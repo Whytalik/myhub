@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias=\"@/*\" --no-turbopack)"
+    ]
+  }
+}
