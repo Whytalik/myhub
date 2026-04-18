@@ -13,8 +13,8 @@ const spaces = [
 ];
 
 export default async function LandingPage() {
-  const session = await auth();
-  if (session) redirect("/life/journal");
+  const session = await auth().catch(() => null);
+  if (session) redirect("/home");
 
   return (
     <div className="min-h-screen bg-bg text-text flex flex-col">
@@ -29,22 +29,15 @@ export default async function LandingPage() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <Link
-            href="/login"
-            className="text-[13px] font-mono text-secondary hover:text-text transition-colors uppercase tracking-wider"
-          >
+          <Link href="/login" className="text-[13px] font-mono text-secondary hover:text-text transition-colors uppercase tracking-wider">
             Sign in
           </Link>
-          <Link
-            href="/register"
-            className="text-[13px] font-mono bg-accent text-bg px-4 py-2 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-accent/20 uppercase tracking-wider"
-          >
+          <Link href="/register" className="text-[13px] font-mono bg-accent text-bg px-4 py-2 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-accent/20 uppercase tracking-wider">
             Sign up
           </Link>
         </div>
       </header>
 
-      {/* Hero */}
       <main className="flex-1 flex flex-col items-center justify-center px-8 py-20 text-center">
         <p className="text-[11px] font-mono text-muted uppercase tracking-[0.3em] mb-6">
           Personal Operating System
@@ -55,21 +48,14 @@ export default async function LandingPage() {
         <p className="text-secondary text-lg max-w-md leading-relaxed mb-10">
           One place to track what matters — your life, habits, food, languages, fitness, and more.
         </p>
-        <Link
-          href="/register"
-          className="inline-flex items-center gap-2 bg-accent text-bg font-bold px-8 py-3.5 rounded-2xl text-[15px] hover:opacity-90 transition-all shadow-xl shadow-accent/25 active:scale-[0.98]"
-        >
+        <Link href="/register" className="inline-flex items-center gap-2 bg-accent text-bg font-bold px-8 py-3.5 rounded-2xl text-[15px] hover:opacity-90 transition-all shadow-xl shadow-accent/25 active:scale-[0.98]">
           Get started
           <ArrowRight size={18} />
         </Link>
 
-        {/* Spaces grid */}
         <div className="mt-20 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl w-full">
           {spaces.map(({ label, description, icon: Icon }) => (
-            <div
-              key={label}
-              className="flex items-start gap-3 p-4 rounded-2xl bg-surface border border-border/50 text-left"
-            >
+            <div key={label} className="flex items-start gap-3 p-4 rounded-2xl bg-surface border border-border/50 text-left">
               <div className="mt-0.5 p-2 rounded-lg bg-accent/10 border border-accent/15 shrink-0">
                 <Icon size={15} className="text-accent" />
               </div>
@@ -82,7 +68,7 @@ export default async function LandingPage() {
         </div>
 
         <p className="mt-10 text-[11px] font-mono text-muted/50 uppercase tracking-widest">
-          Life space is available on signup · Other spaces for admin accounts
+          Life space available on signup · Other spaces for admin accounts
         </p>
       </main>
     </div>

@@ -15,7 +15,7 @@ export default auth((req) => {
 
   if (isAuthRoute) {
     if (isAuth) {
-      return NextResponse.redirect(new URL("/", nextUrl));
+      return NextResponse.redirect(new URL("/home", nextUrl));
     }
     return NextResponse.next();
   }
