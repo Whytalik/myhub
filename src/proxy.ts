@@ -6,7 +6,10 @@ export default auth((req) => {
   const { nextUrl } = req;
 
   const isAuthRoute = nextUrl.pathname.startsWith("/login") || nextUrl.pathname.startsWith("/register");
-  const isPublicRoute = nextUrl.pathname === "/favicon.ico" || nextUrl.pathname.startsWith("/api/auth");
+  const isPublicRoute =
+    nextUrl.pathname === "/" ||
+    nextUrl.pathname === "/favicon.ico" ||
+    nextUrl.pathname.startsWith("/api/auth");
 
   if (isPublicRoute) return NextResponse.next();
 

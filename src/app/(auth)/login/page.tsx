@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { loginAction } from "./actions";
-import { LayoutDashboard } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -14,7 +14,7 @@ export default function LoginPage() {
         {/* Brand */}
         <div className="flex items-center gap-3 mb-10 justify-center">
           <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
-            <LayoutDashboard size={20} className="text-bg" />
+            <Sparkles size={20} className="text-bg" fill="currentColor" />
           </div>
           <p className="font-heading text-2xl text-text leading-none tracking-tight">
             My<span className="text-accent">Hub</span>
@@ -22,7 +22,7 @@ export default function LoginPage() {
         </div>
 
         {/* Form */}
-        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl shadow-violet/5">
+        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl shadow-accent/5">
           <h2 className="font-heading text-2xl text-text mb-1">Sign in</h2>
           <p className="text-secondary text-sm mb-8">Access your personal hub</p>
 
@@ -36,7 +36,7 @@ export default function LoginPage() {
                 name="email"
                 required
                 autoComplete="email"
-                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-violet/50 transition-colors"
+                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
                 placeholder="you@example.com"
               />
             </div>
@@ -50,7 +50,7 @@ export default function LoginPage() {
                 name="password"
                 required
                 autoComplete="current-password"
-                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-violet/50 transition-colors"
+                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -64,7 +64,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="mt-1 bg-violet text-bg font-bold py-2.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg shadow-violet/20 active:scale-[0.98]"
+              className="mt-1 bg-accent text-bg font-bold py-2.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg shadow-accent/20 active:scale-[0.98]"
             >
               {isPending ? "Signing in…" : "Sign in"}
             </button>
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-[12px] text-secondary font-mono uppercase tracking-[0.1em]">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-violet hover:underline decoration-violet/30 font-bold">
+            <Link href="/register" className="text-accent hover:underline decoration-accent/30 font-bold">
               Sign up
             </Link>
           </p>

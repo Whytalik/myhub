@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { registerAction } from "./actions";
-import { LayoutDashboard } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function RegisterPage() {
@@ -14,7 +14,7 @@ export default function RegisterPage() {
         {/* Brand */}
         <div className="flex items-center gap-3 mb-10 justify-center">
           <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
-            <LayoutDashboard size={20} className="text-bg" />
+            <Sparkles size={20} className="text-bg" fill="currentColor" />
           </div>
           <p className="font-heading text-2xl text-text leading-none tracking-tight">
             My<span className="text-accent">Hub</span>
@@ -22,7 +22,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Form */}
-        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl shadow-violet/5">
+        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl shadow-accent/5">
           <h2 className="font-heading text-2xl text-text mb-1">Sign up</h2>
           <p className="text-secondary text-sm mb-8">Create your personal hub</p>
 
@@ -36,7 +36,7 @@ export default function RegisterPage() {
                 name="name"
                 required
                 autoComplete="name"
-                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-violet/50 transition-colors"
+                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
                 placeholder="Vitalii"
               />
             </div>
@@ -50,7 +50,7 @@ export default function RegisterPage() {
                 name="email"
                 required
                 autoComplete="email"
-                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-violet/50 transition-colors"
+                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
                 placeholder="you@example.com"
               />
             </div>
@@ -64,7 +64,7 @@ export default function RegisterPage() {
                 name="password"
                 required
                 autoComplete="new-password"
-                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-violet/50 transition-colors"
+                className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -78,7 +78,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="mt-1 bg-violet text-bg font-bold py-2.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg shadow-violet/20 active:scale-[0.98]"
+              className="mt-1 bg-accent text-bg font-bold py-2.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg shadow-accent/20 active:scale-[0.98]"
             >
               {isPending ? "Creating account…" : "Create account"}
             </button>
@@ -86,7 +86,7 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-[12px] text-secondary font-mono uppercase tracking-[0.1em]">
             Already have an account?{" "}
-            <Link href="/login" className="text-violet hover:underline decoration-violet/30 font-bold">
+            <Link href="/login" className="text-accent hover:underline decoration-accent/30 font-bold">
               Sign in
             </Link>
           </p>
