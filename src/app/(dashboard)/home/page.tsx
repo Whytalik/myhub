@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   BookHeart, Utensils, Languages, Dumbbell,
   BookOpen, ShoppingBag, ArrowRight, Lock,
-  Flame, BookText, Zap, CheckCircle2, CalendarDays,
+  Flame, BookText, Zap,
 } from "lucide-react";
 import { getTodayEntry, getDailyStats } from "@/features/life/services/journal-service";
 import { format } from "date-fns";
@@ -18,12 +18,6 @@ const spaces = [
   { label: "Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
 ];
 
-const quickActions = [
-  { label: "Today's Journal", href: "/life/journal", icon: BookText, desc: "Log your daily entry" },
-  { label: "Habits", href: "/life/habits", icon: Zap, desc: "Check off habits" },
-  { label: "Tasks", href: "/life/tasks", icon: CheckCircle2, desc: "View your task board" },
-  { label: "Journal History", href: "/life/history", icon: CalendarDays, desc: "Browse past entries" },
-];
 
 export default async function HomePage() {
   const session = await auth();
@@ -104,29 +98,6 @@ export default async function HomePage() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Quick actions */}
-        <section>
-          <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">Quick access</h2>
-          <div className="flex flex-col gap-2">
-            {quickActions.map(({ label, href, icon: Icon, desc }) => (
-              <Link
-                key={label}
-                href={href}
-                className="group flex items-center gap-3 px-4 py-3.5 rounded-xl bg-surface border border-border hover:border-accent/40 transition-all"
-              >
-                <div className="p-2 rounded-lg bg-accent/10 border border-accent/20 shrink-0">
-                  <Icon size={14} className="text-accent" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-text leading-none">{label}</p>
-                  <p className="text-[11px] text-muted mt-0.5">{desc}</p>
-                </div>
-                <ArrowRight size={13} className="text-muted group-hover:text-accent transition-colors shrink-0" />
-              </Link>
-            ))}
-          </div>
-        </section>
-
         {/* All spaces */}
         <section>
           <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">All spaces</h2>
