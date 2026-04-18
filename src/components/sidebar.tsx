@@ -319,7 +319,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
       <div className="border-t border-border mt-auto" />
 
       {/* Footer - Pinned to bottom */}
-      <div className="shrink-0 flex flex-col gap-1 p-6 pt-2">
+      <div className="shrink-0 flex flex-col gap-1 px-4 pb-4 pt-2">
         {user && (
           <div className="flex items-center gap-3 px-1 py-1">
             <Link 

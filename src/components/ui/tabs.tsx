@@ -16,6 +16,7 @@ interface TabsProps {
   onTabChange?: (id: string) => void;
   className?: string;
   contentClassName?: string;
+  variant?: string;
 }
 
 export function Tabs({ 

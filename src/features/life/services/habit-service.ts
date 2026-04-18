@@ -19,7 +19,7 @@ export async function getActiveHabits(personId: string) {
 }
 
 export async function upsertHabit(personId: string, input: UpsertHabitInput) {
-  const { id, ...data } = input;
+  const { id, icon: _icon, color: _color, ...data } = input;
   if (id) {
     return prisma.habit.update({
       where: { id, personId },
@@ -29,6 +29,8 @@ export async function upsertHabit(personId: string, input: UpsertHabitInput) {
   return prisma.habit.create({
     data: {
       ...data,
+      anchor: data.anchor ?? "",
+      action: data.action ?? "",
       personId,
       order: data.order ?? 0,
     },

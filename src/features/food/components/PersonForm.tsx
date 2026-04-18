@@ -28,7 +28,7 @@ export function PersonForm({ initialPersons, profileId }: PersonFormProps) {
   const handleCreate = async () => {
     if (!newName) return;
     startTransition(async () => {
-      const result = await createPersonAction(newName, profileId);
+      const result = await createPersonAction(newName);
       if (result.success) {
         setPersons(prev => [...prev, result.data as Person]);
         setNewName("");

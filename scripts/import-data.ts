@@ -131,7 +131,7 @@ async function main() {
         where: { id: record.id },
         update: record,
         create: record,
-      }).catch(err => {
+      }).catch((err: Error) => {
         console.error(`❌ Error importing ${model} (${record.id}):`, err.message);
       });
     }

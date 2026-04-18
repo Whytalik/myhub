@@ -74,7 +74,7 @@ export function WishlistForm({ initialData, onSuccess, onCancel }: WishlistFormP
     // Ensure tags are submitted as an array of strings
     const payload = {
       ...data,
-      tags: typeof data.tags === 'string' ? data.tags.split(',').map(t => t.trim()).filter(Boolean) : data.tags,
+      tags: Array.isArray(data.tags) ? data.tags : (data.tags as unknown as string).split(',').map((t: string) => t.trim()).filter(Boolean),
     };
 
     const result = await upsertWishlistItemAction(payload);
@@ -123,7 +123,7 @@ export function WishlistForm({ initialData, onSuccess, onCancel }: WishlistFormP
           </div>
            <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-mono text-muted tracking-widest px-1">Currency</label>
-            <CustomSelect options={CURRENCY_OPTIONS} value={selectedCurrency} onChange={(val) => setValue("currency", val as string)} />
+            <CustomSelect options={CURRENCY_OPTIONS} value={selectedCurrency ?? ""} onChange={(val) => setValue("currency", val as string)} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-mono text-muted tracking-widest px-1">Store</label>
@@ -147,11 +147,11 @@ export function WishlistForm({ initialData, onSuccess, onCancel }: WishlistFormP
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-mono text-muted tracking-widest px-1">Status</label>
-            <CustomSelect options={STATUS_OPTIONS} value={selectedStatus} onChange={(val) => setValue("status", val as WishlistStatus)} />
+            <CustomSelect options={STATUS_OPTIONS} value={selectedStatus ?? ""} onChange={(val) => setValue("status", val as WishlistStatus)} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-mono text-muted tracking-widest px-1">Priority</label>
-            <CustomSelect options={PRIORITY_OPTIONS} value={selectedPriority} onChange={(val) => setValue("priority", val as TaskPriority)} />
+            <CustomSelect options={PRIORITY_OPTIONS} value={selectedPriority ?? ""} onChange={(val) => setValue("priority", val as TaskPriority)} />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] font-mono text-muted tracking-widest px-1">Necessity (1-10)</label>

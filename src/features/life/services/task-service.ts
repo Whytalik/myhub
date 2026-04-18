@@ -170,7 +170,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
   let completedAt: Date | null | undefined = undefined;
   if (status === 'DONE') {
     completedAt = new Date();
-  } else if (status && status !== 'DONE') {
+  } else if (status) {
     completedAt = null;
   }
 
@@ -215,8 +215,8 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
         hasDueTime,
         depth,
         completedAt: status === 'DONE' ? new Date() : null,
-        parent: parentId ? { connect: { id: parentId } } : undefined,
-        sphere: sphereId ? { connect: { id: sphereId } } : undefined,
+        parentId: parentId ?? null,
+        sphereId: sphereId ?? null,
       },
       include: TASK_INCLUDE,
     });

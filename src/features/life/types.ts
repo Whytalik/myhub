@@ -2,8 +2,10 @@ import type {
   TaskStatus as PrismaTaskStatus,
   TaskPriority as PrismaTaskPriority,
   WishlistStatus as PrismaWishlistStatus,
-  JsonValue
+  Prisma,
 } from "@/app/generated/prisma";
+
+type JsonValue = Prisma.JsonValue;
 import type { RoutineMap } from "@/lib/routine-items";
 
 //
@@ -154,6 +156,9 @@ export interface HabitData {
   name: string;
   icon: string;
   color: string;
+  anchor?: string | null;
+  action?: string | null;
+  celebration?: string | null;
   archived: boolean;
   order: number;
   completions: HabitCompletionData[];
@@ -170,9 +175,13 @@ export interface HabitCompletionData {
 export interface UpsertHabitInput {
   id?: string;
   name: string;
-  icon: string;
-  color: string;
+  icon?: string;
+  color?: string;
+  anchor?: string;
+  action?: string;
+  celebration?: string | null;
   order?: number;
+  archived?: boolean;
 }
 
 //

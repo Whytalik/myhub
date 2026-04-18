@@ -1,8 +1,11 @@
 import { getDailyStats } from "../../services/journal-service";
+import { auth } from "@/auth";
 import { Flame, Moon, Zap } from "lucide-react";
 
 export async function StatsStrip() {
-  const stats = await getDailyStats();
+  const session = await auth();
+  const personId = (session?.user as any)?.personId;
+  const stats = await getDailyStats(personId ?? "");
 
   return (
     <div className="flex items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4">

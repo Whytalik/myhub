@@ -189,7 +189,7 @@ export function TaskStatsView({ stats }: Props) {
                                  strokeDasharray={strokeDasharray}
                                  strokeDashoffset={strokeDashoffset}
                                  className="transition-all duration-1000 ease-out hover:stroke-white/20"
-                                 style={{ pathLength: 100 }}
+                                 pathLength={100}
                               />
                            );
                         });

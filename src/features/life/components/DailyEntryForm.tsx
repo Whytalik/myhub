@@ -53,7 +53,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         sleepNote:       initialEntry?.sleepNote ?? null,
         energy:          initialEntry?.energy ?? null,
         mood:            initialEntry?.mood ?? null,
-        emotions:        initialEntry?.emotions ?? null,
+        emotions:        (initialEntry?.emotions as string[] | null) ?? null,
         weight:          initialEntry?.weight ?? null,
         energyNote:      initialEntry?.energyNote ?? null,
         morningSunlight: initialEntry?.morningSunlight ?? null,
@@ -78,7 +78,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       sleepNote:       initialEntry?.sleepNote ?? null,
       energy:          initialEntry?.energy ?? null,
       mood:            initialEntry?.mood ?? null,
-      emotions:        initialEntry?.emotions ?? null,
+      emotions:        (initialEntry?.emotions as string[] | null) ?? null,
       weight:          initialEntry?.weight ?? null,
       energyNote:      initialEntry?.energyNote ?? null,
       morningSunlight: initialEntry?.morningSunlight ?? null,
@@ -117,7 +117,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         sleepNote:       initialEntry?.sleepNote ?? null,
         energy:          initialEntry?.energy ?? null,
         mood:            initialEntry?.mood ?? null,
-        emotions:        initialEntry?.emotions ?? null,
+        emotions:        (initialEntry?.emotions as string[] | null) ?? null,
         weight:          initialEntry?.weight ?? null,
         energyNote:      initialEntry?.energyNote ?? null,
         morningSunlight: initialEntry?.morningSunlight ?? null,
@@ -144,7 +144,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       sleepNote:       initialEntry?.sleepNote ?? null,
       energy:          initialEntry?.energy ?? null,
       mood:            initialEntry?.mood ?? null,
-      emotions:        initialEntry?.emotions ?? null,
+      emotions:        (initialEntry?.emotions as string[] | null) ?? null,
       weight:          initialEntry?.weight ?? null,
       energyNote:      initialEntry?.energyNote ?? null,
       morningSunlight: initialEntry?.morningSunlight ?? null,
@@ -356,7 +356,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
               </div>
               {data.eveningEnergy !== null && (
                 <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
-                  {["","Drained","Tired","Okay","Low","Meh","Fine","Good","Solid","Peak","Ultra"][data.eveningEnergy]}
+                  {["","Drained","Tired","Okay","Low","Meh","Fine","Good","Solid","Peak","Ultra"][data.eveningEnergy!]}
                 </span>
               )}
             </div>
@@ -369,7 +369,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                   className={`flex-1 rounded-lg border text-[10px] font-mono transition-all ${
                     data.eveningEnergy === value
                       ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                      : data.eveningEnergy !== null && value <= data.eveningEnergy
+                      : data.eveningEnergy != null && value <= data.eveningEnergy
                       ? "bg-accent-muted/40 border-accent/20 text-accent/60"
                       : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
                   }`}

@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import * as profileService from "../services/profile-service";
 
-export async function updateProfileAction(formData: FormData) {
+export async function updateProfileAction(_state: unknown, formData: FormData) {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) return { success: false, error: "Unauthorized" };

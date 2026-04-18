@@ -102,26 +102,13 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
         </div>
 
         <div className="flex flex-col gap-6">
-           <div className="bg-raised/30 border border-border/30 rounded-2xl p-6">
-              <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em] mb-4">Space Access</h4>
-              <div className="space-y-3">
-                 {["Food", "Life", "Languages", "Library"].map(space => (
-                   <div key={space} className="flex items-center gap-3">
-                      <CheckCircle2 size={14} className="text-accent" />
-                      <span className="text-xs font-medium text-secondary">{space} System Active</span>
-                   </div>
-                 ))}
-              </div>
-           </div>
-           
            <div className="bg-accent/5 border border-accent/20 rounded-2xl p-6">
               <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em] mb-2 font-bold">Privacy Matrix</h4>
               <p className="text-[11px] text-secondary leading-relaxed">
                 Your data is strictly isolated within the hub. Encryption keys are linked to your neural signature (password).
               </p>
            </div>
-        </div>
-      </div>
+        </div>      </div>
     </div>
   );
 }

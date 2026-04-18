@@ -22,7 +22,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
   
   // Flags stored in the routine map
   const isTrainingDay = type === "morning" ? (map["_isTrainingDay"] ?? false) : false;
-  const eveningMode = type === "evening" ? (map["_eveningMode"] ?? "normal") : "normal";
+  const eveningMode = type === "evening" ? ((map["_eveningMode"] as unknown as string) ?? "normal") : "normal";
 
   const items = type === "morning"
     ? (isTrainingDay ? MORNING_ROUTINE_TRAIN : MORNING_ROUTINE_NO_TRAIN)
@@ -45,7 +45,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
   };
 
   const setEveningMode = (mode: string) => {
-    const next = { ...map, _eveningMode: mode };
+    const next = { ...map, _eveningMode: mode } as unknown as RoutineMap;
     onChange({ eveningRoutine: next });
   };
 
