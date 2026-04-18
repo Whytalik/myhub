@@ -97,39 +97,34 @@ export default async function HomePage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* All spaces */}
-        <section>
-          <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">All spaces</h2>
-          <div className="flex flex-col gap-2">
-            {spaces.map(({ label, description, icon: Icon, href, adminOnly }) => {
-              const accessible = !adminOnly || isAdmin;
-              return (
-                <Link
-                  key={label}
-                  href={accessible ? href : "#"}
-                  className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all ${
-                    accessible
-                      ? "bg-surface border-border hover:border-accent/40"
-                      : "bg-surface/40 border-border/40 opacity-50 pointer-events-none"
-                  }`}
-                >
-                  <div className={`p-2 rounded-lg border shrink-0 ${accessible ? "bg-accent/10 border-accent/20" : "bg-raised border-border/30"}`}>
-                    <Icon size={14} className={accessible ? "text-accent" : "text-muted"} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <p className="text-[13px] font-semibold text-text leading-none">{label}</p>
-                      {!accessible && <Lock size={10} className="text-muted" />}
-                    </div>
-                    <p className="text-[11px] text-muted mt-0.5">{description}</p>
-                  </div>
-                  {accessible && <ArrowRight size={13} className="text-muted group-hover:text-accent transition-colors shrink-0" />}
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+      {/* Spaces grid */}
+      <div>
+        <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">Spaces</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {spaces.map(({ label, description, icon: Icon, href, adminOnly }) => {
+            const accessible = !adminOnly || isAdmin;
+            return (
+              <Link
+                key={label}
+                href={accessible ? href : "#"}
+                className={`group flex flex-col items-center justify-center gap-3 aspect-square rounded-2xl border transition-all ${
+                  accessible
+                    ? "bg-surface border-border hover:border-accent/50 hover:bg-surface/80 hover:shadow-lg hover:shadow-accent/5"
+                    : "bg-surface/30 border-border/30 opacity-40 pointer-events-none"
+                }`}
+              >
+                <div className={`p-3 rounded-xl border ${accessible ? "bg-accent/10 border-accent/20 group-hover:bg-accent/20 transition-colors" : "bg-raised border-border/30"}`}>
+                  <Icon size={22} className={accessible ? "text-accent" : "text-muted"} />
+                </div>
+                <div className="text-center px-2">
+                  <p className="text-[12px] font-semibold text-text leading-none mb-1">{label}</p>
+                  <p className="text-[10px] text-muted leading-snug">{description}</p>
+                </div>
+                {!accessible && <Lock size={10} className="text-muted absolute" />}
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
