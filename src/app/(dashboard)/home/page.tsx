@@ -52,7 +52,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="px-14 py-12 w-full max-w-4xl">
+    <div className="px-14 py-12 w-full">
       {/* Header */}
       <div className="mb-10">
         <p className="text-[11px] font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
