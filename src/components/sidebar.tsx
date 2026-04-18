@@ -255,7 +255,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     <aside className="w-64 bg-surface border-r border-border flex flex-col h-screen sticky top-0 shrink-0 transition-all duration-300">
       {/* Brand - Fixed at top */}
       <div className="shrink-0 py-8 px-6">
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/home" className="flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-2xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform">
             <Sparkles size={20} className="text-bg" fill="currentColor" />
           </div>
