@@ -45,9 +45,9 @@ export async function registerAction(
         },
       });
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Registration error:", error);
-    return "Something went wrong. Please try again.";
+    return error?.message || "Something went wrong. Please try again.";
   }
 
   try {
