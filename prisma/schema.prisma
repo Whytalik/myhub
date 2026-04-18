@@ -1,0 +1,628 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth Models (NextAuth) ───────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?   // For credentials provider
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum ProductCategory {
+  FRUITS
+  VEGETABLES
+  DAIRY
+  MEAT
+  POULTRY
+  SEAFOOD
+  GRAINS
+  LEGUMES
+  NUTS_SEEDS
+  EGGS
+  OILS_FATS
+  SWEETS
+  BEVERAGES
+  BAKERY
+  OTHER
+}
+
+enum ProductStatus {
+  ACTIVE
+  ARCHIVED
+  FAVORITE
+}
+
+enum ProductSource {
+  MANUAL
+  IMPORTED
+}
+
+enum ProductState {
+  RAW
+  COOKED
+  PROCESSED
+}
+
+enum Priority {
+  FIXED
+  FLEXIBLE
+  AUTO
+}
+
+enum MealSlot {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+enum Unit {
+  GRAM
+  ML
+  PIECE
+  TBSP
+  TSP
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String?  @unique
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  persons Person[]
+}
+
+model Person {
+  id        String   @id @default(cuid())
+  profileId String
+  name      String
+  
+  // Nutrition Goals
+  targetCalories Float? @default(2000)
+  targetProtein  Float? @default(150)
+  targetFat      Float? @default(70)
+  targetCarbs    Float? @default(200)
+  targetFiber    Float? @default(30)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile       Profile        @relation(fields: [profileId], references: [id])
+  dishes        Dish[]
+  dayTemplates  DayTemplate[]
+  weekPlans     WeekPlan[]
+  dayPlans      DayPlan[]
+  shoppingLists ShoppingList[]
+  userLanguages UserLanguage[]
+  
+  // Life Space
+  tasks         Task[]
+  dailyEntries  DailyEntry[]
+  habits        Habit[]
+  lifeSpheres   LifeSphere[]
+  libraryItems  LibraryItem[]
+  wishlistItems WishlistItem[]
+}
+
+model Product {
+  id        String          @id @default(cuid())
+  name      String
+  category  ProductCategory @default(OTHER)
+  status    ProductStatus   @default(ACTIVE)
+  source    ProductSource   @default(MANUAL)
+  state     ProductState    @default(RAW)
+  unit      Unit            @default(GRAM)
+  calories  Float?
+  protein   Float?
+  fat       Float?
+  carbs     Float?
+  fiber     Float?
+  price     Float?          @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  dishIngredients   DishIngredient[]
+  shoppingListItems ShoppingListItem[]
+}
+
+model Dish {
+  id          String   @id @default(cuid())
+  personId    String
+  name        String
+  description String?
+  priority    Priority @default(FLEXIBLE)
+  yield       Float?   @default(1.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  person          Person             @relation(fields: [personId], references: [id])
+  ingredients     DishIngredient[]
+  dayPlanEntries  DayPlanEntry[]
+  templateEntries DayTemplateEntry[]
+}
+
+model DishIngredient {
+  id        String @id @default(cuid())
+  dishId    String
+  productId String
+  amount    Float
+  unit      Unit   @default(GRAM)
+
+  dish    Dish    @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([dishId, productId])
+}
+
+model DayTemplate {
+  id        String   @id @default(cuid())
+  personId  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person   Person             @relation(fields: [personId], references: [id])
+  entries  DayTemplateEntry[]
+  dayPlans DayPlan[]
+}
+
+model DayTemplateEntry {
+  id         String   @id @default(cuid())
+  templateId String
+  dishId     String
+  mealSlot   MealSlot
+  servings   Float    @default(1)
+  priority   Priority @default(FLEXIBLE)
+
+  template DayTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  dish     Dish        @relation(fields: [dishId], references: [id])
+}
+
+model WeekPlan {
+  id        String   @id @default(cuid())
+  personId  String
+  name      String?
+  startDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person        Person         @relation(fields: [personId], references: [id])
+  dayPlans      DayPlan[]
+  shoppingLists ShoppingList[]
+}
+
+enum PlanAdherence {
+  PLANNED
+  FOLLOWED
+  DEVIATED
+}
+
+model DayPlan {
+  id         String    @id @default(cuid())
+  personId   String
+  weekPlanId String?
+  templateId String?
+  date       DateTime  @db.Date
+  adherence  PlanAdherence @default(PLANNED)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  person   Person      @relation(fields: [personId], references: [id])
+  weekPlan WeekPlan?   @relation(fields: [weekPlanId], references: [id])
+  template DayTemplate? @relation(fields: [templateId], references: [id])
+  entries  DayPlanEntry[]
+}
+
+model DayPlanEntry {
+  id        String   @id @default(cuid())
+  dayPlanId String
+  dishId    String
+  mealSlot  MealSlot
+  servings  Float    @default(1)
+  priority  Priority @default(FLEXIBLE)
+
+  dayPlan DayPlan @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
+  dish    Dish    @relation(fields: [dishId], references: [id])
+}
+
+model ShoppingList {
+  id         String   @id @default(cuid())
+  personId   String
+  weekPlanId String?
+  name       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  person   Person             @relation(fields: [personId], references: [id])
+  weekPlan WeekPlan?          @relation(fields: [weekPlanId], references: [id])
+  items    ShoppingListItem[]
+}
+
+model ShoppingListItem {
+  id             String  @id @default(cuid())
+  shoppingListId String
+  productId      String
+  amount         Float
+  unit           Unit    @default(GRAM)
+  checked        Boolean @default(false)
+
+  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id])
+}
+
+// ─── Life Space ───────────────────────────────────────────────────────────────
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model LifeSphere {
+  id        String   @id @default(cuid())
+  personId  String
+  name      String
+  color     String
+  icon      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person    Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  personId    String
+  title       String
+  description String?
+  icon        String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  plannedDate DateTime?
+  hasPlannedTime Boolean   @default(false)
+  dueDate     DateTime?
+  hasDueTime  Boolean      @default(false)
+  depth       Int          @default(0)
+  order       Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  person   Person    @relation(fields: [personId], references: [id], onDelete: Cascade)
+  parentId String?
+  parent   Task?      @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children Task[]     @relation("TaskChildren")
+
+  sphereId String?
+  sphere   LifeSphere? @relation(fields: [sphereId], references: [id], onDelete: SetNull)
+
+  completedAt DateTime?
+}
+
+model DailyEntry {
+  id        String   @id @default(cuid())
+  personId  String
+  date      DateTime @db.Date
+
+  // Sleep
+  sleepBedtime DateTime?
+  sleepWakeup  DateTime?
+  sleepHours   Float?
+  sleepQuality Int?
+  sleepNote    String?
+
+  // Energy & Mood
+  energy     Int?
+  mood       Int?
+  emotions   Json?    // Array of strings: ["Anxious", "Grateful", etc.]
+  weight     Float?
+  energyNote String?
+
+  // Environment & Health
+  morningSunlight Boolean? @default(false)
+
+  // Evening Energy (1-10)
+  eveningEnergy Int?
+
+  // Nutrition adherence (1-5)
+  nutrition     Int?
+  nutritionNote String?
+
+  // Routine (JSON maps: { [itemId]: boolean })
+  morningRoutine     Json?
+  eveningRoutine     Json?
+  routineNote        String?
+
+  // Reflection
+  winToday        String?
+  improveTomorrow String?
+  gratitude       String?
+  brainDump       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person   Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, date])
+}
+
+model Habit {
+  id          String   @id @default(cuid())
+  personId    String
+  name        String
+  anchor      String   // "After I [Anchor]"
+  action      String   // "I will [Action]"
+  celebration String?  // "And then I will [Celebrate]"
+  order       Int      @default(0)
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  person      Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  completions HabitCompletion[]
+}
+
+model HabitCompletion {
+  id        String   @id @default(cuid())
+  habitId   String
+  date      DateTime @db.Date
+  createdAt DateTime @default(now())
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
+}
+
+// ─── Library Space ────────────────────────────────────────────────────────────
+
+enum LibraryItemType {
+  BOOK
+  ARTICLE
+  VIDEO
+  COURSE
+  OTHER
+}
+
+enum LibraryItemStatus {
+  WANT_TO_READ
+  READING
+  COMPLETED
+  DROPPED
+}
+
+model LibraryItem {
+  id        String            @id @default(cuid())
+  personId  String
+  title     String
+  author    String?
+  url       String?
+  type      LibraryItemType   @default(BOOK)
+  status    LibraryItemStatus @default(WANT_TO_READ)
+  rating    Int?              // 1-10
+  notes     String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  person    Person            @relation(fields: [personId], references: [id], onDelete: Cascade)
+}
+
+// ─── Wishlist (Life Space) ────────────────────────────────────────────────────
+
+enum WishlistStatus {
+  IDEA
+  RESEARCHING
+  WISH
+  PLANNED
+  ORDERED
+  BOUGHT
+  GIFTED
+  ABANDONED
+  REPLACED
+  CANCELLED
+}
+
+model WishlistItem {
+  id          String         @id @default(cuid())
+  personId    String
+  name        String
+  description String?
+  url         String?
+  imageUrl    String?        // Link to product image
+  price       Float?
+  currency    String         @default("UAH")
+  priority    TaskPriority   @default(MEDIUM)
+  status      WishlistStatus @default(WISH)
+  category    String?        // Gear, Home, Health, etc.
+  tags        String[]       // ["fishing", "tech"]
+  necessity   Int?           // 1-10 (How much I really need it vs want it)
+  store       String?        // Amazon, Rozetka, etc.
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  person      Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
+}
+
+// ─── Language System ─────────────────────────────────────────────────────────
+
+enum LanguageSphere {
+  VOCABULARY
+  LISTENING
+  READING
+  SPEAKING
+  WRITING
+}
+
+enum CefrLevel {
+  A0
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+model Language {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  code      String   @unique // ISO 639-1 code (e.g., "en", "es")
+  icon      String?  // Emoji or icon name
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userLanguages UserLanguage[]
+}
+
+model UserLanguage {
+  id         String    @id @default(cuid())
+  personId   String
+  languageId String
+  level      CefrLevel @default(A0)
+  totalXp    Int       @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  person   Person   @relation(fields: [personId], references: [id])
+  language Language @relation(fields: [languageId], references: [id])
+
+  sphereProgress  LanguageSphereProgress[]
+  vocabularyItems VocabularyItem[]
+  immersionLogs   ImmersionLog[]
+  resources       LanguageResource[]
+
+  @@unique([personId, languageId])
+}
+
+model LanguageSphereProgress {
+  id             String         @id @default(cuid())
+  userLanguageId String
+  sphere         LanguageSphere
+  mastery        Float          @default(0) // 0 to 100
+  updatedAt      DateTime       @updatedAt
+
+  userLanguage UserLanguage @relation(fields: [userLanguageId], references: [id], onDelete: Cascade)
+
+  @@unique([userLanguageId, sphere])
+}
+
+model VocabularyItem {
+  id             String   @id @default(cuid())
+  userLanguageId String
+  word           String
+  translation    String
+  context        String?
+  notes          String?
+  
+  // SRS (Spaced Repetition System)
+  nextReview     DateTime @default(now())
+  interval       Int      @default(0) // Days
+  easeFactor     Float    @default(2.5)
+  repetition     Int      @default(0)
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  userLanguage UserLanguage @relation(fields: [userLanguageId], references: [id], onDelete: Cascade)
+
+  @@index([nextReview])
+}
+
+model ImmersionLog {
+  id             String         @id @default(cuid())
+  userLanguageId String
+  sphere         LanguageSphere
+  duration       Int            // Minutes
+  note           String?
+  date           DateTime       @default(now())
+  createdAt      DateTime       @default(now())
+
+  userLanguage UserLanguage @relation(fields: [userLanguageId], references: [id], onDelete: Cascade)
+}
+
+model LanguageResource {
+  id             String          @id @default(cuid())
+  userLanguageId String
+  name           String
+  url            String?
+  sphere         LanguageSphere?
+  level          CefrLevel?
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  userLanguage UserLanguage @relation(fields: [userLanguageId], references: [id], onDelete: Cascade)
+}

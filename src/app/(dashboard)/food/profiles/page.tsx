@@ -1,0 +1,32 @@
+import type { Metadata } from "next";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Heading } from "@/components/ui/heading";
+import { getPersons } from "@/features/food/services/person-service";
+import { PersonForm } from "@/features/food/components/PersonForm";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Profiles & Goals",
+};
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function ProfilesPage() {
+  const session = await auth();
+  if (!session?.user) redirect("/login");
+  const profileId = (session.user as any).profileId;
+  if (!profileId) redirect("/login");
+
+  const persons = await getPersons(profileId);
+
+  return (
+    <div className="px-14 py-10">
+      <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "profiles" }]} />
+      <Heading title="Profiles & Goals" />
+      
+      <PersonForm initialPersons={persons} profileId={profileId} />
+    </div>
+  );
+}
