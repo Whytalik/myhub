@@ -21,9 +21,6 @@ export const metadata: Metadata = {
     template: "%s | MyHub",
   },
   description: "Personal operating system for food planning and habits.",
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 export default function RootLayout({
