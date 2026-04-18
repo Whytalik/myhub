@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export const proxy = auth((req) => {
+export default auth((req) => {
   const isAuth = !!req.auth;
   const { nextUrl } = req;
 
