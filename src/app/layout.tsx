@@ -22,7 +22,10 @@ export const metadata: Metadata = {
   },
   description: "Personal operating system for food planning and habits.",
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
   },
 };
 
