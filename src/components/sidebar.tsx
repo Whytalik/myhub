@@ -187,7 +187,8 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     withSubItems = true,
   ) => {
     const isActive = pathname.startsWith(groupHref);
-    const isOpen = openSections[label] || isActive; // Auto-open if active
+    // Use the state but default to active if not explicitly toggled yet or if user wants it open
+    const isOpen = openSections[label] !== undefined ? openSections[label] : isActive;
     const GroupIcon = groupIcon;
     const color = spaceColors[label];
 
