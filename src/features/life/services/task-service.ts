@@ -101,7 +101,13 @@ function sortTasks(tasks: TaskData[]): TaskData[] {
     // 2. Sort by Priority (desc)
     const pA = PRIORITY_ORDER[a.priority] ?? 0;
     const pB = PRIORITY_ORDER[b.priority] ?? 0;
-    return pB - pA;
+    if (pA !== pB) return pB - pA;
+
+    // 3. Fallback to manually set order (asc)
+    if (a.order !== b.order) return a.order - b.order;
+
+    // 4. Fallback to creation date (asc)
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
 

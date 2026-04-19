@@ -62,10 +62,21 @@ const PRIORITY_ORDER: Record<TaskPriority, number> = {
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
-    const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() % 86400000 : Infinity;
-    const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() % 86400000 : Infinity;
+    // 1. Sort by plannedDate (asc)
+    const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() : Infinity;
+    const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() : Infinity;
     if (timeA !== timeB) return timeA - timeB;
-    return (PRIORITY_ORDER[b.priority] ?? 0) - (PRIORITY_ORDER[a.priority] ?? 0);
+
+    // 2. Sort by Priority (desc)
+    const pA = PRIORITY_ORDER[a.priority] ?? 0;
+    const pB = PRIORITY_ORDER[b.priority] ?? 0;
+    if (pA !== pB) return pB - pA;
+
+    // 3. Fallback to manually set order (asc)
+    if (a.order !== b.order) return a.order - b.order;
+
+    // 4. Fallback to creation date (asc)
+    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
 
