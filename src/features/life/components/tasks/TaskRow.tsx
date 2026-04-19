@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { Pencil, Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
 import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { StatusToggle, STATUS_CONFIG } from "./StatusToggle";
 import { PriorityBadge } from "./PriorityBadge";
-import { SPHERE_ICONS } from "./lucide-icons-map";
+import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 
 interface TaskRowProps {
   task:         TaskData;
@@ -85,7 +85,11 @@ export function TaskRow({ task, onAddChild, onEdit, onDuplicate, allTasks }: Tas
     e.stopPropagation();
     if (task.parentId) {
       const parent = allTasks.find(t => t.id === task.parentId);
-      if (parent) onEdit(parent);
+      if (parent) {
+        onEdit(parent);
+      } else {
+        toast.error("Parent task not found in current list");
+      }
     }
   };
 
@@ -137,8 +141,8 @@ export function TaskRow({ task, onAddChild, onEdit, onDuplicate, allTasks }: Tas
             className="flex items-center gap-1.5 text-[9px] font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden pr-20 hover:text-accent transition-colors cursor-pointer group/parent"
           >
             <ArrowUp size={8} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform" />
-            {task.parentIcon && SPHERE_ICONS[task.parentIcon] && (() => {
-               const PIcon = SPHERE_ICONS[task.parentIcon];
+            {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
+               const PIcon = ALL_ICONS[task.parentIcon];
                return <PIcon size={10} className="shrink-0 opacity-40" />;
             })()}
             <span className="truncate underline decoration-dotted underline-offset-2">{task.parentTitle || 'Parent Task'}</span>

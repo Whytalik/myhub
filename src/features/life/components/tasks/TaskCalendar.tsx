@@ -43,10 +43,11 @@ import { TaskFormDialog } from "./TaskFormDialog";
 import { PriorityBadge } from "./PriorityBadge";
 import { STATUS_CONFIG } from "./StatusToggle";
 import { Tabs } from "@/components/ui/tabs";
-import { SPHERE_ICONS } from "./lucide-icons-map";
+import { SPHERE_ICONS, ALL_ICONS } from "./lucide-icons-map";
 
 interface TaskCalendarProps {
   tasks: TaskData[];
+  allTasks?: TaskData[];
   spheres: LifeSphereData[];
   defaultMode?: "month" | "week";
   onDuplicate?: (task: TaskData) => void;
@@ -155,17 +156,17 @@ function TaskCard({ task, isDragging = false, listeners, attributes, setNodeRef,
         </button>
       )}
 
-      {task.parentId && task.parentTitle && (
+      {task.parentId && (
         <div 
           onClick={handleParentClick}
           className="flex items-center gap-1 text-[10px] font-mono text-muted/50 leading-none truncate hover:text-accent transition-colors cursor-pointer group/parent"
         >
           <ArrowUp size={10} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform" />
-          {task.parentIcon && SPHERE_ICONS[task.parentIcon] && (() => {
-             const PIcon = SPHERE_ICONS[task.parentIcon];
+          {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
+             const PIcon = ALL_ICONS[task.parentIcon];
              return <PIcon size={10} className="shrink-0 opacity-40" />;
           })()}
-          <span className="truncate underline decoration-dotted underline-offset-2">{task.parentTitle}</span>
+          <span className="truncate underline decoration-dotted underline-offset-2">{task.parentTitle || 'Parent Task'}</span>
         </div>
       )}
 
@@ -340,6 +341,9 @@ export function TaskCalendar({ tasks: initialTasks, spheres, defaultMode = "mont
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
+  
+  // Use provided allTasks or fallback to localTasks for parent resolution
+  const parentResolutionTasks = allTasks || localTasks;
 
   const handleEdit = (t: TaskData) => {
     setEditingTask(t);
@@ -531,7 +535,7 @@ export function TaskCalendar({ tasks: initialTasks, spheres, defaultMode = "mont
               }}
               isDraggingAny={isDraggingAny}
               mode={mode}
-              allTasks={localTasks}
+              allTasks={parentResolutionTasks}
             />
           ))}
         </div>
@@ -542,7 +546,7 @@ export function TaskCalendar({ tasks: initialTasks, spheres, defaultMode = "mont
         onClose={handleCloseDialog}
         task={editingTask}
         spheres={spheres}
-        allTasks={localTasks}
+        allTasks={parentResolutionTasks}
         onViewTask={(t) => setEditingTask(t)}
         isDuplicate={isDuplicate}
       />

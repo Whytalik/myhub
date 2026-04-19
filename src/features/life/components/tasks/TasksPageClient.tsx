@@ -110,6 +110,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         ) : (
           <TaskCalendar 
             tasks={calendarTasks} 
+            allTasks={initialTasks}
             spheres={spheres} 
             onDuplicate={handleDuplicate}
             onAdd={handleAddNew}

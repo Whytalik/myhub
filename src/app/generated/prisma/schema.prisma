@@ -151,7 +151,7 @@ model Person {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile       Profile        @relation(fields: [profileId], references: [id])
+  profile       Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
   dishes        Dish[]
   dayTemplates  DayTemplate[]
   weekPlans     WeekPlan[]
@@ -199,7 +199,7 @@ model Dish {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  person          Person             @relation(fields: [personId], references: [id])
+  person          Person             @relation(fields: [personId], references: [id], onDelete: Cascade)
   ingredients     DishIngredient[]
   dayPlanEntries  DayPlanEntry[]
   templateEntries DayTemplateEntry[]
@@ -225,7 +225,7 @@ model DayTemplate {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person   Person             @relation(fields: [personId], references: [id])
+  person   Person             @relation(fields: [personId], references: [id], onDelete: Cascade)
   entries  DayTemplateEntry[]
   dayPlans DayPlan[]
 }
@@ -250,7 +250,7 @@ model WeekPlan {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person        Person         @relation(fields: [personId], references: [id])
+  person        Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
   dayPlans      DayPlan[]
   shoppingLists ShoppingList[]
 }
@@ -271,7 +271,7 @@ model DayPlan {
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
-  person   Person         @relation(fields: [personId], references: [id])
+  person   Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
   weekPlan WeekPlan?      @relation(fields: [weekPlanId], references: [id])
   template DayTemplate?   @relation(fields: [templateId], references: [id])
   entries  DayPlanEntry[]
@@ -297,7 +297,7 @@ model ShoppingList {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  person   Person             @relation(fields: [personId], references: [id])
+  person   Person             @relation(fields: [personId], references: [id], onDelete: Cascade)
   weekPlan WeekPlan?          @relation(fields: [weekPlanId], references: [id])
   items    ShoppingListItem[]
 }
@@ -556,7 +556,7 @@ model UserLanguage {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  person   Person   @relation(fields: [personId], references: [id])
+  person   Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
   language Language @relation(fields: [languageId], references: [id])
 
   sphereProgress  LanguageSphereProgress[]
