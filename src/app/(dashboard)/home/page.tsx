@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   BookHeart, Utensils, Languages, Dumbbell,
   BookOpen, ShoppingBag, ArrowRight, Lock,
-  Flame, BookText, Zap,
+  Flame, BookText, Zap, TrendingUp,
 } from "lucide-react";
 import { getTodayEntry, getDailyStats } from "@/features/life/services/journal-service";
 import { format } from "date-fns";
@@ -14,6 +14,7 @@ const spaces = [
   { label: "Food System", description: "Nutrition & meal planning", icon: Utensils, href: "/food", adminOnly: true },
   { label: "Language System", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
   { label: "Fitness System", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
+  { label: "Trading System", description: "Markets & portfolio", icon: TrendingUp, href: "/trading", adminOnly: true },
   { label: "Library System", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
   { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
 ];

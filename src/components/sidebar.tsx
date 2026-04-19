@@ -65,6 +65,12 @@ const languagesNav = [
   { href: "/languages/resources", label: "Resources", icon: BookText },
 ];
 
+const tradingNav = [
+  { href: "/trading", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/trading/journal", label: "Journal", icon: BookText },
+  { href: "/trading/portfolio", label: "Portfolio", icon: Package },
+];
+
 const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
@@ -75,6 +81,7 @@ const spaceColors: Record<string, { text: string; bg: string }> = {
   "Food System": { text: "#f0a868", bg: "rgba(240,168,104,0.10)" },
   "Fitness System": { text: "#e87d88", bg: "rgba(232,125,136,0.10)" },
   "Language System": { text: "#c084fc", bg: "rgba(192,132,252,0.10)" },
+  "Trading System": { text: "#22c55e", bg: "rgba(34,197,94,0.10)" },
   "Misc / Other": { text: "#a3a3a3", bg: "rgba(163,163,163,0.10)" },
 };
 
@@ -90,7 +97,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   const isAdmin = user?.role === "ADMIN";
 
   const ALL_SECTIONS = isAdmin
-    ? ["food", "life", "fitness", "library", "languages", "other"]
+    ? ["food", "life", "fitness", "library", "languages", "trading", "other"]
     : ["life", "other"];
 
   const [order, setOrder] = useState<string[]>([]);
@@ -100,6 +107,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     "Fitness System": false,
     "Library System": false,
     "Language System": false,
+    "Trading System": false,
     "Misc / Other": false,
   });
 
@@ -111,7 +119,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   useEffect(() => {
     setMounted(true);
     const ALL_SECTIONS_CURRENT = user?.role === "ADMIN" 
-      ? ["food", "life", "fitness", "library", "languages", "other"]
+      ? ["food", "life", "fitness", "library", "languages", "trading", "other"]
       : ["life", "other"];
 
     const mergeOrder = (saved: string[]) => [
@@ -339,6 +347,13 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                   languagesNav,
                   "/languages",
                   Languages,
+                );
+              if (section === "trading")
+                return renderNavGroup(
+                  "Trading System",
+                  tradingNav,
+                  "/trading",
+                  TrendingUp,
                 );
               if (section === "other")
                 return renderNavGroup(
