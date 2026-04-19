@@ -101,15 +101,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     : ["life", "other"];
 
   const [order, setOrder] = useState<string[]>([]);
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    "Food System": false,
-    "Life System": false,
-    "Fitness System": false,
-    "Library System": false,
-    "Language System": false,
-    "Trading System": false,
-    "Misc / Other": false,
-  });
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
   // Close mobile menu on path change
   useEffect(() => {
