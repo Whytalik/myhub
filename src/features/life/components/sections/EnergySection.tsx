@@ -130,13 +130,13 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
           )}
         </div>
 
-        <div className="flex gap-1 h-9 overflow-x-auto scrollbar-hide -mx-1 px-1">
+        <div className="flex gap-1 h-9 -mx-1 px-1">
           {LEVELS.map(({ value }) => (
             <button
               key={value}
               type="button"
               onClick={() => onChange({ energy: energy === value ? null : value })}
-              className={`flex-1 min-w-[32px] rounded-lg border text-[10px] font-mono transition-all ${
+              className={`flex-1 w-full rounded-lg border text-[10px] font-mono transition-all ${
                 energy === value
                   ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                   : energy !== null && value <= energy
@@ -167,13 +167,13 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
           )}
         </div>
 
-        <div className="flex gap-1 h-9 overflow-x-auto scrollbar-hide -mx-1 px-1">
+        <div className="flex gap-1 h-9 -mx-1 px-1">
           {LEVELS.map(({ value }) => (
             <button
               key={value}
               type="button"
               onClick={() => onChange({ mood: mood === value ? null : value })}
-              className={`flex-1 min-w-[32px] rounded-lg border text-[10px] font-mono transition-all ${
+              className={`flex-1 w-full rounded-lg border text-[10px] font-mono transition-all ${
                 mood === value
                   ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                   : mood !== null && value <= mood
