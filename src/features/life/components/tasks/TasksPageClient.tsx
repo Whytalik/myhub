@@ -57,21 +57,21 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex flex-col gap-1">
-          <Heading title="Tasks" />
-          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
-            Organize your goals, projects, and daily work.
-          </p>
-        </div>
-        
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 bg-surface/50 border border-border p-1 rounded-xl">
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex flex-col gap-1">
+            <Heading title="Tasks" />
+            <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+              Organize your goals, projects, and daily work.
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-2 bg-surface/50 border border-border p-1 rounded-xl w-full md:w-auto self-stretch md:self-auto">
             <Button
               variant={view === "gallery" ? "primary" : "ghost"}
               size="sm"
               onClick={() => setView("gallery")}
-              className="rounded-lg px-4 h-8 text-[11px]"
+              className="flex-1 md:flex-none rounded-lg px-6 h-8 text-[11px]"
             >
               Gallery
             </Button>
@@ -79,21 +79,32 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
               variant={view === "calendar" ? "primary" : "ghost"}
               size="sm"
               onClick={() => setView("calendar")}
-              className="rounded-lg px-4 h-8 text-[11px]"
+              className="flex-1 md:flex-none rounded-lg px-6 h-8 text-[11px]"
             >
               Calendar
             </Button>
           </div>
+        </div>
 
-          <div className="hidden sm:block h-6 w-px bg-border/40 mx-1" />
-
-          <Button variant="outline" size="sm" onClick={() => setSpheresOpen(true)} className="rounded-xl px-4 h-9 text-[11px]">
-            <Layers size={14} className="mr-1.5" />
-            Spheres
+        {/* Action Buttons Row */}
+        <div className="flex items-center gap-3">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setSpheresOpen(true)} 
+            className="flex-1 md:flex-none rounded-xl px-4 h-10 md:h-9 text-[11px] font-bold"
+          >
+            <Layers size={14} className="mr-2" />
+            Life Spheres
           </Button>
 
-          <Button variant="primary" size="sm" onClick={handleAddNew} className="rounded-xl px-4 h-9 text-[11px]">
-            <Plus size={16} className="mr-1.5" />
+          <Button 
+            variant="primary" 
+            size="sm" 
+            onClick={handleAddNew} 
+            className="flex-1 md:flex-none rounded-xl px-6 h-10 md:h-9 text-[11px] font-bold"
+          >
+            <Plus size={16} className="mr-2" />
             New Task
           </Button>
         </div>

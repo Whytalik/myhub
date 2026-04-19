@@ -10,12 +10,12 @@ import { getTodayEntry, getDailyStats } from "@/features/life/services/journal-s
 import { format } from "date-fns";
 
 const spaces = [
-  { label: "Life Space", description: "Journal, habits & tasks", icon: BookHeart, href: "/life/journal", adminOnly: false },
+  { label: "Life System", description: "Journal, habits & tasks", icon: BookHeart, href: "/life", adminOnly: false },
   { label: "Food System", description: "Nutrition & meal planning", icon: Utensils, href: "/food", adminOnly: true },
-  { label: "Languages", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
-  { label: "Fitness", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
-  { label: "Library", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
-  { label: "Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
+  { label: "Language System", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
+  { label: "Fitness System", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
+  { label: "Library System", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
+  { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
 ];
 
 

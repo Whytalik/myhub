@@ -10,6 +10,9 @@ import {
   ChefHat,
   Dumbbell,
   Sparkles,
+  BookText,
+  Languages,
+  Package,
   RotateCcw
 } from "lucide-react";
 
@@ -20,9 +23,12 @@ type Space = {
 };
 
 const DEFAULT_ORDER: Space[] = [
-  { id: "food",    label: "Food System",   icon: ChefHat },
-  { id: "life",    label: "Life Space",    icon: Sparkles },
-  { id: "fitness", label: "Fitness Space", icon: Dumbbell },
+  { id: "food",      label: "Food System",     icon: ChefHat },
+  { id: "life",      label: "Life System",     icon: Sparkles },
+  { id: "fitness",   label: "Fitness System",  icon: Dumbbell },
+  { id: "library",   label: "Library System",  icon: BookText },
+  { id: "languages", label: "Language System", icon: Languages },
+  { id: "other",     label: "Misc / Other",    icon: Package },
 ];
 
 export function SettingsForm({ initialOrder }: { initialOrder?: string[] }) {
