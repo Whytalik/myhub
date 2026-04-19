@@ -159,8 +159,8 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
     title,
     description,
     icon,
-    status = "TODO",
-    priority = "MEDIUM",
+    status,
+    priority,
     plannedDate,
     hasPlannedTime = false,
     dueDate,
@@ -169,7 +169,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
     sphereId,
   } = input;
 
-  const parsedPlannedDate = plannedDate ? new Date(plannedDate) : undefined;
+  const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
   const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
 
   // Auto-set completedAt
@@ -190,7 +190,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
         icon:        icon !== undefined ? (icon ?? null) : undefined,
         status:      status ?? undefined,
         priority:    priority ?? undefined,
-        plannedDate: parsedPlannedDate,
+        plannedDate: parsedPlannedDate ?? undefined,
         hasPlannedTime: hasPlannedTime ?? undefined,
         dueDate:     parsedDueDate,
         hasDueTime:  hasDueTime ?? undefined,
@@ -213,9 +213,9 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
         title,
         description: description ?? null,
         icon:        icon ?? null,
-        status,
-        priority,
-        plannedDate: parsedPlannedDate ?? null,
+        status:      status ?? "TODO",
+        priority:    priority ?? "MEDIUM",
+        plannedDate: (parsedPlannedDate as Date | null) ?? null,
         hasPlannedTime,
         dueDate: (parsedDueDate as Date | null) ?? null,
         hasDueTime,
