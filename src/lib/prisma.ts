@@ -6,16 +6,34 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+// Programmatically enhance the connection string to handle Vercel/SSL issues
+const getEnhancedConnectionString = () => {
+  let url = process.env.DATABASE_URL || "";
+  if (!url) return url;
+  
+  const hasParams = url.includes("?");
+  // Fix SSL warning by being explicit
+  if (!url.includes("sslmode=")) {
+    url += (hasParams ? "&" : "?") + "sslmode=verify-full";
+  }
+  return url;
+};
+
+const pool = new pg.Pool({ 
+  connectionString: getEnhancedConnectionString(),
+  max: 1, // Crucial for Vercel: only 1 connection per lambda/worker
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
+
 const adapter = new PrismaPg(pool);
 
-// Prisma client singleton with support for new models (Wishlist, Library)
-// We use a getter to ensure we can "bust" the cache if a model is missing due to HMR
+// Prisma client singleton
 export const prisma = (() => {
   const p = globalForPrisma.prisma ?? new PrismaClient({ adapter });
   
   if (process.env.NODE_ENV !== "production") {
-    // Check if new models are present, if not, force a new client instance
+    // Check if new models are present (HMR safety)
     const isOutdated = p && !(p as any).wishlistItem;
     
     if (isOutdated) {
