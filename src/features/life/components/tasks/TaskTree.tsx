@@ -164,11 +164,11 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
   return (
     <div className="flex flex-col gap-8">
       {/* 2-Level Tabs Header */}
-      <div className="flex flex-col gap-2.5 bg-surface/50 border border-border p-4 rounded-[2rem] shadow-sm">
+      <div className="flex flex-col gap-2.5 bg-surface/50 border border-border p-3 md:p-4 rounded-[1.5rem] md:rounded-[2rem] shadow-sm">
         {/* Primary Tabs */}
-        <div className="flex items-center gap-6 px-2">
-          <span className="text-[10px] font-mono text-muted uppercase tracking-[0.2em]">Group By:</span>
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 px-2">
+          <span className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] shrink-0">Group By:</span>
+          <div className="flex flex-wrap items-center gap-1.5">
             {PRIMARY_TABS.map(tab => {
               const Icon = tab.icon;
               const active = activePrimary === tab.id;
@@ -176,7 +176,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
                 <button
                   key={tab.id}
                   onClick={() => handlePrimaryChange(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-bold transition-all ${
+                  className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-xl text-[10px] md:text-[11px] font-bold transition-all ${
                     active 
                       ? "bg-accent text-bg shadow-lg shadow-accent/20" 
                       : "text-secondary hover:bg-raised hover:text-text"
@@ -194,7 +194,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
         <div className="h-px bg-border/40 mx-2" />
 
         {/* Secondary Tabs */}
-        <div className="px-2">
+        <div className="px-2 overflow-x-auto scrollbar-hide">
           <Tabs 
             tabs={secondaryTabs} 
             activeTab={activeSecondary} 

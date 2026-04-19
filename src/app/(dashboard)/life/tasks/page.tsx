@@ -30,7 +30,7 @@ export default async function TasksPage({
   ]);
 
   return (
-    <div className="px-6 sm:px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "tasks" }]} />
       <TasksPageClient
         initialTasks={tasks}

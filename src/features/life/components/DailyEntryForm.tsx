@@ -213,26 +213,29 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         </div>
       )}
       {/* Header Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface border border-border p-4 rounded-2xl shadow-sm">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2 text-[11px] font-mono text-muted uppercase tracking-wider bg-raised px-3 py-1.5 rounded-lg border border-border/50">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-2xl shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 md:gap-6 min-w-0">
+          <div className="flex items-center gap-2 text-[10px] md:text-[11px] font-mono text-muted uppercase tracking-wider bg-raised px-3 py-1.5 rounded-lg border border-border/50 self-start sm:self-auto shrink-0">
             <Clock size={12} className="text-accent" />
             <span>{dateLabel}</span>
           </div>
           
-          <Tabs 
-            tabs={[
-              { id: "morning", label: "Morning" },
-              { id: "habits", label: `Habits (${habits.length})` },
-              { id: "tasks", label: `Tasks (${tasks.length})` },
-              { id: "evening", label: "Evening" }
-            ]} 
-            activeTab={activeTab} 
-            onTabChange={setActiveTab} 
-          />
+          <div className="w-full overflow-hidden">
+            <Tabs 
+              tabs={[
+                { id: "morning", label: "Morning" },
+                { id: "habits", label: `Habits (${habits.length})` },
+                { id: "tasks", label: `Tasks (${tasks.length})` },
+                { id: "evening", label: "Evening" }
+              ]} 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab} 
+              className="!gap-0"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] font-mono text-muted">
+        <div className="flex items-center gap-2 text-[10px] md:text-[11px] font-mono text-muted px-2 md:px-0 shrink-0">
           {isPending ? (
             <><Loader2 size={12} className="animate-spin" /> Saving...</>
           ) : savedAt ? (

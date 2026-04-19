@@ -24,7 +24,7 @@ export default async function VocabularyPage({ params }: { params: Promise<{ id:
   });
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[
         { label: "languages", href: "/languages" },
         { label: userLanguage.language.name.toLowerCase(), href: `/languages/${id}` },

@@ -24,7 +24,7 @@ export default async function AddLanguagePage() {
   const available = allLanguages.filter(l => !userLangIds.includes(l.id));
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[
         { label: "language system", href: "/languages" },
         { label: "add language" }

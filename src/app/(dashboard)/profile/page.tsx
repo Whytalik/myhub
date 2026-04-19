@@ -12,7 +12,7 @@ export default async function ProfilePage() {
   if (!user) redirect("/login");
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "identity", href: "/profile" }]} />
       <ProfileForm initialUser={user as any} />
     </div>

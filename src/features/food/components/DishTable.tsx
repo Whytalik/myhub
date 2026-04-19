@@ -27,6 +27,8 @@ export function DishTable({ initialDishes }: DishTableProps) {
     {
       header: "Ingredients",
       accessorKey: "ingredients",
+      headerClassName: "hidden md:table-cell",
+      cellClassName: "hidden md:table-cell",
       cell: (d: DishWithIngredients) => (
         <div className="flex flex-wrap gap-1.5">
           {d.ingredients.map((ing) => (
@@ -65,6 +67,8 @@ export function DishTable({ initialDishes }: DishTableProps) {
       header: "Yield",
       accessorKey: "yield",
       align: "center" as const,
+      headerClassName: "hidden sm:table-cell",
+      cellClassName: "hidden sm:table-cell",
       cell: (d: DishWithIngredients) => (
         <span className="text-[11px] font-mono text-muted">
           x{d.yield?.toFixed(1) || "1.0"}

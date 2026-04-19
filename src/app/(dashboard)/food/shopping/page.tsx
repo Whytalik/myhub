@@ -30,7 +30,7 @@ export default async function ShoppingPage() {
   };
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "shopping" }]} />
       
       <div className="flex justify-between items-start mb-12">

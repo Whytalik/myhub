@@ -40,9 +40,9 @@ export function Tabs({
   const activeTabContent = tabs.find(t => t.id === activeTab)?.content;
 
   return (
-    <div className="flex flex-col gap-6 w-full">
-      <div className={`flex ${className}`}>
-        <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm">
+    <div className="flex flex-col gap-6 w-full min-w-0">
+      <div className={`flex w-full overflow-x-auto scrollbar-hide -mx-1 px-1 ${className}`}>
+        <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm min-w-max">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             const Icon = tab.icon;
@@ -51,7 +51,7 @@ export function Tabs({
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
                 className={`
-                  flex items-center gap-2 whitespace-nowrap px-6 py-2 rounded-xl text-[11px] font-mono uppercase tracking-widest transition-all
+                  flex items-center gap-2 whitespace-nowrap px-3 md:px-6 py-2 rounded-xl text-[10px] md:text-[11px] font-mono uppercase tracking-widest transition-all
                   ${
                     isActive
                       ? "bg-accent text-bg font-bold shadow-lg shadow-accent/20"

@@ -46,18 +46,18 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="px-14 py-12 w-full">
+    <div className="px-6 py-8 md:px-14 md:py-12 w-full">
       {/* Header */}
       <div className="mb-10">
         <p className="text-[11px] font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
         <p className="text-[11px] font-mono text-accent uppercase tracking-[0.2em] mb-3">{greeting}</p>
-        <h1 className="font-heading text-7xl text-text leading-none tracking-tight">{name}</h1>
+        <h1 className="font-heading text-5xl md:text-7xl text-text leading-none tracking-tight">{name}</h1>
         <div className="h-0.5 w-12 bg-accent mt-4" />
       </div>
 
       {/* Stats strip */}
       {personId && (
-        <div className="flex items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-8">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-8">
           <div className="flex items-center gap-2.5">
             <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
             <div>
@@ -65,7 +65,7 @@ export default async function HomePage() {
               <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Streak</p>
             </div>
           </div>
-          <div className="w-px h-8 bg-border" />
+          <div className="hidden sm:block w-px h-8 bg-border" />
           <div className="flex items-center gap-2.5">
             <Zap size={15} className="text-muted" />
             <div>
@@ -75,7 +75,7 @@ export default async function HomePage() {
               <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Avg Energy</p>
             </div>
           </div>
-          <div className="w-px h-8 bg-border" />
+          <div className="hidden sm:block w-px h-8 bg-border" />
           <div className="flex items-center gap-2.5">
             <BookText size={15} className={todayDone ? "text-accent" : "text-muted"} />
             <div>
@@ -85,7 +85,7 @@ export default async function HomePage() {
               <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Today&apos;s Entry</p>
             </div>
           </div>
-          <div className="ml-auto">
+          <div className="w-full md:w-auto md:ml-auto pt-2 md:pt-0 border-t md:border-none border-border/40">
             <Link
               href="/life/journal"
               className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent hover:underline uppercase tracking-wider"

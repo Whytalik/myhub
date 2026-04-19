@@ -70,7 +70,7 @@ export default function LifeSpacePage() {
   ];
 
   return (
-    <div className="px-6 sm:px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "life system" }]} />
       
       <div className="flex flex-col mb-16">

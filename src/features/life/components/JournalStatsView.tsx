@@ -38,10 +38,10 @@ export function JournalStatsView({ entries, stats, taskStats }: Props) {
 
   return (
     <div className="flex flex-col gap-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <Heading title="Stats" className="text-5xl" />
+            <Heading title="Stats" className="text-4xl md:text-5xl" />
             <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
               Visualize your consistency and performance over time.
             </p>
@@ -56,7 +56,7 @@ export function JournalStatsView({ entries, stats, taskStats }: Props) {
           />
         </div>
 
-        <div className="bg-surface border border-border px-5 py-3 rounded-2xl flex items-center gap-4 shadow-sm">
+        <div className="bg-surface border border-border px-5 py-3 rounded-2xl flex items-center gap-4 shadow-sm self-start xl:self-auto">
           <div className="flex flex-col">
             <span className="text-[10px] font-mono text-muted uppercase tracking-widest">{activeTab === 'journal' ? 'Total Entries' : 'Total Tasks'}</span>
             <span className="text-xl font-heading text-accent">{activeTab === 'journal' ? entries.length : taskStats.totalTasks}</span>

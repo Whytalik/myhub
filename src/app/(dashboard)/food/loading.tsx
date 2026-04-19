@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FoodLoading() {
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Skeleton className="h-4 w-24 mb-6" />
       <Skeleton className="h-14 w-64 mb-12" />
 

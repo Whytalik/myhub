@@ -56,7 +56,7 @@ export default function LanguageDetailPage() {
   ];
 
   if (loading) return (
-    <div className="px-14 py-10 flex items-center justify-center min-h-[60vh]">
+    <div className="px-6 md:px-14 py-8 md:py-10 flex items-center justify-center min-h-[60vh]">
       <div className="flex flex-col items-center gap-4">
         <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin" />
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Initialising Space...</p>
@@ -65,7 +65,7 @@ export default function LanguageDetailPage() {
   );
 
   return (
-    <div className="px-14 py-10 min-h-screen bg-bg">
+    <div className="px-6 md:px-14 py-8 md:py-10 min-h-screen bg-bg">
       <Breadcrumb items={[
         { label: "languages", href: "/languages" },
         { label: "environment hub" }

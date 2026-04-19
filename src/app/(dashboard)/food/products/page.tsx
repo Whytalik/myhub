@@ -28,7 +28,7 @@ export default async function ProductsPage({
   const isEditMode = params.edit === "true";
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "products" }]} />
       <div className="flex justify-between items-start mb-4">
         <Heading title="Products" className="text-5xl" />

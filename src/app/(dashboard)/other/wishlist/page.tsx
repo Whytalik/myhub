@@ -21,7 +21,7 @@ export default async function WishlistPage() {
   const items = await wishlistService.getAll(personId);
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb 
         items={[
           { label: "misc / other", href: "/other" },

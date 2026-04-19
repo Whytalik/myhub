@@ -67,7 +67,7 @@ export function SettingsForm({ initialOrder }: { initialOrder?: string[] }) {
   };
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <div className="sticky top-0 z-20 bg-bg/80 backdrop-blur-md pt-2 pb-6 mb-6 -mx-4 px-4">
         <Breadcrumb items={[{ label: "settings" }]} />
         <div className="flex justify-between items-start">

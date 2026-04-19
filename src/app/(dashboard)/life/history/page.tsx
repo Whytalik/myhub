@@ -19,7 +19,7 @@ export default async function JournalHistoryPage() {
   const entries = await getAllEntries(personId);
 
   return (
-    <div className="px-6 sm:px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb
         items={[
           { label: "life space", href: "/life" },

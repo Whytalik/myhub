@@ -22,7 +22,7 @@ export default async function ProfilesPage() {
   const persons = await getPersons(profileId);
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "profiles" }]} />
       <Heading title="Profiles & Goals" />
       

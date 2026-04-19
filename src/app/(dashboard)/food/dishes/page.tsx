@@ -36,7 +36,7 @@ export default async function DishesPage({
   const products = isCreating ? await getProducts() : [];
 
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "dishes" }]} />
       
       <div className="flex justify-between items-start mb-8">

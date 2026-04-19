@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function FishingPage() {
   return (
-    <div className="px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "fishing" }]} />
       <Heading title="Fishing" />
       <p className="text-secondary text-sm leading-relaxed italic">

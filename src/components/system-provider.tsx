@@ -9,7 +9,7 @@ export function SystemProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <div 
-      className="flex min-h-screen"
+      className="flex flex-col md:flex-row min-h-screen"
       style={{
         "--color-accent": theme.accent,
         "--color-accent-muted": theme.accentMuted,

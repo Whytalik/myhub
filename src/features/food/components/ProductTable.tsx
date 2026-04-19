@@ -254,6 +254,8 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       header: "Protein",
       accessorKey: "protein",
       width: "70px",
+      headerClassName: "hidden md:table-cell",
+      cellClassName: "hidden md:table-cell",
       cell: (p: Product) => (
         <div className="flex items-center gap-1">
           {isEditMode ? (
@@ -275,6 +277,8 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       header: "Fat",
       accessorKey: "fat",
       width: "70px",
+      headerClassName: "hidden md:table-cell",
+      cellClassName: "hidden md:table-cell",
       cell: (p: Product) => (
         <div className="flex items-center gap-1">
           {isEditMode ? (
@@ -296,6 +300,8 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       header: "Carbs",
       accessorKey: "carbs",
       width: "70px",
+      headerClassName: "hidden md:table-cell",
+      cellClassName: "hidden md:table-cell",
       cell: (p: Product) => (
         <div className="flex items-center gap-1">
           {isEditMode ? (
@@ -317,6 +323,8 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       header: "Fiber",
       accessorKey: "fiber",
       width: "70px",
+      headerClassName: "hidden lg:table-cell",
+      cellClassName: "hidden lg:table-cell",
       cell: (p: Product) => (
         <div className="flex items-center gap-1">
           {isEditMode ? (

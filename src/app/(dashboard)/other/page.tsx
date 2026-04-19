@@ -24,7 +24,7 @@ export default async function OtherSpacePage() {
   ];
 
   return (
-    <div className="px-6 sm:px-14 py-10">
+    <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "misc / other" }]} />
       
       <div className="flex flex-col mb-16">

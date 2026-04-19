@@ -332,7 +332,7 @@ function CalendarDayCell({
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
-export function TaskCalendar({ tasks: initialTasks, spheres, defaultMode = "month", onDuplicate, onAdd }: TaskCalendarProps) {
+export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMode = "month", onDuplicate, onAdd }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week">(defaultMode);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);

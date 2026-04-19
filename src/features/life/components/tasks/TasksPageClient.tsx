@@ -65,32 +65,34 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
-          <Button
-            variant={view === "gallery" ? "primary" : "outline"}
-            size="sm"
-            onClick={() => setView("gallery")}
-            className="rounded-xl px-5"
-          >
-            Gallery
-          </Button>
-          <Button
-            variant={view === "calendar" ? "primary" : "outline"}
-            size="sm"
-            onClick={() => setView("calendar")}
-            className="rounded-xl px-5"
-          >
-            Calendar
-          </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2 bg-surface/50 border border-border p-1 rounded-xl">
+            <Button
+              variant={view === "gallery" ? "primary" : "ghost"}
+              size="sm"
+              onClick={() => setView("gallery")}
+              className="rounded-lg px-4 h-8 text-[11px]"
+            >
+              Gallery
+            </Button>
+            <Button
+              variant={view === "calendar" ? "primary" : "ghost"}
+              size="sm"
+              onClick={() => setView("calendar")}
+              className="rounded-lg px-4 h-8 text-[11px]"
+            >
+              Calendar
+            </Button>
+          </div>
 
-          <div className="h-8 w-px bg-border/40 mx-1" />
+          <div className="hidden sm:block h-6 w-px bg-border/40 mx-1" />
 
-          <Button variant="outline" size="sm" onClick={() => setSpheresOpen(true)} className="rounded-xl px-5">
+          <Button variant="outline" size="sm" onClick={() => setSpheresOpen(true)} className="rounded-xl px-4 h-9 text-[11px]">
             <Layers size={14} className="mr-1.5" />
-            Life Spheres
+            Spheres
           </Button>
 
-          <Button variant="primary" size="sm" onClick={handleAddNew} className="rounded-xl px-5">
+          <Button variant="primary" size="sm" onClick={handleAddNew} className="rounded-xl px-4 h-9 text-[11px]">
             <Plus size={16} className="mr-1.5" />
             New Task
           </Button>
