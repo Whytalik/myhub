@@ -151,12 +151,12 @@ export function TaskRow({ task, onAddChild, onEdit, onDuplicate, allTasks }: Tas
 
         {/* 2. MAIN CONTENT: Title & Metadata below it */}
         <div className="flex flex-col gap-2.5 flex-1">
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex items-start gap-2.5 min-w-0">
             {task.icon && SPHERE_ICONS[task.icon] ? (() => {
               const Icon = SPHERE_ICONS[task.icon];
-              return <Icon size={16} className="text-accent/40 shrink-0" strokeWidth={2.5} />;
+              return <Icon size={16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />;
             })() : (
-              <FileText size={16} className="text-accent/40 shrink-0" strokeWidth={2.5} />
+              <FileText size={16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />
             )}
             <h3 
               className={`text-[16px] font-bold tracking-tight leading-tight transition-colors ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}

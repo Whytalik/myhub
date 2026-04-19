@@ -171,10 +171,10 @@ function TaskCard({ task, isDragging = false, listeners, attributes, setNodeRef,
       )}
 
       <div className="flex flex-col gap-1 md:gap-1.5">
-        <div className="flex items-center gap-1 min-w-0">
+        <div className="flex items-start gap-1 min-w-0">
           {task.icon && SPHERE_ICONS[task.icon] ? (() => {
             const Icon = SPHERE_ICONS[task.icon];
-            return <Icon size={10} className="text-accent/60 shrink-0 md:w-[12px] md:h-[12px]" strokeWidth={2.5} />;
+            return <Icon size={10} className="text-accent/60 shrink-0 md:w-[12px] md:h-[12px] mt-0.5" strokeWidth={2.5} />;
           })() : null}
           <div className={`text-[10px] md:text-xs font-bold text-text leading-tight truncate md:whitespace-normal ${isDone && !isDragging ? 'line-through opacity-50' : ''}`}>
             {task.title}
