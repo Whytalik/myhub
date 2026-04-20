@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutAction } from "@/actions/logout";
+import { signOut } from "next-auth/react";
 import type { LucideIcon } from "lucide-react";
 import { useSidebar } from "./sidebar-provider";
 import { useSpace } from "./space-provider";
@@ -243,7 +243,6 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                   )}
                 </div>
                 
-                {/* STABLE SUB-ITEMS REVEAL */}
                 {isExpanded && item.subItems && isSubOpen && (
                   <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in fade-in slide-in-from-top-1 duration-300">
                     <div className="border-t border-border/40 mb-1" />
@@ -289,7 +288,6 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
         `}
       >
-        {/* Branding Area - FIXED POSITIONING */}
         <div className="shrink-0 py-8 px-[22px] flex items-center relative h-28">
           <Link href="/home" className="flex items-center gap-3.5 group shrink-0">
             <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
@@ -374,11 +372,12 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                   >
                     <Settings2 size={13} />
                   </button>
-                  <form action={logoutAction}>
-                    <button type="submit" className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300">
-                      <LogOut size={13} />
-                    </button>
-                  </form>
+                  <button 
+                    onClick={() => signOut({ callbackUrl: "/login" })}
+                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300"
+                  >
+                    <LogOut size={13} />
+                  </button>
                 </div>
               )}
             </div>
