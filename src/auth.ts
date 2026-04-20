@@ -21,7 +21,9 @@ declare module "next-auth" {
     profileId?: string;
     personId?: string;
   }
+}
 
+declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     role: Role;
@@ -78,8 +80,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       // On initial sign in, add data to token
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
+        token.id = user.id as string;
+        token.role = user.role as Role;
         token.profileId = user.profileId;
         token.personId = user.personId;
       }
