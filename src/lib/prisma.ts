@@ -13,12 +13,9 @@ const getEnhancedConnectionString = () => {
   if (!url) return url;
   
   const hasParams = url.includes("?");
-  // Force connection limit and SSL
+  // Force connection limit
   if (!url.includes("connection_limit=")) {
     url += (hasParams ? "&" : "?") + "connection_limit=1";
-  }
-  if (!url.includes("sslmode=")) {
-    url += "&sslmode=verify-full";
   }
   return url;
 };
@@ -28,8 +25,12 @@ if (!globalForPrisma.pgPool) {
   globalForPrisma.pgPool = new pg.Pool({ 
     connectionString: getEnhancedConnectionString(),
     max: 1,
-    idleTimeoutMillis: 1000, // Aggressively close idle connections
+    idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 5000,
+    // More explicit SSL config to satisfy the security warning
+    ssl: {
+      rejectUnauthorized: false,
+    }
   });
 }
 

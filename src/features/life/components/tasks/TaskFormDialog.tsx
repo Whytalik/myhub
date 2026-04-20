@@ -392,11 +392,11 @@ export function TaskFormDialog({
                 value={status}
                 onChange={(val) => setStatus(val as TaskStatus)}
                 disabled={isViewOnly}
-                options={Object.keys(STATUS_CONFIG).map((s) => ({
+                options={(Object.keys(STATUS_CONFIG) as TaskStatus[]).map((s) => ({
                   id: s,
-                  label: STATUS_CONFIG[s as TaskStatus].label,
-                  icon: STATUS_CONFIG[s as TaskStatus].icon,
-                  color: STATUS_CONFIG[s as TaskStatus].color,
+                  label: STATUS_CONFIG[s].label,
+                  icon: STATUS_CONFIG[s].icon,
+                  color: STATUS_CONFIG[s].color,
                 }))}
               />
             </div>
