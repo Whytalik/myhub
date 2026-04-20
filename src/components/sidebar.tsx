@@ -28,10 +28,6 @@ import {
   User,
   Users,
   Zap,
-  Menu,
-  X,
-  PanelLeftClose,
-  PanelLeftOpen,
   Briefcase,
   Shield,
   Brain,
@@ -130,15 +126,11 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   useEffect(() => {
     setMounted(true);
     loadCustomizations();
-    
     window.addEventListener("system-customizations-updated", loadCustomizations);
     return () => window.removeEventListener("system-customizations-updated", loadCustomizations);
   }, []);
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
     const ALL_DOMAINS_CURRENT = isAdmin 
       ? ["operations", "health", "mind", "wealth", "vault"]
       : ["operations", "vault"];
@@ -173,46 +165,29 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   if (!mounted) return <aside className="w-20 bg-surface border-r border-border h-screen shrink-0" />;
 
-  const isExpanded = !isCollapsed;
+  const isExpanded = !isCollapsed || isHovered;
 
   const renderNavGroup = (
     label: string,
     items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
-    domainId: string,
-    domainIcon: LucideIcon
   ) => {
-    // Domain Customization
-    const domCustom = customizations[domainId];
-    const DomIcon = domCustom?.icon ? (ICON_LIBRARY[domCustom.icon as IconName] || domainIcon) : domainIcon;
-    const domColor = domCustom?.color || "#a3a3a3";
-
     return (
-      <div key={label} className="flex flex-col gap-6 animate-in fade-in duration-500">
-        {/* Domain Label */}
-        <div className={`flex items-center gap-3 px-3 transition-all ${isExpanded ? "" : "justify-center"}`}>
-           <div className="p-1.5 rounded-lg bg-accent/5 border border-accent/10">
-              <DomIcon size={14} style={{ color: domColor }} strokeWidth={2.5} />
-           </div>
-           {isExpanded && <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-accent/60">{label}</span>}
-        </div>
-
+      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-500">
         <div className="flex flex-col gap-2.5 px-1">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? isItemActive;
             
-            // Space Customization
             const custom = customizations[item.id];
             const ItemIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || item.icon) : item.icon;
-            
-            // Color Logic
             const baseColor = custom?.color || defaultSpaceColors[item.label]?.text || "#a3a3a3";
+            
             const color = {
                text: baseColor,
-               bgActive: `${baseColor}20`,
+               bgActive: `${baseColor}15`,
                bgInactive: "transparent",
-               borderActive: `${baseColor}40`,
+               borderActive: `${baseColor}30`,
                borderInactive: "var(--color-border)"
             };
 
@@ -301,36 +276,45 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   return (
     <>
       <aside 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className={`
           sticky top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-500 ease-in-out z-[100]
-          ${isExpanded ? "w-64" : "w-20"}
+          ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
         `}
       >
-        <div className={`shrink-0 py-6 flex items-center transition-all duration-300 ${isExpanded ? "px-6 justify-between" : "justify-center"}`}>
+        {/* Branding & Pin Row */}
+        <div className={`shrink-0 py-8 flex items-center transition-all duration-300 ${isExpanded ? "px-6 justify-between" : "justify-center"}`}>
           <Link href="/home" className="flex items-center gap-3 group overflow-hidden">
-            <div className="w-8 h-8 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform shrink-0">
-              <Sparkles size={18} className="text-bg" fill="currentColor" />
+            <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform shrink-0">
+              <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
             <div className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 w-auto ml-1" : "opacity-0 w-0"}`}>
               <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
               <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
             </div>
           </Link>
-          
-          <button 
-            onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-            className={`p-2 rounded-xl transition-all ${!isCollapsed ? "text-accent bg-accent/10" : "text-muted hover:text-accent hover:bg-accent/10"}`}
-            title={!isCollapsed ? "Collapse Sidebar" : "Expand Sidebar"}
-          >
-            {!isCollapsed ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
-          </button>
+
+          {isExpanded && (
+            <button 
+              onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
+              className={`p-2 rounded-xl transition-all ${
+                !isCollapsed 
+                  ? "text-accent bg-accent/10 border border-accent/20" 
+                  : "text-muted hover:text-text hover:bg-raised"
+              }`}
+              title={!isCollapsed ? "Unpin sidebar" : "Pin sidebar"}
+            >
+              <Pin size={14} className={!isCollapsed ? "rotate-45" : ""} />
+            </button>
+          )}
         </div>
 
         <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth transition-all duration-300 ${isExpanded ? "px-3" : "px-2"}`}>
           <div className={`mb-6 transition-all duration-300 ${isExpanded ? "px-3" : "px-1"}`}>
             <div className="h-px w-full bg-border/40" />
           </div>
-          <nav className="flex flex-col gap-8">
+          <nav className="flex flex-col gap-4">
             {order.map((section) => {
               if (section !== activeDomain) return null;
 
@@ -338,25 +322,25 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 return renderNavGroup("Operations", [
                   { id: "planning", label: "Planning Space", href: "/planning", icon: Compass },
                   { id: "life", label: "Life Space", href: "/life", icon: Sparkles, subItems: lifeSpaceNav },
-                ], "operations", Briefcase);
+                ]);
               if (section === "health" && isAdmin)
                 return renderNavGroup("Health", [
                   { id: "food", label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
                   { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
-                ], "health", Shield);
+                ]);
               if (section === "mind" && isAdmin)
                 return renderNavGroup("Mind", [
                   { id: "languages", label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
                   { id: "library", label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
-                ], "mind", Brain);
+                ]);
               if (section === "wealth" && isAdmin)
                 return renderNavGroup("Wealth", [
                   { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
-                ], "wealth", Database);
+                ]);
               if (section === "vault")
                 return renderNavGroup("Vault", [
                   { id: "other", label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
-                ], "vault", Package);
+                ]);
               return null;
             })}
           </nav>

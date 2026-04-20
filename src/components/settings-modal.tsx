@@ -358,7 +358,7 @@ export function SettingsModal({
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 p-5 bg-surface overflow-hidden flex flex-col relative">
+          <div className="flex-1 p-5 bg-surface overflow-y-auto scrollbar-hide flex flex-col relative">
             
             {editingItem && (
               <div className="absolute inset-0 z-[60] bg-surface p-6 animate-in slide-in-from-right-4 duration-300 overflow-y-auto scrollbar-hide">
