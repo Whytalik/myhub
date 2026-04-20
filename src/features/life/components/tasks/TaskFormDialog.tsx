@@ -50,7 +50,7 @@ export function TaskFormDialog({
   onViewTask,
   isDuplicate = false,
 }: TaskFormDialogProps) {
-  const isEditing = !!task && !isDuplicate;
+  const isEditing = !!task?.id && !isDuplicate;
   const [isViewOnly, setIsViewOnly] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [showErrors, setShowErrors]   = useState(false);
@@ -75,7 +75,7 @@ export function TaskFormDialog({
 
   useEffect(() => {
     if (isOpen) {
-      setIsViewOnly(!!task && !isDuplicate);
+      setIsViewOnly(!!task?.id && !isDuplicate);
       setTitle(task?.title ?? "");
       setDescription(task?.description ?? "");
       setIcon(task?.icon ?? parentTask?.icon ?? null);

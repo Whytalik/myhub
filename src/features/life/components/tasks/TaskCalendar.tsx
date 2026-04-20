@@ -45,7 +45,6 @@ interface TaskCalendarProps {
   spheres: LifeSphereData[];
   defaultMode?: "month" | "week";
   onDuplicate?: (task: TaskData) => void;
-  onAdd?: (date: Date) => void;
 }
 
 const PRIORITY_ORDER: Record<TaskPriority, number> = {
@@ -227,8 +226,7 @@ export function TaskCalendar({
   allTasks, 
   spheres, 
   defaultMode = "month", 
-  onDuplicate, 
-  onAdd 
+  onDuplicate 
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week">(defaultMode);

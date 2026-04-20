@@ -95,8 +95,9 @@ const STATUS_SORT_ORDER: Record<TaskStatus, number> = {
   IN_PROGRESS: 0,
   TODO:        1,
   BACKLOG:     2,
-  DONE:        3,
-  CANCELLED:   4,
+  BLOCKED:     3,
+  DONE:        4,
+  CANCELLED:   5,
 };
 
 function sortTasks(tasks: TaskData[]): TaskData[] {

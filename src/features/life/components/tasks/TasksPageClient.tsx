@@ -67,12 +67,12 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-surface/50 border border-border p-1 rounded-xl w-full sm:w-auto">
+            <div className="flex flex-nowrap items-center gap-2 bg-surface/50 border border-border p-1.5 rounded-xl w-full sm:w-auto">
               <Button
                 variant={view === "gallery" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("gallery")}
-                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px]"
+                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px] whitespace-nowrap"
               >
                 Gallery
               </Button>
@@ -80,7 +80,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant={view === "calendar" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("calendar")}
-                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px]"
+                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px] whitespace-nowrap"
               >
                 Calendar
               </Button>
@@ -127,7 +127,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             allTasks={initialTasks}
             spheres={spheres} 
             onDuplicate={handleDuplicate}
-            onAdd={handleAddNew}
           />
         )}
       </div>
