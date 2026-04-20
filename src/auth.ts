@@ -1,4 +1,5 @@
 import NextAuth, { type DefaultSession } from "next-auth";
+import { type JWT } from "next-auth/jwt";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
@@ -20,9 +21,7 @@ declare module "next-auth" {
     profileId?: string;
     personId?: string;
   }
-}
 
-declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     role: Role;
