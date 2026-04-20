@@ -9,6 +9,17 @@ export const SYSTEM_COLORS = [
   { id: "slate",   hex: "#a3a3a3", label: "Neutral Gray" },
   { id: "blue",    hex: "#3b82f6", label: "Ocean Blue" },
   { id: "red",     hex: "#ef4444", label: "Critical Red" },
+  // New vibrant colors
+  { id: "lime",    hex: "#a3e635", label: "Electric Lime" },
+  { id: "sky",     hex: "#0ea5e9", label: "Sky Blue" },
+  { id: "fuchsia", hex: "#d946ef", label: "Fuchsia Pink" },
+  { id: "pink",    hex: "#f472b6", label: "Soft Pink" },
+  { id: "violet",  hex: "#8b5cf6", label: "Deep Violet" },
+  { id: "mint",    hex: "#4ade80", label: "Fresh Mint" },
+  { id: "yellow",  hex: "#facc15", label: "Bright Yellow" },
+  { id: "silver",  hex: "#e2e8f0", label: "Pure Silver" },
+  { id: "crimson", hex: "#be123c", label: "Deep Crimson" },
+  { id: "coffee",  hex: "#92400e", label: "Warm Coffee" },
 ] as const;
 
 export type SystemColor = typeof SYSTEM_COLORS[number];
