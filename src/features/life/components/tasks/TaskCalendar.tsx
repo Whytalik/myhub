@@ -20,30 +20,24 @@ import {
   ChevronLeft,
   ChevronRight,
   Calendar as CalendarIcon,
-  Flag,
-  Clock,
-  ArrowUp,
-  Copy,
   Plus
 } from "lucide-react";
 import { 
   DndContext, 
-  useDraggable, 
-  useDroppable,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent
+  DragEndEvent,
+  useDraggable,
+  useDroppable
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import type { TaskData, LifeSphereData, TaskPriority } from "@/features/life/types";
 import { updateTaskDateAction } from "@/features/life/actions/task-actions";
 import { toast } from "sonner";
 import { TaskFormDialog } from "./TaskFormDialog";
-import { PriorityBadge } from "./PriorityBadge";
-import { STATUS_CONFIG } from "./StatusToggle";
 import { Tabs } from "@/components/ui/tabs";
-import { SPHERE_ICONS, ALL_ICONS } from "./lucide-icons-map";
+import { TaskCardBase } from "./TaskCardBase";
 
 interface TaskCalendarProps {
   tasks: TaskData[];
@@ -81,38 +75,25 @@ function sortTasks(tasks: TaskData[]): TaskData[] {
   });
 }
 
-// ─── Task UI Component ───────────────────────────────────────────────────────
+// ─── Draggable Wrapper ───────────────────────────────────────────────────────
 
-function TaskCard({ task, isDragging = false, listeners, attributes, setNodeRef, transform, onEdit, onDuplicate, allTasks }: {
-  task: TaskData,
-  isDragging?: boolean,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  listeners?: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attributes?: any,
-  setNodeRef?: (node: HTMLElement | null) => void,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  transform?: any,
-  onEdit: (t: TaskData) => void,
+function DraggableTask({ 
+  task, 
+  onEdit, 
+  onDuplicate, 
+  onAddChild,
+  allTasks 
+}: { 
+  task: TaskData, 
+  onEdit: (t: TaskData) => void, 
   onDuplicate?: (t: TaskData) => void,
-  allTasks: TaskData[]
+  onAddChild?: (t: TaskData) => void,
+  allTasks: TaskData[] 
 }) {
-  const isDone = task.status === "DONE" || task.status === "CANCELLED";
-  
-  const formatDateTime = (date: Date | null, hasTime: boolean) => {
-    if (!date) return null;
-    const d = new Date(date);
-    const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" };
-    if (hasTime) {
-      options.hour = "2-digit";
-      options.minute = "2-digit";
-      options.hour12 = false;
-    }
-    return d.toLocaleString("en-US", options);
-  };
-
-  const plannedLabel = formatDateTime(task.plannedDate, task.hasPlannedTime);
-  const dueLabel = formatDateTime(task.dueDate, task.hasDueTime);
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: task.id,
+    data: task
+  });
 
   const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
@@ -122,131 +103,18 @@ function TaskCard({ task, isDragging = false, listeners, attributes, setNodeRef,
     willChange: isDragging ? 'transform' : 'auto',
   };
 
-  const handleParentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (task.parentId) {
-      const parent = allTasks.find(t => t.id === task.parentId);
-      if (parent) onEdit(parent);
-    }
-  };
-
   return (
-    <div
-      ref={setNodeRef}
+    <TaskCardBase
+      task={task}
+      variant="compact"
+      isDragging={isDragging}
+      setNodeRef={setNodeRef}
+      listeners={listeners}
+      attributes={attributes}
       style={style}
-      {...listeners}
-      {...attributes}
-      className={`
-        group relative flex flex-col gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full cursor-grab active:cursor-grabbing mb-1.5 md:mb-2 last:mb-0
-        ${isDragging ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' : 'bg-[#1a1a1a] border-[#2e2e2e] transition-all'}
-        ${isDone && !isDragging ? 'opacity-50' : ''}
-      `}
-      onClick={() => {
-        if (!transform) onEdit(task);
-      }}
-    >
-      {/* Duplicate Button Overlay */}
-      {onDuplicate && !isDragging && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onDuplicate(task); }}
-          className="absolute top-1 right-1 p-1 rounded-md bg-accent/10 border border-accent/20 text-accent opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-accent/20 hidden md:block"
-          title="Duplicate task"
-        >
-          <Copy size={10} />
-        </button>
-      )}
-
-      {task.parentId && (
-        <div 
-          onClick={handleParentClick}
-          className="flex items-center gap-1 text-[8px] md:text-[10px] font-mono text-muted/50 leading-none truncate hover:text-accent transition-colors cursor-pointer group/parent mb-0.5"
-        >
-          <ArrowUp size={8} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform md:w-[10px] md:h-[10px]" />
-          {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
-             const PIcon = ALL_ICONS[task.parentIcon];
-             return <PIcon size={8} className="shrink-0 opacity-40 md:w-[10px] md:h-[10px]" />;
-          })()}
-          <span className="truncate underline decoration-dotted underline-offset-2">{task.parentTitle || 'Parent Task'}</span>
-        </div>
-      )}
-
-      <div className="flex flex-col gap-1 md:gap-1.5">
-        <div className="flex items-start gap-1 min-w-0">
-          {task.icon && SPHERE_ICONS[task.icon] ? (() => {
-            const Icon = SPHERE_ICONS[task.icon];
-            return <Icon size={10} className="text-accent/60 shrink-0 md:w-[12px] md:h-[12px] mt-0.5" strokeWidth={2.5} />;
-          })() : null}
-          <div className={`text-[10px] md:text-xs font-bold text-text leading-tight truncate md:whitespace-normal ${isDone && !isDragging ? 'line-through opacity-50' : ''}`}>
-            {task.title}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1 flex-wrap">
-           {(() => {
-             const statusCfg = STATUS_CONFIG[task.status];
-             const StatusIcon = statusCfg.icon;
-             return (
-               <div
-                 className="flex items-center gap-1 px-1 py-0.5 rounded border text-[7px] md:text-[8px] font-mono font-bold uppercase tracking-wider whitespace-nowrap"
-                 style={{ backgroundColor: `${statusCfg.color}15`, borderColor: `${statusCfg.color}40`, color: statusCfg.color }}
-               >
-                 <StatusIcon size={6} className="md:w-[8px] md:h-[8px]" strokeWidth={3} />
-                 {statusCfg.label}
-               </div>
-             );
-           })()}
-           <PriorityBadge priority={task.priority} className="!text-[7px] md:!text-[8px] !px-1 !md:px-1.5 !py-0.5" />
-           {task.sphere && (
-              <div
-                className="flex items-center gap-1 px-1 py-0.5 rounded border text-[7px] md:text-[8px] font-mono font-bold uppercase tracking-wider whitespace-nowrap"
-                style={{ backgroundColor: `${task.sphere.color}15`, borderColor: `${task.sphere.color}40`, color: task.sphere.color }}
-              >
-                {(() => {
-                  const SphereIcon = SPHERE_ICONS[task.sphere.icon] || Flag;
-                  return <SphereIcon size={6} className="md:w-[8px] md:h-[8px]" strokeWidth={3} />;
-                })()}
-                {task.sphere.name}
-              </div>
-           )}
-        </div>
-
-        <div className="flex flex-col gap-1 pt-1 md:pt-1.5 border-t border-white/[0.03]">
-           {plannedLabel && (
-              <div className="flex items-center gap-1 md:gap-1.5 text-[8px] md:text-[10px] font-mono text-muted leading-none">
-                 <Clock size={8} className="text-accent/40 md:w-[10px] md:h-[10px]" />
-                 <span className="text-text font-black">{plannedLabel}</span>
-              </div>
-           )}
-           {dueLabel && (
-              <div className="flex items-center gap-1 md:gap-1.5 text-[8px] md:text-[10px] font-mono text-rose-500/80 leading-none">
-                 <Flag size={8} className="text-rose-500 fill-rose-500/10 md:w-[10px] md:h-[10px]" />
-                 <span className="font-black text-rose-400">{dueLabel}</span>
-              </div>
-           )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Draggable Wrapper ───────────────────────────────────────────────────────
-
-function DraggableTask({ task, onEdit, onDuplicate, allTasks }: { task: TaskData, onEdit: (t: TaskData) => void, onDuplicate?: (t: TaskData) => void, allTasks: TaskData[] }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: task.id,
-    data: task
-  });
-
-  return (
-    <TaskCard 
-      task={task} 
-      isDragging={isDragging} 
-      setNodeRef={setNodeRef} 
-      listeners={listeners} 
-      attributes={attributes} 
-      transform={transform}
       onEdit={onEdit}
       onDuplicate={onDuplicate}
+      onAddChild={onAddChild}
       allTasks={allTasks}
     />
   );
@@ -260,6 +128,7 @@ function CalendarDayCell({
   tasks,
   onEdit,
   onDuplicate,
+  onAddChild,
   onAdd,
   isDraggingAny,
   mode,
@@ -270,6 +139,7 @@ function CalendarDayCell({
   tasks: TaskData[],
   onEdit: (t: TaskData) => void,
   onDuplicate?: (t: TaskData) => void,
+  onAddChild?: (t: TaskData) => void,
   onAdd?: (date: Date) => void,
   isDraggingAny: boolean,
   mode: "month" | "week",
@@ -323,7 +193,14 @@ function CalendarDayCell({
       
       <div className={`flex-1 flex flex-col ${isDraggingAny ? "overflow-visible" : "overflow-y-auto scrollbar-hide"}`}>
         {sortedTasks.map(task => (
-          <DraggableTask key={task.id} task={task} onEdit={onEdit} onDuplicate={onDuplicate} allTasks={allTasks} />
+          <DraggableTask 
+            key={task.id} 
+            task={task} 
+            onEdit={onEdit} 
+            onDuplicate={onDuplicate} 
+            onAddChild={onAddChild}
+            allTasks={allTasks} 
+          />
         ))}
       </div>
     </div>
@@ -332,10 +209,18 @@ function CalendarDayCell({
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
-export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMode = "month", onDuplicate, onAdd }: TaskCalendarProps) {
+export function TaskCalendar({ 
+  tasks: initialTasks, 
+  allTasks, 
+  spheres, 
+  defaultMode = "month", 
+  onDuplicate, 
+  onAdd 
+}: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week">(defaultMode);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
+  const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isDraggingAny, setIsDraggingAny] = useState(false);
@@ -347,6 +232,7 @@ export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMo
 
   const handleEdit = (t: TaskData) => {
     setEditingTask(t);
+    setParentTask(null);
     setIsDuplicate(false);
     setDialogOpen(true);
   };
@@ -356,14 +242,23 @@ export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMo
       onDuplicate(t);
     } else {
       setEditingTask(t);
+      setParentTask(null);
       setIsDuplicate(true);
       setDialogOpen(true);
     }
   };
 
+  const handleAddChild = (parent: TaskData) => {
+    setEditingTask(null);
+    setParentTask(parent);
+    setIsDuplicate(false);
+    setDialogOpen(true);
+  };
+
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setEditingTask(null);
+    setParentTask(null);
     setIsDuplicate(false);
   };
 
@@ -532,8 +427,10 @@ export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMo
                   tasks={tasksByDay[format(day, "yyyy-MM-dd")] || []}
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
+                  onAddChild={handleAddChild}
                   onAdd={(date) => {
                     setEditingTask({ plannedDate: date } as TaskData);
+                    setParentTask(null);
                     setIsDuplicate(false);
                     setDialogOpen(true);
                   }}
@@ -551,6 +448,7 @@ export function TaskCalendar({ tasks: initialTasks, allTasks, spheres, defaultMo
         isOpen={dialogOpen}
         onClose={handleCloseDialog}
         task={editingTask}
+        parentTask={parentTask}
         spheres={spheres}
         allTasks={parentResolutionTasks}
         onViewTask={(t) => setEditingTask(t)}
