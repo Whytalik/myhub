@@ -38,6 +38,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${dmSans.variable} ${geistMono.variable} h-full`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-bg text-text font-sans antialiased scrollbar-hide">
         {children}

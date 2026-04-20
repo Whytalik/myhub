@@ -27,8 +27,7 @@ import {
   Trash2,
   Check,
   Loader2,
-  Pencil,
-  Plus
+  Pencil
 } from "lucide-react";
 import {
   DndContext, 
@@ -48,7 +47,7 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 
-// --- Types ---
+// --- Types & Data ---
 
 type Domain = {
   id: string;
@@ -82,40 +81,6 @@ const DEFAULT_SPACES: Space[] = [
   { id: "other",     label: "Misc / Other",    icon: ICON_LIBRARY.Vault,     domainId: "vault" },
 ];
 
-// --- Customization Pickers ---
-
-function IconPicker({ currentIcon, onSelect, color }: { currentIcon: string, onSelect: (name: string) => void, color: string }) {
-  return (
-    <div className="grid grid-cols-6 gap-1 p-2 max-h-40 overflow-y-auto scrollbar-hide bg-bg/50 rounded-xl border border-border/40">
-      {Object.entries(ICON_LIBRARY).map(([name, Icon]) => (
-        <button
-          key={name}
-          onClick={() => onSelect(name)}
-          className={`p-2 rounded-lg transition-all hover:bg-raised flex items-center justify-center ${currentIcon === name ? "ring-2 ring-accent bg-accent/10" : ""}`}
-        >
-          <Icon size={16} style={{ color: currentIcon === name ? color : undefined }} />
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelect: (hex: string) => void }) {
-  return (
-    <div className="flex flex-wrap gap-1.5 p-2 bg-bg/50 rounded-xl border border-border/40">
-      {SYSTEM_COLORS.map((c) => (
-        <button
-          key={c.hex}
-          onClick={() => onSelect(c.hex)}
-          className={`w-6 h-6 rounded-full transition-transform hover:scale-110 ${currentColor === c.hex ? "ring-2 ring-text ring-offset-2 ring-offset-bg" : ""}`}
-          style={{ backgroundColor: c.hex }}
-          title={c.label}
-        />
-      ))}
-    </div>
-  );
-}
-
 // --- Sortable Item Component ---
 
 function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id: string, label: string, icon: LucideIcon, color?: string, onEdit?: () => void }) {
@@ -139,7 +104,7 @@ function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id
     <div 
       ref={setNodeRef} 
       style={style}
-      className={`flex items-center gap-3 p-2.5 border rounded-xl group transition-colors ${
+      className={`flex items-center gap-3 p-2 border rounded-xl group transition-colors ${
         isDragging 
           ? "bg-accent text-bg border-accent shadow-2xl z-50 ring-4 ring-accent/20" 
           : "bg-raised/30 border-border/40 hover:border-accent/30"
@@ -157,7 +122,7 @@ function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id
       <div className={`p-1.5 rounded-lg border transition-colors ${
         isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"
       }`}>
-        <Icon size={14} style={{ color: isDragging ? "inherit" : color }} strokeWidth={2.5} />
+        <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} strokeWidth={2.5} />
       </div>
       <span className="flex-1 text-[12px] font-bold truncate">{label}</span>
       {!isDragging && onEdit && (
@@ -165,6 +130,40 @@ function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id
           <Pencil size={12} />
         </button>
       )}
+    </div>
+  );
+}
+
+// --- Pickers ---
+
+function IconPicker({ currentIcon, onSelect, color }: { currentIcon: string, onSelect: (name: string) => void, color: string }) {
+  return (
+    <div className="grid grid-cols-6 gap-1 p-2 max-h-32 overflow-y-auto scrollbar-hide bg-bg/50 rounded-xl border border-border/40">
+      {Object.entries(ICON_LIBRARY).map(([name, Icon]) => (
+        <button
+          key={name}
+          onClick={() => onSelect(name)}
+          className={`p-2 rounded-lg transition-all hover:bg-raised flex items-center justify-center ${currentIcon === name ? "ring-2 ring-accent bg-accent/10" : ""}`}
+        >
+          <Icon size={14} style={{ color: currentIcon === name ? color : undefined }} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelect: (hex: string) => void }) {
+  return (
+    <div className="flex flex-wrap gap-1 p-2 bg-bg/50 rounded-xl border border-border/40">
+      {SYSTEM_COLORS.map((c) => (
+        <button
+          key={c.hex}
+          onClick={() => onSelect(c.hex)}
+          className={`w-5 h-5 rounded-full transition-transform hover:scale-110 ${currentColor === c.hex ? "ring-2 ring-text ring-offset-2 ring-offset-bg" : ""}`}
+          style={{ backgroundColor: c.hex }}
+          title={c.label}
+        />
+      ))}
     </div>
   );
 }
@@ -204,10 +203,9 @@ export function SettingsModal({
   
   const [domains, setDomains] = useState<Domain[]>(DEFAULT_DOMAINS);
   const [spaces, setSpaces] = useState<Space[]>(DEFAULT_SPACES);
-
   const [isSaved, setIsSaved] = useState(false);
 
-  // DnD Setup
+  // DnD Sensors
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -241,17 +239,15 @@ export function SettingsModal({
 
   const saveDomainOrder = (newDomains: Domain[]) => {
     const orderIds = newDomains.map(d => d.id);
-    const orderString = JSON.stringify(orderIds);
-    localStorage.setItem("sidebar-domains-order", orderString);
-    document.cookie = `sidebar-domains-order=${orderString}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    localStorage.setItem("sidebar-domains-order", JSON.stringify(orderIds));
+    document.cookie = `sidebar-domains-order=${JSON.stringify(orderIds)}; path=/; max-age=${60 * 60 * 24 * 365}`;
     window.dispatchEvent(new Event("sidebar-order-updated"));
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1000);
   };
 
   const saveSpaceOrder = (newSpaces: Space[]) => {
-    const orderIds = newSpaces.map(s => s.id);
-    localStorage.setItem("sidebar-spaces-order", JSON.stringify(orderIds));
+    localStorage.setItem("sidebar-spaces-order", JSON.stringify(newSpaces.map(s => s.id)));
     window.dispatchEvent(new Event("sidebar-order-updated"));
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1000);
@@ -262,6 +258,64 @@ export function SettingsModal({
     setCustomizations(next);
     localStorage.setItem("system-customizations", JSON.stringify(next));
     window.dispatchEvent(new Event("system-customizations-updated"));
+  };
+
+  const handleUpdateName = () => {
+    if (!displayName || displayName === userName) return;
+    startTransition(async () => {
+      const result = await updateUserNameAction(displayName);
+      if (result.success) {
+        toast.success("Name updated");
+        router.refresh();
+      } else {
+        toast.error("Failed to update");
+      }
+    });
+  };
+
+  const handleExport = async () => {
+    const result = await exportSystemAction();
+    if (result.success && result.data) {
+      const blob = new Blob([JSON.stringify(result.data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `myhub-backup.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Exported");
+    }
+  };
+
+  const handleReset = async () => {
+    startTransition(async () => {
+      const result = await resetSystemAction();
+      if (result.success) {
+        toast.success("System reset");
+        onClose();
+        router.refresh();
+      }
+    });
+  };
+
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        startTransition(async () => {
+          const result = await importSystemAction(data);
+          if (result.success) {
+            toast.success("Imported");
+            onClose();
+            window.location.reload();
+          }
+        });
+      } catch { toast.error("Invalid file"); }
+    };
+    reader.readAsText(file);
   };
 
   const tabs = [
@@ -279,11 +333,11 @@ export function SettingsModal({
         onClose={onClose} 
         title="System Settings" 
         description="Configure your Personal OS"
-        maxWidth="850px"
+        maxWidth="800px"
         bare
         noScroll
       >
-        <div className="flex h-[480px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden">
+        <div className="flex h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
           {/* Sidebar Tabs */}
           <div className="w-44 border-r border-border/50 bg-raised/30 p-2 flex flex-col gap-1 shrink-0">
             {tabs.map((tab) => (
@@ -291,37 +345,30 @@ export function SettingsModal({
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setEditingItem(null); }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12px] font-bold transition-all ${
-                  activeTab === tab.id 
-                    ? "bg-accent text-bg shadow-sm" 
-                    : "text-muted hover:text-text hover:bg-raised/80"
+                  activeTab === tab.id ? "bg-accent text-bg shadow-sm" : "text-muted hover:text-text hover:bg-raised/80"
                 }`}
               >
                 <tab.icon size={14} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
                 {tab.label}
               </button>
             ))}
-            
             <div className="mt-auto p-2 text-center">
-               <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.5-STABLE</span>
+               <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.5</span>
             </div>
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 p-6 bg-surface overflow-hidden flex flex-col relative">
+          <div className="flex-1 p-5 bg-surface overflow-hidden flex flex-col relative">
             
-            {/* Editor Overlay */}
             {editingItem && (
               <div className="absolute inset-0 z-[60] bg-surface p-6 animate-in slide-in-from-right-4 duration-300 overflow-y-auto scrollbar-hide">
                 <div className="flex items-center justify-between mb-8">
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold">
-                    Edit {editingItem.type}: <span className="text-text">{editingItem.id}</span>
-                  </h4>
-                  <button onClick={() => setEditingItem(null)} className="text-[10px] font-bold uppercase hover:text-accent transition-colors">Close</button>
+                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Edit {editingItem.id}</h4>
+                  <button onClick={() => setEditingItem(null)} className="text-[10px] font-bold uppercase hover:text-accent">Close</button>
                 </div>
-                
-                <div className="space-y-8">
+                <div className="space-y-6">
                   <section>
-                    <label className="text-[10px] font-bold uppercase text-muted block mb-3">Custom Icon</label>
+                    <label className="text-[9px] font-bold uppercase text-muted block mb-2">Icon</label>
                     <IconPicker 
                       currentIcon={customizations[editingItem.id]?.icon || ""} 
                       onSelect={(icon) => updateCustomization(editingItem.id, 'icon', icon)} 
@@ -329,7 +376,7 @@ export function SettingsModal({
                     />
                   </section>
                   <section>
-                    <label className="text-[10px] font-bold uppercase text-muted block mb-3">Accent Color</label>
+                    <label className="text-[9px] font-bold uppercase text-muted block mb-2">Color</label>
                     <ColorPicker 
                       currentColor={customizations[editingItem.id]?.color || "#a3a3a3"} 
                       onSelect={(color) => updateCustomization(editingItem.id, 'color', color)} 
@@ -340,25 +387,15 @@ export function SettingsModal({
             )}
 
             {activeTab === "general" && (
-              <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
+              <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                 <section>
-                  <h4 className="text-[9px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-4">Profile</h4>
+                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[10px] font-bold uppercase text-muted">Display Name</label>
                     <div className="flex gap-2">
-                      <input 
-                        className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm focus:border-accent/50 outline-none transition-all text-text" 
-                        value={displayName}
-                        onChange={(e) => setDisplayName(e.target.value)}
-                        placeholder="Your name"
-                      />
-                      <button 
-                        onClick={handleUpdateName}
-                        disabled={isPending || !displayName || displayName === userName}
-                        className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase tracking-widest disabled:opacity-30 transition-all flex items-center gap-2 h-9"
-                      >
-                        {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
-                        Save
+                      <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                      <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                        {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                       </button>
                     </div>
                   </div>
@@ -369,15 +406,15 @@ export function SettingsModal({
             {activeTab === "appearance" && (
               <div className="space-y-5 animate-in fade-in slide-in-from-right-2 duration-300">
                 <section>
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Visual Theme</h4>
+                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
                   <div className="grid grid-cols-2 gap-2">
                      <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
                         <div className="flex items-center gap-2"><Moon size={14} /><span className="text-[10px] font-bold uppercase">Dark</span></div>
-                        {theme === "dark" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                        {theme === "dark" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                      </button>
                      <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "light" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
                         <div className="flex items-center gap-2"><Sun size={14} /><span className="text-[10px] font-bold uppercase">Light</span></div>
-                        {theme === "light" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                        {theme === "light" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                      </button>
                   </div>
                 </section>
@@ -385,12 +422,11 @@ export function SettingsModal({
             )}
 
             {activeTab === "domains" && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300 h-full flex flex-col overflow-hidden">
+              <div className="space-y-4 h-full flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-2 duration-300">
                 <div className="flex justify-between items-center mb-1">
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domain Hierarchy</h4>
+                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
                   {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                 </div>
-                
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                   <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
                     <div className="flex flex-col gap-1.5 overflow-hidden pb-2">
@@ -407,57 +443,49 @@ export function SettingsModal({
                     </div>
                   </SortableContext>
                 </DndContext>
+                <p className="text-[9px] text-muted mt-auto pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
               </div>
             )}
 
             {activeTab === "spaces" && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300 h-full flex flex-col overflow-hidden">
+              <div className="space-y-4 h-full flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-2 duration-300">
                 <div className="flex justify-between items-center mb-1">
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Space Hierarchy</h4>
+                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
                   {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                 </div>
-                
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                   <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
                     <div className="flex flex-col gap-1.5 overflow-hidden pb-2">
                       {spaces.map((space) => (
-                        <SortableItem 
-                          key={space.id} 
-                          id={space.id} 
-                          label={space.label} 
-                          icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} 
-                          color={customizations[space.id]?.color}
-                          onEdit={() => setEditingItem({ type: 'space', id: space.id })}
-                        />
+                        <SortableItem key={space.id} id={space.id} label={space.label} icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} color={customizations[space.id]?.color} onEdit={() => setEditingItem({ type: 'space', id: space.id })} />
                       ))}
                     </div>
                   </SortableContext>
                 </DndContext>
+                <p className="text-[9px] text-muted mt-auto pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
               </div>
             )}
 
             {activeTab === "data" && (
               <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
-                <section>
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Data Management</h4>
-                  <div className="grid grid-cols-1 gap-2">
-                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-[11px] font-bold">Export JSON</h5><p className="text-[9px] text-muted">Complete backup.</p></div>
-                        <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 transition-all"><Download size={14} /></button>
-                     </div>
-                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-[11px] font-bold">Import Backup</h5><p className="text-[9px] text-muted">Restore state.</p></div>
-                        <div className="flex items-center gap-2">
-                          <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
-                          <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all"><Upload size={14} /></button>
-                        </div>
-                     </div>
-                     <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
+                <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
+                <div className="grid grid-cols-1 gap-2">
+                   <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                      <div><h5 className="text-[11px] font-bold">Export JSON</h5><p className="text-[9px] text-muted">Complete backup.</p></div>
+                      <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 active:scale-95 transition-all shadow-md shadow-accent/20"><Download size={14} strokeWidth={2.5} /></button>
+                   </div>
+                   <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                      <div><h5 className="text-[11px] font-bold">Import Backup</h5><p className="text-[9px] text-muted">Restore state.</p></div>
+                      <div className="flex items-center gap-2">
+                        <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
+                        <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
+                      </div>
+                   </div>
+                   <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
                         <div><h5 className="text-[11px] font-bold text-red-500">Reset System</h5><p className="text-[9px] text-red-500/60">Wipe all records.</p></div>
-                        <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg"><Trash2 size={14} /></button>
-                     </div>
-                  </div>
-                </section>
+                        <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                   </div>
+                </div>
               </div>
             )}
           </div>
@@ -468,8 +496,8 @@ export function SettingsModal({
         isOpen={isResetConfirmOpen}
         onClose={() => setIsResetConfirmOpen(false)}
         onConfirm={handleReset}
-        title="Wipe Entire System?"
-        description="Permanently delete all records. This action CANNOT be undone."
+        title="Wipe System?"
+        description="Permanently delete all data. CANNOT be undone."
         confirmLabel={isPending ? "Resetting..." : "Wipe Everything"}
         variant="danger"
       />
