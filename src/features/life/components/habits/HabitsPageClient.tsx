@@ -77,7 +77,7 @@ export function HabitsPageClient({
           {
             id: "practice",
             label: "Today's practice",
-            icon: ListChecks,
+            icon: <ListChecks size={14} />,
             content: (
               <div className="space-y-8 animate-in fade-in duration-500 pt-6">
                 <div className="flex items-center justify-between border-b border-border/40 pb-4">
@@ -152,7 +152,7 @@ export function HabitsPageClient({
           {
             id: "analytics",
             label: "Success analytics",
-            icon: PieChart,
+            icon: <PieChart size={14} />,
             content: (
               <div className="space-y-8 animate-in fade-in duration-500 pt-6">
                 <div className="flex items-center gap-3 border-b border-border/40 pb-4">
