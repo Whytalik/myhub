@@ -4,21 +4,52 @@ import Link from "next/link";
 import {
   BookHeart, Utensils, Languages, Dumbbell,
   BookOpen, ShoppingBag, ArrowRight, Lock,
-  Flame, BookText, Zap, TrendingUp,
+  Flame, BookText, Zap, TrendingUp, Compass,
+  Briefcase, Shield, Brain, Database, Package,
 } from "lucide-react";
 import { getTodayEntry, getDailyStats } from "@/features/life/services/journal-service";
 import { format } from "date-fns";
 
-const spaces = [
-  { label: "Life System", description: "Journal, habits & tasks", icon: BookHeart, href: "/life", adminOnly: false },
-  { label: "Food System", description: "Nutrition & meal planning", icon: Utensils, href: "/food", adminOnly: true },
-  { label: "Language System", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
-  { label: "Fitness System", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
-  { label: "Trading System", description: "Markets & portfolio", icon: TrendingUp, href: "/trading", adminOnly: true },
-  { label: "Library System", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
-  { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
+const domainGroups = [
+  {
+    name: "Operations",
+    icon: Briefcase,
+    spaces: [
+      { label: "Planning Space", description: "Align vision with cycles", icon: Compass, href: "/planning", adminOnly: false },
+      { label: "Life Space", description: "Journal, habits & tasks", icon: BookHeart, href: "/life", adminOnly: false },
+    ]
+  },
+  {
+    name: "Health",
+    icon: Shield,
+    spaces: [
+      { label: "Food Space", description: "Nutrition & meal planning", icon: Utensils, href: "/food", adminOnly: true },
+      { label: "Fitness Space", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
+    ]
+  },
+  {
+    name: "Mind",
+    icon: Brain,
+    spaces: [
+      { label: "Language Space", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
+      { label: "Library Space", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
+    ]
+  },
+  {
+    name: "Wealth",
+    icon: Database,
+    spaces: [
+      { label: "Trading Space", description: "Markets & portfolio", icon: TrendingUp, href: "/trading", adminOnly: true },
+    ]
+  },
+  {
+    name: "Vault",
+    icon: Package,
+    spaces: [
+      { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
+    ]
+  }
 ];
-
 
 export default async function HomePage() {
   const session = await auth();
@@ -58,7 +89,7 @@ export default async function HomePage() {
 
       {/* Stats strip */}
       {personId && (
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-8">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-12">
           <div className="flex items-center gap-2.5">
             <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
             <div>
@@ -98,34 +129,38 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Spaces grid */}
-      <div>
-        <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">Spaces</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {spaces.map(({ label, description, icon: Icon, href, adminOnly }) => {
-            const accessible = !adminOnly || isAdmin;
-            return (
-              <Link
-                key={label}
-                href={accessible ? href : "#"}
-                className={`group flex flex-col items-center justify-center gap-3 aspect-square rounded-2xl border transition-all ${
-                  accessible
-                    ? "bg-surface border-border hover:border-accent/50 hover:bg-surface/80 hover:shadow-lg hover:shadow-accent/5"
-                    : "bg-surface/30 border-border/30 opacity-40 pointer-events-none"
-                }`}
-              >
-                <div className={`p-3 rounded-xl border ${accessible ? "bg-accent/10 border-accent/20 group-hover:bg-accent/20 transition-colors" : "bg-raised border-border/30"}`}>
-                  <Icon size={22} className={accessible ? "text-accent" : "text-muted"} />
-                </div>
-                <div className="text-center px-2">
-                  <p className="text-[12px] font-semibold text-text leading-none mb-1">{label}</p>
-                  <p className="text-[10px] text-muted leading-snug">{description}</p>
-                </div>
-                {!accessible && <Lock size={10} className="text-muted absolute" />}
-              </Link>
-            );
-          })}
-        </div>
+      {/* Domain Groups */}
+      <div className="flex flex-col gap-12">
+        {domainGroups.map((group) => {
+          const visibleSpaces = group.spaces.filter(s => !s.adminOnly || isAdmin);
+          if (visibleSpaces.length === 0) return null;
+
+          return (
+            <div key={group.name}>
+              <div className="flex items-center gap-2 mb-4">
+                 <group.icon size={14} className="text-accent" />
+                 <h2 className="text-[11px] font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {visibleSpaces.map(({ label, description, icon: Icon, href }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    className="group flex flex-col items-center justify-center gap-3 aspect-square rounded-2xl border border-border bg-surface hover:border-accent/50 hover:bg-surface/80 hover:shadow-lg hover:shadow-accent/5 transition-all"
+                  >
+                    <div className="p-3 rounded-xl border bg-accent/10 border-accent/20 group-hover:bg-accent/20 transition-colors">
+                      <Icon size={22} className="text-accent" />
+                    </div>
+                    <div className="text-center px-2">
+                      <p className="text-[12px] font-semibold text-text leading-none mb-1">{label}</p>
+                      <p className="text-[10px] text-muted leading-snug">{description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
