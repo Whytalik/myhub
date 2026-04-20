@@ -1,4 +1,4 @@
-import NextAuth, { type DefaultSession, type User as NextAuthUser } from "next-auth";
+import NextAuth, { type DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
@@ -15,7 +15,7 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 
-  interface User extends NextAuthUser {
+  interface User {
     role: Role;
     profileId?: string;
     personId?: string;
