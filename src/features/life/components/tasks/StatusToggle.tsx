@@ -11,21 +11,13 @@ import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { createPortal } from "react-dom";
 
 export const NEXT_STATUS: Record<TaskStatus, TaskStatus> = {
-  BACKLOG:     "TODO",
   TODO:        "IN_PROGRESS",
   IN_PROGRESS: "DONE",
-  DONE:        "BACKLOG",
+  DONE:        "TODO",
   CANCELLED:   "TODO",
-  BLOCKED:     "TODO",
 };
 
 export const STATUS_CONFIG: Record<TaskStatus, { style: string, icon: LucideIcon, label: string, color: string }> = {
-  BACKLOG: { 
-    style: "border-border/60 text-muted/40", 
-    icon: HelpCircle,
-    label: "Backlog",
-    color: "#737373"
-  },
   TODO: { 
     style: "border-border hover:border-accent/50 text-muted", 
     icon: Circle,
@@ -49,12 +41,6 @@ export const STATUS_CONFIG: Record<TaskStatus, { style: string, icon: LucideIcon
     icon: XCircle,
     label: "Cancelled",
     color: "#404040"
-  },
-  BLOCKED: { 
-    style: "bg-rose-500/10 border-rose-500/50 text-rose-400", 
-    icon: PauseCircle,
-    label: "Blocked",
-    color: "#f43f5e"
   },
 };
 

@@ -258,12 +258,10 @@ export type PlanAdherence = (typeof PlanAdherence)[keyof typeof PlanAdherence]
 
 
 export const TaskStatus: {
-  BACKLOG: 'BACKLOG',
   TODO: 'TODO',
   IN_PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE',
-  CANCELLED: 'CANCELLED',
-  BLOCKED: 'BLOCKED'
+  CANCELLED: 'CANCELLED'
 };
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]

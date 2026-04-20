@@ -17,6 +17,10 @@ const getEnhancedConnectionString = () => {
   if (!url.includes("connection_limit=")) {
     url += (hasParams ? "&" : "?") + "connection_limit=1";
   }
+  // Fix SSL warning
+  if (!url.includes("sslmode=")) {
+    url += (url.includes("?") ? "&" : "?") + "sslmode=verify-full";
+  }
   return url;
 };
 

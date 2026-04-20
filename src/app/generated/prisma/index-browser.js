@@ -553,12 +553,10 @@ exports.PlanAdherence = exports.$Enums.PlanAdherence = {
 };
 
 exports.TaskStatus = exports.$Enums.TaskStatus = {
-  BACKLOG: 'BACKLOG',
   TODO: 'TODO',
   IN_PROGRESS: 'IN_PROGRESS',
   DONE: 'DONE',
-  CANCELLED: 'CANCELLED',
-  BLOCKED: 'BLOCKED'
+  CANCELLED: 'CANCELLED'
 };
 
 exports.TaskPriority = exports.$Enums.TaskPriority = {
