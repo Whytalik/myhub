@@ -317,10 +317,12 @@ model ShoppingListItem {
 // ─── Life Space ───────────────────────────────────────────────────────────────
 
 enum TaskStatus {
+  BACKLOG
   TODO
   IN_PROGRESS
   DONE
   CANCELLED
+  BLOCKED
 }
 
 enum TaskPriority {
