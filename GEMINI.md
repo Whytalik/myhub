@@ -57,6 +57,7 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 
 ## Engineering Standards
 
+- **Source Control**: NEVER stage, commit, or push changes without explicit user permission. Always ask before performing any Git write operations.
 - **Research First**: Document findings in `docs/research/` before implementation (e.g., `space-vs-system.md`).
 - **Stable Layouts**: Use `DomainTemplate` for hub pages to prevent layout shifts during navigation.
 - **Component Integrity**: ALWAYS use custom UI components from `src/components/ui`. NEVER use native browser methods (`alert`, `prompt`).

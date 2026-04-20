@@ -27,7 +27,7 @@ import {
   Trash2,
   Check,
   Loader2,
-  Pencil
+  ChevronDown
 } from "lucide-react";
 import {
   DndContext, 
@@ -81,17 +81,59 @@ const DEFAULT_SPACES: Space[] = [
   { id: "other",     label: "Misc / Other",    icon: ICON_LIBRARY.Vault,     domainId: "vault" },
 ];
 
+// --- Pickers ---
+
+function IconPicker({ currentIcon, onSelect, color }: { currentIcon: string, onSelect: (name: string) => void, color: string }) {
+  return (
+    <div className="grid grid-cols-8 gap-1 p-2 max-h-32 overflow-y-auto scrollbar-hide bg-bg/30 rounded-lg border border-border/20 mt-2">
+      {Object.entries(ICON_LIBRARY).map(([name, Icon]) => (
+        <button
+          key={name}
+          onClick={(e) => { e.stopPropagation(); onSelect(name); }}
+          className={`p-1.5 rounded-md transition-all hover:bg-raised flex items-center justify-center ${currentIcon === name ? "bg-accent/20 ring-1 ring-accent/30" : ""}`}
+        >
+          <Icon size={12} style={{ color: currentIcon === name ? color : undefined }} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelect: (hex: string) => void }) {
+  return (
+    <div className="flex flex-wrap gap-1 p-2 bg-bg/30 rounded-lg border border-border/20 mt-2">
+      {SYSTEM_COLORS.map((c) => (
+        <button
+          key={c.hex}
+          onClick={(e) => { e.stopPropagation(); onSelect(c.hex); }}
+          className={`w-4 h-4 rounded-full transition-transform hover:scale-125 ${currentColor === c.hex ? "ring-1 ring-text ring-offset-1 ring-offset-bg" : ""}`}
+          style={{ backgroundColor: c.hex }}
+        />
+      ))}
+    </div>
+  );
+}
+
 // --- Sortable Item Component ---
 
-function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id: string, label: string, icon: LucideIcon, color?: string, onEdit?: () => void }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging
-  } = useSortable({ id });
+function SortableItem({ 
+  id, 
+  label, 
+  icon: Icon, 
+  color = "#a3a3a3", 
+  isSelected, 
+  onSelect,
+  onUpdate
+}: { 
+  id: string, 
+  label: string, 
+  icon: LucideIcon, 
+  color?: string, 
+  isSelected: boolean,
+  onSelect: () => void,
+  onUpdate: (key: 'icon' | 'color', val: string) => void
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
   const style = {
     transform: transform ? `translate3d(0px, ${Math.round(transform.y)}px, 0px)` : undefined,
@@ -104,66 +146,45 @@ function SortableItem({ id, label, icon: Icon, color = "#a3a3a3", onEdit }: { id
     <div 
       ref={setNodeRef} 
       style={style}
-      className={`flex items-center gap-3 p-2 border rounded-xl group transition-colors ${
+      onClick={onSelect}
+      className={`flex flex-col border rounded-xl transition-all cursor-pointer overflow-hidden ${
         isDragging 
-          ? "bg-accent text-bg border-accent shadow-2xl z-50 ring-4 ring-accent/20" 
-          : "bg-raised/30 border-border/40 hover:border-accent/30"
+          ? "bg-accent text-bg border-accent shadow-2xl z-50 ring-4 ring-accent/20 scale-[1.02]" 
+          : isSelected 
+            ? "bg-raised border-accent/40 shadow-sm" 
+            : "bg-raised/30 border-border/40 hover:border-accent/30"
       }`}
     >
-      <div 
-        {...attributes} 
-        {...listeners} 
-        className={`transition-colors cursor-grab active:cursor-grabbing p-1 touch-none ${
-          isDragging ? "text-bg" : "text-muted group-hover:text-accent"
-        }`}
-      >
-        <GripVertical size={14} />
-      </div>
-      <div className={`p-1.5 rounded-lg border transition-colors ${
-        isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"
-      }`}>
-        <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} strokeWidth={2.5} />
-      </div>
-      <span className="flex-1 text-[12px] font-bold truncate">{label}</span>
-      {!isDragging && onEdit && (
-        <button onClick={onEdit} className="p-1.5 text-muted hover:text-accent transition-colors opacity-0 group-hover:opacity-100">
-          <Pencil size={12} />
-        </button>
-      )}
-    </div>
-  );
-}
-
-// --- Pickers ---
-
-function IconPicker({ currentIcon, onSelect, color }: { currentIcon: string, onSelect: (name: string) => void, color: string }) {
-  return (
-    <div className="grid grid-cols-6 gap-1 p-2 max-h-32 overflow-y-auto scrollbar-hide bg-bg/50 rounded-xl border border-border/40">
-      {Object.entries(ICON_LIBRARY).map(([name, Icon]) => (
-        <button
-          key={name}
-          onClick={() => onSelect(name)}
-          className={`p-2 rounded-lg transition-all hover:bg-raised flex items-center justify-center ${currentIcon === name ? "ring-2 ring-accent bg-accent/10" : ""}`}
+      <div className="flex items-center gap-3 p-2.5">
+        <div 
+          {...attributes} 
+          {...listeners} 
+          className={`p-1 touch-none transition-colors ${isDragging ? "text-bg" : "text-muted hover:text-accent"}`}
+          onClick={(e) => e.stopPropagation()}
         >
-          <Icon size={14} style={{ color: currentIcon === name ? color : undefined }} />
-        </button>
-      ))}
-    </div>
-  );
-}
+          <GripVertical size={14} />
+        </div>
+        <div className={`p-1.5 rounded-lg border transition-colors ${isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"}`}>
+          <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} style={{ color: isDragging ? undefined : color }} strokeWidth={2.5} />
+        </div>
+        <span className={`flex-1 text-[12px] font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
+        <ChevronDown size={14} className={`text-muted transition-transform duration-300 ${isSelected ? "rotate-180 text-accent" : ""}`} />
+      </div>
 
-function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelect: (hex: string) => void }) {
-  return (
-    <div className="flex flex-wrap gap-1 p-2 bg-bg/50 rounded-xl border border-border/40">
-      {SYSTEM_COLORS.map((c) => (
-        <button
-          key={c.hex}
-          onClick={() => onSelect(c.hex)}
-          className={`w-5 h-5 rounded-full transition-transform hover:scale-110 ${currentColor === c.hex ? "ring-2 ring-text ring-offset-2 ring-offset-bg" : ""}`}
-          style={{ backgroundColor: c.hex }}
-          title={c.label}
-        />
-      ))}
+      {isSelected && !isDragging && (
+        <div className="px-3 pb-3 pt-1 border-t border-border/20 animate-in slide-in-from-top-2 duration-300">
+           <div className="space-y-3">
+              <div>
+                <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Icon Library</span>
+                <IconPicker currentIcon="" onSelect={(icon) => onUpdate('icon', icon)} color={color} />
+              </div>
+              <div>
+                <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Accent Color</span>
+                <ColorPicker currentColor={color} onSelect={(c) => onUpdate('color', c)} />
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -189,8 +210,8 @@ export function SettingsModal({
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Customization State
-  const [editingItem, setEditingItem] = useState<{ type: 'domain' | 'space', id: string } | null>(null);
+  // Selection & Customization
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [customizations, setCustomizations] = useState<Record<string, { icon?: string, color?: string }>>({});
 
   useEffect(() => {
@@ -205,7 +226,6 @@ export function SettingsModal({
   const [spaces, setSpaces] = useState<Space[]>(DEFAULT_SPACES);
   const [isSaved, setIsSaved] = useState(false);
 
-  // DnD Sensors
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -240,7 +260,6 @@ export function SettingsModal({
   const saveDomainOrder = (newDomains: Domain[]) => {
     const orderIds = newDomains.map(d => d.id);
     localStorage.setItem("sidebar-domains-order", JSON.stringify(orderIds));
-    document.cookie = `sidebar-domains-order=${JSON.stringify(orderIds)}; path=/; max-age=${60 * 60 * 24 * 365}`;
     window.dispatchEvent(new Event("sidebar-order-updated"));
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1000);
@@ -267,8 +286,6 @@ export function SettingsModal({
       if (result.success) {
         toast.success("Name updated");
         router.refresh();
-      } else {
-        toast.error("Failed to update");
       }
     });
   };
@@ -279,10 +296,8 @@ export function SettingsModal({
       const blob = new Blob([JSON.stringify(result.data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = `myhub-backup.json`;
-      a.click();
-      URL.revokeObjectURL(url);
+      a.href = url; a.download = `myhub-backup.json`;
+      a.click(); URL.revokeObjectURL(url);
       toast.success("Exported");
     }
   };
@@ -292,15 +307,13 @@ export function SettingsModal({
       const result = await resetSystemAction();
       if (result.success) {
         toast.success("System reset");
-        onClose();
-        router.refresh();
+        onClose(); router.refresh();
       }
     });
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const file = e.target.files?.[0]; if (!file) return;
     const reader = new FileReader();
     reader.onload = async (event) => {
       try {
@@ -308,9 +321,7 @@ export function SettingsModal({
         startTransition(async () => {
           const result = await importSystemAction(data);
           if (result.success) {
-            toast.success("Imported");
-            onClose();
-            window.location.reload();
+            toast.success("Imported"); onClose(); window.location.reload();
           }
         });
       } catch { toast.error("Invalid file"); }
@@ -338,12 +349,11 @@ export function SettingsModal({
         noScroll
       >
         <div className="flex h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
-          {/* Sidebar Tabs */}
           <div className="w-44 border-r border-border/50 bg-raised/30 p-2 flex flex-col gap-1 shrink-0">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => { setActiveTab(tab.id); setEditingItem(null); }}
+                onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12px] font-bold transition-all ${
                   activeTab === tab.id ? "bg-accent text-bg shadow-sm" : "text-muted hover:text-text hover:bg-raised/80"
                 }`}
@@ -353,40 +363,13 @@ export function SettingsModal({
               </button>
             ))}
             <div className="mt-auto p-2 text-center">
-               <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.5</span>
+               <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
             </div>
           </div>
 
-          {/* Content Area - SCROLL ENABLED HERE */}
           <div className="flex-1 bg-surface overflow-hidden relative">
-            <div className="h-full overflow-y-auto scrollbar-hide p-6">
+            <div className="h-full overflow-y-auto scrollbar-hide p-5">
               
-              {editingItem && (
-                <div className="absolute inset-0 z-[60] bg-surface p-6 animate-in slide-in-from-right-4 duration-300 overflow-y-auto scrollbar-hide">
-                  <div className="flex items-center justify-between mb-8">
-                    <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Edit {editingItem.id}</h4>
-                    <button onClick={() => setEditingItem(null)} className="text-[10px] font-bold uppercase hover:text-accent">Close</button>
-                  </div>
-                  <div className="space-y-6">
-                    <section>
-                      <label className="text-[9px] font-bold uppercase text-muted block mb-2">Icon</label>
-                      <IconPicker 
-                        currentIcon={customizations[editingItem.id]?.icon || ""} 
-                        onSelect={(icon) => updateCustomization(editingItem.id, 'icon', icon)} 
-                        color={customizations[editingItem.id]?.color || "#a3a3a3"}
-                      />
-                    </section>
-                    <section>
-                      <label className="text-[9px] font-bold uppercase text-muted block mb-2">Color</label>
-                      <ColorPicker 
-                        currentColor={customizations[editingItem.id]?.color || "#a3a3a3"} 
-                        onSelect={(color) => updateCustomization(editingItem.id, 'color', color)} 
-                      />
-                    </section>
-                  </div>
-                </div>
-              )}
-
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
@@ -394,7 +377,7 @@ export function SettingsModal({
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-bold uppercase text-muted">Display Name</label>
                       <div className="flex gap-2">
-                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                         <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                         </button>
@@ -430,14 +413,23 @@ export function SettingsModal({
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
-                      <div className="flex flex-col gap-1.5 pb-2">
+                      <div className="flex flex-col gap-2 pb-2">
                         {domains.map((domain) => (
-                          <SortableItem key={domain.id} id={domain.id} label={domain.label} icon={ICON_LIBRARY[customizations[domain.id]?.icon as IconName] || domain.icon} color={customizations[domain.id]?.color} onEdit={() => setEditingItem({ type: 'domain', id: domain.id })} />
+                          <SortableItem 
+                            key={domain.id} 
+                            id={domain.id} 
+                            label={domain.label} 
+                            icon={ICON_LIBRARY[customizations[domain.id]?.icon as IconName] || domain.icon} 
+                            color={customizations[domain.id]?.color} 
+                            isSelected={selectedId === domain.id}
+                            onSelect={() => setSelectedId(selectedId === domain.id ? null : domain.id)}
+                            onUpdate={(k, v) => updateCustomization(domain.id, k, v)}
+                          />
                         ))}
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-[9px] text-muted pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
+                  <p className="text-[9px] text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
@@ -449,14 +441,23 @@ export function SettingsModal({
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
-                      <div className="flex flex-col gap-1.5 pb-2">
+                      <div className="flex flex-col gap-2 pb-2">
                         {spaces.map((space) => (
-                          <SortableItem key={space.id} id={space.id} label={space.label} icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} color={customizations[space.id]?.color} onEdit={() => setEditingItem({ type: 'space', id: space.id })} />
+                          <SortableItem 
+                            key={space.id} 
+                            id={space.id} 
+                            label={space.label} 
+                            icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} 
+                            color={customizations[space.id]?.color} 
+                            isSelected={selectedId === space.id}
+                            onSelect={() => setSelectedId(selectedId === space.id ? null : space.id)}
+                            onUpdate={(k, v) => updateCustomization(space.id, k, v)}
+                          />
                         ))}
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-[9px] text-muted pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
+                  <p className="text-[9px] text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 

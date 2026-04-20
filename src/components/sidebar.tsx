@@ -172,7 +172,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
   ) => {
     return (
-      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-700">
+      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-500">
         <div className="flex flex-col gap-2.5 px-1">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
@@ -186,38 +186,43 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
             const color = {
                text: baseColor,
                bgActive: `${baseColor}15`,
+               bgHover: `${baseColor}08`, 
                bgInactive: "transparent",
                borderActive: `${baseColor}30`,
+               borderHover: `${baseColor}20`,
                borderInactive: "var(--color-border)"
             };
 
             return (
               <div 
                 key={item.href} 
-                className={`flex flex-col border rounded-2xl p-1 transition-all duration-500 ${
-                  isItemActive ? "shadow-sm" : "bg-surface/30 border-border/40"
-                }`}
+                className={`flex flex-col border rounded-2xl p-1 transition-all duration-300 group ${
+                  isItemActive ? "shadow-sm" : "bg-surface/30"
+                } ${!isItemActive ? "hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)]" : ""}`}
                 style={{ 
                   backgroundColor: isItemActive ? color.bgActive : color.bgInactive,
                   borderColor: isItemActive ? color.borderActive : color.borderInactive,
-                }}
+                  "--hover-bg": color.bgHover,
+                  "--hover-border": color.borderHover,
+                  "--hover-text": color.text,
+                } as React.CSSProperties}
               >
-                <div className="flex items-center justify-between group">
+                <div className="flex items-center justify-between group/link">
                   <Link
                     href={item.href}
-                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 ${!isExpanded ? "justify-center" : ""}`}
+                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-200 ${!isExpanded ? "justify-center" : ""}`}
                   >
                     <div className="w-5 flex justify-center shrink-0">
                       <ItemIcon 
                         size={18} 
                         style={{ color: isItemActive ? color.text : undefined }} 
                         strokeWidth={isItemActive ? 2.5 : 2}
-                        className={`transition-colors duration-500 ${isItemActive ? "" : "text-muted group-hover:text-secondary"}`}
+                        className={`transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`}
                       />
                     </div>
-                    <div className={`flex-1 transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"}`}>
+                    <div className={`flex-1 transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}>
                       <span 
-                        className="transition-colors duration-500" 
+                        className={`transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`} 
                         style={{ color: isItemActive ? color.text : undefined }}
                       >
                         {item.label}
@@ -227,7 +232,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                   {isExpanded && item.subItems && (
                     <button
                       onClick={() => toggleSection(subSectionKey)}
-                      className="p-2 text-muted hover:text-text transition-colors"
+                      className={`p-2 transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`}
                     >
                       <ChevronRight 
                         size={14} 
@@ -238,8 +243,9 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                   )}
                 </div>
                 
+                {/* STABLE SUB-ITEMS REVEAL */}
                 {isExpanded && item.subItems && isSubOpen && (
-                  <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in slide-in-from-top-2 duration-500">
+                  <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in fade-in slide-in-from-top-1 duration-300">
                     <div className="border-t border-border/40 mb-1" />
                     {item.subItems.map(sub => {
                       const SubIcon = sub.icon;
@@ -248,8 +254,8 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-colors duration-300 overflow-hidden whitespace-nowrap ${
-                            isSubActive ? "bg-accent/5 font-bold" : "text-secondary hover:text-text"
+                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                            isSubActive ? "bg-accent/5 font-bold" : "text-secondary hover:text-[var(--hover-text)] hover:bg-[var(--hover-bg)]"
                           }`}
                           style={{ color: isSubActive ? color.text : undefined }}
                         >
@@ -283,14 +289,14 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
         `}
       >
-        {/* Branding Area - FIXED LEFT ALIGNMENT */}
-        <div className="shrink-0 py-8 px-[22px] flex items-center relative h-28 overflow-hidden">
+        {/* Branding Area - FIXED POSITIONING */}
+        <div className="shrink-0 py-8 px-[22px] flex items-center relative h-28">
           <Link href="/home" className="flex items-center gap-3.5 group shrink-0">
             <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
               <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
             
-            <div className={`flex flex-col transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] translate-x-0" : "opacity-0 max-w-0 -translate-x-4"}`}>
+            <div className={`flex flex-col transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"}`}>
               <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
               <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
             </div>
@@ -321,26 +327,26 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
               if (section === "operations")
                 return renderNavGroup("Operations", [
-                  { id: "planning", label: "Planning Space", href: "/planning", icon: Compass },
+                  { id: "planning", label: "Planning Space", href: "/planning", icon: Compass, subItems: planningNav },
                   { id: "life", label: "Life Space", href: "/life", icon: Sparkles, subItems: lifeSpaceNav },
                 ]);
               if (section === "health" && isAdmin)
                 return renderNavGroup("Health", [
                   { id: "food", label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
-                  { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
+                  { id: "fitness",   label: "Fitness Space",  href: "/fitness",  icon: Dumbbell, subItems: fitnessNav },
                 ]);
               if (section === "mind" && isAdmin)
                 return renderNavGroup("Mind", [
                   { id: "languages", label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
-                  { id: "library", label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
+                  { id: "library",   label: "Library Space",   href: "/library",   icon: BookText, subItems: libraryNav },
                 ]);
               if (section === "wealth" && isAdmin)
                 return renderNavGroup("Wealth", [
-                  { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
+                  { id: "trading",   label: "Trading Space",   href: "/trading",   icon: TrendingUp, subItems: tradingNav },
                 ]);
               if (section === "vault")
                 return renderNavGroup("Vault", [
-                  { id: "other", label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
+                  { id: "other",     label: "Misc / Other",    href: "/other",     icon: Package, subItems: otherNav },
                 ]);
               return null;
             })}
@@ -355,7 +361,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0">
                   <span className="text-accent text-[12px] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
-                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] translate-x-0" : "opacity-0 max-w-0 -translate-x-4"}`}>
+                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"}`}>
                   <p className="text-[13px] font-semibold text-text truncate">{user.name}</p>
                   <p className="text-[11px] text-muted truncate">{user.email}</p>
                 </div>
