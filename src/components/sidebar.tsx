@@ -2,6 +2,7 @@
 
 import { logoutAction } from "@/actions/logout";
 import type { LucideIcon } from "lucide-react";
+import { useSidebar } from "./sidebar-provider";
 import {
   Activity,
   BookText,
@@ -26,6 +27,8 @@ import {
   Zap,
   Menu,
   X,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -92,6 +95,7 @@ interface SidebarProps {
 
 export function Sidebar({ user, initialOrder }: SidebarProps) {
   const pathname = usePathname();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isAdmin = user?.role === "ADMIN";
@@ -180,7 +184,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   ) => {
     const isActive = pathname.startsWith(groupHref);
     // Use the state but default to active if not explicitly toggled yet or if user wants it open
-    const isOpen = openSections[label] !== undefined ? openSections[label] : isActive;
+    const isOpen = !isCollapsed && (openSections[label] !== undefined ? openSections[label] : isActive);
     const GroupIcon = groupIcon;
     const color = spaceColors[label];
 
@@ -189,22 +193,23 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         key={label}
         className={`flex flex-col border rounded-2xl p-1 transition-all duration-700 ${
           isActive ? "shadow-sm border-border" : "bg-surface/40 border-border/40"
-        }`}
+        } ${isCollapsed ? "items-center" : ""}`}
         style={isActive ? { background: color.bg.replace("0.10", "0.04") } : undefined}
       >
         <div
-          className={`flex items-center ${withSubItems ? "justify-between" : ""} px-3 py-2`}
+          className={`flex items-center ${withSubItems && !isCollapsed ? "justify-between" : "justify-center"} ${isCollapsed ? "px-0" : "px-3"} py-2`}
         >
           <Link
             href={groupHref}
-            className="flex items-center gap-3 text-sm font-bold text-text hover:opacity-80 transition-opacity"
+            className={`flex items-center gap-3 text-sm font-bold text-text hover:opacity-80 transition-opacity ${isCollapsed ? "justify-center" : ""}`}
+            title={isCollapsed ? label : undefined}
           >
-            <div className="p-1.5 rounded-lg" style={{ background: color.bg }}>
+            <div className="p-1.5 rounded-lg shrink-0" style={{ background: color.bg }}>
               <GroupIcon size={14} style={{ color: color.text }} />
             </div>
-            <span className="leading-none">{label}</span>
+            {!isCollapsed && <span className="leading-none truncate">{label}</span>}
           </Link>
-          {withSubItems && (
+          {withSubItems && !isCollapsed && (
             <button
               onClick={() => toggleSection(label)}
               className="p-1.5 hover:bg-raised rounded-lg transition-colors text-muted hover:text-text"
@@ -217,7 +222,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           )}
         </div>
 
-        {withSubItems && (
+        {withSubItems && !isCollapsed && (
           <div
             className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
           >
@@ -280,8 +285,9 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
       {/* Sidebar Drawer */}
       <aside className={`
-        fixed inset-y-0 left-0 h-screen w-72 bg-surface border-r border-border flex flex-col shrink-0 transition-transform duration-300 z-50 md:sticky md:top-0 md:translate-x-0
+        fixed inset-y-0 left-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-300 z-50 md:sticky md:top-0 md:translate-x-0
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+        ${isCollapsed ? "md:w-20" : "md:w-72 w-72"}
       `}>
         {/* Mobile Close Button (inside sidebar) */}
         <div className="md:hidden flex justify-end p-4">
@@ -291,23 +297,33 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         </div>
 
         {/* Brand */}
-        <div className="shrink-0 py-8 px-6">
-          <Link href="/home" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-2xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform">
+        <div className={`shrink-0 py-8 ${isCollapsed ? "px-0 flex justify-center" : "px-6"} flex items-center justify-between`}>
+          <Link href="/home" className="flex items-center gap-3 group overflow-hidden">
+            <div className="w-9 h-9 rounded-2xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform shrink-0">
               <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
-            <div>
-              <h1 className="text-lg font-black text-text tracking-tighter leading-none">
-                MYHUB
-              </h1>
-              <p className="text-[10px] font-mono text-accent uppercase tracking-widest mt-1">
-                Personal OS
-              </p>
-            </div>
+            {!isCollapsed && (
+              <div className="animate-in fade-in slide-in-from-left-2 duration-300">
+                <h1 className="text-lg font-black text-text tracking-tighter leading-none">
+                  MYHUB
+                </h1>
+                <p className="text-[10px] font-mono text-accent uppercase tracking-widest mt-1">
+                  Personal OS
+                </p>
+              </div>
+            )}
           </Link>
+          
+          <button 
+            onClick={toggleSidebar}
+            className={`hidden md:flex p-2 text-muted hover:text-accent hover:bg-accent/10 rounded-xl transition-all ${isCollapsed ? "absolute -right-3 top-20 bg-surface border border-border shadow-md z-10" : ""}`}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
+          </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide px-3 flex flex-col scroll-smooth">
+        <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth ${isCollapsed ? "px-2" : "px-3"}`}>
           {/* Navigation Groups */}
           <nav className="flex flex-col gap-4">
             {filteredOrder.map((section) => {
@@ -363,12 +379,13 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         <div className="border-t border-border mt-auto" />
 
         {/* Footer - Pinned to bottom */}
-        <div className="shrink-0 flex flex-col gap-1 px-4 pb-4 pt-2">
+        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 ${isCollapsed ? "px-2 items-center" : "px-4"}`}>
           {user && (
-            <div className="flex items-center gap-3 px-1 py-1">
+            <div className={`flex items-center gap-3 px-1 py-1 w-full ${isCollapsed ? "justify-center" : ""}`}>
               <Link 
                 href="/profile" 
-                className={`flex items-center gap-3 flex-1 min-w-0 p-1.5 rounded-xl transition-all hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''}`}
+                title={isCollapsed ? "Profile" : undefined}
+                className={`flex items-center gap-3 p-1.5 rounded-xl transition-all hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''} ${isCollapsed ? "justify-center w-12 h-12" : "flex-1 min-w-0"}`}
               >
                 <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0 group-hover/profile:border-accent/40 transition-colors">
                   <span className="text-accent text-[12px] font-bold leading-none">
@@ -380,37 +397,67 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                       .slice(0, 2)}
                   </span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-text leading-none truncate group-hover/profile:text-accent transition-colors">
-                    {user.name}
-                  </p>
-                  <p className="text-[11px] text-muted mt-[5px] truncate leading-none">
-                    {user.email}
-                  </p>
-                </div>
+                {!isCollapsed && (
+                  <div className="flex-1 min-w-0 animate-in fade-in duration-300">
+                    <p className="text-[13px] font-semibold text-text leading-none truncate group-hover/profile:text-accent transition-colors">
+                      {user.name}
+                    </p>
+                    <p className="text-[11px] text-muted mt-[5px] truncate leading-none">
+                      {user.email}
+                    </p>
+                  </div>
+                )}
               </Link>
-              <div className="flex items-center gap-0.5">
-                <Link
-                  href="/settings"
-                  title="Settings"
-                  className={`p-1.5 rounded-lg transition-colors shrink-0 ${
-                    pathname === "/settings"
-                      ? "text-accent bg-accent/10"
-                      : "text-muted hover:text-text hover:bg-raised"
-                  }`}
-                >
-                  <Settings2 size={13} />
-                </Link>
-                <form action={logoutAction}>
-                  <button
-                    type="submit"
-                    title="Sign out"
-                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors shrink-0"
+              
+              {!isCollapsed && (
+                <div className="flex items-center gap-0.5 animate-in fade-in duration-300">
+                  <Link
+                    href="/settings"
+                    title="Settings"
+                    className={`p-1.5 rounded-lg transition-colors shrink-0 ${
+                      pathname === "/settings"
+                        ? "text-accent bg-accent/10"
+                        : "text-muted hover:text-text hover:bg-raised"
+                    }`}
                   >
-                    <LogOut size={13} />
-                  </button>
-                </form>
-              </div>
+                    <Settings2 size={13} />
+                  </Link>
+                  <form action={logoutAction}>
+                    <button
+                      type="submit"
+                      title="Sign out"
+                      className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors shrink-0"
+                    >
+                      <LogOut size={13} />
+                    </button>
+                  </form>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {isCollapsed && (
+            <div className="flex flex-col gap-2 mt-2">
+              <Link
+                href="/settings"
+                title="Settings"
+                className={`p-3 rounded-xl transition-colors shrink-0 ${
+                  pathname === "/settings"
+                    ? "text-accent bg-accent/10"
+                    : "text-muted hover:text-text hover:bg-raised"
+                }`}
+              >
+                <Settings2 size={16} />
+              </Link>
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  title="Sign out"
+                  className="p-3 rounded-xl text-muted hover:text-text hover:bg-raised transition-colors shrink-0"
+                >
+                  <LogOut size={16} />
+                </button>
+              </form>
             </div>
           )}
         </div>
