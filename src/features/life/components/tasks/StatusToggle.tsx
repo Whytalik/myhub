@@ -14,7 +14,6 @@ export const NEXT_STATUS: Record<TaskStatus, TaskStatus> = {
   BACKLOG:     "TODO",
   TODO:        "IN_PROGRESS",
   IN_PROGRESS: "DONE",
-  BLOCKED:     "IN_PROGRESS",
   DONE:        "BACKLOG",
   CANCELLED:   "TODO",
 };
@@ -37,12 +36,6 @@ export const STATUS_CONFIG: Record<TaskStatus, { style: string, icon: LucideIcon
     icon: Play,
     label: "In Progress",
     color: "#60a5fa"
-  },
-  BLOCKED: { 
-    style: "bg-amber-500/10 border-amber-500/50 text-amber-400", 
-    icon: PauseCircle,
-    label: "Blocked",
-    color: "#fbbf24"
   },
   DONE: { 
     style: "bg-emerald-500/20 border-emerald-500/50 text-emerald-400", 

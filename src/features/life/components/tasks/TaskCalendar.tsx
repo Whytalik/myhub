@@ -58,10 +58,9 @@ const PRIORITY_ORDER: Record<TaskPriority, number> = {
 const STATUS_SORT_ORDER: Record<string, number> = {
   IN_PROGRESS: 0,
   TODO:        1,
-  BLOCKED:     2,
-  BACKLOG:     3,
-  DONE:        4,
-  CANCELLED:   5,
+  BACKLOG:     2,
+  DONE:        3,
+  CANCELLED:   4,
 };
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
