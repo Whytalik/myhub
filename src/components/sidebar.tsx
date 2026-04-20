@@ -283,13 +283,14 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
         `}
       >
-        {/* Branding & Pin Row */}
-        <div className={`shrink-0 py-8 flex items-center transition-all duration-500 ease-in-out ${isExpanded ? "px-6 justify-between" : "justify-center"}`}>
-          <Link href="/home" className="flex items-center gap-3 group overflow-hidden">
+        {/* Branding Area - FIXED LEFT ALIGNMENT */}
+        <div className="shrink-0 py-8 px-[22px] flex items-center relative h-28 overflow-hidden">
+          <Link href="/home" className="flex items-center gap-3.5 group shrink-0">
             <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
               <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
-            <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] ml-1" : "opacity-0 max-w-0"}`}>
+            
+            <div className={`flex flex-col transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] translate-x-0" : "opacity-0 max-w-0 -translate-x-4"}`}>
               <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
               <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
             </div>
@@ -298,7 +299,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           {isExpanded && (
             <button 
               onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-              className={`p-2 rounded-xl transition-all duration-300 ${
+              className={`absolute right-4 p-2 rounded-xl transition-all duration-500 animate-in fade-in slide-in-from-right-2 ${
                 !isCollapsed 
                   ? "text-accent bg-accent/10 border border-accent/20" 
                   : "text-muted hover:text-text hover:bg-raised"
@@ -347,14 +348,14 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         </div>
 
         <div className="border-t border-border mt-auto" />
-        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 transition-all duration-500 ${isExpanded ? "px-4" : "px-2"}`}>
+        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 transition-all duration-300 ${isExpanded ? "px-4" : "px-2"}`}>
           {user && (
-            <div className="flex items-center gap-3 px-1 py-1 w-full overflow-hidden">
+            <div className="flex items-center gap-3 px-1 py-1 w-full overflow-hidden relative">
               <Link href="/profile" className={`flex items-center gap-3 p-1.5 rounded-xl transition-all duration-300 hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''} ${isExpanded ? "flex-1 min-w-0" : "w-12 h-12 justify-center"}`}>
                 <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0">
                   <span className="text-accent text-[12px] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
-                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px]" : "opacity-0 max-w-0"}`}>
+                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] translate-x-0" : "opacity-0 max-w-0 -translate-x-4"}`}>
                   <p className="text-[13px] font-semibold text-text truncate">{user.name}</p>
                   <p className="text-[11px] text-muted truncate">{user.email}</p>
                 </div>
