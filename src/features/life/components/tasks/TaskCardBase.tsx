@@ -198,25 +198,12 @@ export function TaskCardBase({
 
         {/* Metadata Row */}
         <div className="flex items-center gap-1 flex-wrap min-w-0">
-          {!isCompact && (
-            <div className="flex items-center justify-center h-5" onClick={(e) => e.stopPropagation()}>
-              <StatusToggle taskId={task.id} status={task.status} />
-            </div>
-          )}
-          
-          {(() => {
-            const statusCfg = STATUS_CONFIG[task.status];
-            const StatusIcon = statusCfg.icon;
-            return (
-              <div
-                className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-[9px]'}`}
-                style={{ backgroundColor: `${statusCfg.color}15`, borderColor: `${statusCfg.color}40`, color: statusCfg.color }}
-              >
-                <StatusIcon size={isCompact ? 6 : 10} strokeWidth={3} />
-                {statusCfg.label}
-              </div>
-            );
-          })()}
+          <StatusToggle 
+            taskId={task.id} 
+            status={task.status} 
+            variant="badge" 
+            size={isCompact ? "sm" : "default"} 
+          />
           
           <PriorityBadge 
             priority={task.priority} 
