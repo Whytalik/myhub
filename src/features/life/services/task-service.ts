@@ -91,22 +91,36 @@ const PRIORITY_ORDER: Record<TaskPriority, number> = {
   LOW:    0,
 };
 
+const STATUS_SORT_ORDER: Record<TaskStatus, number> = {
+  IN_PROGRESS: 0,
+  TODO:        1,
+  BLOCKED:     2,
+  BACKLOG:     3,
+  DONE:        4,
+  CANCELLED:   5,
+};
+
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
-    // 1. Sort by plannedDate (asc)
-    const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() : Infinity;
-    const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() : Infinity;
-    if (timeA !== timeB) return timeA - timeB;
+    // 1. Sort by Status (based on STATUS_SORT_ORDER)
+    const sA = STATUS_SORT_ORDER[a.status] ?? 99;
+    const sB = STATUS_SORT_ORDER[b.status] ?? 99;
+    if (sA !== sB) return sA - sB;
 
     // 2. Sort by Priority (desc)
     const pA = PRIORITY_ORDER[a.priority] ?? 0;
     const pB = PRIORITY_ORDER[b.priority] ?? 0;
     if (pA !== pB) return pB - pA;
 
-    // 3. Fallback to manually set order (asc)
+    // 3. Sort by plannedDate (asc)
+    const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() : Infinity;
+    const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() : Infinity;
+    if (timeA !== timeB) return timeA - timeB;
+
+    // 4. Fallback to manually set order (asc)
     if (a.order !== b.order) return a.order - b.order;
 
-    // 4. Fallback to creation date (asc)
+    // 5. Fallback to creation date (asc)
     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
