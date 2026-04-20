@@ -10,9 +10,9 @@ export const metadata: Metadata = { title: "Journal — All Entries" };
 
 export default async function JournalHistoryPage() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
 
-  if (!session || !personId) {
+  if (!personId) {
     redirect("/login");
   }
 

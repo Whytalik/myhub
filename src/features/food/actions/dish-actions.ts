@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 
 export async function createDishAction(data: CreateDishInput) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   const dish = await dishService.createDish(personId, data);
@@ -17,7 +17,7 @@ export async function createDishAction(data: CreateDishInput) {
 
 export async function updateDishAction(data: UpdateDishInput) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   const dish = await dishService.updateDish(personId, data);
@@ -27,7 +27,7 @@ export async function updateDishAction(data: UpdateDishInput) {
 
 export async function deleteDishAction(id: string) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await dishService.deleteDish(personId, id);

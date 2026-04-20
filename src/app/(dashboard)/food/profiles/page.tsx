@@ -15,8 +15,7 @@ export const revalidate = 0;
 
 export default async function ProfilesPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login");
-  const profileId = (session.user as any).profileId;
+  const profileId = session?.user?.profileId;
   if (!profileId) redirect("/login");
 
   const persons = await getPersons(profileId);

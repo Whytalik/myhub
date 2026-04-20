@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 
 export async function createShoppingListAction(weekPlanId: string) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   const list = await shoppingListService.createShoppingListFromWeekPlan(personId, weekPlanId);
@@ -16,7 +16,7 @@ export async function createShoppingListAction(weekPlanId: string) {
 
 export async function toggleShoppingListItemAction(id: string, checked: boolean) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await shoppingListService.updateShoppingListItemStatus(personId, id, checked);
@@ -25,7 +25,7 @@ export async function toggleShoppingListItemAction(id: string, checked: boolean)
 
 export async function deleteShoppingListAction(id: string) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await shoppingListService.deleteShoppingList(personId, id);

@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 
 export default async function ShoppingPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login");
-  const personId = (session.user as any).personId;
+  const personId = session?.user?.personId;
   if (!personId) redirect("/login");
 
   const shoppingLists = await getShoppingLists(personId);

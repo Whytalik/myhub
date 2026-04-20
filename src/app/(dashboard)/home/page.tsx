@@ -22,10 +22,10 @@ const spaces = [
 
 export default async function HomePage() {
   const session = await auth();
-  if (!session) redirect("/login");
+  if (!session?.user) redirect("/login");
 
-  const isAdmin = (session.user as any)?.role === "ADMIN";
-  const personId = (session.user as any)?.personId as string | undefined;
+  const isAdmin = session.user.role === "ADMIN";
+  const personId = session.user.personId;
   const name = session.user?.name?.split(" ")[0] ?? "there";
 
   const hour = new Date().getHours();

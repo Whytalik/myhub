@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 
 export async function createDayPlanAction(data: CreateDayPlanInput) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   const plan = await dayPlanService.createDayPlan(personId, data);
@@ -18,7 +18,7 @@ export async function createDayPlanAction(data: CreateDayPlanInput) {
 
 export async function deleteDayPlanAction(id: string) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await dayPlanService.deleteDayPlan(personId, id);
@@ -27,7 +27,7 @@ export async function deleteDayPlanAction(id: string) {
 
 export async function updateDayPlanAdherenceAction(id: string, adherence: PlanAdherence) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await dayPlanService.updateDayPlanAdherence(personId, id, adherence);

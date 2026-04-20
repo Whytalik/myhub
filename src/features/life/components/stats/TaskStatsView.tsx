@@ -169,30 +169,31 @@ export function TaskStatsView({ stats }: Props) {
                   <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                      {(() => {
                         const total = stats.totalTasks || 1;
-                        let accumulatedOffset = 0;
                         
-                        return stats.sphereDistribution.map((sphere) => {
+                        // Pre-calculate offsets to avoid variable reassignment during render
+                        let currentOffset = 0;
+                        const segments = stats.sphereDistribution.map(sphere => {
                            const percentage = (sphere.count / total) * 100;
-                           const strokeDasharray = `${percentage} ${100 - percentage}`;
-                           const strokeDashoffset = -accumulatedOffset;
-                           accumulatedOffset += percentage;
-
-                           return (
-                              <circle
-                                 key={sphere.id}
-                                 cx="50"
-                                 cy="50"
-                                 r="40"
-                                 fill="transparent"
-                                 stroke={sphere.color}
-                                 strokeWidth="12"
-                                 strokeDasharray={strokeDasharray}
-                                 strokeDashoffset={strokeDashoffset}
-                                 className="transition-all duration-1000 ease-out hover:stroke-white/20"
-                                 pathLength={100}
-                              />
-                           );
+                           const offset = currentOffset;
+                           currentOffset += percentage;
+                           return { ...sphere, percentage, offset };
                         });
+
+                        return segments.map((segment) => (
+                           <circle
+                              key={segment.id}
+                              cx="50"
+                              cy="50"
+                              r="40"
+                              fill="transparent"
+                              stroke={segment.color}
+                              strokeWidth="12"
+                              strokeDasharray={`${segment.percentage} ${100 - segment.percentage}`}
+                              strokeDashoffset={-segment.offset}
+                              className="transition-all duration-1000 ease-out hover:stroke-white/20"
+                              pathLength={100}
+                           />
+                        ));
                      })()}
                      {/* Background ring */}
                      <circle

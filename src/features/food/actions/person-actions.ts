@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 
 export async function createPersonAction(name: string): Promise<ActionResult> {
   const session = await auth();
-  const profileId = (session?.user as any)?.profileId;
+  const profileId = session?.user?.profileId;
   if (!profileId) return { success: false, error: "Unauthorized" };
 
   if (!name) {
@@ -31,7 +31,7 @@ export async function updatePersonGoalsAction(id: string, goals: {
   targetFiber?: number;
 }): Promise<ActionResult> {
   const session = await auth();
-  const profileId = (session?.user as any)?.profileId;
+  const profileId = session?.user?.profileId;
   if (!profileId) return { success: false, error: "Unauthorized" };
 
   try {
@@ -46,7 +46,7 @@ export async function updatePersonGoalsAction(id: string, goals: {
 
 export async function deletePersonAction(id: string): Promise<ActionResult> {
   const session = await auth();
-  const profileId = (session?.user as any)?.profileId;
+  const profileId = session?.user?.profileId;
   if (!profileId) return { success: false, error: "Unauthorized" };
 
   try {

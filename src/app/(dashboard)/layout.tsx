@@ -29,7 +29,7 @@ export default async function DashboardLayout({
         <Sidebar
           initialOrder={initialOrder}
           key={orderCookie?.value || "default"}
-          user={session.user ? { name: session.user.name || "", email: session.user.email || "", role: (session.user as any).role } : undefined}
+          user={session.user ? { name: session.user.name || "", email: session.user.email || "", role: session.user.role } : undefined}
         />
         <main className="flex-1 bg-bg overflow-y-auto scrollbar-hide">{children}</main>
       </SystemProvider>

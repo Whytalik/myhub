@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 
 export async function createWeekPlanAction(data: CreateWeekPlanInput) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   const plan = await weekPlanService.createWeekPlan(personId, data);
@@ -17,7 +17,7 @@ export async function createWeekPlanAction(data: CreateWeekPlanInput) {
 
 export async function deleteWeekPlanAction(id: string) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized");
 
   await weekPlanService.deleteWeekPlan(personId, id);

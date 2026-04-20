@@ -12,9 +12,9 @@ export const dynamic = "force-dynamic";
 
 export default async function JournalStatsPage() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
 
-  if (!session || !personId) {
+  if (!personId) {
     redirect("/login");
   }
 
