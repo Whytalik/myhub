@@ -15,7 +15,7 @@ export default async function TasksPage({
   searchParams: Promise<{ view?: string }>;
 }) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
 
   if (!session || !personId) {
     redirect("/login");

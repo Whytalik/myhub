@@ -168,14 +168,14 @@ export function TaskStatsView({ stats }: Props) {
                <div className="relative w-48 h-48 shrink-0">
                   <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                      {(() => {
-                        let currentOffset = 0;
                         const total = stats.totalTasks || 1;
+                        let accumulatedOffset = 0;
                         
                         return stats.sphereDistribution.map((sphere) => {
                            const percentage = (sphere.count / total) * 100;
                            const strokeDasharray = `${percentage} ${100 - percentage}`;
-                           const strokeDashoffset = -currentOffset;
-                           currentOffset += percentage;
+                           const strokeDashoffset = -accumulatedOffset;
+                           accumulatedOffset += percentage;
 
                            return (
                               <circle
@@ -282,7 +282,7 @@ export function TaskStatsView({ stats }: Props) {
 }
 
 function StatCard({ icon: Icon, label, value, subValue, color, isWarning }: { 
-  icon: any, label: string, value: string, subValue: string, color: string, isWarning?: boolean 
+  icon: React.ComponentType<{ size?: number; className?: string }>, label: string, value: string, subValue: string, color: string, isWarning?: boolean 
 }) {
   return (
     <div className={`bg-surface border ${isWarning ? "border-rose-500/30" : "border-border"} p-8 rounded-[2.5rem] shadow-lg flex flex-col gap-4 relative overflow-hidden group hover:border-accent/40 transition-all duration-500`}>

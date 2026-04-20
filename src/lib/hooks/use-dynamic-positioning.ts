@@ -12,10 +12,10 @@ interface UseDynamicPositioningOptions {
   offset?: number;
 }
 
-export function useDynamicPositioning({ contentHeight, contentWidth, offset = 8 }: UseDynamicPositioningOptions) {
+export function useDynamicPositioning<T extends HTMLElement = HTMLElement>({ contentHeight, contentWidth, offset = 8 }: UseDynamicPositioningOptions) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<PositionCoords | null>(null);
-  const triggerRef = useRef<HTMLElement | null>(null);
+  const triggerRef = useRef<T | null>(null);
 
   const updateCoords = useCallback(() => {
     if (triggerRef.current) {

@@ -35,13 +35,13 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
   const [isDuplicate, setIsDuplicate] = useState(false);
 
   const [data, setData] = useState<Omit<UpsertDailyEntryInput, "date">>(() => {
-    const morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
+    let morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
     
     // Default _isTrainingDay based on day of week (Mon=1, Wed=3, Fri=5) if not set
     if (morningRoutine && morningRoutine["_isTrainingDay"] === undefined) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
-      morningRoutine["_isTrainingDay"] = isTrainDay;
+      morningRoutine = { ...morningRoutine, _isTrainingDay: isTrainDay };
     } else if (!morningRoutine) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
@@ -101,17 +101,19 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
+    let morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
     
     // Default _isTrainingDay based on day of week (Mon=1, Wed=3, Fri=5) if not set
     if (morningRoutine && morningRoutine["_isTrainingDay"] === undefined) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
-      morningRoutine["_isTrainingDay"] = isTrainDay;
+      morningRoutine = { ...morningRoutine, _isTrainingDay: isTrainDay };
     } else if (!morningRoutine) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
       setData({
+        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
+        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
         sleepHours:      initialEntry?.sleepHours ?? null,
         sleepQuality:    initialEntry?.sleepQuality ?? null,
         sleepNote:       initialEntry?.sleepNote ?? null,

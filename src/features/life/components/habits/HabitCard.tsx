@@ -107,7 +107,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
           </div>
           <div className="flex flex-col">
             <span className="text-[9px] font-mono tracking-widest text-muted">Anchor</span>
-            <p className="text-sm text-secondary italic">"{habit.anchor}"</p>
+            <p className="text-sm text-secondary italic">&quot;{habit.anchor}&quot;</p>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
           </div>
           <div className="flex flex-col">
             <span className="text-[9px] font-mono tracking-widest text-muted">Action</span>
-            <p className="text-sm font-medium text-text">"{habit.action}"</p>
+            <p className="text-sm font-medium text-text">&quot;{habit.action}&quot;</p>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             </div>
             <div className="flex flex-col">
               <span className="text-[9px] font-mono tracking-widest text-muted">Celebration</span>
-              <p className="text-sm text-secondary italic">"{habit.celebration}"</p>
+              <p className="text-sm text-secondary italic">&quot;{habit.celebration}&quot;</p>
             </div>
           </div>
         )}

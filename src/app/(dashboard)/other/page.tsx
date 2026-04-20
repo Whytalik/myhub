@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
-import { Target, Package, Zap } from "lucide-react";
+import { Target, Package } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Misc / Other",
@@ -30,7 +30,7 @@ export default async function OtherSpacePage() {
       <div className="flex flex-col mb-16">
         <Heading title="Misc / Other" />
         <p className="text-secondary max-w-2xl leading-relaxed">
-          A collection of independent tools and trackers that don't fit into the main systems.
+          A collection of independent tools and trackers that don&apos;t fit into the main systems.
         </p>
       </div>
 

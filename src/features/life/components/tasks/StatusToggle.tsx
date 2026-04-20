@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition, useRef } from "react";
+import { useState, useTransition } from "react";
 import { 
-  Check, Play, Circle, XCircle, PauseCircle, HelpCircle, 
+  Check, Play, Circle, XCircle, HelpCircle, 
   LucideIcon, ChevronDown 
 } from "lucide-react";
 import { updateTaskStatusAction } from "@/features/life/actions/task-actions";
@@ -62,7 +62,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
   const [currentStatus, setCurrentStatus] = useState<TaskStatus>(initialStatus);
   const [isPending, startTransition] = useTransition();
   
-  const { isOpen, coords, triggerRef, open, close, toggle } = useDynamicPositioning({
+  const { isOpen, coords, triggerRef, close, toggle } = useDynamicPositioning<HTMLButtonElement>({
     contentHeight: 220,
     contentWidth: 160,
     offset: 8
@@ -95,7 +95,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
     return (
       <div className="relative inline-block" onClick={(e) => e.stopPropagation()}>
         <button
-          ref={triggerRef as any}
+          ref={triggerRef}
           onClick={toggle}
           disabled={isPending}
           className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all hover:brightness-125 active:scale-95 ${
@@ -159,7 +159,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
   return (
     <div className="relative inline-block" onClick={(e) => e.stopPropagation()}>
       <button
-        ref={triggerRef as any}
+        ref={triggerRef}
         onClick={toggle}
         disabled={isPending}
         title={`Status: ${currentStatus}`}

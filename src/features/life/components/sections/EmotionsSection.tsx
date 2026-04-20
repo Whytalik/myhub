@@ -48,6 +48,42 @@ const PHYSICAL_STATES = [
   { label: "Restless", positive: false },
 ];
 
+interface EmotionColumnProps {
+  title: string;
+  items: { label: string; positive: boolean }[];
+  emotions: string[] | null;
+  toggleEmotion: (emotion: string) => void;
+}
+
+const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnProps) => (
+  <div className="flex flex-col gap-3 flex-1">
+    <span className="text-[9px] font-mono uppercase text-muted font-bold tracking-widest px-1">
+      {title}
+    </span>
+    <div className="flex flex-wrap gap-1.5">
+      {items.map(item => {
+        const active = emotions?.includes(item.label);
+        const colorClass = item.positive 
+          ? active ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-600 font-bold" : "hover:border-emerald-500/20"
+          : active ? "bg-rose-500/10 border-rose-500/40 text-rose-600 font-bold" : "hover:border-rose-500/20";
+        
+        return (
+          <button
+            key={item.label}
+            type="button"
+            onClick={() => toggleEmotion(item.label)}
+            className={`px-2 py-1 rounded-lg border text-[10px] font-medium transition-all ${colorClass} ${
+              !active ? "bg-raised border-border text-secondary hover:text-text" : ""
+            }`}
+          >
+            {item.label}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+);
+
 export function EmotionsSection({ emotions, onChange }: Props) {
   const hasValue = (emotions?.length ?? 0) > 0;
 
@@ -58,35 +94,6 @@ export function EmotionsSection({ emotions, onChange }: Props) {
       : [...current, emotion];
     onChange({ emotions: next.length > 0 ? next : null });
   };
-
-  const EmotionColumn = ({ title, items }: { title: string, items: typeof MENTAL_STATES }) => (
-    <div className="flex flex-col gap-3 flex-1">
-      <span className="text-[9px] font-mono uppercase text-muted font-bold tracking-widest px-1">
-        {title}
-      </span>
-      <div className="flex flex-wrap gap-1.5">
-        {items.map(item => {
-          const active = emotions?.includes(item.label);
-          const colorClass = item.positive 
-            ? active ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-600 font-bold" : "hover:border-emerald-500/20"
-            : active ? "bg-rose-500/10 border-rose-500/40 text-rose-600 font-bold" : "hover:border-rose-500/20";
-          
-          return (
-            <button
-              key={item.label}
-              type="button"
-              onClick={() => toggleEmotion(item.label)}
-              className={`px-2 py-1 rounded-lg border text-[10px] font-medium transition-all ${colorClass} ${
-                !active ? "bg-raised border-border text-secondary hover:text-text" : ""
-              }`}
-            >
-              {item.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
 
   return (
     <div className={`bg-surface border rounded-2xl p-6 flex flex-col gap-6 transition-all ${
@@ -101,15 +108,15 @@ export function EmotionsSection({ emotions, onChange }: Props) {
         </div>
         
         <div className="flex flex-col md:flex-row gap-8 relative">
-          <EmotionColumn title="Mental" items={MENTAL_STATES} />
+          <EmotionColumn title="Mental" items={MENTAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
           
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
           
-          <EmotionColumn title="Emotional" items={EMOTIONAL_STATES} />
+          <EmotionColumn title="Emotional" items={EMOTIONAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
           
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
           
-          <EmotionColumn title="Stress & Energy" items={PHYSICAL_STATES} />
+          <EmotionColumn title="Stress & Energy" items={PHYSICAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
         </div>
       </div>
     </div>

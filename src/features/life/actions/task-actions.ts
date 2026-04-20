@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import * as taskService from "../services/task-service";
-import type { UpsertTaskInput, UpsertSphereInput, TaskStatus } from "../types";
+import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority } from "../types";
 
 const PATH = "/life/tasks";
 
 async function getPersonId() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = session?.user?.personId;
   if (!personId) throw new Error("Unauthorized: No personId found in session");
   return personId;
 }
@@ -30,6 +30,12 @@ export async function deleteTaskAction(id: string) {
 export async function updateTaskStatusAction(id: string, status: TaskStatus) {
   const personId = await getPersonId();
   await taskService.updateTaskStatus(personId, id, status);
+  revalidatePath(PATH);
+}
+
+export async function updateTaskPriorityAction(id: string, priority: TaskPriority) {
+  const personId = await getPersonId();
+  await taskService.updateTaskPriority(personId, id, priority);
   revalidatePath(PATH);
 }
 

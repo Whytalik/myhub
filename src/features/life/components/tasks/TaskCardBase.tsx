@@ -6,8 +6,8 @@ import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/dialog";
-import { StatusToggle, STATUS_CONFIG } from "./StatusToggle";
-import { PriorityBadge } from "./PriorityBadge";
+import { StatusToggle } from "./StatusToggle";
+import { PriorityToggle } from "./PriorityToggle";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 
 export interface TaskCardBaseProps {
@@ -205,9 +205,10 @@ export function TaskCardBase({
             size={isCompact ? "sm" : "default"} 
           />
           
-          <PriorityBadge 
+          <PriorityToggle 
+            taskId={task.id}
             priority={task.priority} 
-            className={isCompact ? "!text-[7px] md:!text-[8px] !px-1 !py-0.5" : ""} 
+            size={isCompact ? "sm" : "default"} 
           />
           
           {task.sphere && (

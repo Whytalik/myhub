@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
-import { Plus, ShoppingCart, ExternalLink, MoreVertical } from "lucide-react";
 import { WishlistPageClient } from "./WishlistPageClient";
 import { wishlistService } from "@/features/other/wishlist/services/wishlist-service";
 

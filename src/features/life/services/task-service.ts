@@ -252,6 +252,10 @@ export async function updateTaskStatus(personId: string, id: string, status: Tas
   await prisma.task.update({ where: { id, personId }, data: { status, completedAt } });
 }
 
+export async function updateTaskPriority(personId: string, id: string, priority: TaskPriority): Promise<void> {
+  await prisma.task.update({ where: { id, personId }, data: { priority } });
+}
+
 // ─── Spheres ──────────────────────────────────────────────────────────────────
 
 export async function getAllSpheres(personId: string): Promise<LifeSphereData[]> {
