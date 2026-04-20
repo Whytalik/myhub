@@ -5,6 +5,7 @@ import type { LucideIcon } from "lucide-react";
 import { useSidebar } from "./sidebar-provider";
 import { useSpace } from "./space-provider";
 import { SettingsModal } from "./settings-modal";
+import { ICON_LIBRARY, IconName } from "@/lib/constants/icons";
 import {
   Activity,
   BookText,
@@ -34,7 +35,9 @@ import {
   Briefcase,
   Shield,
   Brain,
-  Database
+  Database,
+  Pin,
+  PinOff
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -89,8 +92,8 @@ const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
 
-// --- Theme Configuration (Adaptive) ---
-const spaceColors: Record<string, { text: string; bgActive: string; bgInactive: string; borderActive: string; borderInactive: string }> = {
+// --- Default Theme Configuration ---
+const defaultSpaceColors: Record<string, { text: string; bgActive: string; bgInactive: string; borderActive: string; borderInactive: string }> = {
   "Life Space":     { text: "#6fbfbf", bgActive: "var(--color-life-muted)", bgInactive: "transparent", borderActive: "rgba(111,191,191,0.2)", borderInactive: "var(--color-border)" },
   "Planning Space": { text: "#fbbf24", bgActive: "rgba(251,191,36,0.1)",  bgInactive: "transparent",  borderActive: "rgba(251,191,36,0.2)",  borderInactive: "var(--color-border)" },
   "Food Space":     { text: "#ff8c00", bgActive: "rgba(255,140,0,0.1)",   bgInactive: "transparent",   borderActive: "rgba(255,140,0,0.2)",   borderInactive: "var(--color-border)" },
@@ -111,16 +114,28 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { activeDomain } = useSpace();
   const [mounted, setMounted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [customizations, setCustomizations] = useState<Record<string, { icon?: string, color?: string }>>({});
   const isAdmin = user?.role === "ADMIN";
 
   const [order, setOrder] = useState<string[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
+  const loadCustomizations = () => {
+    const saved = localStorage.getItem("system-customizations");
+    if (saved) setCustomizations(JSON.parse(saved));
+  };
+
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+    setMounted(true);
+    loadCustomizations();
+    
+    window.addEventListener("system-customizations-updated", loadCustomizations);
+    return () => window.removeEventListener("system-customizations-updated", loadCustomizations);
+  }, []);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -162,20 +177,44 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   const renderNavGroup = (
     label: string,
-    items: { href: string; label: string; icon: LucideIcon; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
+    items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
+    domainId: string,
+    domainIcon: LucideIcon
   ) => {
+    // Domain Customization
+    const domCustom = customizations[domainId];
+    const DomIcon = domCustom?.icon ? (ICON_LIBRARY[domCustom.icon as IconName] || domainIcon) : domainIcon;
+    const domColor = domCustom?.color || "#a3a3a3";
+
     return (
-      <div
-        key={label}
-        className="flex flex-col gap-4 animate-in fade-in duration-500"
-      >
+      <div key={label} className="flex flex-col gap-6 animate-in fade-in duration-500">
+        {/* Domain Label */}
+        <div className={`flex items-center gap-3 px-3 transition-all ${isExpanded ? "" : "justify-center"}`}>
+           <div className="p-1.5 rounded-lg bg-accent/5 border border-accent/10">
+              <DomIcon size={14} style={{ color: domColor }} strokeWidth={2.5} />
+           </div>
+           {isExpanded && <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-accent/60">{label}</span>}
+        </div>
+
         <div className="flex flex-col gap-2.5 px-1">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? isItemActive;
-            const ItemIcon = item.icon;
-            const color = spaceColors[item.label] || spaceColors["Misc / Other"];
+            
+            // Space Customization
+            const custom = customizations[item.id];
+            const ItemIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || item.icon) : item.icon;
+            
+            // Color Logic
+            const baseColor = custom?.color || defaultSpaceColors[item.label]?.text || "#a3a3a3";
+            const color = {
+               text: baseColor,
+               bgActive: `${baseColor}20`,
+               bgInactive: "transparent",
+               borderActive: `${baseColor}40`,
+               borderInactive: "var(--color-border)"
+            };
 
             return (
               <div 
@@ -291,33 +330,33 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           <div className={`mb-6 transition-all duration-300 ${isExpanded ? "px-3" : "px-1"}`}>
             <div className="h-px w-full bg-border/40" />
           </div>
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-8">
             {order.map((section) => {
               if (section !== activeDomain) return null;
 
               if (section === "operations")
                 return renderNavGroup("Operations", [
-                  { label: "Planning Space", href: "/planning", icon: Compass, subItems: planningNav },
-                  { label: "Life Space", href: "/life", icon: Sparkles, subItems: lifeSpaceNav },
-                ]);
+                  { id: "planning", label: "Planning Space", href: "/planning", icon: Compass },
+                  { id: "life", label: "Life Space", href: "/life", icon: Sparkles, subItems: lifeSpaceNav },
+                ], "operations", Briefcase);
               if (section === "health" && isAdmin)
                 return renderNavGroup("Health", [
-                  { label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
-                  { label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
-                ]);
+                  { id: "food", label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
+                  { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
+                ], "health", Shield);
               if (section === "mind" && isAdmin)
                 return renderNavGroup("Mind", [
-                  { label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
-                  { label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
-                ]);
+                  { id: "languages", label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
+                  { id: "library", label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
+                ], "mind", Brain);
               if (section === "wealth" && isAdmin)
                 return renderNavGroup("Wealth", [
-                  { label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
-                ]);
+                  { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
+                ], "wealth", Database);
               if (section === "vault")
                 return renderNavGroup("Vault", [
-                  { label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
-                ]);
+                  { id: "other", label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
+                ], "vault", Package);
               return null;
             })}
           </nav>
