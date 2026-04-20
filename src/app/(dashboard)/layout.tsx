@@ -11,7 +11,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const orderCookie = cookieStore.get("sidebar-spaces-order");
+  const orderCookie = cookieStore.get("sidebar-systems-order");
   let initialOrder: string[] | undefined = undefined;
 
   if (orderCookie) {

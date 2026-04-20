@@ -98,9 +98,9 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Spaces grid */}
+      {/* Systems grid */}
       <div>
-        <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">Spaces</h2>
+        <h2 className="text-[11px] font-mono text-muted uppercase tracking-widest mb-4">Systems</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {spaces.map(({ label, description, icon: Icon, href, adminOnly }) => {
             const accessible = !adminOnly || isAdmin;

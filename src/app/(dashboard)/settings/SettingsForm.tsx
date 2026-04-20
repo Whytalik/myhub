@@ -16,13 +16,13 @@ import {
   RotateCcw
 } from "lucide-react";
 
-type Space = {
+type System = {
   id: string;
   label: string;
   icon: LucideIcon;
 };
 
-const DEFAULT_ORDER: Space[] = [
+const DEFAULT_ORDER: System[] = [
   { id: "food",      label: "Food System",     icon: ChefHat },
   { id: "life",      label: "Life System",     icon: Sparkles },
   { id: "fitness",   label: "Fitness System",  icon: Dumbbell },
@@ -32,11 +32,11 @@ const DEFAULT_ORDER: Space[] = [
 ];
 
 export function SettingsForm({ initialOrder }: { initialOrder?: string[] }) {
-  const [spaces, setSpaces] = useState<Space[]>(() => {
+  const [systems, setSystems] = useState<System[]>(() => {
     if (initialOrder) {
       const ordered = initialOrder
         .map(id => DEFAULT_ORDER.find(s => s.id === id))
-        .filter(Boolean) as Space[];
+        .filter(Boolean) as System[];
       const missing = DEFAULT_ORDER.filter(s => !initialOrder.includes(s.id));
       return [...ordered, ...missing];
     }
@@ -45,28 +45,28 @@ export function SettingsForm({ initialOrder }: { initialOrder?: string[] }) {
   
   const [isSaved, setIsSaved] = useState(false);
 
-  const saveToStorage = (newSpaces: Space[]) => {
-    const orderIds = newSpaces.map(s => s.id);
+  const saveToStorage = (newSystems: System[]) => {
+    const orderIds = newSystems.map(s => s.id);
     const orderString = JSON.stringify(orderIds);
-    localStorage.setItem("sidebar-spaces-order", orderString);
+    localStorage.setItem("sidebar-systems-order", orderString);
     // eslint-disable-next-line react-hooks/immutability
-    document.cookie = `sidebar-spaces-order=${orderString}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    document.cookie = `sidebar-systems-order=${orderString}; path=/; max-age=${60 * 60 * 24 * 365}`;
     window.dispatchEvent(new Event("sidebar-order-updated"));
   };
 
-  const moveSpace = (index: number, direction: 'up' | 'down') => {
-    const newSpaces = [...spaces];
+  const moveSystem = (index: number, direction: 'up' | 'down') => {
+    const newSystems = [...systems];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= spaces.length) return;
-    [newSpaces[index], newSpaces[targetIndex]] = [newSpaces[targetIndex], newSpaces[index]];
-    setSpaces(newSpaces);
-    saveToStorage(newSpaces);
+    if (targetIndex < 0 || targetIndex >= systems.length) return;
+    [newSystems[index], newSystems[targetIndex]] = [newSystems[targetIndex], newSystems[index]];
+    setSystems(newSystems);
+    saveToStorage(newSystems);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1000);
   };
 
   const resetOrder = () => {
-    setSpaces(DEFAULT_ORDER);
+    setSystems(DEFAULT_ORDER);
     saveToStorage(DEFAULT_ORDER);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 1000);
@@ -101,14 +101,14 @@ export function SettingsForm({ initialOrder }: { initialOrder?: string[] }) {
             </p>
           </div>
           <div className="p-2 flex flex-col gap-1">
-            {spaces.map((space, index) => (
-              <div key={space.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-raised/50 transition-all border border-transparent hover:border-border/40 group">
+            {systems.map((system, index) => (
+              <div key={system.id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-raised/50 transition-all border border-transparent hover:border-border/40 group">
                 <div className="text-muted group-hover:text-accent transition-colors"><GripVertical size={18} /></div>
-                <div className="p-2 rounded-lg bg-accent-muted text-accent"><space.icon size={18} /></div>
-                <div className="flex-1"><span className="text-[14px] font-medium text-text">{space.label}</span></div>
+                <div className="p-2 rounded-lg bg-accent-muted text-accent"><system.icon size={18} /></div>
+                <div className="flex-1"><span className="text-[14px] font-medium text-text">{system.label}</span></div>
                 <div className="flex gap-1">
-                  <button onClick={() => moveSpace(index, 'up')} disabled={index === 0} className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text disabled:opacity-0 transition-all">↑</button>
-                  <button onClick={() => moveSpace(index, 'down')} disabled={index === spaces.length - 1} className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text disabled:opacity-0 transition-all">↓</button>
+                  <button onClick={() => moveSystem(index, 'up')} disabled={index === 0} className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text disabled:opacity-0 transition-all">↑</button>
+                  <button onClick={() => moveSystem(index, 'down')} disabled={index === systems.length - 1} className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text disabled:opacity-0 transition-all">↓</button>
                 </div>
               </div>
             ))}

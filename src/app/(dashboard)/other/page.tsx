@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Misc / Other",
 };
 
-export default async function OtherSpacePage() {
+export default async function OtherSystemPage() {
   const session = await auth();
   if ((session?.user as any)?.role !== "ADMIN") redirect("/life");
   const sections = [
@@ -65,7 +65,7 @@ export default async function OtherSpacePage() {
                 {section.description}
               </p>
               <Link href={section.href} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
-                <span>Enter Space</span>
+                <span>Enter System</span>
                 <span>→</span>
               </Link>
             </div>

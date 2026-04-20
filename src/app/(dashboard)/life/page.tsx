@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Life System",
 };
 
-export default function LifeSpacePage() {
+export default function LifeSystemPage() {
   const sections = [
     {
       title: "Journal",
@@ -148,7 +148,7 @@ export default function LifeSpacePage() {
                   href={section.href}
                   className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors"
                 >
-                  <span>Enter Space</span>
+                  <span>Enter System</span>
                   <span>→</span>
                 </Link>
                 {section.subHref && (

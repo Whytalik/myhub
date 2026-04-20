@@ -42,7 +42,7 @@ const foodNav = [
   { href: "/food/shopping", label: "Shopping", icon: ShoppingCart },
 ];
 
-const lifeSpaceNav = [
+const lifeSystemNav = [
   { href: "/life/journal", label: "Journal", icon: BookText },
   { href: "/life/habits", label: "Habits", icon: Zap },
   { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
@@ -78,7 +78,7 @@ const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
 
-const spaceColors: Record<string, { text: string; bg: string }> = {
+const systemColors: Record<string, { text: string; bg: string }> = {
   "Life System": { text: "#6fbfbf", bg: "rgba(111,191,191,0.10)" },
   "Library System": { text: "#818cf8", bg: "rgba(129,140,248,0.10)" },
   "Food System": { text: "#f0a868", bg: "rgba(240,168,104,0.10)" },
@@ -126,7 +126,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     if (initialOrder) {
       setOrder(mergeOrder(initialOrder));
     } else {
-      const savedOrder = localStorage.getItem("sidebar-spaces-order");
+      const savedOrder = localStorage.getItem("sidebar-systems-order");
       if (savedOrder) {
         try {
           setOrder(mergeOrder(JSON.parse(savedOrder)));
@@ -141,7 +141,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   useEffect(() => {
     const handleSync = () => {
-      const savedOrder = localStorage.getItem("sidebar-spaces-order");
+      const savedOrder = localStorage.getItem("sidebar-systems-order");
       if (savedOrder) {
         try {
           const ALL_SECTIONS_CURRENT = user?.role === "ADMIN" 
@@ -186,7 +186,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     // Use the state but default to active if not explicitly toggled yet or if user wants it open
     const isOpen = !isCollapsed && (openSections[label] !== undefined ? openSections[label] : isActive);
     const GroupIcon = groupIcon;
-    const color = spaceColors[label];
+    const color = systemColors[label];
 
     return (
       <div
@@ -332,7 +332,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
               if (section === "life")
                 return renderNavGroup(
                   "Life System",
-                  lifeSpaceNav,
+                  lifeSystemNav,
                   "/life",
                   Sparkles,
                 );

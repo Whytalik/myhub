@@ -23,7 +23,7 @@ export default async function HabitsPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "habit tracker" }]} />
+      <Breadcrumb items={[{ label: "life system", href: "/life" }, { label: "habit tracker" }]} />
       <HabitsPageClient 
         initialHabits={habits as unknown as HabitData[]} 
         initialStats={stats} 

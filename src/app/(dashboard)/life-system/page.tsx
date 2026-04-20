@@ -25,7 +25,7 @@ export default function LifeSystemPage() {
         </div>
         <h3 className="text-xl font-heading text-text uppercase mb-2">Under Construction</h3>
         <p className="text-sm text-secondary max-w-sm">
-          We are currently building this space to provide a more unified experience for your personal growth.
+          We are currently building this system to provide a more unified experience for your personal growth.
         </p>
       </div>
     </div>

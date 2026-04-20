@@ -9,7 +9,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Language Space",
+  title: "Language System",
 };
 
 export default async function LanguagesPage() {
@@ -54,10 +54,10 @@ export default async function LanguagesPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "language space" }]} />
+      <Breadcrumb items={[{ label: "language system" }]} />
 
       <div className="flex flex-col mb-16">
-        <Heading title="Language Space" />
+        <Heading title="Language System" />
         <p className="text-secondary max-w-2xl leading-relaxed">
           Precision environment for linguistic neural growth. Automate lexical retention,
           track immersion density, and visualize mastery balance across five core spheres.
@@ -168,7 +168,7 @@ export default async function LanguagesPage() {
                   </div>
 
                   <Link href={`/languages/${ul.id}`} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
-                    <span>Enter Space</span>
+                    <span>Enter System</span>
                     <span>→</span>
                   </Link>
                 </div>
