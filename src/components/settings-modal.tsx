@@ -357,137 +357,132 @@ export function SettingsModal({
             </div>
           </div>
 
-          {/* Content Area */}
-          <div className="flex-1 p-5 bg-surface overflow-y-auto scrollbar-hide flex flex-col relative">
-            
-            {editingItem && (
-              <div className="absolute inset-0 z-[60] bg-surface p-6 animate-in slide-in-from-right-4 duration-300 overflow-y-auto scrollbar-hide">
-                <div className="flex items-center justify-between mb-8">
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Edit {editingItem.id}</h4>
-                  <button onClick={() => setEditingItem(null)} className="text-[10px] font-bold uppercase hover:text-accent">Close</button>
-                </div>
-                <div className="space-y-6">
-                  <section>
-                    <label className="text-[9px] font-bold uppercase text-muted block mb-2">Icon</label>
-                    <IconPicker 
-                      currentIcon={customizations[editingItem.id]?.icon || ""} 
-                      onSelect={(icon) => updateCustomization(editingItem.id, 'icon', icon)} 
-                      color={customizations[editingItem.id]?.color || "#a3a3a3"}
-                    />
-                  </section>
-                  <section>
-                    <label className="text-[9px] font-bold uppercase text-muted block mb-2">Color</label>
-                    <ColorPicker 
-                      currentColor={customizations[editingItem.id]?.color || "#a3a3a3"} 
-                      onSelect={(color) => updateCustomization(editingItem.id, 'color', color)} 
-                    />
-                  </section>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "general" && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
-                <section>
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase text-muted">Display Name</label>
-                    <div className="flex gap-2">
-                      <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-                      <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
-                        {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
-                      </button>
-                    </div>
+          {/* Content Area - SCROLL ENABLED HERE */}
+          <div className="flex-1 bg-surface overflow-hidden relative">
+            <div className="h-full overflow-y-auto scrollbar-hide p-6">
+              
+              {editingItem && (
+                <div className="absolute inset-0 z-[60] bg-surface p-6 animate-in slide-in-from-right-4 duration-300 overflow-y-auto scrollbar-hide">
+                  <div className="flex items-center justify-between mb-8">
+                    <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Edit {editingItem.id}</h4>
+                    <button onClick={() => setEditingItem(null)} className="text-[10px] font-bold uppercase hover:text-accent">Close</button>
                   </div>
-                </section>
-              </div>
-            )}
-
-            {activeTab === "appearance" && (
-              <div className="space-y-5 animate-in fade-in slide-in-from-right-2 duration-300">
-                <section>
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                     <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                        <div className="flex items-center gap-2"><Moon size={14} /><span className="text-[10px] font-bold uppercase">Dark</span></div>
-                        {theme === "dark" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
-                     </button>
-                     <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "light" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                        <div className="flex items-center gap-2"><Sun size={14} /><span className="text-[10px] font-bold uppercase">Light</span></div>
-                        {theme === "light" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
-                     </button>
+                  <div className="space-y-6">
+                    <section>
+                      <label className="text-[9px] font-bold uppercase text-muted block mb-2">Icon</label>
+                      <IconPicker 
+                        currentIcon={customizations[editingItem.id]?.icon || ""} 
+                        onSelect={(icon) => updateCustomization(editingItem.id, 'icon', icon)} 
+                        color={customizations[editingItem.id]?.color || "#a3a3a3"}
+                      />
+                    </section>
+                    <section>
+                      <label className="text-[9px] font-bold uppercase text-muted block mb-2">Color</label>
+                      <ColorPicker 
+                        currentColor={customizations[editingItem.id]?.color || "#a3a3a3"} 
+                        onSelect={(color) => updateCustomization(editingItem.id, 'color', color)} 
+                      />
+                    </section>
                   </div>
-                </section>
-              </div>
-            )}
-
-            {activeTab === "domains" && (
-              <div className="space-y-4 h-full flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-2 duration-300">
-                <div className="flex justify-between items-center mb-1">
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
-                  {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                 </div>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
-                  <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
-                    <div className="flex flex-col gap-1.5 overflow-hidden pb-2">
-                      {domains.map((domain) => (
-                        <SortableItem 
-                          key={domain.id} 
-                          id={domain.id} 
-                          label={domain.label} 
-                          icon={ICON_LIBRARY[customizations[domain.id]?.icon as IconName] || domain.icon} 
-                          color={customizations[domain.id]?.color}
-                          onEdit={() => setEditingItem({ type: 'domain', id: domain.id })}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-                <p className="text-[9px] text-muted mt-auto pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
-              </div>
-            )}
+              )}
 
-            {activeTab === "spaces" && (
-              <div className="space-y-4 h-full flex flex-col overflow-hidden animate-in fade-in slide-in-from-right-2 duration-300">
-                <div className="flex justify-between items-center mb-1">
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
-                  {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
-                </div>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
-                  <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
-                    <div className="flex flex-col gap-1.5 overflow-hidden pb-2">
-                      {spaces.map((space) => (
-                        <SortableItem key={space.id} id={space.id} label={space.label} icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} color={customizations[space.id]?.color} onEdit={() => setEditingItem({ type: 'space', id: space.id })} />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-                <p className="text-[9px] text-muted mt-auto pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
-              </div>
-            )}
-
-            {activeTab === "data" && (
-              <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
-                <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
-                <div className="grid grid-cols-1 gap-2">
-                   <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                      <div><h5 className="text-[11px] font-bold">Export JSON</h5><p className="text-[9px] text-muted">Complete backup.</p></div>
-                      <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 active:scale-95 transition-all shadow-md shadow-accent/20"><Download size={14} strokeWidth={2.5} /></button>
-                   </div>
-                   <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                      <div><h5 className="text-[11px] font-bold">Import Backup</h5><p className="text-[9px] text-muted">Restore state.</p></div>
-                      <div className="flex items-center gap-2">
-                        <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
-                        <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
+              {activeTab === "general" && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <section>
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase text-muted">Display Name</label>
+                      <div className="flex gap-2">
+                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                          {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
+                        </button>
                       </div>
-                   </div>
-                   <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-[11px] font-bold text-red-500">Reset System</h5><p className="text-[9px] text-red-500/60">Wipe all records.</p></div>
-                        <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
-                   </div>
+                    </div>
+                  </section>
                 </div>
-              </div>
-            )}
+              )}
+
+              {activeTab === "appearance" && (
+                <div className="space-y-5 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <section>
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                       <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
+                          <div className="flex items-center gap-2"><Moon size={14} /><span className="text-[10px] font-bold uppercase">Dark</span></div>
+                          {theme === "dark" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                       </button>
+                       <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "light" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
+                          <div className="flex items-center gap-2"><Sun size={14} /><span className="text-[10px] font-bold uppercase">Light</span></div>
+                          {theme === "light" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                       </button>
+                    </div>
+                  </section>
+                </div>
+              )}
+
+              {activeTab === "domains" && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
+                    {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                  </div>
+                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
+                    <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
+                      <div className="flex flex-col gap-1.5 pb-2">
+                        {domains.map((domain) => (
+                          <SortableItem key={domain.id} id={domain.id} label={domain.label} icon={ICON_LIBRARY[customizations[domain.id]?.icon as IconName] || domain.icon} color={customizations[domain.id]?.color} onEdit={() => setEditingItem({ type: 'domain', id: domain.id })} />
+                        ))}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
+                  <p className="text-[9px] text-muted pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
+                </div>
+              )}
+
+              {activeTab === "spaces" && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <div className="flex justify-between items-center mb-1">
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
+                    {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                  </div>
+                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
+                    <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
+                      <div className="flex flex-col gap-1.5 pb-2">
+                        {spaces.map((space) => (
+                          <SortableItem key={space.id} id={space.id} label={space.label} icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} color={customizations[space.id]?.color} onEdit={() => setEditingItem({ type: 'space', id: space.id })} />
+                        ))}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
+                  <p className="text-[9px] text-muted pt-3 text-center italic opacity-60">Vertical drag to reorder.</p>
+                </div>
+              )}
+
+              {activeTab === "data" && (
+                <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                        <div><h5 className="text-[11px] font-bold">Export JSON</h5><p className="text-[9px] text-muted">Complete backup.</p></div>
+                        <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 active:scale-95 transition-all shadow-md shadow-accent/20"><Download size={14} strokeWidth={2.5} /></button>
+                     </div>
+                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                        <div><h5 className="text-[11px] font-bold">Import Backup</h5><p className="text-[9px] text-muted">Restore state.</p></div>
+                        <div className="flex items-center gap-2">
+                          <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
+                          <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
+                        </div>
+                     </div>
+                     <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
+                          <div><h5 className="text-[11px] font-bold text-red-500">Reset System</h5><p className="text-[9px] text-red-500/60">Wipe all records.</p></div>
+                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                     </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Dialog>

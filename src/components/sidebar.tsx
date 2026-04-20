@@ -172,7 +172,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
   ) => {
     return (
-      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-500">
+      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-700">
         <div className="flex flex-col gap-2.5 px-1">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
@@ -194,7 +194,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
             return (
               <div 
                 key={item.href} 
-                className={`flex flex-col border rounded-2xl p-1 transition-all duration-300 ${
+                className={`flex flex-col border rounded-2xl p-1 transition-all duration-500 ${
                   isItemActive ? "shadow-sm" : "bg-surface/30 border-border/40"
                 }`}
                 style={{ 
@@ -205,19 +205,19 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 <div className="flex items-center justify-between group">
                   <Link
                     href={item.href}
-                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-200 ${!isExpanded ? "justify-center" : ""}`}
+                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 ${!isExpanded ? "justify-center" : ""}`}
                   >
                     <div className="w-5 flex justify-center shrink-0">
                       <ItemIcon 
                         size={18} 
                         style={{ color: isItemActive ? color.text : undefined }} 
                         strokeWidth={isItemActive ? 2.5 : 2}
-                        className={`transition-colors ${isItemActive ? "" : "text-muted group-hover:text-secondary"}`}
+                        className={`transition-colors duration-500 ${isItemActive ? "" : "text-muted group-hover:text-secondary"}`}
                       />
                     </div>
-                    <div className={`flex-1 transition-all duration-300 overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
+                    <div className={`flex-1 transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"}`}>
                       <span 
-                        className="transition-colors" 
+                        className="transition-colors duration-500" 
                         style={{ color: isItemActive ? color.text : undefined }}
                       >
                         {item.label}
@@ -231,7 +231,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                     >
                       <ChevronRight 
                         size={14} 
-                        className={`transition-transform duration-300 ${isSubOpen ? "rotate-90" : ""}`} 
+                        className={`transition-transform duration-500 ${isSubOpen ? "rotate-90" : ""}`} 
                         style={{ color: isItemActive ? color.text : undefined }}
                       />
                     </button>
@@ -239,7 +239,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 </div>
                 
                 {isExpanded && item.subItems && isSubOpen && (
-                  <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in slide-in-from-top-2 duration-300">
+                  <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in slide-in-from-top-2 duration-500">
                     <div className="border-t border-border/40 mb-1" />
                     {item.subItems.map(sub => {
                       const SubIcon = sub.icon;
@@ -248,7 +248,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-colors overflow-hidden whitespace-nowrap ${
+                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-colors duration-300 overflow-hidden whitespace-nowrap ${
                             isSubActive ? "bg-accent/5 font-bold" : "text-secondary hover:text-text"
                           }`}
                           style={{ color: isSubActive ? color.text : undefined }}
@@ -279,17 +279,17 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className={`
-          sticky top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-500 ease-in-out z-[100]
+          sticky top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1) z-[100]
           ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
         `}
       >
         {/* Branding & Pin Row */}
-        <div className={`shrink-0 py-8 flex items-center transition-all duration-300 ${isExpanded ? "px-6 justify-between" : "justify-center"}`}>
+        <div className={`shrink-0 py-8 flex items-center transition-all duration-500 ease-in-out ${isExpanded ? "px-6 justify-between" : "justify-center"}`}>
           <Link href="/home" className="flex items-center gap-3 group overflow-hidden">
-            <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
               <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
-            <div className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 w-auto ml-1" : "opacity-0 w-0"}`}>
+            <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px] ml-1" : "opacity-0 max-w-0"}`}>
               <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
               <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
             </div>
@@ -298,20 +298,20 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           {isExpanded && (
             <button 
               onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-              className={`p-2 rounded-xl transition-all ${
+              className={`p-2 rounded-xl transition-all duration-300 ${
                 !isCollapsed 
                   ? "text-accent bg-accent/10 border border-accent/20" 
                   : "text-muted hover:text-text hover:bg-raised"
               }`}
               title={!isCollapsed ? "Unpin sidebar" : "Pin sidebar"}
             >
-              <Pin size={14} className={!isCollapsed ? "rotate-45" : ""} />
+              <Pin size={14} className={`transition-transform duration-500 ${!isCollapsed ? "rotate-45" : ""}`} />
             </button>
           )}
         </div>
 
-        <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth transition-all duration-300 ${isExpanded ? "px-3" : "px-2"}`}>
-          <div className={`mb-6 transition-all duration-300 ${isExpanded ? "px-3" : "px-1"}`}>
+        <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth transition-all duration-500 ${isExpanded ? "px-3" : "px-2"}`}>
+          <div className={`mb-6 transition-all duration-500 ${isExpanded ? "px-3" : "px-1"}`}>
             <div className="h-px w-full bg-border/40" />
           </div>
           <nav className="flex flex-col gap-4">
@@ -347,28 +347,28 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         </div>
 
         <div className="border-t border-border mt-auto" />
-        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 transition-all duration-300 ${isExpanded ? "px-4" : "px-2"}`}>
+        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 transition-all duration-500 ${isExpanded ? "px-4" : "px-2"}`}>
           {user && (
             <div className="flex items-center gap-3 px-1 py-1 w-full overflow-hidden">
-              <Link href="/profile" className={`flex items-center gap-3 p-1.5 rounded-xl transition-all hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''} ${isExpanded ? "flex-1 min-w-0" : "w-12 h-12 justify-center"}`}>
+              <Link href="/profile" className={`flex items-center gap-3 p-1.5 rounded-xl transition-all duration-300 hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''} ${isExpanded ? "flex-1 min-w-0" : "w-12 h-12 justify-center"}`}>
                 <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0">
                   <span className="text-accent text-[12px] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
-                <div className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
+                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 max-w-[150px]" : "opacity-0 max-w-0"}`}>
                   <p className="text-[13px] font-semibold text-text truncate">{user.name}</p>
                   <p className="text-[11px] text-muted truncate">{user.email}</p>
                 </div>
               </Link>
               {isExpanded && (
-                <div className="flex items-center gap-0.5 animate-in fade-in duration-500">
+                <div className="flex items-center gap-0.5 animate-in fade-in duration-700">
                   <button 
                     onClick={() => setIsSettingsOpen(true)}
-                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors"
+                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300"
                   >
                     <Settings2 size={13} />
                   </button>
                   <form action={logoutAction}>
-                    <button type="submit" className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors">
+                    <button type="submit" className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300">
                       <LogOut size={13} />
                     </button>
                   </form>
