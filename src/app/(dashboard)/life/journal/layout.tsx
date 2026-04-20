@@ -7,7 +7,7 @@ export default function JournalLayout({
 }) {
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "life system", href: "/life" }, { label: "daily journal" }]} />
+      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "daily journal" }]} />
 
       <div className="flex-1">
         {children}

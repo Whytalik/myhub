@@ -1,4 +1,4 @@
-export const SYSTEM_THEMES = {
+export const SPACE_THEMES = {
   food:      { accent: "#f0a868", accentMuted: "#2e1c0a" },
   life:      { accent: "#6fbfbf", accentMuted: "#0b2222" },
   fitness:   { accent: "#e87d88", accentMuted: "#2a0d11" },
@@ -9,9 +9,9 @@ export const SYSTEM_THEMES = {
   default:   { accent: "#c084fc", accentMuted: "#2e1a4a" },
 } as const;
 
-export type SystemKey = keyof typeof SYSTEM_THEMES;
+export type SpaceKey = keyof typeof SPACE_THEMES;
 
-export function getSystemFromPath(pathname: string): SystemKey {
+export function getSpaceFromPath(pathname: string): SpaceKey {
   if (pathname.startsWith("/food"))      return "food";
   if (pathname.startsWith("/life"))      return "life";
   if (pathname.startsWith("/fitness"))   return "fitness";

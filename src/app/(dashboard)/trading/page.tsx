@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Trading System",
+  title: "Trading Space",
 };
 
 export default async function TradingPage() {
@@ -42,10 +42,10 @@ export default async function TradingPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "trading system" }]} />
+      <Breadcrumb items={[{ label: "trading space" }]} />
 
       <div className="flex flex-col mb-16">
-        <Heading title="Trading System" />
+        <Heading title="Trading Space" />
         <p className="text-secondary max-w-2xl leading-relaxed">
           High-performance environment for market execution and portfolio management. 
           Analyze market structures, track trade performance, and optimize execution strategies.
@@ -83,7 +83,7 @@ export default async function TradingPage() {
       <div className="mb-20">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-3">
-            <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em]">System Modules</h4>
+            <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em]">Space Modules</h4>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default async function TradingPage() {
       {/* Placeholder Content */}
       <div className="bg-surface/30 border border-dashed border-border/40 p-24 rounded-2xl text-center">
         <TrendingUp size={48} className="mx-auto text-muted/20 mb-6" />
-        <h3 className="text-2xl font-black uppercase tracking-tight text-muted mb-4">Trading System Offline</h3>
+        <h3 className="text-2xl font-black uppercase tracking-tight text-muted mb-4">Trading Space Offline</h3>
         <p className="text-secondary text-sm max-w-md mx-auto mb-8">
           The high-frequency execution engine and market analysis modules are currently under development.
         </p>

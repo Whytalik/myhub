@@ -68,8 +68,9 @@ export default async function LandingPage() {
         </div>
 
         <p className="mt-10 text-[11px] font-mono text-muted/50 uppercase tracking-widest">
-          Life system available on signup · Other systems for admin accounts
+          Life space available on signup · Other spaces for admin accounts
         </p>
+
       </main>
     </div>
   );

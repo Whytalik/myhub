@@ -17,22 +17,21 @@ const getEnhancedConnectionString = () => {
   if (!url.includes("connection_limit=")) {
     url += (hasParams ? "&" : "?") + "connection_limit=1";
   }
-  // Fix SSL warning
-  if (!url.includes("sslmode=")) {
-    url += (url.includes("?") ? "&" : "?") + "sslmode=verify-full";
-  }
   return url;
 };
 
 // Use a singleton for the pool
 if (!globalForPrisma.pgPool) {
+  const connectionString = getEnhancedConnectionString();
+  const isLocal = connectionString.includes("localhost") || connectionString.includes("127.0.0.1") || connectionString.includes("host.docker.internal");
+  
   globalForPrisma.pgPool = new pg.Pool({ 
-    connectionString: getEnhancedConnectionString(),
+    connectionString,
     max: 1,
     idleTimeoutMillis: 1000,
     connectionTimeoutMillis: 5000,
-    // More explicit SSL config to satisfy the security warning
-    ssl: {
+    // Only use SSL if not local or if explicitly requested in connection string
+    ssl: isLocal ? false : {
       rejectUnauthorized: false,
     }
   });

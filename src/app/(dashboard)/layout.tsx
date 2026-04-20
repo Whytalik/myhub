@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/sidebar";
-import { SystemProvider } from "@/components/system-provider";
+import { SpaceProvider } from "@/components/space-provider";
 import { SidebarProvider } from "@/components/sidebar-provider";
 import { auth } from "@/auth";
 import { cookies } from "next/headers";
@@ -11,7 +11,8 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const orderCookie = cookieStore.get("sidebar-systems-order");
+  const orderCookie = cookieStore.get("sidebar-spaces-order");
+
   let initialOrder: string[] | undefined = undefined;
 
   if (orderCookie) {
@@ -25,14 +26,14 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <SystemProvider>
+      <SpaceProvider>
         <Sidebar
           initialOrder={initialOrder}
           key={orderCookie?.value || "default"}
           user={session.user ? { name: session.user.name || "", email: session.user.email || "", role: session.user.role } : undefined}
         />
         <main className="flex-1 bg-bg overflow-y-auto scrollbar-hide">{children}</main>
-      </SystemProvider>
+      </SpaceProvider>
     </SidebarProvider>
   );
 }

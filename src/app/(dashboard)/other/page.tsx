@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Misc / Other",
 };
 
-export default async function OtherSystemPage() {
+export default async function OtherSpacePage() {
   const session = await auth();
   if ((session?.user as any)?.role !== "ADMIN") redirect("/life");
   const sections = [
@@ -30,7 +30,7 @@ export default async function OtherSystemPage() {
       <div className="flex flex-col mb-16">
         <Heading title="Misc / Other" />
         <p className="text-secondary max-w-2xl leading-relaxed">
-          A collection of independent tools and trackers that don&apos;t fit into the main systems.
+          A collection of independent tools and trackers that don&apos;t fit into the main spaces.
         </p>
       </div>
 
@@ -65,9 +65,10 @@ export default async function OtherSystemPage() {
                 {section.description}
               </p>
               <Link href={section.href} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
-                <span>Enter System</span>
+                <span>Enter Space</span>
                 <span>→</span>
               </Link>
+
             </div>
           </div>
         ))}

@@ -9,8 +9,9 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Language System",
+  title: "Language Space",
 };
+
 
 export default async function LanguagesPage() {
   const session = await auth();
@@ -54,10 +55,12 @@ export default async function LanguagesPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "language system" }]} />
+      <Breadcrumb items={[{ label: "language space" }]} />
+
 
       <div className="flex flex-col mb-16">
-        <Heading title="Language System" />
+        <Heading title="Language Space" />
+
         <p className="text-secondary max-w-2xl leading-relaxed">
           Precision environment for linguistic neural growth. Automate lexical retention,
           track immersion density, and visualize mastery balance across five core spheres.
@@ -122,7 +125,7 @@ export default async function LanguagesPage() {
               href="/languages/add"
               className="bg-accent text-bg px-10 py-4 rounded-xl font-black uppercase text-[11px] tracking-[0.2em] hover:scale-105 transition-all inline-block"
             >
-              Initialize System
+              Initialize Space
             </Link>
           </div>
         ) : (
@@ -168,7 +171,8 @@ export default async function LanguagesPage() {
                   </div>
 
                   <Link href={`/languages/${ul.id}`} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
-                    <span>Enter System</span>
+                    <span>Enter Space</span>
+
                     <span>→</span>
                   </Link>
                 </div>
@@ -182,7 +186,7 @@ export default async function LanguagesPage() {
       <div className="bg-surface/50 border border-border-dim rounded-2xl p-10 flex flex-col gap-6">
         <div className="flex items-center gap-3">
           <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-          <h4 className="text-[10px] font-mono text-muted uppercase tracking-[0.3em]">System Intelligence</h4>
+          <h4 className="text-[10px] font-mono text-muted uppercase tracking-[0.3em]">Space Intelligence</h4>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="space-y-3">

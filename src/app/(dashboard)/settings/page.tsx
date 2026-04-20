@@ -8,7 +8,7 @@ export default async function SettingsPage() {
   if (!session) redirect("/login");
 
   const cookieStore = await cookies();
-  const orderCookie = cookieStore.get("sidebar-systems-order");
+  const orderCookie = cookieStore.get("sidebar-spaces-order");
   let initialOrder: string[] | undefined = undefined;
 
   if (orderCookie) {

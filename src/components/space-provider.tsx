@@ -1,11 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { SYSTEM_THEMES, getSystemFromPath } from "@/lib/spaces";
+import { SPACE_THEMES, getSpaceFromPath } from "@/lib/spaces";
 
-export function SystemProvider({ children }: { children: React.ReactNode }) {
+export function SpaceProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const theme = SYSTEM_THEMES[getSystemFromPath(pathname)];
+  const theme = SPACE_THEMES[getSpaceFromPath(pathname)];
 
   return (
     <div 

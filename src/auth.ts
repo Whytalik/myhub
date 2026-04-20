@@ -45,34 +45,54 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const email = (credentials.email as string).toLowerCase();
-        const user = await prisma.user.findUnique({
-          where: { email },
-          include: {
-            profile: {
-              include: {
-                persons: {
-                  take: 1,
-                  orderBy: { createdAt: "asc" },
+        try {
+          const email = (credentials.email as string).toLowerCase();
+          console.log("[Auth] Attempting findUnique for email:", email);
+          
+          const user = await prisma.user.findUnique({
+            where: { email },
+            include: {
+              profile: {
+                include: {
+                  persons: {
+                    take: 1,
+                    orderBy: { createdAt: "asc" },
+                  },
                 },
               },
             },
-          },
-        });
+          });
 
-        if (!user || !user.passwordHash) return null;
+          if (!user) {
+            console.log("[Auth] User not found:", email);
+            return null;
+          }
 
-        const isValid = await compare(credentials.password as string, user.passwordHash);
-        if (!isValid) return null;
+          if (!user.passwordHash) {
+            console.log("[Auth] User has no password hash:", email);
+            return null;
+          }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          profileId: user.profile?.id,
-          personId: user.profile?.persons[0]?.id,
-        };
+          const isValid = await compare(credentials.password as string, user.passwordHash);
+          if (!isValid) {
+            console.log("[Auth] Invalid password for user:", email);
+            return null;
+          }
+
+          console.log("[Auth] User authorized successfully:", email);
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            profileId: user.profile?.id,
+            personId: user.profile?.persons[0]?.id,
+          };
+        } catch (error: any) {
+          console.error("[Auth] findUnique error:", error);
+          // Re-throw to see the full stack trace in the log if possible
+          throw error;
+        }
       },
     }),
   ],
@@ -88,12 +108,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       
       // OPTIONAL: Always fetch fresh role from DB to avoid session lag
       if (token.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: token.email },
-          select: { role: true }
-        });
-        if (dbUser) {
-          token.role = dbUser.role;
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: token.email },
+            select: { role: true }
+          });
+          if (dbUser) {
+            token.role = dbUser.role;
+          }
+        } catch (error) {
+          console.error("[Auth] jwt findUnique error:", error);
         }
       }
 

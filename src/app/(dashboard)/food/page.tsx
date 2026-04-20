@@ -3,9 +3,11 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import { prisma } from "@/lib/prisma";
+import { Tabs } from "@/components/ui/tabs";
+import { LayoutDashboard, Settings2, Info } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Food System",
+  title: "Food Space",
 };
 
 export default async function FoodDashboardPage() {
@@ -62,22 +64,12 @@ export default async function FoodDashboardPage() {
     {
       step: "04",
       name: "Procurement",
-      desc: "Generate a shopping list from your plan. The system sums all quantities automatically.",
+      desc: "Generate a shopping list from your plan. The space sums all quantities automatically.",
     },
   ];
 
-  return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "food system" }]} />
-      
-      <div className="flex flex-col mb-16">
-        <Heading title="Food System" />
-        <p className="text-secondary max-w-2xl leading-relaxed">
-          Integrated nutrition management environment. Automate your meal planning, 
-          track macro-nutrients, and sync your shopping requirements with live targets.
-        </p>
-      </div>
-
+  const dashboardContent = (
+    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
       {/* Workflow Section */}
       <div className="mb-20">
         <div className="flex items-center gap-3 mb-8">
@@ -145,7 +137,7 @@ export default async function FoodDashboardPage() {
       <div className="bg-surface/50 border border-border-dim rounded-2xl p-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-          <h4 className="text-[10px] font-mono text-muted uppercase tracking-[0.3em]">System Intelligence</h4>
+          <h4 className="text-[10px] font-mono text-muted uppercase tracking-[0.3em]">Space Intelligence</h4>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
            <div>
@@ -166,6 +158,79 @@ export default async function FoodDashboardPage() {
            </div>
         </div>
       </div>
+    </div>
+  );
+
+  const systemContent = (
+    <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 max-w-4xl">
+      <div className="space-y-12">
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <Settings2 size={18} className="text-accent" />
+            <h3 className="text-xl font-bold uppercase tracking-tight">System Logic & Rules</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-surface border border-border p-6 rounded-2xl">
+              <h4 className="font-mono text-[10px] text-accent uppercase tracking-widest mb-3">Calorie Targets</h4>
+              <p className="text-sm text-secondary leading-relaxed">
+                The system automatically scales dish ingredients to match the target calories set in a Day Plan. 
+                If a dish is part of multiple meals, the target is distributed proportionally.
+              </p>
+            </div>
+            <div className="bg-surface border border-border p-6 rounded-2xl">
+              <h4 className="font-mono text-[10px] text-accent uppercase tracking-widest mb-3">Ingredient Aggregation</h4>
+              <p className="text-sm text-secondary leading-relaxed">
+                Shopping lists aggregate identical products across all dishes in a plan. 
+                Measurements are converted to the base unit (usually grams or ml) before summing.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="flex items-center gap-3 mb-6">
+            <Info size={18} className="text-accent" />
+            <h3 className="text-xl font-bold uppercase tracking-tight">Principles of the Space</h3>
+          </div>
+          <ul className="space-y-4">
+            <li className="flex gap-4">
+              <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center shrink-0 text-accent font-mono text-[10px]">1</div>
+              <div>
+                <p className="text-sm font-bold mb-1 uppercase tracking-tight">Precision over Guesswork</p>
+                <p className="text-xs text-secondary leading-relaxed">Always weight ingredients raw. The system assumes raw weights for all caloric calculations unless specified.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center shrink-0 text-accent font-mono text-[10px]">2</div>
+              <div>
+                <p className="text-sm font-bold mb-1 uppercase tracking-tight">The 80/20 of Nutrition</p>
+                <p className="text-xs text-secondary leading-relaxed">Focus on hitting your protein and total calorie targets first. Micros are secondary to macro consistency.</p>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="px-6 md:px-14 py-8 md:py-10">
+      <Breadcrumb items={[{ label: "food space" }]} />
+      
+      <div className="flex flex-col mb-16">
+        <Heading title="Food Space" />
+        <p className="text-secondary max-w-2xl leading-relaxed">
+          Integrated nutrition management environment. Automate your meal planning, 
+          track macro-nutrients, and sync your shopping requirements with live targets.
+        </p>
+      </div>
+
+      <Tabs 
+        tabs={[
+          { id: "dashboard", label: "Dashboard", icon: <LayoutDashboard size={14} />, content: dashboardContent },
+          { id: "system", label: "System Guide", icon: <Info size={14} />, content: systemContent },
+        ]} 
+      />
     </div>
   );
 }

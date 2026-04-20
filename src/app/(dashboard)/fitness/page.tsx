@@ -5,7 +5,7 @@ import { Heading } from "@/components/ui/heading";
 import { Dumbbell, Activity, TrendingUp, Flame, Target, RefreshCw } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Fitness System",
+  title: "Fitness Space",
 };
 
 export default function FitnessPage() {
@@ -56,12 +56,12 @@ export default function FitnessPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "fitness system" }]} />
+      <Breadcrumb items={[{ label: "fitness space" }]} />
 
       <div className="flex flex-col mb-16">
-        <Heading title="Fitness System" />
+        <Heading title="Fitness Space" />
         <p className="text-secondary max-w-2xl leading-relaxed">
-          Your physical training system. Build strength, track progress, and structure
+          Your physical training space. Build strength, track progress, and structure
           workouts around the principles that actually produce long-term results.
         </p>
       </div>

@@ -6,7 +6,7 @@ import type { LucideIcon } from "lucide-react";
 interface Tab {
   id: string;
   label: string;
-  icon?: LucideIcon;
+  icon?: React.ReactNode;
   content?: React.ReactNode;
 }
 
@@ -45,7 +45,6 @@ export function Tabs({
         <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm min-w-max">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
-            const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
@@ -59,7 +58,7 @@ export function Tabs({
                   }
                 `}
               >
-                {Icon && <Icon size={14} />}
+                {tab.icon}
                 {tab.label}
               </button>
             );

@@ -6,7 +6,7 @@ import { BookText, Sparkles, Video, GraduationCap, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Library System",
+  title: "Library Space",
 };
 
 export default function LibrarySpacePage() {
@@ -43,11 +43,11 @@ export default function LibrarySpacePage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "library system" }]} />
+      <Breadcrumb items={[{ label: "library space" }]} />
       
       <div className="flex justify-between items-end mb-16">
         <div className="flex flex-col">
-          <Heading title="Library System" />
+          <Heading title="Library Space" />
           <p className="text-secondary max-w-2xl leading-relaxed">
             Your personal knowledge repository. Organize books, articles, and courses 
             to build your intellectual capital and track your learning journey.

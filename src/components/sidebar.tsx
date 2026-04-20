@@ -42,12 +42,13 @@ const foodNav = [
   { href: "/food/shopping", label: "Shopping", icon: ShoppingCart },
 ];
 
-const lifeSystemNav = [
+const lifeSpaceNav = [
   { href: "/life/journal", label: "Journal", icon: BookText },
   { href: "/life/habits", label: "Habits", icon: Zap },
   { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
   { href: "/life/journal/stats", label: "Statistics", icon: LayoutDashboard },
 ];
+
 
 const fitnessNav = [
   { href: "/fitness/workouts", label: "Workouts", icon: Dumbbell },
@@ -78,13 +79,13 @@ const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
 
-const systemColors: Record<string, { text: string; bg: string }> = {
-  "Life System": { text: "#6fbfbf", bg: "rgba(111,191,191,0.10)" },
-  "Library System": { text: "#818cf8", bg: "rgba(129,140,248,0.10)" },
-  "Food System": { text: "#f0a868", bg: "rgba(240,168,104,0.10)" },
-  "Fitness System": { text: "#e87d88", bg: "rgba(232,125,136,0.10)" },
-  "Language System": { text: "#c084fc", bg: "rgba(192,132,252,0.10)" },
-  "Trading System": { text: "#22c55e", bg: "rgba(34,197,94,0.10)" },
+const spaceColors: Record<string, { text: string; bg: string }> = {
+  "Life Space": { text: "#6fbfbf", bg: "rgba(111,191,191,0.10)" },
+  "Library Space": { text: "#818cf8", bg: "rgba(129,140,248,0.10)" },
+  "Food Space": { text: "#f0a868", bg: "rgba(240,168,104,0.10)" },
+  "Fitness Space": { text: "#e87d88", bg: "rgba(232,125,136,0.10)" },
+  "Language Space": { text: "#c084fc", bg: "rgba(192,132,252,0.10)" },
+  "Trading Space": { text: "#22c55e", bg: "rgba(34,197,94,0.10)" },
   "Misc / Other": { text: "#a3a3a3", bg: "rgba(163,163,163,0.10)" },
 };
 
@@ -126,7 +127,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     if (initialOrder) {
       setOrder(mergeOrder(initialOrder));
     } else {
-      const savedOrder = localStorage.getItem("sidebar-systems-order");
+      const savedOrder = localStorage.getItem("sidebar-spaces-order");
       if (savedOrder) {
         try {
           setOrder(mergeOrder(JSON.parse(savedOrder)));
@@ -141,7 +142,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   useEffect(() => {
     const handleSync = () => {
-      const savedOrder = localStorage.getItem("sidebar-systems-order");
+      const savedOrder = localStorage.getItem("sidebar-spaces-order");
       if (savedOrder) {
         try {
           const ALL_SECTIONS_CURRENT = user?.role === "ADMIN" 
@@ -186,7 +187,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     // Use the state but default to active if not explicitly toggled yet or if user wants it open
     const isOpen = !isCollapsed && (openSections[label] !== undefined ? openSections[label] : isActive);
     const GroupIcon = groupIcon;
-    const color = systemColors[label];
+    const color = spaceColors[label];
 
     return (
       <div
@@ -328,38 +329,38 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
           <nav className="flex flex-col gap-4">
             {filteredOrder.map((section) => {
               if (section === "food")
-                return renderNavGroup("Food System", foodNav, "/food", ChefHat);
+                return renderNavGroup("Food Space", foodNav, "/food", ChefHat);
               if (section === "life")
                 return renderNavGroup(
-                  "Life System",
-                  lifeSystemNav,
+                  "Life Space",
+                  lifeSpaceNav,
                   "/life",
                   Sparkles,
                 );
               if (section === "fitness")
                 return renderNavGroup(
-                  "Fitness System",
+                  "Fitness Space",
                   fitnessNav,
                   "/fitness",
                   Activity,
                 );
               if (section === "library")
                 return renderNavGroup(
-                  "Library System",
+                  "Library Space",
                   libraryNav,
                   "/library",
                   BookText,
                 );
               if (section === "languages")
                 return renderNavGroup(
-                  "Language System",
+                  "Language Space",
                   languagesNav,
                   "/languages",
                   Languages,
                 );
               if (section === "trading")
                 return renderNavGroup(
-                  "Trading System",
+                  "Trading Space",
                   tradingNav,
                   "/trading",
                   TrendingUp,
