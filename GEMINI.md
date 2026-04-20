@@ -1,59 +1,66 @@
-# Hub Project (Food & Fishing System)
+# Hub Project (Personal OS)
 
-A Next.js application designed to manage personal data, primarily focused on nutrition/meal planning and fishing activities.
+A Next.js application designed to manage personal data, modeled as a modular "Personal Operating System".
 
 ## Project Overview
 
 - **Framework:** Next.js 16 (App Router) with Turbopack.
 - **Language:** TypeScript.
 - **Styling:** Tailwind CSS v4 (using `@theme` tokens in `src/app/globals.css`).
-- **Database:** PostgreSQL managed via Prisma 7.
-- **Package Manager:** pnpm.
-- **Runtime Environment:** Docker for local PostgreSQL instance.
+- **Architecture:** Domain-Driven Modular Monolith.
+- **Database:** PostgreSQL via Prisma 7.
+- **Authentication:** NextAuth v5 (Beta) with Session-DB sync.
 
-## Architecture & Conventions
+## Core Architecture: The Domain Model
+
+The system is organized into 5 high-level **Life Domains**, each serving as a self-contained hub:
+
+1.  **Operations**: The "Engine". Handles 5-level planning (Vision, Milestones, Theme, Sprints, Reviews) and daily execution (Journal, Habits, Tasks).
+2.  **Health**: Physical optimization. Nutrition (Food Space) and performance tracking (Fitness Space).
+3.  **Mind**: Intellectual mastery. Knowledge management (Library Space) and skill acquisition (Language Space).
+4.  **Wealth**: Financial resources. Portfolio tracking and market telemetry (Trading Space).
+5.  **Vault**: System archives. Desires (Wishlist), utilities, and low-frequency tools.
 
 ### Directory Structure
 
-- `src/app`: Next.js App Router (layouts, pages, API routes).
-- `src/features/{feature}`: Modular feature logic.
-  - `actions.ts`: Next.js Server Actions (`"use server"`).
-  - `queries.ts`: Prisma database queries (server-side only).
-  - `types.ts`: TypeScript definitions for the feature.
-- `src/lib`: Shared utilities and singleton instances (e.g., `prisma.ts`).
-- `src/components`: Generic UI components.
-- `src/app/generated/prisma`: Custom output directory for the generated Prisma Client.
-- `prisma/`: Database schema and migrations.
+- `src/app/(dashboard)`: Routing layer. Contains lightweight page wrappers for domain hubs.
+- `src/features/{domain}`: The logic core.
+  - `actions/`: Mutation logic (`"use server"`).
+  - `services/`: Database interaction layer.
+  - `components/`: Domain-specific UI elements.
+- `src/components`:
+  - `ui/`: Agnostic primitives (Shadcn-style).
+  - `shared/`: Cross-domain components (`Sidebar`, `DomainHeader`, `SettingsModal`).
+- `src/lib`: Singletons (`prisma.ts`), hooks, and global providers.
 
-### Data Access (Prisma)
+## UI & Navigation Systems
 
-- **Singleton Client:** Always import the Prisma client from `@/lib/prisma`.
-- **Custom Output:** Prisma Client is generated into `src/app/generated/prisma`. **DO NOT** edit these files manually.
-- **Transactions:** Use `prisma.$transaction` for complex updates involving multiple related models (e.g., updating a dish with its ingredients).
+### Contextual Navigation
+- **DomainHeader**: A global top bar for switching between high-level Domains.
+- **Contextual Sidebar**: Dynamically filters content based on the active Domain. Supports collapsing (Rail mode) and manual pinning.
+- **DomainHubs**: Dedicated landing pages for each domain built with a stable `DomainTemplate` to ensure visual consistency.
 
-### State Management & Mutations
+### Theme & Layout
+- **Dynamic Theming**: Global support for **Light** and **Dark** modes via `SpaceProvider`.
+- **Space Themes**: Each specific Space (e.g., Planning, Food) has its own accent color that propagates through the UI.
 
-- **Server Actions:** Use Server Actions in `actions.ts` for all mutations and data fetching from the client.
-- **Action Results:** Actions should return a standardized `ActionResult<T>` type: `{ success: boolean; data?: T; error?: string }`.
+## Data Integrity & Governance
 
-### Styling Rules
+### Backup & Recovery
+- **Full Export**: Generates a deep JSON snapshot of the entire system state (all related tables).
+- **Deep Restore**: Implements intelligent ID mapping to restore the full relational structure from a backup file, including recursive tasks and linked ingredients.
+- **System Reset**: Safe transactional wipe of all user-associated data.
 
-- **Tailwind v4:** Use utility classes and design tokens defined in `src/app/globals.css`.
-- **No Inline Styles:** Avoid `style={{}}` props unless absolutely necessary for dynamic values (e.g., calculations).
+### Database Sync
+- **Safe Build**: Uses `prisma db push` (without data loss flags) on Vercel to protect data while ensuring schema alignment.
+- **Session Sync**: Authentication callbacks are configured to fetch fresh data from the DB on every refresh, ensuring UI elements like "User Name" are always current.
 
-## UI & Component Guidelines
+## Engineering Standards
 
-- **Custom UI Components:** ALWAYS use the custom UI components located in `src/components/ui` (e.g., `Input`, `Select`, `Button`, `Dialog`) instead of native HTML elements like `<input>` or `<select>`.
-- **Modals & Alerts:** NEVER use native browser methods like `alert()`, `confirm()`, or `prompt()`. ALWAYS use the custom `Dialog` component for confirmations and `toast` (sonner) for notifications.
-- **New Components:** If a required UI component does not exist in `src/components/ui`, you MUST create it as a reusable, styled component before using it in a feature. NEVER use native elements as a fallback.
-- **Design System Adherence:** All components must strictly follow the specifications in `docs/design/design-system.md`.
-
-## Development Principles
-
-- **Research First:** Before any functional improvement, you MUST search the internet for best practices, technology documentation, and scientific research. Findings MUST be documented in `docs/research/` (create a new `.md` file for each topic).
-- **Documentation Sync:** When implementing functional changes, you MUST update the corresponding space overview page (e.g., `src/app/(dashboard)/{space_name}/page.tsx`) and the Life System (formerly System Guide).
-- **Up-to-Date Knowledge:** Before performing any task, always search the internet for the latest documentation (dated 2026) and best practices specifically for the technologies used in this project (Next.js 16, Prisma 7, Tailwind v4).
-- **Security First:** Never expose secrets or hardcode sensitive data.
+- **Research First**: Document findings in `docs/research/` before implementation (e.g., `space-vs-system.md`).
+- **Stable Layouts**: Use `DomainTemplate` for hub pages to prevent layout shifts during navigation.
+- **Component Integrity**: ALWAYS use custom UI components from `src/components/ui`. NEVER use native browser methods (`alert`, `prompt`).
+- **Type Safety**: Avoid `any`. Use module augmentation for NextAuth types to maintain a strictly typed environment.
 
 ## Building and Running
 
@@ -63,35 +70,21 @@ A Next.js application designed to manage personal data, primarily focused on nut
 
 ### Setup & Development
 ```bash
-# Start local database
+# Start database
 docker compose up -d
 
-# Install dependencies
-pnpm install
+# Generate Client
+pnpm prisma generate
 
-# Apply database migrations
+# Create/Sync Schema
 pnpm prisma migrate dev
 
-# Run development server
+# Run
 pnpm dev
 ```
 
-### Other Commands
-- `pnpm build`: Create a production build.
-- `pnpm lint`: Run ESLint.
-- `pnpm prisma generate`: Regenerate the Prisma Client.
-- `pnpm prisma studio`: Open Prisma GUI for database management.
-
-## Key Models (Nutrition)
-
-- **Profile/Person:** Multi-user support within a single hub.
-- **Product:** Individual food items with nutritional values (calories, protein, etc.).
-- **Dish:** Collections of products (recipes).
-- **DayTemplate:** Reusable meal plans.
-- **WeekPlan/DayPlan:** Actual scheduled meal plans.
-- **ShoppingList:** Automatically generated lists based on plans.
-
 ## Development TODOs
+- [ ] Complete 12-Week Sprint logic (OKRs & Tactics tracking).
+- [ ] Implement automated Weekly Scorecard calculations.
+- [ ] Add AI-powered reflection analysis in Daily Journal.
 - [ ] Implement comprehensive test suite (Vitest/Playwright).
-- [ ] Complete the `fishing` feature implementation.
-- [ ] Add user authentication and authorization.

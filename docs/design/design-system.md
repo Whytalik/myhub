@@ -1,79 +1,97 @@
-# Design System — Vitalii's Hub (v0.3.0)
+# Design System — Personal OS (MyHub)
 
-## Core Philosophy
+## 1. Core Philosophy: "The Sovereign Workspace"
+MyHub is designed as a modular **Personal Operating System**. It prioritizes **contextual focus**, **information density**, and **cross-domain alignment**. 
 
-A "personal operating system" aesthetic. High-contrast, warm dark theme, focused on modularity and information density. Inspired by Notion's structure and Linear's precision.
+### The System vs. Space Distinction:
+- **The System (Logic):** The underlying engine, rules, and data schemas (The "How").
+- **The Space (Environment):** The interactive UI dashboard where work happens (The "Where").
 
 ---
 
-## Typography (Updated: "The Classics")
+## 2. Information Architecture: 5-Domain Model
+The entire OS is organized into 5 fundamental **Life Domains**. Every tool and piece of data must belong to a Domain.
 
-We use **Inter** for its neutral, premium feel and high readability.
+1.  **Operations (Gold)**: The Engine. Planning, Tasks, Habits, Daily Journal.
+2.  **Health (Orange)**: Physical foundation. Nutrition (Food), Fitness, Vitals.
+3.  **Mind (Indigo)**: Intellectual mastery. Languages, Library, Knowledge Base.
+4.  **Wealth (Green)**: Financial resources. Trading, Portfolio, Budgeting.
+5.  **Vault (Gray)**: Secondary storage. Wishlist, Archives, Utilities.
 
-| Role      | Font Family     | Weight       | Tracking | Purpose                          |
+---
+
+## 3. Typography: "The Modern Engineer"
+We use two primary fonts to balance aesthetic appeal with technical precision.
+
+| Role      | Font Family     | Weight       | Tracking | Usage                            |
 |-----------|-----------------|--------------|----------|----------------------------------|
-| Headings  | Inter           | 800 (Black)  | -0.04em  | Page titles, Section headers     |
-| UI / Body | Inter           | 400 - 600    | -0.015em | General interface, Data tables   |
-| Mono      | Geist Mono      | 400 - 500    | 0.2em    | Metadata, Labels, Status, Breadcrumb |
+| Headings  | DM Sans         | 900 (Black)  | -0.06em  | Hero titles, Domain headers      |
+| UI / Body | DM Sans         | 400 - 600    | -0.015em | General interface, Descriptions  |
+| Technical | Geist Mono      | 500 - 700    | 0.25em   | Metadata, Metrics, Sidenotes     |
 
-### Header Scale
-- **Page Title**: `text-5xl font-black uppercase tracking-tighter`
-- **Module Title**: `text-4xl font-black uppercase tracking-tight`
-- **Sidebar Brand**: `text-xl font-black`
-- **Nav Label**: `text-[11px] font-mono uppercase tracking-[0.2em]`
-- **Metadata**: `text-[11px] font-mono uppercase tracking-wider` (Increased for legibility)
+### Heading Scale (Compact)
+- **Hero Title**: `text-5xl md:text-7xl font-heading uppercase`
+- **Section Label**: `text-[10px] font-mono uppercase tracking-[0.4em]`
+- **Metric Value**: `text-2xl font-heading uppercase tracking-tighter`
 
 ---
 
-## Colors (High-Contrast Warm Dark)
+## 4. Color Palette & Theming
+The system supports full **Light** and **Dark** modes via CSS variables defined in `globals.css`.
 
-Updated for maximum legibility on dark backgrounds.
-
-| Token             | Hex       | Tailwind Class        | Usage                                |
-|-------------------|-----------|-----------------------|--------------------------------------|
-| `--color-bg`      | `#0f0d0a` | `bg-bg`               | Canvas background                    |
-| `--color-surface` | `#1a1712` | `bg-surface`          | Sidebar, Primary cards               |
-| `--color-raised`  | `#221e18` | `bg-raised`           | Hover states, Active nav items       |
-| `--color-border`  | `#2c271f` | `border-border`       | Main structural dividers             |
-| `--color-text`    | `#ffffff` | `text-text`           | Primary content, High contrast       |
-| `--color-secondary`| `#d1c7bc` | `text-secondary`      | Secondary information, metadata      |
-| `--color-muted`   | `#a3968a` | `text-muted`          | Inactive labels, placeholder text    |
-| `--color-accent`  | `#e09b2f` | `text-accent`, `bg-accent` | Primary branding, Active indicators |
-| `--color-accent-muted` | `#3a2a0e` | `bg-accent-muted` | Subtle highlights, Selection         |
+| Token             | Dark (Default) | Light Mode   | Usage                                |
+|-------------------|----------------|--------------|--------------------------------------|
+| `--color-bg`      | `#0f0d0a`      | `#f7f5f2`    | Global canvas background             |
+| `--color-surface` | `#1a1712`      | `#ffffff`    | Sidebar, Primary cards               |
+| `--color-raised`  | `#221e18`      | `#efedea`    | Hover states, Secondary backgrounds  |
+| `--color-border`  | `#2c271f`      | `#e2e0db`    | Structural dividers                  |
+| `--color-text`    | `#ffffff`      | `#1a1712`    | Primary content                      |
+| `--color-secondary`| `#d1c7bc`      | `#4a453e`    | Supporting information               |
+| `--color-accent`  | Domain-linked  | Domain-linked| Dynamic accent based on Space        |
 
 ---
 
-## UI Components (Modular Library)
+## 5. UI Components & Patterns
 
-### Form Elements
-- **Input**: Custom borderless `inline` variant for tables and bordered `default` variant for standalone forms. Spinners (arrows) are disabled for `type="number"`.
-- **Select**: Custom dropdown with Lucide chevrons. Maintains mono-font uppercase style.
-- **Tabs**: Linear-style (Pills). Rounded-full buttons with subtle borders. Active tab uses `bg-accent` with a glow effect (`shadow-accent`).
-- **Interactivity**: All inputs use `focus:ring-1 focus:ring-accent` for consistent feedback.
+### 5.1 DomainHeader (Context Switcher)
+- **Visuals**: Permanent horizontal bar (`h-14`) at the top.
+- **Behavior**: Switches the active Domain, triggering a Sidebar filter and navigating to the Domain Hub.
+- **Active State**: Inverted colors (Dark on Accent) with no underline.
 
-### Feedback System
-- **Toasts**: Handled by **sonner**. Dark theme, positioned `top-right`. Matches structural colors (`bg-surface`, `border-border`).
+### 5.2 Contextual Sidebar
+- **States**: 
+    - **Rail (w-20)**: Icon-only mode for focus.
+    - **Expanded (w-64)**: Full labels and sub-navigation.
+- **Pinning**: Manual toggle between Rail and Expanded states.
+- **Interactivity**: Active Space card is highlighted with the Space's unique accent color (8% opacity bg, 25% opacity border).
 
----
-
-## structural Components
-
-### Data Tables (Notion-style)
-- **Border**: Minimal horizontal dividers (`border-b border-border/50`).
-- **Header**: Mono font, uppercase, tracking `0.18em`.
-- **Hover**: Subtle background lift (`hover:bg-raised/50`).
-- **Editing**: Seamless inline editing using `Input[variant="inline"]`.
-
-### Sidebar (Modular)
-- **Width**: `w-64`
-- **Padding**: `p-4`
-- **Groups**: Each module is wrapped in a `bg-surface/40` container with `rounded-2xl` and `border-border/40`.
-- **Interactivity**: Headers toggle visibility via CSS grid transitions.
+### 5.3 Domain Hubs (Landing Pages)
+Built using the **`DomainTemplate`** to ensure 100% visual stability during navigation.
+- **Rules**: 
+    - No vertical scroll for the main dashboard ("Single Screen Design").
+    - **Top Area**: Breadcrumbs.
+    - **Hero Area**: Big typography mission statement.
+    - **Content Area**: Horizontal Space Cards.
+    - **Bottom Area**: Fixed 3-column metrics strip.
 
 ---
 
-## Layout & Spacing (Density over White-space)
+## 6. Data Organization Principles
 
-- **Page Inset**: `px-14 py-10` (Reduced from `py-16` for density)
-- **Component Gap**: `gap-12` (Standard gap between page sections)
-- **Module Gap**: `gap-16` (Major module-level separation)
+### Hierarchical Lineage
+Every record must have a clear lineage:
+`Domain` -> `Space` -> `Tool` -> `Sub-tool` -> `Entry`
+*Example:* `Operations` -> `Life Space` -> `Journal` -> `Morning Routine` -> `Checkmark`.
+
+### Data Governance (Export/Import)
+- **Deep Restore**: The system must maintain relational integrity during imports by mapping old IDs to newly generated database IDs.
+- **Recursive Tasks**: Parent-child relationships in tasks must be restored in order of depth.
+- **Safe Migrations**: Always use `prisma db push` on production without `--accept-data-loss` to protect the state.
+
+---
+
+## 7. Interaction Rules for AI Agents
+1.  **Always use `DomainTemplate`** for new high-level pages.
+2.  **Never hardcode colors**: Use `var(--color-...)` or pass color props to template components.
+3.  **Typography consistency**: Use `font-heading` for titles and `font-mono` for anything quantifiable.
+4.  **Compactness first**: If adding content creates a scroll on a hub page, simplify or move to a sub-page.
