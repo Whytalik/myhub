@@ -14,7 +14,6 @@ import {
   ChevronRight,
   Compass,
   Dumbbell,
-  HelpCircle,
   History,
   Languages,
   LayoutDashboard,
@@ -35,9 +34,7 @@ import {
   Briefcase,
   Shield,
   Brain,
-  Database,
-  Pin,
-  PinOff
+  Database
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -92,16 +89,16 @@ const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
 
-// --- Theme Configuration ---
+// --- Theme Configuration (Adaptive) ---
 const spaceColors: Record<string, { text: string; bgActive: string; bgInactive: string; borderActive: string; borderInactive: string }> = {
-  "Life Space":     { text: "#6fbfbf", bgActive: "rgba(111,191,191,0.12)", bgInactive: "rgba(111,191,191,0.02)", borderActive: "rgba(111,191,191,0.25)", borderInactive: "rgba(111,191,191,0.1)" },
-  "Planning Space": { text: "#fbbf24", bgActive: "rgba(251,191,36,0.12)",  bgInactive: "rgba(251,191,36,0.02)",  borderActive: "rgba(251,191,36,0.25)",  borderInactive: "rgba(251,191,36,0.1)" },
-  "Food Space":     { text: "#ff8c00", bgActive: "rgba(255,140,0,0.12)",   bgInactive: "rgba(255,140,0,0.02)",   borderActive: "rgba(255,140,0,0.25)",   borderInactive: "rgba(255,140,0,0.1)" },
-  "Fitness Space":  { text: "#e87d88", bgActive: "rgba(232,125,136,0.12)", bgInactive: "rgba(232,125,136,0.02)", borderActive: "rgba(232,125,136,0.25)", borderInactive: "rgba(232,125,136,0.1)" },
-  "Language Space": { text: "#c084fc", bgActive: "rgba(192,132,252,0.12)", bgInactive: "rgba(192,132,252,0.02)", borderActive: "rgba(192,132,252,0.25)", borderInactive: "rgba(192,132,252,0.1)" },
-  "Library Space":  { text: "#818cf8", bgActive: "rgba(129,140,248,0.12)", bgInactive: "rgba(129,140,248,0.02)", borderActive: "rgba(129,140,248,0.25)", borderInactive: "rgba(129,140,248,0.1)" },
-  "Trading Space":  { text: "#22c55e", bgActive: "rgba(34,197,94,0.12)",  bgInactive: "rgba(34,197,94,0.02)",  borderActive: "rgba(34,197,94,0.25)",  borderInactive: "rgba(34,197,94,0.1)" },
-  "Misc / Other":   { text: "#a3a3a3", bgActive: "rgba(163,163,163,0.12)", bgInactive: "rgba(163,163,163,0.02)", borderActive: "rgba(163,163,163,0.25)", borderInactive: "rgba(163,163,163,0.1)" },
+  "Life Space":     { text: "#6fbfbf", bgActive: "var(--color-life-muted)", bgInactive: "transparent", borderActive: "rgba(111,191,191,0.2)", borderInactive: "var(--color-border)" },
+  "Planning Space": { text: "#fbbf24", bgActive: "rgba(251,191,36,0.1)",  bgInactive: "transparent",  borderActive: "rgba(251,191,36,0.2)",  borderInactive: "var(--color-border)" },
+  "Food Space":     { text: "#ff8c00", bgActive: "rgba(255,140,0,0.1)",   bgInactive: "transparent",   borderActive: "rgba(255,140,0,0.2)",   borderInactive: "var(--color-border)" },
+  "Fitness Space":  { text: "#e87d88", bgActive: "rgba(232,125,136,0.1)", bgInactive: "transparent", borderActive: "rgba(232,125,136,0.2)", borderInactive: "var(--color-border)" },
+  "Language Space": { text: "#c084fc", bgActive: "rgba(192,132,252,0.1)", bgInactive: "transparent", borderActive: "rgba(192,132,252,0.2)", borderInactive: "var(--color-border)" },
+  "Library Space":  { text: "#818cf8", bgActive: "rgba(129,140,248,0.1)", bgInactive: "transparent", borderActive: "rgba(129,140,248,0.2)", borderInactive: "var(--color-border)" },
+  "Trading Space":  { text: "#22c55e", bgActive: "rgba(34,197,94,0.1)",  bgInactive: "transparent",  borderActive: "rgba(34,197,94,0.2)",  borderInactive: "var(--color-border)" },
+  "Misc / Other":   { text: "#a3a3a3", bgActive: "rgba(163,163,163,0.1)", bgInactive: "transparent", borderActive: "rgba(163,163,163,0.2)", borderInactive: "var(--color-border)" },
 };
 
 interface SidebarProps {
@@ -114,12 +111,16 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   const { isCollapsed, toggleSidebar } = useSidebar();
   const { activeDomain } = useSpace();
   const [mounted, setMounted] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isAdmin = user?.role === "ADMIN";
 
   const [order, setOrder] = useState<string[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     setMounted(true);
@@ -157,7 +158,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   if (!mounted) return <aside className="w-20 bg-surface border-r border-border h-screen shrink-0" />;
 
-  const isExpanded = !isCollapsed || isHovered;
+  const isExpanded = !isCollapsed;
 
   const renderNavGroup = (
     label: string,
@@ -166,9 +167,9 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     return (
       <div
         key={label}
-        className="flex flex-col gap-4 animate-in fade-in slide-in-from-left-4 duration-500"
+        className="flex flex-col gap-4 animate-in fade-in duration-500"
       >
-        <div className="flex flex-col gap-3 px-1">
+        <div className="flex flex-col gap-2.5 px-1">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
             const subSectionKey = `${label}-${item.label}`;
@@ -180,7 +181,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
               <div 
                 key={item.href} 
                 className={`flex flex-col border rounded-2xl p-1 transition-all duration-300 ${
-                  isItemActive ? "border-border shadow-sm" : "bg-surface/30 border-border/40"
+                  isItemActive ? "shadow-sm" : "bg-surface/30 border-border/40"
                 }`}
                 style={{ 
                   backgroundColor: isItemActive ? color.bgActive : color.bgInactive,
@@ -190,18 +191,21 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 <div className="flex items-center justify-between group">
                   <Link
                     href={item.href}
-                    className="flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-200"
+                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-200 ${!isExpanded ? "justify-center" : ""}`}
                   >
                     <div className="w-5 flex justify-center shrink-0">
                       <ItemIcon 
                         size={18} 
-                        style={{ color: isItemActive ? color.text : 'rgba(255,255,255,0.4)' }} 
+                        style={{ color: isItemActive ? color.text : undefined }} 
                         strokeWidth={isItemActive ? 2.5 : 2}
-                        className="transition-colors"
+                        className={`transition-colors ${isItemActive ? "" : "text-muted group-hover:text-secondary"}`}
                       />
                     </div>
                     <div className={`flex-1 transition-all duration-300 overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
-                      <span className="transition-colors" style={{ color: isItemActive ? color.text : 'rgba(255,255,255,0.6)' }}>
+                      <span 
+                        className="transition-colors" 
+                        style={{ color: isItemActive ? color.text : undefined }}
+                      >
                         {item.label}
                       </span>
                     </div>
@@ -214,7 +218,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                       <ChevronRight 
                         size={14} 
                         className={`transition-transform duration-300 ${isSubOpen ? "rotate-90" : ""}`} 
-                        style={{ color: isItemActive ? color.text : 'rgba(255,255,255,0.3)' }}
+                        style={{ color: isItemActive ? color.text : undefined }}
                       />
                     </button>
                   )}
@@ -222,7 +226,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                 
                 {isExpanded && item.subItems && isSubOpen && (
                   <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in slide-in-from-top-2 duration-300">
-                    <div className="border-t mb-1" style={{ borderColor: isItemActive ? color.borderActive : 'rgba(255,255,255,0.1)' }} />
+                    <div className="border-t border-border/40 mb-1" />
                     {item.subItems.map(sub => {
                       const SubIcon = sub.icon;
                       const isSubActive = pathname === sub.href;
@@ -230,14 +234,18 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-colors overflow-hidden whitespace-nowrap"
-                          style={{ 
-                            color: isSubActive ? color.text : 'rgba(255,255,255,0.5)',
-                            backgroundColor: isSubActive ? 'rgba(255,255,255,0.06)' : 'transparent'
-                          }}
+                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-colors overflow-hidden whitespace-nowrap ${
+                            isSubActive ? "bg-accent/5 font-bold" : "text-secondary hover:text-text"
+                          }`}
+                          style={{ color: isSubActive ? color.text : undefined }}
                         >
-                          <SubIcon size={12} style={{ color: isSubActive ? color.text : 'currentColor', opacity: isSubActive ? 1 : 0.6 }} strokeWidth={isSubActive ? 2.5 : 2} className="shrink-0" />
-                          <span className={`${isSubActive ? "font-bold" : ""} truncate`}>{sub.label}</span>
+                          <SubIcon 
+                            size={12} 
+                            style={{ color: isSubActive ? color.text : undefined }} 
+                            strokeWidth={isSubActive ? 2.5 : 2} 
+                            className="shrink-0" 
+                          />
+                          <span className="truncate">{sub.label}</span>
                         </Link>
                       );
                     })}
@@ -254,8 +262,6 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   return (
     <>
       <aside 
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         className={`
           sticky top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-500 ease-in-out z-[100]
           ${isExpanded ? "w-64" : "w-20"}
@@ -272,15 +278,13 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
             </div>
           </Link>
           
-          {isExpanded && (
-            <button 
-              onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-              className={`p-1.5 rounded-lg transition-all ${!isCollapsed ? "text-accent bg-accent/10" : "text-muted hover:text-text hover:bg-raised"}`}
-              title={!isCollapsed ? "Unlock sidebar" : "Lock expanded"}
-            >
-              {!isCollapsed ? <Pin size={14} /> : <PinOff size={14} />}
-            </button>
-          )}
+          <button 
+            onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
+            className={`p-2 rounded-xl transition-all ${!isCollapsed ? "text-accent bg-accent/10" : "text-muted hover:text-accent hover:bg-accent/10"}`}
+            title={!isCollapsed ? "Collapse Sidebar" : "Expand Sidebar"}
+          >
+            {!isCollapsed ? <PanelLeftClose size={18} /> : <PanelLeftOpen size={18} />}
+          </button>
         </div>
 
         <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth transition-all duration-300 ${isExpanded ? "px-3" : "px-2"}`}>
@@ -356,6 +360,7 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
         isOpen={isSettingsOpen} 
         onClose={() => setIsSettingsOpen(false)} 
         initialOrder={order}
+        userName={user?.name}
       />
     </>
   );

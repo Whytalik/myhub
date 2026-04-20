@@ -13,12 +13,25 @@
   --color-text:        #ffffff;
   --color-secondary:   #d1c7bc;
   --color-muted:       #a3968a;
-  --color-accent:      #c084fc;
+  --color-accent:      #fbbf24;
   --color-accent-muted:#2d1b4e;
-  --color-gold:        #e09b2f;
+  --color-gold:        #fbbf24;
   --color-life:        #6fbfbf;
   --color-life-muted:  #0d2424;
+}
 
+/* Light Theme Variables */
+.light {
+  --color-bg:          #f7f5f2;
+  --color-surface:     #ffffff;
+  --color-raised:      #efedea;
+  --color-border:      #e2e0db;
+  --color-border-dim:  #eceae5;
+  --color-text:        #1a1712;
+  --color-secondary:   #4a453e;
+  --color-muted:       #8a8276;
+  --color-accent:      #d97706; 
+  --color-accent-muted:#fef3c7;
 }
 
 *, *::before, *::after {
@@ -31,6 +44,7 @@ body {
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.015em;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -43,23 +57,7 @@ h1, h2, h3, h4, .font-heading {
   letter-spacing: -0.04em;
 }
 
-/* Hide number input spin buttons */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-::-webkit-scrollbar       { width: 5px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 9999px; }
-
-/* Hide scrollbar by default for a clean "OS" look, while keeping functionality */
+/* Hide scrollbar by default */
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;

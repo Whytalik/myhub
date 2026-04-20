@@ -13,6 +13,7 @@ interface DialogProps {
   footer?: React.ReactNode;
   maxWidth?: string;
   bare?: boolean; // skip the left-border content wrapper
+  noScroll?: boolean; // disable internal scrolling
 }
 
 export function Dialog({
@@ -24,6 +25,7 @@ export function Dialog({
   footer,
   maxWidth,
   bare,
+  noScroll,
 }: DialogProps) {
   const [mounted, setMounted] = React.useState(false);
 
@@ -54,7 +56,7 @@ export function Dialog({
         className="relative w-full bg-surface border border-border rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-300 overflow-hidden"
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
-        <div className="px-6 pt-6 pb-6 overflow-y-auto max-h-[84vh]">
+        <div className={`px-6 pt-6 pb-6 ${noScroll ? "" : "overflow-y-auto max-h-[84vh]"}`}>
           <div className="flex items-start justify-between mb-3">
             <div className="space-y-0.5">
               {title && (
