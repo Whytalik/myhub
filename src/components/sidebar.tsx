@@ -2,10 +2,12 @@
 
 import { signOut } from "next-auth/react";
 import type { LucideIcon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "./sidebar-provider";
 import { useSpace } from "./space-provider";
 import { SettingsModal } from "./settings-modal";
 import { ICON_LIBRARY, IconName } from "@/lib/constants/icons";
+import { DEFAULT_SPACE_COLORS } from "@/lib/constants/colors";
 import {
   Activity,
   BookText,
@@ -33,7 +35,8 @@ import {
   Brain,
   Database,
   Pin,
-  PinOff
+  PinOff,
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -88,37 +91,38 @@ const otherNav = [
   { href: "/other/wishlist", label: "Wishlist", icon: Target },
 ];
 
-// --- Default Theme Configuration ---
-const defaultSpaceColors: Record<string, { text: string; bgActive: string; bgInactive: string; borderActive: string; borderInactive: string }> = {
-  "Life Space":     { text: "#6fbfbf", bgActive: "var(--color-life-muted)", bgInactive: "transparent", borderActive: "rgba(111,191,191,0.2)", borderInactive: "var(--color-border)" },
-  "Planning Space": { text: "#fbbf24", bgActive: "rgba(251,191,36,0.1)",  bgInactive: "transparent",  borderActive: "rgba(251,191,36,0.2)",  borderInactive: "var(--color-border)" },
-  "Food Space":     { text: "#ff8c00", bgActive: "rgba(255,140,0,0.1)",   bgInactive: "transparent",   borderActive: "rgba(255,140,0,0.2)",   borderInactive: "var(--color-border)" },
-  "Fitness Space":  { text: "#e87d88", bgActive: "rgba(232,125,136,0.1)", bgInactive: "transparent", borderActive: "rgba(232,125,136,0.2)", borderInactive: "var(--color-border)" },
-  "Language Space": { text: "#c084fc", bgActive: "rgba(192,132,252,0.1)", bgInactive: "transparent", borderActive: "rgba(192,132,252,0.2)", borderInactive: "var(--color-border)" },
-  "Library Space":  { text: "#818cf8", bgActive: "rgba(129,140,248,0.1)", bgInactive: "transparent", borderActive: "rgba(129,140,248,0.2)", borderInactive: "var(--color-border)" },
-  "Trading Space":  { text: "#22c55e", bgActive: "rgba(34,197,94,0.1)",  bgInactive: "transparent",  borderActive: "rgba(34,197,94,0.2)",  borderInactive: "var(--color-border)" },
-  "Misc / Other":   { text: "#a3a3a3", bgActive: "rgba(163,163,163,0.1)", bgInactive: "transparent", borderActive: "rgba(163,163,163,0.2)", borderInactive: "var(--color-border)" },
-};
+// --- Animation constants ---
+const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
+const LABEL_TRANSITION = { duration: 0.14, ease: "easeOut" } as const;
+const SUBMENU_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
 
 interface SidebarProps {
   user?: { name: string; email: string; role?: string };
   initialOrder?: string[];
+  initialCustomizations?: Record<string, { icon?: string, color?: string }>;
+  initialOpenSections?: Record<string, boolean>;
 }
 
-export function Sidebar({ user, initialOrder }: SidebarProps) {
+export function Sidebar({
+  user,
+  initialOrder,
+  initialCustomizations = {},
+  initialOpenSections = {}
+}: SidebarProps) {
   const pathname = usePathname();
-  const { isCollapsed, toggleSidebar } = useSidebar();
+  const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const { activeDomain } = useSpace();
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [customizations, setCustomizations] = useState<Record<string, { icon?: string, color?: string }>>({});
+  const [customizations, setCustomizations] = useState(initialCustomizations);
   const isAdmin = user?.role === "ADMIN";
 
   const [order, setOrder] = useState<string[]>([]);
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
   const loadCustomizations = () => {
+    if (typeof window === 'undefined') return;
     const saved = localStorage.getItem("system-customizations");
     if (saved) setCustomizations(JSON.parse(saved));
   };
@@ -131,7 +135,11 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   }, []);
 
   useEffect(() => {
-    const ALL_DOMAINS_CURRENT = isAdmin 
+    setIsMobileOpen(false);
+  }, [pathname, setIsMobileOpen]);
+
+  useEffect(() => {
+    const ALL_DOMAINS_CURRENT = isAdmin
       ? ["operations", "health", "mind", "wealth", "vault"]
       : ["operations", "vault"];
 
@@ -146,11 +154,15 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
     if (initialOrder) {
       setOrder(mergeOrder(initialOrder));
     } else {
-      const savedOrder = localStorage.getItem("sidebar-domains-order");
-      if (savedOrder) {
-        try {
-          setOrder(mergeOrder(JSON.parse(savedOrder)));
-        } catch {
+      if (typeof window !== 'undefined') {
+        const savedOrder = localStorage.getItem("sidebar-domains-order");
+        if (savedOrder) {
+          try {
+            setOrder(mergeOrder(JSON.parse(savedOrder)));
+          } catch {
+            setOrder(ALL_DOMAINS_CURRENT);
+          }
+        } else {
           setOrder(ALL_DOMAINS_CURRENT);
         }
       } else {
@@ -160,115 +172,161 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
   }, [initialOrder, isAdmin]);
 
   const toggleSection = (label: string) => {
-    setOpenSections((prev) => ({ ...prev, [label]: !prev[label] }));
+    setOpenSections((prev) => {
+      const next = { ...prev, [label]: !prev[label] };
+      document.cookie = `sidebar-open-sections=${JSON.stringify(next)}; path=/; max-age=31536000`;
+      localStorage.setItem("sidebar-open-sections", JSON.stringify(next));
+      return next;
+    });
   };
 
-  if (!mounted) return <aside className="w-20 bg-surface border-r border-border h-screen shrink-0" />;
-
-  const isExpanded = !isCollapsed || isHovered;
+  const isExpanded = isMobileOpen || !isCollapsed || isHovered;
 
   const renderNavGroup = (
     label: string,
     items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
   ) => {
     return (
-      <div key={label} className="flex flex-col gap-4 animate-in fade-in duration-500">
-        <div className="flex flex-col gap-2.5 px-1">
+      <div key={label} className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-2 w-full">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
             const subSectionKey = `${label}-${item.label}`;
-            const isSubOpen = openSections[subSectionKey] ?? isItemActive;
-            
+            const isSubOpen = openSections[subSectionKey] ?? false;
+
             const custom = customizations[item.id];
             const ItemIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || item.icon) : item.icon;
-            const baseColor = custom?.color || defaultSpaceColors[item.label]?.text || "#a3a3a3";
-            
+            const baseColor = custom?.color || DEFAULT_SPACE_COLORS[item.label]?.text || "#a3a3a3";
+
             const color = {
-               text: baseColor,
-               bgActive: `${baseColor}15`,
-               bgHover: `${baseColor}08`, 
-               bgInactive: "transparent",
-               borderActive: `${baseColor}30`,
-               borderHover: `${baseColor}20`,
-               borderInactive: "var(--color-border)"
+              text: baseColor,
+              bgActive: `${baseColor}18`,
+              bgHover: `${baseColor}12`,
+              bgInactive: "transparent",
+              borderActive: `${baseColor}40`,
+              borderHover: `${baseColor}50`,
+              glow: `${baseColor}20`
             };
 
             return (
-              <div 
-                key={item.href} 
-                className={`flex flex-col border rounded-2xl p-1 transition-all duration-300 group ${
-                  isItemActive ? "shadow-sm" : "bg-surface/30"
-                } ${!isItemActive ? "hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)]" : ""}`}
-                style={{ 
-                  backgroundColor: isItemActive ? color.bgActive : color.bgInactive,
-                  borderColor: isItemActive ? color.borderActive : color.borderInactive,
+              <div
+                key={item.href}
+                className={`flex flex-col border transition-colors duration-200 group/item overflow-hidden rounded-2xl bg-[var(--item-bg)] border-[var(--item-border)] hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)] ${
+                  isItemActive ? "shadow-[0_8px_20px_-6px_var(--glow-color)]" : ""
+                }`}
+                style={{
+                  "--item-bg": isItemActive ? color.bgActive : "transparent",
+                  "--item-border": isItemActive ? color.borderActive : `${baseColor}25`,
                   "--hover-bg": color.bgHover,
                   "--hover-border": color.borderHover,
                   "--hover-text": color.text,
+                  "--glow-color": color.glow,
                 } as React.CSSProperties}
               >
-                <div className="flex items-center justify-between group/link">
+                <div className="flex items-center group/link relative w-full">
                   <Link
                     href={item.href}
-                    className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-200 ${!isExpanded ? "justify-center" : ""}`}
+                    className="flex-1 flex items-center h-12"
                   >
-                    <div className="w-5 flex justify-center shrink-0">
-                      <ItemIcon 
-                        size={18} 
-                        style={{ color: isItemActive ? color.text : undefined }} 
+                    <motion.div
+                      initial={false}
+                      animate={{ paddingLeft: isExpanded ? 12 : 10 }}
+                      transition={SIDEBAR_SPRING}
+                      className="flex items-center w-full h-full"
+                    >
+                    <div className={`w-9 h-9 flex items-center justify-center shrink-0 rounded-xl transition-all duration-200 ${
+                      !isExpanded && isItemActive ? "shadow-[0_0_15px_-3px_var(--glow-color)]" : ""
+                    } ${!isExpanded ? "group-hover/item:scale-110" : ""}`}
+                    style={{ backgroundColor: !isExpanded && isItemActive ? `${color.text}15` : undefined }}>
+                      <ItemIcon
+                        size={18}
+                        style={{ color: color.text }}
                         strokeWidth={isItemActive ? 2.5 : 2}
-                        className={`transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`}
+                        className="transition-colors duration-200"
                       />
                     </div>
-                    <div className={`flex-1 transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}>
-                      <span 
-                        className={`transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`} 
-                        style={{ color: isItemActive ? color.text : undefined }}
+
+                    <motion.div
+                      initial={false}
+                      animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
+                      transition={LABEL_TRANSITION}
+                      className="ml-3 overflow-hidden"
+                      style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+                    >
+                      <span
+                        className="text-[13px] font-bold whitespace-nowrap"
+                        style={{ color: color.text }}
                       >
                         {item.label}
                       </span>
-                    </div>
+                    </motion.div>
+                    </motion.div>
                   </Link>
-                  {isExpanded && item.subItems && (
-                    <button
-                      onClick={() => toggleSection(subSectionKey)}
-                      className={`p-2 transition-colors duration-300 ${isItemActive ? "" : "text-muted group-hover:text-[var(--hover-text)]"}`}
+
+                  {item.subItems && (
+                    <motion.button
+                      initial={false}
+                      animate={{ opacity: isExpanded ? 1 : 0 }}
+                      transition={{ duration: 0.15 }}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleSection(subSectionKey); }}
+                      className="p-3 transition-colors duration-200"
+                      style={{ pointerEvents: isExpanded ? "auto" : "none", color: color.text }}
                     >
-                      <ChevronRight 
-                        size={14} 
-                        className={`transition-transform duration-500 ${isSubOpen ? "rotate-90" : ""}`} 
-                        style={{ color: isItemActive ? color.text : undefined }}
-                      />
-                    </button>
+                      <motion.div
+                        initial={false}
+                        animate={{ rotate: isSubOpen ? 90 : 0 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                      >
+                        <ChevronRight size={14} />
+                      </motion.div>
+                    </motion.button>
                   )}
                 </div>
-                
-                {isExpanded && item.subItems && isSubOpen && (
-                  <div className="flex flex-col gap-1 pl-7 pr-1 pb-1 pt-1 animate-in fade-in slide-in-from-top-1 duration-300">
-                    <div className="border-t border-border/40 mb-1" />
-                    {item.subItems.map(sub => {
-                      const SubIcon = sub.icon;
-                      const isSubActive = pathname === sub.href;
-                      return (
-                        <Link
-                          key={sub.href}
-                          href={sub.href}
-                          className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-all duration-300 overflow-hidden whitespace-nowrap ${
-                            isSubActive ? "bg-accent/5 font-bold" : "text-secondary hover:text-[var(--hover-text)] hover:bg-[var(--hover-bg)]"
-                          }`}
-                          style={{ color: isSubActive ? color.text : undefined }}
-                        >
-                          <SubIcon 
-                            size={12} 
-                            style={{ color: isSubActive ? color.text : undefined }} 
-                            strokeWidth={isSubActive ? 2.5 : 2} 
-                            className="shrink-0" 
-                          />
-                          <span className="truncate">{sub.label}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
+
+                {item.subItems && (
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      height: isExpanded && isSubOpen ? "auto" : 0,
+                      opacity: isExpanded && isSubOpen ? 1 : 0,
+                    }}
+                    transition={SUBMENU_TRANSITION}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <div className="flex flex-col gap-1 pl-3 pr-2 pb-2 pt-1">
+                      <div
+                        className="h-px mb-1 transition-colors duration-500"
+                        style={{ backgroundColor: isItemActive ? color.borderActive : "rgba(255,255,255,0.05)" }}
+                      />
+                      {item.subItems.map((sub) => {
+                        const SubIcon = sub.icon;
+                        const isSubActive = pathname === sub.href;
+                        return (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-lg text-[12px] transition-colors duration-200 ${
+                              isSubActive
+                                ? "font-bold"
+                                : "text-muted hover:text-[var(--hover-text)] hover:bg-[var(--hover-bg)]"
+                            }`}
+                            style={{
+                              color: isSubActive ? color.text : undefined,
+                              backgroundColor: isSubActive ? color.bgHover : undefined,
+                            }}
+                          >
+                            <SubIcon
+                              size={13}
+                              style={{ color: isSubActive ? color.text : undefined }}
+                              strokeWidth={isSubActive ? 2.5 : 2}
+                              className="shrink-0"
+                            />
+                            <span className="truncate">{sub.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
                 )}
               </div>
             );
@@ -280,45 +338,96 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
 
   return (
     <>
-      <aside 
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-bg/60 backdrop-blur-sm z-[105] lg:hidden"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.aside
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        animate={{
+          width: isMobileOpen ? 288 : (isExpanded ? 256 : 80),
+        }}
+        initial={false}
+        transition={SIDEBAR_SPRING}
         className={`
-          sticky top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1) z-[100]
-          ${isExpanded ? "w-64 shadow-2xl" : "w-20"}
+          fixed inset-y-0 left-0 z-[999] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
+          transition-transform duration-300 ease-out
+          ${isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
         `}
       >
-        <div className="shrink-0 py-8 px-[22px] flex items-center relative h-28">
-          <Link href="/home" className="flex items-center gap-3.5 group shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
+        {/* Sidebar Header */}
+        <div className="shrink-0 h-16 flex items-center justify-between relative pl-5 pr-4 border-b border-border">
+          <Link href="/home" className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
               <Sparkles size={20} className="text-bg" fill="currentColor" />
             </div>
-            
-            <div className={`flex flex-col transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"}`}>
-              <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
-              <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
-            </div>
+
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={LABEL_TRANSITION}
+                  className="flex flex-col overflow-hidden whitespace-nowrap"
+                >
+                  <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
+                  <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Link>
 
-          {isExpanded && (
-            <button 
-              onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-              className={`absolute right-4 p-2 rounded-xl transition-all duration-500 animate-in fade-in slide-in-from-right-2 ${
-                !isCollapsed 
-                  ? "text-accent bg-accent/10 border border-accent/20" 
-                  : "text-muted hover:text-text hover:bg-raised"
-              }`}
-              title={!isCollapsed ? "Unpin sidebar" : "Pin sidebar"}
-            >
-              <Pin size={14} className={`transition-transform duration-500 ${!isCollapsed ? "rotate-45" : ""}`} />
-            </button>
-          )}
+          <AnimatePresence initial={false}>
+            {isExpanded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="shrink-0 flex items-center"
+              >
+                {/* Mobile: X close button */}
+                <button
+                  onClick={() => setIsMobileOpen(false)}
+                  className="lg:hidden p-2 rounded-xl text-muted hover:text-text hover:bg-raised transition-all duration-200"
+                >
+                  <X size={16} />
+                </button>
+                {/* Desktop: Pin button */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
+                  className={`hidden lg:flex p-2 rounded-xl transition-all duration-200 ${
+                    !isCollapsed
+                      ? "text-accent bg-accent/10 border border-accent/20"
+                      : "text-muted hover:text-text hover:bg-raised"
+                  }`}
+                >
+                  <motion.div
+                    animate={{ rotate: !isCollapsed ? 45 : 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
+                    <Pin size={14} />
+                  </motion.div>
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className={`flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth transition-all duration-500 ${isExpanded ? "px-3" : "px-2"}`}>
-          <div className={`mb-6 transition-all duration-500 ${isExpanded ? "px-3" : "px-1"}`}>
-            <div className="h-px w-full bg-border/40" />
-          </div>
+        {/* Navigation Content */}
+        <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth px-3 pt-4">
           <nav className="flex flex-col gap-4">
             {order.map((section) => {
               if (section !== activeDomain) return null;
@@ -331,63 +440,83 @@ export function Sidebar({ user, initialOrder }: SidebarProps) {
               if (section === "health" && isAdmin)
                 return renderNavGroup("Health", [
                   { id: "food", label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
-                  { id: "fitness",   label: "Fitness Space",  href: "/fitness",  icon: Dumbbell, subItems: fitnessNav },
+                  { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
                 ]);
               if (section === "mind" && isAdmin)
                 return renderNavGroup("Mind", [
                   { id: "languages", label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
-                  { id: "library",   label: "Library Space",   href: "/library",   icon: BookText, subItems: libraryNav },
+                  { id: "library", label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
                 ]);
               if (section === "wealth" && isAdmin)
                 return renderNavGroup("Wealth", [
-                  { id: "trading",   label: "Trading Space",   href: "/trading",   icon: TrendingUp, subItems: tradingNav },
+                  { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
                 ]);
               if (section === "vault")
                 return renderNavGroup("Vault", [
-                  { id: "other",     label: "Misc / Other",    href: "/other",     icon: Package, subItems: otherNav },
+                  { id: "other", label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
                 ]);
               return null;
             })}
           </nav>
         </div>
 
-        <div className="border-t border-border mt-auto" />
-        <div className={`shrink-0 flex flex-col gap-1 pb-4 pt-2 transition-all duration-300 ${isExpanded ? "px-4" : "px-2"}`}>
+        {/* User Footer */}
+        <div className="shrink-0 flex items-center justify-between relative pl-5 pr-4 py-4 overflow-hidden border-t border-border">
           {user && (
-            <div className="flex items-center gap-3 px-1 py-1 w-full overflow-hidden relative">
-              <Link href="/profile" className={`flex items-center gap-3 p-1.5 rounded-xl transition-all duration-300 hover:bg-raised group/profile ${pathname === '/profile' ? 'bg-raised/80' : ''} ${isExpanded ? "flex-1 min-w-0" : "w-12 h-12 justify-center"}`}>
-                <div className="w-8 h-8 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0">
+            <>
+              <Link href="/profile" className="flex items-center gap-4 group/profile-link">
+                <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0 group-hover/profile-link:scale-105 transition-transform duration-200 shadow-lg shadow-accent/5">
                   <span className="text-accent text-[12px] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
-                <div className={`transition-all duration-500 ease-in-out overflow-hidden whitespace-nowrap ${isExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"}`}>
-                  <p className="text-[13px] font-semibold text-text truncate">{user.name}</p>
-                  <p className="text-[11px] text-muted truncate">{user.email}</p>
-                </div>
+
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={LABEL_TRANSITION}
+                      className="flex flex-col overflow-hidden whitespace-nowrap"
+                    >
+                      <p className="text-[13px] font-bold text-text truncate leading-none mb-1">{user.name}</p>
+                      <p className="text-[10px] text-muted truncate font-mono uppercase tracking-widest">{user.role || 'User'}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </Link>
-              {isExpanded && (
-                <div className="flex items-center gap-0.5 animate-in fade-in duration-700">
-                  <button 
-                    onClick={() => setIsSettingsOpen(true)}
-                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300"
+
+              <AnimatePresence initial={false}>
+                {isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-0.5 shrink-0"
                   >
-                    <Settings2 size={13} />
-                  </button>
-                  <button 
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-colors duration-300"
-                  >
-                    <LogOut size={13} />
-                  </button>
-                </div>
-              )}
-            </div>
+                    <button
+                      onClick={() => setIsSettingsOpen(true)}
+                      className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-all duration-200"
+                    >
+                      <Settings2 size={13} />
+                    </button>
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/login" })}
+                      className="p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                    >
+                      <LogOut size={13} />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
           )}
         </div>
-      </aside>
+      </motion.aside>
 
-      <SettingsModal 
-        isOpen={isSettingsOpen} 
-        onClose={() => setIsSettingsOpen(false)} 
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
         initialOrder={order}
         userName={user?.name}
       />
