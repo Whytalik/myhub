@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ICON_LIBRARY, IconName } from "@/lib/constants/icons";
 import { SYSTEM_COLORS } from "@/lib/constants/colors";
+import { SPACE_THEMES } from "@/lib/spaces";
 import { 
   User, 
   Palette, 
@@ -106,7 +107,7 @@ function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelec
         <button
           key={c.hex}
           onClick={(e) => { e.stopPropagation(); onSelect(c.hex); }}
-          className={`w-4 h-4 rounded-full transition-transform hover:scale-125 ${currentColor === c.hex ? "ring-1 ring-text ring-offset-1 ring-offset-bg" : ""}`}
+          className={`w-4 h-4 rounded-full transition-transform hover:scale-125 ${currentColor.toLowerCase() === c.hex.toLowerCase() ? "ring-1 ring-text ring-offset-1 ring-offset-bg" : ""}`}
           style={{ backgroundColor: c.hex }}
         />
       ))}
@@ -120,18 +121,20 @@ function SortableItem({
   id, 
   label, 
   icon: Icon, 
-  color = "#a3a3a3", 
+  color, 
   isSelected, 
   onSelect,
-  onUpdate
+  onUpdate,
+  currentIconName
 }: { 
   id: string, 
   label: string, 
   icon: LucideIcon, 
-  color?: string, 
+  color: string, 
   isSelected: boolean,
   onSelect: () => void,
-  onUpdate: (key: 'icon' | 'color', val: string) => void
+  onUpdate: (key: 'icon' | 'color', val: string) => void,
+  currentIconName: string
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
@@ -176,7 +179,7 @@ function SortableItem({
            <div className="space-y-3">
               <div>
                 <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Icon Library</span>
-                <IconPicker currentIcon="" onSelect={(icon) => onUpdate('icon', icon)} color={color} />
+                <IconPicker currentIcon={currentIconName} onSelect={(icon) => onUpdate('icon', icon)} color={color} />
               </div>
               <div>
                 <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Accent Color</span>
@@ -348,8 +351,28 @@ export function SettingsModal({
         bare
         noScroll
       >
-        <div className="flex h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
-          <div className="w-44 border-r border-border/50 bg-raised/30 p-2 flex flex-col gap-1 shrink-0">
+        <div className="flex flex-col sm:flex-row h-[calc(100dvh-160px)] sm:h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
+
+          {/* Mobile: horizontal scrollable tabs */}
+          <div className="sm:hidden flex overflow-x-auto scrollbar-hide border-b border-border/30 bg-raised/30 shrink-0">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
+                className={`flex flex-col items-center gap-1 px-4 py-3 text-[10px] font-bold whitespace-nowrap transition-all shrink-0 border-b-2 ${
+                  activeTab === tab.id
+                    ? "border-accent text-accent"
+                    : "border-transparent text-muted"
+                }`}
+              >
+                <tab.icon size={16} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Desktop: vertical tabs */}
+          <div className="hidden sm:flex w-44 border-r border-border/50 bg-raised/30 p-2 flex-col gap-1 shrink-0">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -363,12 +386,12 @@ export function SettingsModal({
               </button>
             ))}
             <div className="mt-auto p-2 text-center">
-               <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
+              <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
             </div>
           </div>
 
           <div className="flex-1 bg-surface overflow-hidden relative">
-            <div className="h-full overflow-y-auto scrollbar-hide p-5">
+            <div className="h-full overflow-y-auto scrollbar-hide p-4 sm:p-5">
               
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
@@ -414,18 +437,26 @@ export function SettingsModal({
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
-                        {domains.map((domain) => (
-                          <SortableItem 
-                            key={domain.id} 
-                            id={domain.id} 
-                            label={domain.label} 
-                            icon={ICON_LIBRARY[customizations[domain.id]?.icon as IconName] || domain.icon} 
-                            color={customizations[domain.id]?.color} 
-                            isSelected={selectedId === domain.id}
-                            onSelect={() => setSelectedId(selectedId === domain.id ? null : domain.id)}
-                            onUpdate={(k, v) => updateCustomization(domain.id, k, v)}
-                          />
-                        ))}
+                        {domains.map((domain) => {
+                          const custom = customizations[domain.id];
+                          // Беремо дефолтний колір з SPACE_THEMES за ID домену
+                          const activeColor = custom?.color || (SPACE_THEMES as any)[domain.id]?.accent || "#fbbf24";
+                          const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || domain.icon) : domain.icon;
+
+                          return (
+                            <SortableItem 
+                              key={domain.id} 
+                              id={domain.id} 
+                              label={domain.label} 
+                              icon={ActiveIcon} 
+                              currentIconName={custom?.icon || ""}
+                              color={activeColor} 
+                              isSelected={selectedId === domain.id}
+                              onSelect={() => setSelectedId(selectedId === domain.id ? null : domain.id)}
+                              onUpdate={(k, v) => updateCustomization(domain.id, k, v)}
+                            />
+                          );
+                        })}
                       </div>
                     </SortableContext>
                   </DndContext>
@@ -442,18 +473,26 @@ export function SettingsModal({
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
-                        {spaces.map((space) => (
-                          <SortableItem 
-                            key={space.id} 
-                            id={space.id} 
-                            label={space.label} 
-                            icon={ICON_LIBRARY[customizations[space.id]?.icon as IconName] || space.icon} 
-                            color={customizations[space.id]?.color} 
-                            isSelected={selectedId === space.id}
-                            onSelect={() => setSelectedId(selectedId === space.id ? null : space.id)}
-                            onUpdate={(k, v) => updateCustomization(space.id, k, v)}
-                          />
-                        ))}
+                        {spaces.map((space) => {
+                          const custom = customizations[space.id];
+                          // Беремо дефолтний колір з SPACE_THEMES за ID спейсу
+                          const activeColor = custom?.color || (SPACE_THEMES as any)[space.id]?.accent || "#fbbf24";
+                          const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || space.icon) : space.icon;
+
+                          return (
+                            <SortableItem 
+                              key={space.id} 
+                              id={space.id} 
+                              label={space.label} 
+                              icon={ActiveIcon} 
+                              currentIconName={custom?.icon || ""}
+                              color={activeColor} 
+                              isSelected={selectedId === space.id}
+                              onSelect={() => setSelectedId(selectedId === space.id ? null : space.id)}
+                              onUpdate={(k, v) => updateCustomization(space.id, k, v)}
+                            />
+                          );
+                        })}
                       </div>
                     </SortableContext>
                   </DndContext>

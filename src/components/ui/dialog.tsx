@@ -44,19 +44,19 @@ export function Dialog({
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[1100] flex items-end sm:items-center justify-center sm:p-4">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-bg/90 backdrop-blur-md animate-in fade-in duration-300"
         onClick={onClose}
       />
-      
+
       {/* Content */}
       <div
-        className="relative w-full bg-surface border border-border rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in zoom-in-95 fade-in duration-300 overflow-hidden"
+        className="relative w-full bg-surface border border-border rounded-t-2xl sm:rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 overflow-hidden"
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
-        <div className={`px-6 pt-6 pb-6 ${noScroll ? "" : "overflow-y-auto max-h-[84vh]"}`}>
+        <div className={`px-6 pt-5 pb-6 ${noScroll ? "" : "overflow-y-auto max-h-[90dvh]"}`}>
           <div className="flex items-start justify-between mb-3">
             <div className="space-y-0.5">
               {title && (
