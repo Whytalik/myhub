@@ -379,7 +379,7 @@ export function TaskCalendar({
           </div>
           
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-6">
-            <div className="flex-1 sm:flex-none">
+            <div className="flex-1 sm:flex-initial min-w-0">
               <Tabs 
                 tabs={[
                   { id: "month", label: "Month" },

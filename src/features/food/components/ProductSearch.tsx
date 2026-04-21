@@ -63,7 +63,7 @@ export function ProductSearch({ products, onSelect, placeholder = "Search produc
       </div>
 
       {isOpen && filteredProducts.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-xl shadow-2xl z-[70] overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="p-1">
             {filteredProducts.map((p) => (
               <button

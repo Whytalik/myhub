@@ -138,15 +138,6 @@ export function TaskCardBase({
             <Copy size={isCompact ? 10 : 12} />
           </button>
         )}
-        {!isCompact && (
-          <button
-            onClick={(e) => { e.stopPropagation(); onEdit(task); }}
-            className="p-1.5 rounded-lg text-muted hover:text-secondary hover:bg-raised transition-colors bg-surface/80 backdrop-blur-sm border border-border/50"
-            title="Edit task"
-          >
-            <Pencil size={12} />
-          </button>
-        )}
         {onAddChild && (
           <button
             onClick={(e) => { e.stopPropagation(); onAddChild(task); }}

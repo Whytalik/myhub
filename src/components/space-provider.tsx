@@ -20,7 +20,7 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const themeData = SPACE_THEMES[getSpaceFromPath(pathname)];
 
-  // Domain Logic
+  // Domain Logic - Derived directly from pathname to prevent sync lag
   const getDomainFromPath = (path: string): DomainId => {
     if (path === "/operations" || path.startsWith("/planning") || path.startsWith("/life")) return "operations";
     if (path === "/health" || path.startsWith("/food") || path.startsWith("/fitness")) return "health";
@@ -29,7 +29,7 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
     return "vault";
   };
 
-  const [activeDomain, setActiveDomain] = useState<DomainId>(getDomainFromPath(pathname));
+  const activeDomain = getDomainFromPath(pathname);
 
   // Theme Logic
   const [theme, setThemeState] = useState<Theme>("dark");
@@ -48,13 +48,8 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle("light", newTheme === "light");
   };
 
-  // Sync domain with URL
-  useEffect(() => {
-    setActiveDomain(getDomainFromPath(pathname));
-  }, [pathname]);
-
   return (
-    <SpaceContext.Provider value={{ activeDomain, setActiveDomain, theme, setTheme }}>
+    <SpaceContext.Provider value={{ activeDomain, setActiveDomain: () => {}, theme, setTheme }}>
       <div 
         className="flex flex-col min-h-screen transition-colors duration-300"
         style={{

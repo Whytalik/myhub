@@ -2,34 +2,42 @@
 
 import { Sidebar } from "@/components/sidebar";
 import { DomainHeader } from "@/components/domain-header";
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { useSidebar } from "./sidebar-provider";
 
 export function DashboardUIWrapper({
   children,
   initialOrder,
+  initialCustomizations,
+  initialOpenSections,
   user,
 }: {
   children: React.ReactNode;
   initialOrder?: string[];
+  initialCustomizations?: Record<string, any>;
+  initialOpenSections?: Record<string, boolean>;
   user?: { name: string; email: string; role?: string };
 }) {
   return (
     <div className="flex h-screen overflow-hidden w-full bg-bg relative">
-      {/* Sidebar - Always visible as a rail, expands on hover */}
-      <div className="relative z-50 h-full">
-        <Sidebar
-          initialOrder={initialOrder}
-          user={user}
-        />
-      </div>
+      {/* Sidebar - Desktop Sticky / Mobile Drawer */}
+      <Sidebar
+        initialOrder={initialOrder}
+        initialCustomizations={initialCustomizations}
+        initialOpenSections={initialOpenSections}
+        user={user}
+      />
 
+      {/* Main Container */}
       <div className="flex flex-col flex-1 min-w-0 relative h-full overflow-hidden">
-        {/* Header - Always visible but minimalist */}
         <DomainHeader />
-
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50">
+        
+        <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0">
           {children}
         </main>
+
+        {/* Mobile Bottom Nav */}
+        <MobileBottomNav />
       </div>
     </div>
   );

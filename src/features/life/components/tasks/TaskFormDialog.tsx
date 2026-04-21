@@ -51,7 +51,6 @@ export function TaskFormDialog({
   isDuplicate = false,
 }: TaskFormDialogProps) {
   const isEditing = !!task?.id && !isDuplicate;
-  const [isViewOnly, setIsViewOnly] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [showErrors, setShowErrors]   = useState(false);
 
@@ -75,7 +74,6 @@ export function TaskFormDialog({
 
   useEffect(() => {
     if (isOpen) {
-      setIsViewOnly(!!task?.id && !isDuplicate);
       setTitle(task?.title ?? "");
       setDescription(task?.description ?? "");
       setIcon(task?.icon ?? parentTask?.icon ?? null);
@@ -190,13 +188,9 @@ export function TaskFormDialog({
     if (checked && !dueTime) setDueTime("12:00");
   };
 
-  const dialogTitle = isViewOnly && task
-    ? "View Task"
-    : isDuplicate ? "Duplicate Task" : isEditing ? "Edit Task" : parentTask ? "Add Subtask" : "New Task";
+  const dialogTitle = isDuplicate ? "Duplicate Task" : isEditing ? "Edit Task" : parentTask ? "Add Subtask" : "New Task";
 
-  const dialogDescription = isViewOnly && task
-    ? "View task details and update status"
-    : isDuplicate ? "Create a copy of this task" : isEditing ? "Update task details" : parentTask ? `Under: ${parentTask.title}` : "Create a new task";
+  const dialogDescription = isDuplicate ? "Create a copy of this task" : isEditing ? "Update task details" : parentTask ? `Under: ${parentTask.title}` : "Create a new task";
 
   return (
     <Dialog
@@ -208,48 +202,29 @@ export function TaskFormDialog({
       footer={
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-1.5">
-            {!isViewOnly && (
-              <>
-                <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted">Required Fields</span>
-              </>
-            )}
+            <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+            <span className="text-[10px] font-mono uppercase tracking-widest text-muted">Required Fields</span>
           </div>
           <div className="flex items-center gap-2">
-            {isEditing && (
-              <Button 
-                type="button" 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setIsViewOnly(!isViewOnly)} 
-                disabled={isPending}
-              >
-                {isViewOnly ? "Edit Details" : "Cancel Edit"}
-              </Button>
-            )}
-            {!isEditing && (
-              <Button type="button" variant="ghost" size="sm" onClick={handleClose} disabled={isPending}>
-                Cancel
-              </Button>
-            )}
-            {(!isViewOnly || !isEditing) && (
-              <Button
-                type="submit"
-                form="task-form"
-                variant="primary"
-                size="sm"
-                disabled={isPending || (!isViewOnly && showErrors && !title.trim())}
-                className="min-w-[120px]"
-              >
-                {isPending ? "Saving…" : isDuplicate ? "Duplicate & Create" : isEditing ? "Save Changes" : "Create Task"}
-              </Button>
-            )}
+            <Button type="button" variant="ghost" size="sm" onClick={handleClose} disabled={isPending}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="task-form"
+              variant="primary"
+              size="sm"
+              disabled={isPending || (showErrors && !title.trim())}
+              className="min-w-[120px]"
+            >
+              {isPending ? "Saving…" : isDuplicate ? "Duplicate & Create" : isEditing ? "Save Changes" : "Create Task"}
+            </Button>
           </div>
         </div>
       }
     >
       <form id="task-form" onSubmit={handleSubmit} className="flex flex-col gap-4 text-sm">
-        {/* Title & Status Badge for View Mode */}
+        {/* Title Section */}
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-1">
             <RequiredLabel>Title</RequiredLabel>
@@ -257,61 +232,10 @@ export function TaskFormDialog({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="What needs to be done?"
-              disabled={isViewOnly}
               className={`text-[15px] font-medium h-11 px-4 rounded-xl transition-all ${showErrors && !title.trim() ? "border-rose-500/50 bg-rose-500/5 ring-1 ring-rose-500/20" : ""}`}
               autoFocus
               required
             />
-            {isViewOnly && task && (
-              <div className="flex items-center gap-2 flex-wrap mt-1">
-                {/* Status Badge */}
-                <div
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[11px] font-mono font-bold uppercase tracking-wider whitespace-nowrap"
-                  style={{ 
-                    color: STATUS_CONFIG[status].color, 
-                    borderColor: `${STATUS_CONFIG[status].color}30`, 
-                    backgroundColor: `${STATUS_CONFIG[status].color}10` 
-                  }}
-                >
-                  {(() => {
-                    const Icon = STATUS_CONFIG[status].icon;
-                    return <Icon size={12} strokeWidth={3} />;
-                  })()}
-                  {STATUS_CONFIG[status].label}
-                </div>
-
-                {/* Priority Badge */}
-                {(() => {
-                   const pCfg = PRIORITY_CONFIG[priority];
-                   const PIcon = pCfg.icon;
-                   return (
-                      <div
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[11px] font-mono font-bold uppercase tracking-wider whitespace-nowrap"
-                        style={{ color: pCfg.color, borderColor: `${pCfg.color}30`, backgroundColor: `${pCfg.color}10` }}
-                      >
-                        <PIcon size={12} strokeWidth={3} />
-                        {pCfg.label}
-                      </div>
-                   );
-                })()}
-
-                {/* Sphere Badge */}
-                {(() => {
-                   const sphere = spheres.find(s => s.id === sphereId);
-                   if (!sphere) return null;
-                   const SphereIcon = ALL_ICONS[sphere.icon] || FileText;
-                   return (
-                      <div
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[11px] font-mono font-bold uppercase tracking-wider whitespace-nowrap"
-                        style={{ color: sphere.color, borderColor: `${sphere.color}30`, backgroundColor: `${sphere.color}10` }}
-                      >
-                        <SphereIcon size={12} strokeWidth={3} />
-                        {sphere.name}
-                      </div>
-                   );
-                })()}
-              </div>
-            )}
           </div>
         </div>
 
@@ -325,7 +249,6 @@ export function TaskFormDialog({
               <CustomSelect
                 value={parentId || "none"}
                 onChange={(val) => setParentId(val === "none" ? null : val)}
-                disabled={isViewOnly}
                 placeholder="No Parent Task"
                 options={[
                   { id: "none", label: "None (Top Level)", icon: Link2Off, color: "#666" },
@@ -351,7 +274,7 @@ export function TaskFormDialog({
             {/* Icon Picker */}
             <div className="flex flex-col gap-2.5">
               <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1">Symbol</label>
-              <div className={`flex items-center gap-4 p-4 bg-surface/50 border border-border rounded-2xl group transition-all ${!isViewOnly ? "hover:border-accent/40" : ""}`}>
+              <div className="flex items-center gap-4 p-4 bg-surface/50 border border-border rounded-2xl group transition-all hover:border-accent/40">
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
                   {icon && ALL_ICONS[icon] ? (() => {
                     const Icon = ALL_ICONS[icon];
@@ -362,27 +285,23 @@ export function TaskFormDialog({
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[13px] font-bold text-text truncate max-w-[140px]">{icon || "No icon selected"}</span>
-                  {!isViewOnly && (
-                    <button
-                      type="button"
-                      onClick={() => setIconPickerOpen(true)}
-                      className="text-[10px] font-black uppercase tracking-[0.1em] text-accent hover:underline flex items-center gap-1.5"
-                    >
-                      <Pencil size={10} /> Change Symbol
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIconPickerOpen(true)}
+                    className="text-[10px] font-black uppercase tracking-[0.1em] text-accent hover:underline flex items-center gap-1.5"
+                  >
+                    <Pencil size={10} /> Change Symbol
+                  </button>
                 </div>
               </div>
-              {!isViewOnly && (
-                <IconPickerDialog
-                  isOpen={iconPickerOpen}
-                  onClose={() => setIconPickerOpen(false)}
-                  value={icon}
-                  onChange={setIcon}
-                  color={spheres.find(s => s.id === sphereId)?.color}
-                  title="Task Symbol"
-                />
-              )}
+              <IconPickerDialog
+                isOpen={iconPickerOpen}
+                onClose={() => setIconPickerOpen(false)}
+                value={icon}
+                onChange={setIcon}
+                color={spheres.find(s => s.id === sphereId)?.color}
+                title="Task Symbol"
+              />
             </div>
 
             {/* Status */}
@@ -391,7 +310,6 @@ export function TaskFormDialog({
               <CustomSelect
                 value={status}
                 onChange={(val) => setStatus(val as TaskStatus)}
-                disabled={isViewOnly}
                 options={(Object.keys(STATUS_CONFIG) as TaskStatus[]).map((s) => ({
                   id: s,
                   label: STATUS_CONFIG[s].label,
@@ -407,7 +325,6 @@ export function TaskFormDialog({
               <CustomSelect
                 value={priority}
                 onChange={(val) => setPriority(val as TaskPriority)}
-                disabled={isViewOnly}
                 options={Object.keys(PRIORITY_CONFIG).map((p) => ({
                   id: p,
                   label: PRIORITY_CONFIG[p as TaskPriority].label,
@@ -430,7 +347,6 @@ export function TaskFormDialog({
               <CustomSelect
                 value={sphereId}
                 onChange={setSphereId}
-                disabled={isViewOnly}
                 placeholder="Select a sphere"
                 options={spheres.map((s) => ({
                   id: s.id,
@@ -458,19 +374,18 @@ export function TaskFormDialog({
                       <CalendarClock size={14} />
                       <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Planned Day</label>
                     </div>
-                    <label className={`flex items-center gap-1.5 text-[9px] font-mono text-secondary cursor-pointer group ${isViewOnly ? "pointer-events-none opacity-50" : ""}`}>
+                    <label className="flex items-center gap-1.5 text-[9px] font-mono text-secondary cursor-pointer group">
                       <input
                         type="checkbox"
                         checked={hasPlannedTime}
-                        disabled={isViewOnly}
                         onChange={(e) => handleTogglePlannedTime(e.target.checked)}
                         className="accent-accent w-3.5 h-3.5"
                       />
                       <span className="group-hover:text-text transition-colors">Time</span>
                     </label>
                   </div>
-                  <DatePicker value={plannedDate} onChange={setPlannedDate} disabled={isViewOnly} placeholder="Optional" />
-                  {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} disabled={isViewOnly} className="mt-1 animate-in fade-in slide-in-from-top-1" />}
+                  <DatePicker value={plannedDate} onChange={setPlannedDate} placeholder="Optional" />
+                  {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} className="mt-1 animate-in fade-in slide-in-from-top-1" />}
                 </div>
 
                 {/* Deadline */}
@@ -482,11 +397,10 @@ export function TaskFormDialog({
                     </div>
                     <div className="flex items-center gap-3">
                       {useDeadline && (
-                        <label className={`flex items-center gap-1.5 text-[9px] font-mono text-secondary cursor-pointer group ${isViewOnly ? "pointer-events-none opacity-50" : ""}`}>
+                        <label className="flex items-center gap-1.5 text-[9px] font-mono text-secondary cursor-pointer group">
                           <input
                             type="checkbox"
                             checked={hasDueTime}
-                            disabled={isViewOnly}
                             onChange={(e) => handleToggleDueTime(e.target.checked)}
                             className="accent-accent w-3.5 h-3.5"
                           />
@@ -495,9 +409,8 @@ export function TaskFormDialog({
                       )}
                       <button
                         type="button"
-                        disabled={isViewOnly}
                         onClick={() => setUseDeadline(!useDeadline)}
-                        className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border disabled:opacity-50 ${useDeadline ? "bg-rose-500/10 text-rose-500 border-rose-500/30" : "bg-surface text-muted border-border"}`}
+                        className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded border ${useDeadline ? "bg-rose-500/10 text-rose-500 border-rose-500/30" : "bg-surface text-muted border-border"}`}
                       >
                         {useDeadline ? "ON" : "OFF"}
                       </button>
@@ -505,8 +418,8 @@ export function TaskFormDialog({
                   </div>
                   {useDeadline ? (
                     <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-right-1">
-                      <DatePicker value={dueDate} onChange={setDueDate} disabled={isViewOnly} />
-                      {hasDueTime && <TimePicker value={dueTime} onChange={setDueTime} disabled={isViewOnly} className="mt-1 animate-in fade-in slide-in-from-top-1" />}
+                      <DatePicker value={dueDate} onChange={setDueDate} />
+                      {hasDueTime && <TimePicker value={dueTime} onChange={setDueTime} className="mt-1 animate-in fade-in slide-in-from-top-1" />}
                     </div>
                   ) : (
                     <div className="flex-1 flex items-center justify-center border border-dashed border-border/20 rounded-2xl min-h-[80px]">
@@ -526,7 +439,6 @@ export function TaskFormDialog({
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                disabled={isViewOnly}
                 placeholder="Notes, steps, or details (Markdown supported)..."
                 rows={3}
                 className="w-full min-h-[80px] resize-none bg-surface/50 border border-border rounded-2xl px-5 py-4 text-[12px] text-text placeholder:text-muted outline-none focus:ring-1 focus:ring-accent/50 focus:border-accent/50 transition-all shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
@@ -558,21 +470,19 @@ export function TaskFormDialog({
                                   type="button"
                                   onClick={() => onViewTask(child)}
                                   className="p-1 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-all"
-                                  title="View subtask"
+                                  title="Edit subtask"
                                 >
                                     <Eye size={12} />
                                 </button>
                               )}
-                              {!isViewOnly && (
-                                <button
-                                  type="button"
-                                  onClick={() => handleUnlinkSubtask(child)}
-                                  className="p-1 rounded-lg text-muted hover:text-rose-400 hover:bg-rose-400/10 transition-all"
-                                  title="Unlink from parent"
-                                >
-                                    <Link2Off size={12} />
-                                </button>
-                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleUnlinkSubtask(child)}
+                                className="p-1 rounded-lg text-muted hover:text-rose-400 hover:bg-rose-400/10 transition-all"
+                                title="Unlink from parent"
+                              >
+                                  <Link2Off size={12} />
+                              </button>
                               <ChevronRight size={11} className="text-muted/20" />
                           </div>
                         </div>

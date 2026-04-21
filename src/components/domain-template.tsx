@@ -38,7 +38,7 @@ export function DomainTemplate({
   metrics,
 }: DomainTemplateProps) {
   return (
-    <div className="relative h-full flex flex-col overflow-hidden">
+    <div className="relative min-h-full flex flex-col">
       {/* Background Decor */}
       <div 
         className="absolute top-0 left-0 right-0 h-[200px] opacity-[0.04] pointer-events-none transition-colors duration-700"

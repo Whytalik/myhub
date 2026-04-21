@@ -141,7 +141,7 @@ export function CreateDayPlanForm({ personId, dishes, onSuccess, onCancel }: Cre
             className="pl-4"
           />
           {searchQuery && filteredDishes.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-xl shadow-2xl z-50 p-1 animate-in fade-in slide-in-from-top-1 duration-200">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-surface border border-border rounded-xl shadow-2xl z-[70] p-1 animate-in fade-in slide-in-from-top-1 duration-200">
               {filteredDishes.map((dish) => (
                 <button
                   key={dish.id}

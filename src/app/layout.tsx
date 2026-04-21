@@ -7,13 +7,13 @@ import "./globals.css";
 
 const dmSans = DM_Sans({
   variable: "--font-inter",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "cyrillic"],
   display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext", "cyrillic"],
   display: "swap",
 });
 

@@ -40,9 +40,9 @@ export function Tabs({
   const activeTabContent = tabs.find(t => t.id === activeTab)?.content;
 
   return (
-    <div className="flex flex-col gap-6 w-full min-w-0">
-      <div className={`flex w-full overflow-x-auto scrollbar-hide -mx-1 px-1 ${className}`}>
-        <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm min-w-max">
+    <div className={`flex flex-col w-full min-w-0 ${activeTabContent ? "gap-6" : ""}`}>
+      <div className={`flex w-full overflow-x-auto scrollbar-hide ${className}`}>
+        <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm w-fit">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (

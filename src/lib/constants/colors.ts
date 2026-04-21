@@ -23,3 +23,14 @@ export const SYSTEM_COLORS = [
 ] as const;
 
 export type SystemColor = typeof SYSTEM_COLORS[number];
+
+export const DEFAULT_SPACE_COLORS: Record<string, { text: string; bgActive: string; bgInactive: string; borderActive: string; borderInactive: string }> = {
+  "Life Space":     { text: "#6fbfbf", bgActive: "var(--color-life-muted)", bgInactive: "transparent", borderActive: "rgba(111,191,191,0.2)", borderInactive: "var(--color-border)" },
+  "Planning Space": { text: "#fbbf24", bgActive: "rgba(251,191,36,0.1)",  bgInactive: "transparent",  borderActive: "rgba(251,191,36,0.2)",  borderInactive: "var(--color-border)" },
+  "Food Space":     { text: "#ff8c00", bgActive: "rgba(255,140,0,0.1)",   bgInactive: "transparent",   borderActive: "rgba(255,140,0,0.2)",   borderInactive: "var(--color-border)" },
+  "Fitness Space":  { text: "#e87d88", bgActive: "rgba(232,125,136,0.1)", bgInactive: "transparent", borderActive: "rgba(232,125,136,0.2)", borderInactive: "var(--color-border)" },
+  "Language Space": { text: "#c084fc", bgActive: "rgba(192,132,252,0.1)", bgInactive: "transparent", borderActive: "rgba(192,132,252,0.2)", borderInactive: "var(--color-border)" },
+  "Library Space":  { text: "#818cf8", bgActive: "rgba(129,140,248,0.1)", bgInactive: "transparent", borderActive: "rgba(129,140,248,0.2)", borderInactive: "var(--color-border)" },
+  "Trading Space":  { text: "#22c55e", bgActive: "rgba(34,197,94,0.1)",  bgInactive: "transparent",  borderActive: "rgba(34,197,94,0.2)",  borderInactive: "var(--color-border)" },
+  "Misc / Other":   { text: "#a3a3a3", bgActive: "rgba(163,163,163,0.1)", bgInactive: "transparent", borderActive: "rgba(163,163,163,0.2)", borderInactive: "var(--color-border)" },
+};

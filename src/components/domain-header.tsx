@@ -1,64 +1,87 @@
 "use client";
 
 import { useSpace } from "./space-provider";
+import { useSidebar } from "./sidebar-provider";
 import { 
   Briefcase, 
   Shield, 
   Brain, 
   Database, 
   Package,
-  ChevronRight
+  Menu,
+  X,
+  Sparkles
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const domains = [
-  { id: "operations", label: "Operations", icon: Briefcase, color: "#fbbf24", href: "/operations" },
-  { id: "health",     label: "Health",     icon: Shield,    color: "#f0a868", href: "/health" },
-  { id: "mind",       label: "Mind",       icon: Brain,     color: "#818cf8", href: "/mind" },
-  { id: "wealth",     label: "Wealth",     icon: Database,  color: "#22c55e", href: "/wealth" },
-  { id: "vault",      label: "Vault",      icon: Package,   color: "#a3a3a3", href: "/vault" },
-] as const;
+const DOMAINS = [
+  { id: "operations", label: "Operations", icon: Briefcase, href: "/operations" },
+  { id: "health",     label: "Health",     icon: Shield,    href: "/health" },
+  { id: "mind",       label: "Mind",       icon: Brain,     href: "/mind" },
+  { id: "wealth",     label: "Wealth",     icon: Database,  href: "/wealth" },
+  { id: "vault",      label: "Vault",      icon: Package,   href: "/vault" },
+];
 
 export function DomainHeader() {
+  const pathname = usePathname();
   const { activeDomain } = useSpace();
-  const router = useRouter();
+  const { isMobileOpen, setIsMobileOpen } = useSidebar();
 
   return (
-    <header className="h-14 border-b border-border bg-surface/50 backdrop-blur-md sticky top-0 z-30 flex items-center px-4 md:px-6 justify-between">
-      <div className="flex items-center gap-1 md:gap-1.5">
-        {domains.map((domain) => {
-          const isActive = activeDomain === domain.id;
-          const Icon = domain.icon;
+    <header className="h-16 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
+      <div className="flex items-center gap-3 w-full lg:w-auto">
+        {/* Mobile: Burger + Logo */}
+        <div className="flex lg:hidden items-center justify-between w-full">
+          <Link href="/home" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
+              <Sparkles size={16} className="text-bg" fill="currentColor" />
+            </div>
+            <span className="text-sm font-black tracking-tighter uppercase leading-none">MYHUB</span>
+          </Link>
 
-          return (
-            <Link
-              key={domain.id}
-              href={domain.href}
-              className={`group relative flex flex-col items-center justify-center w-10 md:w-16 h-10 rounded-lg transition-all ${
-                isActive 
-                  ? "bg-accent/10 text-accent shadow-sm border border-accent/20" 
-                  : "text-muted hover:text-text hover:bg-raised/50 border border-transparent"
-              }`}
-              title={domain.label}
-            >
-              <Icon 
-                size={16} 
-                strokeWidth={isActive ? 2.5 : 2}
-                style={isActive ? { color: domain.color } : undefined}
-                className="transition-transform group-hover:scale-110"
-              />
-              <span className={`hidden md:block text-[8px] font-bold uppercase tracking-widest mt-1 ${isActive ? "opacity-100" : "opacity-40 group-hover:opacity-100"}`}>
-                {domain.label}
-              </span>
-            </Link>
-          );
-        })}
+          <button 
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="p-2 rounded-xl text-muted hover:text-text hover:bg-raised transition-all duration-300"
+            aria-label="Toggle Spaces Menu"
+          >
+            {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+        {/* Desktop: Domains List */}
+        <div className="hidden lg:flex items-center gap-1">
+          {DOMAINS.map((domain) => {
+            const Icon = domain.icon;
+            const isActive = activeDomain === domain.id;
+            
+            return (
+              <Link
+                key={domain.id}
+                href={domain.href}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all duration-500 shrink-0 group ${
+                  isActive 
+                    ? "bg-accent/10 border border-accent/20" 
+                    : "hover:bg-raised border border-transparent"
+                }`}
+              >
+                <Icon 
+                  size={14} 
+                  className={`transition-colors duration-300 ${isActive ? "text-accent" : "text-muted group-hover:text-text"}`} 
+                />
+                <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 ${
+                  isActive ? "text-text" : "text-muted group-hover:text-text"
+                }`}>
+                  {domain.label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
-
-      <div className="flex items-center gap-3">
-        {/* Placeholder for global search or notifications */}
+      <div className="hidden lg:flex items-center gap-3">
+        {/* Desktop actions placeholder */}
       </div>
     </header>
   );
