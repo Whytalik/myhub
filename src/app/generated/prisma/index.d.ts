@@ -39,10 +39,10 @@ export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTok
  */
 export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
 /**
- * Model Person
+ * Model NutritionPerson
  * 
  */
-export type Person = $Result.DefaultSelection<Prisma.$PersonPayload>
+export type NutritionPerson = $Result.DefaultSelection<Prisma.$NutritionPersonPayload>
 /**
  * Model Product
  * 
@@ -576,14 +576,14 @@ export class PrismaClient<
   get profile(): Prisma.ProfileDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.person`: Exposes CRUD operations for the **Person** model.
+   * `prisma.nutritionPerson`: Exposes CRUD operations for the **NutritionPerson** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more People
-    * const people = await prisma.person.findMany()
+    * // Fetch zero or more NutritionPeople
+    * const nutritionPeople = await prisma.nutritionPerson.findMany()
     * ```
     */
-  get person(): Prisma.PersonDelegate<ExtArgs, ClientOptions>;
+  get nutritionPerson(): Prisma.NutritionPersonDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.product`: Exposes CRUD operations for the **Product** model.
@@ -1253,7 +1253,7 @@ export namespace Prisma {
     Session: 'Session',
     VerificationToken: 'VerificationToken',
     Profile: 'Profile',
-    Person: 'Person',
+    NutritionPerson: 'NutritionPerson',
     Product: 'Product',
     Dish: 'Dish',
     DishIngredient: 'DishIngredient',
@@ -1292,7 +1292,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "person" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "nutritionPerson" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1666,77 +1666,77 @@ export namespace Prisma {
           }
         }
       }
-      Person: {
-        payload: Prisma.$PersonPayload<ExtArgs>
-        fields: Prisma.PersonFieldRefs
+      NutritionPerson: {
+        payload: Prisma.$NutritionPersonPayload<ExtArgs>
+        fields: Prisma.NutritionPersonFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.PersonFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload> | null
+            args: Prisma.NutritionPersonFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.PersonFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           findFirst: {
-            args: Prisma.PersonFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload> | null
+            args: Prisma.NutritionPersonFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.PersonFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           findMany: {
-            args: Prisma.PersonFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>[]
+            args: Prisma.NutritionPersonFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>[]
           }
           create: {
-            args: Prisma.PersonCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           createMany: {
-            args: Prisma.PersonCreateManyArgs<ExtArgs>
+            args: Prisma.NutritionPersonCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.PersonCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>[]
+            args: Prisma.NutritionPersonCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>[]
           }
           delete: {
-            args: Prisma.PersonDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           update: {
-            args: Prisma.PersonUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           deleteMany: {
-            args: Prisma.PersonDeleteManyArgs<ExtArgs>
+            args: Prisma.NutritionPersonDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.PersonUpdateManyArgs<ExtArgs>
+            args: Prisma.NutritionPersonUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.PersonUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>[]
+            args: Prisma.NutritionPersonUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>[]
           }
           upsert: {
-            args: Prisma.PersonUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PersonPayload>
+            args: Prisma.NutritionPersonUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NutritionPersonPayload>
           }
           aggregate: {
-            args: Prisma.PersonAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePerson>
+            args: Prisma.NutritionPersonAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNutritionPerson>
           }
           groupBy: {
-            args: Prisma.PersonGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PersonGroupByOutputType>[]
+            args: Prisma.NutritionPersonGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NutritionPersonGroupByOutputType>[]
           }
           count: {
-            args: Prisma.PersonCountArgs<ExtArgs>
-            result: $Utils.Optional<PersonCountAggregateOutputType> | number
+            args: Prisma.NutritionPersonCountArgs<ExtArgs>
+            result: $Utils.Optional<NutritionPersonCountAggregateOutputType> | number
           }
         }
       }
@@ -3555,7 +3555,7 @@ export namespace Prisma {
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
     profile?: ProfileOmit
-    person?: PersonOmit
+    nutritionPerson?: NutritionPersonOmit
     product?: ProductOmit
     dish?: DishOmit
     dishIngredient?: DishIngredientOmit
@@ -3721,15 +3721,15 @@ export namespace Prisma {
    * ProfileCountOutputType without action
    */
   export type ProfileCountOutputTypeCountPersonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
   }
 
 
   /**
-   * Count Type PersonCountOutputType
+   * Count Type NutritionPersonCountOutputType
    */
 
-  export type PersonCountOutputType = {
+  export type NutritionPersonCountOutputType = {
     dishes: number
     dayTemplates: number
     weekPlans: number
@@ -3744,113 +3744,113 @@ export namespace Prisma {
     wishlistItems: number
   }
 
-  export type PersonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dishes?: boolean | PersonCountOutputTypeCountDishesArgs
-    dayTemplates?: boolean | PersonCountOutputTypeCountDayTemplatesArgs
-    weekPlans?: boolean | PersonCountOutputTypeCountWeekPlansArgs
-    dayPlans?: boolean | PersonCountOutputTypeCountDayPlansArgs
-    shoppingLists?: boolean | PersonCountOutputTypeCountShoppingListsArgs
-    userLanguages?: boolean | PersonCountOutputTypeCountUserLanguagesArgs
-    tasks?: boolean | PersonCountOutputTypeCountTasksArgs
-    dailyEntries?: boolean | PersonCountOutputTypeCountDailyEntriesArgs
-    habits?: boolean | PersonCountOutputTypeCountHabitsArgs
-    lifeSpheres?: boolean | PersonCountOutputTypeCountLifeSpheresArgs
-    libraryItems?: boolean | PersonCountOutputTypeCountLibraryItemsArgs
-    wishlistItems?: boolean | PersonCountOutputTypeCountWishlistItemsArgs
+  export type NutritionPersonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dishes?: boolean | NutritionPersonCountOutputTypeCountDishesArgs
+    dayTemplates?: boolean | NutritionPersonCountOutputTypeCountDayTemplatesArgs
+    weekPlans?: boolean | NutritionPersonCountOutputTypeCountWeekPlansArgs
+    dayPlans?: boolean | NutritionPersonCountOutputTypeCountDayPlansArgs
+    shoppingLists?: boolean | NutritionPersonCountOutputTypeCountShoppingListsArgs
+    userLanguages?: boolean | NutritionPersonCountOutputTypeCountUserLanguagesArgs
+    tasks?: boolean | NutritionPersonCountOutputTypeCountTasksArgs
+    dailyEntries?: boolean | NutritionPersonCountOutputTypeCountDailyEntriesArgs
+    habits?: boolean | NutritionPersonCountOutputTypeCountHabitsArgs
+    lifeSpheres?: boolean | NutritionPersonCountOutputTypeCountLifeSpheresArgs
+    libraryItems?: boolean | NutritionPersonCountOutputTypeCountLibraryItemsArgs
+    wishlistItems?: boolean | NutritionPersonCountOutputTypeCountWishlistItemsArgs
   }
 
   // Custom InputTypes
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PersonCountOutputType
+     * Select specific fields to fetch from the NutritionPersonCountOutputType
      */
-    select?: PersonCountOutputTypeSelect<ExtArgs> | null
+    select?: NutritionPersonCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountDishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountDishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DishWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountDayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountDayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DayTemplateWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountWeekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountWeekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WeekPlanWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DayPlanWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountShoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountShoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ShoppingListWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountUserLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountUserLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserLanguageWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountDailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountDailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DailyEntryWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HabitWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountLifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountLifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LifeSphereWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountLibraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountLibraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LibraryItemWhereInput
   }
 
   /**
-   * PersonCountOutputType without action
+   * NutritionPersonCountOutputType without action
    */
-  export type PersonCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WishlistItemWhereInput
   }
 
@@ -8874,7 +8874,7 @@ export namespace Prisma {
     name: "Profile"
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
-      persons: Prisma.$PersonPayload<ExtArgs>[]
+      persons: Prisma.$NutritionPersonPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9277,7 +9277,7 @@ export namespace Prisma {
   export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends Profile$userArgs<ExtArgs> = {}>(args?: Subset<T, Profile$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    persons<T extends Profile$personsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$personsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    persons<T extends Profile$personsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$personsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9736,23 +9736,23 @@ export namespace Prisma {
    */
   export type Profile$personsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
-    where?: PersonWhereInput
-    orderBy?: PersonOrderByWithRelationInput | PersonOrderByWithRelationInput[]
-    cursor?: PersonWhereUniqueInput
+    include?: NutritionPersonInclude<ExtArgs> | null
+    where?: NutritionPersonWhereInput
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
+    cursor?: NutritionPersonWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: PersonScalarFieldEnum | PersonScalarFieldEnum[]
+    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
   }
 
   /**
@@ -9775,18 +9775,18 @@ export namespace Prisma {
 
 
   /**
-   * Model Person
+   * Model NutritionPerson
    */
 
-  export type AggregatePerson = {
-    _count: PersonCountAggregateOutputType | null
-    _avg: PersonAvgAggregateOutputType | null
-    _sum: PersonSumAggregateOutputType | null
-    _min: PersonMinAggregateOutputType | null
-    _max: PersonMaxAggregateOutputType | null
+  export type AggregateNutritionPerson = {
+    _count: NutritionPersonCountAggregateOutputType | null
+    _avg: NutritionPersonAvgAggregateOutputType | null
+    _sum: NutritionPersonSumAggregateOutputType | null
+    _min: NutritionPersonMinAggregateOutputType | null
+    _max: NutritionPersonMaxAggregateOutputType | null
   }
 
-  export type PersonAvgAggregateOutputType = {
+  export type NutritionPersonAvgAggregateOutputType = {
     targetCalories: number | null
     targetProtein: number | null
     targetFat: number | null
@@ -9794,7 +9794,7 @@ export namespace Prisma {
     targetFiber: number | null
   }
 
-  export type PersonSumAggregateOutputType = {
+  export type NutritionPersonSumAggregateOutputType = {
     targetCalories: number | null
     targetProtein: number | null
     targetFat: number | null
@@ -9802,7 +9802,7 @@ export namespace Prisma {
     targetFiber: number | null
   }
 
-  export type PersonMinAggregateOutputType = {
+  export type NutritionPersonMinAggregateOutputType = {
     id: string | null
     profileId: string | null
     name: string | null
@@ -9815,7 +9815,7 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type PersonMaxAggregateOutputType = {
+  export type NutritionPersonMaxAggregateOutputType = {
     id: string | null
     profileId: string | null
     name: string | null
@@ -9828,7 +9828,7 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type PersonCountAggregateOutputType = {
+  export type NutritionPersonCountAggregateOutputType = {
     id: number
     profileId: number
     name: number
@@ -9843,7 +9843,7 @@ export namespace Prisma {
   }
 
 
-  export type PersonAvgAggregateInputType = {
+  export type NutritionPersonAvgAggregateInputType = {
     targetCalories?: true
     targetProtein?: true
     targetFat?: true
@@ -9851,7 +9851,7 @@ export namespace Prisma {
     targetFiber?: true
   }
 
-  export type PersonSumAggregateInputType = {
+  export type NutritionPersonSumAggregateInputType = {
     targetCalories?: true
     targetProtein?: true
     targetFat?: true
@@ -9859,7 +9859,7 @@ export namespace Prisma {
     targetFiber?: true
   }
 
-  export type PersonMinAggregateInputType = {
+  export type NutritionPersonMinAggregateInputType = {
     id?: true
     profileId?: true
     name?: true
@@ -9872,7 +9872,7 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type PersonMaxAggregateInputType = {
+  export type NutritionPersonMaxAggregateInputType = {
     id?: true
     profileId?: true
     name?: true
@@ -9885,7 +9885,7 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type PersonCountAggregateInputType = {
+  export type NutritionPersonCountAggregateInputType = {
     id?: true
     profileId?: true
     name?: true
@@ -9899,93 +9899,93 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type PersonAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Person to aggregate.
+     * Filter which NutritionPerson to aggregate.
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of People to fetch.
+     * Determine the order of NutritionPeople to fetch.
      */
-    orderBy?: PersonOrderByWithRelationInput | PersonOrderByWithRelationInput[]
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: PersonWhereUniqueInput
+    cursor?: NutritionPersonWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` People from the position of the cursor.
+     * Take `±n` NutritionPeople from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` People.
+     * Skip the first `n` NutritionPeople.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned People
+     * Count returned NutritionPeople
     **/
-    _count?: true | PersonCountAggregateInputType
+    _count?: true | NutritionPersonCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: PersonAvgAggregateInputType
+    _avg?: NutritionPersonAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: PersonSumAggregateInputType
+    _sum?: NutritionPersonSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: PersonMinAggregateInputType
+    _min?: NutritionPersonMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: PersonMaxAggregateInputType
+    _max?: NutritionPersonMaxAggregateInputType
   }
 
-  export type GetPersonAggregateType<T extends PersonAggregateArgs> = {
-        [P in keyof T & keyof AggregatePerson]: P extends '_count' | 'count'
+  export type GetNutritionPersonAggregateType<T extends NutritionPersonAggregateArgs> = {
+        [P in keyof T & keyof AggregateNutritionPerson]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregatePerson[P]>
-      : GetScalarType<T[P], AggregatePerson[P]>
+        : GetScalarType<T[P], AggregateNutritionPerson[P]>
+      : GetScalarType<T[P], AggregateNutritionPerson[P]>
   }
 
 
 
 
-  export type PersonGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PersonWhereInput
-    orderBy?: PersonOrderByWithAggregationInput | PersonOrderByWithAggregationInput[]
-    by: PersonScalarFieldEnum[] | PersonScalarFieldEnum
-    having?: PersonScalarWhereWithAggregatesInput
+  export type NutritionPersonGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NutritionPersonWhereInput
+    orderBy?: NutritionPersonOrderByWithAggregationInput | NutritionPersonOrderByWithAggregationInput[]
+    by: NutritionPersonScalarFieldEnum[] | NutritionPersonScalarFieldEnum
+    having?: NutritionPersonScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: PersonCountAggregateInputType | true
-    _avg?: PersonAvgAggregateInputType
-    _sum?: PersonSumAggregateInputType
-    _min?: PersonMinAggregateInputType
-    _max?: PersonMaxAggregateInputType
+    _count?: NutritionPersonCountAggregateInputType | true
+    _avg?: NutritionPersonAvgAggregateInputType
+    _sum?: NutritionPersonSumAggregateInputType
+    _min?: NutritionPersonMinAggregateInputType
+    _max?: NutritionPersonMaxAggregateInputType
   }
 
-  export type PersonGroupByOutputType = {
+  export type NutritionPersonGroupByOutputType = {
     id: string
     profileId: string
     name: string
@@ -9996,28 +9996,28 @@ export namespace Prisma {
     targetFiber: number | null
     createdAt: Date
     updatedAt: Date
-    _count: PersonCountAggregateOutputType | null
-    _avg: PersonAvgAggregateOutputType | null
-    _sum: PersonSumAggregateOutputType | null
-    _min: PersonMinAggregateOutputType | null
-    _max: PersonMaxAggregateOutputType | null
+    _count: NutritionPersonCountAggregateOutputType | null
+    _avg: NutritionPersonAvgAggregateOutputType | null
+    _sum: NutritionPersonSumAggregateOutputType | null
+    _min: NutritionPersonMinAggregateOutputType | null
+    _max: NutritionPersonMaxAggregateOutputType | null
   }
 
-  type GetPersonGroupByPayload<T extends PersonGroupByArgs> = Prisma.PrismaPromise<
+  type GetNutritionPersonGroupByPayload<T extends NutritionPersonGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<PersonGroupByOutputType, T['by']> &
+      PickEnumerable<NutritionPersonGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof PersonGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof NutritionPersonGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], PersonGroupByOutputType[P]>
-            : GetScalarType<T[P], PersonGroupByOutputType[P]>
+              : GetScalarType<T[P], NutritionPersonGroupByOutputType[P]>
+            : GetScalarType<T[P], NutritionPersonGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type PersonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type NutritionPersonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     name?: boolean
@@ -10029,22 +10029,22 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    dishes?: boolean | Person$dishesArgs<ExtArgs>
-    dayTemplates?: boolean | Person$dayTemplatesArgs<ExtArgs>
-    weekPlans?: boolean | Person$weekPlansArgs<ExtArgs>
-    dayPlans?: boolean | Person$dayPlansArgs<ExtArgs>
-    shoppingLists?: boolean | Person$shoppingListsArgs<ExtArgs>
-    userLanguages?: boolean | Person$userLanguagesArgs<ExtArgs>
-    tasks?: boolean | Person$tasksArgs<ExtArgs>
-    dailyEntries?: boolean | Person$dailyEntriesArgs<ExtArgs>
-    habits?: boolean | Person$habitsArgs<ExtArgs>
-    lifeSpheres?: boolean | Person$lifeSpheresArgs<ExtArgs>
-    libraryItems?: boolean | Person$libraryItemsArgs<ExtArgs>
-    wishlistItems?: boolean | Person$wishlistItemsArgs<ExtArgs>
-    _count?: boolean | PersonCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["person"]>
+    dishes?: boolean | NutritionPerson$dishesArgs<ExtArgs>
+    dayTemplates?: boolean | NutritionPerson$dayTemplatesArgs<ExtArgs>
+    weekPlans?: boolean | NutritionPerson$weekPlansArgs<ExtArgs>
+    dayPlans?: boolean | NutritionPerson$dayPlansArgs<ExtArgs>
+    shoppingLists?: boolean | NutritionPerson$shoppingListsArgs<ExtArgs>
+    userLanguages?: boolean | NutritionPerson$userLanguagesArgs<ExtArgs>
+    tasks?: boolean | NutritionPerson$tasksArgs<ExtArgs>
+    dailyEntries?: boolean | NutritionPerson$dailyEntriesArgs<ExtArgs>
+    habits?: boolean | NutritionPerson$habitsArgs<ExtArgs>
+    lifeSpheres?: boolean | NutritionPerson$lifeSpheresArgs<ExtArgs>
+    libraryItems?: boolean | NutritionPerson$libraryItemsArgs<ExtArgs>
+    wishlistItems?: boolean | NutritionPerson$wishlistItemsArgs<ExtArgs>
+    _count?: boolean | NutritionPersonCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["nutritionPerson"]>
 
-  export type PersonSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type NutritionPersonSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     name?: boolean
@@ -10056,9 +10056,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["person"]>
+  }, ExtArgs["result"]["nutritionPerson"]>
 
-  export type PersonSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type NutritionPersonSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profileId?: boolean
     name?: boolean
@@ -10070,9 +10070,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["person"]>
+  }, ExtArgs["result"]["nutritionPerson"]>
 
-  export type PersonSelectScalar = {
+  export type NutritionPersonSelectScalar = {
     id?: boolean
     profileId?: boolean
     name?: boolean
@@ -10085,32 +10085,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "name" | "targetCalories" | "targetProtein" | "targetFat" | "targetCarbs" | "targetFiber" | "createdAt" | "updatedAt", ExtArgs["result"]["person"]>
-  export type PersonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "name" | "targetCalories" | "targetProtein" | "targetFat" | "targetCarbs" | "targetFiber" | "createdAt" | "updatedAt", ExtArgs["result"]["nutritionPerson"]>
+  export type NutritionPersonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    dishes?: boolean | Person$dishesArgs<ExtArgs>
-    dayTemplates?: boolean | Person$dayTemplatesArgs<ExtArgs>
-    weekPlans?: boolean | Person$weekPlansArgs<ExtArgs>
-    dayPlans?: boolean | Person$dayPlansArgs<ExtArgs>
-    shoppingLists?: boolean | Person$shoppingListsArgs<ExtArgs>
-    userLanguages?: boolean | Person$userLanguagesArgs<ExtArgs>
-    tasks?: boolean | Person$tasksArgs<ExtArgs>
-    dailyEntries?: boolean | Person$dailyEntriesArgs<ExtArgs>
-    habits?: boolean | Person$habitsArgs<ExtArgs>
-    lifeSpheres?: boolean | Person$lifeSpheresArgs<ExtArgs>
-    libraryItems?: boolean | Person$libraryItemsArgs<ExtArgs>
-    wishlistItems?: boolean | Person$wishlistItemsArgs<ExtArgs>
-    _count?: boolean | PersonCountOutputTypeDefaultArgs<ExtArgs>
+    dishes?: boolean | NutritionPerson$dishesArgs<ExtArgs>
+    dayTemplates?: boolean | NutritionPerson$dayTemplatesArgs<ExtArgs>
+    weekPlans?: boolean | NutritionPerson$weekPlansArgs<ExtArgs>
+    dayPlans?: boolean | NutritionPerson$dayPlansArgs<ExtArgs>
+    shoppingLists?: boolean | NutritionPerson$shoppingListsArgs<ExtArgs>
+    userLanguages?: boolean | NutritionPerson$userLanguagesArgs<ExtArgs>
+    tasks?: boolean | NutritionPerson$tasksArgs<ExtArgs>
+    dailyEntries?: boolean | NutritionPerson$dailyEntriesArgs<ExtArgs>
+    habits?: boolean | NutritionPerson$habitsArgs<ExtArgs>
+    lifeSpheres?: boolean | NutritionPerson$lifeSpheresArgs<ExtArgs>
+    libraryItems?: boolean | NutritionPerson$libraryItemsArgs<ExtArgs>
+    wishlistItems?: boolean | NutritionPerson$wishlistItemsArgs<ExtArgs>
+    _count?: boolean | NutritionPersonCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type PersonIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
-  export type PersonIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | ProfileDefaultArgs<ExtArgs>
   }
 
-  export type $PersonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Person"
+  export type $NutritionPersonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NutritionPerson"
     objects: {
       profile: Prisma.$ProfilePayload<ExtArgs>
       dishes: Prisma.$DishPayload<ExtArgs>[]
@@ -10137,136 +10137,136 @@ export namespace Prisma {
       targetFiber: number | null
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["person"]>
+    }, ExtArgs["result"]["nutritionPerson"]>
     composites: {}
   }
 
-  type PersonGetPayload<S extends boolean | null | undefined | PersonDefaultArgs> = $Result.GetResult<Prisma.$PersonPayload, S>
+  type NutritionPersonGetPayload<S extends boolean | null | undefined | NutritionPersonDefaultArgs> = $Result.GetResult<Prisma.$NutritionPersonPayload, S>
 
-  type PersonCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PersonFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PersonCountAggregateInputType | true
+  type NutritionPersonCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NutritionPersonFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NutritionPersonCountAggregateInputType | true
     }
 
-  export interface PersonDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Person'], meta: { name: 'Person' } }
+  export interface NutritionPersonDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NutritionPerson'], meta: { name: 'NutritionPerson' } }
     /**
-     * Find zero or one Person that matches the filter.
-     * @param {PersonFindUniqueArgs} args - Arguments to find a Person
+     * Find zero or one NutritionPerson that matches the filter.
+     * @param {NutritionPersonFindUniqueArgs} args - Arguments to find a NutritionPerson
      * @example
-     * // Get one Person
-     * const person = await prisma.person.findUnique({
+     * // Get one NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends PersonFindUniqueArgs>(args: SelectSubset<T, PersonFindUniqueArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends NutritionPersonFindUniqueArgs>(args: SelectSubset<T, NutritionPersonFindUniqueArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Person that matches the filter or throw an error with `error.code='P2025'`
+     * Find one NutritionPerson that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {PersonFindUniqueOrThrowArgs} args - Arguments to find a Person
+     * @param {NutritionPersonFindUniqueOrThrowArgs} args - Arguments to find a NutritionPerson
      * @example
-     * // Get one Person
-     * const person = await prisma.person.findUniqueOrThrow({
+     * // Get one NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends PersonFindUniqueOrThrowArgs>(args: SelectSubset<T, PersonFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends NutritionPersonFindUniqueOrThrowArgs>(args: SelectSubset<T, NutritionPersonFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Person that matches the filter.
+     * Find the first NutritionPerson that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonFindFirstArgs} args - Arguments to find a Person
+     * @param {NutritionPersonFindFirstArgs} args - Arguments to find a NutritionPerson
      * @example
-     * // Get one Person
-     * const person = await prisma.person.findFirst({
+     * // Get one NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends PersonFindFirstArgs>(args?: SelectSubset<T, PersonFindFirstArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends NutritionPersonFindFirstArgs>(args?: SelectSubset<T, NutritionPersonFindFirstArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Person that matches the filter or
+     * Find the first NutritionPerson that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonFindFirstOrThrowArgs} args - Arguments to find a Person
+     * @param {NutritionPersonFindFirstOrThrowArgs} args - Arguments to find a NutritionPerson
      * @example
-     * // Get one Person
-     * const person = await prisma.person.findFirstOrThrow({
+     * // Get one NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends PersonFindFirstOrThrowArgs>(args?: SelectSubset<T, PersonFindFirstOrThrowArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends NutritionPersonFindFirstOrThrowArgs>(args?: SelectSubset<T, NutritionPersonFindFirstOrThrowArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more People that matches the filter.
+     * Find zero or more NutritionPeople that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {NutritionPersonFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all People
-     * const people = await prisma.person.findMany()
+     * // Get all NutritionPeople
+     * const nutritionPeople = await prisma.nutritionPerson.findMany()
      * 
-     * // Get first 10 People
-     * const people = await prisma.person.findMany({ take: 10 })
+     * // Get first 10 NutritionPeople
+     * const nutritionPeople = await prisma.nutritionPerson.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const personWithIdOnly = await prisma.person.findMany({ select: { id: true } })
+     * const nutritionPersonWithIdOnly = await prisma.nutritionPerson.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends PersonFindManyArgs>(args?: SelectSubset<T, PersonFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends NutritionPersonFindManyArgs>(args?: SelectSubset<T, NutritionPersonFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Person.
-     * @param {PersonCreateArgs} args - Arguments to create a Person.
+     * Create a NutritionPerson.
+     * @param {NutritionPersonCreateArgs} args - Arguments to create a NutritionPerson.
      * @example
-     * // Create one Person
-     * const Person = await prisma.person.create({
+     * // Create one NutritionPerson
+     * const NutritionPerson = await prisma.nutritionPerson.create({
      *   data: {
-     *     // ... data to create a Person
+     *     // ... data to create a NutritionPerson
      *   }
      * })
      * 
      */
-    create<T extends PersonCreateArgs>(args: SelectSubset<T, PersonCreateArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends NutritionPersonCreateArgs>(args: SelectSubset<T, NutritionPersonCreateArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many People.
-     * @param {PersonCreateManyArgs} args - Arguments to create many People.
+     * Create many NutritionPeople.
+     * @param {NutritionPersonCreateManyArgs} args - Arguments to create many NutritionPeople.
      * @example
-     * // Create many People
-     * const person = await prisma.person.createMany({
+     * // Create many NutritionPeople
+     * const nutritionPerson = await prisma.nutritionPerson.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends PersonCreateManyArgs>(args?: SelectSubset<T, PersonCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends NutritionPersonCreateManyArgs>(args?: SelectSubset<T, NutritionPersonCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many People and returns the data saved in the database.
-     * @param {PersonCreateManyAndReturnArgs} args - Arguments to create many People.
+     * Create many NutritionPeople and returns the data saved in the database.
+     * @param {NutritionPersonCreateManyAndReturnArgs} args - Arguments to create many NutritionPeople.
      * @example
-     * // Create many People
-     * const person = await prisma.person.createManyAndReturn({
+     * // Create many NutritionPeople
+     * const nutritionPerson = await prisma.nutritionPerson.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many People and only return the `id`
-     * const personWithIdOnly = await prisma.person.createManyAndReturn({
+     * // Create many NutritionPeople and only return the `id`
+     * const nutritionPersonWithIdOnly = await prisma.nutritionPerson.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -10276,28 +10276,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends PersonCreateManyAndReturnArgs>(args?: SelectSubset<T, PersonCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends NutritionPersonCreateManyAndReturnArgs>(args?: SelectSubset<T, NutritionPersonCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Person.
-     * @param {PersonDeleteArgs} args - Arguments to delete one Person.
+     * Delete a NutritionPerson.
+     * @param {NutritionPersonDeleteArgs} args - Arguments to delete one NutritionPerson.
      * @example
-     * // Delete one Person
-     * const Person = await prisma.person.delete({
+     * // Delete one NutritionPerson
+     * const NutritionPerson = await prisma.nutritionPerson.delete({
      *   where: {
-     *     // ... filter to delete one Person
+     *     // ... filter to delete one NutritionPerson
      *   }
      * })
      * 
      */
-    delete<T extends PersonDeleteArgs>(args: SelectSubset<T, PersonDeleteArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends NutritionPersonDeleteArgs>(args: SelectSubset<T, NutritionPersonDeleteArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Person.
-     * @param {PersonUpdateArgs} args - Arguments to update one Person.
+     * Update one NutritionPerson.
+     * @param {NutritionPersonUpdateArgs} args - Arguments to update one NutritionPerson.
      * @example
-     * // Update one Person
-     * const person = await prisma.person.update({
+     * // Update one NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10307,30 +10307,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends PersonUpdateArgs>(args: SelectSubset<T, PersonUpdateArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends NutritionPersonUpdateArgs>(args: SelectSubset<T, NutritionPersonUpdateArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more People.
-     * @param {PersonDeleteManyArgs} args - Arguments to filter People to delete.
+     * Delete zero or more NutritionPeople.
+     * @param {NutritionPersonDeleteManyArgs} args - Arguments to filter NutritionPeople to delete.
      * @example
-     * // Delete a few People
-     * const { count } = await prisma.person.deleteMany({
+     * // Delete a few NutritionPeople
+     * const { count } = await prisma.nutritionPerson.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends PersonDeleteManyArgs>(args?: SelectSubset<T, PersonDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends NutritionPersonDeleteManyArgs>(args?: SelectSubset<T, NutritionPersonDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more People.
+     * Update zero or more NutritionPeople.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {NutritionPersonUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many People
-     * const person = await prisma.person.updateMany({
+     * // Update many NutritionPeople
+     * const nutritionPerson = await prisma.nutritionPerson.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10340,14 +10340,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends PersonUpdateManyArgs>(args: SelectSubset<T, PersonUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends NutritionPersonUpdateManyArgs>(args: SelectSubset<T, NutritionPersonUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more People and returns the data updated in the database.
-     * @param {PersonUpdateManyAndReturnArgs} args - Arguments to update many People.
+     * Update zero or more NutritionPeople and returns the data updated in the database.
+     * @param {NutritionPersonUpdateManyAndReturnArgs} args - Arguments to update many NutritionPeople.
      * @example
-     * // Update many People
-     * const person = await prisma.person.updateManyAndReturn({
+     * // Update many NutritionPeople
+     * const nutritionPerson = await prisma.nutritionPerson.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10356,8 +10356,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more People and only return the `id`
-     * const personWithIdOnly = await prisma.person.updateManyAndReturn({
+     * // Update zero or more NutritionPeople and only return the `id`
+     * const nutritionPersonWithIdOnly = await prisma.nutritionPerson.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -10370,56 +10370,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends PersonUpdateManyAndReturnArgs>(args: SelectSubset<T, PersonUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends NutritionPersonUpdateManyAndReturnArgs>(args: SelectSubset<T, NutritionPersonUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Person.
-     * @param {PersonUpsertArgs} args - Arguments to update or create a Person.
+     * Create or update one NutritionPerson.
+     * @param {NutritionPersonUpsertArgs} args - Arguments to update or create a NutritionPerson.
      * @example
-     * // Update or create a Person
-     * const person = await prisma.person.upsert({
+     * // Update or create a NutritionPerson
+     * const nutritionPerson = await prisma.nutritionPerson.upsert({
      *   create: {
-     *     // ... data to create a Person
+     *     // ... data to create a NutritionPerson
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Person we want to update
+     *     // ... the filter for the NutritionPerson we want to update
      *   }
      * })
      */
-    upsert<T extends PersonUpsertArgs>(args: SelectSubset<T, PersonUpsertArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends NutritionPersonUpsertArgs>(args: SelectSubset<T, NutritionPersonUpsertArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of People.
+     * Count the number of NutritionPeople.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonCountArgs} args - Arguments to filter People to count.
+     * @param {NutritionPersonCountArgs} args - Arguments to filter NutritionPeople to count.
      * @example
-     * // Count the number of People
-     * const count = await prisma.person.count({
+     * // Count the number of NutritionPeople
+     * const count = await prisma.nutritionPerson.count({
      *   where: {
-     *     // ... the filter for the People we want to count
+     *     // ... the filter for the NutritionPeople we want to count
      *   }
      * })
     **/
-    count<T extends PersonCountArgs>(
-      args?: Subset<T, PersonCountArgs>,
+    count<T extends NutritionPersonCountArgs>(
+      args?: Subset<T, NutritionPersonCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], PersonCountAggregateOutputType>
+          : GetScalarType<T['select'], NutritionPersonCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Person.
+     * Allows you to perform aggregations operations on a NutritionPerson.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {NutritionPersonAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -10439,13 +10439,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends PersonAggregateArgs>(args: Subset<T, PersonAggregateArgs>): Prisma.PrismaPromise<GetPersonAggregateType<T>>
+    aggregate<T extends NutritionPersonAggregateArgs>(args: Subset<T, NutritionPersonAggregateArgs>): Prisma.PrismaPromise<GetNutritionPersonAggregateType<T>>
 
     /**
-     * Group by Person.
+     * Group by NutritionPerson.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PersonGroupByArgs} args - Group by arguments.
+     * @param {NutritionPersonGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -10460,14 +10460,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends PersonGroupByArgs,
+      T extends NutritionPersonGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PersonGroupByArgs['orderBy'] }
-        : { orderBy?: PersonGroupByArgs['orderBy'] },
+        ? { orderBy: NutritionPersonGroupByArgs['orderBy'] }
+        : { orderBy?: NutritionPersonGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -10516,34 +10516,34 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, PersonGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPersonGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, NutritionPersonGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNutritionPersonGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Person model
+   * Fields of the NutritionPerson model
    */
-  readonly fields: PersonFieldRefs;
+  readonly fields: NutritionPersonFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Person.
+   * The delegate class that acts as a "Promise-like" for NutritionPerson.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__PersonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__NutritionPersonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    dishes<T extends Person$dishesArgs<ExtArgs> = {}>(args?: Subset<T, Person$dishesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayTemplates<T extends Person$dayTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Person$dayTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    weekPlans<T extends Person$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, Person$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayPlans<T extends Person$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, Person$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    shoppingLists<T extends Person$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, Person$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    userLanguages<T extends Person$userLanguagesArgs<ExtArgs> = {}>(args?: Subset<T, Person$userLanguagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tasks<T extends Person$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Person$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dailyEntries<T extends Person$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Person$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    habits<T extends Person$habitsArgs<ExtArgs> = {}>(args?: Subset<T, Person$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    lifeSpheres<T extends Person$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, Person$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    libraryItems<T extends Person$libraryItemsArgs<ExtArgs> = {}>(args?: Subset<T, Person$libraryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    wishlistItems<T extends Person$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, Person$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dishes<T extends NutritionPerson$dishesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dishesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dayTemplates<T extends NutritionPerson$dayTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dayTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    weekPlans<T extends NutritionPerson$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dayPlans<T extends NutritionPerson$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    shoppingLists<T extends NutritionPerson$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userLanguages<T extends NutritionPerson$userLanguagesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$userLanguagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasks<T extends NutritionPerson$tasksArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dailyEntries<T extends NutritionPerson$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    habits<T extends NutritionPerson$habitsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lifeSpheres<T extends NutritionPerson$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    libraryItems<T extends NutritionPerson$libraryItemsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$libraryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    wishlistItems<T extends NutritionPerson$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10570,423 +10570,423 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Person model
+   * Fields of the NutritionPerson model
    */
-  interface PersonFieldRefs {
-    readonly id: FieldRef<"Person", 'String'>
-    readonly profileId: FieldRef<"Person", 'String'>
-    readonly name: FieldRef<"Person", 'String'>
-    readonly targetCalories: FieldRef<"Person", 'Float'>
-    readonly targetProtein: FieldRef<"Person", 'Float'>
-    readonly targetFat: FieldRef<"Person", 'Float'>
-    readonly targetCarbs: FieldRef<"Person", 'Float'>
-    readonly targetFiber: FieldRef<"Person", 'Float'>
-    readonly createdAt: FieldRef<"Person", 'DateTime'>
-    readonly updatedAt: FieldRef<"Person", 'DateTime'>
+  interface NutritionPersonFieldRefs {
+    readonly id: FieldRef<"NutritionPerson", 'String'>
+    readonly profileId: FieldRef<"NutritionPerson", 'String'>
+    readonly name: FieldRef<"NutritionPerson", 'String'>
+    readonly targetCalories: FieldRef<"NutritionPerson", 'Float'>
+    readonly targetProtein: FieldRef<"NutritionPerson", 'Float'>
+    readonly targetFat: FieldRef<"NutritionPerson", 'Float'>
+    readonly targetCarbs: FieldRef<"NutritionPerson", 'Float'>
+    readonly targetFiber: FieldRef<"NutritionPerson", 'Float'>
+    readonly createdAt: FieldRef<"NutritionPerson", 'DateTime'>
+    readonly updatedAt: FieldRef<"NutritionPerson", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Person findUnique
+   * NutritionPerson findUnique
    */
-  export type PersonFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter, which Person to fetch.
+     * Filter, which NutritionPerson to fetch.
      */
-    where: PersonWhereUniqueInput
+    where: NutritionPersonWhereUniqueInput
   }
 
   /**
-   * Person findUniqueOrThrow
+   * NutritionPerson findUniqueOrThrow
    */
-  export type PersonFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter, which Person to fetch.
+     * Filter, which NutritionPerson to fetch.
      */
-    where: PersonWhereUniqueInput
+    where: NutritionPersonWhereUniqueInput
   }
 
   /**
-   * Person findFirst
+   * NutritionPerson findFirst
    */
-  export type PersonFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter, which Person to fetch.
+     * Filter, which NutritionPerson to fetch.
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of People to fetch.
+     * Determine the order of NutritionPeople to fetch.
      */
-    orderBy?: PersonOrderByWithRelationInput | PersonOrderByWithRelationInput[]
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for People.
+     * Sets the position for searching for NutritionPeople.
      */
-    cursor?: PersonWhereUniqueInput
+    cursor?: NutritionPersonWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` People from the position of the cursor.
+     * Take `±n` NutritionPeople from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` People.
+     * Skip the first `n` NutritionPeople.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of People.
+     * Filter by unique combinations of NutritionPeople.
      */
-    distinct?: PersonScalarFieldEnum | PersonScalarFieldEnum[]
+    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
   }
 
   /**
-   * Person findFirstOrThrow
+   * NutritionPerson findFirstOrThrow
    */
-  export type PersonFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter, which Person to fetch.
+     * Filter, which NutritionPerson to fetch.
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of People to fetch.
+     * Determine the order of NutritionPeople to fetch.
      */
-    orderBy?: PersonOrderByWithRelationInput | PersonOrderByWithRelationInput[]
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for People.
+     * Sets the position for searching for NutritionPeople.
      */
-    cursor?: PersonWhereUniqueInput
+    cursor?: NutritionPersonWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` People from the position of the cursor.
+     * Take `±n` NutritionPeople from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` People.
+     * Skip the first `n` NutritionPeople.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of People.
+     * Filter by unique combinations of NutritionPeople.
      */
-    distinct?: PersonScalarFieldEnum | PersonScalarFieldEnum[]
+    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
   }
 
   /**
-   * Person findMany
+   * NutritionPerson findMany
    */
-  export type PersonFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter, which People to fetch.
+     * Filter, which NutritionPeople to fetch.
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of People to fetch.
+     * Determine the order of NutritionPeople to fetch.
      */
-    orderBy?: PersonOrderByWithRelationInput | PersonOrderByWithRelationInput[]
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing People.
+     * Sets the position for listing NutritionPeople.
      */
-    cursor?: PersonWhereUniqueInput
+    cursor?: NutritionPersonWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` People from the position of the cursor.
+     * Take `±n` NutritionPeople from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` People.
+     * Skip the first `n` NutritionPeople.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of People.
+     * Filter by unique combinations of NutritionPeople.
      */
-    distinct?: PersonScalarFieldEnum | PersonScalarFieldEnum[]
+    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
   }
 
   /**
-   * Person create
+   * NutritionPerson create
    */
-  export type PersonCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * The data needed to create a Person.
+     * The data needed to create a NutritionPerson.
      */
-    data: XOR<PersonCreateInput, PersonUncheckedCreateInput>
+    data: XOR<NutritionPersonCreateInput, NutritionPersonUncheckedCreateInput>
   }
 
   /**
-   * Person createMany
+   * NutritionPerson createMany
    */
-  export type PersonCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many People.
+     * The data used to create many NutritionPeople.
      */
-    data: PersonCreateManyInput | PersonCreateManyInput[]
+    data: NutritionPersonCreateManyInput | NutritionPersonCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Person createManyAndReturn
+   * NutritionPerson createManyAndReturn
    */
-  export type PersonCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelectCreateManyAndReturn<ExtArgs> | null
+    select?: NutritionPersonSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
-     * The data used to create many People.
+     * The data used to create many NutritionPeople.
      */
-    data: PersonCreateManyInput | PersonCreateManyInput[]
+    data: NutritionPersonCreateManyInput | NutritionPersonCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: NutritionPersonIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Person update
+   * NutritionPerson update
    */
-  export type PersonUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * The data needed to update a Person.
+     * The data needed to update a NutritionPerson.
      */
-    data: XOR<PersonUpdateInput, PersonUncheckedUpdateInput>
+    data: XOR<NutritionPersonUpdateInput, NutritionPersonUncheckedUpdateInput>
     /**
-     * Choose, which Person to update.
+     * Choose, which NutritionPerson to update.
      */
-    where: PersonWhereUniqueInput
+    where: NutritionPersonWhereUniqueInput
   }
 
   /**
-   * Person updateMany
+   * NutritionPerson updateMany
    */
-  export type PersonUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update People.
+     * The data used to update NutritionPeople.
      */
-    data: XOR<PersonUpdateManyMutationInput, PersonUncheckedUpdateManyInput>
+    data: XOR<NutritionPersonUpdateManyMutationInput, NutritionPersonUncheckedUpdateManyInput>
     /**
-     * Filter which People to update
+     * Filter which NutritionPeople to update
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
-     * Limit how many People to update.
+     * Limit how many NutritionPeople to update.
      */
     limit?: number
   }
 
   /**
-   * Person updateManyAndReturn
+   * NutritionPerson updateManyAndReturn
    */
-  export type PersonUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: NutritionPersonSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
-     * The data used to update People.
+     * The data used to update NutritionPeople.
      */
-    data: XOR<PersonUpdateManyMutationInput, PersonUncheckedUpdateManyInput>
+    data: XOR<NutritionPersonUpdateManyMutationInput, NutritionPersonUncheckedUpdateManyInput>
     /**
-     * Filter which People to update
+     * Filter which NutritionPeople to update
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
-     * Limit how many People to update.
+     * Limit how many NutritionPeople to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: NutritionPersonIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Person upsert
+   * NutritionPerson upsert
    */
-  export type PersonUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * The filter to search for the Person to update in case it exists.
+     * The filter to search for the NutritionPerson to update in case it exists.
      */
-    where: PersonWhereUniqueInput
+    where: NutritionPersonWhereUniqueInput
     /**
-     * In case the Person found by the `where` argument doesn't exist, create a new Person with this data.
+     * In case the NutritionPerson found by the `where` argument doesn't exist, create a new NutritionPerson with this data.
      */
-    create: XOR<PersonCreateInput, PersonUncheckedCreateInput>
+    create: XOR<NutritionPersonCreateInput, NutritionPersonUncheckedCreateInput>
     /**
-     * In case the Person was found with the provided `where` argument, update it with this data.
+     * In case the NutritionPerson was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<PersonUpdateInput, PersonUncheckedUpdateInput>
+    update: XOR<NutritionPersonUpdateInput, NutritionPersonUncheckedUpdateInput>
   }
 
   /**
-   * Person delete
+   * NutritionPerson delete
    */
-  export type PersonDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
     /**
-     * Filter which Person to delete.
+     * Filter which NutritionPerson to delete.
      */
-    where: PersonWhereUniqueInput
+    where: NutritionPersonWhereUniqueInput
   }
 
   /**
-   * Person deleteMany
+   * NutritionPerson deleteMany
    */
-  export type PersonDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which People to delete
+     * Filter which NutritionPeople to delete
      */
-    where?: PersonWhereInput
+    where?: NutritionPersonWhereInput
     /**
-     * Limit how many People to delete.
+     * Limit how many NutritionPeople to delete.
      */
     limit?: number
   }
 
   /**
-   * Person.dishes
+   * NutritionPerson.dishes
    */
-  export type Person$dishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$dishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Dish
      */
@@ -11008,9 +11008,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.dayTemplates
+   * NutritionPerson.dayTemplates
    */
-  export type Person$dayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$dayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the DayTemplate
      */
@@ -11032,9 +11032,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.weekPlans
+   * NutritionPerson.weekPlans
    */
-  export type Person$weekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$weekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the WeekPlan
      */
@@ -11056,9 +11056,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.dayPlans
+   * NutritionPerson.dayPlans
    */
-  export type Person$dayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$dayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the DayPlan
      */
@@ -11080,9 +11080,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.shoppingLists
+   * NutritionPerson.shoppingLists
    */
-  export type Person$shoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$shoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ShoppingList
      */
@@ -11104,9 +11104,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.userLanguages
+   * NutritionPerson.userLanguages
    */
-  export type Person$userLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$userLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the UserLanguage
      */
@@ -11128,9 +11128,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.tasks
+   * NutritionPerson.tasks
    */
-  export type Person$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Task
      */
@@ -11152,9 +11152,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.dailyEntries
+   * NutritionPerson.dailyEntries
    */
-  export type Person$dailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$dailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the DailyEntry
      */
@@ -11176,9 +11176,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.habits
+   * NutritionPerson.habits
    */
-  export type Person$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Habit
      */
@@ -11200,9 +11200,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.lifeSpheres
+   * NutritionPerson.lifeSpheres
    */
-  export type Person$lifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$lifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the LifeSphere
      */
@@ -11224,9 +11224,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.libraryItems
+   * NutritionPerson.libraryItems
    */
-  export type Person$libraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$libraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the LibraryItem
      */
@@ -11248,9 +11248,9 @@ export namespace Prisma {
   }
 
   /**
-   * Person.wishlistItems
+   * NutritionPerson.wishlistItems
    */
-  export type Person$wishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPerson$wishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the WishlistItem
      */
@@ -11272,21 +11272,21 @@ export namespace Prisma {
   }
 
   /**
-   * Person without action
+   * NutritionPerson without action
    */
-  export type PersonDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type NutritionPersonDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Person
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: PersonSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Person
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: PersonOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PersonInclude<ExtArgs> | null
+    include?: NutritionPersonInclude<ExtArgs> | null
   }
 
 
@@ -12799,7 +12799,7 @@ export namespace Prisma {
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
     dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
     templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
@@ -12815,7 +12815,7 @@ export namespace Prisma {
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dish"]>
 
   export type DishSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12827,7 +12827,7 @@ export namespace Prisma {
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dish"]>
 
   export type DishSelectScalar = {
@@ -12843,23 +12843,23 @@ export namespace Prisma {
 
   export type DishOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "description" | "priority" | "yield" | "createdAt" | "updatedAt", ExtArgs["result"]["dish"]>
   export type DishInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
     dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
     templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
     _count?: boolean | DishCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DishIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type DishIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $DishPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Dish"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       ingredients: Prisma.$DishIngredientPayload<ExtArgs>[]
       dayPlanEntries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
       templateEntries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
@@ -13267,7 +13267,7 @@ export namespace Prisma {
    */
   export interface Prisma__DishClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ingredients<T extends Dish$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Dish$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dayPlanEntries<T extends Dish$dayPlanEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$dayPlanEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     templateEntries<T extends Dish$templateEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$templateEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -15068,7 +15068,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
     dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
     _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
@@ -15080,7 +15080,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayTemplate"]>
 
   export type DayTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15089,7 +15089,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayTemplate"]>
 
   export type DayTemplateSelectScalar = {
@@ -15102,22 +15102,22 @@ export namespace Prisma {
 
   export type DayTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["dayTemplate"]>
   export type DayTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
     dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
     _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type DayTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $DayTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DayTemplate"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       entries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
       dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
     }
@@ -15521,7 +15521,7 @@ export namespace Prisma {
    */
   export interface Prisma__DayTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     entries<T extends DayTemplate$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dayPlans<T extends DayTemplate$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -17315,7 +17315,7 @@ export namespace Prisma {
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
     shoppingLists?: boolean | WeekPlan$shoppingListsArgs<ExtArgs>
     _count?: boolean | WeekPlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -17328,7 +17328,7 @@ export namespace Prisma {
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["weekPlan"]>
 
   export type WeekPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17338,7 +17338,7 @@ export namespace Prisma {
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["weekPlan"]>
 
   export type WeekPlanSelectScalar = {
@@ -17352,22 +17352,22 @@ export namespace Prisma {
 
   export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "startDate" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
   export type WeekPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
     shoppingLists?: boolean | WeekPlan$shoppingListsArgs<ExtArgs>
     _count?: boolean | WeekPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WeekPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type WeekPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $WeekPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WeekPlan"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
       shoppingLists: Prisma.$ShoppingListPayload<ExtArgs>[]
     }
@@ -17772,7 +17772,7 @@ export namespace Prisma {
    */
   export interface Prisma__WeekPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dayPlans<T extends WeekPlan$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, WeekPlan$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shoppingLists<T extends WeekPlan$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, WeekPlan$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -18465,7 +18465,7 @@ export namespace Prisma {
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
     entries?: boolean | DayPlan$entriesArgs<ExtArgs>
@@ -18481,7 +18481,7 @@ export namespace Prisma {
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
@@ -18495,7 +18495,7 @@ export namespace Prisma {
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
@@ -18513,19 +18513,19 @@ export namespace Prisma {
 
   export type DayPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "weekPlanId" | "templateId" | "date" | "adherence" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPlan"]>
   export type DayPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
     entries?: boolean | DayPlan$entriesArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
   export type DayPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
@@ -18533,7 +18533,7 @@ export namespace Prisma {
   export type $DayPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DayPlan"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
       template: Prisma.$DayTemplatePayload<ExtArgs> | null
       entries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
@@ -18941,7 +18941,7 @@ export namespace Prisma {
    */
   export interface Prisma__DayPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends DayPlan$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     template<T extends DayPlan$templateArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$templateArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     entries<T extends DayPlan$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -20753,7 +20753,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
     items?: boolean | ShoppingList$itemsArgs<ExtArgs>
     _count?: boolean | ShoppingListCountOutputTypeDefaultArgs<ExtArgs>
@@ -20766,7 +20766,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }, ExtArgs["result"]["shoppingList"]>
 
@@ -20777,7 +20777,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }, ExtArgs["result"]["shoppingList"]>
 
@@ -20792,24 +20792,24 @@ export namespace Prisma {
 
   export type ShoppingListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "weekPlanId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["shoppingList"]>
   export type ShoppingListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
     items?: boolean | ShoppingList$itemsArgs<ExtArgs>
     _count?: boolean | ShoppingListCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ShoppingListIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }
   export type ShoppingListIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }
 
   export type $ShoppingListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ShoppingList"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
       items: Prisma.$ShoppingListItemPayload<ExtArgs>[]
     }
@@ -21214,7 +21214,7 @@ export namespace Prisma {
    */
   export interface Prisma__ShoppingListClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends ShoppingList$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, ShoppingList$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends ShoppingList$itemsArgs<ExtArgs> = {}>(args?: Subset<T, ShoppingList$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -23054,7 +23054,7 @@ export namespace Prisma {
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
@@ -23068,7 +23068,7 @@ export namespace Prisma {
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
   export type LifeSphereSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -23080,7 +23080,7 @@ export namespace Prisma {
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
   export type LifeSphereSelectScalar = {
@@ -23096,21 +23096,21 @@ export namespace Prisma {
 
   export type LifeSphereOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "color" | "icon" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["lifeSphere"]>
   export type LifeSphereInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $LifeSpherePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LifeSphere"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       tasks: Prisma.$TaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -23516,7 +23516,7 @@ export namespace Prisma {
    */
   export interface Prisma__LifeSphereClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tasks<T extends LifeSphere$tasksArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -24304,7 +24304,7 @@ export namespace Prisma {
     parentId?: boolean
     sphereId?: boolean
     completedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -24330,7 +24330,7 @@ export namespace Prisma {
     parentId?: boolean
     sphereId?: boolean
     completedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -24354,7 +24354,7 @@ export namespace Prisma {
     parentId?: boolean
     sphereId?: boolean
     completedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
@@ -24382,19 +24382,19 @@ export namespace Prisma {
 
   export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "description" | "icon" | "status" | "priority" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "completedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
   }
   export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
   }
@@ -24402,7 +24402,7 @@ export namespace Prisma {
   export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Task"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       parent: Prisma.$TaskPayload<ExtArgs> | null
       children: Prisma.$TaskPayload<ExtArgs>[]
       sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
@@ -24820,7 +24820,7 @@ export namespace Prisma {
    */
   export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     parent<T extends Task$parentArgs<ExtArgs> = {}>(args?: Subset<T, Task$parentArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Task$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Task$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sphere<T extends Task$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Task$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -25730,7 +25730,7 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25760,7 +25760,7 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25790,7 +25790,7 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectScalar = {
@@ -25824,19 +25824,19 @@ export namespace Prisma {
 
   export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "morningSunlight" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type DailyEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type DailyEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $DailyEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DailyEntry"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -26259,7 +26259,7 @@ export namespace Prisma {
    */
   export interface Prisma__DailyEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26972,7 +26972,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
@@ -26988,7 +26988,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -27002,7 +27002,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectScalar = {
@@ -27020,21 +27020,21 @@ export namespace Prisma {
 
   export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "anchor" | "action" | "celebration" | "order" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HabitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type HabitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $HabitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Habit"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       completions: Prisma.$HabitCompletionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -27442,7 +27442,7 @@ export namespace Prisma {
    */
   export interface Prisma__HabitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     completions<T extends Habit$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -29222,7 +29222,7 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -29237,7 +29237,7 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -29252,7 +29252,7 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectScalar = {
@@ -29271,19 +29271,19 @@ export namespace Prisma {
 
   export type LibraryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "author" | "url" | "type" | "status" | "rating" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["libraryItem"]>
   export type LibraryItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type LibraryItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type LibraryItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $LibraryItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LibraryItem"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29691,7 +29691,7 @@ export namespace Prisma {
    */
   export interface Prisma__LibraryItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30437,7 +30437,7 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -30457,7 +30457,7 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -30477,7 +30477,7 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectScalar = {
@@ -30501,19 +30501,19 @@ export namespace Prisma {
 
   export type WishlistItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "description" | "url" | "imageUrl" | "price" | "currency" | "priority" | "status" | "category" | "tags" | "necessity" | "store" | "createdAt" | "updatedAt", ExtArgs["result"]["wishlistItem"]>
   export type WishlistItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type WishlistItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
   export type WishlistItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
   }
 
   export type $WishlistItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WishlistItem"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -30926,7 +30926,7 @@ export namespace Prisma {
    */
   export interface Prisma__WishlistItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32693,7 +32693,7 @@ export namespace Prisma {
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
     sphereProgress?: boolean | UserLanguage$sphereProgressArgs<ExtArgs>
     vocabularyItems?: boolean | UserLanguage$vocabularyItemsArgs<ExtArgs>
@@ -32710,7 +32710,7 @@ export namespace Prisma {
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userLanguage"]>
 
@@ -32722,7 +32722,7 @@ export namespace Prisma {
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userLanguage"]>
 
@@ -32738,7 +32738,7 @@ export namespace Prisma {
 
   export type UserLanguageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "languageId" | "level" | "totalXp" | "createdAt" | "updatedAt", ExtArgs["result"]["userLanguage"]>
   export type UserLanguageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
     sphereProgress?: boolean | UserLanguage$sphereProgressArgs<ExtArgs>
     vocabularyItems?: boolean | UserLanguage$vocabularyItemsArgs<ExtArgs>
@@ -32747,18 +32747,18 @@ export namespace Prisma {
     _count?: boolean | UserLanguageCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserLanguageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }
   export type UserLanguageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | PersonDefaultArgs<ExtArgs>
+    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }
 
   export type $UserLanguagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserLanguage"
     objects: {
-      person: Prisma.$PersonPayload<ExtArgs>
+      person: Prisma.$NutritionPersonPayload<ExtArgs>
       language: Prisma.$LanguagePayload<ExtArgs>
       sphereProgress: Prisma.$LanguageSphereProgressPayload<ExtArgs>[]
       vocabularyItems: Prisma.$VocabularyItemPayload<ExtArgs>[]
@@ -33167,7 +33167,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserLanguageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends PersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PersonDefaultArgs<ExtArgs>>): Prisma__PersonClient<$Result.GetResult<Prisma.$PersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     language<T extends LanguageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LanguageDefaultArgs<ExtArgs>>): Prisma__LanguageClient<$Result.GetResult<Prisma.$LanguagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sphereProgress<T extends UserLanguage$sphereProgressArgs<ExtArgs> = {}>(args?: Subset<T, UserLanguage$sphereProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LanguageSphereProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vocabularyItems<T extends UserLanguage$vocabularyItemsArgs<ExtArgs> = {}>(args?: Subset<T, UserLanguage$vocabularyItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -38332,7 +38332,7 @@ export namespace Prisma {
   export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
-  export const PersonScalarFieldEnum: {
+  export const NutritionPersonScalarFieldEnum: {
     id: 'id',
     profileId: 'profileId',
     name: 'name',
@@ -38345,7 +38345,7 @@ export namespace Prisma {
     updatedAt: 'updatedAt'
   };
 
-  export type PersonScalarFieldEnum = (typeof PersonScalarFieldEnum)[keyof typeof PersonScalarFieldEnum]
+  export type NutritionPersonScalarFieldEnum = (typeof NutritionPersonScalarFieldEnum)[keyof typeof NutritionPersonScalarFieldEnum]
 
 
   export const ProductScalarFieldEnum: {
@@ -39323,7 +39323,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    persons?: PersonListRelationFilter
+    persons?: NutritionPersonListRelationFilter
   }
 
   export type ProfileOrderByWithRelationInput = {
@@ -39333,7 +39333,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
-    persons?: PersonOrderByRelationAggregateInput
+    persons?: NutritionPersonOrderByRelationAggregateInput
   }
 
   export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -39346,7 +39346,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Profile"> | Date | string
     updatedAt?: DateTimeFilter<"Profile"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    persons?: PersonListRelationFilter
+    persons?: NutritionPersonListRelationFilter
   }, "id" | "userId">
 
   export type ProfileOrderByWithAggregationInput = {
@@ -39371,20 +39371,20 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
   }
 
-  export type PersonWhereInput = {
-    AND?: PersonWhereInput | PersonWhereInput[]
-    OR?: PersonWhereInput[]
-    NOT?: PersonWhereInput | PersonWhereInput[]
-    id?: StringFilter<"Person"> | string
-    profileId?: StringFilter<"Person"> | string
-    name?: StringFilter<"Person"> | string
-    targetCalories?: FloatNullableFilter<"Person"> | number | null
-    targetProtein?: FloatNullableFilter<"Person"> | number | null
-    targetFat?: FloatNullableFilter<"Person"> | number | null
-    targetCarbs?: FloatNullableFilter<"Person"> | number | null
-    targetFiber?: FloatNullableFilter<"Person"> | number | null
-    createdAt?: DateTimeFilter<"Person"> | Date | string
-    updatedAt?: DateTimeFilter<"Person"> | Date | string
+  export type NutritionPersonWhereInput = {
+    AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
+    OR?: NutritionPersonWhereInput[]
+    NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
+    id?: StringFilter<"NutritionPerson"> | string
+    profileId?: StringFilter<"NutritionPerson"> | string
+    name?: StringFilter<"NutritionPerson"> | string
+    targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetCarbs?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
+    createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
+    updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
     dishes?: DishListRelationFilter
     dayTemplates?: DayTemplateListRelationFilter
@@ -39400,7 +39400,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemListRelationFilter
   }
 
-  export type PersonOrderByWithRelationInput = {
+  export type NutritionPersonOrderByWithRelationInput = {
     id?: SortOrder
     profileId?: SortOrder
     name?: SortOrder
@@ -39426,20 +39426,20 @@ export namespace Prisma {
     wishlistItems?: WishlistItemOrderByRelationAggregateInput
   }
 
-  export type PersonWhereUniqueInput = Prisma.AtLeast<{
+  export type NutritionPersonWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: PersonWhereInput | PersonWhereInput[]
-    OR?: PersonWhereInput[]
-    NOT?: PersonWhereInput | PersonWhereInput[]
-    profileId?: StringFilter<"Person"> | string
-    name?: StringFilter<"Person"> | string
-    targetCalories?: FloatNullableFilter<"Person"> | number | null
-    targetProtein?: FloatNullableFilter<"Person"> | number | null
-    targetFat?: FloatNullableFilter<"Person"> | number | null
-    targetCarbs?: FloatNullableFilter<"Person"> | number | null
-    targetFiber?: FloatNullableFilter<"Person"> | number | null
-    createdAt?: DateTimeFilter<"Person"> | Date | string
-    updatedAt?: DateTimeFilter<"Person"> | Date | string
+    AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
+    OR?: NutritionPersonWhereInput[]
+    NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
+    profileId?: StringFilter<"NutritionPerson"> | string
+    name?: StringFilter<"NutritionPerson"> | string
+    targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetCarbs?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
+    createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
+    updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
     dishes?: DishListRelationFilter
     dayTemplates?: DayTemplateListRelationFilter
@@ -39455,7 +39455,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemListRelationFilter
   }, "id">
 
-  export type PersonOrderByWithAggregationInput = {
+  export type NutritionPersonOrderByWithAggregationInput = {
     id?: SortOrder
     profileId?: SortOrder
     name?: SortOrder
@@ -39466,27 +39466,27 @@ export namespace Prisma {
     targetFiber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: PersonCountOrderByAggregateInput
-    _avg?: PersonAvgOrderByAggregateInput
-    _max?: PersonMaxOrderByAggregateInput
-    _min?: PersonMinOrderByAggregateInput
-    _sum?: PersonSumOrderByAggregateInput
+    _count?: NutritionPersonCountOrderByAggregateInput
+    _avg?: NutritionPersonAvgOrderByAggregateInput
+    _max?: NutritionPersonMaxOrderByAggregateInput
+    _min?: NutritionPersonMinOrderByAggregateInput
+    _sum?: NutritionPersonSumOrderByAggregateInput
   }
 
-  export type PersonScalarWhereWithAggregatesInput = {
-    AND?: PersonScalarWhereWithAggregatesInput | PersonScalarWhereWithAggregatesInput[]
-    OR?: PersonScalarWhereWithAggregatesInput[]
-    NOT?: PersonScalarWhereWithAggregatesInput | PersonScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Person"> | string
-    profileId?: StringWithAggregatesFilter<"Person"> | string
-    name?: StringWithAggregatesFilter<"Person"> | string
-    targetCalories?: FloatNullableWithAggregatesFilter<"Person"> | number | null
-    targetProtein?: FloatNullableWithAggregatesFilter<"Person"> | number | null
-    targetFat?: FloatNullableWithAggregatesFilter<"Person"> | number | null
-    targetCarbs?: FloatNullableWithAggregatesFilter<"Person"> | number | null
-    targetFiber?: FloatNullableWithAggregatesFilter<"Person"> | number | null
-    createdAt?: DateTimeWithAggregatesFilter<"Person"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Person"> | Date | string
+  export type NutritionPersonScalarWhereWithAggregatesInput = {
+    AND?: NutritionPersonScalarWhereWithAggregatesInput | NutritionPersonScalarWhereWithAggregatesInput[]
+    OR?: NutritionPersonScalarWhereWithAggregatesInput[]
+    NOT?: NutritionPersonScalarWhereWithAggregatesInput | NutritionPersonScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NutritionPerson"> | string
+    profileId?: StringWithAggregatesFilter<"NutritionPerson"> | string
+    name?: StringWithAggregatesFilter<"NutritionPerson"> | string
+    targetCalories?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
+    targetProtein?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
+    targetFat?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
+    targetCarbs?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
+    targetFiber?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"NutritionPerson"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NutritionPerson"> | Date | string
   }
 
   export type ProductWhereInput = {
@@ -39611,7 +39611,7 @@ export namespace Prisma {
     yield?: FloatNullableFilter<"Dish"> | number | null
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     ingredients?: DishIngredientListRelationFilter
     dayPlanEntries?: DayPlanEntryListRelationFilter
     templateEntries?: DayTemplateEntryListRelationFilter
@@ -39626,7 +39626,7 @@ export namespace Prisma {
     yield?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     ingredients?: DishIngredientOrderByRelationAggregateInput
     dayPlanEntries?: DayPlanEntryOrderByRelationAggregateInput
     templateEntries?: DayTemplateEntryOrderByRelationAggregateInput
@@ -39644,7 +39644,7 @@ export namespace Prisma {
     yield?: FloatNullableFilter<"Dish"> | number | null
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     ingredients?: DishIngredientListRelationFilter
     dayPlanEntries?: DayPlanEntryListRelationFilter
     templateEntries?: DayTemplateEntryListRelationFilter
@@ -39750,7 +39750,7 @@ export namespace Prisma {
     name?: StringFilter<"DayTemplate"> | string
     createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     entries?: DayTemplateEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
   }
@@ -39761,7 +39761,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     entries?: DayTemplateEntryOrderByRelationAggregateInput
     dayPlans?: DayPlanOrderByRelationAggregateInput
   }
@@ -39775,7 +39775,7 @@ export namespace Prisma {
     name?: StringFilter<"DayTemplate"> | string
     createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     entries?: DayTemplateEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
   }, "id">
@@ -39877,7 +39877,7 @@ export namespace Prisma {
     startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     dayPlans?: DayPlanListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
   }
@@ -39889,7 +39889,7 @@ export namespace Prisma {
     startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     dayPlans?: DayPlanOrderByRelationAggregateInput
     shoppingLists?: ShoppingListOrderByRelationAggregateInput
   }
@@ -39904,7 +39904,7 @@ export namespace Prisma {
     startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     dayPlans?: DayPlanListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
   }, "id">
@@ -39945,7 +39945,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
     entries?: DayPlanEntryListRelationFilter
@@ -39960,7 +39960,7 @@ export namespace Prisma {
     adherence?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
     template?: DayTemplateOrderByWithRelationInput
     entries?: DayPlanEntryOrderByRelationAggregateInput
@@ -39978,7 +39978,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
     entries?: DayPlanEntryListRelationFilter
@@ -40087,7 +40087,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"ShoppingList"> | string | null
     createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
     updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     items?: ShoppingListItemListRelationFilter
   }
@@ -40099,7 +40099,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
     items?: ShoppingListItemOrderByRelationAggregateInput
   }
@@ -40114,7 +40114,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"ShoppingList"> | string | null
     createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
     updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     items?: ShoppingListItemListRelationFilter
   }, "id">
@@ -40220,7 +40220,7 @@ export namespace Prisma {
     order?: IntFilter<"LifeSphere"> | number
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     tasks?: TaskListRelationFilter
   }
 
@@ -40233,7 +40233,7 @@ export namespace Prisma {
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     tasks?: TaskOrderByRelationAggregateInput
   }
 
@@ -40249,7 +40249,7 @@ export namespace Prisma {
     order?: IntFilter<"LifeSphere"> | number
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     tasks?: TaskListRelationFilter
   }, "id">
 
@@ -40305,7 +40305,7 @@ export namespace Prisma {
     parentId?: StringNullableFilter<"Task"> | string | null
     sphereId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
@@ -40330,7 +40330,7 @@ export namespace Prisma {
     parentId?: SortOrderInput | SortOrder
     sphereId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     parent?: TaskOrderByWithRelationInput
     children?: TaskOrderByRelationAggregateInput
     sphere?: LifeSphereOrderByWithRelationInput
@@ -40358,7 +40358,7 @@ export namespace Prisma {
     parentId?: StringNullableFilter<"Task"> | string | null
     sphereId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
@@ -40444,7 +40444,7 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }
 
   export type DailyEntryOrderByWithRelationInput = {
@@ -40474,7 +40474,7 @@ export namespace Prisma {
     brainDump?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
   }
 
   export type DailyEntryWhereUniqueInput = Prisma.AtLeast<{
@@ -40508,7 +40508,7 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }, "id" | "personId_date">
 
   export type DailyEntryOrderByWithAggregationInput = {
@@ -40591,7 +40591,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     completions?: HabitCompletionListRelationFilter
   }
 
@@ -40606,7 +40606,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     completions?: HabitCompletionOrderByRelationAggregateInput
   }
 
@@ -40624,7 +40624,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     completions?: HabitCompletionListRelationFilter
   }, "id">
 
@@ -40728,7 +40728,7 @@ export namespace Prisma {
     notes?: StringNullableFilter<"LibraryItem"> | string | null
     createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
     updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }
 
   export type LibraryItemOrderByWithRelationInput = {
@@ -40743,7 +40743,7 @@ export namespace Prisma {
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
   }
 
   export type LibraryItemWhereUniqueInput = Prisma.AtLeast<{
@@ -40761,7 +40761,7 @@ export namespace Prisma {
     notes?: StringNullableFilter<"LibraryItem"> | string | null
     createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
     updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }, "id">
 
   export type LibraryItemOrderByWithAggregationInput = {
@@ -40820,7 +40820,7 @@ export namespace Prisma {
     store?: StringNullableFilter<"WishlistItem"> | string | null
     createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }
 
   export type WishlistItemOrderByWithRelationInput = {
@@ -40840,7 +40840,7 @@ export namespace Prisma {
     store?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
   }
 
   export type WishlistItemWhereUniqueInput = Prisma.AtLeast<{
@@ -40863,7 +40863,7 @@ export namespace Prisma {
     store?: StringNullableFilter<"WishlistItem"> | string | null
     createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
   }, "id">
 
   export type WishlistItemOrderByWithAggregationInput = {
@@ -40983,7 +40983,7 @@ export namespace Prisma {
     totalXp?: IntFilter<"UserLanguage"> | number
     createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
     updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     language?: XOR<LanguageScalarRelationFilter, LanguageWhereInput>
     sphereProgress?: LanguageSphereProgressListRelationFilter
     vocabularyItems?: VocabularyItemListRelationFilter
@@ -40999,7 +40999,7 @@ export namespace Prisma {
     totalXp?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: PersonOrderByWithRelationInput
+    person?: NutritionPersonOrderByWithRelationInput
     language?: LanguageOrderByWithRelationInput
     sphereProgress?: LanguageSphereProgressOrderByRelationAggregateInput
     vocabularyItems?: VocabularyItemOrderByRelationAggregateInput
@@ -41019,7 +41019,7 @@ export namespace Prisma {
     totalXp?: IntFilter<"UserLanguage"> | number
     createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
     updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
-    person?: XOR<PersonScalarRelationFilter, PersonWhereInput>
+    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     language?: XOR<LanguageScalarRelationFilter, LanguageWhereInput>
     sphereProgress?: LanguageSphereProgressListRelationFilter
     vocabularyItems?: VocabularyItemListRelationFilter
@@ -41643,7 +41643,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutProfileInput
-    persons?: PersonCreateNestedManyWithoutProfileInput
+    persons?: NutritionPersonCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateInput = {
@@ -41652,7 +41652,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    persons?: PersonUncheckedCreateNestedManyWithoutProfileInput
+    persons?: NutritionPersonUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUpdateInput = {
@@ -41661,7 +41661,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutProfileNestedInput
-    persons?: PersonUpdateManyWithoutProfileNestedInput
+    persons?: NutritionPersonUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateInput = {
@@ -41670,7 +41670,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: PersonUncheckedUpdateManyWithoutProfileNestedInput
+    persons?: NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileCreateManyInput = {
@@ -41696,7 +41696,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PersonCreateInput = {
+  export type NutritionPersonCreateInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -41721,7 +41721,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateInput = {
+  export type NutritionPersonUncheckedCreateInput = {
     id?: string
     profileId: string
     name: string
@@ -41746,7 +41746,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUpdateInput = {
+  export type NutritionPersonUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -41771,7 +41771,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateInput = {
+  export type NutritionPersonUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -41796,7 +41796,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonCreateManyInput = {
+  export type NutritionPersonCreateManyInput = {
     id?: string
     profileId: string
     name: string
@@ -41809,7 +41809,7 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PersonUpdateManyMutationInput = {
+  export type NutritionPersonUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -41821,7 +41821,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PersonUncheckedUpdateManyInput = {
+  export type NutritionPersonUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -41976,7 +41976,7 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDishesInput
+    person: NutritionPersonCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
@@ -42004,7 +42004,7 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDishesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
@@ -42115,7 +42115,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayTemplatesInput
+    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
     entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
     dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
   }
@@ -42135,7 +42135,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
     entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
     dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
   }
@@ -42240,7 +42240,7 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutWeekPlansInput
+    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
   }
@@ -42262,7 +42262,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutWeekPlanNestedInput
   }
@@ -42310,7 +42310,7 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayPlansInput
+    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
@@ -42334,7 +42334,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
@@ -42448,7 +42448,7 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutShoppingListsInput
+    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
     weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
     items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
   }
@@ -42468,7 +42468,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutShoppingListsNestedInput
     items?: ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   }
@@ -42577,7 +42577,7 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutLifeSpheresInput
+    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
   }
 
@@ -42601,7 +42601,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
   }
 
@@ -42665,7 +42665,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: PersonCreateNestedOneWithoutTasksInput
+    person: NutritionPersonCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -42709,7 +42709,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: PersonUpdateOneRequiredWithoutTasksNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -42823,7 +42823,7 @@ export namespace Prisma {
     brainDump?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDailyEntriesInput
+    person: NutritionPersonCreateNestedOneWithoutDailyEntriesInput
   }
 
   export type DailyEntryUncheckedCreateInput = {
@@ -42881,7 +42881,7 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDailyEntriesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDailyEntriesNestedInput
   }
 
   export type DailyEntryUncheckedUpdateInput = {
@@ -43009,7 +43009,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutHabitsInput
+    person: NutritionPersonCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
   }
 
@@ -43037,7 +43037,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutHabitsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
 
@@ -43152,7 +43152,7 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutLibraryItemsInput
+    person: NutritionPersonCreateNestedOneWithoutLibraryItemsInput
   }
 
   export type LibraryItemUncheckedCreateInput = {
@@ -43180,7 +43180,7 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutLibraryItemsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutLibraryItemsNestedInput
   }
 
   export type LibraryItemUncheckedUpdateInput = {
@@ -43254,7 +43254,7 @@ export namespace Prisma {
     store?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutWishlistItemsInput
+    person: NutritionPersonCreateNestedOneWithoutWishlistItemsInput
   }
 
   export type WishlistItemUncheckedCreateInput = {
@@ -43292,7 +43292,7 @@ export namespace Prisma {
     store?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutWishlistItemsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutWishlistItemsNestedInput
   }
 
   export type WishlistItemUncheckedUpdateInput = {
@@ -43443,7 +43443,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -43471,7 +43471,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -44170,13 +44170,13 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
-  export type PersonListRelationFilter = {
-    every?: PersonWhereInput
-    some?: PersonWhereInput
-    none?: PersonWhereInput
+  export type NutritionPersonListRelationFilter = {
+    every?: NutritionPersonWhereInput
+    some?: NutritionPersonWhereInput
+    none?: NutritionPersonWhereInput
   }
 
-  export type PersonOrderByRelationAggregateInput = {
+  export type NutritionPersonOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44340,7 +44340,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type PersonCountOrderByAggregateInput = {
+  export type NutritionPersonCountOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     name?: SortOrder
@@ -44353,7 +44353,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type PersonAvgOrderByAggregateInput = {
+  export type NutritionPersonAvgOrderByAggregateInput = {
     targetCalories?: SortOrder
     targetProtein?: SortOrder
     targetFat?: SortOrder
@@ -44361,7 +44361,7 @@ export namespace Prisma {
     targetFiber?: SortOrder
   }
 
-  export type PersonMaxOrderByAggregateInput = {
+  export type NutritionPersonMaxOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     name?: SortOrder
@@ -44374,7 +44374,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type PersonMinOrderByAggregateInput = {
+  export type NutritionPersonMinOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     name?: SortOrder
@@ -44387,7 +44387,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type PersonSumOrderByAggregateInput = {
+  export type NutritionPersonSumOrderByAggregateInput = {
     targetCalories?: SortOrder
     targetProtein?: SortOrder
     targetFat?: SortOrder
@@ -44595,9 +44595,9 @@ export namespace Prisma {
     not?: NestedEnumPriorityFilter<$PrismaModel> | $Enums.Priority
   }
 
-  export type PersonScalarRelationFilter = {
-    is?: PersonWhereInput
-    isNot?: PersonWhereInput
+  export type NutritionPersonScalarRelationFilter = {
+    is?: NutritionPersonWhereInput
+    isNot?: NutritionPersonWhereInput
   }
 
   export type DayPlanEntryListRelationFilter = {
@@ -46182,18 +46182,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type PersonCreateNestedManyWithoutProfileInput = {
-    create?: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput> | PersonCreateWithoutProfileInput[] | PersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: PersonCreateOrConnectWithoutProfileInput | PersonCreateOrConnectWithoutProfileInput[]
-    createMany?: PersonCreateManyProfileInputEnvelope
-    connect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
+  export type NutritionPersonCreateNestedManyWithoutProfileInput = {
+    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
+    createMany?: NutritionPersonCreateManyProfileInputEnvelope
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
   }
 
-  export type PersonUncheckedCreateNestedManyWithoutProfileInput = {
-    create?: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput> | PersonCreateWithoutProfileInput[] | PersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: PersonCreateOrConnectWithoutProfileInput | PersonCreateOrConnectWithoutProfileInput[]
-    createMany?: PersonCreateManyProfileInputEnvelope
-    connect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
+  export type NutritionPersonUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
+    createMany?: NutritionPersonCreateManyProfileInputEnvelope
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
   }
 
   export type UserUpdateOneWithoutProfileNestedInput = {
@@ -46206,32 +46206,32 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileInput, UserUpdateWithoutProfileInput>, UserUncheckedUpdateWithoutProfileInput>
   }
 
-  export type PersonUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput> | PersonCreateWithoutProfileInput[] | PersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: PersonCreateOrConnectWithoutProfileInput | PersonCreateOrConnectWithoutProfileInput[]
-    upsert?: PersonUpsertWithWhereUniqueWithoutProfileInput | PersonUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: PersonCreateManyProfileInputEnvelope
-    set?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    disconnect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    delete?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    connect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    update?: PersonUpdateWithWhereUniqueWithoutProfileInput | PersonUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: PersonUpdateManyWithWhereWithoutProfileInput | PersonUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: PersonScalarWhereInput | PersonScalarWhereInput[]
+  export type NutritionPersonUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
+    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutProfileInput | NutritionPersonUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: NutritionPersonCreateManyProfileInputEnvelope
+    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    update?: NutritionPersonUpdateWithWhereUniqueWithoutProfileInput | NutritionPersonUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: NutritionPersonUpdateManyWithWhereWithoutProfileInput | NutritionPersonUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
   }
 
-  export type PersonUncheckedUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput> | PersonCreateWithoutProfileInput[] | PersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: PersonCreateOrConnectWithoutProfileInput | PersonCreateOrConnectWithoutProfileInput[]
-    upsert?: PersonUpsertWithWhereUniqueWithoutProfileInput | PersonUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: PersonCreateManyProfileInputEnvelope
-    set?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    disconnect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    delete?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    connect?: PersonWhereUniqueInput | PersonWhereUniqueInput[]
-    update?: PersonUpdateWithWhereUniqueWithoutProfileInput | PersonUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: PersonUpdateManyWithWhereWithoutProfileInput | PersonUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: PersonScalarWhereInput | PersonScalarWhereInput[]
+  export type NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
+    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutProfileInput | NutritionPersonUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: NutritionPersonCreateManyProfileInputEnvelope
+    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    update?: NutritionPersonUpdateWithWhereUniqueWithoutProfileInput | NutritionPersonUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: NutritionPersonUpdateManyWithWhereWithoutProfileInput | NutritionPersonUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
   }
 
   export type ProfileCreateNestedOneWithoutPersonsInput = {
@@ -46864,10 +46864,10 @@ export namespace Prisma {
     deleteMany?: ShoppingListItemScalarWhereInput | ShoppingListItemScalarWhereInput[]
   }
 
-  export type PersonCreateNestedOneWithoutDishesInput = {
-    create?: XOR<PersonCreateWithoutDishesInput, PersonUncheckedCreateWithoutDishesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDishesInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutDishesInput = {
+    create?: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDishesInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type DishIngredientCreateNestedManyWithoutDishInput = {
@@ -46916,12 +46916,12 @@ export namespace Prisma {
     set?: $Enums.Priority
   }
 
-  export type PersonUpdateOneRequiredWithoutDishesNestedInput = {
-    create?: XOR<PersonCreateWithoutDishesInput, PersonUncheckedCreateWithoutDishesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDishesInput
-    upsert?: PersonUpsertWithoutDishesInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutDishesInput, PersonUpdateWithoutDishesInput>, PersonUncheckedUpdateWithoutDishesInput>
+  export type NutritionPersonUpdateOneRequiredWithoutDishesNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDishesInput
+    upsert?: NutritionPersonUpsertWithoutDishesInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDishesInput, NutritionPersonUpdateWithoutDishesInput>, NutritionPersonUncheckedUpdateWithoutDishesInput>
   }
 
   export type DishIngredientUpdateManyWithoutDishNestedInput = {
@@ -47044,10 +47044,10 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutDishIngredientsInput, ProductUpdateWithoutDishIngredientsInput>, ProductUncheckedUpdateWithoutDishIngredientsInput>
   }
 
-  export type PersonCreateNestedOneWithoutDayTemplatesInput = {
-    create?: XOR<PersonCreateWithoutDayTemplatesInput, PersonUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDayTemplatesInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutDayTemplatesInput = {
+    create?: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayTemplatesInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type DayTemplateEntryCreateNestedManyWithoutTemplateInput = {
@@ -47078,12 +47078,12 @@ export namespace Prisma {
     connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
   }
 
-  export type PersonUpdateOneRequiredWithoutDayTemplatesNestedInput = {
-    create?: XOR<PersonCreateWithoutDayTemplatesInput, PersonUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDayTemplatesInput
-    upsert?: PersonUpsertWithoutDayTemplatesInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutDayTemplatesInput, PersonUpdateWithoutDayTemplatesInput>, PersonUncheckedUpdateWithoutDayTemplatesInput>
+  export type NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayTemplatesInput
+    upsert?: NutritionPersonUpsertWithoutDayTemplatesInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDayTemplatesInput, NutritionPersonUpdateWithoutDayTemplatesInput>, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
   }
 
   export type DayTemplateEntryUpdateManyWithoutTemplateNestedInput = {
@@ -47174,10 +47174,10 @@ export namespace Prisma {
     update?: XOR<XOR<DishUpdateToOneWithWhereWithoutTemplateEntriesInput, DishUpdateWithoutTemplateEntriesInput>, DishUncheckedUpdateWithoutTemplateEntriesInput>
   }
 
-  export type PersonCreateNestedOneWithoutWeekPlansInput = {
-    create?: XOR<PersonCreateWithoutWeekPlansInput, PersonUncheckedCreateWithoutWeekPlansInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutWeekPlansInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutWeekPlansInput = {
+    create?: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWeekPlansInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type DayPlanCreateNestedManyWithoutWeekPlanInput = {
@@ -47208,12 +47208,12 @@ export namespace Prisma {
     connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
   }
 
-  export type PersonUpdateOneRequiredWithoutWeekPlansNestedInput = {
-    create?: XOR<PersonCreateWithoutWeekPlansInput, PersonUncheckedCreateWithoutWeekPlansInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutWeekPlansInput
-    upsert?: PersonUpsertWithoutWeekPlansInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutWeekPlansInput, PersonUpdateWithoutWeekPlansInput>, PersonUncheckedUpdateWithoutWeekPlansInput>
+  export type NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWeekPlansInput
+    upsert?: NutritionPersonUpsertWithoutWeekPlansInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutWeekPlansInput, NutritionPersonUpdateWithoutWeekPlansInput>, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
   }
 
   export type DayPlanUpdateManyWithoutWeekPlanNestedInput = {
@@ -47272,10 +47272,10 @@ export namespace Prisma {
     deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
   }
 
-  export type PersonCreateNestedOneWithoutDayPlansInput = {
-    create?: XOR<PersonCreateWithoutDayPlansInput, PersonUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDayPlansInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutDayPlansInput = {
+    create?: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayPlansInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type WeekPlanCreateNestedOneWithoutDayPlansInput = {
@@ -47308,12 +47308,12 @@ export namespace Prisma {
     set?: $Enums.PlanAdherence
   }
 
-  export type PersonUpdateOneRequiredWithoutDayPlansNestedInput = {
-    create?: XOR<PersonCreateWithoutDayPlansInput, PersonUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDayPlansInput
-    upsert?: PersonUpsertWithoutDayPlansInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutDayPlansInput, PersonUpdateWithoutDayPlansInput>, PersonUncheckedUpdateWithoutDayPlansInput>
+  export type NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayPlansInput
+    upsert?: NutritionPersonUpsertWithoutDayPlansInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDayPlansInput, NutritionPersonUpdateWithoutDayPlansInput>, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
   }
 
   export type WeekPlanUpdateOneWithoutDayPlansNestedInput = {
@@ -47392,10 +47392,10 @@ export namespace Prisma {
     update?: XOR<XOR<DishUpdateToOneWithWhereWithoutDayPlanEntriesInput, DishUpdateWithoutDayPlanEntriesInput>, DishUncheckedUpdateWithoutDayPlanEntriesInput>
   }
 
-  export type PersonCreateNestedOneWithoutShoppingListsInput = {
-    create?: XOR<PersonCreateWithoutShoppingListsInput, PersonUncheckedCreateWithoutShoppingListsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutShoppingListsInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutShoppingListsInput = {
+    create?: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutShoppingListsInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type WeekPlanCreateNestedOneWithoutShoppingListsInput = {
@@ -47418,12 +47418,12 @@ export namespace Prisma {
     connect?: ShoppingListItemWhereUniqueInput | ShoppingListItemWhereUniqueInput[]
   }
 
-  export type PersonUpdateOneRequiredWithoutShoppingListsNestedInput = {
-    create?: XOR<PersonCreateWithoutShoppingListsInput, PersonUncheckedCreateWithoutShoppingListsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutShoppingListsInput
-    upsert?: PersonUpsertWithoutShoppingListsInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutShoppingListsInput, PersonUpdateWithoutShoppingListsInput>, PersonUncheckedUpdateWithoutShoppingListsInput>
+  export type NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutShoppingListsInput
+    upsert?: NutritionPersonUpsertWithoutShoppingListsInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutShoppingListsInput, NutritionPersonUpdateWithoutShoppingListsInput>, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
   }
 
   export type WeekPlanUpdateOneWithoutShoppingListsNestedInput = {
@@ -47496,10 +47496,10 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutShoppingListItemsInput, ProductUpdateWithoutShoppingListItemsInput>, ProductUncheckedUpdateWithoutShoppingListItemsInput>
   }
 
-  export type PersonCreateNestedOneWithoutLifeSpheresInput = {
-    create?: XOR<PersonCreateWithoutLifeSpheresInput, PersonUncheckedCreateWithoutLifeSpheresInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutLifeSpheresInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutLifeSpheresInput = {
+    create?: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLifeSpheresInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type TaskCreateNestedManyWithoutSphereInput = {
@@ -47524,12 +47524,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type PersonUpdateOneRequiredWithoutLifeSpheresNestedInput = {
-    create?: XOR<PersonCreateWithoutLifeSpheresInput, PersonUncheckedCreateWithoutLifeSpheresInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutLifeSpheresInput
-    upsert?: PersonUpsertWithoutLifeSpheresInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutLifeSpheresInput, PersonUpdateWithoutLifeSpheresInput>, PersonUncheckedUpdateWithoutLifeSpheresInput>
+  export type NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLifeSpheresInput
+    upsert?: NutritionPersonUpsertWithoutLifeSpheresInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutLifeSpheresInput, NutritionPersonUpdateWithoutLifeSpheresInput>, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
   }
 
   export type TaskUpdateManyWithoutSphereNestedInput = {
@@ -47560,10 +47560,10 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type PersonCreateNestedOneWithoutTasksInput = {
-    create?: XOR<PersonCreateWithoutTasksInput, PersonUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutTasksInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutTasksInput = {
+    create?: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutTasksInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type TaskCreateNestedOneWithoutChildrenInput = {
@@ -47600,12 +47600,12 @@ export namespace Prisma {
     set?: $Enums.TaskPriority
   }
 
-  export type PersonUpdateOneRequiredWithoutTasksNestedInput = {
-    create?: XOR<PersonCreateWithoutTasksInput, PersonUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutTasksInput
-    upsert?: PersonUpsertWithoutTasksInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutTasksInput, PersonUpdateWithoutTasksInput>, PersonUncheckedUpdateWithoutTasksInput>
+  export type NutritionPersonUpdateOneRequiredWithoutTasksNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutTasksInput
+    upsert?: NutritionPersonUpsertWithoutTasksInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutTasksInput, NutritionPersonUpdateWithoutTasksInput>, NutritionPersonUncheckedUpdateWithoutTasksInput>
   }
 
   export type TaskUpdateOneWithoutChildrenNestedInput = {
@@ -47656,28 +47656,28 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type PersonCreateNestedOneWithoutDailyEntriesInput = {
-    create?: XOR<PersonCreateWithoutDailyEntriesInput, PersonUncheckedCreateWithoutDailyEntriesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDailyEntriesInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutDailyEntriesInput = {
+    create?: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDailyEntriesInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
   }
 
-  export type PersonUpdateOneRequiredWithoutDailyEntriesNestedInput = {
-    create?: XOR<PersonCreateWithoutDailyEntriesInput, PersonUncheckedCreateWithoutDailyEntriesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutDailyEntriesInput
-    upsert?: PersonUpsertWithoutDailyEntriesInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutDailyEntriesInput, PersonUpdateWithoutDailyEntriesInput>, PersonUncheckedUpdateWithoutDailyEntriesInput>
+  export type NutritionPersonUpdateOneRequiredWithoutDailyEntriesNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDailyEntriesInput
+    upsert?: NutritionPersonUpsertWithoutDailyEntriesInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDailyEntriesInput, NutritionPersonUpdateWithoutDailyEntriesInput>, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
   }
 
-  export type PersonCreateNestedOneWithoutHabitsInput = {
-    create?: XOR<PersonCreateWithoutHabitsInput, PersonUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutHabitsInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutHabitsInput = {
+    create?: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutHabitsInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type HabitCompletionCreateNestedManyWithoutHabitInput = {
@@ -47694,12 +47694,12 @@ export namespace Prisma {
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
   }
 
-  export type PersonUpdateOneRequiredWithoutHabitsNestedInput = {
-    create?: XOR<PersonCreateWithoutHabitsInput, PersonUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutHabitsInput
-    upsert?: PersonUpsertWithoutHabitsInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutHabitsInput, PersonUpdateWithoutHabitsInput>, PersonUncheckedUpdateWithoutHabitsInput>
+  export type NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutHabitsInput
+    upsert?: NutritionPersonUpsertWithoutHabitsInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutHabitsInput, NutritionPersonUpdateWithoutHabitsInput>, NutritionPersonUncheckedUpdateWithoutHabitsInput>
   }
 
   export type HabitCompletionUpdateManyWithoutHabitNestedInput = {
@@ -47744,10 +47744,10 @@ export namespace Prisma {
     update?: XOR<XOR<HabitUpdateToOneWithWhereWithoutCompletionsInput, HabitUpdateWithoutCompletionsInput>, HabitUncheckedUpdateWithoutCompletionsInput>
   }
 
-  export type PersonCreateNestedOneWithoutLibraryItemsInput = {
-    create?: XOR<PersonCreateWithoutLibraryItemsInput, PersonUncheckedCreateWithoutLibraryItemsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutLibraryItemsInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutLibraryItemsInput = {
+    create?: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLibraryItemsInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type EnumLibraryItemTypeFieldUpdateOperationsInput = {
@@ -47758,22 +47758,22 @@ export namespace Prisma {
     set?: $Enums.LibraryItemStatus
   }
 
-  export type PersonUpdateOneRequiredWithoutLibraryItemsNestedInput = {
-    create?: XOR<PersonCreateWithoutLibraryItemsInput, PersonUncheckedCreateWithoutLibraryItemsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutLibraryItemsInput
-    upsert?: PersonUpsertWithoutLibraryItemsInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutLibraryItemsInput, PersonUpdateWithoutLibraryItemsInput>, PersonUncheckedUpdateWithoutLibraryItemsInput>
+  export type NutritionPersonUpdateOneRequiredWithoutLibraryItemsNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLibraryItemsInput
+    upsert?: NutritionPersonUpsertWithoutLibraryItemsInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutLibraryItemsInput, NutritionPersonUpdateWithoutLibraryItemsInput>, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
   }
 
   export type WishlistItemCreatetagsInput = {
     set: string[]
   }
 
-  export type PersonCreateNestedOneWithoutWishlistItemsInput = {
-    create?: XOR<PersonCreateWithoutWishlistItemsInput, PersonUncheckedCreateWithoutWishlistItemsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutWishlistItemsInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutWishlistItemsInput = {
+    create?: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWishlistItemsInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type EnumWishlistStatusFieldUpdateOperationsInput = {
@@ -47785,12 +47785,12 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type PersonUpdateOneRequiredWithoutWishlistItemsNestedInput = {
-    create?: XOR<PersonCreateWithoutWishlistItemsInput, PersonUncheckedCreateWithoutWishlistItemsInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutWishlistItemsInput
-    upsert?: PersonUpsertWithoutWishlistItemsInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutWishlistItemsInput, PersonUpdateWithoutWishlistItemsInput>, PersonUncheckedUpdateWithoutWishlistItemsInput>
+  export type NutritionPersonUpdateOneRequiredWithoutWishlistItemsNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWishlistItemsInput
+    upsert?: NutritionPersonUpsertWithoutWishlistItemsInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutWishlistItemsInput, NutritionPersonUpdateWithoutWishlistItemsInput>, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
   }
 
   export type UserLanguageCreateNestedManyWithoutLanguageInput = {
@@ -47835,10 +47835,10 @@ export namespace Prisma {
     deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
   }
 
-  export type PersonCreateNestedOneWithoutUserLanguagesInput = {
-    create?: XOR<PersonCreateWithoutUserLanguagesInput, PersonUncheckedCreateWithoutUserLanguagesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutUserLanguagesInput
-    connect?: PersonWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutUserLanguagesInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserLanguagesInput
+    connect?: NutritionPersonWhereUniqueInput
   }
 
   export type LanguageCreateNestedOneWithoutUserLanguagesInput = {
@@ -47907,12 +47907,12 @@ export namespace Prisma {
     set?: $Enums.CefrLevel
   }
 
-  export type PersonUpdateOneRequiredWithoutUserLanguagesNestedInput = {
-    create?: XOR<PersonCreateWithoutUserLanguagesInput, PersonUncheckedCreateWithoutUserLanguagesInput>
-    connectOrCreate?: PersonCreateOrConnectWithoutUserLanguagesInput
-    upsert?: PersonUpsertWithoutUserLanguagesInput
-    connect?: PersonWhereUniqueInput
-    update?: XOR<XOR<PersonUpdateToOneWithWhereWithoutUserLanguagesInput, PersonUpdateWithoutUserLanguagesInput>, PersonUncheckedUpdateWithoutUserLanguagesInput>
+  export type NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserLanguagesInput
+    upsert?: NutritionPersonUpsertWithoutUserLanguagesInput
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserLanguagesInput, NutritionPersonUpdateWithoutUserLanguagesInput>, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
   }
 
   export type LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput = {
@@ -48743,7 +48743,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    persons?: PersonCreateNestedManyWithoutProfileInput
+    persons?: NutritionPersonCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileUncheckedCreateWithoutUserInput = {
@@ -48751,7 +48751,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    persons?: PersonUncheckedCreateNestedManyWithoutProfileInput
+    persons?: NutritionPersonUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type ProfileCreateOrConnectWithoutUserInput = {
@@ -48835,7 +48835,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: PersonUpdateManyWithoutProfileNestedInput
+    persons?: NutritionPersonUpdateManyWithoutProfileNestedInput
   }
 
   export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -48843,7 +48843,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: PersonUncheckedUpdateManyWithoutProfileNestedInput
+    persons?: NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -49023,7 +49023,7 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
   }
 
-  export type PersonCreateWithoutProfileInput = {
+  export type NutritionPersonCreateWithoutProfileInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -49047,7 +49047,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutProfileInput = {
+  export type NutritionPersonUncheckedCreateWithoutProfileInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -49071,13 +49071,13 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutProfileInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput>
+  export type NutritionPersonCreateOrConnectWithoutProfileInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput>
   }
 
-  export type PersonCreateManyProfileInputEnvelope = {
-    data: PersonCreateManyProfileInput | PersonCreateManyProfileInput[]
+  export type NutritionPersonCreateManyProfileInputEnvelope = {
+    data: NutritionPersonCreateManyProfileInput | NutritionPersonCreateManyProfileInput[]
     skipDuplicates?: boolean
   }
 
@@ -49120,36 +49120,36 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type PersonUpsertWithWhereUniqueWithoutProfileInput = {
-    where: PersonWhereUniqueInput
-    update: XOR<PersonUpdateWithoutProfileInput, PersonUncheckedUpdateWithoutProfileInput>
-    create: XOR<PersonCreateWithoutProfileInput, PersonUncheckedCreateWithoutProfileInput>
+  export type NutritionPersonUpsertWithWhereUniqueWithoutProfileInput = {
+    where: NutritionPersonWhereUniqueInput
+    update: XOR<NutritionPersonUpdateWithoutProfileInput, NutritionPersonUncheckedUpdateWithoutProfileInput>
+    create: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput>
   }
 
-  export type PersonUpdateWithWhereUniqueWithoutProfileInput = {
-    where: PersonWhereUniqueInput
-    data: XOR<PersonUpdateWithoutProfileInput, PersonUncheckedUpdateWithoutProfileInput>
+  export type NutritionPersonUpdateWithWhereUniqueWithoutProfileInput = {
+    where: NutritionPersonWhereUniqueInput
+    data: XOR<NutritionPersonUpdateWithoutProfileInput, NutritionPersonUncheckedUpdateWithoutProfileInput>
   }
 
-  export type PersonUpdateManyWithWhereWithoutProfileInput = {
-    where: PersonScalarWhereInput
-    data: XOR<PersonUpdateManyMutationInput, PersonUncheckedUpdateManyWithoutProfileInput>
+  export type NutritionPersonUpdateManyWithWhereWithoutProfileInput = {
+    where: NutritionPersonScalarWhereInput
+    data: XOR<NutritionPersonUpdateManyMutationInput, NutritionPersonUncheckedUpdateManyWithoutProfileInput>
   }
 
-  export type PersonScalarWhereInput = {
-    AND?: PersonScalarWhereInput | PersonScalarWhereInput[]
-    OR?: PersonScalarWhereInput[]
-    NOT?: PersonScalarWhereInput | PersonScalarWhereInput[]
-    id?: StringFilter<"Person"> | string
-    profileId?: StringFilter<"Person"> | string
-    name?: StringFilter<"Person"> | string
-    targetCalories?: FloatNullableFilter<"Person"> | number | null
-    targetProtein?: FloatNullableFilter<"Person"> | number | null
-    targetFat?: FloatNullableFilter<"Person"> | number | null
-    targetCarbs?: FloatNullableFilter<"Person"> | number | null
-    targetFiber?: FloatNullableFilter<"Person"> | number | null
-    createdAt?: DateTimeFilter<"Person"> | Date | string
-    updatedAt?: DateTimeFilter<"Person"> | Date | string
+  export type NutritionPersonScalarWhereInput = {
+    AND?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
+    OR?: NutritionPersonScalarWhereInput[]
+    NOT?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
+    id?: StringFilter<"NutritionPerson"> | string
+    profileId?: StringFilter<"NutritionPerson"> | string
+    name?: StringFilter<"NutritionPerson"> | string
+    targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetCarbs?: FloatNullableFilter<"NutritionPerson"> | number | null
+    targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
+    createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
+    updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
   }
 
   export type ProfileCreateWithoutPersonsInput = {
@@ -50156,7 +50156,7 @@ export namespace Prisma {
     checked?: BoolFilter<"ShoppingListItem"> | boolean
   }
 
-  export type PersonCreateWithoutDishesInput = {
+  export type NutritionPersonCreateWithoutDishesInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -50180,7 +50180,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutDishesInput = {
+  export type NutritionPersonUncheckedCreateWithoutDishesInput = {
     id?: string
     profileId: string
     name: string
@@ -50204,9 +50204,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutDishesInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutDishesInput, PersonUncheckedCreateWithoutDishesInput>
+  export type NutritionPersonCreateOrConnectWithoutDishesInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
   }
 
   export type DishIngredientCreateWithoutDishInput = {
@@ -50285,18 +50285,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutDishesInput = {
-    update: XOR<PersonUpdateWithoutDishesInput, PersonUncheckedUpdateWithoutDishesInput>
-    create: XOR<PersonCreateWithoutDishesInput, PersonUncheckedCreateWithoutDishesInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutDishesInput = {
+    update: XOR<NutritionPersonUpdateWithoutDishesInput, NutritionPersonUncheckedUpdateWithoutDishesInput>
+    create: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutDishesInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutDishesInput, PersonUncheckedUpdateWithoutDishesInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutDishesInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutDishesInput, NutritionPersonUncheckedUpdateWithoutDishesInput>
   }
 
-  export type PersonUpdateWithoutDishesInput = {
+  export type NutritionPersonUpdateWithoutDishesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50320,7 +50320,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutDishesInput = {
+  export type NutritionPersonUncheckedUpdateWithoutDishesInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -50424,7 +50424,7 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDishesInput
+    person: NutritionPersonCreateNestedOneWithoutDishesInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
   }
@@ -50509,7 +50509,7 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDishesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
@@ -50576,7 +50576,7 @@ export namespace Prisma {
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type PersonCreateWithoutDayTemplatesInput = {
+  export type NutritionPersonCreateWithoutDayTemplatesInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -50600,7 +50600,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutDayTemplatesInput = {
+  export type NutritionPersonUncheckedCreateWithoutDayTemplatesInput = {
     id?: string
     profileId: string
     name: string
@@ -50624,9 +50624,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutDayTemplatesInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutDayTemplatesInput, PersonUncheckedCreateWithoutDayTemplatesInput>
+  export type NutritionPersonCreateOrConnectWithoutDayTemplatesInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
   }
 
   export type DayTemplateEntryCreateWithoutTemplateInput = {
@@ -50661,7 +50661,7 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayPlansInput
+    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
   }
@@ -50687,18 +50687,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutDayTemplatesInput = {
-    update: XOR<PersonUpdateWithoutDayTemplatesInput, PersonUncheckedUpdateWithoutDayTemplatesInput>
-    create: XOR<PersonCreateWithoutDayTemplatesInput, PersonUncheckedCreateWithoutDayTemplatesInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutDayTemplatesInput = {
+    update: XOR<NutritionPersonUpdateWithoutDayTemplatesInput, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
+    create: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutDayTemplatesInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutDayTemplatesInput, PersonUncheckedUpdateWithoutDayTemplatesInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutDayTemplatesInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutDayTemplatesInput, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
   }
 
-  export type PersonUpdateWithoutDayTemplatesInput = {
+  export type NutritionPersonUpdateWithoutDayTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -50722,7 +50722,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutDayTemplatesInput = {
+  export type NutritionPersonUncheckedUpdateWithoutDayTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -50783,7 +50783,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayTemplatesInput
+    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
     dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
   }
 
@@ -50809,7 +50809,7 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDishesInput
+    person: NutritionPersonCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
   }
@@ -50848,7 +50848,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
     dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
   }
 
@@ -50880,7 +50880,7 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDishesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
   }
@@ -50898,7 +50898,7 @@ export namespace Prisma {
     dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
-  export type PersonCreateWithoutWeekPlansInput = {
+  export type NutritionPersonCreateWithoutWeekPlansInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -50922,7 +50922,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutWeekPlansInput = {
+  export type NutritionPersonUncheckedCreateWithoutWeekPlansInput = {
     id?: string
     profileId: string
     name: string
@@ -50946,9 +50946,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutWeekPlansInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutWeekPlansInput, PersonUncheckedCreateWithoutWeekPlansInput>
+  export type NutritionPersonCreateOrConnectWithoutWeekPlansInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
   }
 
   export type DayPlanCreateWithoutWeekPlanInput = {
@@ -50957,7 +50957,7 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayPlansInput
+    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
   }
@@ -50988,7 +50988,7 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutShoppingListsInput
+    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
     items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
   }
 
@@ -51011,18 +51011,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutWeekPlansInput = {
-    update: XOR<PersonUpdateWithoutWeekPlansInput, PersonUncheckedUpdateWithoutWeekPlansInput>
-    create: XOR<PersonCreateWithoutWeekPlansInput, PersonUncheckedCreateWithoutWeekPlansInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutWeekPlansInput = {
+    update: XOR<NutritionPersonUpdateWithoutWeekPlansInput, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
+    create: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutWeekPlansInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutWeekPlansInput, PersonUncheckedUpdateWithoutWeekPlansInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutWeekPlansInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutWeekPlansInput, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
   }
 
-  export type PersonUpdateWithoutWeekPlansInput = {
+  export type NutritionPersonUpdateWithoutWeekPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -51046,7 +51046,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutWeekPlansInput = {
+  export type NutritionPersonUncheckedUpdateWithoutWeekPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -51102,7 +51102,7 @@ export namespace Prisma {
     data: XOR<ShoppingListUpdateManyMutationInput, ShoppingListUncheckedUpdateManyWithoutWeekPlanInput>
   }
 
-  export type PersonCreateWithoutDayPlansInput = {
+  export type NutritionPersonCreateWithoutDayPlansInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -51126,7 +51126,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutDayPlansInput = {
+  export type NutritionPersonUncheckedCreateWithoutDayPlansInput = {
     id?: string
     profileId: string
     name: string
@@ -51150,9 +51150,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutDayPlansInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutDayPlansInput, PersonUncheckedCreateWithoutDayPlansInput>
+  export type NutritionPersonCreateOrConnectWithoutDayPlansInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
   }
 
   export type WeekPlanCreateWithoutDayPlansInput = {
@@ -51161,7 +51161,7 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutWeekPlansInput
+    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
   }
 
@@ -51185,7 +51185,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayTemplatesInput
+    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
     entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
   }
 
@@ -51229,18 +51229,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutDayPlansInput = {
-    update: XOR<PersonUpdateWithoutDayPlansInput, PersonUncheckedUpdateWithoutDayPlansInput>
-    create: XOR<PersonCreateWithoutDayPlansInput, PersonUncheckedCreateWithoutDayPlansInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutDayPlansInput = {
+    update: XOR<NutritionPersonUpdateWithoutDayPlansInput, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
+    create: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutDayPlansInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutDayPlansInput, PersonUncheckedUpdateWithoutDayPlansInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutDayPlansInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutDayPlansInput, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
   }
 
-  export type PersonUpdateWithoutDayPlansInput = {
+  export type NutritionPersonUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -51264,7 +51264,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutDayPlansInput = {
+  export type NutritionPersonUncheckedUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -51305,7 +51305,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutWeekPlanNestedInput
   }
 
@@ -51335,7 +51335,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
     entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
   }
 
@@ -51370,7 +51370,7 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDayPlansInput
+    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
   }
@@ -51399,7 +51399,7 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutDishesInput
+    person: NutritionPersonCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
   }
@@ -51439,7 +51439,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
   }
@@ -51474,7 +51474,7 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDishesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
@@ -51492,7 +51492,7 @@ export namespace Prisma {
     templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
-  export type PersonCreateWithoutShoppingListsInput = {
+  export type NutritionPersonCreateWithoutShoppingListsInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -51516,7 +51516,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutShoppingListsInput = {
+  export type NutritionPersonUncheckedCreateWithoutShoppingListsInput = {
     id?: string
     profileId: string
     name: string
@@ -51540,9 +51540,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutShoppingListsInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutShoppingListsInput, PersonUncheckedCreateWithoutShoppingListsInput>
+  export type NutritionPersonCreateOrConnectWithoutShoppingListsInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
   }
 
   export type WeekPlanCreateWithoutShoppingListsInput = {
@@ -51551,7 +51551,7 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutWeekPlansInput
+    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
   }
 
@@ -51596,18 +51596,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutShoppingListsInput = {
-    update: XOR<PersonUpdateWithoutShoppingListsInput, PersonUncheckedUpdateWithoutShoppingListsInput>
-    create: XOR<PersonCreateWithoutShoppingListsInput, PersonUncheckedCreateWithoutShoppingListsInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutShoppingListsInput = {
+    update: XOR<NutritionPersonUpdateWithoutShoppingListsInput, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
+    create: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutShoppingListsInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutShoppingListsInput, PersonUncheckedUpdateWithoutShoppingListsInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutShoppingListsInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutShoppingListsInput, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
   }
 
-  export type PersonUpdateWithoutShoppingListsInput = {
+  export type NutritionPersonUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -51631,7 +51631,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutShoppingListsInput = {
+  export type NutritionPersonUncheckedUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -51672,7 +51672,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
   }
 
@@ -51707,7 +51707,7 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutShoppingListsInput
+    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
     weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
   }
 
@@ -51784,7 +51784,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutShoppingListsNestedInput
   }
 
@@ -51846,7 +51846,7 @@ export namespace Prisma {
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type PersonCreateWithoutLifeSpheresInput = {
+  export type NutritionPersonCreateWithoutLifeSpheresInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -51870,7 +51870,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutLifeSpheresInput = {
+  export type NutritionPersonUncheckedCreateWithoutLifeSpheresInput = {
     id?: string
     profileId: string
     name: string
@@ -51894,9 +51894,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutLifeSpheresInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutLifeSpheresInput, PersonUncheckedCreateWithoutLifeSpheresInput>
+  export type NutritionPersonCreateOrConnectWithoutLifeSpheresInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
   }
 
   export type TaskCreateWithoutSphereInput = {
@@ -51915,7 +51915,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: PersonCreateNestedOneWithoutTasksInput
+    person: NutritionPersonCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
   }
@@ -51951,18 +51951,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutLifeSpheresInput = {
-    update: XOR<PersonUpdateWithoutLifeSpheresInput, PersonUncheckedUpdateWithoutLifeSpheresInput>
-    create: XOR<PersonCreateWithoutLifeSpheresInput, PersonUncheckedCreateWithoutLifeSpheresInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutLifeSpheresInput = {
+    update: XOR<NutritionPersonUpdateWithoutLifeSpheresInput, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
+    create: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutLifeSpheresInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutLifeSpheresInput, PersonUncheckedUpdateWithoutLifeSpheresInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutLifeSpheresInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutLifeSpheresInput, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
   }
 
-  export type PersonUpdateWithoutLifeSpheresInput = {
+  export type NutritionPersonUpdateWithoutLifeSpheresInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -51986,7 +51986,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutLifeSpheresInput = {
+  export type NutritionPersonUncheckedUpdateWithoutLifeSpheresInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52026,7 +52026,7 @@ export namespace Prisma {
     data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutSphereInput>
   }
 
-  export type PersonCreateWithoutTasksInput = {
+  export type NutritionPersonCreateWithoutTasksInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -52050,7 +52050,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutTasksInput = {
+  export type NutritionPersonUncheckedCreateWithoutTasksInput = {
     id?: string
     profileId: string
     name: string
@@ -52074,9 +52074,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutTasksInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutTasksInput, PersonUncheckedCreateWithoutTasksInput>
+  export type NutritionPersonCreateOrConnectWithoutTasksInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
   }
 
   export type TaskCreateWithoutChildrenInput = {
@@ -52095,7 +52095,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: PersonCreateNestedOneWithoutTasksInput
+    person: NutritionPersonCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
   }
@@ -52142,7 +52142,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: PersonCreateNestedOneWithoutTasksInput
+    person: NutritionPersonCreateNestedOneWithoutTasksInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
   }
@@ -52186,7 +52186,7 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutLifeSpheresInput
+    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
   }
 
   export type LifeSphereUncheckedCreateWithoutTasksInput = {
@@ -52205,18 +52205,18 @@ export namespace Prisma {
     create: XOR<LifeSphereCreateWithoutTasksInput, LifeSphereUncheckedCreateWithoutTasksInput>
   }
 
-  export type PersonUpsertWithoutTasksInput = {
-    update: XOR<PersonUpdateWithoutTasksInput, PersonUncheckedUpdateWithoutTasksInput>
-    create: XOR<PersonCreateWithoutTasksInput, PersonUncheckedCreateWithoutTasksInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutTasksInput = {
+    update: XOR<NutritionPersonUpdateWithoutTasksInput, NutritionPersonUncheckedUpdateWithoutTasksInput>
+    create: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutTasksInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutTasksInput, PersonUncheckedUpdateWithoutTasksInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutTasksInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutTasksInput, NutritionPersonUncheckedUpdateWithoutTasksInput>
   }
 
-  export type PersonUpdateWithoutTasksInput = {
+  export type NutritionPersonUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52240,7 +52240,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutTasksInput = {
+  export type NutritionPersonUncheckedUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52291,7 +52291,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: PersonUpdateOneRequiredWithoutTasksNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
   }
@@ -52352,7 +52352,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutTasksInput = {
@@ -52366,7 +52366,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PersonCreateWithoutDailyEntriesInput = {
+  export type NutritionPersonCreateWithoutDailyEntriesInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -52390,7 +52390,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutDailyEntriesInput = {
+  export type NutritionPersonUncheckedCreateWithoutDailyEntriesInput = {
     id?: string
     profileId: string
     name: string
@@ -52414,23 +52414,23 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutDailyEntriesInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutDailyEntriesInput, PersonUncheckedCreateWithoutDailyEntriesInput>
+  export type NutritionPersonCreateOrConnectWithoutDailyEntriesInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
   }
 
-  export type PersonUpsertWithoutDailyEntriesInput = {
-    update: XOR<PersonUpdateWithoutDailyEntriesInput, PersonUncheckedUpdateWithoutDailyEntriesInput>
-    create: XOR<PersonCreateWithoutDailyEntriesInput, PersonUncheckedCreateWithoutDailyEntriesInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutDailyEntriesInput = {
+    update: XOR<NutritionPersonUpdateWithoutDailyEntriesInput, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
+    create: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutDailyEntriesInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutDailyEntriesInput, PersonUncheckedUpdateWithoutDailyEntriesInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutDailyEntriesInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutDailyEntriesInput, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
   }
 
-  export type PersonUpdateWithoutDailyEntriesInput = {
+  export type NutritionPersonUpdateWithoutDailyEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52454,7 +52454,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutDailyEntriesInput = {
+  export type NutritionPersonUncheckedUpdateWithoutDailyEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52478,7 +52478,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonCreateWithoutHabitsInput = {
+  export type NutritionPersonCreateWithoutHabitsInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -52502,7 +52502,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutHabitsInput = {
+  export type NutritionPersonUncheckedCreateWithoutHabitsInput = {
     id?: string
     profileId: string
     name: string
@@ -52526,9 +52526,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutHabitsInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutHabitsInput, PersonUncheckedCreateWithoutHabitsInput>
+  export type NutritionPersonCreateOrConnectWithoutHabitsInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
   }
 
   export type HabitCompletionCreateWithoutHabitInput = {
@@ -52553,18 +52553,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutHabitsInput = {
-    update: XOR<PersonUpdateWithoutHabitsInput, PersonUncheckedUpdateWithoutHabitsInput>
-    create: XOR<PersonCreateWithoutHabitsInput, PersonUncheckedCreateWithoutHabitsInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutHabitsInput = {
+    update: XOR<NutritionPersonUpdateWithoutHabitsInput, NutritionPersonUncheckedUpdateWithoutHabitsInput>
+    create: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutHabitsInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutHabitsInput, PersonUncheckedUpdateWithoutHabitsInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutHabitsInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutHabitsInput, NutritionPersonUncheckedUpdateWithoutHabitsInput>
   }
 
-  export type PersonUpdateWithoutHabitsInput = {
+  export type NutritionPersonUpdateWithoutHabitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52588,7 +52588,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutHabitsInput = {
+  export type NutritionPersonUncheckedUpdateWithoutHabitsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52648,7 +52648,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutHabitsInput
+    person: NutritionPersonCreateNestedOneWithoutHabitsInput
   }
 
   export type HabitUncheckedCreateWithoutCompletionsInput = {
@@ -52690,7 +52690,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutHabitsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput
   }
 
   export type HabitUncheckedUpdateWithoutCompletionsInput = {
@@ -52706,7 +52706,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PersonCreateWithoutLibraryItemsInput = {
+  export type NutritionPersonCreateWithoutLibraryItemsInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -52730,7 +52730,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutLibraryItemsInput = {
+  export type NutritionPersonUncheckedCreateWithoutLibraryItemsInput = {
     id?: string
     profileId: string
     name: string
@@ -52754,23 +52754,23 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutLibraryItemsInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutLibraryItemsInput, PersonUncheckedCreateWithoutLibraryItemsInput>
+  export type NutritionPersonCreateOrConnectWithoutLibraryItemsInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
   }
 
-  export type PersonUpsertWithoutLibraryItemsInput = {
-    update: XOR<PersonUpdateWithoutLibraryItemsInput, PersonUncheckedUpdateWithoutLibraryItemsInput>
-    create: XOR<PersonCreateWithoutLibraryItemsInput, PersonUncheckedCreateWithoutLibraryItemsInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutLibraryItemsInput = {
+    update: XOR<NutritionPersonUpdateWithoutLibraryItemsInput, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
+    create: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutLibraryItemsInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutLibraryItemsInput, PersonUncheckedUpdateWithoutLibraryItemsInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutLibraryItemsInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutLibraryItemsInput, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
   }
 
-  export type PersonUpdateWithoutLibraryItemsInput = {
+  export type NutritionPersonUpdateWithoutLibraryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52794,7 +52794,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutLibraryItemsInput = {
+  export type NutritionPersonUncheckedUpdateWithoutLibraryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52818,7 +52818,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonCreateWithoutWishlistItemsInput = {
+  export type NutritionPersonCreateWithoutWishlistItemsInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -52842,7 +52842,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutWishlistItemsInput = {
+  export type NutritionPersonUncheckedCreateWithoutWishlistItemsInput = {
     id?: string
     profileId: string
     name: string
@@ -52866,23 +52866,23 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutWishlistItemsInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutWishlistItemsInput, PersonUncheckedCreateWithoutWishlistItemsInput>
+  export type NutritionPersonCreateOrConnectWithoutWishlistItemsInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
   }
 
-  export type PersonUpsertWithoutWishlistItemsInput = {
-    update: XOR<PersonUpdateWithoutWishlistItemsInput, PersonUncheckedUpdateWithoutWishlistItemsInput>
-    create: XOR<PersonCreateWithoutWishlistItemsInput, PersonUncheckedCreateWithoutWishlistItemsInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutWishlistItemsInput = {
+    update: XOR<NutritionPersonUpdateWithoutWishlistItemsInput, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
+    create: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutWishlistItemsInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutWishlistItemsInput, PersonUncheckedUpdateWithoutWishlistItemsInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutWishlistItemsInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutWishlistItemsInput, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
   }
 
-  export type PersonUpdateWithoutWishlistItemsInput = {
+  export type NutritionPersonUpdateWithoutWishlistItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52906,7 +52906,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutWishlistItemsInput = {
+  export type NutritionPersonUncheckedUpdateWithoutWishlistItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52936,7 +52936,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -52982,7 +52982,7 @@ export namespace Prisma {
     data: XOR<UserLanguageUpdateManyMutationInput, UserLanguageUncheckedUpdateManyWithoutLanguageInput>
   }
 
-  export type PersonCreateWithoutUserLanguagesInput = {
+  export type NutritionPersonCreateWithoutUserLanguagesInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -53006,7 +53006,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonUncheckedCreateWithoutUserLanguagesInput = {
+  export type NutritionPersonUncheckedCreateWithoutUserLanguagesInput = {
     id?: string
     profileId: string
     name: string
@@ -53030,9 +53030,9 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
   }
 
-  export type PersonCreateOrConnectWithoutUserLanguagesInput = {
-    where: PersonWhereUniqueInput
-    create: XOR<PersonCreateWithoutUserLanguagesInput, PersonUncheckedCreateWithoutUserLanguagesInput>
+  export type NutritionPersonCreateOrConnectWithoutUserLanguagesInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
   }
 
   export type LanguageCreateWithoutUserLanguagesInput = {
@@ -53180,18 +53180,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PersonUpsertWithoutUserLanguagesInput = {
-    update: XOR<PersonUpdateWithoutUserLanguagesInput, PersonUncheckedUpdateWithoutUserLanguagesInput>
-    create: XOR<PersonCreateWithoutUserLanguagesInput, PersonUncheckedCreateWithoutUserLanguagesInput>
-    where?: PersonWhereInput
+  export type NutritionPersonUpsertWithoutUserLanguagesInput = {
+    update: XOR<NutritionPersonUpdateWithoutUserLanguagesInput, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
+    create: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type PersonUpdateToOneWithWhereWithoutUserLanguagesInput = {
-    where?: PersonWhereInput
-    data: XOR<PersonUpdateWithoutUserLanguagesInput, PersonUncheckedUpdateWithoutUserLanguagesInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutUserLanguagesInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutUserLanguagesInput, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
   }
 
-  export type PersonUpdateWithoutUserLanguagesInput = {
+  export type NutritionPersonUpdateWithoutUserLanguagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -53215,7 +53215,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutUserLanguagesInput = {
+  export type NutritionPersonUncheckedUpdateWithoutUserLanguagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     profileId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -53395,7 +53395,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -53437,7 +53437,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput
@@ -53463,7 +53463,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -53505,7 +53505,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput
@@ -53531,7 +53531,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -53573,7 +53573,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -53599,7 +53599,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: PersonCreateNestedOneWithoutUserLanguagesInput
+    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -53641,7 +53641,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -53741,7 +53741,7 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PersonCreateManyProfileInput = {
+  export type NutritionPersonCreateManyProfileInput = {
     id?: string
     name: string
     targetCalories?: number | null
@@ -53753,7 +53753,7 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PersonUpdateWithoutProfileInput = {
+  export type NutritionPersonUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -53777,7 +53777,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateWithoutProfileInput = {
+  export type NutritionPersonUncheckedUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -53801,7 +53801,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
   }
 
-  export type PersonUncheckedUpdateManyWithoutProfileInput = {
+  export type NutritionPersonUncheckedUpdateManyWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -54657,7 +54657,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
@@ -54707,7 +54707,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutDayPlansNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
@@ -54738,7 +54738,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
     items?: ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   }
 
@@ -54859,7 +54859,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: PersonUpdateOneRequiredWithoutTasksNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
   }
@@ -54941,7 +54941,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: PersonUpdateOneRequiredWithoutTasksNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
   }
@@ -55026,7 +55026,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: PersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput

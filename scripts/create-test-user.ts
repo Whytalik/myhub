@@ -41,9 +41,9 @@ async function main() {
       },
     });
 
-    await tx.person.create({
+    await tx.nutritionPerson.create({
       data: {
-        name: name,
+        name: "Test User",
         profileId: profile.id,
       },
     });

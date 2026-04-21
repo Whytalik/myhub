@@ -20,7 +20,7 @@ async function main() {
   const models = [
     "user",
     "profile",
-    "person",
+    "nutritionPerson",
     "product",
     "dish",
     "dishIngredient",

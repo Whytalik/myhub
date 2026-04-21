@@ -38,7 +38,7 @@ export async function registerAction(
         },
       });
 
-      await tx.person.create({
+      await tx.nutritionPerson.create({
         data: {
           name: name,
           profileId: profile.id,

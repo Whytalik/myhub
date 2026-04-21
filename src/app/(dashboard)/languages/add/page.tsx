@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AddLanguagePage() {
-  const person = await prisma.person.findFirst();
+  const person = await prisma.nutritionPerson.findFirst();
   
   if (!person) {
     return <div>No profile found</div>;

@@ -1,14 +1,14 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getPersons(profileId: string) {
-  return await prisma.person.findMany({
+  return await prisma.nutritionPerson.findMany({
     where: { profileId },
     orderBy: { name: 'asc' },
   });
 }
 
 export async function createPerson(profileId: string, name: string) {
-  return await prisma.person.create({
+  return await prisma.nutritionPerson.create({
     data: {
       name,
       profileId,
@@ -28,14 +28,14 @@ export async function updatePersonGoals(profileId: string, id: string, goals: {
   targetCarbs?: number;
   targetFiber?: number;
 }) {
-  return await prisma.person.update({
+  return await prisma.nutritionPerson.update({
     where: { id, profileId },
     data: goals,
   });
 }
 
 export async function deletePerson(profileId: string, id: string) {
-  return await prisma.person.delete({
+  return await prisma.nutritionPerson.delete({
     where: { id, profileId },
   });
 }

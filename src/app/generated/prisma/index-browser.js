@@ -168,7 +168,7 @@ exports.Prisma.ProfileScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.PersonScalarFieldEnum = {
+exports.Prisma.NutritionPersonScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
   name: 'name',
@@ -619,7 +619,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Profile: 'Profile',
-  Person: 'Person',
+  NutritionPerson: 'NutritionPerson',
   Product: 'Product',
   Dish: 'Dish',
   DishIngredient: 'DishIngredient',

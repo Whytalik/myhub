@@ -60,6 +60,7 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 - **Source Control**: NEVER stage, commit, or push changes without explicit user permission. Always ask before performing any Git write operations.
 - **Research First**: Document findings in `docs/research/` before implementation (e.g., `space-vs-system.md`).
 - **Stable Layouts**: Use `DomainTemplate` for hub pages to prevent layout shifts during navigation.
+- **Verification Mandate**: After every significant code modification, ALWAYS run `pnpm tsc --noEmit`, `pnpm lint`, and `pnpm build` to ensure the project's integrity. Never consider a task finished until these checks pass.
 - **Component Integrity**: ALWAYS use custom UI components from `src/components/ui`. NEVER use native browser methods (`alert`, `prompt`).
 - **Type Safety**: Avoid `any`. Use module augmentation for NextAuth types to maintain a strictly typed environment.
 

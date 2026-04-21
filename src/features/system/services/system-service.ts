@@ -107,7 +107,7 @@ export const systemService = {
 
     for (const personData of profileData.persons) {
       // 3. Recreate Person
-      const person = await prisma.person.create({
+      const person = await prisma.nutritionPerson.create({
         data: {
           profileId: profile.id,
           name: personData.name,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect, useMemo } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,7 @@ import type { TaskData, LifeSphereData, TaskStatus, TaskPriority } from "@/featu
 import { toast } from "sonner";
 import {
   AlertCircle, CalendarClock, Flag, Pencil, FileText,
-  Clock, Link2Off, Eye, ChevronRight
+  Link2Off, Eye, ChevronRight
 } from "lucide-react";
 
 interface TaskFormDialogProps {

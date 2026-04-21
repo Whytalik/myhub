@@ -48,10 +48,10 @@ async function main() {
     });
   }
 
-  let targetPerson = await prisma.person.findFirst({ where: { profileId: targetProfile.id } });
+  let targetPerson = await prisma.nutritionPerson.findFirst({ where: { profileId: targetProfile.id } });
   if (!targetPerson) {
     console.log("👨 Creating default person...");
-    targetPerson = await prisma.person.create({
+    targetPerson = await prisma.nutritionPerson.create({
       data: {
         name: targetUser.name || "Vitalii",
         profileId: targetProfile.id,

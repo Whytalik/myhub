@@ -6,19 +6,19 @@ import { Trash2, UserPlus, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { Person } from "@/app/generated/prisma/client";
+import { NutritionPerson } from "@/app/generated/prisma/client";
 import { updatePersonGoalsAction, deletePersonAction, createPersonAction } from "../actions/person-actions";
 
 interface PersonFormProps {
-  initialPersons: Person[];
+  initialPersons: NutritionPerson[];
   profileId: string;
 }
 
-export function PersonForm({ initialPersons, profileId }: PersonFormProps) {
-  const [persons, setPersons] = useState(initialPersons);
+export function PersonForm({ initialPersons }: PersonFormProps) {
+  const [persons, setPersons] = useState<NutritionPerson[]>(initialPersons);
   const [isPending, startTransition] = useTransition();
   const [newName, setNewName] = useState("");
-  const [personToDelete, setPersonToDelete] = useState<Person | null>(null);
+  const [personToDelete, setPersonToDelete] = useState<NutritionPerson | null>(null);
 
   // Sync state with props
   useEffect(() => {
@@ -30,7 +30,7 @@ export function PersonForm({ initialPersons, profileId }: PersonFormProps) {
     startTransition(async () => {
       const result = await createPersonAction(newName);
       if (result.success) {
-        setPersons(prev => [...prev, result.data as Person]);
+        setPersons(prev => [...prev, result.data as NutritionPerson]);
         setNewName("");
         toast.success("Profile created");
       } else {
@@ -55,7 +55,7 @@ export function PersonForm({ initialPersons, profileId }: PersonFormProps) {
       });
       
       if (result.success) {
-        setPersons(prev => prev.map(p => p.id === id ? result.data as Person : p));
+        setPersons(prev => prev.map(p => p.id === id ? result.data as NutritionPerson : p));
         toast.success("Goals updated");
       } else {
         toast.error(result.error || "Update failed");

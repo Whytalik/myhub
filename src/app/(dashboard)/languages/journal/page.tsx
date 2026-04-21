@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export default async function JournalRedirect() {
-  const person = await prisma.person.findFirst();
+  const person = await prisma.nutritionPerson.findFirst();
   if (!person) redirect("/languages");
   
   const userLang = await prisma.userLanguage.findFirst({

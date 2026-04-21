@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Pencil, Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
+import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
 import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
