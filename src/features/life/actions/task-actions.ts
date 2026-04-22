@@ -59,6 +59,11 @@ export async function deleteSphereAction(id: string) {
   revalidatePath(PATH);
 }
 
+export async function getAllSpheresAction() {
+  const personId = await getPersonId();
+  return taskService.getAllSpheres(personId);
+}
+
 export async function getTaskStatsAction() {
   const personId = await getPersonId();
   return taskService.getTaskStats(personId);
