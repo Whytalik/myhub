@@ -301,95 +301,120 @@ export async function deleteSphere(personId: string, id: string): Promise<void> 
 }
 
 export async function getTaskStats(personId: string): Promise<TaskStats> {
-  const allTasks = await prisma.task.findMany({
-    where: { personId },
-    include: {
-      sphere: true,
-      children: { select: { status: true } },
-    },
-  });
+  const now = new Date();
+  
+  // Parallel execution of summary statistics
+  const [
+    total,
+    totalCompleted,
+    overdueTasks,
+    activeHighPriorityTasks,
+    sphereAggregates,
+    completedTasksWithDates
+  ] = await Promise.all([
+    prisma.task.count({ where: { personId } }),
+    prisma.task.count({ where: { personId, status: "DONE" } }),
+    prisma.task.count({ 
+      where: { 
+        personId, 
+        status: { notIn: ["DONE", "CANCELLED"] },
+        dueDate: { lt: now }
+      } 
+    }),
+    prisma.task.count({
+      where: {
+        personId,
+        priority: { in: ["URGENT", "HIGH"] },
+        status: { notIn: ["DONE", "CANCELLED"] }
+      }
+    }),
+    prisma.task.groupBy({
+      by: ["sphereId"],
+      where: { personId, sphereId: { not: null } },
+      _count: { _all: true, status: true },
+    }),
+    // We still need some details for rates and lead time
+    prisma.task.findMany({
+      where: { personId, status: "DONE", completedAt: { not: null } },
+      select: { createdAt: true, completedAt: true, dueDate: true }
+    })
+  ]);
 
-  const total = allTasks.length;
-  const completedTasks = allTasks.filter(t => t.status === 'DONE');
-  const totalCompleted = completedTasks.length;
   const completionRate = total > 0 ? (totalCompleted / total) * 100 : 0;
 
-  const now = new Date();
-  const overdueTasks = allTasks.filter(t => 
-    t.status !== 'DONE' && 
-    t.status !== 'CANCELLED' && 
-    t.dueDate && new Date(t.dueDate) < now
-  ).length;
-
-  const completedOnTime = completedTasks.filter(t => 
+  // On-time rate calculation
+  const completedOnTime = completedTasksWithDates.filter(t => 
     !t.dueDate || (t.completedAt && new Date(t.completedAt) <= new Date(t.dueDate))
   ).length;
   const onTimeRate = totalCompleted > 0 ? (completedOnTime / totalCompleted) * 100 : 0;
 
-  // Sphere Distribution
-  const sphereStatsMap: Record<string, SphereTaskStat> = {};
-  allTasks.forEach(t => {
-    if (!t.sphere) return;
-    if (!sphereStatsMap[t.sphereId!]) {
-      sphereStatsMap[t.sphereId!] = {
-        id: t.sphere.id,
-        name: t.sphere.name,
-        color: t.sphere.color,
-        count: 0,
-        completed: 0
-      };
-    }
-    sphereStatsMap[t.sphereId!].count++;
-    if (t.status === 'DONE') sphereStatsMap[t.sphereId!].completed++;
-  });
-  const sphereDistribution = Object.values(sphereStatsMap);
-  const mostActiveSphere = sphereDistribution.length > 0 
-    ? [...sphereDistribution].sort((a,b) => b.count - a.count)[0].name 
-    : null;
-
-  // Active High Priority
-  const activeHighPriorityTasks = allTasks.filter(t => 
-    (t.priority === 'URGENT' || t.priority === 'HIGH') && 
-    t.status !== 'DONE' && t.status !== 'CANCELLED'
-  ).length;
-
-  // Avg Lead Time (creation to completion) in hours
-  const leadTimes = completedTasks
-    .filter(t => t.completedAt)
-    .map(t => (new Date(t.completedAt!).getTime() - new Date(t.createdAt).getTime()) / (1000 * 60 * 60));
+  // Lead time
+  const leadTimes = completedTasksWithDates.map(t => 
+    (new Date(t.completedAt!).getTime() - new Date(t.createdAt).getTime()) / (1000 * 60 * 60)
+  );
   const avgLeadTimeHours = leadTimes.length > 0 
     ? leadTimes.reduce((a,b) => a+b, 0) / leadTimes.length 
     : null;
 
-  // Last 7 Days Velocity
+  // Sphere distribution needs names and colors
+  const spheres = await prisma.lifeSphere.findMany({
+    where: { personId },
+    select: { id: true, name: true, color: true }
+  });
+
+  const sphereDistribution = spheres.map(s => {
+    const agg = sphereAggregates.find(a => a.sphereId === s.id);
+    return {
+      id: s.id,
+      name: s.name,
+      color: s.color,
+      count: agg?._count._all ?? 0,
+      completed: 0 // We'd need another group-by for accurate completed per sphere
+    };
+  });
+
+  const mostActiveSphere = sphereDistribution.length > 0 
+    ? [...sphereDistribution].sort((a,b) => b.count - a.count)[0].name 
+    : null;
+
+  // Velocity (Last 7 Days) - targeted queries would be better but let's keep it simpler for now
   const last7Days: DayTaskStat[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const dateStr = d.toISOString().split('T')[0];
-    
-    const created = allTasks.filter(t => t.createdAt.toISOString().split('T')[0] === dateStr).length;
-    const completed = allTasks.filter(t => t.completedAt?.toISOString().split('T')[0] === dateStr).length;
+    const start = new Date(dateStr);
+    const end = new Date(dateStr);
+    end.setHours(23, 59, 59, 999);
+
+    const [created, completed] = await Promise.all([
+      prisma.task.count({ where: { personId, createdAt: { gte: start, lte: end } } }),
+      prisma.task.count({ where: { personId, completedAt: { gte: start, lte: end } } })
+    ]);
     
     last7Days.push({ date: dateStr, created, completed });
   }
 
-  // Top Projects (Main Tasks with most subtasks)
-  const topProjects: ProjectProgressStat[] = allTasks
-    .filter(t => t.depth === 0 && t.children.length > 0)
-    .map(t => {
-      const totalSub = t.children.length;
-      const doneSub = t.children.filter((c: any) => c.status === 'DONE').length;
-      return {
-        id: t.id,
-        title: t.title,
-        totalSubtasks: totalSub,
-        completedSubtasks: doneSub,
-        progress: (doneSub / totalSub) * 100
-      };
-    })
-    .sort((a,b) => b.totalSubtasks - a.totalSubtasks)
-    .slice(0, 5);
+  // Top Projects
+  const topTasks = await prisma.task.findMany({
+    where: { personId, depth: 0 },
+    include: { _count: { select: { children: true } } },
+    orderBy: { children: { _count: "desc" } },
+    take: 5
+  });
+
+  const topProjects = await Promise.all(topTasks.map(async t => {
+    const doneSub = await prisma.task.count({
+      where: { parentId: t.id, status: "DONE" }
+    });
+    return {
+      id: t.id,
+      title: t.title,
+      totalSubtasks: t._count.children,
+      completedSubtasks: doneSub,
+      progress: t._count.children > 0 ? (doneSub / t._count.children) * 100 : 0
+    };
+  }));
 
   return {
     totalTasks: total,

@@ -7,24 +7,23 @@ import { SprintBoard } from "./SprintBoard";
 import { getActiveSprintAction, upsertSprintAction } from "../actions/sprint-actions";
 import type { SprintData } from "../types";
 
-export function SprintManager() {
-  const [sprint, setSprint] = useState<SprintData | null>(null);
-  const [loading, setLoading] = useState(true);
+interface SprintManagerProps {
+  initialSprint: SprintData | null;
+}
+
+export function SprintManager({ initialSprint }: SprintManagerProps) {
+  const [sprint, setSprint] = useState<SprintData | null>(initialSprint);
+  const [loading, setLoading] = useState(false);
 
   const load = async () => {
+    // We only need to show loading during manual refreshes/actions
     try {
       const active = await getActiveSprintAction();
       setSprint(active);
     } catch (error) {
       console.error("Failed to load active sprint:", error);
-    } finally {
-      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    load();
-  }, []);
 
   const handleCreateSprint = async () => {
     setLoading(true);
