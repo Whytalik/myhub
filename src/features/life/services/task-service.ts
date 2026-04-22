@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/app/generated/prisma";
 import type {
   TaskData,
   LifeSphereData,
@@ -29,12 +30,10 @@ const TASK_INCLUDE = {
           project: { select: { id: true, title: true } },
           parent: { select: { id: true, title: true, icon: true } },
         },
-        orderBy: [{ order: "asc" }, { createdAt: "asc" }],
       },
     },
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
   },
-};
+} as const satisfies Prisma.TaskInclude;
 
 function mapSphere(
   sphere: { id: string; name: string; color: string; icon: string; order: number; createdAt: Date; updatedAt: Date } | null,
