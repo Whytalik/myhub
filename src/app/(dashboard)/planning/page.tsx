@@ -6,11 +6,8 @@ import {
   Compass, 
   Target, 
   Zap, 
-  LayoutDashboard, 
-  Flag, 
   CheckCircle2,
-  Brain,
-  History
+  Brain
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -104,7 +101,7 @@ export default function PlanningPage() {
           <h4 className="text-sm font-bold uppercase tracking-widest mb-2 text-text">System Intelligence</h4>
           <p className="text-xs text-secondary leading-relaxed">
             This space is designed to ensure that every 12-week goal has a clear lineage to your North Star. 
-            If a sprint doesn't support a Milestone, the system will flag it as a distraction.
+            If a sprint doesn&apos;t support a Milestone, the system will flag it as a distraction.
           </p>
         </div>
       </div>

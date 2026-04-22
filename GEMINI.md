@@ -86,7 +86,7 @@ pnpm dev
 ```
 
 ## Development TODOs
-- [ ] Complete 12-Week Sprint logic (OKRs & Tactics tracking).
+- [x] Complete 12-Week Sprint logic (OKRs & Tactics tracking).
 - [ ] Implement automated Weekly Scorecard calculations.
 - [ ] Add AI-powered reflection analysis in Daily Journal.
 - [ ] Implement comprehensive test suite (Vitest/Playwright).
