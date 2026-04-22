@@ -35,8 +35,7 @@ export default async function JournalPage({
     redirect("/login");
   }
 
-  const params = await searchParams;
-  const dateStr = params.date ?? currentTodayStr();
+  const dateStr = currentTodayStr();
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
