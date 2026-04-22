@@ -108,8 +108,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (dbUser) {
           token.role = dbUser.role;
           token.name = dbUser.name;
-          token.profileId = dbUser.profile?.id;
-          token.personId = dbUser.profile?.persons[0]?.id;
+          if (dbUser.profile) {
+            token.profileId = dbUser.profile.id;
+            token.personId = dbUser.profile.persons[0]?.id;
+          }
         }
       }
 

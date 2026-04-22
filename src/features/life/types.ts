@@ -58,6 +58,8 @@ export interface TaskData {
   parentIcon?: string | null;
   sphereId: string | null;
   sphere: LifeSphereData | null;
+  projectId?: string | null;
+  project?: { id: string; title: string } | null;
   children: TaskData[];
   completedAt: Date | null;
   createdAt: Date;
@@ -77,6 +79,7 @@ export interface UpsertTaskInput {
   hasDueTime?: boolean;
   parentId?: string | null;
   sphereId?: string | null;
+  projectId?: string | null;
 }
 
 //

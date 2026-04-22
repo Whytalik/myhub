@@ -16,26 +16,23 @@ import type {
 
 const TASK_INCLUDE = {
   sphere: true,
+  project: { select: { id: true, title: true } },
   parent: { select: { id: true, title: true, icon: true } },
   children: {
     include: {
       sphere: true,
+      project: { select: { id: true, title: true } },
       parent: { select: { id: true, title: true, icon: true } },
       children: {
         include: {
           sphere: true,
+          project: { select: { id: true, title: true } },
           parent: { select: { id: true, title: true, icon: true } },
         },
-        orderBy: [{ order: "asc" }, { createdAt: "asc" }] as [
-          { order: "asc" },
-          { createdAt: "asc" },
-        ],
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }],
       },
     },
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }] as [
-      { order: "asc" },
-      { createdAt: "asc" },
-    ],
+    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
   },
 };
 
@@ -66,6 +63,8 @@ function mapTask(task: any): TaskData {
     parentIcon: task.parent?.icon,
     sphereId: task.sphereId,
     sphere: mapSphere(task.sphere),
+    projectId: task.projectId,
+    project: task.project,
     children: (task.children ?? []).map(mapTask),
     completedAt: task.completedAt,
     createdAt: task.createdAt,
@@ -76,9 +75,10 @@ function mapTask(task: any): TaskData {
 async function resolveDepth(personId: string, parentId: string | null | undefined): Promise<number> {
   if (!parentId) return 0;
   const parent = await prisma.task.findUniqueOrThrow({
-    where: { id: parentId, personId },
+    where: { id: parentId },
     select: { depth: true },
   });
+
   const depth = parent.depth + 1;
   if (depth > 2) throw new Error("Max nesting depth is 2 (Task → Subtask → Sub-subtask)");
   return depth;
@@ -180,6 +180,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
     hasDueTime = false,
     parentId,
     sphereId,
+    projectId,
   } = input;
 
   const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
@@ -210,6 +211,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
         completedAt,
         parent: parentId !== undefined ? (parentId ? { connect: { id: parentId } } : { disconnect: true }) : undefined,
         sphere: sphereId !== undefined ? (sphereId ? { connect: { id: sphereId } } : { disconnect: true }) : undefined,
+        project: projectId !== undefined ? (projectId ? { connect: { id: projectId } } : { disconnect: true }) : undefined,
       },
       include: TASK_INCLUDE,
     });
@@ -236,6 +238,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
         completedAt: status === 'DONE' ? new Date() : null,
         parentId: parentId ?? null,
         sphereId: sphereId ?? null,
+        projectId: projectId ?? null,
       },
       include: TASK_INCLUDE,
     });
