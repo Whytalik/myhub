@@ -22,7 +22,7 @@ export async function upsertHabit(personId: string, input: UpsertHabitInput) {
   const { id, icon: _icon, color: _color, ...data } = input;
   if (id) {
     return prisma.habit.update({
-      where: { id, personId },
+      where: { id },
       data,
     });
   }
@@ -38,23 +38,23 @@ export async function upsertHabit(personId: string, input: UpsertHabitInput) {
 }
 
 export async function toggleHabitArchived(personId: string, id: string) {
-  const habit = await prisma.habit.findUnique({ where: { id, personId } });
+  const habit = await prisma.habit.findUnique({ where: { id } });
   if (!habit) throw new Error("Habit not found");
   return prisma.habit.update({
-    where: { id, personId },
+    where: { id },
     data: { archived: !habit.archived },
   });
 }
 
 export async function deleteHabit(personId: string, id: string) {
   return prisma.habit.delete({
-    where: { id, personId },
+    where: { id },
   });
 }
 
 export async function toggleHabitCompletion(personId: string, habitId: string, date: Date) {
   const habit = await prisma.habit.findUnique({
-    where: { id: habitId, personId }
+    where: { id: habitId }
   });
   if (!habit) throw new Error("Habit not found or unauthorized");
 

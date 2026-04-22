@@ -36,7 +36,7 @@ export async function upsertEntry(personId: string, input: UpsertDailyEntryInput
 
 export async function deleteEntry(personId: string, id: string) {
   return prisma.dailyEntry.delete({
-    where: { id, personId },
+    where: { id },
   });
 }
 

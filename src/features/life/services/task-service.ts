@@ -196,7 +196,7 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
   if (id) {
     // Perform Update
     const saved = await prisma.task.update({
-      where: { id, personId },
+      where: { id },
       data: {
         title:       title ?? undefined,
         description: description !== undefined ? (description ?? null) : undefined,
@@ -244,16 +244,16 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
 }
 
 export async function deleteTask(personId: string, id: string): Promise<void> {
-  await prisma.task.delete({ where: { id, personId } });
+  await prisma.task.delete({ where: { id } });
 }
 
 export async function updateTaskStatus(personId: string, id: string, status: TaskStatus): Promise<void> {
   const completedAt = status === 'DONE' ? new Date() : null;
-  await prisma.task.update({ where: { id, personId }, data: { status, completedAt } });
+  await prisma.task.update({ where: { id }, data: { status, completedAt } });
 }
 
 export async function updateTaskPriority(personId: string, id: string, priority: TaskPriority): Promise<void> {
-  await prisma.task.update({ where: { id, personId }, data: { priority } });
+  await prisma.task.update({ where: { id }, data: { priority } });
 }
 
 // ─── Spheres ──────────────────────────────────────────────────────────────────
@@ -279,7 +279,7 @@ export async function getAllSpheres(personId: string): Promise<LifeSphereData[]>
 export async function upsertSphere(personId: string, input: UpsertSphereInput): Promise<LifeSphereData> {
   const { id, name, color, icon, order = 0 } = input;
   const sphere = await prisma.lifeSphere.upsert({
-    where: { id: id ?? "", personId },
+    where: { id: id ?? "" },
     create: { personId, name, color, icon, order },
     update: { name, color, icon, order },
     include: { _count: { select: { tasks: true } } },
@@ -297,7 +297,7 @@ export async function upsertSphere(personId: string, input: UpsertSphereInput): 
 }
 
 export async function deleteSphere(personId: string, id: string): Promise<void> {
-  await prisma.lifeSphere.delete({ where: { id, personId } });
+  await prisma.lifeSphere.delete({ where: { id } });
 }
 
 export async function getTaskStats(personId: string): Promise<TaskStats> {

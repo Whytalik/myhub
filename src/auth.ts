@@ -86,15 +86,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.personId = user.personId;
       }
       
-      // FETCH FRESH DATA: Ensure name and role are always current from DB
+      // FETCH FRESH DATA: Ensure role, name, and linked IDs are always current from DB
       if (token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
-          select: { role: true, name: true }
+          select: { 
+            role: true, 
+            name: true,
+            profile: {
+              select: {
+                id: true,
+                persons: {
+                  take: 1,
+                  orderBy: { createdAt: "asc" },
+                  select: { id: true }
+                }
+              }
+            }
+          }
         });
         if (dbUser) {
           token.role = dbUser.role;
-          token.name = dbUser.name; // Keep name in sync with DB
+          token.name = dbUser.name;
+          token.profileId = dbUser.profile?.id;
+          token.personId = dbUser.profile?.persons[0]?.id;
         }
       }
 

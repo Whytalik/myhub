@@ -16,7 +16,7 @@ export const wishlistService = {
   async upsert(personId: string, input: UpsertWishlistItemInput): Promise<WishlistItemData> {
     if (input.id) {
       return prisma.wishlistItem.update({
-        where: { id: input.id, personId },
+        where: { id: input.id },
         data: {
           name: input.name,
           description: input.description,
@@ -43,7 +43,7 @@ export const wishlistService = {
 
   async delete(personId: string, id: string): Promise<void> {
     await prisma.wishlistItem.delete({
-      where: { id, personId },
+      where: { id },
     });
   },
 };

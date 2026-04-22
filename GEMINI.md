@@ -36,22 +36,26 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 ## UI & Navigation Systems
 
 ### Contextual Navigation
+
 - **DomainHeader**: A global top bar for switching between high-level Domains.
 - **Contextual Sidebar**: Dynamically filters content based on the active Domain. Supports collapsing (Rail mode) and manual pinning.
 - **DomainHubs**: Dedicated landing pages for each domain built with a stable `DomainTemplate` to ensure visual consistency.
 
 ### Theme & Layout
+
 - **Dynamic Theming**: Global support for **Light** and **Dark** modes via `SpaceProvider`.
 - **Space Themes**: Each specific Space (e.g., Planning, Food) has its own accent color that propagates through the UI.
 
 ## Data Integrity & Governance
 
 ### Backup & Recovery
+
 - **Full Export**: Generates a deep JSON snapshot of the entire system state (all related tables).
 - **Deep Restore**: Implements intelligent ID mapping to restore the full relational structure from a backup file, including recursive tasks and linked ingredients.
 - **System Reset**: Safe transactional wipe of all user-associated data.
 
 ### Database Sync
+
 - **Safe Build**: Uses `prisma db push` (without data loss flags) on Vercel to protect data while ensuring schema alignment.
 - **Session Sync**: Authentication callbacks are configured to fetch fresh data from the DB on every refresh, ensuring UI elements like "User Name" are always current.
 
@@ -59,6 +63,7 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 
 - **Source Control**: NEVER stage, commit, or push changes without explicit user permission. Always ask before performing any Git write operations.
 - **Research First**: Document findings in `docs/research/` before implementation (e.g., `space-vs-system.md`).
+- **Changelog Maintenance**: After fixing a bug or adding a feature, ALWAYS append a 1-2 sentence summary AND a brief verification checklist to a domain-specific markdown file in the `docs/changelog/` directory (e.g., `docs/changelog/planning.md`, `docs/changelog/food.md`). The checklist should confirm steps like: `[x] Logic implemented`, `[x] UI updated`, `[x] Verified with tsc/lint/build`. Divide the logs by domain to save tokens. Before starting a new task or making fixes in a specific domain, ALWAYS read its corresponding changelog file first to understand recent context.
 - **Stable Layouts**: Use `DomainTemplate` for hub pages to prevent layout shifts during navigation.
 - **Verification Mandate**: After every significant code modification, ALWAYS run `pnpm tsc --noEmit`, `pnpm lint`, and `pnpm build` to ensure the project's integrity. Never consider a task finished until these checks pass.
 - **Component Integrity**: ALWAYS use custom UI components from `src/components/ui`. NEVER use native browser methods (`alert`, `prompt`).
@@ -67,10 +72,12 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 ## Building and Running
 
 ### Prerequisites
+
 - Node.js & pnpm.
 - Docker (for PostgreSQL).
 
 ### Setup & Development
+
 ```bash
 # Start database
 docker compose up -d
@@ -84,9 +91,3 @@ pnpm prisma migrate dev
 # Run
 pnpm dev
 ```
-
-## Development TODOs
-- [x] Complete 12-Week Sprint logic (OKRs & Tactics tracking).
-- [ ] Implement automated Weekly Scorecard calculations.
-- [ ] Add AI-powered reflection analysis in Daily Journal.
-- [ ] Implement comprehensive test suite (Vitest/Playwright).
