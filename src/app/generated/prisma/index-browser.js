@@ -311,6 +311,7 @@ exports.Prisma.TaskScalarFieldEnum = {
   updatedAt: 'updatedAt',
   parentId: 'parentId',
   sphereId: 'sphereId',
+  projectId: 'projectId',
   completedAt: 'completedAt'
 };
 
@@ -456,6 +457,104 @@ exports.Prisma.LanguageResourceScalarFieldEnum = {
   sphere: 'sphere',
   level: 'level',
   notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VisionScalarFieldEnum = {
+  id: 'id',
+  personId: 'personId',
+  title: 'title',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MilestoneScalarFieldEnum = {
+  id: 'id',
+  personId: 'personId',
+  title: 'title',
+  description: 'description',
+  targetDate: 'targetDate',
+  completed: 'completed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sphereId: 'sphereId'
+};
+
+exports.Prisma.SprintScalarFieldEnum = {
+  id: 'id',
+  personId: 'personId',
+  number: 'number',
+  year: 'year',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ObjectiveScalarFieldEnum = {
+  id: 'id',
+  sprintId: 'sprintId',
+  sphereId: 'sphereId',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.KeyResultScalarFieldEnum = {
+  id: 'id',
+  objectiveId: 'objectiveId',
+  title: 'title',
+  targetValue: 'targetValue',
+  currentValue: 'currentValue',
+  unit: 'unit',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  objectiveId: 'objectiveId',
+  title: 'title',
+  description: 'description',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TacticScalarFieldEnum = {
+  id: 'id',
+  keyResultId: 'keyResultId',
+  title: 'title',
+  description: 'description',
+  frequency: 'frequency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TacticCompletionScalarFieldEnum = {
+  id: 'id',
+  tacticId: 'tacticId',
+  weekNumber: 'weekNumber',
+  completed: 'completed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SprintReviewScalarFieldEnum = {
+  id: 'id',
+  sprintId: 'sprintId',
+  weekNumber: 'weekNumber',
+  date: 'date',
+  score: 'score',
+  wins: 'wins',
+  challenges: 'challenges',
+  adjustments: 'adjustments',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -613,6 +712,26 @@ exports.LanguageSphere = exports.$Enums.LanguageSphere = {
   WRITING: 'WRITING'
 };
 
+exports.SprintStatus = exports.$Enums.SprintStatus = {
+  PLANNED: 'PLANNED',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ObjectiveStatus = exports.$Enums.ObjectiveStatus = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  ACHIEVED: 'ACHIEVED',
+  PARTIAL: 'PARTIAL',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.TacticFrequency = exports.$Enums.TacticFrequency = {
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -642,7 +761,16 @@ exports.Prisma.ModelName = {
   LanguageSphereProgress: 'LanguageSphereProgress',
   VocabularyItem: 'VocabularyItem',
   ImmersionLog: 'ImmersionLog',
-  LanguageResource: 'LanguageResource'
+  LanguageResource: 'LanguageResource',
+  Vision: 'Vision',
+  Milestone: 'Milestone',
+  Sprint: 'Sprint',
+  Objective: 'Objective',
+  KeyResult: 'KeyResult',
+  Project: 'Project',
+  Tactic: 'Tactic',
+  TacticCompletion: 'TacticCompletion',
+  SprintReview: 'SprintReview'
 };
 
 /**
