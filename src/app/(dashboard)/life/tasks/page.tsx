@@ -18,7 +18,7 @@ export default async function TasksPage({
   const personId = session?.user?.personId;
 
   if (!session || !personId) {
-    redirect("/login");
+    redirect("/profile");
   }
 
   const params = await searchParams;
