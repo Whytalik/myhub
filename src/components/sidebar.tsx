@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 // --- Navigation Data ---
 const foodNav = [
@@ -110,19 +110,18 @@ export function Sidebar({
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
-  const ALL_DOMAINS = isAdmin
+  const ALL_DOMAINS = useMemo(() => isAdmin
     ? ["operations", "health", "mind", "wealth", "vault"]
-    : ["operations", "vault"];
-
-  const mergeOrder = (saved: string[]) => {
-    const filteredSaved = saved.filter(s => ALL_DOMAINS.includes(s));
-    return [
-      ...filteredSaved,
-      ...ALL_DOMAINS.filter((s) => !filteredSaved.includes(s)),
-    ];
-  };
+    : ["operations", "vault"], [isAdmin]);
 
   const getInitialOrder = useCallback(() => {
+    const mergeOrder = (saved: string[]) => {
+      const filteredSaved = saved.filter(s => ALL_DOMAINS.includes(s));
+      return [
+        ...filteredSaved,
+        ...ALL_DOMAINS.filter((s) => !filteredSaved.includes(s)),
+      ];
+    };
     if (initialOrder) {
       return mergeOrder(initialOrder);
     }
@@ -137,9 +136,9 @@ export function Sidebar({
       }
     }
     return ["operations", "vault"];
-  }, [initialOrder, mergeOrder]);
+  }, [initialOrder, ALL_DOMAINS]);
 
-  const [order, setOrder] = useState<string[]>(getInitialOrder);
+  const [order] = useState<string[]>(getInitialOrder);
 
   const loadCustomizations = useCallback(() => {
     if (typeof window === 'undefined') return {};

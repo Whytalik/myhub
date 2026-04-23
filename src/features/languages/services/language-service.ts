@@ -39,7 +39,7 @@ export function calculateNextReview(
 
 export const LanguageService = {
   // Розрахунок XP за активність
-  calculateXpGain(durationMinutes: number, _sphere: LanguageSphere) {
+  calculateXpGain(durationMinutes: number) {
     // Базовий XP: 1 хвилина = 10 XP
     // Можна додати множники для різних сфер
     return durationMinutes * 10;
@@ -117,7 +117,7 @@ export const LanguageService = {
 
   // Логування занурення
   async logImmersion(userId: string, userLanguageId: string, sphere: LanguageSphere, duration: number, note?: string) {
-    const xpGain = this.calculateXpGain(duration, sphere);
+    const xpGain = this.calculateXpGain(duration);
     
     // Використовуємо транзакцію для цілісності даних
     return prisma.$transaction(async (tx) => {

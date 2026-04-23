@@ -22,7 +22,6 @@ export function DashboardUIWrapper({
       {/* Sidebar - Desktop Sticky / Mobile Drawer */}
       <Sidebar
         initialOrder={initialOrder}
-        initialCustomizations={initialCustomizations}
         initialOpenSections={initialOpenSections}
         user={user}
       />
