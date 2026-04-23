@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, Plus } from "lucide-react";
+import { Layers, Plus, Lock, Unlock } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
 import { TaskCalendar } from "./TaskCalendar";
 import { SphereGrid } from "./SphereGrid";
@@ -22,6 +24,9 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "gallery");
+  const [privateUnlocked, setPrivateUnlocked] = useState(false);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
 
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
@@ -55,6 +60,14 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
     setTaskFormOpen(true);
   };
 
+  const [passwordError, setPasswordError] = useState(false);
+  const handleUnlock = () => {
+    setPasswordDialogOpen(true);
+  };
+
+  const tasks = privateUnlocked ? initialTasks : initialTasks.filter(t => !t.isPrivate);
+  const privateCount = initialTasks.filter(t => t.isPrivate).length;
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-6">
@@ -87,6 +100,18 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
+              {privateCount > 0 && (
+                <Button 
+                  variant={privateUnlocked ? "secondary" : "outline"} 
+                  size="sm" 
+                  onClick={handleUnlock} 
+                  className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-[11px] font-bold"
+                >
+                  {privateUnlocked ? <Unlock size={14} className="mr-2" /> : <Lock size={14} className="mr-2" />}
+                  {privateUnlocked ? "Private" : `${privateCount} Private`}
+                </Button>
+              )}
+
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -114,7 +139,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
       <div className="animate-in fade-in duration-500">
         {view === "gallery" ? (
           <TaskTree 
-            tasks={initialTasks} 
+            tasks={tasks} 
             spheres={spheres} 
             onEdit={handleEdit}
             onDuplicate={handleDuplicate}
@@ -123,7 +148,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           />
         ) : (
           <TaskCalendar 
-            tasks={calendarTasks} 
+            tasks={privateUnlocked ? calendarTasks : calendarTasks.filter(t => !t.isPrivate)} 
             allTasks={initialTasks}
             spheres={spheres} 
             onDuplicate={handleDuplicate}
@@ -152,6 +177,47 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         allTasks={initialTasks}
         isDuplicate={isDuplicate}
       />
+
+      <Dialog
+        isOpen={passwordDialogOpen}
+        onClose={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); }}
+        title="Unlock Private Tasks"
+      >
+        <div className="space-y-4">
+          <Input
+            type="password"
+            value={passwordInput}
+            onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
+            placeholder="Enter your private tasks password"
+          />
+          {passwordError && <p className="text-[10px] font-bold text-rose-500">Invalid password</p>}
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); }}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={async () => {
+                const result = await verifyPrivateTaskPasswordAction(passwordInput);
+                if (result.success) {
+                  setPrivateUnlocked(true);
+                  setPasswordDialogOpen(false);
+                  setPasswordInput("");
+                } else {
+                  setPasswordError(true);
+                }
+              }}
+              className="flex-1"
+            >
+              Unlock
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
