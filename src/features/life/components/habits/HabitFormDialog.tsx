@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { Anchor, Zap, PartyPopper, Bell } from "lucide-react";
+import { Anchor, Zap, PartyPopper, Bell, X } from "lucide-react";
+import { TimePicker } from "@/components/ui/time-picker";
 
 interface HabitFormDialogProps {
   isOpen: boolean;
@@ -135,19 +136,29 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <Bell size={14} className="text-blue-500" />
-              <label className="text-[10px] font-mono tracking-widest text-muted">Daily Reminder (Optional)</label>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Bell size={14} className="text-blue-500" />
+                <label className="text-[10px] font-mono tracking-widest text-muted">Daily Reminder (Optional)</label>
+              </div>
+              {reminderTime && (
+                <button 
+                  type="button"
+                  onClick={() => setReminderTime("")}
+                  className="text-[9px] font-mono text-muted hover:text-red-500 transition-colors flex items-center gap-1"
+                >
+                  <X size={10} /> Clear
+                </button>
+              )}
             </div>
             <div className="relative">
-              <Input 
-                type="time"
-                value={reminderTime} 
-                onChange={(e) => setReminderTime(e.target.value)} 
+              <TimePicker 
+                value={reminderTime || ""} 
+                onChange={(val) => setReminderTime(val)} 
                 className="w-full"
               />
               {!reminderTime && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <div className="absolute right-12 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <span className="text-[9px] text-muted font-mono uppercase">Auto (3x day)</span>
                 </div>
               )}
