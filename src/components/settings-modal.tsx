@@ -286,7 +286,15 @@ export function SettingsModal({
         return;
       }
 
-      const registration = await navigator.serviceWorker.register("/sw.js");
+      await navigator.serviceWorker.register("/sw.js");
+      const registration = await navigator.serviceWorker.ready;
+      
+      // Переконуємося, що Service Worker активний
+      if (!registration.active) {
+        toast.error("Service Worker is registering... please try again in a second.");
+        return;
+      }
+
       const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
       
       if (!publicKey) {
