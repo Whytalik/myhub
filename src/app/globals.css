@@ -70,3 +70,14 @@ h1, h2, h3, h4, .font-heading {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+main {
+  view-transition-name: main-content;
+}

@@ -4,15 +4,12 @@ import { DashboardUIWrapper } from "@/components/dashboard-ui-wrapper";
 import { auth } from "@/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Динамічний компонент, який зчитує дані сесії та куки
+async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
   
-  // Зчитуємо всі налаштування сайдбару з куків для серверного рендерингу
   const orderCookie = cookieStore.get("sidebar-domains-order");
   const collapsedCookie = cookieStore.get("sidebar-collapsed");
   const customizationsCookie = cookieStore.get("system-customizations");
@@ -55,5 +52,20 @@ export default async function DashboardLayout({
         </DashboardUIWrapper>
       </SpaceProvider>
     </SidebarProvider>
+  );
+}
+
+// Статичний лейаут, який не блокує рендеринг
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense fallback={<div className="h-screen w-full bg-bg flex items-center justify-center"><div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" /></div>}>
+      <DashboardDataLayer>
+        {children}
+      </DashboardDataLayer>
+    </Suspense>
   );
 }

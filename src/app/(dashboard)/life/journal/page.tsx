@@ -15,9 +15,6 @@ export const metadata: Metadata = {
   title: "Daily Journal",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 function currentTodayStr(): string {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;

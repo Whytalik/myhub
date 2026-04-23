@@ -6,8 +6,6 @@ import { TasksPageClient } from "@/features/life/components/tasks/TasksPageClien
 import * as taskService from "@/features/life/services/task-service";
 
 export const metadata: Metadata = { title: "Tasks" };
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export default async function TasksPage({
   searchParams,

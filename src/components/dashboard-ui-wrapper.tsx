@@ -20,17 +20,19 @@ export function DashboardUIWrapper({
   return (
     <div className="flex h-screen overflow-hidden w-full bg-bg relative">
       {/* Sidebar - Desktop Sticky / Mobile Drawer */}
-      <Sidebar
-        initialOrder={initialOrder}
-        initialOpenSections={initialOpenSections}
-        user={user}
-      />
+      <div style={{ viewTransitionName: 'sidebar' }}>
+        <Sidebar
+          initialOrder={initialOrder}
+          initialOpenSections={initialOpenSections}
+          user={user}
+        />
+      </div>
 
       {/* Main Container */}
       <div className="flex flex-col flex-1 min-w-0 relative h-full overflow-hidden">
-        <DomainHeader />
+        <DomainHeader user={user} />
         
-        <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0">
+        <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0" style={{ viewTransitionName: 'page-content' }}>
           {children}
         </main>
 

@@ -7,13 +7,11 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Profiles & Goals",
+  title: "Food Profiles",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default async function FoodProfilesPage() {
 
-export default async function ProfilesPage() {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) redirect("/login");

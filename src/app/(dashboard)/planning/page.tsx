@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
 import { 
   Compass, 
   Target, 
@@ -9,6 +7,7 @@ import {
   CheckCircle2,
   Brain
 } from "lucide-react";
+import { DomainPageHeader } from "@/components/domain-page-header";
 
 export const metadata: Metadata = {
   title: "Planning Space",
@@ -56,15 +55,11 @@ export default function PlanningPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "planning space" }]} />
-      
-      <div className="flex flex-col mb-16">
-        <Heading title="Planning Space" />
-        <p className="text-secondary max-w-2xl leading-relaxed">
-          The alignment engine of your Personal OS. Bridge the gap between 
-          your abstract dreams and daily execution using the 5-Level Structure.
-        </p>
-      </div>
+      <DomainPageHeader 
+        label="planning space" 
+        title="Planning Space" 
+        description="The alignment engine of your Personal OS. Bridge the gap between your abstract dreams and daily execution using the 5-Level Structure." 
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {levels.map((l) => (

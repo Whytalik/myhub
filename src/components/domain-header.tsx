@@ -13,8 +13,9 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
+import { useMemo } from "react";
 
-const DOMAINS = [
+const DOMAINS_CONFIG = [
   { id: "operations", label: "Operations", icon: Briefcase, href: "/operations" },
   { id: "health",     label: "Health",     icon: Shield,    href: "/health" },
   { id: "mind",       label: "Mind",       icon: Brain,     href: "/mind" },
@@ -22,9 +23,19 @@ const DOMAINS = [
   { id: "vault",      label: "Vault",      icon: Package,   href: "/vault" },
 ];
 
-export function DomainHeader() {
+interface DomainHeaderProps {
+  user?: { role?: string };
+}
+
+export function DomainHeader({ user }: DomainHeaderProps) {
   const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
+  const isAdmin = user?.role === "ADMIN";
+
+  const visibleDomains = useMemo(() => {
+    if (isAdmin) return DOMAINS_CONFIG;
+    return DOMAINS_CONFIG.filter(d => d.id === "operations" || d.id === "vault");
+  }, [isAdmin]);
 
   return (
     <header className="h-16 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
@@ -49,7 +60,7 @@ export function DomainHeader() {
 
         {/* Desktop: Domains List */}
         <div className="hidden lg:flex items-center gap-1">
-          {DOMAINS.map((domain) => {
+          {visibleDomains.map((domain) => {
             const Icon = domain.icon;
             const isActive = activeDomain === domain.id;
             

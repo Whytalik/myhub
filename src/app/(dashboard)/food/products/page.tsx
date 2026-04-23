@@ -9,13 +9,10 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Products",
+  title: "Food Products",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-export default async function ProductsPage({
+export default async function FoodProductsPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

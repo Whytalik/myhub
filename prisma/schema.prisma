@@ -22,7 +22,7 @@ model User {
   image         String?
   passwordHash  String?   // For credentials provider
   privateTaskPasswordHash String?  // For private tasks
-  role          Role      @default(USER)
+  role          Role      @default(ADMIN)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   

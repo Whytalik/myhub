@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { SPACE_THEMES, getSpaceFromPath } from "@/lib/spaces";
 
@@ -31,6 +31,13 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
 
   const activeDomain = getDomainFromPath(pathname);
 
+  // Sync CSS variables for accent colors
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--color-accent", themeData.accent);
+    root.style.setProperty("--color-accent-muted", themeData.accentMuted);
+  }, [themeData]);
+
   // Theme Logic
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
@@ -58,12 +65,6 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
           "--color-accent-muted": themeData.accentMuted,
         } as React.CSSProperties}
       >
-        <style dangerouslySetInnerHTML={{ __html: `
-          body {
-            --color-accent: ${themeData.accent};
-            --color-accent-muted: ${themeData.accentMuted};
-          }
-        `}} />
         {children}
       </div>
     </SpaceContext.Provider>

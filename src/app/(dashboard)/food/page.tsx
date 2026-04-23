@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
 import { prisma } from "@/lib/prisma";
 import { Tabs } from "@/components/ui/tabs";
 import { LayoutDashboard, Settings2, Info } from "lucide-react";
+import { DomainPageHeader } from "@/components/domain-page-header";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Food Space",
 };
 
-export default async function FoodDashboardPage() {
+export const experimental_ppr = true;
+
+async function FoodModuleCards() {
   const [productCount, dishCount, planCount, shoppingCount] = await Promise.all([
     prisma.product.count(),
     prisma.dish.count(),
@@ -45,6 +48,61 @@ export default async function FoodDashboardPage() {
     },
   ];
 
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+      {sections.map((section) => (
+        <div
+          key={section.href}
+          className="group relative bg-surface border border-border p-8 rounded-xl hover:bg-raised transition-all duration-300 hover:border-accent/40 overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+            <span className="font-heading text-8xl uppercase leading-none tracking-tighter -mr-8">
+              {section.title}
+            </span>
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="font-heading text-5xl text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
+                {section.title}
+              </h3>
+              <span className="text-[10px] font-mono text-accent uppercase tracking-[0.2em] bg-accent/10 px-2 py-1 rounded">
+                {section.count}
+              </span>
+            </div>
+            <p className="text-secondary text-sm leading-relaxed mb-8 max-w-[80%]">
+              {section.description}
+            </p>
+            <Link href={section.href} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
+              <span>Access Module</span>
+              <span>→</span>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FoodModuleCardsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="bg-surface border border-border p-8 rounded-xl overflow-hidden">
+          <div className="flex justify-between items-start mb-6">
+            <Skeleton className="h-12 w-48" />
+            <Skeleton className="h-6 w-16" />
+          </div>
+          <Skeleton className="h-4 w-[80%] mb-2" />
+          <Skeleton className="h-4 w-[60%] mb-8" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function FoodDashboardPage() {
   const workflow = [
     {
       step: "01",
@@ -99,39 +157,10 @@ export default async function FoodDashboardPage() {
         </div>
       </div>
 
-      {/* Modules Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
-        {sections.map((section) => (
-          <div
-            key={section.href}
-            className="group relative bg-surface border border-border p-8 rounded-xl hover:bg-raised transition-all duration-300 hover:border-accent/40 overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
-              <span className="font-heading text-8xl uppercase leading-none tracking-tighter -mr-8">
-                {section.title}
-              </span>
-            </div>
-
-            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-6">
-                <h3 className="font-heading text-5xl text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
-                  {section.title}
-                </h3>
-                <span className="text-[10px] font-mono text-accent uppercase tracking-[0.2em] bg-accent/10 px-2 py-1 rounded">
-                  {section.count}
-                </span>
-              </div>
-              <p className="text-secondary text-sm leading-relaxed mb-8 max-w-[80%]">
-                {section.description}
-              </p>
-              <Link href={section.href} className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
-                <span>Access Module</span>
-                <span>→</span>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Modules Grid - WRAPPED IN SUSPENSE */}
+      <Suspense fallback={<FoodModuleCardsSkeleton />}>
+        <FoodModuleCards />
+      </Suspense>
 
       {/* System Status Footer */}
       <div className="bg-surface/50 border border-border-dim rounded-2xl p-8">
@@ -215,15 +244,11 @@ export default async function FoodDashboardPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "food space" }]} />
-      
-      <div className="flex flex-col mb-16">
-        <Heading title="Food Space" />
-        <p className="text-secondary max-w-2xl leading-relaxed">
-          Integrated nutrition management environment. Automate your meal planning, 
-          track macro-nutrients, and sync your shopping requirements with live targets.
-        </p>
-      </div>
+      <DomainPageHeader 
+        label="food space" 
+        title="Food Space" 
+        description="Integrated nutrition management environment. Automate your meal planning, track macro-nutrients, and sync your shopping requirements with live targets." 
+      />
 
       <Tabs 
         tabs={[

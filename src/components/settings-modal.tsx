@@ -243,12 +243,15 @@ export function SettingsModal({
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const loadCustomizations = useCallback(() => {
+    if (typeof window === 'undefined') return {};
     const saved = localStorage.getItem("system-customizations");
     return saved ? JSON.parse(saved) : {};
   }, []);
-  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>(() => loadCustomizations());
+  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>({});
 
   useEffect(() => {
+    setCustomizations(loadCustomizations());
+    
     const handler = () => setCustomizations(loadCustomizations());
     window.addEventListener("system-customizations-updated", handler);
     return () => window.removeEventListener("system-customizations-updated", handler);
