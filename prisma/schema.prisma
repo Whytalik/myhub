@@ -143,8 +143,8 @@ enum Unit {
 model NutritionPerson {
   id        String   @id @default(cuid())
   userId    String   @unique
-  name      String
-  
+  name     String
+   
   // Nutrition Goals
   targetCalories Float? @default(2000)
   targetProtein  Float? @default(150)
