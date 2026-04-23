@@ -35,7 +35,7 @@ export async function registerAction(
         data: {
           userId: user.id,
           name: name,
-        },
+        } as never,
       });
     });
   } catch (error) {
