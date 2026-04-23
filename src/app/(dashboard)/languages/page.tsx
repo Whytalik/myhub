@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 
 export default async function LanguagesPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) redirect("/login");
+  const userId = session?.user?.id;
+  if (!userId) redirect("/login");
 
-  const userLanguages = await LanguageService.getUserLanguages(personId);
+  const userLanguages = await LanguageService.getUserLanguages(userId);
   const languagesWithStats = await Promise.all(
     userLanguages.map(async (ul) => {
-      const stats = await LanguageService.getLanguageStats(personId, ul.id);
+      const stats = await LanguageService.getLanguageStats(userId, ul.id);
       return { ...ul, stats };
     })
   );

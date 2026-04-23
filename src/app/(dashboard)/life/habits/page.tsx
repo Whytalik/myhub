@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 
 export default async function HabitsPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
 
-  if (!personId) {
+  if (!userId) {
     redirect("/login");
   }
 
-  const habits = await habitService.getActiveHabits(personId);
-  const stats = await habitService.getHabitStats(personId);
+  const habits = await habitService.getActiveHabits(userId);
+  const stats = await habitService.getHabitStats(userId);
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">

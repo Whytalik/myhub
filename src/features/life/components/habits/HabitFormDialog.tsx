@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,21 +19,11 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
   
-  const [name, setName] = useState("");
-  const [anchor, setAnchor] = useState("");
-  const [action, setAction] = useState("");
-  const [celebration, setCelebration] = useState("");
-  const [archived, setArchived] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setName(habit?.name ?? "");
-      setAnchor(habit?.anchor ?? "");
-      setAction(habit?.action ?? "");
-      setCelebration(habit?.celebration ?? "");
-      setArchived(habit?.archived ?? false);
-    }
-  }, [isOpen, habit]);
+  const [name, setName] = useState(() => habit?.name ?? "");
+  const [anchor, setAnchor] = useState(() => habit?.anchor ?? "");
+  const [action, setAction] = useState(() => habit?.action ?? "");
+  const [celebration, setCelebration] = useState(() => habit?.celebration ?? "");
+  const [archived, setArchived] = useState(() => habit?.archived ?? false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

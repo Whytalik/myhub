@@ -10,13 +10,13 @@ export const metadata: Metadata = { title: "Journal — All Entries" };
 
 export default async function JournalHistoryPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
 
-  if (!personId) {
+  if (!userId) {
     redirect("/login");
   }
 
-  const entries = await getAllEntries(personId);
+  const entries = await getAllEntries(userId);
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">

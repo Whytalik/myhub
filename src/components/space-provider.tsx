@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SPACE_THEMES, getSpaceFromPath } from "@/lib/spaces";
 
@@ -32,15 +32,16 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
   const activeDomain = getDomainFromPath(pathname);
 
   // Theme Logic
-  const [theme, setThemeState] = useState<Theme>("dark");
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("system-theme") as Theme;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-      document.documentElement.classList.toggle("light", savedTheme === "light");
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem("system-theme") as Theme;
+      if (savedTheme) {
+        document.documentElement.classList.toggle("light", savedTheme === "light");
+        return savedTheme;
+      }
     }
-  }, []);
+    return "dark";
+  });
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

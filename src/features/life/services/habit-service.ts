@@ -2,9 +2,9 @@ import { prisma } from "@/lib/prisma";
 import type { UpsertHabitInput, HabitStats } from "../types";
 import { getStartOfDay, calculateStreak } from "../logic/habit-utils";
 
-export async function getActiveHabits(personId: string) {
+export async function getActiveHabits(userId: string) {
   return prisma.habit.findMany({
-    where: { personId },
+    where: { userId },
     orderBy: { order: "asc" },
     include: {
       completions: {
@@ -18,8 +18,8 @@ export async function getActiveHabits(personId: string) {
   });
 }
 
-export async function upsertHabit(personId: string, input: UpsertHabitInput) {
-  const { id, icon: _icon, color: _color, ...data } = input;
+export async function upsertHabit(userId: string, input: UpsertHabitInput) {
+  const { id, ...data } = input;
   if (id) {
     return prisma.habit.update({
       where: { id },
@@ -31,13 +31,13 @@ export async function upsertHabit(personId: string, input: UpsertHabitInput) {
       ...data,
       anchor: data.anchor ?? "",
       action: data.action ?? "",
-      personId,
+      userId,
       order: data.order ?? 0,
     },
   });
 }
 
-export async function toggleHabitArchived(personId: string, id: string) {
+export async function toggleHabitArchived(userId: string, id: string) {
   const habit = await prisma.habit.findUnique({ where: { id } });
   if (!habit) throw new Error("Habit not found");
   return prisma.habit.update({
@@ -46,13 +46,13 @@ export async function toggleHabitArchived(personId: string, id: string) {
   });
 }
 
-export async function deleteHabit(personId: string, id: string) {
+export async function deleteHabit(userId: string, id: string) {
   return prisma.habit.delete({
     where: { id },
   });
 }
 
-export async function toggleHabitCompletion(personId: string, habitId: string, date: Date) {
+export async function toggleHabitCompletion(userId: string, habitId: string, date: Date) {
   const habit = await prisma.habit.findUnique({
     where: { id: habitId }
   });
@@ -83,9 +83,9 @@ export async function toggleHabitCompletion(personId: string, habitId: string, d
   });
 }
 
-export async function getHabitStats(personId: string): Promise<HabitStats[]> {
+export async function getHabitStats(userId: string): Promise<HabitStats[]> {
   const habits = await prisma.habit.findMany({
-    where: { personId, archived: false },
+    where: { userId, archived: false },
     include: {
       completions: {
         orderBy: { date: "desc" },

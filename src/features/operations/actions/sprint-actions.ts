@@ -12,41 +12,41 @@ import type {
 
 const PATH = "/planning/sprints";
 
-async function getPersonId() {
+async function getUserId() {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized: No personId found in session");
-  return personId;
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized: No userId found in session");
+  return userId;
 }
 
 export async function getActiveSprintAction() {
-  const personId = await getPersonId();
-  return sprintService.getActiveSprint(personId);
+  const userId = await getUserId();
+  return sprintService.getActiveSprint(userId);
 }
 
 export async function upsertSprintAction(input: UpsertSprintInput) {
-  const personId = await getPersonId();
-  const sprint = await sprintService.upsertSprint(personId, input);
+  const userId = await getUserId();
+  const sprint = await sprintService.upsertSprint(userId, input);
   revalidatePath(PATH);
   return sprint;
 }
 
 export async function upsertObjectiveAction(input: UpsertObjectiveInput) {
-  const personId = await getPersonId();
-  const objective = await sprintService.upsertObjective(personId, input);
+  const userId = await getUserId();
+  const objective = await sprintService.upsertObjective(userId, input);
   revalidatePath(PATH);
   return objective;
 }
 
 export async function deleteObjectiveAction(id: string) {
-  const personId = await getPersonId();
-  await sprintService.deleteObjective(personId, id);
+  const userId = await getUserId();
+  await sprintService.deleteObjective(userId, id);
   revalidatePath(PATH);
 }
 
 export async function upsertKeyResultAction(input: UpsertKeyResultInput) {
-  const personId = await getPersonId();
-  const kr = await sprintService.upsertKeyResult(personId, input);
+  const userId = await getUserId();
+  const kr = await sprintService.upsertKeyResult(userId, input);
   revalidatePath(PATH);
   return kr;
 }
@@ -57,8 +57,8 @@ export async function updateKRValueAction(id: string, value: number) {
 }
 
 export async function upsertTacticAction(input: UpsertTacticInput) {
-  const personId = await getPersonId();
-  const tactic = await sprintService.upsertTactic(personId, input);
+  const userId = await getUserId();
+  const tactic = await sprintService.upsertTactic(userId, input);
   revalidatePath(PATH);
   return tactic;
 }

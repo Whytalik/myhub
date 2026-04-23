@@ -12,16 +12,16 @@ export const dynamic = "force-dynamic";
 
 export default async function JournalStatsPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
 
-  if (!personId) {
+  if (!userId) {
     redirect("/login");
   }
 
   const [entries, journalStats, taskStats] = await Promise.all([
-    getAllEntries(personId),
-    getDailyStats(personId),
-    getTaskStats(personId)
+    getAllEntries(userId),
+    getDailyStats(userId),
+    getTaskStats(userId)
   ]);
 
   return <JournalStatsView entries={entries} stats={journalStats} taskStats={taskStats} />;

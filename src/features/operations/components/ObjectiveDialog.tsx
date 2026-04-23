@@ -9,6 +9,8 @@ import { getAllSpheresAction } from "@/features/life/actions/task-actions";
 import { upsertObjectiveAction } from "../actions/sprint-actions";
 import type { ObjectiveData } from "../types";
 
+import type { LifeSphereData } from "@/features/life/types";
+
 interface ObjectiveDialogProps {
   sprintId: string;
   objective?: ObjectiveData;
@@ -19,7 +21,7 @@ interface ObjectiveDialogProps {
 export function ObjectiveDialog({ sprintId, objective, onSuccess, children }: ObjectiveDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [spheres, setSpheres] = useState<any[]>([]);
+  const [spheres, setSpheres] = useState<LifeSphereData[]>([]);
   
   const [title, setTitle] = useState(objective?.title || "");
   const [description, setDescription] = useState(objective?.description || "");

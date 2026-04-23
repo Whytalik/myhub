@@ -4,7 +4,7 @@ import { Flame, Moon, Zap } from "lucide-react";
 
 export async function StatsStrip() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = (session?.user as { personId?: string })?.personId;
   const stats = await getDailyStats(personId ?? "");
 
   return (

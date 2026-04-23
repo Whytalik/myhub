@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 
 export default async function ShoppingPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) redirect("/login");
+  const userId = session?.user?.id;
+  if (!userId) redirect("/login");
 
-  const shoppingLists = await getShoppingLists(personId);
-  const weekPlans = await getWeekPlans(personId);
+  const shoppingLists = await getShoppingLists(userId);
+  const weekPlans = await getWeekPlans(userId);
 
   // Simple handler to create from the latest week plan
   const handleGenerateFromLatest = async () => {

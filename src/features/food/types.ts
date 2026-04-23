@@ -25,7 +25,7 @@ export interface DishIngredientInput {
 }
 
 export interface CreateDishInput {
-  personId: string;
+  userId: string;
   name: string;
   description?: string;
   priority?: Priority;
@@ -45,7 +45,7 @@ export interface DayPlanEntryInput {
 }
 
 export interface CreateDayPlanInput {
-  personId: string;
+  userId: string;
   date: Date;
   weekPlanId?: string;
   templateId?: string;
@@ -53,7 +53,7 @@ export interface CreateDayPlanInput {
 }
 
 export interface CreateWeekPlanInput {
-  personId: string;
+  userId: string;
   name?: string;
   startDate: Date;
 }

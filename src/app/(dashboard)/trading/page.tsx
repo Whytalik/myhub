@@ -60,7 +60,7 @@ export default async function TradingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {workflow.map((w, i) => (
+          {workflow.map((w) => (
             <div key={w.step} className="relative group">
               <div className="flex flex-col gap-3">
                 <span className="text-4xl font-heading text-border group-hover:text-accent/20 transition-colors duration-500">

@@ -8,7 +8,6 @@ import {
   Trophy,
   Moon,
   Zap,
-  Sun,
   Moon as MoonIcon,
   Utensils,
   Smile
@@ -32,7 +31,6 @@ interface Props {
 export function JournalStatsView({ entries, stats, taskStats }: Props) {
   const [activeTab, setActiveTab] = useState("journal");
 
-  const totalMorningTasks = entries.reduce((acc, e) => acc + Object.values(e.morningRoutine || {}).filter(Boolean).length, 0);
   const totalEveningTasks = entries.reduce((acc, e) => acc + Object.values(e.eveningRoutine || {}).filter(Boolean).length, 0);
   const totalWins = entries.filter(e => e.winToday).length;
 

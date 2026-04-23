@@ -1,12 +1,11 @@
 "use client";
 
-import { useActionState, useState, useEffect } from "react";
+import { useActionState, useEffect, useMemo } from "react";
 import { updateProfileAction } from "@/features/profile/actions/profile-actions";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { User, Mail, Calendar, CheckCircle2 } from "lucide-react";
+import { User, Mail, Calendar } from "lucide-react";
 
 interface ProfileFormProps {
   initialUser: {
@@ -19,17 +18,19 @@ interface ProfileFormProps {
 
 export function ProfileForm({ initialUser }: ProfileFormProps) {
   const [error, action, isPending] = useActionState(updateProfileAction, null);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
+    if (!error) return;
     if (error?.success) {
       toast.success("Profile updated successfully");
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 2000);
     } else if (error?.error) {
       toast.error(error.error);
     }
   }, [error]);
+
+  const showSuccess = useMemo(() => {
+    return !!error?.success && !isPending;
+  }, [error, isPending]);
 
   return (
     <div className="flex flex-col gap-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -79,7 +80,7 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
             </div>
 
             <div className="pt-2 flex justify-end items-center gap-4">
-               {isSuccess && (
+               {showSuccess && (
                  <p className="text-[11px] font-mono text-accent animate-in fade-in zoom-in duration-300">Changes Saved Successfully</p>
                )}
                <Button type="submit" disabled={isPending} className="px-8 min-w-[140px]">

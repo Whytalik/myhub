@@ -14,7 +14,7 @@ import { createDayPlanAction } from "../actions/day-plan-actions";
 import { calculateDishStats, PlanSummary, DishWithIngredients } from "../logic/recalculator";
 
 interface CreateDayPlanFormProps {
-  personId: string;
+  userId: string;
   dishes: DishWithIngredients[];
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -25,7 +25,7 @@ interface EntryState extends DayPlanEntryInput {
   dishName: string;
 }
 
-export function CreateDayPlanForm({ personId, dishes, onSuccess, onCancel }: CreateDayPlanFormProps) {
+export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: CreateDayPlanFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   
@@ -92,7 +92,7 @@ export function CreateDayPlanForm({ personId, dishes, onSuccess, onCancel }: Cre
     startTransition(async () => {
       try {
         const planData: CreateDayPlanInput = {
-          personId,
+          userId,
           date: new Date(date),
           entries: entries.map(({ dishId, mealSlot, servings, priority }) => ({
             dishId,

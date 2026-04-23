@@ -47,10 +47,10 @@ export const LanguageService = {
 
   // Оновлення прогресу сфери (mastery)
   // mastery росте на основі логів занурення та успішних повторень
-  async updateSphereProgress(personId: string, userLanguageId: string, sphere: LanguageSphere, gain: number) {
+  async updateSphereProgress(userId: string, userLanguageId: string, sphere: LanguageSphere, gain: number) {
     // Перевірка власності
     await prisma.userLanguage.findFirstOrThrow({
-      where: { id: userLanguageId, personId }
+      where: { id: userLanguageId, userId }
     });
 
     const current = await prisma.languageSphereProgress.findUnique({
@@ -67,11 +67,11 @@ export const LanguageService = {
   },
 
   // Отримання повної статистики мови для Radar Chart
-  async getLanguageStats(personId: string, userLanguageId: string) {
+  async getLanguageStats(userId: string, userLanguageId: string) {
     const progress = await prisma.languageSphereProgress.findMany({
       where: { 
         userLanguageId,
-        userLanguage: { personId }
+        userLanguage: { userId }
       }
     });
 
@@ -89,10 +89,10 @@ export const LanguageService = {
   },
 
   // Додавання мови для користувача
-  async addLanguage(personId: string, languageId: string) {
+  async addLanguage(userId: string, languageId: string) {
     return prisma.userLanguage.create({
       data: {
-        personId,
+        userId,
         languageId,
         level: CefrLevel.A0,
         totalXp: 0,
@@ -108,22 +108,22 @@ export const LanguageService = {
   },
 
   // Отримання мов користувача
-  async getUserLanguages(personId: string) {
+  async getUserLanguages(userId: string) {
     return prisma.userLanguage.findMany({
-      where: { personId },
+      where: { userId },
       include: { language: true }
     });
   },
 
   // Логування занурення
-  async logImmersion(personId: string, userLanguageId: string, sphere: LanguageSphere, duration: number, note?: string) {
+  async logImmersion(userId: string, userLanguageId: string, sphere: LanguageSphere, duration: number, note?: string) {
     const xpGain = this.calculateXpGain(duration, sphere);
     
     // Використовуємо транзакцію для цілісності даних
     return prisma.$transaction(async (tx) => {
       // Перевірка власності
       await tx.userLanguage.findFirstOrThrow({
-        where: { id: userLanguageId, personId }
+        where: { id: userLanguageId, userId }
       });
 
       // 1. Створюємо лог
@@ -158,10 +158,10 @@ export const LanguageService = {
   },
 
   // Словник
-  async addVocabularyItem(personId: string, userLanguageId: string, word: string, translation: string, context?: string) {
+  async addVocabularyItem(userId: string, userLanguageId: string, word: string, translation: string, context?: string) {
     // Перевірка власності
     await prisma.userLanguage.findFirstOrThrow({
-      where: { id: userLanguageId, personId }
+      where: { id: userLanguageId, userId }
     });
 
     return prisma.vocabularyItem.create({
@@ -178,11 +178,11 @@ export const LanguageService = {
     });
   },
 
-  async reviewVocabularyItem(personId: string, id: string, quality: number) {
+  async reviewVocabularyItem(userId: string, id: string, quality: number) {
     const item = await prisma.vocabularyItem.findFirst({ 
       where: { 
         id,
-        userLanguage: { personId }
+        userLanguage: { userId }
       } 
     });
     if (!item) throw new Error("Item not found");

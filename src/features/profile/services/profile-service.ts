@@ -9,30 +9,13 @@ export async function getUserProfile(userId: string) {
       email: true,
       image: true,
       createdAt: true,
-      profile: {
-        select: {
-          id: true,
-          name: true,
-        }
-      }
     }
   });
 }
 
 export async function updateUserProfile(userId: string, data: { name?: string }) {
-  return await prisma.$transaction(async (tx) => {
-    const user = await tx.user.update({
-      where: { id: userId },
-      data: { name: data.name },
-    });
-
-    if (data.name) {
-      await tx.profile.updateMany({
-        where: { userId },
-        data: { name: `${data.name}'s Profile` },
-      });
-    }
-
-    return user;
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { name: data.name },
   });
 }

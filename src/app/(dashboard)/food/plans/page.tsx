@@ -26,15 +26,15 @@ export default async function PlansPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const personId = (session.user as any).personId;
-  if (!personId) redirect("/login");
+  const userId = session.user.id;
+  if (!userId) redirect("/login");
 
   const params = await searchParams;
   const isCreating = params.create === "true";
 
-  const weekPlans = await getWeekPlans(personId);
-  const dayPlans = await getDayPlans(personId);
-  const dishes = isCreating ? await getDishes(personId) : [];
+  const weekPlans = await getWeekPlans(userId);
+  const dayPlans = await getDayPlans(userId);
+  const dishes = isCreating ? await getDishes(userId) : [];
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
@@ -67,7 +67,7 @@ export default async function PlansPage({
       </div>
 
       {isCreating ? (
-        <CreateDayPlanForm personId={personId} dishes={dishes} />
+        <CreateDayPlanForm userId={userId} dishes={dishes} />
       ) : (
         <div className="flex flex-col gap-16">
           {weekPlans.length > 0 && (

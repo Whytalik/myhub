@@ -25,9 +25,24 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
-  accounts      Account[]
-  sessions      Session[]
-  profile       Profile?
+  accounts           Account[]
+  sessions           Session[]
+  nutritionPerson    NutritionPerson?
+  dishes            Dish[]
+  dayTemplates      DayTemplate[]
+  weekPlans        WeekPlan[]
+  dayPlans         DayPlan[]
+  shoppingLists   ShoppingList[]
+  userLanguages   UserLanguage[]
+  tasks            Task[]
+  dailyEntries     DailyEntry[]
+  habits           Habit[]
+  lifeSpheres     LifeSphere[]
+  libraryItems    LibraryItem[]
+  wishlistItems   WishlistItem[]
+  visions         Vision[]
+  milestones     Milestone[]
+  sprints        Sprint[]
 }
 
 model Account {
@@ -125,20 +140,9 @@ enum Unit {
 
 // ─── Models ───────────────────────────────────────────────────────────────────
 
-model Profile {
-  id        String   @id @default(cuid())
-  userId    String?  @unique
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  persons NutritionPerson[]
-}
-
 model NutritionPerson {
   id        String   @id @default(cuid())
-  profileId String
+  userId    String   @unique
   name      String
   
   // Nutrition Goals
@@ -151,26 +155,7 @@ model NutritionPerson {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile       Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  dishes        Dish[]
-  dayTemplates  DayTemplate[]
-  weekPlans     WeekPlan[]
-  dayPlans      DayPlan[]
-  shoppingLists ShoppingList[]
-  userLanguages UserLanguage[]
-  
-  // Life Space
-  tasks         Task[]
-  dailyEntries  DailyEntry[]
-  habits        Habit[]
-  lifeSpheres   LifeSphere[]
-  libraryItems  LibraryItem[]
-  wishlistItems WishlistItem[]
-
-  // Planning Space
-  visions       Vision[]
-  milestones    Milestone[]
-  sprints       Sprint[]
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Product {
@@ -196,7 +181,7 @@ model Product {
 
 model Dish {
   id          String   @id @default(cuid())
-  personId    String
+  userId      String
   name        String
   description String?
   priority    Priority @default(FLEXIBLE)
@@ -204,9 +189,9 @@ model Dish {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  person          NutritionPerson    @relation(fields: [personId], references: [id], onDelete: Cascade)
-  ingredients     DishIngredient[]
-  dayPlanEntries  DayPlanEntry[]
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ingredients    DishIngredient[]
+  dayPlanEntries DayPlanEntry[]
   templateEntries DayTemplateEntry[]
 }
 
@@ -225,12 +210,12 @@ model DishIngredient {
 
 model DayTemplate {
   id        String   @id @default(cuid())
-  personId  String
+  userId    String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person   NutritionPerson    @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   entries  DayTemplateEntry[]
   dayPlans DayPlan[]
 }
@@ -249,14 +234,14 @@ model DayTemplateEntry {
 
 model WeekPlan {
   id        String   @id @default(cuid())
-  personId  String
+  userId    String
   name      String?
   startDate DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person        NutritionPerson    @relation(fields: [personId], references: [id], onDelete: Cascade)
-  dayPlans      DayPlan[]
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dayPlans        DayPlan[]
   shoppingLists ShoppingList[]
 }
 
@@ -268,7 +253,7 @@ enum PlanAdherence {
 
 model DayPlan {
   id         String    @id @default(cuid())
-  personId   String
+  userId     String
   weekPlanId String?
   templateId String?
   date       DateTime  @db.Date
@@ -276,10 +261,10 @@ model DayPlan {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  person   NutritionPerson     @relation(fields: [personId], references: [id], onDelete: Cascade)
-  weekPlan WeekPlan?           @relation(fields: [weekPlanId], references: [id])
-  template DayTemplate?        @relation(fields: [templateId], references: [id])
-  entries  DayPlanEntry[]
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekPlan  WeekPlan?        @relation(fields: [weekPlanId], references: [id])
+  template  DayTemplate?    @relation(fields: [templateId], references: [id])
+  entries   DayPlanEntry[]
 }
 
 model DayPlanEntry {
@@ -296,15 +281,15 @@ model DayPlanEntry {
 
 model ShoppingList {
   id         String   @id @default(cuid())
-  personId   String
+  userId     String
   weekPlanId String?
   name       String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  person   NutritionPerson    @relation(fields: [personId], references: [id], onDelete: Cascade)
-  weekPlan WeekPlan?          @relation(fields: [weekPlanId], references: [id])
-  items    ShoppingListItem[]
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekPlan  WeekPlan?            @relation(fields: [weekPlanId], references: [id])
+  items     ShoppingListItem[]
 }
 
 model ShoppingListItem {
@@ -338,7 +323,7 @@ enum TaskPriority {
 
 model LifeSphere {
   id        String   @id @default(cuid())
-  personId  String
+  userId    String
   name      String
   color     String
   icon      String
@@ -346,60 +331,60 @@ model LifeSphere {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person    NutritionPerson   @relation(fields: [personId], references: [id], onDelete: Cascade)
-  tasks     Task[]
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks      Task[]
   milestones Milestone[]
   objectives Objective[]
 }
 
 model Task {
-  id          String       @id @default(cuid())
-  personId    String
-  title       String
-  description String?
-  icon        String?
-  status      TaskStatus   @default(TODO)
-  priority    TaskPriority @default(MEDIUM)
-  plannedDate DateTime?
-  hasPlannedTime Boolean   @default(false)
+  id            String       @id @default(cuid())
+  userId        String
+  title        String
+  description  String?
+  icon         String?
+  status       TaskStatus   @default(TODO)
+  priority     TaskPriority @default(MEDIUM)
+  plannedDate  DateTime?
+  hasPlannedTime Boolean    @default(false)
   dueDate     DateTime?
-  hasDueTime  Boolean      @default(false)
-  depth       Int          @default(0)
-  order       Int          @default(0)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  hasDueTime  Boolean    @default(false)
+  depth       Int        @default(0)
+  order       Int        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
-  person   NutritionPerson    @relation(fields: [personId], references: [id], onDelete: Cascade)
-  parentId String?
-  parent   Task?      @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
-  children Task[]     @relation("TaskChildren")
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId   String?
+  parent     Task?     @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children   Task[]    @relation("TaskChildren")
 
-  sphereId String?
-  sphere   LifeSphere? @relation(fields: [sphereId], references: [id], onDelete: SetNull)
+  sphereId   String?
+  sphere    LifeSphere? @relation(fields: [sphereId], references: [id], onDelete: SetNull)
 
   projectId String?
-  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   completedAt DateTime?
 }
 
 model DailyEntry {
   id        String   @id @default(cuid())
-  personId  String
+  userId    String
   date      DateTime @db.Date
 
   // Sleep
-  sleepBedtime DateTime?
-  sleepWakeup  DateTime?
-  sleepHours   Float?
+  sleepBedtime    DateTime?
+  sleepWakeup   DateTime?
+  sleepHours    Float?
   sleepQuality Int?
   sleepNote    String?
 
   // Energy & Mood
-  energy     Int?
-  mood       Int?
-  emotions   Json?    // Array of strings: ["Anxious", "Grateful", etc.]
-  weight     Float?
+  energy      Int?
+  mood        Int?
+  emotions    Json?    // Array of strings: ["Anxious", "Grateful", etc.]
+  weight      Float?
   energyNote String?
 
   // Environment & Health
@@ -409,41 +394,41 @@ model DailyEntry {
   eveningEnergy Int?
 
   // Nutrition adherence (1-5)
-  nutrition     Int?
+  nutrition      Int?
   nutritionNote String?
 
   // Routine (JSON maps: { [itemId]: boolean })
-  morningRoutine     Json?
-  eveningRoutine     Json?
-  routineNote        String?
+  morningRoutine   Json?
+  eveningRoutine Json?
+  routineNote    String?
 
   // Reflection
   winToday        String?
   improveTomorrow String?
-  gratitude       String?
-  brainDump       String?
+  gratitude     String?
+  brainDump     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person   NutritionPerson   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([personId, date])
+  @@unique([userId, date])
 }
 
 model Habit {
   id          String   @id @default(cuid())
-  personId    String
-  name        String
-  anchor      String   // "After I [Anchor]"
-  action      String   // "I will [Action]"
-  celebration String?  // "And then I will [Celebrate]"
-  order       Int      @default(0)
-  archived    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  userId     String
+  name       String
+  anchor     String   // "After I [Anchor]"
+  action     String   // "I will [Action]"
+  celebration String? // "And then I will Celebrate"
+  order      Int      @default(0)
+  archived   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  person      NutritionPerson   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   completions HabitCompletion[]
 }
 
@@ -477,18 +462,18 @@ enum LibraryItemStatus {
 
 model LibraryItem {
   id        String            @id @default(cuid())
-  personId  String
-  title     String
-  author    String?
-  url       String?
-  type      LibraryItemType   @default(BOOK)
-  status    LibraryItemStatus @default(WANT_TO_READ)
-  rating    Int?              // 1-10
-  notes     String?
+  userId   String
+  title    String
+  author   String?
+  url      String?
+  type     LibraryItemType   @default(BOOK)
+  status   LibraryItemStatus @default(WANT_TO_READ)
+  rating   Int?             // 1-10
+  notes    String?
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
 
-  person    NutritionPerson            @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // ─── Wishlist (Life Space) ────────────────────────────────────────────────────
@@ -508,23 +493,23 @@ enum WishlistStatus {
 
 model WishlistItem {
   id          String         @id @default(cuid())
-  personId    String
+  userId      String
   name        String
   description String?
   url         String?
-  imageUrl    String?        // Link to product image
-  price       Float?
-  currency    String         @default("UAH")
-  priority    TaskPriority   @default(MEDIUM)
-  status      WishlistStatus @default(WISH)
-  category    String?        // Gear, Home, Health, etc.
-  tags        String[]       // ["fishing", "tech"]
-  necessity   Int?           // 1-10 (How much I really need it vs want it)
-  store       String?        // Amazon, Rozetka, etc.
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  imageUrl    String?    // Link to product image
+  price      Float?
+  currency   String     @default("UAH")
+  priority   TaskPriority @default(MEDIUM)
+  status     WishlistStatus @default(WISH)
+  category   String?    // Gear, Home, Health, etc.
+  tags       String[]  // ["fishing", "tech"]
+  necessity  Int?     // 1-10 (How much I really need it vs want it)
+  store      String?  // Amazon, Rozetka, etc.
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  person      NutritionPerson         @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // ─── Language System ─────────────────────────────────────────────────────────
@@ -560,22 +545,22 @@ model Language {
 
 model UserLanguage {
   id         String    @id @default(cuid())
-  personId   String
+  userId     String
   languageId String
-  level      CefrLevel @default(A0)
-  totalXp    Int       @default(0)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  level     CefrLevel @default(A0)
+  totalXp   Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  person   NutritionPerson   @relation(fields: [personId], references: [id], onDelete: Cascade)
-  language Language @relation(fields: [languageId], references: [id])
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  language        Language         @relation(fields: [languageId], references: [id])
 
-  sphereProgress  LanguageSphereProgress[]
+  sphereProgress   LanguageSphereProgress[]
   vocabularyItems VocabularyItem[]
-  immersionLogs   ImmersionLog[]
-  resources       LanguageResource[]
+  immersionLogs  ImmersionLog[]
+  resources    LanguageResource[]
 
-  @@unique([personId, languageId])
+  @@unique([userId, languageId])
 }
 
 model LanguageSphereProgress {
@@ -642,18 +627,18 @@ model LanguageResource {
 
 model Vision {
   id        String   @id @default(cuid())
-  personId  String
-  title     String
-  content   String?  // The "North Star" description
+  userId   String
+  title    String
+  content  String?  // The "North Star" description
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person    NutritionPerson @relation(fields: [personId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Milestone {
   id          String   @id @default(cuid())
-  personId    String
+  userId      String
   title       String
   description String?
   targetDate  DateTime?
@@ -661,9 +646,9 @@ model Milestone {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  person      NutritionPerson @relation(fields: [personId], references: [id], onDelete: Cascade)
-  sphereId    String?
-  sphere      LifeSphere? @relation(fields: [sphereId], references: [id], onDelete: SetNull)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sphereId  String?
+  sphere    LifeSphere?  @relation(fields: [sphereId], references: [id], onDelete: SetNull)
 }
 
 enum SprintStatus {
@@ -674,19 +659,19 @@ enum SprintStatus {
 }
 
 model Sprint {
-  id          String   @id @default(cuid())
-  personId    String
-  number      Int      // 1-4
-  year        Int      
-  startDate   DateTime
-  endDate     DateTime
-  status      SprintStatus @default(PLANNED)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String       @id @default(cuid())
+  userId   String
+  number  Int          // 1-4
+  year    Int      
+  startDate DateTime
+  endDate   DateTime
+  status   SprintStatus @default(PLANNED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  person      NutritionPerson @relation(fields: [personId], references: [id], onDelete: Cascade)
-  objectives  Objective[]
-  reviews     SprintReview[]
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  objectives   Objective[]
+  reviews      SprintReview[]
 }
 
 enum ObjectiveStatus {

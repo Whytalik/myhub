@@ -25,7 +25,7 @@ export default auth((req) => {
   }
 
   // Admin and Role Restrictions
-  const user = req.auth?.user as any;
+  const user = req.auth?.user as { role?: string };
   const role = user?.role;
   const isAdmin = role === "ADMIN";
 

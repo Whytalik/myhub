@@ -23,16 +23,16 @@ export default async function DishesPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const userId = session?.user?.id;
 
-  if (!session || !personId) {
+  if (!session || !userId) {
     redirect("/login");
   }
 
   const params = await searchParams;
   const isCreating = params.create === "true";
   
-  const dishes = await getDishes(personId);
+  const dishes = await getDishes(userId);
   const products = isCreating ? await getProducts() : [];
 
   return (
@@ -60,7 +60,7 @@ export default async function DishesPage({
 
       {isCreating ? (
         <CreateDishForm 
-          personId={personId} 
+          userId={userId} 
           products={products} 
         />
       ) : (

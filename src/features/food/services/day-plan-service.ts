@@ -2,10 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { CreateDayPlanInput } from "../types";
 import { PlanAdherence } from "@/app/generated/prisma";
 
-export async function getDayPlans(personId: string, startDate?: Date, endDate?: Date) {
+export async function getDayPlans(userId: string, startDate?: Date, endDate?: Date) {
   return await prisma.dayPlan.findMany({
     where: {
-      personId,
+      userId,
       date: {
         gte: startDate,
         lte: endDate,
@@ -22,12 +22,12 @@ export async function getDayPlans(personId: string, startDate?: Date, endDate?: 
   });
 }
 
-export async function createDayPlan(personId: string, data: CreateDayPlanInput) {
+export async function createDayPlan(userId: string, data: CreateDayPlanInput) {
   const { entries, ...planData } = data;
   return await prisma.dayPlan.create({
     data: {
       ...planData,
-      personId,
+      userId,
       entries: {
         create: entries.map((entry) => ({
           dishId: entry.dishId,
@@ -43,15 +43,15 @@ export async function createDayPlan(personId: string, data: CreateDayPlanInput) 
   });
 }
 
-export async function deleteDayPlan(personId: string, id: string) {
+export async function deleteDayPlan(userId: string, id: string) {
   return await prisma.dayPlan.delete({
-    where: { id, personId },
+    where: { id, userId },
   });
 }
 
-export async function updateDayPlanAdherence(personId: string, id: string, adherence: PlanAdherence) {
+export async function updateDayPlanAdherence(userId: string, id: string, adherence: PlanAdherence) {
   return await prisma.dayPlan.update({
-    where: { id, personId },
+    where: { id, userId },
     data: { adherence },
   });
 }

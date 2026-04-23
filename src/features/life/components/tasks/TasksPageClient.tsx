@@ -143,6 +143,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
       </Dialog>
 
       <TaskFormDialog
+        key={`task-form-${editingTask?.id ?? 'new'}`}
         isOpen={taskFormOpen}
         onClose={() => setTaskFormOpen(false)}
         task={editingTask}

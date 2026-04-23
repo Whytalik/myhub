@@ -23,15 +23,11 @@ function currentTodayStr(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
 
-export default async function JournalPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ date?: string }>;
-}) {
+export default async function JournalPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
 
-  if (!personId) {
+  if (!userId) {
     redirect("/login");
   }
 
@@ -40,10 +36,10 @@ export default async function JournalPage({
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
   const [raw, tasks, spheres, habits] = await Promise.all([
-    getEntryByDate(personId, date),
-    taskService.getTasksByDate(personId, date),
-    taskService.getAllSpheres(personId),
-    habitService.getActiveHabits(personId),
+    getEntryByDate(userId, date),
+    taskService.getTasksByDate(userId, date),
+    taskService.getAllSpheres(userId),
+    habitService.getActiveHabits(userId),
   ]);
 
   const entry: DailyEntryData | null = raw

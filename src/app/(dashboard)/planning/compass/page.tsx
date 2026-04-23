@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
-import { Compass, Sparkles, Map } from "lucide-react";
+import { Compass, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Annual Compass | Planning",

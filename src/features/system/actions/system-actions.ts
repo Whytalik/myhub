@@ -31,7 +31,7 @@ export async function resetSystemAction() {
   }
 }
 
-export async function importSystemAction(data: any) {
+export async function importSystemAction(data: Record<string, unknown>) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 

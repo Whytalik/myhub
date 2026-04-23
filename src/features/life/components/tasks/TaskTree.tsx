@@ -243,6 +243,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
       )}
 
       <TaskFormDialog
+        key={`task-form-${editingTask?.id ?? 'new'}`}
         isOpen={dialogOpen}
         onClose={handleClose}
         task={editingTask}

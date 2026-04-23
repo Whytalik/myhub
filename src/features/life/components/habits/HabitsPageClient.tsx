@@ -38,7 +38,7 @@ export function HabitsPageClient({
       try {
         await deleteHabitAction(id);
         toast.success("Habit deleted");
-      } catch (err) {
+      } catch {
         toast.error("Failed to delete habit");
       }
     }
@@ -179,6 +179,7 @@ export function HabitsPageClient({
       />
 
       <HabitFormDialog
+        key={`habit-form-${selectedHabit?.id ?? 'new'}`}
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         habit={selectedHabit}

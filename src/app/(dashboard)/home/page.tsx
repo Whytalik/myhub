@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   BookHeart, Utensils, Languages, Dumbbell,
-  BookOpen, ShoppingBag, ArrowRight, Lock,
+  BookOpen, ShoppingBag, ArrowRight,
   Flame, BookText, Zap, TrendingUp, Compass,
   Briefcase, Shield, Brain, Database, Package,
 } from "lucide-react";
@@ -56,7 +56,7 @@ export default async function HomePage() {
   if (!session?.user) redirect("/login");
 
   const isAdmin = session.user.role === "ADMIN";
-  const personId = session.user.personId;
+  const userId = session.user.id;
   const name = session.user?.name?.split(" ")[0] ?? "there";
 
   const hour = new Date().getHours();
@@ -67,10 +67,10 @@ export default async function HomePage() {
   let todayDone = false;
   let avgEnergy: number | null = null;
 
-  if (personId) {
+  if (userId) {
     const [stats, todayEntry] = await Promise.all([
-      getDailyStats(personId).catch(() => null),
-      getTodayEntry(personId).catch(() => null),
+      getDailyStats(userId).catch(() => null),
+      getTodayEntry(userId).catch(() => null),
     ]);
     streak = stats?.streak ?? 0;
     todayDone = !!todayEntry;
@@ -88,7 +88,7 @@ export default async function HomePage() {
       </div>
 
       {/* Stats strip */}
-      {personId && (
+      {userId && (
         <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-12">
           <div className="flex items-center gap-2.5">
             <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />

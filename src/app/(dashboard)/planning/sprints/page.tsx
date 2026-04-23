@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default async function SprintsPage() {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
   
-  const initialSprint = personId ? await sprintService.getActiveSprint(personId) : null;
+  const initialSprint = userId ? await sprintService.getActiveSprint(userId) : null;
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">

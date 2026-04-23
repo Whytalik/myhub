@@ -82,7 +82,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
     return (
       <div className="flex items-center">
         <div 
-          ref={triggerRef as any}
+          ref={triggerRef as React.RefObject<HTMLDivElement>}
           onMouseEnter={open}
           onMouseLeave={close}
           className="cursor-help flex items-center"

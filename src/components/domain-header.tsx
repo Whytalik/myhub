@@ -13,7 +13,6 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const DOMAINS = [
   { id: "operations", label: "Operations", icon: Briefcase, href: "/operations" },
@@ -24,7 +23,6 @@ const DOMAINS = [
 ];
 
 export function DomainHeader() {
-  const pathname = usePathname();
   const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
 

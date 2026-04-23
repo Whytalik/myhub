@@ -2,9 +2,9 @@ import { prisma } from "@/lib/prisma";
 import type { WishlistItemData, UpsertWishlistItemInput } from "../types";
 
 export const wishlistService = {
-  async getAll(personId: string): Promise<WishlistItemData[]> {
+  async getAll(userId: string): Promise<WishlistItemData[]> {
     return prisma.wishlistItem.findMany({
-      where: { personId },
+      where: { userId },
       orderBy: [
         { status: "asc" },
         { priority: "desc" },
@@ -13,7 +13,7 @@ export const wishlistService = {
     }) as unknown as WishlistItemData[];
   },
 
-  async upsert(personId: string, input: UpsertWishlistItemInput): Promise<WishlistItemData> {
+  async upsert(userId: string, input: UpsertWishlistItemInput): Promise<WishlistItemData> {
     if (input.id) {
       return prisma.wishlistItem.update({
         where: { id: input.id },
@@ -30,7 +30,7 @@ export const wishlistService = {
 
     return prisma.wishlistItem.create({
       data: {
-        personId,
+        userId,
         name: input.name,
         description: input.description,
         url: input.url,
@@ -41,7 +41,7 @@ export const wishlistService = {
     }) as unknown as WishlistItemData;
   },
 
-  async delete(personId: string, id: string): Promise<void> {
+  async delete(userId: string, id: string): Promise<void> {
     await prisma.wishlistItem.delete({
       where: { id },
     });

@@ -7,14 +7,14 @@ import { auth } from "@/auth";
 
 export async function createPersonAction(name: string): Promise<ActionResult> {
   const session = await auth();
-  const profileId = session?.user?.profileId;
-  if (!profileId) return { success: false, error: "Unauthorized" };
+  const userId = session?.user?.id;
+  if (!userId) return { success: false, error: "Unauthorized" };
 
   if (!name) {
     return { success: false, error: "Name is required" };
   }
   try {
-    const person = await personService.createPerson(profileId, name);
+    const person = await personService.createPerson(userId, name);
     revalidatePath("/food/profiles");
     return { success: true, data: JSON.parse(JSON.stringify(person)) };
   } catch (error: unknown) {
@@ -31,11 +31,11 @@ export async function updatePersonGoalsAction(id: string, goals: {
   targetFiber?: number;
 }): Promise<ActionResult> {
   const session = await auth();
-  const profileId = session?.user?.profileId;
-  if (!profileId) return { success: false, error: "Unauthorized" };
+  const userId = session?.user?.id;
+  if (!userId) return { success: false, error: "Unauthorized" };
 
   try {
-    const person = await personService.updatePersonGoals(profileId, id, goals);
+    const person = await personService.updatePersonGoals(userId, id, goals);
     revalidatePath("/food/profiles");
     return { success: true, data: JSON.parse(JSON.stringify(person)) };
   } catch (error: unknown) {
@@ -46,11 +46,11 @@ export async function updatePersonGoalsAction(id: string, goals: {
 
 export async function deletePersonAction(id: string): Promise<ActionResult> {
   const session = await auth();
-  const profileId = session?.user?.profileId;
-  if (!profileId) return { success: false, error: "Unauthorized" };
+  const userId = session?.user?.id;
+  if (!userId) return { success: false, error: "Unauthorized" };
 
   try {
-    await personService.deletePerson(profileId, id);
+    await personService.deletePerson(userId, id);
     revalidatePath("/food/profiles");
     return { success: true };
   } catch (error: unknown) {

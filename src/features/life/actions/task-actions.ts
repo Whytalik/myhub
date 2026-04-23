@@ -7,64 +7,64 @@ import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority } fro
 
 const PATH = "/life/tasks";
 
-async function getPersonId() {
+async function getUserId() {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized: No personId found in session");
-  return personId;
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized: No userId found in session");
+  return userId;
 }
 
 export async function upsertTaskAction(input: UpsertTaskInput) {
-  const personId = await getPersonId();
-  const task = await taskService.upsertTask(personId, input);
+  const userId = await getUserId();
+  const task = await taskService.upsertTask(userId, input);
   revalidatePath(PATH);
   return task;
 }
 
 export async function deleteTaskAction(id: string) {
-  const personId = await getPersonId();
-  await taskService.deleteTask(personId, id);
+  const userId = await getUserId();
+  await taskService.deleteTask(userId, id);
   revalidatePath(PATH);
 }
 
 export async function updateTaskStatusAction(id: string, status: TaskStatus) {
-  const personId = await getPersonId();
-  await taskService.updateTaskStatus(personId, id, status);
+  const userId = await getUserId();
+  await taskService.updateTaskStatus(userId, id, status);
   revalidatePath(PATH);
 }
 
 export async function updateTaskPriorityAction(id: string, priority: TaskPriority) {
-  const personId = await getPersonId();
-  await taskService.updateTaskPriority(personId, id, priority);
+  const userId = await getUserId();
+  await taskService.updateTaskPriority(userId, id, priority);
   revalidatePath(PATH);
 }
 
 export async function updateTaskDateAction(id: string, plannedDate: string) {
-  const personId = await getPersonId();
-  const task = await taskService.upsertTask(personId, { id, plannedDate });
+  const userId = await getUserId();
+  const task = await taskService.upsertTask(userId, { id, plannedDate });
   revalidatePath(PATH);
   return task;
 }
 
 export async function upsertSphereAction(input: UpsertSphereInput) {
-  const personId = await getPersonId();
-  const sphere = await taskService.upsertSphere(personId, input);
+  const userId = await getUserId();
+  const sphere = await taskService.upsertSphere(userId, input);
   revalidatePath(PATH);
   return sphere;
 }
 
 export async function deleteSphereAction(id: string) {
-  const personId = await getPersonId();
-  await taskService.deleteSphere(personId, id);
+  const userId = await getUserId();
+  await taskService.deleteSphere(userId, id);
   revalidatePath(PATH);
 }
 
 export async function getAllSpheresAction() {
-  const personId = await getPersonId();
-  return taskService.getAllSpheres(personId);
+  const userId = await getUserId();
+  return taskService.getAllSpheres(userId);
 }
 
 export async function getTaskStatsAction() {
-  const personId = await getPersonId();
-  return taskService.getTaskStats(personId);
+  const userId = await getUserId();
+  return taskService.getTaskStats(userId);
 }

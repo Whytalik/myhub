@@ -7,42 +7,42 @@ function todayDate(): Date {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
-export async function getTodayEntry(personId: string) {
+export async function getTodayEntry(userId: string) {
   return prisma.dailyEntry.findUnique({
-    where: { personId_date: { personId, date: todayDate() } },
+    where: { userId_date: { userId, date: todayDate() } },
   });
 }
 
-export async function getEntryByDate(personId: string, date: Date) {
+export async function getEntryByDate(userId: string, date: Date) {
   return prisma.dailyEntry.findUnique({
-    where: { personId_date: { personId, date } },
+    where: { userId_date: { userId, date } },
   });
 }
 
-export async function upsertEntry(personId: string, input: UpsertDailyEntryInput) {
+export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {
   const date = new Date(input.date);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { date: _date, ...data } = input;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const payload: any = { ...data, personId };
+  const payload: any = { ...data, userId };
 
   return prisma.dailyEntry.upsert({
-    where: { personId_date: { personId, date } },
+    where: { userId_date: { userId, date } },
     create: { date, ...payload },
     update: payload,
   });
 }
 
-export async function deleteEntry(personId: string, id: string) {
+export async function deleteEntry(userId: string, id: string) {
   return prisma.dailyEntry.delete({
     where: { id },
   });
 }
 
-export async function getAllEntries(personId: string) {
+export async function getAllEntries(userId: string) {
   return prisma.dailyEntry.findMany({
-    where: { personId },
+    where: { userId },
     orderBy: { date: "desc" },
     select: {
       id: true,
@@ -60,9 +60,9 @@ export async function getAllEntries(personId: string) {
   });
 }
 
-export async function getDailyStats(personId: string): Promise<DailyStats> {
+export async function getDailyStats(userId: string): Promise<DailyStats> {
   const entries = await prisma.dailyEntry.findMany({
-    where: { personId },
+    where: { userId },
     orderBy: { date: "desc" },
     take: 30,
     select: {

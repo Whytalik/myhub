@@ -30,7 +30,7 @@ export function AddLanguageForm({ availableLanguages, personId }: AddLanguageFor
       } else {
         toast.error(result.error || "Failed to add language");
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setIsPending(false);

@@ -39,7 +39,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
       } else {
         toast.error(result.error || "Failed to log activity");
       }
-    } catch (error) {
+    } catch {
       toast.error("Operational failure");
     } finally {
       setIsPending(false);

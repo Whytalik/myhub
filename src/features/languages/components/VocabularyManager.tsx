@@ -40,7 +40,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
       } else {
         toast.error(result.error || "Neural mapping failed");
       }
-    } catch (error) {
+    } catch {
       toast.error("Process interruption");
     } finally {
       setIsAdding(false);

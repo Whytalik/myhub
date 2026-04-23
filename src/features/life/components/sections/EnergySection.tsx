@@ -51,7 +51,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
     return (
       <div className="flex items-center">
         <div 
-          ref={triggerRef as any}
+          ref={triggerRef as React.RefObject<HTMLDivElement>}
           onMouseEnter={open}
           onMouseLeave={close}
           className="cursor-help flex items-center"

@@ -16,7 +16,7 @@ import { createDishAction } from "../actions/dish-actions";
 import { calculateRawIngredientStats, PlanSummary } from "../logic/recalculator";
 
 interface CreateDishFormProps {
-  personId: string;
+  userId: string;
   products: Product[];
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -28,7 +28,7 @@ interface IngredientRow extends DishIngredientInput {
   calories: number;
 }
 
-export function CreateDishForm({ personId, products, onSuccess, onCancel }: CreateDishFormProps) {
+export function CreateDishForm({ userId, products, onSuccess, onCancel }: CreateDishFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   
@@ -93,7 +93,7 @@ export function CreateDishForm({ personId, products, onSuccess, onCancel }: Crea
     startTransition(async () => {
       try {
         const dishData: CreateDishInput = {
-          personId,
+          userId,
           name,
           description,
           yield: yieldValue,

@@ -187,17 +187,17 @@ export default function LifeSystemPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-surface border border-border p-6 rounded-2xl">
               <h4 className="font-mono text-[10px] text-accent uppercase tracking-widest mb-3">Daily Closure</h4>
-              <p className="text-sm text-secondary leading-relaxed">
-                The day is considered "Complete" only after the Evening Reflection is filled. 
-                Unfinished tasks are automatically prompted for migration or elimination the next morning.
-              </p>
+<p className="text-sm text-secondary leading-relaxed">
+                 The day is considered &ldquo;Complete&rdquo; only after the Evening Reflection is filled. 
+                 Unfinished tasks are automatically prompted for migration or elimination the next morning.
+               </p>
             </div>
             <div className="bg-surface border border-border p-6 rounded-2xl">
               <h4 className="font-mono text-[10px] text-accent uppercase tracking-widest mb-3">Habit Gravity</h4>
-              <p className="text-sm text-secondary leading-relaxed">
-                Missing a habit twice is a trend; missing it once is a mistake. 
-                The system highlights "Recovery" when a streak is broken to focus on immediate resumption.
-              </p>
+<p className="text-sm text-secondary leading-relaxed">
+                 Missing a habit twice is a trend; missing it once is a mistake. 
+                 The system highlights &ldquo;Recovery&rdquo; when a streak is broken to focus on immediate resumption.
+               </p>
             </div>
           </div>
         </section>
@@ -219,7 +219,7 @@ export default function LifeSystemPage() {
               <div className="w-6 h-6 rounded bg-accent/10 flex items-center justify-center shrink-0 text-accent font-mono text-[10px]">2</div>
               <div>
                 <p className="text-sm font-bold mb-1 uppercase tracking-tight">Radical Elimination</p>
-                <p className="text-xs text-secondary leading-relaxed">If a task has been moved 3 times without action, it must be eliminated or moved to a "Someday" list. No ghost tasks.</p>
+                <p className="text-xs text-secondary leading-relaxed">If a task has been moved 3 times without action, it must be eliminated or moved to a &ldquo;Someday&rdquo; list. No ghost tasks.</p>
               </div>
             </li>
           </ul>

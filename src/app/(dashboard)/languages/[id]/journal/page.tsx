@@ -25,7 +25,7 @@ export default async function JournalPage({ params }: { params: Promise<{ id: st
     orderBy: { date: "desc" }
   });
 
-  const sphereIcons: Record<LanguageSphere, any> = {
+  const sphereIcons: Record<LanguageSphere, React.ElementType> = {
     [LanguageSphere.VOCABULARY]: Library,
     [LanguageSphere.LISTENING]: Headphones,
     [LanguageSphere.READING]: Book,

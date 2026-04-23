@@ -7,19 +7,19 @@ import { auth } from "@/auth";
 
 export async function createWeekPlanAction(data: CreateWeekPlanInput) {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  const plan = await weekPlanService.createWeekPlan(personId, data);
+  const plan = await weekPlanService.createWeekPlan(userId, data);
   revalidatePath("/food");
   return plan;
 }
 
 export async function deleteWeekPlanAction(id: string) {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  await weekPlanService.deleteWeekPlan(personId, id);
+  await weekPlanService.deleteWeekPlan(userId, id);
   revalidatePath("/food");
 }

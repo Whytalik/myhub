@@ -456,6 +456,7 @@ export function TaskCalendar({
       </div>
 
       <TaskFormDialog
+        key={`task-form-${editingTask?.id ?? 'new'}`}
         isOpen={dialogOpen}
         onClose={handleCloseDialog}
         task={editingTask}

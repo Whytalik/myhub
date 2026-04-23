@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { CreateDishInput, UpdateDishInput } from "../types";
 
-export async function getDishes(personId: string) {
+export async function getDishes(userId: string) {
   return await prisma.dish.findMany({
-    where: { personId },
+    where: { userId },
     include: {
       ingredients: {
         include: {
@@ -15,9 +15,9 @@ export async function getDishes(personId: string) {
   });
 }
 
-export async function getDishById(personId: string, id: string) {
+export async function getDishById(userId: string, id: string) {
   return await prisma.dish.findFirst({
-    where: { id, personId },
+    where: { id, userId },
     include: {
       ingredients: {
         include: {
@@ -28,12 +28,12 @@ export async function getDishById(personId: string, id: string) {
   });
 }
 
-export async function createDish(personId: string, data: CreateDishInput) {
+export async function createDish(userId: string, data: CreateDishInput) {
   const { ingredients, ...dishData } = data;
   return await prisma.dish.create({
     data: {
       ...dishData,
-      personId,
+      userId,
       ingredients: {
         create: ingredients.map((ing) => ({
           productId: ing.productId,
@@ -48,11 +48,11 @@ export async function createDish(personId: string, data: CreateDishInput) {
   });
 }
 
-export async function updateDish(personId: string, { id, ...data }: UpdateDishInput) {
+export async function updateDish(userId: string, { id, ...data }: UpdateDishInput) {
   const { ingredients, ...dishData } = data;
 
   return await prisma.dish.update({
-    where: { id, personId },
+    where: { id, userId },
     data: {
       ...dishData,
       ingredients: ingredients
@@ -72,8 +72,8 @@ export async function updateDish(personId: string, { id, ...data }: UpdateDishIn
   });
 }
 
-export async function deleteDish(personId: string, id: string) {
+export async function deleteDish(userId: string, id: string) {
   return await prisma.dish.delete({
-    where: { id, personId },
+    where: { id, userId },
   });
 }

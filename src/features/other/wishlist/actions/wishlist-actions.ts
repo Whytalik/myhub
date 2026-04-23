@@ -13,7 +13,7 @@ export type ActionResult<T> = {
 
 async function getPersonId() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const personId = (session?.user as { personId?: string })?.personId;
   if (!personId) throw new Error("Unauthorized: No personId found in session");
   return personId;
 }

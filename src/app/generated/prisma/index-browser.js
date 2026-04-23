@@ -160,17 +160,9 @@ exports.Prisma.VerificationTokenScalarFieldEnum = {
   expires: 'expires'
 };
 
-exports.Prisma.ProfileScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.NutritionPersonScalarFieldEnum = {
   id: 'id',
-  profileId: 'profileId',
+  userId: 'userId',
   name: 'name',
   targetCalories: 'targetCalories',
   targetProtein: 'targetProtein',
@@ -201,7 +193,7 @@ exports.Prisma.ProductScalarFieldEnum = {
 
 exports.Prisma.DishScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   description: 'description',
   priority: 'priority',
@@ -220,7 +212,7 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
 
 exports.Prisma.DayTemplateScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -237,7 +229,7 @@ exports.Prisma.DayTemplateEntryScalarFieldEnum = {
 
 exports.Prisma.WeekPlanScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   startDate: 'startDate',
   createdAt: 'createdAt',
@@ -246,7 +238,7 @@ exports.Prisma.WeekPlanScalarFieldEnum = {
 
 exports.Prisma.DayPlanScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   weekPlanId: 'weekPlanId',
   templateId: 'templateId',
   date: 'date',
@@ -266,7 +258,7 @@ exports.Prisma.DayPlanEntryScalarFieldEnum = {
 
 exports.Prisma.ShoppingListScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   weekPlanId: 'weekPlanId',
   name: 'name',
   createdAt: 'createdAt',
@@ -284,7 +276,7 @@ exports.Prisma.ShoppingListItemScalarFieldEnum = {
 
 exports.Prisma.LifeSphereScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   color: 'color',
   icon: 'icon',
@@ -295,7 +287,7 @@ exports.Prisma.LifeSphereScalarFieldEnum = {
 
 exports.Prisma.TaskScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   title: 'title',
   description: 'description',
   icon: 'icon',
@@ -317,7 +309,7 @@ exports.Prisma.TaskScalarFieldEnum = {
 
 exports.Prisma.DailyEntryScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   date: 'date',
   sleepBedtime: 'sleepBedtime',
   sleepWakeup: 'sleepWakeup',
@@ -346,7 +338,7 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
 
 exports.Prisma.HabitScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   anchor: 'anchor',
   action: 'action',
@@ -366,7 +358,7 @@ exports.Prisma.HabitCompletionScalarFieldEnum = {
 
 exports.Prisma.LibraryItemScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   title: 'title',
   author: 'author',
   url: 'url',
@@ -380,7 +372,7 @@ exports.Prisma.LibraryItemScalarFieldEnum = {
 
 exports.Prisma.WishlistItemScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   name: 'name',
   description: 'description',
   url: 'url',
@@ -408,7 +400,7 @@ exports.Prisma.LanguageScalarFieldEnum = {
 
 exports.Prisma.UserLanguageScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   languageId: 'languageId',
   level: 'level',
   totalXp: 'totalXp',
@@ -463,7 +455,7 @@ exports.Prisma.LanguageResourceScalarFieldEnum = {
 
 exports.Prisma.VisionScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   title: 'title',
   content: 'content',
   createdAt: 'createdAt',
@@ -472,7 +464,7 @@ exports.Prisma.VisionScalarFieldEnum = {
 
 exports.Prisma.MilestoneScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   title: 'title',
   description: 'description',
   targetDate: 'targetDate',
@@ -484,7 +476,7 @@ exports.Prisma.MilestoneScalarFieldEnum = {
 
 exports.Prisma.SprintScalarFieldEnum = {
   id: 'id',
-  personId: 'personId',
+  userId: 'userId',
   number: 'number',
   year: 'year',
   startDate: 'startDate',
@@ -737,7 +729,6 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Profile: 'Profile',
   NutritionPerson: 'NutritionPerson',
   Product: 'Product',
   Dish: 'Dish',

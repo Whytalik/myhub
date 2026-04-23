@@ -11,7 +11,6 @@ import { updatePersonGoalsAction, deletePersonAction, createPersonAction } from 
 
 interface PersonFormProps {
   initialPersons: NutritionPerson[];
-  profileId: string;
 }
 
 export function PersonForm({ initialPersons }: PersonFormProps) {

@@ -15,32 +15,24 @@ export default async function TasksPage({
   searchParams: Promise<{ view?: string }>;
 }) {
   const session = await auth();
-  const personId = session?.user?.personId;
+  const userId = session?.user?.id;
 
-  if (!session) {
+  if (!session || !userId) {
     redirect("/login");
   }
 
   const params = await searchParams;
 
-  try {
-    const [tasks, calendarTasks, spheres] = await Promise.all([
-      taskService.getAllTasks(personId),
-      taskService.getCalendarTasks(personId),
-      taskService.getAllSpheres(personId),
-    ]);
+  let tasks: Awaited<ReturnType<typeof taskService.getAllTasks>> = [];
+  let calendarTasks: typeof tasks = [];
+  let spheres: Awaited<ReturnType<typeof taskService.getAllSpheres>> = [];
 
-    return (
-      <div className="px-6 md:px-14 py-8 md:py-10">
-        <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "tasks" }]} />
-        <TasksPageClient
-          initialTasks={tasks}
-          calendarTasks={calendarTasks}
-          spheres={spheres}
-          initialView={params.view}
-        />
-      </div>
-    );
+  try {
+    [tasks, calendarTasks, spheres] = await Promise.all([
+      taskService.getAllTasks(userId),
+      taskService.getCalendarTasks(userId),
+      taskService.getAllSpheres(userId),
+    ]);
   } catch (error) {
     console.error("Critical error in TasksPage:", error);
     return (
@@ -53,4 +45,16 @@ export default async function TasksPage({
       </div>
     );
   }
+
+  return (
+    <div className="px-6 md:px-14 py-8 md:py-10">
+      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "tasks" }]} />
+      <TasksPageClient
+        initialTasks={tasks}
+        calendarTasks={calendarTasks}
+        spheres={spheres}
+        initialView={params.view}
+      />
+    </div>
+  );
 }

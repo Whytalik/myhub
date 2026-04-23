@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 
 export default async function WishlistPage() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
+  const userId = session?.user?.id;
+  
+  if (!session || !userId) redirect("/login");
+  if (session?.user?.role !== "ADMIN") redirect("/life");
 
-  if (!session || !personId) redirect("/login");
-  if ((session?.user as any)?.role !== "ADMIN") redirect("/life");
-
-  const items = await wishlistService.getAll(personId);
+  const items = await wishlistService.getAll(userId);
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">

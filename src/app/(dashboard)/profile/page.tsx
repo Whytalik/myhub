@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "identity", href: "/profile" }]} />
-      <ProfileForm initialUser={user as any} />
+      <ProfileForm initialUser={user as { id: string; name: string | null; email: string | null; createdAt: Date }} />
     </div>
   );
 }

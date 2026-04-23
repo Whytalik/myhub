@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,45 +54,36 @@ export function TaskFormDialog({
   const [isPending, startTransition] = useTransition();
   const [showErrors, setShowErrors]   = useState(false);
 
-  const [title, setTitle]             = useState("");
-  const [description, setDescription] = useState("");
-  const [icon, setIcon]               = useState<string | null>(null);
+  const getInitialIcon = () => task?.icon ?? parentTask?.icon ?? null;
+  const getInitialStatus = () => isDuplicate ? "TODO" : (task?.status ?? "TODO");
+  const getInitialPriority = () => task?.priority ?? parentTask?.priority ?? "MEDIUM";
+  const getInitialSphereId = () => task?.sphereId ?? parentTask?.sphereId ?? (spheres[0]?.id ?? "");
+  const getInitialParentId = () => task?.parentId ?? parentTask?.id ?? null;
+  const getInitialPlannedDate = () => task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "";
+  const getInitialPlannedTime = () => task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "";
+  const getInitialHasPlannedTime = () => task?.hasPlannedTime ?? false;
+  const getInitialHasDue = () => !!task?.dueDate;
+  const getInitialDueDate = () => getInitialHasDue() && task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "";
+  const getInitialDueTime = () => getInitialHasDue() && task?.hasDueTime ? new Date(task.dueDate!).toTimeString().slice(0, 5) : "";
+  const getInitialHasDueTime = () => task?.hasDueTime ?? false;
+
+  const [title, setTitle]             = useState(() => task?.title ?? "");
+  const [description, setDescription] = useState(() => task?.description ?? "");
+  const [icon, setIcon]               = useState<string | null>(getInitialIcon);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
-  const [status, setStatus]           = useState<TaskStatus>("TODO");
-  const [priority, setPriority]       = useState<TaskPriority>("MEDIUM");
-  const [sphereId, setSphereId]       = useState("");
-  const [parentId, setParentId]       = useState<string | null>(null);
+  const [status, setStatus]           = useState<TaskStatus>(getInitialStatus);
+  const [priority, setPriority]       = useState<TaskPriority>(getInitialPriority);
+  const [sphereId, setSphereId]       = useState(getInitialSphereId);
+  const [parentId, setParentId]       = useState<string | null>(getInitialParentId);
 
-  const [plannedDate, setPlannedDate] = useState("");
-  const [plannedTime, setPlannedTime] = useState("");
-  const [hasPlannedTime, setHasPlannedTime] = useState(false);
+  const [plannedDate, setPlannedDate] = useState(getInitialPlannedDate);
+  const [plannedTime, setPlannedTime] = useState(getInitialPlannedTime);
+  const [hasPlannedTime, setHasPlannedTime] = useState(getInitialHasPlannedTime);
 
-  const [useDeadline, setUseDeadline] = useState(false);
-  const [dueDate, setDueDate]         = useState("");
-  const [dueTime, setDueTime]         = useState("");
-  const [hasDueTime, setHasDueTime]   = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTitle(task?.title ?? "");
-      setDescription(task?.description ?? "");
-      setIcon(task?.icon ?? parentTask?.icon ?? null);
-      setStatus(isDuplicate ? "TODO" : (task?.status ?? "TODO"));
-      setPriority(task?.priority ?? parentTask?.priority ?? "MEDIUM");
-      setSphereId(task?.sphereId ?? parentTask?.sphereId ?? (spheres[0]?.id ?? ""));
-      setParentId(task?.parentId ?? parentTask?.id ?? null);
-
-      setPlannedDate(task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "");
-      setPlannedTime(task?.plannedDate && task.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "");
-      setHasPlannedTime(task?.hasPlannedTime ?? false);
-
-      const hasDue = !!task?.dueDate;
-      setUseDeadline(hasDue);
-      setDueDate(hasDue ? new Date(task!.dueDate!).toISOString().split("T")[0] : "");
-      setDueTime(hasDue && task!.hasDueTime ? new Date(task!.dueDate!).toTimeString().slice(0, 5) : "");
-      setHasDueTime(task?.hasDueTime ?? false);
-    }
-  }, [isOpen, task, parentTask, spheres, isDuplicate]);
+  const [useDeadline, setUseDeadline] = useState(getInitialHasDue);
+  const [dueDate, setDueDate]         = useState(getInitialDueDate);
+  const [dueTime, setDueTime]         = useState(getInitialDueTime);
+  const [hasDueTime, setHasDueTime]   = useState(getInitialHasDueTime);
 
   const handleClose = () => {
     if (!isEditing && !isDuplicate) {

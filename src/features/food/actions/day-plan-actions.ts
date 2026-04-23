@@ -8,28 +8,28 @@ import { auth } from "@/auth";
 
 export async function createDayPlanAction(data: CreateDayPlanInput) {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  const plan = await dayPlanService.createDayPlan(personId, data);
+  const plan = await dayPlanService.createDayPlan(userId, data);
   revalidatePath("/food");
   return plan;
 }
 
 export async function deleteDayPlanAction(id: string) {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  await dayPlanService.deleteDayPlan(personId, id);
+  await dayPlanService.deleteDayPlan(userId, id);
   revalidatePath("/food");
 }
 
 export async function updateDayPlanAdherenceAction(id: string, adherence: PlanAdherence) {
   const session = await auth();
-  const personId = session?.user?.personId;
-  if (!personId) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  await dayPlanService.updateDayPlanAdherence(personId, id, adherence);
+  await dayPlanService.updateDayPlanAdherence(userId, id, adherence);
   revalidatePath("/food");
 }

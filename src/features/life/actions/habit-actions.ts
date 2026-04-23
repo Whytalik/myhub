@@ -5,37 +5,37 @@ import { auth } from "@/auth";
 import * as habitService from "../services/habit-service";
 import type { UpsertHabitInput } from "../types";
 
-async function getPersonId() {
+async function getUserId() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
-  if (!personId) throw new Error("Unauthorized: No personId found in session");
-  return personId;
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized: No userId found in session");
+  return userId;
 }
 
 export async function upsertHabitAction(data: UpsertHabitInput) {
-  const personId = await getPersonId();
-  const habit = await habitService.upsertHabit(personId, data);
+  const userId = await getUserId();
+  const habit = await habitService.upsertHabit(userId, data);
   revalidatePath("/life/habits");
   return { success: true, data: habit };
 }
 
 export async function deleteHabitAction(id: string) {
-  const personId = await getPersonId();
-  await habitService.deleteHabit(personId, id);
+  const userId = await getUserId();
+  await habitService.deleteHabit(userId, id);
   revalidatePath("/life/habits");
   return { success: true };
 }
 
 export async function toggleHabitCompletionAction(habitId: string, date: Date) {
-  const personId = await getPersonId();
-  await habitService.toggleHabitCompletion(personId, habitId, date);
+  const userId = await getUserId();
+  await habitService.toggleHabitCompletion(userId, habitId, date);
   revalidatePath("/life/habits");
   return { success: true };
 }
 
 export async function toggleHabitArchivedAction(id: string) {
-  const personId = await getPersonId();
-  await habitService.toggleHabitArchived(personId, id);
+  const userId = await getUserId();
+  await habitService.toggleHabitArchived(userId, id);
   revalidatePath("/life/habits");
   return { success: true };
 }

@@ -9,7 +9,6 @@ import { LanguageRadarChart } from "@/features/languages/components/LanguageRada
 import { ImmersionTimer } from "@/features/languages/components/ImmersionTimer";
 import { VocabularyManager } from "@/features/languages/components/VocabularyManager";
 import { 
-  Zap, 
   History, 
   Headphones,
   Book,
@@ -23,7 +22,12 @@ import {
 import { LanguageSphere } from "@/app/generated/prisma";
 import { getLanguageStatsAction } from "@/features/languages/actions/language-actions";
 
-const sphereIcons: Record<LanguageSphere, any> = {
+type LanguageStat = {
+  sphere: LanguageSphere;
+  mastery: number;
+};
+
+const sphereIcons: Record<LanguageSphere, React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>> = {
   [LanguageSphere.VOCABULARY]: Library,
   [LanguageSphere.LISTENING]: Headphones,
   [LanguageSphere.READING]: Book,
@@ -36,13 +40,13 @@ export default function LanguageDetailPage() {
   const id = params.id as string;
   
   const [activeTab, setActiveTab] = useState("overview");
-  const [stats, setStats] = useState<any[]>([]);
+  const [stats, setStats] = useState<LanguageStat[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       const statsRes = await getLanguageStatsAction(id);
-      if (statsRes.success) setStats(statsRes.data as any[]);
+      if (statsRes.success) setStats(statsRes.data as LanguageStat[]);
       setLoading(false);
     }
     fetchData();
@@ -142,10 +146,8 @@ export default function LanguageDetailPage() {
                 <Brain size={18} className="text-accent/60" />
                 <h4 className="text-[11px] font-mono text-muted uppercase tracking-[0.3em] font-bold">Neural Insights</h4>
               </div>
-              <p className="text-secondary text-sm leading-relaxed font-medium italic opacity-80">
-                Your cognitive load is currently optimized. Continue building "Input" through listening 
-                to reach the next proficiency milestone.
-              </p>
+Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo; through listening 
+                 to reach the next proficiency milestone.
             </div>
           </div>
 

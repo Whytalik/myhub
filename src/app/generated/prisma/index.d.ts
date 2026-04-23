@@ -34,11 +34,6 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
 /**
- * Model Profile
- * 
- */
-export type Profile = $Result.DefaultSelection<Prisma.$ProfilePayload>
-/**
  * Model NutritionPerson
  * 
  */
@@ -650,16 +645,6 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.profile`: Exposes CRUD operations for the **Profile** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Profiles
-    * const profiles = await prisma.profile.findMany()
-    * ```
-    */
-  get profile(): Prisma.ProfileDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.nutritionPerson`: Exposes CRUD operations for the **NutritionPerson** model.
@@ -1428,7 +1413,6 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
-    Profile: 'Profile',
     NutritionPerson: 'NutritionPerson',
     Product: 'Product',
     Dish: 'Dish',
@@ -1477,7 +1461,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "profile" | "nutritionPerson" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "nutritionPerson" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1774,80 +1758,6 @@ export namespace Prisma {
           count: {
             args: Prisma.VerificationTokenCountArgs<ExtArgs>
             result: $Utils.Optional<VerificationTokenCountAggregateOutputType> | number
-          }
-        }
-      }
-      Profile: {
-        payload: Prisma.$ProfilePayload<ExtArgs>
-        fields: Prisma.ProfileFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ProfileFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ProfileFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          findFirst: {
-            args: Prisma.ProfileFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ProfileFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          findMany: {
-            args: Prisma.ProfileFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>[]
-          }
-          create: {
-            args: Prisma.ProfileCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          createMany: {
-            args: Prisma.ProfileCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.ProfileCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>[]
-          }
-          delete: {
-            args: Prisma.ProfileDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          update: {
-            args: Prisma.ProfileUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          deleteMany: {
-            args: Prisma.ProfileDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ProfileUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.ProfileUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>[]
-          }
-          upsert: {
-            args: Prisma.ProfileUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ProfilePayload>
-          }
-          aggregate: {
-            args: Prisma.ProfileAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateProfile>
-          }
-          groupBy: {
-            args: Prisma.ProfileGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ProfileGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ProfileCountArgs<ExtArgs>
-            result: $Utils.Optional<ProfileCountAggregateOutputType> | number
           }
         }
       }
@@ -4405,7 +4315,6 @@ export namespace Prisma {
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
-    profile?: ProfileOmit
     nutritionPerson?: NutritionPersonOmit
     product?: ProductOmit
     dish?: DishOmit
@@ -4521,11 +4430,41 @@ export namespace Prisma {
   export type UserCountOutputType = {
     accounts: number
     sessions: number
+    dishes: number
+    dayTemplates: number
+    weekPlans: number
+    dayPlans: number
+    shoppingLists: number
+    userLanguages: number
+    tasks: number
+    dailyEntries: number
+    habits: number
+    lifeSpheres: number
+    libraryItems: number
+    wishlistItems: number
+    visions: number
+    milestones: number
+    sprints: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+    dishes?: boolean | UserCountOutputTypeCountDishesArgs
+    dayTemplates?: boolean | UserCountOutputTypeCountDayTemplatesArgs
+    weekPlans?: boolean | UserCountOutputTypeCountWeekPlansArgs
+    dayPlans?: boolean | UserCountOutputTypeCountDayPlansArgs
+    shoppingLists?: boolean | UserCountOutputTypeCountShoppingListsArgs
+    userLanguages?: boolean | UserCountOutputTypeCountUserLanguagesArgs
+    tasks?: boolean | UserCountOutputTypeCountTasksArgs
+    dailyEntries?: boolean | UserCountOutputTypeCountDailyEntriesArgs
+    habits?: boolean | UserCountOutputTypeCountHabitsArgs
+    lifeSpheres?: boolean | UserCountOutputTypeCountLifeSpheresArgs
+    libraryItems?: boolean | UserCountOutputTypeCountLibraryItemsArgs
+    wishlistItems?: boolean | UserCountOutputTypeCountWishlistItemsArgs
+    visions?: boolean | UserCountOutputTypeCountVisionsArgs
+    milestones?: boolean | UserCountOutputTypeCountMilestonesArgs
+    sprints?: boolean | UserCountOutputTypeCountSprintsArgs
   }
 
   // Custom InputTypes
@@ -4553,191 +4492,108 @@ export namespace Prisma {
     where?: SessionWhereInput
   }
 
-
   /**
-   * Count Type ProfileCountOutputType
+   * UserCountOutputType without action
    */
-
-  export type ProfileCountOutputType = {
-    persons: number
-  }
-
-  export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    persons?: boolean | ProfileCountOutputTypeCountPersonsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ProfileCountOutputType without action
-   */
-  export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ProfileCountOutputType
-     */
-    select?: ProfileCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ProfileCountOutputType without action
-   */
-  export type ProfileCountOutputTypeCountPersonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NutritionPersonWhereInput
-  }
-
-
-  /**
-   * Count Type NutritionPersonCountOutputType
-   */
-
-  export type NutritionPersonCountOutputType = {
-    dishes: number
-    dayTemplates: number
-    weekPlans: number
-    dayPlans: number
-    shoppingLists: number
-    userLanguages: number
-    tasks: number
-    dailyEntries: number
-    habits: number
-    lifeSpheres: number
-    libraryItems: number
-    wishlistItems: number
-    visions: number
-    milestones: number
-    sprints: number
-  }
-
-  export type NutritionPersonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dishes?: boolean | NutritionPersonCountOutputTypeCountDishesArgs
-    dayTemplates?: boolean | NutritionPersonCountOutputTypeCountDayTemplatesArgs
-    weekPlans?: boolean | NutritionPersonCountOutputTypeCountWeekPlansArgs
-    dayPlans?: boolean | NutritionPersonCountOutputTypeCountDayPlansArgs
-    shoppingLists?: boolean | NutritionPersonCountOutputTypeCountShoppingListsArgs
-    userLanguages?: boolean | NutritionPersonCountOutputTypeCountUserLanguagesArgs
-    tasks?: boolean | NutritionPersonCountOutputTypeCountTasksArgs
-    dailyEntries?: boolean | NutritionPersonCountOutputTypeCountDailyEntriesArgs
-    habits?: boolean | NutritionPersonCountOutputTypeCountHabitsArgs
-    lifeSpheres?: boolean | NutritionPersonCountOutputTypeCountLifeSpheresArgs
-    libraryItems?: boolean | NutritionPersonCountOutputTypeCountLibraryItemsArgs
-    wishlistItems?: boolean | NutritionPersonCountOutputTypeCountWishlistItemsArgs
-    visions?: boolean | NutritionPersonCountOutputTypeCountVisionsArgs
-    milestones?: boolean | NutritionPersonCountOutputTypeCountMilestonesArgs
-    sprints?: boolean | NutritionPersonCountOutputTypeCountSprintsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * NutritionPersonCountOutputType without action
-   */
-  export type NutritionPersonCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NutritionPersonCountOutputType
-     */
-    select?: NutritionPersonCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * NutritionPersonCountOutputType without action
-   */
-  export type NutritionPersonCountOutputTypeCountDishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountDishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DishWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountDayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountDayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DayTemplateWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountWeekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountWeekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WeekPlanWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DayPlanWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountShoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountShoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ShoppingListWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountUserLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountUserLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserLanguageWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountDailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountDailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DailyEntryWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HabitWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountLifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountLifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LifeSphereWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountLibraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountLibraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LibraryItemWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WishlistItemWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountVisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountVisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VisionWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountMilestonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountMilestonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MilestoneWhereInput
   }
 
   /**
-   * NutritionPersonCountOutputType without action
+   * UserCountOutputType without action
    */
-  export type NutritionPersonCountOutputTypeCountSprintsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountSprintsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SprintWhereInput
   }
 
@@ -5548,7 +5404,22 @@ export namespace Prisma {
     updatedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
-    profile?: boolean | User$profileArgs<ExtArgs>
+    nutritionPerson?: boolean | User$nutritionPersonArgs<ExtArgs>
+    dishes?: boolean | User$dishesArgs<ExtArgs>
+    dayTemplates?: boolean | User$dayTemplatesArgs<ExtArgs>
+    weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
+    dayPlans?: boolean | User$dayPlansArgs<ExtArgs>
+    shoppingLists?: boolean | User$shoppingListsArgs<ExtArgs>
+    userLanguages?: boolean | User$userLanguagesArgs<ExtArgs>
+    tasks?: boolean | User$tasksArgs<ExtArgs>
+    dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
+    habits?: boolean | User$habitsArgs<ExtArgs>
+    lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
+    libraryItems?: boolean | User$libraryItemsArgs<ExtArgs>
+    wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
+    visions?: boolean | User$visionsArgs<ExtArgs>
+    milestones?: boolean | User$milestonesArgs<ExtArgs>
+    sprints?: boolean | User$sprintsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5592,7 +5463,22 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
-    profile?: boolean | User$profileArgs<ExtArgs>
+    nutritionPerson?: boolean | User$nutritionPersonArgs<ExtArgs>
+    dishes?: boolean | User$dishesArgs<ExtArgs>
+    dayTemplates?: boolean | User$dayTemplatesArgs<ExtArgs>
+    weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
+    dayPlans?: boolean | User$dayPlansArgs<ExtArgs>
+    shoppingLists?: boolean | User$shoppingListsArgs<ExtArgs>
+    userLanguages?: boolean | User$userLanguagesArgs<ExtArgs>
+    tasks?: boolean | User$tasksArgs<ExtArgs>
+    dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
+    habits?: boolean | User$habitsArgs<ExtArgs>
+    lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
+    libraryItems?: boolean | User$libraryItemsArgs<ExtArgs>
+    wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
+    visions?: boolean | User$visionsArgs<ExtArgs>
+    milestones?: boolean | User$milestonesArgs<ExtArgs>
+    sprints?: boolean | User$sprintsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5603,7 +5489,22 @@ export namespace Prisma {
     objects: {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
-      profile: Prisma.$ProfilePayload<ExtArgs> | null
+      nutritionPerson: Prisma.$NutritionPersonPayload<ExtArgs> | null
+      dishes: Prisma.$DishPayload<ExtArgs>[]
+      dayTemplates: Prisma.$DayTemplatePayload<ExtArgs>[]
+      weekPlans: Prisma.$WeekPlanPayload<ExtArgs>[]
+      dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
+      shoppingLists: Prisma.$ShoppingListPayload<ExtArgs>[]
+      userLanguages: Prisma.$UserLanguagePayload<ExtArgs>[]
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
+      dailyEntries: Prisma.$DailyEntryPayload<ExtArgs>[]
+      habits: Prisma.$HabitPayload<ExtArgs>[]
+      lifeSpheres: Prisma.$LifeSpherePayload<ExtArgs>[]
+      libraryItems: Prisma.$LibraryItemPayload<ExtArgs>[]
+      wishlistItems: Prisma.$WishlistItemPayload<ExtArgs>[]
+      visions: Prisma.$VisionPayload<ExtArgs>[]
+      milestones: Prisma.$MilestonePayload<ExtArgs>[]
+      sprints: Prisma.$SprintPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6011,7 +5912,22 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    nutritionPerson<T extends User$nutritionPersonArgs<ExtArgs> = {}>(args?: Subset<T, User$nutritionPersonArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    dishes<T extends User$dishesArgs<ExtArgs> = {}>(args?: Subset<T, User$dishesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dayTemplates<T extends User$dayTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$dayTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    weekPlans<T extends User$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dayPlans<T extends User$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    shoppingLists<T extends User$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, User$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userLanguages<T extends User$userLanguagesArgs<ExtArgs> = {}>(args?: Subset<T, User$userLanguagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dailyEntries<T extends User$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lifeSpheres<T extends User$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, User$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    libraryItems<T extends User$libraryItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$libraryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    wishlistItems<T extends User$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    milestones<T extends User$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, User$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sprints<T extends User$sprintsArgs<ExtArgs> = {}>(args?: Subset<T, User$sprintsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6491,22 +6407,382 @@ export namespace Prisma {
   }
 
   /**
-   * User.profile
+   * User.nutritionPerson
    */
-  export type User$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$nutritionPersonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Profile
+     * Select specific fields to fetch from the NutritionPerson
      */
-    select?: ProfileSelect<ExtArgs> | null
+    select?: NutritionPersonSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Profile
+     * Omit specific fields from the NutritionPerson
      */
-    omit?: ProfileOmit<ExtArgs> | null
+    omit?: NutritionPersonOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProfileInclude<ExtArgs> | null
-    where?: ProfileWhereInput
+    include?: NutritionPersonInclude<ExtArgs> | null
+    where?: NutritionPersonWhereInput
+  }
+
+  /**
+   * User.dishes
+   */
+  export type User$dishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dish
+     */
+    select?: DishSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Dish
+     */
+    omit?: DishOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishInclude<ExtArgs> | null
+    where?: DishWhereInput
+    orderBy?: DishOrderByWithRelationInput | DishOrderByWithRelationInput[]
+    cursor?: DishWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DishScalarFieldEnum | DishScalarFieldEnum[]
+  }
+
+  /**
+   * User.dayTemplates
+   */
+  export type User$dayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayTemplate
+     */
+    select?: DayTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayTemplate
+     */
+    omit?: DayTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayTemplateInclude<ExtArgs> | null
+    where?: DayTemplateWhereInput
+    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
+    cursor?: DayTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.weekPlans
+   */
+  export type User$weekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeekPlan
+     */
+    select?: WeekPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeekPlan
+     */
+    omit?: WeekPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeekPlanInclude<ExtArgs> | null
+    where?: WeekPlanWhereInput
+    orderBy?: WeekPlanOrderByWithRelationInput | WeekPlanOrderByWithRelationInput[]
+    cursor?: WeekPlanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WeekPlanScalarFieldEnum | WeekPlanScalarFieldEnum[]
+  }
+
+  /**
+   * User.dayPlans
+   */
+  export type User$dayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPlan
+     */
+    select?: DayPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPlan
+     */
+    omit?: DayPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPlanInclude<ExtArgs> | null
+    where?: DayPlanWhereInput
+    orderBy?: DayPlanOrderByWithRelationInput | DayPlanOrderByWithRelationInput[]
+    cursor?: DayPlanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DayPlanScalarFieldEnum | DayPlanScalarFieldEnum[]
+  }
+
+  /**
+   * User.shoppingLists
+   */
+  export type User$shoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShoppingList
+     */
+    select?: ShoppingListSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ShoppingList
+     */
+    omit?: ShoppingListOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShoppingListInclude<ExtArgs> | null
+    where?: ShoppingListWhereInput
+    orderBy?: ShoppingListOrderByWithRelationInput | ShoppingListOrderByWithRelationInput[]
+    cursor?: ShoppingListWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShoppingListScalarFieldEnum | ShoppingListScalarFieldEnum[]
+  }
+
+  /**
+   * User.userLanguages
+   */
+  export type User$userLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserLanguage
+     */
+    select?: UserLanguageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserLanguage
+     */
+    omit?: UserLanguageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserLanguageInclude<ExtArgs> | null
+    where?: UserLanguageWhereInput
+    orderBy?: UserLanguageOrderByWithRelationInput | UserLanguageOrderByWithRelationInput[]
+    cursor?: UserLanguageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserLanguageScalarFieldEnum | UserLanguageScalarFieldEnum[]
+  }
+
+  /**
+   * User.tasks
+   */
+  export type User$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.dailyEntries
+   */
+  export type User$dailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailyEntry
+     */
+    select?: DailyEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailyEntry
+     */
+    omit?: DailyEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailyEntryInclude<ExtArgs> | null
+    where?: DailyEntryWhereInput
+    orderBy?: DailyEntryOrderByWithRelationInput | DailyEntryOrderByWithRelationInput[]
+    cursor?: DailyEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DailyEntryScalarFieldEnum | DailyEntryScalarFieldEnum[]
+  }
+
+  /**
+   * User.habits
+   */
+  export type User$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Habit
+     */
+    select?: HabitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Habit
+     */
+    omit?: HabitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitInclude<ExtArgs> | null
+    where?: HabitWhereInput
+    orderBy?: HabitOrderByWithRelationInput | HabitOrderByWithRelationInput[]
+    cursor?: HabitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HabitScalarFieldEnum | HabitScalarFieldEnum[]
+  }
+
+  /**
+   * User.lifeSpheres
+   */
+  export type User$lifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LifeSphere
+     */
+    select?: LifeSphereSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LifeSphere
+     */
+    omit?: LifeSphereOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LifeSphereInclude<ExtArgs> | null
+    where?: LifeSphereWhereInput
+    orderBy?: LifeSphereOrderByWithRelationInput | LifeSphereOrderByWithRelationInput[]
+    cursor?: LifeSphereWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LifeSphereScalarFieldEnum | LifeSphereScalarFieldEnum[]
+  }
+
+  /**
+   * User.libraryItems
+   */
+  export type User$libraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LibraryItem
+     */
+    select?: LibraryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LibraryItem
+     */
+    omit?: LibraryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LibraryItemInclude<ExtArgs> | null
+    where?: LibraryItemWhereInput
+    orderBy?: LibraryItemOrderByWithRelationInput | LibraryItemOrderByWithRelationInput[]
+    cursor?: LibraryItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LibraryItemScalarFieldEnum | LibraryItemScalarFieldEnum[]
+  }
+
+  /**
+   * User.wishlistItems
+   */
+  export type User$wishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WishlistItem
+     */
+    select?: WishlistItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WishlistItem
+     */
+    omit?: WishlistItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WishlistItemInclude<ExtArgs> | null
+    where?: WishlistItemWhereInput
+    orderBy?: WishlistItemOrderByWithRelationInput | WishlistItemOrderByWithRelationInput[]
+    cursor?: WishlistItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WishlistItemScalarFieldEnum | WishlistItemScalarFieldEnum[]
+  }
+
+  /**
+   * User.visions
+   */
+  export type User$visionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vision
+     */
+    select?: VisionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vision
+     */
+    omit?: VisionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisionInclude<ExtArgs> | null
+    where?: VisionWhereInput
+    orderBy?: VisionOrderByWithRelationInput | VisionOrderByWithRelationInput[]
+    cursor?: VisionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisionScalarFieldEnum | VisionScalarFieldEnum[]
+  }
+
+  /**
+   * User.milestones
+   */
+  export type User$milestonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Milestone
+     */
+    select?: MilestoneSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Milestone
+     */
+    omit?: MilestoneOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MilestoneInclude<ExtArgs> | null
+    where?: MilestoneWhereInput
+    orderBy?: MilestoneOrderByWithRelationInput | MilestoneOrderByWithRelationInput[]
+    cursor?: MilestoneWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MilestoneScalarFieldEnum | MilestoneScalarFieldEnum[]
+  }
+
+  /**
+   * User.sprints
+   */
+  export type User$sprintsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sprint
+     */
+    select?: SprintSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sprint
+     */
+    omit?: SprintOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SprintInclude<ExtArgs> | null
+    where?: SprintWhereInput
+    orderBy?: SprintOrderByWithRelationInput | SprintOrderByWithRelationInput[]
+    cursor?: SprintWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SprintScalarFieldEnum | SprintScalarFieldEnum[]
   }
 
   /**
@@ -9741,1118 +10017,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Profile
-   */
-
-  export type AggregateProfile = {
-    _count: ProfileCountAggregateOutputType | null
-    _min: ProfileMinAggregateOutputType | null
-    _max: ProfileMaxAggregateOutputType | null
-  }
-
-  export type ProfileMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ProfileMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ProfileCountAggregateOutputType = {
-    id: number
-    userId: number
-    name: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ProfileMinAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ProfileMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ProfileCountAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ProfileAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Profile to aggregate.
-     */
-    where?: ProfileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Profiles to fetch.
-     */
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ProfileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Profiles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Profiles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Profiles
-    **/
-    _count?: true | ProfileCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ProfileMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ProfileMaxAggregateInputType
-  }
-
-  export type GetProfileAggregateType<T extends ProfileAggregateArgs> = {
-        [P in keyof T & keyof AggregateProfile]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateProfile[P]>
-      : GetScalarType<T[P], AggregateProfile[P]>
-  }
-
-
-
-
-  export type ProfileGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProfileWhereInput
-    orderBy?: ProfileOrderByWithAggregationInput | ProfileOrderByWithAggregationInput[]
-    by: ProfileScalarFieldEnum[] | ProfileScalarFieldEnum
-    having?: ProfileScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ProfileCountAggregateInputType | true
-    _min?: ProfileMinAggregateInputType
-    _max?: ProfileMaxAggregateInputType
-  }
-
-  export type ProfileGroupByOutputType = {
-    id: string
-    userId: string | null
-    name: string
-    createdAt: Date
-    updatedAt: Date
-    _count: ProfileCountAggregateOutputType | null
-    _min: ProfileMinAggregateOutputType | null
-    _max: ProfileMaxAggregateOutputType | null
-  }
-
-  type GetProfileGroupByPayload<T extends ProfileGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ProfileGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ProfileGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ProfileGroupByOutputType[P]>
-            : GetScalarType<T[P], ProfileGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ProfileSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | Profile$userArgs<ExtArgs>
-    persons?: boolean | Profile$personsArgs<ExtArgs>
-    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["profile"]>
-
-  export type ProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | Profile$userArgs<ExtArgs>
-  }, ExtArgs["result"]["profile"]>
-
-  export type ProfileSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | Profile$userArgs<ExtArgs>
-  }, ExtArgs["result"]["profile"]>
-
-  export type ProfileSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
-  export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Profile$userArgs<ExtArgs>
-    persons?: boolean | Profile$personsArgs<ExtArgs>
-    _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type ProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Profile$userArgs<ExtArgs>
-  }
-  export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | Profile$userArgs<ExtArgs>
-  }
-
-  export type $ProfilePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Profile"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs> | null
-      persons: Prisma.$NutritionPersonPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string | null
-      name: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["profile"]>
-    composites: {}
-  }
-
-  type ProfileGetPayload<S extends boolean | null | undefined | ProfileDefaultArgs> = $Result.GetResult<Prisma.$ProfilePayload, S>
-
-  type ProfileCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ProfileFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ProfileCountAggregateInputType | true
-    }
-
-  export interface ProfileDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Profile'], meta: { name: 'Profile' } }
-    /**
-     * Find zero or one Profile that matches the filter.
-     * @param {ProfileFindUniqueArgs} args - Arguments to find a Profile
-     * @example
-     * // Get one Profile
-     * const profile = await prisma.profile.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ProfileFindUniqueArgs>(args: SelectSubset<T, ProfileFindUniqueArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Profile that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ProfileFindUniqueOrThrowArgs} args - Arguments to find a Profile
-     * @example
-     * // Get one Profile
-     * const profile = await prisma.profile.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ProfileFindUniqueOrThrowArgs>(args: SelectSubset<T, ProfileFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Profile that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileFindFirstArgs} args - Arguments to find a Profile
-     * @example
-     * // Get one Profile
-     * const profile = await prisma.profile.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ProfileFindFirstArgs>(args?: SelectSubset<T, ProfileFindFirstArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Profile that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileFindFirstOrThrowArgs} args - Arguments to find a Profile
-     * @example
-     * // Get one Profile
-     * const profile = await prisma.profile.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ProfileFindFirstOrThrowArgs>(args?: SelectSubset<T, ProfileFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Profiles that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Profiles
-     * const profiles = await prisma.profile.findMany()
-     * 
-     * // Get first 10 Profiles
-     * const profiles = await prisma.profile.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const profileWithIdOnly = await prisma.profile.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ProfileFindManyArgs>(args?: SelectSubset<T, ProfileFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Profile.
-     * @param {ProfileCreateArgs} args - Arguments to create a Profile.
-     * @example
-     * // Create one Profile
-     * const Profile = await prisma.profile.create({
-     *   data: {
-     *     // ... data to create a Profile
-     *   }
-     * })
-     * 
-     */
-    create<T extends ProfileCreateArgs>(args: SelectSubset<T, ProfileCreateArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Profiles.
-     * @param {ProfileCreateManyArgs} args - Arguments to create many Profiles.
-     * @example
-     * // Create many Profiles
-     * const profile = await prisma.profile.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ProfileCreateManyArgs>(args?: SelectSubset<T, ProfileCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Profiles and returns the data saved in the database.
-     * @param {ProfileCreateManyAndReturnArgs} args - Arguments to create many Profiles.
-     * @example
-     * // Create many Profiles
-     * const profile = await prisma.profile.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Profiles and only return the `id`
-     * const profileWithIdOnly = await prisma.profile.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends ProfileCreateManyAndReturnArgs>(args?: SelectSubset<T, ProfileCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Profile.
-     * @param {ProfileDeleteArgs} args - Arguments to delete one Profile.
-     * @example
-     * // Delete one Profile
-     * const Profile = await prisma.profile.delete({
-     *   where: {
-     *     // ... filter to delete one Profile
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ProfileDeleteArgs>(args: SelectSubset<T, ProfileDeleteArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Profile.
-     * @param {ProfileUpdateArgs} args - Arguments to update one Profile.
-     * @example
-     * // Update one Profile
-     * const profile = await prisma.profile.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ProfileUpdateArgs>(args: SelectSubset<T, ProfileUpdateArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Profiles.
-     * @param {ProfileDeleteManyArgs} args - Arguments to filter Profiles to delete.
-     * @example
-     * // Delete a few Profiles
-     * const { count } = await prisma.profile.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ProfileDeleteManyArgs>(args?: SelectSubset<T, ProfileDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Profiles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Profiles
-     * const profile = await prisma.profile.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ProfileUpdateManyArgs>(args: SelectSubset<T, ProfileUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Profiles and returns the data updated in the database.
-     * @param {ProfileUpdateManyAndReturnArgs} args - Arguments to update many Profiles.
-     * @example
-     * // Update many Profiles
-     * const profile = await prisma.profile.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Profiles and only return the `id`
-     * const profileWithIdOnly = await prisma.profile.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends ProfileUpdateManyAndReturnArgs>(args: SelectSubset<T, ProfileUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Profile.
-     * @param {ProfileUpsertArgs} args - Arguments to update or create a Profile.
-     * @example
-     * // Update or create a Profile
-     * const profile = await prisma.profile.upsert({
-     *   create: {
-     *     // ... data to create a Profile
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Profile we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ProfileUpsertArgs>(args: SelectSubset<T, ProfileUpsertArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Profiles.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileCountArgs} args - Arguments to filter Profiles to count.
-     * @example
-     * // Count the number of Profiles
-     * const count = await prisma.profile.count({
-     *   where: {
-     *     // ... the filter for the Profiles we want to count
-     *   }
-     * })
-    **/
-    count<T extends ProfileCountArgs>(
-      args?: Subset<T, ProfileCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ProfileCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Profile.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ProfileAggregateArgs>(args: Subset<T, ProfileAggregateArgs>): Prisma.PrismaPromise<GetProfileAggregateType<T>>
-
-    /**
-     * Group by Profile.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ProfileGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ProfileGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ProfileGroupByArgs['orderBy'] }
-        : { orderBy?: ProfileGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ProfileGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProfileGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Profile model
-   */
-  readonly fields: ProfileFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Profile.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends Profile$userArgs<ExtArgs> = {}>(args?: Subset<T, Profile$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    persons<T extends Profile$personsArgs<ExtArgs> = {}>(args?: Subset<T, Profile$personsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Profile model
-   */
-  interface ProfileFieldRefs {
-    readonly id: FieldRef<"Profile", 'String'>
-    readonly userId: FieldRef<"Profile", 'String'>
-    readonly name: FieldRef<"Profile", 'String'>
-    readonly createdAt: FieldRef<"Profile", 'DateTime'>
-    readonly updatedAt: FieldRef<"Profile", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Profile findUnique
-   */
-  export type ProfileFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter, which Profile to fetch.
-     */
-    where: ProfileWhereUniqueInput
-  }
-
-  /**
-   * Profile findUniqueOrThrow
-   */
-  export type ProfileFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter, which Profile to fetch.
-     */
-    where: ProfileWhereUniqueInput
-  }
-
-  /**
-   * Profile findFirst
-   */
-  export type ProfileFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter, which Profile to fetch.
-     */
-    where?: ProfileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Profiles to fetch.
-     */
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Profiles.
-     */
-    cursor?: ProfileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Profiles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Profiles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Profiles.
-     */
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Profile findFirstOrThrow
-   */
-  export type ProfileFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter, which Profile to fetch.
-     */
-    where?: ProfileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Profiles to fetch.
-     */
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Profiles.
-     */
-    cursor?: ProfileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Profiles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Profiles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Profiles.
-     */
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Profile findMany
-   */
-  export type ProfileFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter, which Profiles to fetch.
-     */
-    where?: ProfileWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Profiles to fetch.
-     */
-    orderBy?: ProfileOrderByWithRelationInput | ProfileOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Profiles.
-     */
-    cursor?: ProfileWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Profiles from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Profiles.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Profiles.
-     */
-    distinct?: ProfileScalarFieldEnum | ProfileScalarFieldEnum[]
-  }
-
-  /**
-   * Profile create
-   */
-  export type ProfileCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Profile.
-     */
-    data: XOR<ProfileCreateInput, ProfileUncheckedCreateInput>
-  }
-
-  /**
-   * Profile createMany
-   */
-  export type ProfileCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Profiles.
-     */
-    data: ProfileCreateManyInput | ProfileCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Profile createManyAndReturn
-   */
-  export type ProfileCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * The data used to create many Profiles.
-     */
-    data: ProfileCreateManyInput | ProfileCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Profile update
-   */
-  export type ProfileUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Profile.
-     */
-    data: XOR<ProfileUpdateInput, ProfileUncheckedUpdateInput>
-    /**
-     * Choose, which Profile to update.
-     */
-    where: ProfileWhereUniqueInput
-  }
-
-  /**
-   * Profile updateMany
-   */
-  export type ProfileUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Profiles.
-     */
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyInput>
-    /**
-     * Filter which Profiles to update
-     */
-    where?: ProfileWhereInput
-    /**
-     * Limit how many Profiles to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Profile updateManyAndReturn
-   */
-  export type ProfileUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * The data used to update Profiles.
-     */
-    data: XOR<ProfileUpdateManyMutationInput, ProfileUncheckedUpdateManyInput>
-    /**
-     * Filter which Profiles to update
-     */
-    where?: ProfileWhereInput
-    /**
-     * Limit how many Profiles to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Profile upsert
-   */
-  export type ProfileUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Profile to update in case it exists.
-     */
-    where: ProfileWhereUniqueInput
-    /**
-     * In case the Profile found by the `where` argument doesn't exist, create a new Profile with this data.
-     */
-    create: XOR<ProfileCreateInput, ProfileUncheckedCreateInput>
-    /**
-     * In case the Profile was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ProfileUpdateInput, ProfileUncheckedUpdateInput>
-  }
-
-  /**
-   * Profile delete
-   */
-  export type ProfileDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-    /**
-     * Filter which Profile to delete.
-     */
-    where: ProfileWhereUniqueInput
-  }
-
-  /**
-   * Profile deleteMany
-   */
-  export type ProfileDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Profiles to delete
-     */
-    where?: ProfileWhereInput
-    /**
-     * Limit how many Profiles to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Profile.user
-   */
-  export type Profile$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * Profile.persons
-   */
-  export type Profile$personsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the NutritionPerson
-     */
-    select?: NutritionPersonSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the NutritionPerson
-     */
-    omit?: NutritionPersonOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NutritionPersonInclude<ExtArgs> | null
-    where?: NutritionPersonWhereInput
-    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
-    cursor?: NutritionPersonWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
-  }
-
-  /**
-   * Profile without action
-   */
-  export type ProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Profile
-     */
-    select?: ProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Profile
-     */
-    omit?: ProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ProfileInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model NutritionPerson
    */
 
@@ -10882,7 +10046,7 @@ export namespace Prisma {
 
   export type NutritionPersonMinAggregateOutputType = {
     id: string | null
-    profileId: string | null
+    userId: string | null
     name: string | null
     targetCalories: number | null
     targetProtein: number | null
@@ -10895,7 +10059,7 @@ export namespace Prisma {
 
   export type NutritionPersonMaxAggregateOutputType = {
     id: string | null
-    profileId: string | null
+    userId: string | null
     name: string | null
     targetCalories: number | null
     targetProtein: number | null
@@ -10908,7 +10072,7 @@ export namespace Prisma {
 
   export type NutritionPersonCountAggregateOutputType = {
     id: number
-    profileId: number
+    userId: number
     name: number
     targetCalories: number
     targetProtein: number
@@ -10939,7 +10103,7 @@ export namespace Prisma {
 
   export type NutritionPersonMinAggregateInputType = {
     id?: true
-    profileId?: true
+    userId?: true
     name?: true
     targetCalories?: true
     targetProtein?: true
@@ -10952,7 +10116,7 @@ export namespace Prisma {
 
   export type NutritionPersonMaxAggregateInputType = {
     id?: true
-    profileId?: true
+    userId?: true
     name?: true
     targetCalories?: true
     targetProtein?: true
@@ -10965,7 +10129,7 @@ export namespace Prisma {
 
   export type NutritionPersonCountAggregateInputType = {
     id?: true
-    profileId?: true
+    userId?: true
     name?: true
     targetCalories?: true
     targetProtein?: true
@@ -11065,7 +10229,7 @@ export namespace Prisma {
 
   export type NutritionPersonGroupByOutputType = {
     id: string
-    profileId: string
+    userId: string
     name: string
     targetCalories: number | null
     targetProtein: number | null
@@ -11097,7 +10261,7 @@ export namespace Prisma {
 
   export type NutritionPersonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    profileId?: boolean
+    userId?: boolean
     name?: boolean
     targetCalories?: boolean
     targetProtein?: boolean
@@ -11106,28 +10270,12 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    dishes?: boolean | NutritionPerson$dishesArgs<ExtArgs>
-    dayTemplates?: boolean | NutritionPerson$dayTemplatesArgs<ExtArgs>
-    weekPlans?: boolean | NutritionPerson$weekPlansArgs<ExtArgs>
-    dayPlans?: boolean | NutritionPerson$dayPlansArgs<ExtArgs>
-    shoppingLists?: boolean | NutritionPerson$shoppingListsArgs<ExtArgs>
-    userLanguages?: boolean | NutritionPerson$userLanguagesArgs<ExtArgs>
-    tasks?: boolean | NutritionPerson$tasksArgs<ExtArgs>
-    dailyEntries?: boolean | NutritionPerson$dailyEntriesArgs<ExtArgs>
-    habits?: boolean | NutritionPerson$habitsArgs<ExtArgs>
-    lifeSpheres?: boolean | NutritionPerson$lifeSpheresArgs<ExtArgs>
-    libraryItems?: boolean | NutritionPerson$libraryItemsArgs<ExtArgs>
-    wishlistItems?: boolean | NutritionPerson$wishlistItemsArgs<ExtArgs>
-    visions?: boolean | NutritionPerson$visionsArgs<ExtArgs>
-    milestones?: boolean | NutritionPerson$milestonesArgs<ExtArgs>
-    sprints?: boolean | NutritionPerson$sprintsArgs<ExtArgs>
-    _count?: boolean | NutritionPersonCountOutputTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    profileId?: boolean
+    userId?: boolean
     name?: boolean
     targetCalories?: boolean
     targetProtein?: boolean
@@ -11136,12 +10284,12 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    profileId?: boolean
+    userId?: boolean
     name?: boolean
     targetCalories?: boolean
     targetProtein?: boolean
@@ -11150,12 +10298,12 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectScalar = {
     id?: boolean
-    profileId?: boolean
+    userId?: boolean
     name?: boolean
     targetCalories?: boolean
     targetProtein?: boolean
@@ -11166,56 +10314,25 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type NutritionPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "name" | "targetCalories" | "targetProtein" | "targetFat" | "targetCarbs" | "targetFiber" | "createdAt" | "updatedAt", ExtArgs["result"]["nutritionPerson"]>
+  export type NutritionPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "targetCalories" | "targetProtein" | "targetFat" | "targetCarbs" | "targetFiber" | "createdAt" | "updatedAt", ExtArgs["result"]["nutritionPerson"]>
   export type NutritionPersonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
-    dishes?: boolean | NutritionPerson$dishesArgs<ExtArgs>
-    dayTemplates?: boolean | NutritionPerson$dayTemplatesArgs<ExtArgs>
-    weekPlans?: boolean | NutritionPerson$weekPlansArgs<ExtArgs>
-    dayPlans?: boolean | NutritionPerson$dayPlansArgs<ExtArgs>
-    shoppingLists?: boolean | NutritionPerson$shoppingListsArgs<ExtArgs>
-    userLanguages?: boolean | NutritionPerson$userLanguagesArgs<ExtArgs>
-    tasks?: boolean | NutritionPerson$tasksArgs<ExtArgs>
-    dailyEntries?: boolean | NutritionPerson$dailyEntriesArgs<ExtArgs>
-    habits?: boolean | NutritionPerson$habitsArgs<ExtArgs>
-    lifeSpheres?: boolean | NutritionPerson$lifeSpheresArgs<ExtArgs>
-    libraryItems?: boolean | NutritionPerson$libraryItemsArgs<ExtArgs>
-    wishlistItems?: boolean | NutritionPerson$wishlistItemsArgs<ExtArgs>
-    visions?: boolean | NutritionPerson$visionsArgs<ExtArgs>
-    milestones?: boolean | NutritionPerson$milestonesArgs<ExtArgs>
-    sprints?: boolean | NutritionPerson$sprintsArgs<ExtArgs>
-    _count?: boolean | NutritionPersonCountOutputTypeDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NutritionPersonIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type NutritionPersonIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    profile?: boolean | ProfileDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $NutritionPersonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "NutritionPerson"
     objects: {
-      profile: Prisma.$ProfilePayload<ExtArgs>
-      dishes: Prisma.$DishPayload<ExtArgs>[]
-      dayTemplates: Prisma.$DayTemplatePayload<ExtArgs>[]
-      weekPlans: Prisma.$WeekPlanPayload<ExtArgs>[]
-      dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
-      shoppingLists: Prisma.$ShoppingListPayload<ExtArgs>[]
-      userLanguages: Prisma.$UserLanguagePayload<ExtArgs>[]
-      tasks: Prisma.$TaskPayload<ExtArgs>[]
-      dailyEntries: Prisma.$DailyEntryPayload<ExtArgs>[]
-      habits: Prisma.$HabitPayload<ExtArgs>[]
-      lifeSpheres: Prisma.$LifeSpherePayload<ExtArgs>[]
-      libraryItems: Prisma.$LibraryItemPayload<ExtArgs>[]
-      wishlistItems: Prisma.$WishlistItemPayload<ExtArgs>[]
-      visions: Prisma.$VisionPayload<ExtArgs>[]
-      milestones: Prisma.$MilestonePayload<ExtArgs>[]
-      sprints: Prisma.$SprintPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      profileId: string
+      userId: string
       name: string
       targetCalories: number | null
       targetProtein: number | null
@@ -11618,22 +10735,7 @@ export namespace Prisma {
    */
   export interface Prisma__NutritionPersonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    profile<T extends ProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfileDefaultArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    dishes<T extends NutritionPerson$dishesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dishesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayTemplates<T extends NutritionPerson$dayTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dayTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    weekPlans<T extends NutritionPerson$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayPlans<T extends NutritionPerson$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    shoppingLists<T extends NutritionPerson$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    userLanguages<T extends NutritionPerson$userLanguagesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$userLanguagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLanguagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tasks<T extends NutritionPerson$tasksArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dailyEntries<T extends NutritionPerson$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    habits<T extends NutritionPerson$habitsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    lifeSpheres<T extends NutritionPerson$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    libraryItems<T extends NutritionPerson$libraryItemsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$libraryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    wishlistItems<T extends NutritionPerson$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    visions<T extends NutritionPerson$visionsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    milestones<T extends NutritionPerson$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    sprints<T extends NutritionPerson$sprintsArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$sprintsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11664,7 +10766,7 @@ export namespace Prisma {
    */
   interface NutritionPersonFieldRefs {
     readonly id: FieldRef<"NutritionPerson", 'String'>
-    readonly profileId: FieldRef<"NutritionPerson", 'String'>
+    readonly userId: FieldRef<"NutritionPerson", 'String'>
     readonly name: FieldRef<"NutritionPerson", 'String'>
     readonly targetCalories: FieldRef<"NutritionPerson", 'Float'>
     readonly targetProtein: FieldRef<"NutritionPerson", 'Float'>
@@ -12071,366 +11173,6 @@ export namespace Prisma {
      * Limit how many NutritionPeople to delete.
      */
     limit?: number
-  }
-
-  /**
-   * NutritionPerson.dishes
-   */
-  export type NutritionPerson$dishesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Dish
-     */
-    select?: DishSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Dish
-     */
-    omit?: DishOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DishInclude<ExtArgs> | null
-    where?: DishWhereInput
-    orderBy?: DishOrderByWithRelationInput | DishOrderByWithRelationInput[]
-    cursor?: DishWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DishScalarFieldEnum | DishScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.dayTemplates
-   */
-  export type NutritionPerson$dayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    where?: DayTemplateWhereInput
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    cursor?: DayTemplateWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.weekPlans
-   */
-  export type NutritionPerson$weekPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WeekPlan
-     */
-    select?: WeekPlanSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WeekPlan
-     */
-    omit?: WeekPlanOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WeekPlanInclude<ExtArgs> | null
-    where?: WeekPlanWhereInput
-    orderBy?: WeekPlanOrderByWithRelationInput | WeekPlanOrderByWithRelationInput[]
-    cursor?: WeekPlanWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WeekPlanScalarFieldEnum | WeekPlanScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.dayPlans
-   */
-  export type NutritionPerson$dayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlan
-     */
-    select?: DayPlanSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlan
-     */
-    omit?: DayPlanOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanInclude<ExtArgs> | null
-    where?: DayPlanWhereInput
-    orderBy?: DayPlanOrderByWithRelationInput | DayPlanOrderByWithRelationInput[]
-    cursor?: DayPlanWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayPlanScalarFieldEnum | DayPlanScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.shoppingLists
-   */
-  export type NutritionPerson$shoppingListsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ShoppingList
-     */
-    select?: ShoppingListSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ShoppingList
-     */
-    omit?: ShoppingListOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ShoppingListInclude<ExtArgs> | null
-    where?: ShoppingListWhereInput
-    orderBy?: ShoppingListOrderByWithRelationInput | ShoppingListOrderByWithRelationInput[]
-    cursor?: ShoppingListWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ShoppingListScalarFieldEnum | ShoppingListScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.userLanguages
-   */
-  export type NutritionPerson$userLanguagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLanguage
-     */
-    select?: UserLanguageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserLanguage
-     */
-    omit?: UserLanguageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserLanguageInclude<ExtArgs> | null
-    where?: UserLanguageWhereInput
-    orderBy?: UserLanguageOrderByWithRelationInput | UserLanguageOrderByWithRelationInput[]
-    cursor?: UserLanguageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserLanguageScalarFieldEnum | UserLanguageScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.tasks
-   */
-  export type NutritionPerson$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Task
-     */
-    select?: TaskSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Task
-     */
-    omit?: TaskOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TaskInclude<ExtArgs> | null
-    where?: TaskWhereInput
-    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
-    cursor?: TaskWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.dailyEntries
-   */
-  export type NutritionPerson$dailyEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyEntry
-     */
-    select?: DailyEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyEntry
-     */
-    omit?: DailyEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyEntryInclude<ExtArgs> | null
-    where?: DailyEntryWhereInput
-    orderBy?: DailyEntryOrderByWithRelationInput | DailyEntryOrderByWithRelationInput[]
-    cursor?: DailyEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DailyEntryScalarFieldEnum | DailyEntryScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.habits
-   */
-  export type NutritionPerson$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Habit
-     */
-    select?: HabitSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Habit
-     */
-    omit?: HabitOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: HabitInclude<ExtArgs> | null
-    where?: HabitWhereInput
-    orderBy?: HabitOrderByWithRelationInput | HabitOrderByWithRelationInput[]
-    cursor?: HabitWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: HabitScalarFieldEnum | HabitScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.lifeSpheres
-   */
-  export type NutritionPerson$lifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LifeSphere
-     */
-    select?: LifeSphereSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LifeSphere
-     */
-    omit?: LifeSphereOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LifeSphereInclude<ExtArgs> | null
-    where?: LifeSphereWhereInput
-    orderBy?: LifeSphereOrderByWithRelationInput | LifeSphereOrderByWithRelationInput[]
-    cursor?: LifeSphereWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LifeSphereScalarFieldEnum | LifeSphereScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.libraryItems
-   */
-  export type NutritionPerson$libraryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LibraryItem
-     */
-    select?: LibraryItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LibraryItem
-     */
-    omit?: LibraryItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LibraryItemInclude<ExtArgs> | null
-    where?: LibraryItemWhereInput
-    orderBy?: LibraryItemOrderByWithRelationInput | LibraryItemOrderByWithRelationInput[]
-    cursor?: LibraryItemWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LibraryItemScalarFieldEnum | LibraryItemScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.wishlistItems
-   */
-  export type NutritionPerson$wishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WishlistItem
-     */
-    select?: WishlistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WishlistItem
-     */
-    omit?: WishlistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WishlistItemInclude<ExtArgs> | null
-    where?: WishlistItemWhereInput
-    orderBy?: WishlistItemOrderByWithRelationInput | WishlistItemOrderByWithRelationInput[]
-    cursor?: WishlistItemWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WishlistItemScalarFieldEnum | WishlistItemScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.visions
-   */
-  export type NutritionPerson$visionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Vision
-     */
-    select?: VisionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Vision
-     */
-    omit?: VisionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VisionInclude<ExtArgs> | null
-    where?: VisionWhereInput
-    orderBy?: VisionOrderByWithRelationInput | VisionOrderByWithRelationInput[]
-    cursor?: VisionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: VisionScalarFieldEnum | VisionScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.milestones
-   */
-  export type NutritionPerson$milestonesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Milestone
-     */
-    select?: MilestoneSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Milestone
-     */
-    omit?: MilestoneOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MilestoneInclude<ExtArgs> | null
-    where?: MilestoneWhereInput
-    orderBy?: MilestoneOrderByWithRelationInput | MilestoneOrderByWithRelationInput[]
-    cursor?: MilestoneWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MilestoneScalarFieldEnum | MilestoneScalarFieldEnum[]
-  }
-
-  /**
-   * NutritionPerson.sprints
-   */
-  export type NutritionPerson$sprintsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sprint
-     */
-    select?: SprintSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sprint
-     */
-    omit?: SprintOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SprintInclude<ExtArgs> | null
-    where?: SprintWhereInput
-    orderBy?: SprintOrderByWithRelationInput | SprintOrderByWithRelationInput[]
-    cursor?: SprintWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SprintScalarFieldEnum | SprintScalarFieldEnum[]
   }
 
   /**
@@ -13761,7 +12503,7 @@ export namespace Prisma {
 
   export type DishMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     description: string | null
     priority: $Enums.Priority | null
@@ -13772,7 +12514,7 @@ export namespace Prisma {
 
   export type DishMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     description: string | null
     priority: $Enums.Priority | null
@@ -13783,7 +12525,7 @@ export namespace Prisma {
 
   export type DishCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     description: number
     priority: number
@@ -13804,7 +12546,7 @@ export namespace Prisma {
 
   export type DishMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     priority?: true
@@ -13815,7 +12557,7 @@ export namespace Prisma {
 
   export type DishMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     priority?: true
@@ -13826,7 +12568,7 @@ export namespace Prisma {
 
   export type DishCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     priority?: true
@@ -13924,7 +12666,7 @@ export namespace Prisma {
 
   export type DishGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string
     description: string | null
     priority: $Enums.Priority
@@ -13954,14 +12696,14 @@ export namespace Prisma {
 
   export type DishSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     priority?: boolean
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
     dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
     templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
@@ -13970,31 +12712,31 @@ export namespace Prisma {
 
   export type DishSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     priority?: boolean
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dish"]>
 
   export type DishSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     priority?: boolean
     yield?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dish"]>
 
   export type DishSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     priority?: boolean
@@ -14003,32 +12745,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DishOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "description" | "priority" | "yield" | "createdAt" | "updatedAt", ExtArgs["result"]["dish"]>
+  export type DishOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "priority" | "yield" | "createdAt" | "updatedAt", ExtArgs["result"]["dish"]>
   export type DishInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
     dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
     templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
     _count?: boolean | DishCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DishIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DishIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $DishPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Dish"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       ingredients: Prisma.$DishIngredientPayload<ExtArgs>[]
       dayPlanEntries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
       templateEntries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string
       description: string | null
       priority: $Enums.Priority
@@ -14429,7 +13171,7 @@ export namespace Prisma {
    */
   export interface Prisma__DishClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ingredients<T extends Dish$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Dish$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dayPlanEntries<T extends Dish$dayPlanEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$dayPlanEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     templateEntries<T extends Dish$templateEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$templateEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -14463,7 +13205,7 @@ export namespace Prisma {
    */
   interface DishFieldRefs {
     readonly id: FieldRef<"Dish", 'String'>
-    readonly personId: FieldRef<"Dish", 'String'>
+    readonly userId: FieldRef<"Dish", 'String'>
     readonly name: FieldRef<"Dish", 'String'>
     readonly description: FieldRef<"Dish", 'String'>
     readonly priority: FieldRef<"Dish", 'Priority'>
@@ -16078,7 +14820,7 @@ export namespace Prisma {
 
   export type DayTemplateMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16086,7 +14828,7 @@ export namespace Prisma {
 
   export type DayTemplateMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -16094,7 +14836,7 @@ export namespace Prisma {
 
   export type DayTemplateCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     createdAt: number
     updatedAt: number
@@ -16104,7 +14846,7 @@ export namespace Prisma {
 
   export type DayTemplateMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -16112,7 +14854,7 @@ export namespace Prisma {
 
   export type DayTemplateMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -16120,7 +14862,7 @@ export namespace Prisma {
 
   export type DayTemplateCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -16201,7 +14943,7 @@ export namespace Prisma {
 
   export type DayTemplateGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string
     createdAt: Date
     updatedAt: Date
@@ -16226,11 +14968,11 @@ export namespace Prisma {
 
   export type DayTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
     dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
     _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
@@ -16238,54 +14980,54 @@ export namespace Prisma {
 
   export type DayTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayTemplate"]>
 
   export type DayTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayTemplate"]>
 
   export type DayTemplateSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DayTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["dayTemplate"]>
+  export type DayTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["dayTemplate"]>
   export type DayTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
     dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
     _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DayTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $DayTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DayTemplate"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       entries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
       dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string
       createdAt: Date
       updatedAt: Date
@@ -16683,7 +15425,7 @@ export namespace Prisma {
    */
   export interface Prisma__DayTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     entries<T extends DayTemplate$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dayPlans<T extends DayTemplate$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -16716,7 +15458,7 @@ export namespace Prisma {
    */
   interface DayTemplateFieldRefs {
     readonly id: FieldRef<"DayTemplate", 'String'>
-    readonly personId: FieldRef<"DayTemplate", 'String'>
+    readonly userId: FieldRef<"DayTemplate", 'String'>
     readonly name: FieldRef<"DayTemplate", 'String'>
     readonly createdAt: FieldRef<"DayTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"DayTemplate", 'DateTime'>
@@ -18317,7 +17059,7 @@ export namespace Prisma {
 
   export type WeekPlanMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     startDate: Date | null
     createdAt: Date | null
@@ -18326,7 +17068,7 @@ export namespace Prisma {
 
   export type WeekPlanMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     startDate: Date | null
     createdAt: Date | null
@@ -18335,7 +17077,7 @@ export namespace Prisma {
 
   export type WeekPlanCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     startDate: number
     createdAt: number
@@ -18346,7 +17088,7 @@ export namespace Prisma {
 
   export type WeekPlanMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     startDate?: true
     createdAt?: true
@@ -18355,7 +17097,7 @@ export namespace Prisma {
 
   export type WeekPlanMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     startDate?: true
     createdAt?: true
@@ -18364,7 +17106,7 @@ export namespace Prisma {
 
   export type WeekPlanCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     startDate?: true
     createdAt?: true
@@ -18446,7 +17188,7 @@ export namespace Prisma {
 
   export type WeekPlanGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string | null
     startDate: Date
     createdAt: Date
@@ -18472,12 +17214,12 @@ export namespace Prisma {
 
   export type WeekPlanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
     shoppingLists?: boolean | WeekPlan$shoppingListsArgs<ExtArgs>
     _count?: boolean | WeekPlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -18485,57 +17227,57 @@ export namespace Prisma {
 
   export type WeekPlanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["weekPlan"]>
 
   export type WeekPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["weekPlan"]>
 
   export type WeekPlanSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "startDate" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
+  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "startDate" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
   export type WeekPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
     shoppingLists?: boolean | WeekPlan$shoppingListsArgs<ExtArgs>
     _count?: boolean | WeekPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WeekPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WeekPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $WeekPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WeekPlan"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
       shoppingLists: Prisma.$ShoppingListPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string | null
       startDate: Date
       createdAt: Date
@@ -18934,7 +17676,7 @@ export namespace Prisma {
    */
   export interface Prisma__WeekPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dayPlans<T extends WeekPlan$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, WeekPlan$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shoppingLists<T extends WeekPlan$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, WeekPlan$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -18967,7 +17709,7 @@ export namespace Prisma {
    */
   interface WeekPlanFieldRefs {
     readonly id: FieldRef<"WeekPlan", 'String'>
-    readonly personId: FieldRef<"WeekPlan", 'String'>
+    readonly userId: FieldRef<"WeekPlan", 'String'>
     readonly name: FieldRef<"WeekPlan", 'String'>
     readonly startDate: FieldRef<"WeekPlan", 'DateTime'>
     readonly createdAt: FieldRef<"WeekPlan", 'DateTime'>
@@ -19451,7 +18193,7 @@ export namespace Prisma {
 
   export type DayPlanMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     weekPlanId: string | null
     templateId: string | null
     date: Date | null
@@ -19462,7 +18204,7 @@ export namespace Prisma {
 
   export type DayPlanMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     weekPlanId: string | null
     templateId: string | null
     date: Date | null
@@ -19473,7 +18215,7 @@ export namespace Prisma {
 
   export type DayPlanCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     weekPlanId: number
     templateId: number
     date: number
@@ -19486,7 +18228,7 @@ export namespace Prisma {
 
   export type DayPlanMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     templateId?: true
     date?: true
@@ -19497,7 +18239,7 @@ export namespace Prisma {
 
   export type DayPlanMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     templateId?: true
     date?: true
@@ -19508,7 +18250,7 @@ export namespace Prisma {
 
   export type DayPlanCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     templateId?: true
     date?: true
@@ -19592,7 +18334,7 @@ export namespace Prisma {
 
   export type DayPlanGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     weekPlanId: string | null
     templateId: string | null
     date: Date
@@ -19620,14 +18362,14 @@ export namespace Prisma {
 
   export type DayPlanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     templateId?: boolean
     date?: boolean
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
     entries?: boolean | DayPlan$entriesArgs<ExtArgs>
@@ -19636,35 +18378,35 @@ export namespace Prisma {
 
   export type DayPlanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     templateId?: boolean
     date?: boolean
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
 
   export type DayPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     templateId?: boolean
     date?: boolean
     adherence?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
 
   export type DayPlanSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     templateId?: boolean
     date?: boolean
@@ -19673,21 +18415,21 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DayPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "weekPlanId" | "templateId" | "date" | "adherence" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPlan"]>
+  export type DayPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "weekPlanId" | "templateId" | "date" | "adherence" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPlan"]>
   export type DayPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
     entries?: boolean | DayPlan$entriesArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
   export type DayPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
@@ -19695,14 +18437,14 @@ export namespace Prisma {
   export type $DayPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DayPlan"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
       template: Prisma.$DayTemplatePayload<ExtArgs> | null
       entries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       weekPlanId: string | null
       templateId: string | null
       date: Date
@@ -20103,7 +18845,7 @@ export namespace Prisma {
    */
   export interface Prisma__DayPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends DayPlan$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     template<T extends DayPlan$templateArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$templateArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     entries<T extends DayPlan$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -20137,7 +18879,7 @@ export namespace Prisma {
    */
   interface DayPlanFieldRefs {
     readonly id: FieldRef<"DayPlan", 'String'>
-    readonly personId: FieldRef<"DayPlan", 'String'>
+    readonly userId: FieldRef<"DayPlan", 'String'>
     readonly weekPlanId: FieldRef<"DayPlan", 'String'>
     readonly templateId: FieldRef<"DayPlan", 'String'>
     readonly date: FieldRef<"DayPlan", 'DateTime'>
@@ -21755,7 +20497,7 @@ export namespace Prisma {
 
   export type ShoppingListMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     weekPlanId: string | null
     name: string | null
     createdAt: Date | null
@@ -21764,7 +20506,7 @@ export namespace Prisma {
 
   export type ShoppingListMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     weekPlanId: string | null
     name: string | null
     createdAt: Date | null
@@ -21773,7 +20515,7 @@ export namespace Prisma {
 
   export type ShoppingListCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     weekPlanId: number
     name: number
     createdAt: number
@@ -21784,7 +20526,7 @@ export namespace Prisma {
 
   export type ShoppingListMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     name?: true
     createdAt?: true
@@ -21793,7 +20535,7 @@ export namespace Prisma {
 
   export type ShoppingListMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     name?: true
     createdAt?: true
@@ -21802,7 +20544,7 @@ export namespace Prisma {
 
   export type ShoppingListCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     weekPlanId?: true
     name?: true
     createdAt?: true
@@ -21884,7 +20626,7 @@ export namespace Prisma {
 
   export type ShoppingListGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     weekPlanId: string | null
     name: string | null
     createdAt: Date
@@ -21910,12 +20652,12 @@ export namespace Prisma {
 
   export type ShoppingListSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
     items?: boolean | ShoppingList$itemsArgs<ExtArgs>
     _count?: boolean | ShoppingListCountOutputTypeDefaultArgs<ExtArgs>
@@ -21923,61 +20665,61 @@ export namespace Prisma {
 
   export type ShoppingListSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }, ExtArgs["result"]["shoppingList"]>
 
   export type ShoppingListSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }, ExtArgs["result"]["shoppingList"]>
 
   export type ShoppingListSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     weekPlanId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ShoppingListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "weekPlanId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["shoppingList"]>
+  export type ShoppingListOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "weekPlanId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["shoppingList"]>
   export type ShoppingListInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
     items?: boolean | ShoppingList$itemsArgs<ExtArgs>
     _count?: boolean | ShoppingListCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ShoppingListIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }
   export type ShoppingListIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | ShoppingList$weekPlanArgs<ExtArgs>
   }
 
   export type $ShoppingListPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ShoppingList"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
       items: Prisma.$ShoppingListItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       weekPlanId: string | null
       name: string | null
       createdAt: Date
@@ -22376,7 +21118,7 @@ export namespace Prisma {
    */
   export interface Prisma__ShoppingListClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends ShoppingList$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, ShoppingList$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     items<T extends ShoppingList$itemsArgs<ExtArgs> = {}>(args?: Subset<T, ShoppingList$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -22409,7 +21151,7 @@ export namespace Prisma {
    */
   interface ShoppingListFieldRefs {
     readonly id: FieldRef<"ShoppingList", 'String'>
-    readonly personId: FieldRef<"ShoppingList", 'String'>
+    readonly userId: FieldRef<"ShoppingList", 'String'>
     readonly weekPlanId: FieldRef<"ShoppingList", 'String'>
     readonly name: FieldRef<"ShoppingList", 'String'>
     readonly createdAt: FieldRef<"ShoppingList", 'DateTime'>
@@ -24016,7 +22758,7 @@ export namespace Prisma {
 
   export type LifeSphereMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     color: string | null
     icon: string | null
@@ -24027,7 +22769,7 @@ export namespace Prisma {
 
   export type LifeSphereMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     color: string | null
     icon: string | null
@@ -24038,7 +22780,7 @@ export namespace Prisma {
 
   export type LifeSphereCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     color: number
     icon: number
@@ -24059,7 +22801,7 @@ export namespace Prisma {
 
   export type LifeSphereMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     color?: true
     icon?: true
@@ -24070,7 +22812,7 @@ export namespace Prisma {
 
   export type LifeSphereMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     color?: true
     icon?: true
@@ -24081,7 +22823,7 @@ export namespace Prisma {
 
   export type LifeSphereCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     color?: true
     icon?: true
@@ -24179,7 +22921,7 @@ export namespace Prisma {
 
   export type LifeSphereGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -24209,14 +22951,14 @@ export namespace Prisma {
 
   export type LifeSphereSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     color?: boolean
     icon?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
@@ -24225,31 +22967,31 @@ export namespace Prisma {
 
   export type LifeSphereSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     color?: boolean
     icon?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
   export type LifeSphereSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     color?: boolean
     icon?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
   export type LifeSphereSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     color?: boolean
     icon?: boolean
@@ -24258,32 +23000,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LifeSphereOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "color" | "icon" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["lifeSphere"]>
+  export type LifeSphereOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "color" | "icon" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["lifeSphere"]>
   export type LifeSphereInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $LifeSpherePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LifeSphere"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       objectives: Prisma.$ObjectivePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string
       color: string
       icon: string
@@ -24684,7 +23426,7 @@ export namespace Prisma {
    */
   export interface Prisma__LifeSphereClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     tasks<T extends LifeSphere$tasksArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     milestones<T extends LifeSphere$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     objectives<T extends LifeSphere$objectivesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$objectivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -24718,7 +23460,7 @@ export namespace Prisma {
    */
   interface LifeSphereFieldRefs {
     readonly id: FieldRef<"LifeSphere", 'String'>
-    readonly personId: FieldRef<"LifeSphere", 'String'>
+    readonly userId: FieldRef<"LifeSphere", 'String'>
     readonly name: FieldRef<"LifeSphere", 'String'>
     readonly color: FieldRef<"LifeSphere", 'String'>
     readonly icon: FieldRef<"LifeSphere", 'String'>
@@ -25240,7 +23982,7 @@ export namespace Prisma {
 
   export type TaskMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     description: string | null
     icon: string | null
@@ -25262,7 +24004,7 @@ export namespace Prisma {
 
   export type TaskMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     description: string | null
     icon: string | null
@@ -25284,7 +24026,7 @@ export namespace Prisma {
 
   export type TaskCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     title: number
     description: number
     icon: number
@@ -25318,7 +24060,7 @@ export namespace Prisma {
 
   export type TaskMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     icon?: true
@@ -25340,7 +24082,7 @@ export namespace Prisma {
 
   export type TaskMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     icon?: true
@@ -25362,7 +24104,7 @@ export namespace Prisma {
 
   export type TaskCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     icon?: true
@@ -25471,7 +24213,7 @@ export namespace Prisma {
 
   export type TaskGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     title: string
     description: string | null
     icon: string | null
@@ -25512,7 +24254,7 @@ export namespace Prisma {
 
   export type TaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     icon?: boolean
@@ -25530,7 +24272,7 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -25540,7 +24282,7 @@ export namespace Prisma {
 
   export type TaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     icon?: boolean
@@ -25558,7 +24300,7 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -25566,7 +24308,7 @@ export namespace Prisma {
 
   export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     icon?: boolean
@@ -25584,7 +24326,7 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -25592,7 +24334,7 @@ export namespace Prisma {
 
   export type TaskSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     icon?: boolean
@@ -25612,9 +24354,9 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "description" | "icon" | "status" | "priority" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -25622,13 +24364,13 @@ export namespace Prisma {
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
   }
   export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -25637,7 +24379,7 @@ export namespace Prisma {
   export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Task"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       parent: Prisma.$TaskPayload<ExtArgs> | null
       children: Prisma.$TaskPayload<ExtArgs>[]
       sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
@@ -25645,7 +24387,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       title: string
       description: string | null
       icon: string | null
@@ -26057,7 +24799,7 @@ export namespace Prisma {
    */
   export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     parent<T extends Task$parentArgs<ExtArgs> = {}>(args?: Subset<T, Task$parentArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Task$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Task$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sphere<T extends Task$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Task$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -26092,7 +24834,7 @@ export namespace Prisma {
    */
   interface TaskFieldRefs {
     readonly id: FieldRef<"Task", 'String'>
-    readonly personId: FieldRef<"Task", 'String'>
+    readonly userId: FieldRef<"Task", 'String'>
     readonly title: FieldRef<"Task", 'String'>
     readonly description: FieldRef<"Task", 'String'>
     readonly icon: FieldRef<"Task", 'String'>
@@ -26644,7 +25386,7 @@ export namespace Prisma {
 
   export type DailyEntryMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     date: Date | null
     sleepBedtime: Date | null
     sleepWakeup: Date | null
@@ -26670,7 +25412,7 @@ export namespace Prisma {
 
   export type DailyEntryMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     date: Date | null
     sleepBedtime: Date | null
     sleepWakeup: Date | null
@@ -26696,7 +25438,7 @@ export namespace Prisma {
 
   export type DailyEntryCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     date: number
     sleepBedtime: number
     sleepWakeup: number
@@ -26747,7 +25489,7 @@ export namespace Prisma {
 
   export type DailyEntryMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     date?: true
     sleepBedtime?: true
     sleepWakeup?: true
@@ -26773,7 +25515,7 @@ export namespace Prisma {
 
   export type DailyEntryMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     date?: true
     sleepBedtime?: true
     sleepWakeup?: true
@@ -26799,7 +25541,7 @@ export namespace Prisma {
 
   export type DailyEntryCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     date?: true
     sleepBedtime?: true
     sleepWakeup?: true
@@ -26915,7 +25657,7 @@ export namespace Prisma {
 
   export type DailyEntryGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     date: Date
     sleepBedtime: Date | null
     sleepWakeup: Date | null
@@ -26963,7 +25705,7 @@ export namespace Prisma {
 
   export type DailyEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     date?: boolean
     sleepBedtime?: boolean
     sleepWakeup?: boolean
@@ -26988,12 +25730,12 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     date?: boolean
     sleepBedtime?: boolean
     sleepWakeup?: boolean
@@ -27018,12 +25760,12 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     date?: boolean
     sleepBedtime?: boolean
     sleepWakeup?: boolean
@@ -27048,12 +25790,12 @@ export namespace Prisma {
     brainDump?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
   export type DailyEntrySelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     date?: boolean
     sleepBedtime?: boolean
     sleepWakeup?: boolean
@@ -27080,25 +25822,25 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "morningSunlight" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "morningSunlight" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DailyEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type DailyEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $DailyEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DailyEntry"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       date: Date
       sleepBedtime: Date | null
       sleepWakeup: Date | null
@@ -27517,7 +26259,7 @@ export namespace Prisma {
    */
   export interface Prisma__DailyEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27548,7 +26290,7 @@ export namespace Prisma {
    */
   interface DailyEntryFieldRefs {
     readonly id: FieldRef<"DailyEntry", 'String'>
-    readonly personId: FieldRef<"DailyEntry", 'String'>
+    readonly userId: FieldRef<"DailyEntry", 'String'>
     readonly date: FieldRef<"DailyEntry", 'DateTime'>
     readonly sleepBedtime: FieldRef<"DailyEntry", 'DateTime'>
     readonly sleepWakeup: FieldRef<"DailyEntry", 'DateTime'>
@@ -28014,7 +26756,7 @@ export namespace Prisma {
 
   export type HabitMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     anchor: string | null
     action: string | null
@@ -28027,7 +26769,7 @@ export namespace Prisma {
 
   export type HabitMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     anchor: string | null
     action: string | null
@@ -28040,7 +26782,7 @@ export namespace Prisma {
 
   export type HabitCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     anchor: number
     action: number
@@ -28063,7 +26805,7 @@ export namespace Prisma {
 
   export type HabitMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     anchor?: true
     action?: true
@@ -28076,7 +26818,7 @@ export namespace Prisma {
 
   export type HabitMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     anchor?: true
     action?: true
@@ -28089,7 +26831,7 @@ export namespace Prisma {
 
   export type HabitCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     anchor?: true
     action?: true
@@ -28189,7 +26931,7 @@ export namespace Prisma {
 
   export type HabitGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string
     anchor: string
     action: string
@@ -28221,7 +26963,7 @@ export namespace Prisma {
 
   export type HabitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     anchor?: boolean
     action?: boolean
@@ -28230,14 +26972,14 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     anchor?: boolean
     action?: boolean
@@ -28246,12 +26988,12 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     anchor?: boolean
     action?: boolean
@@ -28260,12 +27002,12 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     anchor?: boolean
     action?: boolean
@@ -28276,28 +27018,28 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "anchor" | "action" | "celebration" | "order" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "anchor" | "action" | "celebration" | "order" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HabitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type HabitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $HabitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Habit"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       completions: Prisma.$HabitCompletionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string
       anchor: string
       action: string
@@ -28700,7 +27442,7 @@ export namespace Prisma {
    */
   export interface Prisma__HabitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     completions<T extends Habit$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -28732,7 +27474,7 @@ export namespace Prisma {
    */
   interface HabitFieldRefs {
     readonly id: FieldRef<"Habit", 'String'>
-    readonly personId: FieldRef<"Habit", 'String'>
+    readonly userId: FieldRef<"Habit", 'String'>
     readonly name: FieldRef<"Habit", 'String'>
     readonly anchor: FieldRef<"Habit", 'String'>
     readonly action: FieldRef<"Habit", 'String'>
@@ -30256,7 +28998,7 @@ export namespace Prisma {
 
   export type LibraryItemMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     author: string | null
     url: string | null
@@ -30270,7 +29012,7 @@ export namespace Prisma {
 
   export type LibraryItemMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     author: string | null
     url: string | null
@@ -30284,7 +29026,7 @@ export namespace Prisma {
 
   export type LibraryItemCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     title: number
     author: number
     url: number
@@ -30308,7 +29050,7 @@ export namespace Prisma {
 
   export type LibraryItemMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     author?: true
     url?: true
@@ -30322,7 +29064,7 @@ export namespace Prisma {
 
   export type LibraryItemMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     author?: true
     url?: true
@@ -30336,7 +29078,7 @@ export namespace Prisma {
 
   export type LibraryItemCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     author?: true
     url?: true
@@ -30437,7 +29179,7 @@ export namespace Prisma {
 
   export type LibraryItemGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     title: string
     author: string | null
     url: string | null
@@ -30470,7 +29212,7 @@ export namespace Prisma {
 
   export type LibraryItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     author?: boolean
     url?: boolean
@@ -30480,12 +29222,12 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     author?: boolean
     url?: boolean
@@ -30495,12 +29237,12 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     author?: boolean
     url?: boolean
@@ -30510,12 +29252,12 @@ export namespace Prisma {
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["libraryItem"]>
 
   export type LibraryItemSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     author?: boolean
     url?: boolean
@@ -30527,25 +29269,25 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LibraryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "author" | "url" | "type" | "status" | "rating" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["libraryItem"]>
+  export type LibraryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "author" | "url" | "type" | "status" | "rating" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["libraryItem"]>
   export type LibraryItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LibraryItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LibraryItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $LibraryItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LibraryItem"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       title: string
       author: string | null
       url: string | null
@@ -30949,7 +29691,7 @@ export namespace Prisma {
    */
   export interface Prisma__LibraryItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -30980,7 +29722,7 @@ export namespace Prisma {
    */
   interface LibraryItemFieldRefs {
     readonly id: FieldRef<"LibraryItem", 'String'>
-    readonly personId: FieldRef<"LibraryItem", 'String'>
+    readonly userId: FieldRef<"LibraryItem", 'String'>
     readonly title: FieldRef<"LibraryItem", 'String'>
     readonly author: FieldRef<"LibraryItem", 'String'>
     readonly url: FieldRef<"LibraryItem", 'String'>
@@ -31433,7 +30175,7 @@ export namespace Prisma {
 
   export type WishlistItemMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     description: string | null
     url: string | null
@@ -31451,7 +30193,7 @@ export namespace Prisma {
 
   export type WishlistItemMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     name: string | null
     description: string | null
     url: string | null
@@ -31469,7 +30211,7 @@ export namespace Prisma {
 
   export type WishlistItemCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     name: number
     description: number
     url: number
@@ -31500,7 +30242,7 @@ export namespace Prisma {
 
   export type WishlistItemMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     url?: true
@@ -31518,7 +30260,7 @@ export namespace Prisma {
 
   export type WishlistItemMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     url?: true
@@ -31536,7 +30278,7 @@ export namespace Prisma {
 
   export type WishlistItemCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     name?: true
     description?: true
     url?: true
@@ -31642,7 +30384,7 @@ export namespace Prisma {
 
   export type WishlistItemGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     name: string
     description: string | null
     url: string | null
@@ -31680,7 +30422,7 @@ export namespace Prisma {
 
   export type WishlistItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     url?: boolean
@@ -31695,12 +30437,12 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     url?: boolean
@@ -31715,12 +30457,12 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     url?: boolean
@@ -31735,12 +30477,12 @@ export namespace Prisma {
     store?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wishlistItem"]>
 
   export type WishlistItemSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     name?: boolean
     description?: boolean
     url?: boolean
@@ -31757,25 +30499,25 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type WishlistItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "name" | "description" | "url" | "imageUrl" | "price" | "currency" | "priority" | "status" | "category" | "tags" | "necessity" | "store" | "createdAt" | "updatedAt", ExtArgs["result"]["wishlistItem"]>
+  export type WishlistItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "url" | "imageUrl" | "price" | "currency" | "priority" | "status" | "category" | "tags" | "necessity" | "store" | "createdAt" | "updatedAt", ExtArgs["result"]["wishlistItem"]>
   export type WishlistItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WishlistItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WishlistItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $WishlistItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WishlistItem"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       name: string
       description: string | null
       url: string | null
@@ -32184,7 +30926,7 @@ export namespace Prisma {
    */
   export interface Prisma__WishlistItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -32215,7 +30957,7 @@ export namespace Prisma {
    */
   interface WishlistItemFieldRefs {
     readonly id: FieldRef<"WishlistItem", 'String'>
-    readonly personId: FieldRef<"WishlistItem", 'String'>
+    readonly userId: FieldRef<"WishlistItem", 'String'>
     readonly name: FieldRef<"WishlistItem", 'String'>
     readonly description: FieldRef<"WishlistItem", 'String'>
     readonly url: FieldRef<"WishlistItem", 'String'>
@@ -33759,7 +32501,7 @@ export namespace Prisma {
 
   export type UserLanguageMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     languageId: string | null
     level: $Enums.CefrLevel | null
     totalXp: number | null
@@ -33769,7 +32511,7 @@ export namespace Prisma {
 
   export type UserLanguageMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     languageId: string | null
     level: $Enums.CefrLevel | null
     totalXp: number | null
@@ -33779,7 +32521,7 @@ export namespace Prisma {
 
   export type UserLanguageCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     languageId: number
     level: number
     totalXp: number
@@ -33799,7 +32541,7 @@ export namespace Prisma {
 
   export type UserLanguageMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     languageId?: true
     level?: true
     totalXp?: true
@@ -33809,7 +32551,7 @@ export namespace Prisma {
 
   export type UserLanguageMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     languageId?: true
     level?: true
     totalXp?: true
@@ -33819,7 +32561,7 @@ export namespace Prisma {
 
   export type UserLanguageCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     languageId?: true
     level?: true
     totalXp?: true
@@ -33916,7 +32658,7 @@ export namespace Prisma {
 
   export type UserLanguageGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     languageId: string
     level: $Enums.CefrLevel
     totalXp: number
@@ -33945,13 +32687,13 @@ export namespace Prisma {
 
   export type UserLanguageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     languageId?: boolean
     level?: boolean
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
     sphereProgress?: boolean | UserLanguage$sphereProgressArgs<ExtArgs>
     vocabularyItems?: boolean | UserLanguage$vocabularyItemsArgs<ExtArgs>
@@ -33962,31 +32704,31 @@ export namespace Prisma {
 
   export type UserLanguageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     languageId?: boolean
     level?: boolean
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userLanguage"]>
 
   export type UserLanguageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     languageId?: boolean
     level?: boolean
     totalXp?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userLanguage"]>
 
   export type UserLanguageSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     languageId?: boolean
     level?: boolean
     totalXp?: boolean
@@ -33994,9 +32736,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserLanguageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "languageId" | "level" | "totalXp" | "createdAt" | "updatedAt", ExtArgs["result"]["userLanguage"]>
+  export type UserLanguageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "languageId" | "level" | "totalXp" | "createdAt" | "updatedAt", ExtArgs["result"]["userLanguage"]>
   export type UserLanguageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
     sphereProgress?: boolean | UserLanguage$sphereProgressArgs<ExtArgs>
     vocabularyItems?: boolean | UserLanguage$vocabularyItemsArgs<ExtArgs>
@@ -34005,18 +32747,18 @@ export namespace Prisma {
     _count?: boolean | UserLanguageCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserLanguageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }
   export type UserLanguageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     language?: boolean | LanguageDefaultArgs<ExtArgs>
   }
 
   export type $UserLanguagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserLanguage"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       language: Prisma.$LanguagePayload<ExtArgs>
       sphereProgress: Prisma.$LanguageSphereProgressPayload<ExtArgs>[]
       vocabularyItems: Prisma.$VocabularyItemPayload<ExtArgs>[]
@@ -34025,7 +32767,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       languageId: string
       level: $Enums.CefrLevel
       totalXp: number
@@ -34425,7 +33167,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserLanguageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     language<T extends LanguageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LanguageDefaultArgs<ExtArgs>>): Prisma__LanguageClient<$Result.GetResult<Prisma.$LanguagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sphereProgress<T extends UserLanguage$sphereProgressArgs<ExtArgs> = {}>(args?: Subset<T, UserLanguage$sphereProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LanguageSphereProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vocabularyItems<T extends UserLanguage$vocabularyItemsArgs<ExtArgs> = {}>(args?: Subset<T, UserLanguage$vocabularyItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VocabularyItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -34461,7 +33203,7 @@ export namespace Prisma {
    */
   interface UserLanguageFieldRefs {
     readonly id: FieldRef<"UserLanguage", 'String'>
-    readonly personId: FieldRef<"UserLanguage", 'String'>
+    readonly userId: FieldRef<"UserLanguage", 'String'>
     readonly languageId: FieldRef<"UserLanguage", 'String'>
     readonly level: FieldRef<"UserLanguage", 'CefrLevel'>
     readonly totalXp: FieldRef<"UserLanguage", 'Int'>
@@ -39525,7 +38267,7 @@ export namespace Prisma {
 
   export type VisionMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     content: string | null
     createdAt: Date | null
@@ -39534,7 +38276,7 @@ export namespace Prisma {
 
   export type VisionMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     content: string | null
     createdAt: Date | null
@@ -39543,7 +38285,7 @@ export namespace Prisma {
 
   export type VisionCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     title: number
     content: number
     createdAt: number
@@ -39554,7 +38296,7 @@ export namespace Prisma {
 
   export type VisionMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     content?: true
     createdAt?: true
@@ -39563,7 +38305,7 @@ export namespace Prisma {
 
   export type VisionMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     content?: true
     createdAt?: true
@@ -39572,7 +38314,7 @@ export namespace Prisma {
 
   export type VisionCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     content?: true
     createdAt?: true
@@ -39654,7 +38396,7 @@ export namespace Prisma {
 
   export type VisionGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     title: string
     content: string | null
     createdAt: Date
@@ -39680,62 +38422,62 @@ export namespace Prisma {
 
   export type VisionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vision"]>
 
   export type VisionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vision"]>
 
   export type VisionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vision"]>
 
   export type VisionSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VisionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "content" | "createdAt" | "updatedAt", ExtArgs["result"]["vision"]>
+  export type VisionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "content" | "createdAt" | "updatedAt", ExtArgs["result"]["vision"]>
   export type VisionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type VisionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type VisionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $VisionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Vision"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       title: string
       content: string | null
       createdAt: Date
@@ -40134,7 +38876,7 @@ export namespace Prisma {
    */
   export interface Prisma__VisionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -40165,7 +38907,7 @@ export namespace Prisma {
    */
   interface VisionFieldRefs {
     readonly id: FieldRef<"Vision", 'String'>
-    readonly personId: FieldRef<"Vision", 'String'>
+    readonly userId: FieldRef<"Vision", 'String'>
     readonly title: FieldRef<"Vision", 'String'>
     readonly content: FieldRef<"Vision", 'String'>
     readonly createdAt: FieldRef<"Vision", 'DateTime'>
@@ -40601,7 +39343,7 @@ export namespace Prisma {
 
   export type MilestoneMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     description: string | null
     targetDate: Date | null
@@ -40613,7 +39355,7 @@ export namespace Prisma {
 
   export type MilestoneMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     title: string | null
     description: string | null
     targetDate: Date | null
@@ -40625,7 +39367,7 @@ export namespace Prisma {
 
   export type MilestoneCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     title: number
     description: number
     targetDate: number
@@ -40639,7 +39381,7 @@ export namespace Prisma {
 
   export type MilestoneMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     targetDate?: true
@@ -40651,7 +39393,7 @@ export namespace Prisma {
 
   export type MilestoneMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     targetDate?: true
@@ -40663,7 +39405,7 @@ export namespace Prisma {
 
   export type MilestoneCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     title?: true
     description?: true
     targetDate?: true
@@ -40748,7 +39490,7 @@ export namespace Prisma {
 
   export type MilestoneGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     title: string
     description: string | null
     targetDate: Date | null
@@ -40777,7 +39519,7 @@ export namespace Prisma {
 
   export type MilestoneSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     targetDate?: boolean
@@ -40785,13 +39527,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["milestone"]>
 
   export type MilestoneSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     targetDate?: boolean
@@ -40799,13 +39541,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["milestone"]>
 
   export type MilestoneSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     targetDate?: boolean
@@ -40813,13 +39555,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["milestone"]>
 
   export type MilestoneSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     title?: boolean
     description?: boolean
     targetDate?: boolean
@@ -40829,29 +39571,29 @@ export namespace Prisma {
     sphereId?: boolean
   }
 
-  export type MilestoneOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "title" | "description" | "targetDate" | "completed" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["milestone"]>
+  export type MilestoneOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "targetDate" | "completed" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["milestone"]>
   export type MilestoneInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }
   export type MilestoneIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }
   export type MilestoneIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     sphere?: boolean | Milestone$sphereArgs<ExtArgs>
   }
 
   export type $MilestonePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Milestone"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       title: string
       description: string | null
       targetDate: Date | null
@@ -41253,7 +39995,7 @@ export namespace Prisma {
    */
   export interface Prisma__MilestoneClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sphere<T extends Milestone$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Milestone$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -41285,7 +40027,7 @@ export namespace Prisma {
    */
   interface MilestoneFieldRefs {
     readonly id: FieldRef<"Milestone", 'String'>
-    readonly personId: FieldRef<"Milestone", 'String'>
+    readonly userId: FieldRef<"Milestone", 'String'>
     readonly title: FieldRef<"Milestone", 'String'>
     readonly description: FieldRef<"Milestone", 'String'>
     readonly targetDate: FieldRef<"Milestone", 'DateTime'>
@@ -41755,7 +40497,7 @@ export namespace Prisma {
 
   export type SprintMinAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     number: number | null
     year: number | null
     startDate: Date | null
@@ -41767,7 +40509,7 @@ export namespace Prisma {
 
   export type SprintMaxAggregateOutputType = {
     id: string | null
-    personId: string | null
+    userId: string | null
     number: number | null
     year: number | null
     startDate: Date | null
@@ -41779,7 +40521,7 @@ export namespace Prisma {
 
   export type SprintCountAggregateOutputType = {
     id: number
-    personId: number
+    userId: number
     number: number
     year: number
     startDate: number
@@ -41803,7 +40545,7 @@ export namespace Prisma {
 
   export type SprintMinAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     number?: true
     year?: true
     startDate?: true
@@ -41815,7 +40557,7 @@ export namespace Prisma {
 
   export type SprintMaxAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     number?: true
     year?: true
     startDate?: true
@@ -41827,7 +40569,7 @@ export namespace Prisma {
 
   export type SprintCountAggregateInputType = {
     id?: true
-    personId?: true
+    userId?: true
     number?: true
     year?: true
     startDate?: true
@@ -41926,7 +40668,7 @@ export namespace Prisma {
 
   export type SprintGroupByOutputType = {
     id: string
-    personId: string
+    userId: string
     number: number
     year: number
     startDate: Date
@@ -41957,7 +40699,7 @@ export namespace Prisma {
 
   export type SprintSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     number?: boolean
     year?: boolean
     startDate?: boolean
@@ -41965,7 +40707,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objectives?: boolean | Sprint$objectivesArgs<ExtArgs>
     reviews?: boolean | Sprint$reviewsArgs<ExtArgs>
     _count?: boolean | SprintCountOutputTypeDefaultArgs<ExtArgs>
@@ -41973,7 +40715,7 @@ export namespace Prisma {
 
   export type SprintSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     number?: boolean
     year?: boolean
     startDate?: boolean
@@ -41981,12 +40723,12 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sprint"]>
 
   export type SprintSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     number?: boolean
     year?: boolean
     startDate?: boolean
@@ -41994,12 +40736,12 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sprint"]>
 
   export type SprintSelectScalar = {
     id?: boolean
-    personId?: boolean
+    userId?: boolean
     number?: boolean
     year?: boolean
     startDate?: boolean
@@ -42009,30 +40751,30 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SprintOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "personId" | "number" | "year" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["sprint"]>
+  export type SprintOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "number" | "year" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["sprint"]>
   export type SprintInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objectives?: boolean | Sprint$objectivesArgs<ExtArgs>
     reviews?: boolean | Sprint$reviewsArgs<ExtArgs>
     _count?: boolean | SprintCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SprintIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type SprintIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $SprintPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Sprint"
     objects: {
-      person: Prisma.$NutritionPersonPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       objectives: Prisma.$ObjectivePayload<ExtArgs>[]
       reviews: Prisma.$SprintReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      personId: string
+      userId: string
       number: number
       year: number
       startDate: Date
@@ -42434,7 +41176,7 @@ export namespace Prisma {
    */
   export interface Prisma__SprintClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     objectives<T extends Sprint$objectivesArgs<ExtArgs> = {}>(args?: Subset<T, Sprint$objectivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends Sprint$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Sprint$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SprintReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -42467,7 +41209,7 @@ export namespace Prisma {
    */
   interface SprintFieldRefs {
     readonly id: FieldRef<"Sprint", 'String'>
-    readonly personId: FieldRef<"Sprint", 'String'>
+    readonly userId: FieldRef<"Sprint", 'String'>
     readonly number: FieldRef<"Sprint", 'Int'>
     readonly year: FieldRef<"Sprint", 'Int'>
     readonly startDate: FieldRef<"Sprint", 'DateTime'>
@@ -49873,20 +48615,9 @@ export namespace Prisma {
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
-  export const ProfileScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    name: 'name',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
-
-
   export const NutritionPersonScalarFieldEnum: {
     id: 'id',
-    profileId: 'profileId',
+    userId: 'userId',
     name: 'name',
     targetCalories: 'targetCalories',
     targetProtein: 'targetProtein',
@@ -49923,7 +48654,7 @@ export namespace Prisma {
 
   export const DishScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     description: 'description',
     priority: 'priority',
@@ -49948,7 +48679,7 @@ export namespace Prisma {
 
   export const DayTemplateScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -49971,7 +48702,7 @@ export namespace Prisma {
 
   export const WeekPlanScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     startDate: 'startDate',
     createdAt: 'createdAt',
@@ -49983,7 +48714,7 @@ export namespace Prisma {
 
   export const DayPlanScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     weekPlanId: 'weekPlanId',
     templateId: 'templateId',
     date: 'date',
@@ -50009,7 +48740,7 @@ export namespace Prisma {
 
   export const ShoppingListScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     weekPlanId: 'weekPlanId',
     name: 'name',
     createdAt: 'createdAt',
@@ -50033,7 +48764,7 @@ export namespace Prisma {
 
   export const LifeSphereScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     color: 'color',
     icon: 'icon',
@@ -50047,7 +48778,7 @@ export namespace Prisma {
 
   export const TaskScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     title: 'title',
     description: 'description',
     icon: 'icon',
@@ -50072,7 +48803,7 @@ export namespace Prisma {
 
   export const DailyEntryScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     date: 'date',
     sleepBedtime: 'sleepBedtime',
     sleepWakeup: 'sleepWakeup',
@@ -50104,7 +48835,7 @@ export namespace Prisma {
 
   export const HabitScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     anchor: 'anchor',
     action: 'action',
@@ -50130,7 +48861,7 @@ export namespace Prisma {
 
   export const LibraryItemScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     title: 'title',
     author: 'author',
     url: 'url',
@@ -50147,7 +48878,7 @@ export namespace Prisma {
 
   export const WishlistItemScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     name: 'name',
     description: 'description',
     url: 'url',
@@ -50181,7 +48912,7 @@ export namespace Prisma {
 
   export const UserLanguageScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     languageId: 'languageId',
     level: 'level',
     totalXp: 'totalXp',
@@ -50251,7 +48982,7 @@ export namespace Prisma {
 
   export const VisionScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     title: 'title',
     content: 'content',
     createdAt: 'createdAt',
@@ -50263,7 +48994,7 @@ export namespace Prisma {
 
   export const MilestoneScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     title: 'title',
     description: 'description',
     targetDate: 'targetDate',
@@ -50278,7 +49009,7 @@ export namespace Prisma {
 
   export const SprintScalarFieldEnum: {
     id: 'id',
-    personId: 'personId',
+    userId: 'userId',
     number: 'number',
     year: 'year',
     startDate: 'startDate',
@@ -50781,7 +49512,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
-    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
+    nutritionPerson?: XOR<NutritionPersonNullableScalarRelationFilter, NutritionPersonWhereInput> | null
+    dishes?: DishListRelationFilter
+    dayTemplates?: DayTemplateListRelationFilter
+    weekPlans?: WeekPlanListRelationFilter
+    dayPlans?: DayPlanListRelationFilter
+    shoppingLists?: ShoppingListListRelationFilter
+    userLanguages?: UserLanguageListRelationFilter
+    tasks?: TaskListRelationFilter
+    dailyEntries?: DailyEntryListRelationFilter
+    habits?: HabitListRelationFilter
+    lifeSpheres?: LifeSphereListRelationFilter
+    libraryItems?: LibraryItemListRelationFilter
+    wishlistItems?: WishlistItemListRelationFilter
+    visions?: VisionListRelationFilter
+    milestones?: MilestoneListRelationFilter
+    sprints?: SprintListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -50796,7 +49542,22 @@ export namespace Prisma {
     updatedAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
-    profile?: ProfileOrderByWithRelationInput
+    nutritionPerson?: NutritionPersonOrderByWithRelationInput
+    dishes?: DishOrderByRelationAggregateInput
+    dayTemplates?: DayTemplateOrderByRelationAggregateInput
+    weekPlans?: WeekPlanOrderByRelationAggregateInput
+    dayPlans?: DayPlanOrderByRelationAggregateInput
+    shoppingLists?: ShoppingListOrderByRelationAggregateInput
+    userLanguages?: UserLanguageOrderByRelationAggregateInput
+    tasks?: TaskOrderByRelationAggregateInput
+    dailyEntries?: DailyEntryOrderByRelationAggregateInput
+    habits?: HabitOrderByRelationAggregateInput
+    lifeSpheres?: LifeSphereOrderByRelationAggregateInput
+    libraryItems?: LibraryItemOrderByRelationAggregateInput
+    wishlistItems?: WishlistItemOrderByRelationAggregateInput
+    visions?: VisionOrderByRelationAggregateInput
+    milestones?: MilestoneOrderByRelationAggregateInput
+    sprints?: SprintOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -50814,7 +49575,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
-    profile?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
+    nutritionPerson?: XOR<NutritionPersonNullableScalarRelationFilter, NutritionPersonWhereInput> | null
+    dishes?: DishListRelationFilter
+    dayTemplates?: DayTemplateListRelationFilter
+    weekPlans?: WeekPlanListRelationFilter
+    dayPlans?: DayPlanListRelationFilter
+    shoppingLists?: ShoppingListListRelationFilter
+    userLanguages?: UserLanguageListRelationFilter
+    tasks?: TaskListRelationFilter
+    dailyEntries?: DailyEntryListRelationFilter
+    habits?: HabitListRelationFilter
+    lifeSpheres?: LifeSphereListRelationFilter
+    libraryItems?: LibraryItemListRelationFilter
+    wishlistItems?: WishlistItemListRelationFilter
+    visions?: VisionListRelationFilter
+    milestones?: MilestoneListRelationFilter
+    sprints?: SprintListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -51033,70 +49809,12 @@ export namespace Prisma {
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
-  export type ProfileWhereInput = {
-    AND?: ProfileWhereInput | ProfileWhereInput[]
-    OR?: ProfileWhereInput[]
-    NOT?: ProfileWhereInput | ProfileWhereInput[]
-    id?: StringFilter<"Profile"> | string
-    userId?: StringNullableFilter<"Profile"> | string | null
-    name?: StringFilter<"Profile"> | string
-    createdAt?: DateTimeFilter<"Profile"> | Date | string
-    updatedAt?: DateTimeFilter<"Profile"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    persons?: NutritionPersonListRelationFilter
-  }
-
-  export type ProfileOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrderInput | SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    persons?: NutritionPersonOrderByRelationAggregateInput
-  }
-
-  export type ProfileWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    userId?: string
-    AND?: ProfileWhereInput | ProfileWhereInput[]
-    OR?: ProfileWhereInput[]
-    NOT?: ProfileWhereInput | ProfileWhereInput[]
-    name?: StringFilter<"Profile"> | string
-    createdAt?: DateTimeFilter<"Profile"> | Date | string
-    updatedAt?: DateTimeFilter<"Profile"> | Date | string
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    persons?: NutritionPersonListRelationFilter
-  }, "id" | "userId">
-
-  export type ProfileOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrderInput | SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ProfileCountOrderByAggregateInput
-    _max?: ProfileMaxOrderByAggregateInput
-    _min?: ProfileMinOrderByAggregateInput
-  }
-
-  export type ProfileScalarWhereWithAggregatesInput = {
-    AND?: ProfileScalarWhereWithAggregatesInput | ProfileScalarWhereWithAggregatesInput[]
-    OR?: ProfileScalarWhereWithAggregatesInput[]
-    NOT?: ProfileScalarWhereWithAggregatesInput | ProfileScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Profile"> | string
-    userId?: StringNullableWithAggregatesFilter<"Profile"> | string | null
-    name?: StringWithAggregatesFilter<"Profile"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Profile"> | Date | string
-  }
-
   export type NutritionPersonWhereInput = {
     AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     OR?: NutritionPersonWhereInput[]
     NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     id?: StringFilter<"NutritionPerson"> | string
-    profileId?: StringFilter<"NutritionPerson"> | string
+    userId?: StringFilter<"NutritionPerson"> | string
     name?: StringFilter<"NutritionPerson"> | string
     targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
@@ -51105,27 +49823,12 @@ export namespace Prisma {
     targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
     createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    dishes?: DishListRelationFilter
-    dayTemplates?: DayTemplateListRelationFilter
-    weekPlans?: WeekPlanListRelationFilter
-    dayPlans?: DayPlanListRelationFilter
-    shoppingLists?: ShoppingListListRelationFilter
-    userLanguages?: UserLanguageListRelationFilter
-    tasks?: TaskListRelationFilter
-    dailyEntries?: DailyEntryListRelationFilter
-    habits?: HabitListRelationFilter
-    lifeSpheres?: LifeSphereListRelationFilter
-    libraryItems?: LibraryItemListRelationFilter
-    wishlistItems?: WishlistItemListRelationFilter
-    visions?: VisionListRelationFilter
-    milestones?: MilestoneListRelationFilter
-    sprints?: SprintListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type NutritionPersonOrderByWithRelationInput = {
     id?: SortOrder
-    profileId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     targetCalories?: SortOrderInput | SortOrder
     targetProtein?: SortOrderInput | SortOrder
@@ -51134,30 +49837,15 @@ export namespace Prisma {
     targetFiber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    profile?: ProfileOrderByWithRelationInput
-    dishes?: DishOrderByRelationAggregateInput
-    dayTemplates?: DayTemplateOrderByRelationAggregateInput
-    weekPlans?: WeekPlanOrderByRelationAggregateInput
-    dayPlans?: DayPlanOrderByRelationAggregateInput
-    shoppingLists?: ShoppingListOrderByRelationAggregateInput
-    userLanguages?: UserLanguageOrderByRelationAggregateInput
-    tasks?: TaskOrderByRelationAggregateInput
-    dailyEntries?: DailyEntryOrderByRelationAggregateInput
-    habits?: HabitOrderByRelationAggregateInput
-    lifeSpheres?: LifeSphereOrderByRelationAggregateInput
-    libraryItems?: LibraryItemOrderByRelationAggregateInput
-    wishlistItems?: WishlistItemOrderByRelationAggregateInput
-    visions?: VisionOrderByRelationAggregateInput
-    milestones?: MilestoneOrderByRelationAggregateInput
-    sprints?: SprintOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type NutritionPersonWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId?: string
     AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     OR?: NutritionPersonWhereInput[]
     NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
-    profileId?: StringFilter<"NutritionPerson"> | string
     name?: StringFilter<"NutritionPerson"> | string
     targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
@@ -51166,27 +49854,12 @@ export namespace Prisma {
     targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
     createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-    profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
-    dishes?: DishListRelationFilter
-    dayTemplates?: DayTemplateListRelationFilter
-    weekPlans?: WeekPlanListRelationFilter
-    dayPlans?: DayPlanListRelationFilter
-    shoppingLists?: ShoppingListListRelationFilter
-    userLanguages?: UserLanguageListRelationFilter
-    tasks?: TaskListRelationFilter
-    dailyEntries?: DailyEntryListRelationFilter
-    habits?: HabitListRelationFilter
-    lifeSpheres?: LifeSphereListRelationFilter
-    libraryItems?: LibraryItemListRelationFilter
-    wishlistItems?: WishlistItemListRelationFilter
-    visions?: VisionListRelationFilter
-    milestones?: MilestoneListRelationFilter
-    sprints?: SprintListRelationFilter
-  }, "id">
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
 
   export type NutritionPersonOrderByWithAggregationInput = {
     id?: SortOrder
-    profileId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     targetCalories?: SortOrderInput | SortOrder
     targetProtein?: SortOrderInput | SortOrder
@@ -51207,7 +49880,7 @@ export namespace Prisma {
     OR?: NutritionPersonScalarWhereWithAggregatesInput[]
     NOT?: NutritionPersonScalarWhereWithAggregatesInput | NutritionPersonScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"NutritionPerson"> | string
-    profileId?: StringWithAggregatesFilter<"NutritionPerson"> | string
+    userId?: StringWithAggregatesFilter<"NutritionPerson"> | string
     name?: StringWithAggregatesFilter<"NutritionPerson"> | string
     targetCalories?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
@@ -51333,14 +50006,14 @@ export namespace Prisma {
     OR?: DishWhereInput[]
     NOT?: DishWhereInput | DishWhereInput[]
     id?: StringFilter<"Dish"> | string
-    personId?: StringFilter<"Dish"> | string
+    userId?: StringFilter<"Dish"> | string
     name?: StringFilter<"Dish"> | string
     description?: StringNullableFilter<"Dish"> | string | null
     priority?: EnumPriorityFilter<"Dish"> | $Enums.Priority
     yield?: FloatNullableFilter<"Dish"> | number | null
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     ingredients?: DishIngredientListRelationFilter
     dayPlanEntries?: DayPlanEntryListRelationFilter
     templateEntries?: DayTemplateEntryListRelationFilter
@@ -51348,14 +50021,14 @@ export namespace Prisma {
 
   export type DishOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     priority?: SortOrder
     yield?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     ingredients?: DishIngredientOrderByRelationAggregateInput
     dayPlanEntries?: DayPlanEntryOrderByRelationAggregateInput
     templateEntries?: DayTemplateEntryOrderByRelationAggregateInput
@@ -51366,14 +50039,14 @@ export namespace Prisma {
     AND?: DishWhereInput | DishWhereInput[]
     OR?: DishWhereInput[]
     NOT?: DishWhereInput | DishWhereInput[]
-    personId?: StringFilter<"Dish"> | string
+    userId?: StringFilter<"Dish"> | string
     name?: StringFilter<"Dish"> | string
     description?: StringNullableFilter<"Dish"> | string | null
     priority?: EnumPriorityFilter<"Dish"> | $Enums.Priority
     yield?: FloatNullableFilter<"Dish"> | number | null
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     ingredients?: DishIngredientListRelationFilter
     dayPlanEntries?: DayPlanEntryListRelationFilter
     templateEntries?: DayTemplateEntryListRelationFilter
@@ -51381,7 +50054,7 @@ export namespace Prisma {
 
   export type DishOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     priority?: SortOrder
@@ -51400,7 +50073,7 @@ export namespace Prisma {
     OR?: DishScalarWhereWithAggregatesInput[]
     NOT?: DishScalarWhereWithAggregatesInput | DishScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Dish"> | string
-    personId?: StringWithAggregatesFilter<"Dish"> | string
+    userId?: StringWithAggregatesFilter<"Dish"> | string
     name?: StringWithAggregatesFilter<"Dish"> | string
     description?: StringNullableWithAggregatesFilter<"Dish"> | string | null
     priority?: EnumPriorityWithAggregatesFilter<"Dish"> | $Enums.Priority
@@ -51475,22 +50148,22 @@ export namespace Prisma {
     OR?: DayTemplateWhereInput[]
     NOT?: DayTemplateWhereInput | DayTemplateWhereInput[]
     id?: StringFilter<"DayTemplate"> | string
-    personId?: StringFilter<"DayTemplate"> | string
+    userId?: StringFilter<"DayTemplate"> | string
     name?: StringFilter<"DayTemplate"> | string
     createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     entries?: DayTemplateEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
   }
 
   export type DayTemplateOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     entries?: DayTemplateEntryOrderByRelationAggregateInput
     dayPlans?: DayPlanOrderByRelationAggregateInput
   }
@@ -51500,18 +50173,18 @@ export namespace Prisma {
     AND?: DayTemplateWhereInput | DayTemplateWhereInput[]
     OR?: DayTemplateWhereInput[]
     NOT?: DayTemplateWhereInput | DayTemplateWhereInput[]
-    personId?: StringFilter<"DayTemplate"> | string
+    userId?: StringFilter<"DayTemplate"> | string
     name?: StringFilter<"DayTemplate"> | string
     createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     entries?: DayTemplateEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
   }, "id">
 
   export type DayTemplateOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -51525,7 +50198,7 @@ export namespace Prisma {
     OR?: DayTemplateScalarWhereWithAggregatesInput[]
     NOT?: DayTemplateScalarWhereWithAggregatesInput | DayTemplateScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DayTemplate"> | string
-    personId?: StringWithAggregatesFilter<"DayTemplate"> | string
+    userId?: StringWithAggregatesFilter<"DayTemplate"> | string
     name?: StringWithAggregatesFilter<"DayTemplate"> | string
     createdAt?: DateTimeWithAggregatesFilter<"DayTemplate"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DayTemplate"> | Date | string
@@ -51601,24 +50274,24 @@ export namespace Prisma {
     OR?: WeekPlanWhereInput[]
     NOT?: WeekPlanWhereInput | WeekPlanWhereInput[]
     id?: StringFilter<"WeekPlan"> | string
-    personId?: StringFilter<"WeekPlan"> | string
+    userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
     startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     dayPlans?: DayPlanListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
   }
 
   export type WeekPlanOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrderInput | SortOrder
     startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     dayPlans?: DayPlanOrderByRelationAggregateInput
     shoppingLists?: ShoppingListOrderByRelationAggregateInput
   }
@@ -51628,19 +50301,19 @@ export namespace Prisma {
     AND?: WeekPlanWhereInput | WeekPlanWhereInput[]
     OR?: WeekPlanWhereInput[]
     NOT?: WeekPlanWhereInput | WeekPlanWhereInput[]
-    personId?: StringFilter<"WeekPlan"> | string
+    userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
     startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     dayPlans?: DayPlanListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
   }, "id">
 
   export type WeekPlanOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrderInput | SortOrder
     startDate?: SortOrder
     createdAt?: SortOrder
@@ -51655,7 +50328,7 @@ export namespace Prisma {
     OR?: WeekPlanScalarWhereWithAggregatesInput[]
     NOT?: WeekPlanScalarWhereWithAggregatesInput | WeekPlanScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"WeekPlan"> | string
-    personId?: StringWithAggregatesFilter<"WeekPlan"> | string
+    userId?: StringWithAggregatesFilter<"WeekPlan"> | string
     name?: StringNullableWithAggregatesFilter<"WeekPlan"> | string | null
     startDate?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
@@ -51667,14 +50340,14 @@ export namespace Prisma {
     OR?: DayPlanWhereInput[]
     NOT?: DayPlanWhereInput | DayPlanWhereInput[]
     id?: StringFilter<"DayPlan"> | string
-    personId?: StringFilter<"DayPlan"> | string
+    userId?: StringFilter<"DayPlan"> | string
     weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
     templateId?: StringNullableFilter<"DayPlan"> | string | null
     date?: DateTimeFilter<"DayPlan"> | Date | string
     adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
     entries?: DayPlanEntryListRelationFilter
@@ -51682,14 +50355,14 @@ export namespace Prisma {
 
   export type DayPlanOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
     templateId?: SortOrderInput | SortOrder
     date?: SortOrder
     adherence?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
     template?: DayTemplateOrderByWithRelationInput
     entries?: DayPlanEntryOrderByRelationAggregateInput
@@ -51700,14 +50373,14 @@ export namespace Prisma {
     AND?: DayPlanWhereInput | DayPlanWhereInput[]
     OR?: DayPlanWhereInput[]
     NOT?: DayPlanWhereInput | DayPlanWhereInput[]
-    personId?: StringFilter<"DayPlan"> | string
+    userId?: StringFilter<"DayPlan"> | string
     weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
     templateId?: StringNullableFilter<"DayPlan"> | string | null
     date?: DateTimeFilter<"DayPlan"> | Date | string
     adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
     entries?: DayPlanEntryListRelationFilter
@@ -51715,7 +50388,7 @@ export namespace Prisma {
 
   export type DayPlanOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
     templateId?: SortOrderInput | SortOrder
     date?: SortOrder
@@ -51732,7 +50405,7 @@ export namespace Prisma {
     OR?: DayPlanScalarWhereWithAggregatesInput[]
     NOT?: DayPlanScalarWhereWithAggregatesInput | DayPlanScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DayPlan"> | string
-    personId?: StringWithAggregatesFilter<"DayPlan"> | string
+    userId?: StringWithAggregatesFilter<"DayPlan"> | string
     weekPlanId?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
     templateId?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
     date?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
@@ -51811,24 +50484,24 @@ export namespace Prisma {
     OR?: ShoppingListWhereInput[]
     NOT?: ShoppingListWhereInput | ShoppingListWhereInput[]
     id?: StringFilter<"ShoppingList"> | string
-    personId?: StringFilter<"ShoppingList"> | string
+    userId?: StringFilter<"ShoppingList"> | string
     weekPlanId?: StringNullableFilter<"ShoppingList"> | string | null
     name?: StringNullableFilter<"ShoppingList"> | string | null
     createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
     updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     items?: ShoppingListItemListRelationFilter
   }
 
   export type ShoppingListOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
     items?: ShoppingListItemOrderByRelationAggregateInput
   }
@@ -51838,19 +50511,19 @@ export namespace Prisma {
     AND?: ShoppingListWhereInput | ShoppingListWhereInput[]
     OR?: ShoppingListWhereInput[]
     NOT?: ShoppingListWhereInput | ShoppingListWhereInput[]
-    personId?: StringFilter<"ShoppingList"> | string
+    userId?: StringFilter<"ShoppingList"> | string
     weekPlanId?: StringNullableFilter<"ShoppingList"> | string | null
     name?: StringNullableFilter<"ShoppingList"> | string | null
     createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
     updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     items?: ShoppingListItemListRelationFilter
   }, "id">
 
   export type ShoppingListOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -51865,7 +50538,7 @@ export namespace Prisma {
     OR?: ShoppingListScalarWhereWithAggregatesInput[]
     NOT?: ShoppingListScalarWhereWithAggregatesInput | ShoppingListScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ShoppingList"> | string
-    personId?: StringWithAggregatesFilter<"ShoppingList"> | string
+    userId?: StringWithAggregatesFilter<"ShoppingList"> | string
     weekPlanId?: StringNullableWithAggregatesFilter<"ShoppingList"> | string | null
     name?: StringNullableWithAggregatesFilter<"ShoppingList"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ShoppingList"> | Date | string
@@ -51942,14 +50615,14 @@ export namespace Prisma {
     OR?: LifeSphereWhereInput[]
     NOT?: LifeSphereWhereInput | LifeSphereWhereInput[]
     id?: StringFilter<"LifeSphere"> | string
-    personId?: StringFilter<"LifeSphere"> | string
+    userId?: StringFilter<"LifeSphere"> | string
     name?: StringFilter<"LifeSphere"> | string
     color?: StringFilter<"LifeSphere"> | string
     icon?: StringFilter<"LifeSphere"> | string
     order?: IntFilter<"LifeSphere"> | number
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tasks?: TaskListRelationFilter
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
@@ -51957,14 +50630,14 @@ export namespace Prisma {
 
   export type LifeSphereOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     tasks?: TaskOrderByRelationAggregateInput
     milestones?: MilestoneOrderByRelationAggregateInput
     objectives?: ObjectiveOrderByRelationAggregateInput
@@ -51975,14 +50648,14 @@ export namespace Prisma {
     AND?: LifeSphereWhereInput | LifeSphereWhereInput[]
     OR?: LifeSphereWhereInput[]
     NOT?: LifeSphereWhereInput | LifeSphereWhereInput[]
-    personId?: StringFilter<"LifeSphere"> | string
+    userId?: StringFilter<"LifeSphere"> | string
     name?: StringFilter<"LifeSphere"> | string
     color?: StringFilter<"LifeSphere"> | string
     icon?: StringFilter<"LifeSphere"> | string
     order?: IntFilter<"LifeSphere"> | number
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tasks?: TaskListRelationFilter
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
@@ -51990,7 +50663,7 @@ export namespace Prisma {
 
   export type LifeSphereOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     color?: SortOrder
     icon?: SortOrder
@@ -52009,7 +50682,7 @@ export namespace Prisma {
     OR?: LifeSphereScalarWhereWithAggregatesInput[]
     NOT?: LifeSphereScalarWhereWithAggregatesInput | LifeSphereScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"LifeSphere"> | string
-    personId?: StringWithAggregatesFilter<"LifeSphere"> | string
+    userId?: StringWithAggregatesFilter<"LifeSphere"> | string
     name?: StringWithAggregatesFilter<"LifeSphere"> | string
     color?: StringWithAggregatesFilter<"LifeSphere"> | string
     icon?: StringWithAggregatesFilter<"LifeSphere"> | string
@@ -52023,7 +50696,7 @@ export namespace Prisma {
     OR?: TaskWhereInput[]
     NOT?: TaskWhereInput | TaskWhereInput[]
     id?: StringFilter<"Task"> | string
-    personId?: StringFilter<"Task"> | string
+    userId?: StringFilter<"Task"> | string
     title?: StringFilter<"Task"> | string
     description?: StringNullableFilter<"Task"> | string | null
     icon?: StringNullableFilter<"Task"> | string | null
@@ -52041,7 +50714,7 @@ export namespace Prisma {
     sphereId?: StringNullableFilter<"Task"> | string | null
     projectId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
@@ -52050,7 +50723,7 @@ export namespace Prisma {
 
   export type TaskOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     icon?: SortOrderInput | SortOrder
@@ -52068,7 +50741,7 @@ export namespace Prisma {
     sphereId?: SortOrderInput | SortOrder
     projectId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     parent?: TaskOrderByWithRelationInput
     children?: TaskOrderByRelationAggregateInput
     sphere?: LifeSphereOrderByWithRelationInput
@@ -52080,7 +50753,7 @@ export namespace Prisma {
     AND?: TaskWhereInput | TaskWhereInput[]
     OR?: TaskWhereInput[]
     NOT?: TaskWhereInput | TaskWhereInput[]
-    personId?: StringFilter<"Task"> | string
+    userId?: StringFilter<"Task"> | string
     title?: StringFilter<"Task"> | string
     description?: StringNullableFilter<"Task"> | string | null
     icon?: StringNullableFilter<"Task"> | string | null
@@ -52098,7 +50771,7 @@ export namespace Prisma {
     sphereId?: StringNullableFilter<"Task"> | string | null
     projectId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
@@ -52107,7 +50780,7 @@ export namespace Prisma {
 
   export type TaskOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     icon?: SortOrderInput | SortOrder
@@ -52137,7 +50810,7 @@ export namespace Prisma {
     OR?: TaskScalarWhereWithAggregatesInput[]
     NOT?: TaskScalarWhereWithAggregatesInput | TaskScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Task"> | string
-    personId?: StringWithAggregatesFilter<"Task"> | string
+    userId?: StringWithAggregatesFilter<"Task"> | string
     title?: StringWithAggregatesFilter<"Task"> | string
     description?: StringNullableWithAggregatesFilter<"Task"> | string | null
     icon?: StringNullableWithAggregatesFilter<"Task"> | string | null
@@ -52162,7 +50835,7 @@ export namespace Prisma {
     OR?: DailyEntryWhereInput[]
     NOT?: DailyEntryWhereInput | DailyEntryWhereInput[]
     id?: StringFilter<"DailyEntry"> | string
-    personId?: StringFilter<"DailyEntry"> | string
+    userId?: StringFilter<"DailyEntry"> | string
     date?: DateTimeFilter<"DailyEntry"> | Date | string
     sleepBedtime?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     sleepWakeup?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
@@ -52187,12 +50860,12 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type DailyEntryOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     date?: SortOrder
     sleepBedtime?: SortOrderInput | SortOrder
     sleepWakeup?: SortOrderInput | SortOrder
@@ -52217,16 +50890,16 @@ export namespace Prisma {
     brainDump?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type DailyEntryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    personId_date?: DailyEntryPersonIdDateCompoundUniqueInput
+    userId_date?: DailyEntryUserIdDateCompoundUniqueInput
     AND?: DailyEntryWhereInput | DailyEntryWhereInput[]
     OR?: DailyEntryWhereInput[]
     NOT?: DailyEntryWhereInput | DailyEntryWhereInput[]
-    personId?: StringFilter<"DailyEntry"> | string
+    userId?: StringFilter<"DailyEntry"> | string
     date?: DateTimeFilter<"DailyEntry"> | Date | string
     sleepBedtime?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     sleepWakeup?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
@@ -52251,12 +50924,12 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
-  }, "id" | "personId_date">
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_date">
 
   export type DailyEntryOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     date?: SortOrder
     sleepBedtime?: SortOrderInput | SortOrder
     sleepWakeup?: SortOrderInput | SortOrder
@@ -52293,7 +50966,7 @@ export namespace Prisma {
     OR?: DailyEntryScalarWhereWithAggregatesInput[]
     NOT?: DailyEntryScalarWhereWithAggregatesInput | DailyEntryScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"DailyEntry"> | string
-    personId?: StringWithAggregatesFilter<"DailyEntry"> | string
+    userId?: StringWithAggregatesFilter<"DailyEntry"> | string
     date?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     sleepBedtime?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
     sleepWakeup?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
@@ -52325,7 +50998,7 @@ export namespace Prisma {
     OR?: HabitWhereInput[]
     NOT?: HabitWhereInput | HabitWhereInput[]
     id?: StringFilter<"Habit"> | string
-    personId?: StringFilter<"Habit"> | string
+    userId?: StringFilter<"Habit"> | string
     name?: StringFilter<"Habit"> | string
     anchor?: StringFilter<"Habit"> | string
     action?: StringFilter<"Habit"> | string
@@ -52334,13 +51007,13 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
   }
 
   export type HabitOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
@@ -52349,7 +51022,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     completions?: HabitCompletionOrderByRelationAggregateInput
   }
 
@@ -52358,7 +51031,7 @@ export namespace Prisma {
     AND?: HabitWhereInput | HabitWhereInput[]
     OR?: HabitWhereInput[]
     NOT?: HabitWhereInput | HabitWhereInput[]
-    personId?: StringFilter<"Habit"> | string
+    userId?: StringFilter<"Habit"> | string
     name?: StringFilter<"Habit"> | string
     anchor?: StringFilter<"Habit"> | string
     action?: StringFilter<"Habit"> | string
@@ -52367,13 +51040,13 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
   }, "id">
 
   export type HabitOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
@@ -52394,7 +51067,7 @@ export namespace Prisma {
     OR?: HabitScalarWhereWithAggregatesInput[]
     NOT?: HabitScalarWhereWithAggregatesInput | HabitScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Habit"> | string
-    personId?: StringWithAggregatesFilter<"Habit"> | string
+    userId?: StringWithAggregatesFilter<"Habit"> | string
     name?: StringWithAggregatesFilter<"Habit"> | string
     anchor?: StringWithAggregatesFilter<"Habit"> | string
     action?: StringWithAggregatesFilter<"Habit"> | string
@@ -52461,7 +51134,7 @@ export namespace Prisma {
     OR?: LibraryItemWhereInput[]
     NOT?: LibraryItemWhereInput | LibraryItemWhereInput[]
     id?: StringFilter<"LibraryItem"> | string
-    personId?: StringFilter<"LibraryItem"> | string
+    userId?: StringFilter<"LibraryItem"> | string
     title?: StringFilter<"LibraryItem"> | string
     author?: StringNullableFilter<"LibraryItem"> | string | null
     url?: StringNullableFilter<"LibraryItem"> | string | null
@@ -52471,12 +51144,12 @@ export namespace Prisma {
     notes?: StringNullableFilter<"LibraryItem"> | string | null
     createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
     updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type LibraryItemOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     author?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
@@ -52486,7 +51159,7 @@ export namespace Prisma {
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type LibraryItemWhereUniqueInput = Prisma.AtLeast<{
@@ -52494,7 +51167,7 @@ export namespace Prisma {
     AND?: LibraryItemWhereInput | LibraryItemWhereInput[]
     OR?: LibraryItemWhereInput[]
     NOT?: LibraryItemWhereInput | LibraryItemWhereInput[]
-    personId?: StringFilter<"LibraryItem"> | string
+    userId?: StringFilter<"LibraryItem"> | string
     title?: StringFilter<"LibraryItem"> | string
     author?: StringNullableFilter<"LibraryItem"> | string | null
     url?: StringNullableFilter<"LibraryItem"> | string | null
@@ -52504,12 +51177,12 @@ export namespace Prisma {
     notes?: StringNullableFilter<"LibraryItem"> | string | null
     createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
     updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type LibraryItemOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     author?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
@@ -52531,7 +51204,7 @@ export namespace Prisma {
     OR?: LibraryItemScalarWhereWithAggregatesInput[]
     NOT?: LibraryItemScalarWhereWithAggregatesInput | LibraryItemScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"LibraryItem"> | string
-    personId?: StringWithAggregatesFilter<"LibraryItem"> | string
+    userId?: StringWithAggregatesFilter<"LibraryItem"> | string
     title?: StringWithAggregatesFilter<"LibraryItem"> | string
     author?: StringNullableWithAggregatesFilter<"LibraryItem"> | string | null
     url?: StringNullableWithAggregatesFilter<"LibraryItem"> | string | null
@@ -52548,7 +51221,7 @@ export namespace Prisma {
     OR?: WishlistItemWhereInput[]
     NOT?: WishlistItemWhereInput | WishlistItemWhereInput[]
     id?: StringFilter<"WishlistItem"> | string
-    personId?: StringFilter<"WishlistItem"> | string
+    userId?: StringFilter<"WishlistItem"> | string
     name?: StringFilter<"WishlistItem"> | string
     description?: StringNullableFilter<"WishlistItem"> | string | null
     url?: StringNullableFilter<"WishlistItem"> | string | null
@@ -52563,12 +51236,12 @@ export namespace Prisma {
     store?: StringNullableFilter<"WishlistItem"> | string | null
     createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type WishlistItemOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
@@ -52583,7 +51256,7 @@ export namespace Prisma {
     store?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type WishlistItemWhereUniqueInput = Prisma.AtLeast<{
@@ -52591,7 +51264,7 @@ export namespace Prisma {
     AND?: WishlistItemWhereInput | WishlistItemWhereInput[]
     OR?: WishlistItemWhereInput[]
     NOT?: WishlistItemWhereInput | WishlistItemWhereInput[]
-    personId?: StringFilter<"WishlistItem"> | string
+    userId?: StringFilter<"WishlistItem"> | string
     name?: StringFilter<"WishlistItem"> | string
     description?: StringNullableFilter<"WishlistItem"> | string | null
     url?: StringNullableFilter<"WishlistItem"> | string | null
@@ -52606,12 +51279,12 @@ export namespace Prisma {
     store?: StringNullableFilter<"WishlistItem"> | string | null
     createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type WishlistItemOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     url?: SortOrderInput | SortOrder
@@ -52638,7 +51311,7 @@ export namespace Prisma {
     OR?: WishlistItemScalarWhereWithAggregatesInput[]
     NOT?: WishlistItemScalarWhereWithAggregatesInput | WishlistItemScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"WishlistItem"> | string
-    personId?: StringWithAggregatesFilter<"WishlistItem"> | string
+    userId?: StringWithAggregatesFilter<"WishlistItem"> | string
     name?: StringWithAggregatesFilter<"WishlistItem"> | string
     description?: StringNullableWithAggregatesFilter<"WishlistItem"> | string | null
     url?: StringNullableWithAggregatesFilter<"WishlistItem"> | string | null
@@ -52720,13 +51393,13 @@ export namespace Prisma {
     OR?: UserLanguageWhereInput[]
     NOT?: UserLanguageWhereInput | UserLanguageWhereInput[]
     id?: StringFilter<"UserLanguage"> | string
-    personId?: StringFilter<"UserLanguage"> | string
+    userId?: StringFilter<"UserLanguage"> | string
     languageId?: StringFilter<"UserLanguage"> | string
     level?: EnumCefrLevelFilter<"UserLanguage"> | $Enums.CefrLevel
     totalXp?: IntFilter<"UserLanguage"> | number
     createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
     updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     language?: XOR<LanguageScalarRelationFilter, LanguageWhereInput>
     sphereProgress?: LanguageSphereProgressListRelationFilter
     vocabularyItems?: VocabularyItemListRelationFilter
@@ -52736,13 +51409,13 @@ export namespace Prisma {
 
   export type UserLanguageOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     languageId?: SortOrder
     level?: SortOrder
     totalXp?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     language?: LanguageOrderByWithRelationInput
     sphereProgress?: LanguageSphereProgressOrderByRelationAggregateInput
     vocabularyItems?: VocabularyItemOrderByRelationAggregateInput
@@ -52752,27 +51425,27 @@ export namespace Prisma {
 
   export type UserLanguageWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    personId_languageId?: UserLanguagePersonIdLanguageIdCompoundUniqueInput
+    userId_languageId?: UserLanguageUserIdLanguageIdCompoundUniqueInput
     AND?: UserLanguageWhereInput | UserLanguageWhereInput[]
     OR?: UserLanguageWhereInput[]
     NOT?: UserLanguageWhereInput | UserLanguageWhereInput[]
-    personId?: StringFilter<"UserLanguage"> | string
+    userId?: StringFilter<"UserLanguage"> | string
     languageId?: StringFilter<"UserLanguage"> | string
     level?: EnumCefrLevelFilter<"UserLanguage"> | $Enums.CefrLevel
     totalXp?: IntFilter<"UserLanguage"> | number
     createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
     updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     language?: XOR<LanguageScalarRelationFilter, LanguageWhereInput>
     sphereProgress?: LanguageSphereProgressListRelationFilter
     vocabularyItems?: VocabularyItemListRelationFilter
     immersionLogs?: ImmersionLogListRelationFilter
     resources?: LanguageResourceListRelationFilter
-  }, "id" | "personId_languageId">
+  }, "id" | "userId_languageId">
 
   export type UserLanguageOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     languageId?: SortOrder
     level?: SortOrder
     totalXp?: SortOrder
@@ -52790,7 +51463,7 @@ export namespace Prisma {
     OR?: UserLanguageScalarWhereWithAggregatesInput[]
     NOT?: UserLanguageScalarWhereWithAggregatesInput | UserLanguageScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"UserLanguage"> | string
-    personId?: StringWithAggregatesFilter<"UserLanguage"> | string
+    userId?: StringWithAggregatesFilter<"UserLanguage"> | string
     languageId?: StringWithAggregatesFilter<"UserLanguage"> | string
     level?: EnumCefrLevelWithAggregatesFilter<"UserLanguage"> | $Enums.CefrLevel
     totalXp?: IntWithAggregatesFilter<"UserLanguage"> | number
@@ -53095,22 +51768,22 @@ export namespace Prisma {
     OR?: VisionWhereInput[]
     NOT?: VisionWhereInput | VisionWhereInput[]
     id?: StringFilter<"Vision"> | string
-    personId?: StringFilter<"Vision"> | string
+    userId?: StringFilter<"Vision"> | string
     title?: StringFilter<"Vision"> | string
     content?: StringNullableFilter<"Vision"> | string | null
     createdAt?: DateTimeFilter<"Vision"> | Date | string
     updatedAt?: DateTimeFilter<"Vision"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type VisionOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type VisionWhereUniqueInput = Prisma.AtLeast<{
@@ -53118,17 +51791,17 @@ export namespace Prisma {
     AND?: VisionWhereInput | VisionWhereInput[]
     OR?: VisionWhereInput[]
     NOT?: VisionWhereInput | VisionWhereInput[]
-    personId?: StringFilter<"Vision"> | string
+    userId?: StringFilter<"Vision"> | string
     title?: StringFilter<"Vision"> | string
     content?: StringNullableFilter<"Vision"> | string | null
     createdAt?: DateTimeFilter<"Vision"> | Date | string
     updatedAt?: DateTimeFilter<"Vision"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type VisionOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -53143,7 +51816,7 @@ export namespace Prisma {
     OR?: VisionScalarWhereWithAggregatesInput[]
     NOT?: VisionScalarWhereWithAggregatesInput | VisionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Vision"> | string
-    personId?: StringWithAggregatesFilter<"Vision"> | string
+    userId?: StringWithAggregatesFilter<"Vision"> | string
     title?: StringWithAggregatesFilter<"Vision"> | string
     content?: StringNullableWithAggregatesFilter<"Vision"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Vision"> | Date | string
@@ -53155,7 +51828,7 @@ export namespace Prisma {
     OR?: MilestoneWhereInput[]
     NOT?: MilestoneWhereInput | MilestoneWhereInput[]
     id?: StringFilter<"Milestone"> | string
-    personId?: StringFilter<"Milestone"> | string
+    userId?: StringFilter<"Milestone"> | string
     title?: StringFilter<"Milestone"> | string
     description?: StringNullableFilter<"Milestone"> | string | null
     targetDate?: DateTimeNullableFilter<"Milestone"> | Date | string | null
@@ -53163,13 +51836,13 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Milestone"> | Date | string
     updatedAt?: DateTimeFilter<"Milestone"> | Date | string
     sphereId?: StringNullableFilter<"Milestone"> | string | null
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }
 
   export type MilestoneOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     targetDate?: SortOrderInput | SortOrder
@@ -53177,7 +51850,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     sphere?: LifeSphereOrderByWithRelationInput
   }
 
@@ -53186,7 +51859,7 @@ export namespace Prisma {
     AND?: MilestoneWhereInput | MilestoneWhereInput[]
     OR?: MilestoneWhereInput[]
     NOT?: MilestoneWhereInput | MilestoneWhereInput[]
-    personId?: StringFilter<"Milestone"> | string
+    userId?: StringFilter<"Milestone"> | string
     title?: StringFilter<"Milestone"> | string
     description?: StringNullableFilter<"Milestone"> | string | null
     targetDate?: DateTimeNullableFilter<"Milestone"> | Date | string | null
@@ -53194,13 +51867,13 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Milestone"> | Date | string
     updatedAt?: DateTimeFilter<"Milestone"> | Date | string
     sphereId?: StringNullableFilter<"Milestone"> | string | null
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }, "id">
 
   export type MilestoneOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     targetDate?: SortOrderInput | SortOrder
@@ -53218,7 +51891,7 @@ export namespace Prisma {
     OR?: MilestoneScalarWhereWithAggregatesInput[]
     NOT?: MilestoneScalarWhereWithAggregatesInput | MilestoneScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Milestone"> | string
-    personId?: StringWithAggregatesFilter<"Milestone"> | string
+    userId?: StringWithAggregatesFilter<"Milestone"> | string
     title?: StringWithAggregatesFilter<"Milestone"> | string
     description?: StringNullableWithAggregatesFilter<"Milestone"> | string | null
     targetDate?: DateTimeNullableWithAggregatesFilter<"Milestone"> | Date | string | null
@@ -53233,7 +51906,7 @@ export namespace Prisma {
     OR?: SprintWhereInput[]
     NOT?: SprintWhereInput | SprintWhereInput[]
     id?: StringFilter<"Sprint"> | string
-    personId?: StringFilter<"Sprint"> | string
+    userId?: StringFilter<"Sprint"> | string
     number?: IntFilter<"Sprint"> | number
     year?: IntFilter<"Sprint"> | number
     startDate?: DateTimeFilter<"Sprint"> | Date | string
@@ -53241,14 +51914,14 @@ export namespace Prisma {
     status?: EnumSprintStatusFilter<"Sprint"> | $Enums.SprintStatus
     createdAt?: DateTimeFilter<"Sprint"> | Date | string
     updatedAt?: DateTimeFilter<"Sprint"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     objectives?: ObjectiveListRelationFilter
     reviews?: SprintReviewListRelationFilter
   }
 
   export type SprintOrderByWithRelationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     number?: SortOrder
     year?: SortOrder
     startDate?: SortOrder
@@ -53256,7 +51929,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    person?: NutritionPersonOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     objectives?: ObjectiveOrderByRelationAggregateInput
     reviews?: SprintReviewOrderByRelationAggregateInput
   }
@@ -53266,7 +51939,7 @@ export namespace Prisma {
     AND?: SprintWhereInput | SprintWhereInput[]
     OR?: SprintWhereInput[]
     NOT?: SprintWhereInput | SprintWhereInput[]
-    personId?: StringFilter<"Sprint"> | string
+    userId?: StringFilter<"Sprint"> | string
     number?: IntFilter<"Sprint"> | number
     year?: IntFilter<"Sprint"> | number
     startDate?: DateTimeFilter<"Sprint"> | Date | string
@@ -53274,14 +51947,14 @@ export namespace Prisma {
     status?: EnumSprintStatusFilter<"Sprint"> | $Enums.SprintStatus
     createdAt?: DateTimeFilter<"Sprint"> | Date | string
     updatedAt?: DateTimeFilter<"Sprint"> | Date | string
-    person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     objectives?: ObjectiveListRelationFilter
     reviews?: SprintReviewListRelationFilter
   }, "id">
 
   export type SprintOrderByWithAggregationInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     number?: SortOrder
     year?: SortOrder
     startDate?: SortOrder
@@ -53301,7 +51974,7 @@ export namespace Prisma {
     OR?: SprintScalarWhereWithAggregatesInput[]
     NOT?: SprintScalarWhereWithAggregatesInput | SprintScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Sprint"> | string
-    personId?: StringWithAggregatesFilter<"Sprint"> | string
+    userId?: StringWithAggregatesFilter<"Sprint"> | string
     number?: IntWithAggregatesFilter<"Sprint"> | number
     year?: IntWithAggregatesFilter<"Sprint"> | number
     startDate?: DateTimeWithAggregatesFilter<"Sprint"> | Date | string
@@ -53763,7 +52436,22 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -53778,7 +52466,22 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -53793,7 +52496,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -53808,7 +52526,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -54041,65 +52774,6 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ProfileCreateInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutProfileInput
-    persons?: NutritionPersonCreateNestedManyWithoutProfileInput
-  }
-
-  export type ProfileUncheckedCreateInput = {
-    id?: string
-    userId?: string | null
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    persons?: NutritionPersonUncheckedCreateNestedManyWithoutProfileInput
-  }
-
-  export type ProfileUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProfileNestedInput
-    persons?: NutritionPersonUpdateManyWithoutProfileNestedInput
-  }
-
-  export type ProfileUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput
-  }
-
-  export type ProfileCreateManyInput = {
-    id?: string
-    userId?: string | null
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ProfileUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ProfileUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type NutritionPersonCreateInput = {
     id?: string
     name: string
@@ -54110,27 +52784,12 @@ export namespace Prisma {
     targetFiber?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    user: UserCreateNestedOneWithoutNutritionPersonInput
   }
 
   export type NutritionPersonUncheckedCreateInput = {
     id?: string
-    profileId: string
+    userId: string
     name: string
     targetCalories?: number | null
     targetProtein?: number | null
@@ -54139,21 +52798,6 @@ export namespace Prisma {
     targetFiber?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
   }
 
   export type NutritionPersonUpdateInput = {
@@ -54166,27 +52810,12 @@ export namespace Prisma {
     targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    user?: UserUpdateOneRequiredWithoutNutritionPersonNestedInput
   }
 
   export type NutritionPersonUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -54195,26 +52824,11 @@ export namespace Prisma {
     targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
   }
 
   export type NutritionPersonCreateManyInput = {
     id?: string
-    profileId: string
+    userId: string
     name: string
     targetCalories?: number | null
     targetProtein?: number | null
@@ -54239,7 +52853,7 @@ export namespace Prisma {
 
   export type NutritionPersonUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -54392,7 +53006,7 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDishesInput
+    user: UserCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
@@ -54400,7 +53014,7 @@ export namespace Prisma {
 
   export type DishUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     priority?: $Enums.Priority
@@ -54420,7 +53034,7 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
+    user?: UserUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
@@ -54428,7 +53042,7 @@ export namespace Prisma {
 
   export type DishUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -54442,7 +53056,7 @@ export namespace Prisma {
 
   export type DishCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     priority?: $Enums.Priority
@@ -54463,7 +53077,7 @@ export namespace Prisma {
 
   export type DishUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -54531,14 +53145,14 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
+    user: UserCreateNestedOneWithoutDayTemplatesInput
     entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
     dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
   }
 
   export type DayTemplateUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -54551,14 +53165,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
     entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
     dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
   }
 
   export type DayTemplateUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54568,7 +53182,7 @@ export namespace Prisma {
 
   export type DayTemplateCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -54583,7 +53197,7 @@ export namespace Prisma {
 
   export type DayTemplateUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54656,14 +53270,14 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
+    user: UserCreateNestedOneWithoutWeekPlansInput
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
   }
 
   export type WeekPlanUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     startDate: Date | string
     createdAt?: Date | string
@@ -54678,14 +53292,14 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutWeekPlanNestedInput
   }
 
   export type WeekPlanUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54696,7 +53310,7 @@ export namespace Prisma {
 
   export type WeekPlanCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     startDate: Date | string
     createdAt?: Date | string
@@ -54713,7 +53327,7 @@ export namespace Prisma {
 
   export type WeekPlanUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54726,7 +53340,7 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
+    user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
@@ -54734,7 +53348,7 @@ export namespace Prisma {
 
   export type DayPlanUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     templateId?: string | null
     date: Date | string
@@ -54750,7 +53364,7 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
@@ -54758,7 +53372,7 @@ export namespace Prisma {
 
   export type DayPlanUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54770,7 +53384,7 @@ export namespace Prisma {
 
   export type DayPlanCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     templateId?: string | null
     date: Date | string
@@ -54789,7 +53403,7 @@ export namespace Prisma {
 
   export type DayPlanUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54864,14 +53478,14 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
+    user: UserCreateNestedOneWithoutShoppingListsInput
     weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
     items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
   }
 
   export type ShoppingListUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     name?: string | null
     createdAt?: Date | string
@@ -54884,14 +53498,14 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    user?: UserUpdateOneRequiredWithoutShoppingListsNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutShoppingListsNestedInput
     items?: ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   }
 
   export type ShoppingListUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54901,7 +53515,7 @@ export namespace Prisma {
 
   export type ShoppingListCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     name?: string | null
     createdAt?: Date | string
@@ -54917,7 +53531,7 @@ export namespace Prisma {
 
   export type ShoppingListUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54993,7 +53607,7 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
+    user: UserCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
@@ -55001,7 +53615,7 @@ export namespace Prisma {
 
   export type LifeSphereUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -55021,7 +53635,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
@@ -55029,7 +53643,7 @@ export namespace Prisma {
 
   export type LifeSphereUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
@@ -55043,7 +53657,7 @@ export namespace Prisma {
 
   export type LifeSphereCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -55064,7 +53678,7 @@ export namespace Prisma {
 
   export type LifeSphereUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
@@ -55089,7 +53703,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: NutritionPersonCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -55098,7 +53712,7 @@ export namespace Prisma {
 
   export type TaskUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -55135,7 +53749,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -55144,7 +53758,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55167,7 +53781,7 @@ export namespace Prisma {
 
   export type TaskCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -55207,7 +53821,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55253,12 +53867,12 @@ export namespace Prisma {
     brainDump?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDailyEntriesInput
+    user: UserCreateNestedOneWithoutDailyEntriesInput
   }
 
   export type DailyEntryUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     date: Date | string
     sleepBedtime?: Date | string | null
     sleepWakeup?: Date | string | null
@@ -55311,12 +53925,12 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDailyEntriesNestedInput
+    user?: UserUpdateOneRequiredWithoutDailyEntriesNestedInput
   }
 
   export type DailyEntryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sleepBedtime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sleepWakeup?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55345,7 +53959,7 @@ export namespace Prisma {
 
   export type DailyEntryCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     date: Date | string
     sleepBedtime?: Date | string | null
     sleepWakeup?: Date | string | null
@@ -55402,7 +54016,7 @@ export namespace Prisma {
 
   export type DailyEntryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sleepBedtime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sleepWakeup?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55439,13 +54053,13 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutHabitsInput
+    user: UserCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
   }
 
   export type HabitUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     anchor: string
     action: string
@@ -55467,13 +54081,13 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
 
   export type HabitUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -55487,7 +54101,7 @@ export namespace Prisma {
 
   export type HabitCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     anchor: string
     action: string
@@ -55512,7 +54126,7 @@ export namespace Prisma {
 
   export type HabitUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -55582,12 +54196,12 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutLibraryItemsInput
+    user: UserCreateNestedOneWithoutLibraryItemsInput
   }
 
   export type LibraryItemUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     author?: string | null
     url?: string | null
@@ -55610,12 +54224,12 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutLibraryItemsNestedInput
+    user?: UserUpdateOneRequiredWithoutLibraryItemsNestedInput
   }
 
   export type LibraryItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55629,7 +54243,7 @@ export namespace Prisma {
 
   export type LibraryItemCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     author?: string | null
     url?: string | null
@@ -55656,7 +54270,7 @@ export namespace Prisma {
 
   export type LibraryItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55684,12 +54298,12 @@ export namespace Prisma {
     store?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutWishlistItemsInput
+    user: UserCreateNestedOneWithoutWishlistItemsInput
   }
 
   export type WishlistItemUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     url?: string | null
@@ -55722,12 +54336,12 @@ export namespace Prisma {
     store?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutWishlistItemsNestedInput
+    user?: UserUpdateOneRequiredWithoutWishlistItemsNestedInput
   }
 
   export type WishlistItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55746,7 +54360,7 @@ export namespace Prisma {
 
   export type WishlistItemCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     url?: string | null
@@ -55783,7 +54397,7 @@ export namespace Prisma {
 
   export type WishlistItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     url?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55873,7 +54487,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -55883,7 +54497,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -55901,7 +54515,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -55911,7 +54525,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -55925,7 +54539,7 @@ export namespace Prisma {
 
   export type UserLanguageCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -55943,7 +54557,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -56268,12 +54882,12 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutVisionsInput
+    user: UserCreateNestedOneWithoutVisionsInput
   }
 
   export type VisionUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     content?: string | null
     createdAt?: Date | string
@@ -56286,12 +54900,12 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutVisionsNestedInput
+    user?: UserUpdateOneRequiredWithoutVisionsNestedInput
   }
 
   export type VisionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56300,7 +54914,7 @@ export namespace Prisma {
 
   export type VisionCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     content?: string | null
     createdAt?: Date | string
@@ -56317,7 +54931,7 @@ export namespace Prisma {
 
   export type VisionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56332,13 +54946,13 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutMilestonesInput
+    user: UserCreateNestedOneWithoutMilestonesInput
     sphere?: LifeSphereCreateNestedOneWithoutMilestonesInput
   }
 
   export type MilestoneUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     targetDate?: Date | string | null
@@ -56356,13 +54970,13 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutMilestonesNestedInput
+    user?: UserUpdateOneRequiredWithoutMilestonesNestedInput
     sphere?: LifeSphereUpdateOneWithoutMilestonesNestedInput
   }
 
   export type MilestoneUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56374,7 +54988,7 @@ export namespace Prisma {
 
   export type MilestoneCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     targetDate?: Date | string | null
@@ -56396,7 +55010,7 @@ export namespace Prisma {
 
   export type MilestoneUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56415,14 +55029,14 @@ export namespace Prisma {
     status?: $Enums.SprintStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutSprintsInput
+    user: UserCreateNestedOneWithoutSprintsInput
     objectives?: ObjectiveCreateNestedManyWithoutSprintInput
     reviews?: SprintReviewCreateNestedManyWithoutSprintInput
   }
 
   export type SprintUncheckedCreateInput = {
     id?: string
-    personId: string
+    userId: string
     number: number
     year: number
     startDate: Date | string
@@ -56443,14 +55057,14 @@ export namespace Prisma {
     status?: EnumSprintStatusFieldUpdateOperationsInput | $Enums.SprintStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutSprintsNestedInput
+    user?: UserUpdateOneRequiredWithoutSprintsNestedInput
     objectives?: ObjectiveUpdateManyWithoutSprintNestedInput
     reviews?: SprintReviewUpdateManyWithoutSprintNestedInput
   }
 
   export type SprintUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56464,7 +55078,7 @@ export namespace Prisma {
 
   export type SprintCreateManyInput = {
     id?: string
-    personId: string
+    userId: string
     number: number
     year: number
     startDate: Date | string
@@ -56487,7 +55101,7 @@ export namespace Prisma {
 
   export type SprintUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57036,9 +55650,99 @@ export namespace Prisma {
     none?: SessionWhereInput
   }
 
-  export type ProfileNullableScalarRelationFilter = {
-    is?: ProfileWhereInput | null
-    isNot?: ProfileWhereInput | null
+  export type NutritionPersonNullableScalarRelationFilter = {
+    is?: NutritionPersonWhereInput | null
+    isNot?: NutritionPersonWhereInput | null
+  }
+
+  export type DishListRelationFilter = {
+    every?: DishWhereInput
+    some?: DishWhereInput
+    none?: DishWhereInput
+  }
+
+  export type DayTemplateListRelationFilter = {
+    every?: DayTemplateWhereInput
+    some?: DayTemplateWhereInput
+    none?: DayTemplateWhereInput
+  }
+
+  export type WeekPlanListRelationFilter = {
+    every?: WeekPlanWhereInput
+    some?: WeekPlanWhereInput
+    none?: WeekPlanWhereInput
+  }
+
+  export type DayPlanListRelationFilter = {
+    every?: DayPlanWhereInput
+    some?: DayPlanWhereInput
+    none?: DayPlanWhereInput
+  }
+
+  export type ShoppingListListRelationFilter = {
+    every?: ShoppingListWhereInput
+    some?: ShoppingListWhereInput
+    none?: ShoppingListWhereInput
+  }
+
+  export type UserLanguageListRelationFilter = {
+    every?: UserLanguageWhereInput
+    some?: UserLanguageWhereInput
+    none?: UserLanguageWhereInput
+  }
+
+  export type TaskListRelationFilter = {
+    every?: TaskWhereInput
+    some?: TaskWhereInput
+    none?: TaskWhereInput
+  }
+
+  export type DailyEntryListRelationFilter = {
+    every?: DailyEntryWhereInput
+    some?: DailyEntryWhereInput
+    none?: DailyEntryWhereInput
+  }
+
+  export type HabitListRelationFilter = {
+    every?: HabitWhereInput
+    some?: HabitWhereInput
+    none?: HabitWhereInput
+  }
+
+  export type LifeSphereListRelationFilter = {
+    every?: LifeSphereWhereInput
+    some?: LifeSphereWhereInput
+    none?: LifeSphereWhereInput
+  }
+
+  export type LibraryItemListRelationFilter = {
+    every?: LibraryItemWhereInput
+    some?: LibraryItemWhereInput
+    none?: LibraryItemWhereInput
+  }
+
+  export type WishlistItemListRelationFilter = {
+    every?: WishlistItemWhereInput
+    some?: WishlistItemWhereInput
+    none?: WishlistItemWhereInput
+  }
+
+  export type VisionListRelationFilter = {
+    every?: VisionWhereInput
+    some?: VisionWhereInput
+    none?: VisionWhereInput
+  }
+
+  export type MilestoneListRelationFilter = {
+    every?: MilestoneWhereInput
+    some?: MilestoneWhereInput
+    none?: MilestoneWhereInput
+  }
+
+  export type SprintListRelationFilter = {
+    every?: SprintWhereInput
+    some?: SprintWhereInput
+    none?: SprintWhereInput
   }
 
   export type SortOrderInput = {
@@ -57051,6 +55755,66 @@ export namespace Prisma {
   }
 
   export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DishOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DayTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WeekPlanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DayPlanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ShoppingListOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserLanguageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DailyEntryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HabitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LifeSphereOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LibraryItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WishlistItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VisionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MilestoneOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SprintOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57298,45 +56062,6 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
-  export type NutritionPersonListRelationFilter = {
-    every?: NutritionPersonWhereInput
-    some?: NutritionPersonWhereInput
-    none?: NutritionPersonWhereInput
-  }
-
-  export type NutritionPersonOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProfileCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ProfileMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ProfileMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -57348,164 +56073,9 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type ProfileScalarRelationFilter = {
-    is?: ProfileWhereInput
-    isNot?: ProfileWhereInput
-  }
-
-  export type DishListRelationFilter = {
-    every?: DishWhereInput
-    some?: DishWhereInput
-    none?: DishWhereInput
-  }
-
-  export type DayTemplateListRelationFilter = {
-    every?: DayTemplateWhereInput
-    some?: DayTemplateWhereInput
-    none?: DayTemplateWhereInput
-  }
-
-  export type WeekPlanListRelationFilter = {
-    every?: WeekPlanWhereInput
-    some?: WeekPlanWhereInput
-    none?: WeekPlanWhereInput
-  }
-
-  export type DayPlanListRelationFilter = {
-    every?: DayPlanWhereInput
-    some?: DayPlanWhereInput
-    none?: DayPlanWhereInput
-  }
-
-  export type ShoppingListListRelationFilter = {
-    every?: ShoppingListWhereInput
-    some?: ShoppingListWhereInput
-    none?: ShoppingListWhereInput
-  }
-
-  export type UserLanguageListRelationFilter = {
-    every?: UserLanguageWhereInput
-    some?: UserLanguageWhereInput
-    none?: UserLanguageWhereInput
-  }
-
-  export type TaskListRelationFilter = {
-    every?: TaskWhereInput
-    some?: TaskWhereInput
-    none?: TaskWhereInput
-  }
-
-  export type DailyEntryListRelationFilter = {
-    every?: DailyEntryWhereInput
-    some?: DailyEntryWhereInput
-    none?: DailyEntryWhereInput
-  }
-
-  export type HabitListRelationFilter = {
-    every?: HabitWhereInput
-    some?: HabitWhereInput
-    none?: HabitWhereInput
-  }
-
-  export type LifeSphereListRelationFilter = {
-    every?: LifeSphereWhereInput
-    some?: LifeSphereWhereInput
-    none?: LifeSphereWhereInput
-  }
-
-  export type LibraryItemListRelationFilter = {
-    every?: LibraryItemWhereInput
-    some?: LibraryItemWhereInput
-    none?: LibraryItemWhereInput
-  }
-
-  export type WishlistItemListRelationFilter = {
-    every?: WishlistItemWhereInput
-    some?: WishlistItemWhereInput
-    none?: WishlistItemWhereInput
-  }
-
-  export type VisionListRelationFilter = {
-    every?: VisionWhereInput
-    some?: VisionWhereInput
-    none?: VisionWhereInput
-  }
-
-  export type MilestoneListRelationFilter = {
-    every?: MilestoneWhereInput
-    some?: MilestoneWhereInput
-    none?: MilestoneWhereInput
-  }
-
-  export type SprintListRelationFilter = {
-    every?: SprintWhereInput
-    some?: SprintWhereInput
-    none?: SprintWhereInput
-  }
-
-  export type DishOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DayTemplateOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WeekPlanOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DayPlanOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ShoppingListOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserLanguageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TaskOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DailyEntryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type HabitOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LifeSphereOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LibraryItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WishlistItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type VisionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type MilestoneOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SprintOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type NutritionPersonCountOrderByAggregateInput = {
     id?: SortOrder
-    profileId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     targetCalories?: SortOrder
     targetProtein?: SortOrder
@@ -57526,7 +56096,7 @@ export namespace Prisma {
 
   export type NutritionPersonMaxOrderByAggregateInput = {
     id?: SortOrder
-    profileId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     targetCalories?: SortOrder
     targetProtein?: SortOrder
@@ -57539,7 +56109,7 @@ export namespace Prisma {
 
   export type NutritionPersonMinOrderByAggregateInput = {
     id?: SortOrder
-    profileId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     targetCalories?: SortOrder
     targetProtein?: SortOrder
@@ -57758,11 +56328,6 @@ export namespace Prisma {
     not?: NestedEnumPriorityFilter<$PrismaModel> | $Enums.Priority
   }
 
-  export type NutritionPersonScalarRelationFilter = {
-    is?: NutritionPersonWhereInput
-    isNot?: NutritionPersonWhereInput
-  }
-
   export type DayPlanEntryListRelationFilter = {
     every?: DayPlanEntryWhereInput
     some?: DayPlanEntryWhereInput
@@ -57785,7 +56350,7 @@ export namespace Prisma {
 
   export type DishCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     priority?: SortOrder
@@ -57800,7 +56365,7 @@ export namespace Prisma {
 
   export type DishMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     priority?: SortOrder
@@ -57811,7 +56376,7 @@ export namespace Prisma {
 
   export type DishMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     priority?: SortOrder
@@ -57910,7 +56475,7 @@ export namespace Prisma {
 
   export type DayTemplateCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -57918,7 +56483,7 @@ export namespace Prisma {
 
   export type DayTemplateMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -57926,7 +56491,7 @@ export namespace Prisma {
 
   export type DayTemplateMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -57991,7 +56556,7 @@ export namespace Prisma {
 
   export type WeekPlanCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     startDate?: SortOrder
     createdAt?: SortOrder
@@ -58000,7 +56565,7 @@ export namespace Prisma {
 
   export type WeekPlanMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     startDate?: SortOrder
     createdAt?: SortOrder
@@ -58009,7 +56574,7 @@ export namespace Prisma {
 
   export type WeekPlanMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     startDate?: SortOrder
     createdAt?: SortOrder
@@ -58035,7 +56600,7 @@ export namespace Prisma {
 
   export type DayPlanCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     templateId?: SortOrder
     date?: SortOrder
@@ -58046,7 +56611,7 @@ export namespace Prisma {
 
   export type DayPlanMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     templateId?: SortOrder
     date?: SortOrder
@@ -58057,7 +56622,7 @@ export namespace Prisma {
 
   export type DayPlanMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     templateId?: SortOrder
     date?: SortOrder
@@ -58118,7 +56683,7 @@ export namespace Prisma {
 
   export type ShoppingListCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
@@ -58127,7 +56692,7 @@ export namespace Prisma {
 
   export type ShoppingListMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
@@ -58136,7 +56701,7 @@ export namespace Prisma {
 
   export type ShoppingListMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     weekPlanId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
@@ -58219,7 +56784,7 @@ export namespace Prisma {
 
   export type LifeSphereCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     color?: SortOrder
     icon?: SortOrder
@@ -58234,7 +56799,7 @@ export namespace Prisma {
 
   export type LifeSphereMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     color?: SortOrder
     icon?: SortOrder
@@ -58245,7 +56810,7 @@ export namespace Prisma {
 
   export type LifeSphereMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     color?: SortOrder
     icon?: SortOrder
@@ -58305,7 +56870,7 @@ export namespace Prisma {
 
   export type TaskCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     icon?: SortOrder
@@ -58332,7 +56897,7 @@ export namespace Prisma {
 
   export type TaskMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     icon?: SortOrder
@@ -58354,7 +56919,7 @@ export namespace Prisma {
 
   export type TaskMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     icon?: SortOrder
@@ -58427,14 +56992,14 @@ export namespace Prisma {
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
-  export type DailyEntryPersonIdDateCompoundUniqueInput = {
-    personId: string
+  export type DailyEntryUserIdDateCompoundUniqueInput = {
+    userId: string
     date: Date | string
   }
 
   export type DailyEntryCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     date?: SortOrder
     sleepBedtime?: SortOrder
     sleepWakeup?: SortOrder
@@ -58473,7 +57038,7 @@ export namespace Prisma {
 
   export type DailyEntryMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     date?: SortOrder
     sleepBedtime?: SortOrder
     sleepWakeup?: SortOrder
@@ -58499,7 +57064,7 @@ export namespace Prisma {
 
   export type DailyEntryMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     date?: SortOrder
     sleepBedtime?: SortOrder
     sleepWakeup?: SortOrder
@@ -58579,7 +57144,7 @@ export namespace Prisma {
 
   export type HabitCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
@@ -58596,7 +57161,7 @@ export namespace Prisma {
 
   export type HabitMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
@@ -58609,7 +57174,7 @@ export namespace Prisma {
 
   export type HabitMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
@@ -58671,7 +57236,7 @@ export namespace Prisma {
 
   export type LibraryItemCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     author?: SortOrder
     url?: SortOrder
@@ -58689,7 +57254,7 @@ export namespace Prisma {
 
   export type LibraryItemMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     author?: SortOrder
     url?: SortOrder
@@ -58703,7 +57268,7 @@ export namespace Prisma {
 
   export type LibraryItemMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     author?: SortOrder
     url?: SortOrder
@@ -58756,7 +57321,7 @@ export namespace Prisma {
 
   export type WishlistItemCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     url?: SortOrder
@@ -58780,7 +57345,7 @@ export namespace Prisma {
 
   export type WishlistItemMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     url?: SortOrder
@@ -58798,7 +57363,7 @@ export namespace Prisma {
 
   export type WishlistItemMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     url?: SortOrder
@@ -58908,14 +57473,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UserLanguagePersonIdLanguageIdCompoundUniqueInput = {
-    personId: string
+  export type UserLanguageUserIdLanguageIdCompoundUniqueInput = {
+    userId: string
     languageId: string
   }
 
   export type UserLanguageCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     languageId?: SortOrder
     level?: SortOrder
     totalXp?: SortOrder
@@ -58929,7 +57494,7 @@ export namespace Prisma {
 
   export type UserLanguageMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     languageId?: SortOrder
     level?: SortOrder
     totalXp?: SortOrder
@@ -58939,7 +57504,7 @@ export namespace Prisma {
 
   export type UserLanguageMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     languageId?: SortOrder
     level?: SortOrder
     totalXp?: SortOrder
@@ -59187,7 +57752,7 @@ export namespace Prisma {
 
   export type VisionCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
@@ -59196,7 +57761,7 @@ export namespace Prisma {
 
   export type VisionMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
@@ -59205,7 +57770,7 @@ export namespace Prisma {
 
   export type VisionMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
@@ -59214,7 +57779,7 @@ export namespace Prisma {
 
   export type MilestoneCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     targetDate?: SortOrder
@@ -59226,7 +57791,7 @@ export namespace Prisma {
 
   export type MilestoneMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     targetDate?: SortOrder
@@ -59238,7 +57803,7 @@ export namespace Prisma {
 
   export type MilestoneMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     title?: SortOrder
     description?: SortOrder
     targetDate?: SortOrder
@@ -59267,7 +57832,7 @@ export namespace Prisma {
 
   export type SprintCountOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     number?: SortOrder
     year?: SortOrder
     startDate?: SortOrder
@@ -59284,7 +57849,7 @@ export namespace Prisma {
 
   export type SprintMaxOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     number?: SortOrder
     year?: SortOrder
     startDate?: SortOrder
@@ -59296,7 +57861,7 @@ export namespace Prisma {
 
   export type SprintMinOrderByAggregateInput = {
     id?: SortOrder
-    personId?: SortOrder
+    userId?: SortOrder
     number?: SortOrder
     year?: SortOrder
     startDate?: SortOrder
@@ -59662,10 +58227,115 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type ProfileCreateNestedOneWithoutUserInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    connect?: ProfileWhereUniqueInput
+  export type NutritionPersonCreateNestedOneWithoutUserInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
+    connect?: NutritionPersonWhereUniqueInput
+  }
+
+  export type DishCreateNestedManyWithoutUserInput = {
+    create?: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput> | DishCreateWithoutUserInput[] | DishUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DishCreateOrConnectWithoutUserInput | DishCreateOrConnectWithoutUserInput[]
+    createMany?: DishCreateManyUserInputEnvelope
+    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+  }
+
+  export type DayTemplateCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: DayTemplateCreateManyUserInputEnvelope
+    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+  }
+
+  export type WeekPlanCreateNestedManyWithoutUserInput = {
+    create?: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput> | WeekPlanCreateWithoutUserInput[] | WeekPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekPlanCreateOrConnectWithoutUserInput | WeekPlanCreateOrConnectWithoutUserInput[]
+    createMany?: WeekPlanCreateManyUserInputEnvelope
+    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+  }
+
+  export type DayPlanCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput> | DayPlanCreateWithoutUserInput[] | DayPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayPlanCreateOrConnectWithoutUserInput | DayPlanCreateOrConnectWithoutUserInput[]
+    createMany?: DayPlanCreateManyUserInputEnvelope
+    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+  }
+
+  export type ShoppingListCreateNestedManyWithoutUserInput = {
+    create?: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput> | ShoppingListCreateWithoutUserInput[] | ShoppingListUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ShoppingListCreateOrConnectWithoutUserInput | ShoppingListCreateOrConnectWithoutUserInput[]
+    createMany?: ShoppingListCreateManyUserInputEnvelope
+    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+  }
+
+  export type UserLanguageCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput> | UserLanguageCreateWithoutUserInput[] | UserLanguageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLanguageCreateOrConnectWithoutUserInput | UserLanguageCreateOrConnectWithoutUserInput[]
+    createMany?: UserLanguageCreateManyUserInputEnvelope
+    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+  }
+
+  export type TaskCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type DailyEntryCreateNestedManyWithoutUserInput = {
+    create?: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput> | DailyEntryCreateWithoutUserInput[] | DailyEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailyEntryCreateOrConnectWithoutUserInput | DailyEntryCreateOrConnectWithoutUserInput[]
+    createMany?: DailyEntryCreateManyUserInputEnvelope
+    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+  }
+
+  export type HabitCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type LifeSphereCreateNestedManyWithoutUserInput = {
+    create?: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput> | LifeSphereCreateWithoutUserInput[] | LifeSphereUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutUserInput | LifeSphereCreateOrConnectWithoutUserInput[]
+    createMany?: LifeSphereCreateManyUserInputEnvelope
+    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+  }
+
+  export type LibraryItemCreateNestedManyWithoutUserInput = {
+    create?: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput> | LibraryItemCreateWithoutUserInput[] | LibraryItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LibraryItemCreateOrConnectWithoutUserInput | LibraryItemCreateOrConnectWithoutUserInput[]
+    createMany?: LibraryItemCreateManyUserInputEnvelope
+    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+  }
+
+  export type WishlistItemCreateNestedManyWithoutUserInput = {
+    create?: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput> | WishlistItemCreateWithoutUserInput[] | WishlistItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
+    createMany?: WishlistItemCreateManyUserInputEnvelope
+    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+  }
+
+  export type VisionCreateNestedManyWithoutUserInput = {
+    create?: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput> | VisionCreateWithoutUserInput[] | VisionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VisionCreateOrConnectWithoutUserInput | VisionCreateOrConnectWithoutUserInput[]
+    createMany?: VisionCreateManyUserInputEnvelope
+    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+  }
+
+  export type MilestoneCreateNestedManyWithoutUserInput = {
+    create?: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput> | MilestoneCreateWithoutUserInput[] | MilestoneUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MilestoneCreateOrConnectWithoutUserInput | MilestoneCreateOrConnectWithoutUserInput[]
+    createMany?: MilestoneCreateManyUserInputEnvelope
+    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+  }
+
+  export type SprintCreateNestedManyWithoutUserInput = {
+    create?: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput> | SprintCreateWithoutUserInput[] | SprintUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SprintCreateOrConnectWithoutUserInput | SprintCreateOrConnectWithoutUserInput[]
+    createMany?: SprintCreateManyUserInputEnvelope
+    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -59682,10 +58352,115 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
-  export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    connect?: ProfileWhereUniqueInput
+  export type NutritionPersonUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
+    connect?: NutritionPersonWhereUniqueInput
+  }
+
+  export type DishUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput> | DishCreateWithoutUserInput[] | DishUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DishCreateOrConnectWithoutUserInput | DishCreateOrConnectWithoutUserInput[]
+    createMany?: DishCreateManyUserInputEnvelope
+    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+  }
+
+  export type DayTemplateUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: DayTemplateCreateManyUserInputEnvelope
+    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+  }
+
+  export type WeekPlanUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput> | WeekPlanCreateWithoutUserInput[] | WeekPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekPlanCreateOrConnectWithoutUserInput | WeekPlanCreateOrConnectWithoutUserInput[]
+    createMany?: WeekPlanCreateManyUserInputEnvelope
+    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+  }
+
+  export type DayPlanUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput> | DayPlanCreateWithoutUserInput[] | DayPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayPlanCreateOrConnectWithoutUserInput | DayPlanCreateOrConnectWithoutUserInput[]
+    createMany?: DayPlanCreateManyUserInputEnvelope
+    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+  }
+
+  export type ShoppingListUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput> | ShoppingListCreateWithoutUserInput[] | ShoppingListUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ShoppingListCreateOrConnectWithoutUserInput | ShoppingListCreateOrConnectWithoutUserInput[]
+    createMany?: ShoppingListCreateManyUserInputEnvelope
+    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+  }
+
+  export type UserLanguageUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput> | UserLanguageCreateWithoutUserInput[] | UserLanguageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLanguageCreateOrConnectWithoutUserInput | UserLanguageCreateOrConnectWithoutUserInput[]
+    createMany?: UserLanguageCreateManyUserInputEnvelope
+    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type DailyEntryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput> | DailyEntryCreateWithoutUserInput[] | DailyEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailyEntryCreateOrConnectWithoutUserInput | DailyEntryCreateOrConnectWithoutUserInput[]
+    createMany?: DailyEntryCreateManyUserInputEnvelope
+    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+  }
+
+  export type HabitUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type LifeSphereUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput> | LifeSphereCreateWithoutUserInput[] | LifeSphereUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutUserInput | LifeSphereCreateOrConnectWithoutUserInput[]
+    createMany?: LifeSphereCreateManyUserInputEnvelope
+    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+  }
+
+  export type LibraryItemUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput> | LibraryItemCreateWithoutUserInput[] | LibraryItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LibraryItemCreateOrConnectWithoutUserInput | LibraryItemCreateOrConnectWithoutUserInput[]
+    createMany?: LibraryItemCreateManyUserInputEnvelope
+    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+  }
+
+  export type WishlistItemUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput> | WishlistItemCreateWithoutUserInput[] | WishlistItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
+    createMany?: WishlistItemCreateManyUserInputEnvelope
+    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+  }
+
+  export type VisionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput> | VisionCreateWithoutUserInput[] | VisionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VisionCreateOrConnectWithoutUserInput | VisionCreateOrConnectWithoutUserInput[]
+    createMany?: VisionCreateManyUserInputEnvelope
+    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+  }
+
+  export type MilestoneUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput> | MilestoneCreateWithoutUserInput[] | MilestoneUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MilestoneCreateOrConnectWithoutUserInput | MilestoneCreateOrConnectWithoutUserInput[]
+    createMany?: MilestoneCreateManyUserInputEnvelope
+    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+  }
+
+  export type SprintUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput> | SprintCreateWithoutUserInput[] | SprintUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SprintCreateOrConnectWithoutUserInput | SprintCreateOrConnectWithoutUserInput[]
+    createMany?: SprintCreateManyUserInputEnvelope
+    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -59736,14 +58511,224 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type ProfileUpdateOneWithoutUserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    upsert?: ProfileUpsertWithoutUserInput
-    disconnect?: ProfileWhereInput | boolean
-    delete?: ProfileWhereInput | boolean
-    connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
+  export type NutritionPersonUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
+    upsert?: NutritionPersonUpsertWithoutUserInput
+    disconnect?: NutritionPersonWhereInput | boolean
+    delete?: NutritionPersonWhereInput | boolean
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserInput, NutritionPersonUpdateWithoutUserInput>, NutritionPersonUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DishUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput> | DishCreateWithoutUserInput[] | DishUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DishCreateOrConnectWithoutUserInput | DishCreateOrConnectWithoutUserInput[]
+    upsert?: DishUpsertWithWhereUniqueWithoutUserInput | DishUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DishCreateManyUserInputEnvelope
+    set?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    disconnect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    delete?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    update?: DishUpdateWithWhereUniqueWithoutUserInput | DishUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DishUpdateManyWithWhereWithoutUserInput | DishUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DishScalarWhereInput | DishScalarWhereInput[]
+  }
+
+  export type DayTemplateUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: DayTemplateUpsertWithWhereUniqueWithoutUserInput | DayTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayTemplateCreateManyUserInputEnvelope
+    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    update?: DayTemplateUpdateWithWhereUniqueWithoutUserInput | DayTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayTemplateUpdateManyWithWhereWithoutUserInput | DayTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
+  }
+
+  export type WeekPlanUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput> | WeekPlanCreateWithoutUserInput[] | WeekPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekPlanCreateOrConnectWithoutUserInput | WeekPlanCreateOrConnectWithoutUserInput[]
+    upsert?: WeekPlanUpsertWithWhereUniqueWithoutUserInput | WeekPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WeekPlanCreateManyUserInputEnvelope
+    set?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    disconnect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    delete?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    update?: WeekPlanUpdateWithWhereUniqueWithoutUserInput | WeekPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WeekPlanUpdateManyWithWhereWithoutUserInput | WeekPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
+  }
+
+  export type DayPlanUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput> | DayPlanCreateWithoutUserInput[] | DayPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayPlanCreateOrConnectWithoutUserInput | DayPlanCreateOrConnectWithoutUserInput[]
+    upsert?: DayPlanUpsertWithWhereUniqueWithoutUserInput | DayPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayPlanCreateManyUserInputEnvelope
+    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    update?: DayPlanUpdateWithWhereUniqueWithoutUserInput | DayPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayPlanUpdateManyWithWhereWithoutUserInput | DayPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
+  }
+
+  export type ShoppingListUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput> | ShoppingListCreateWithoutUserInput[] | ShoppingListUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ShoppingListCreateOrConnectWithoutUserInput | ShoppingListCreateOrConnectWithoutUserInput[]
+    upsert?: ShoppingListUpsertWithWhereUniqueWithoutUserInput | ShoppingListUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ShoppingListCreateManyUserInputEnvelope
+    set?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    disconnect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    delete?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    update?: ShoppingListUpdateWithWhereUniqueWithoutUserInput | ShoppingListUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ShoppingListUpdateManyWithWhereWithoutUserInput | ShoppingListUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
+  }
+
+  export type UserLanguageUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput> | UserLanguageCreateWithoutUserInput[] | UserLanguageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLanguageCreateOrConnectWithoutUserInput | UserLanguageCreateOrConnectWithoutUserInput[]
+    upsert?: UserLanguageUpsertWithWhereUniqueWithoutUserInput | UserLanguageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserLanguageCreateManyUserInputEnvelope
+    set?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    disconnect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    delete?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    update?: UserLanguageUpdateWithWhereUniqueWithoutUserInput | UserLanguageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserLanguageUpdateManyWithWhereWithoutUserInput | UserLanguageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
+  }
+
+  export type TaskUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type DailyEntryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput> | DailyEntryCreateWithoutUserInput[] | DailyEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailyEntryCreateOrConnectWithoutUserInput | DailyEntryCreateOrConnectWithoutUserInput[]
+    upsert?: DailyEntryUpsertWithWhereUniqueWithoutUserInput | DailyEntryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DailyEntryCreateManyUserInputEnvelope
+    set?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    disconnect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    delete?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    update?: DailyEntryUpdateWithWhereUniqueWithoutUserInput | DailyEntryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DailyEntryUpdateManyWithWhereWithoutUserInput | DailyEntryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
+  }
+
+  export type HabitUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutUserInput | HabitUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type LifeSphereUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput> | LifeSphereCreateWithoutUserInput[] | LifeSphereUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutUserInput | LifeSphereCreateOrConnectWithoutUserInput[]
+    upsert?: LifeSphereUpsertWithWhereUniqueWithoutUserInput | LifeSphereUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LifeSphereCreateManyUserInputEnvelope
+    set?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    disconnect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    delete?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    update?: LifeSphereUpdateWithWhereUniqueWithoutUserInput | LifeSphereUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LifeSphereUpdateManyWithWhereWithoutUserInput | LifeSphereUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
+  }
+
+  export type LibraryItemUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput> | LibraryItemCreateWithoutUserInput[] | LibraryItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LibraryItemCreateOrConnectWithoutUserInput | LibraryItemCreateOrConnectWithoutUserInput[]
+    upsert?: LibraryItemUpsertWithWhereUniqueWithoutUserInput | LibraryItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LibraryItemCreateManyUserInputEnvelope
+    set?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    disconnect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    delete?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    update?: LibraryItemUpdateWithWhereUniqueWithoutUserInput | LibraryItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LibraryItemUpdateManyWithWhereWithoutUserInput | LibraryItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
+  }
+
+  export type WishlistItemUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput> | WishlistItemCreateWithoutUserInput[] | WishlistItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
+    upsert?: WishlistItemUpsertWithWhereUniqueWithoutUserInput | WishlistItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WishlistItemCreateManyUserInputEnvelope
+    set?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    disconnect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    delete?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    update?: WishlistItemUpdateWithWhereUniqueWithoutUserInput | WishlistItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WishlistItemUpdateManyWithWhereWithoutUserInput | WishlistItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
+  }
+
+  export type VisionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput> | VisionCreateWithoutUserInput[] | VisionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VisionCreateOrConnectWithoutUserInput | VisionCreateOrConnectWithoutUserInput[]
+    upsert?: VisionUpsertWithWhereUniqueWithoutUserInput | VisionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VisionCreateManyUserInputEnvelope
+    set?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    disconnect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    delete?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    update?: VisionUpdateWithWhereUniqueWithoutUserInput | VisionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VisionUpdateManyWithWhereWithoutUserInput | VisionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VisionScalarWhereInput | VisionScalarWhereInput[]
+  }
+
+  export type MilestoneUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput> | MilestoneCreateWithoutUserInput[] | MilestoneUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MilestoneCreateOrConnectWithoutUserInput | MilestoneCreateOrConnectWithoutUserInput[]
+    upsert?: MilestoneUpsertWithWhereUniqueWithoutUserInput | MilestoneUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MilestoneCreateManyUserInputEnvelope
+    set?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    disconnect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    delete?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    update?: MilestoneUpdateWithWhereUniqueWithoutUserInput | MilestoneUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MilestoneUpdateManyWithWhereWithoutUserInput | MilestoneUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
+  }
+
+  export type SprintUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput> | SprintCreateWithoutUserInput[] | SprintUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SprintCreateOrConnectWithoutUserInput | SprintCreateOrConnectWithoutUserInput[]
+    upsert?: SprintUpsertWithWhereUniqueWithoutUserInput | SprintUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SprintCreateManyUserInputEnvelope
+    set?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    disconnect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    delete?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    update?: SprintUpdateWithWhereUniqueWithoutUserInput | SprintUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SprintUpdateManyWithWhereWithoutUserInput | SprintUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -59774,14 +58759,224 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
-  export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutUserInput
-    upsert?: ProfileUpsertWithoutUserInput
-    disconnect?: ProfileWhereInput | boolean
-    delete?: ProfileWhereInput | boolean
-    connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutUserInput, ProfileUpdateWithoutUserInput>, ProfileUncheckedUpdateWithoutUserInput>
+  export type NutritionPersonUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
+    upsert?: NutritionPersonUpsertWithoutUserInput
+    disconnect?: NutritionPersonWhereInput | boolean
+    delete?: NutritionPersonWhereInput | boolean
+    connect?: NutritionPersonWhereUniqueInput
+    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserInput, NutritionPersonUpdateWithoutUserInput>, NutritionPersonUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DishUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput> | DishCreateWithoutUserInput[] | DishUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DishCreateOrConnectWithoutUserInput | DishCreateOrConnectWithoutUserInput[]
+    upsert?: DishUpsertWithWhereUniqueWithoutUserInput | DishUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DishCreateManyUserInputEnvelope
+    set?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    disconnect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    delete?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
+    update?: DishUpdateWithWhereUniqueWithoutUserInput | DishUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DishUpdateManyWithWhereWithoutUserInput | DishUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DishScalarWhereInput | DishScalarWhereInput[]
+  }
+
+  export type DayTemplateUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: DayTemplateUpsertWithWhereUniqueWithoutUserInput | DayTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayTemplateCreateManyUserInputEnvelope
+    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
+    update?: DayTemplateUpdateWithWhereUniqueWithoutUserInput | DayTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayTemplateUpdateManyWithWhereWithoutUserInput | DayTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
+  }
+
+  export type WeekPlanUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput> | WeekPlanCreateWithoutUserInput[] | WeekPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekPlanCreateOrConnectWithoutUserInput | WeekPlanCreateOrConnectWithoutUserInput[]
+    upsert?: WeekPlanUpsertWithWhereUniqueWithoutUserInput | WeekPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WeekPlanCreateManyUserInputEnvelope
+    set?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    disconnect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    delete?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
+    update?: WeekPlanUpdateWithWhereUniqueWithoutUserInput | WeekPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WeekPlanUpdateManyWithWhereWithoutUserInput | WeekPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
+  }
+
+  export type DayPlanUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput> | DayPlanCreateWithoutUserInput[] | DayPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayPlanCreateOrConnectWithoutUserInput | DayPlanCreateOrConnectWithoutUserInput[]
+    upsert?: DayPlanUpsertWithWhereUniqueWithoutUserInput | DayPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayPlanCreateManyUserInputEnvelope
+    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
+    update?: DayPlanUpdateWithWhereUniqueWithoutUserInput | DayPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayPlanUpdateManyWithWhereWithoutUserInput | DayPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
+  }
+
+  export type ShoppingListUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput> | ShoppingListCreateWithoutUserInput[] | ShoppingListUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ShoppingListCreateOrConnectWithoutUserInput | ShoppingListCreateOrConnectWithoutUserInput[]
+    upsert?: ShoppingListUpsertWithWhereUniqueWithoutUserInput | ShoppingListUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ShoppingListCreateManyUserInputEnvelope
+    set?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    disconnect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    delete?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
+    update?: ShoppingListUpdateWithWhereUniqueWithoutUserInput | ShoppingListUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ShoppingListUpdateManyWithWhereWithoutUserInput | ShoppingListUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
+  }
+
+  export type UserLanguageUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput> | UserLanguageCreateWithoutUserInput[] | UserLanguageUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserLanguageCreateOrConnectWithoutUserInput | UserLanguageCreateOrConnectWithoutUserInput[]
+    upsert?: UserLanguageUpsertWithWhereUniqueWithoutUserInput | UserLanguageUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserLanguageCreateManyUserInputEnvelope
+    set?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    disconnect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    delete?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
+    update?: UserLanguageUpdateWithWhereUniqueWithoutUserInput | UserLanguageUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserLanguageUpdateManyWithWhereWithoutUserInput | UserLanguageUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutUserInput | TaskUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaskCreateManyUserInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type DailyEntryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput> | DailyEntryCreateWithoutUserInput[] | DailyEntryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailyEntryCreateOrConnectWithoutUserInput | DailyEntryCreateOrConnectWithoutUserInput[]
+    upsert?: DailyEntryUpsertWithWhereUniqueWithoutUserInput | DailyEntryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DailyEntryCreateManyUserInputEnvelope
+    set?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    disconnect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    delete?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
+    update?: DailyEntryUpdateWithWhereUniqueWithoutUserInput | DailyEntryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DailyEntryUpdateManyWithWhereWithoutUserInput | DailyEntryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
+  }
+
+  export type HabitUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput> | HabitCreateWithoutUserInput[] | HabitUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutUserInput | HabitUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HabitCreateManyUserInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type LifeSphereUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput> | LifeSphereCreateWithoutUserInput[] | LifeSphereUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutUserInput | LifeSphereCreateOrConnectWithoutUserInput[]
+    upsert?: LifeSphereUpsertWithWhereUniqueWithoutUserInput | LifeSphereUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LifeSphereCreateManyUserInputEnvelope
+    set?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    disconnect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    delete?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
+    update?: LifeSphereUpdateWithWhereUniqueWithoutUserInput | LifeSphereUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LifeSphereUpdateManyWithWhereWithoutUserInput | LifeSphereUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
+  }
+
+  export type LibraryItemUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput> | LibraryItemCreateWithoutUserInput[] | LibraryItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LibraryItemCreateOrConnectWithoutUserInput | LibraryItemCreateOrConnectWithoutUserInput[]
+    upsert?: LibraryItemUpsertWithWhereUniqueWithoutUserInput | LibraryItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LibraryItemCreateManyUserInputEnvelope
+    set?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    disconnect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    delete?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
+    update?: LibraryItemUpdateWithWhereUniqueWithoutUserInput | LibraryItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LibraryItemUpdateManyWithWhereWithoutUserInput | LibraryItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
+  }
+
+  export type WishlistItemUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput> | WishlistItemCreateWithoutUserInput[] | WishlistItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
+    upsert?: WishlistItemUpsertWithWhereUniqueWithoutUserInput | WishlistItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WishlistItemCreateManyUserInputEnvelope
+    set?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    disconnect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    delete?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+    update?: WishlistItemUpdateWithWhereUniqueWithoutUserInput | WishlistItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WishlistItemUpdateManyWithWhereWithoutUserInput | WishlistItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
+  }
+
+  export type VisionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput> | VisionCreateWithoutUserInput[] | VisionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: VisionCreateOrConnectWithoutUserInput | VisionCreateOrConnectWithoutUserInput[]
+    upsert?: VisionUpsertWithWhereUniqueWithoutUserInput | VisionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: VisionCreateManyUserInputEnvelope
+    set?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    disconnect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    delete?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
+    update?: VisionUpdateWithWhereUniqueWithoutUserInput | VisionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: VisionUpdateManyWithWhereWithoutUserInput | VisionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: VisionScalarWhereInput | VisionScalarWhereInput[]
+  }
+
+  export type MilestoneUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput> | MilestoneCreateWithoutUserInput[] | MilestoneUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MilestoneCreateOrConnectWithoutUserInput | MilestoneCreateOrConnectWithoutUserInput[]
+    upsert?: MilestoneUpsertWithWhereUniqueWithoutUserInput | MilestoneUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MilestoneCreateManyUserInputEnvelope
+    set?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    disconnect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    delete?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
+    update?: MilestoneUpdateWithWhereUniqueWithoutUserInput | MilestoneUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MilestoneUpdateManyWithWhereWithoutUserInput | MilestoneUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
+  }
+
+  export type SprintUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput> | SprintCreateWithoutUserInput[] | SprintUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SprintCreateOrConnectWithoutUserInput | SprintCreateOrConnectWithoutUserInput[]
+    upsert?: SprintUpsertWithWhereUniqueWithoutUserInput | SprintUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SprintCreateManyUserInputEnvelope
+    set?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    disconnect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    delete?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+    update?: SprintUpdateWithWhereUniqueWithoutUserInput | SprintUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SprintUpdateManyWithWhereWithoutUserInput | SprintUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -59820,278 +59015,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
-  export type UserCreateNestedOneWithoutProfileInput = {
-    create?: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProfileInput
+  export type UserCreateNestedOneWithoutNutritionPersonInput = {
+    create?: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type NutritionPersonCreateNestedManyWithoutProfileInput = {
-    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
-    createMany?: NutritionPersonCreateManyProfileInputEnvelope
-    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-  }
-
-  export type NutritionPersonUncheckedCreateNestedManyWithoutProfileInput = {
-    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
-    createMany?: NutritionPersonCreateManyProfileInputEnvelope
-    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneWithoutProfileNestedInput = {
-    create?: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProfileInput
-    upsert?: UserUpsertWithoutProfileInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileInput, UserUpdateWithoutProfileInput>, UserUncheckedUpdateWithoutProfileInput>
-  }
-
-  export type NutritionPersonUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
-    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutProfileInput | NutritionPersonUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: NutritionPersonCreateManyProfileInputEnvelope
-    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    update?: NutritionPersonUpdateWithWhereUniqueWithoutProfileInput | NutritionPersonUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: NutritionPersonUpdateManyWithWhereWithoutProfileInput | NutritionPersonUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
-  }
-
-  export type NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput> | NutritionPersonCreateWithoutProfileInput[] | NutritionPersonUncheckedCreateWithoutProfileInput[]
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutProfileInput | NutritionPersonCreateOrConnectWithoutProfileInput[]
-    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutProfileInput | NutritionPersonUpsertWithWhereUniqueWithoutProfileInput[]
-    createMany?: NutritionPersonCreateManyProfileInputEnvelope
-    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
-    update?: NutritionPersonUpdateWithWhereUniqueWithoutProfileInput | NutritionPersonUpdateWithWhereUniqueWithoutProfileInput[]
-    updateMany?: NutritionPersonUpdateManyWithWhereWithoutProfileInput | NutritionPersonUpdateManyWithWhereWithoutProfileInput[]
-    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
-  }
-
-  export type ProfileCreateNestedOneWithoutPersonsInput = {
-    create?: XOR<ProfileCreateWithoutPersonsInput, ProfileUncheckedCreateWithoutPersonsInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutPersonsInput
-    connect?: ProfileWhereUniqueInput
-  }
-
-  export type DishCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput> | DishCreateWithoutPersonInput[] | DishUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DishCreateOrConnectWithoutPersonInput | DishCreateOrConnectWithoutPersonInput[]
-    createMany?: DishCreateManyPersonInputEnvelope
-    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-  }
-
-  export type DayTemplateCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput> | DayTemplateCreateWithoutPersonInput[] | DayTemplateUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutPersonInput | DayTemplateCreateOrConnectWithoutPersonInput[]
-    createMany?: DayTemplateCreateManyPersonInputEnvelope
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-  }
-
-  export type WeekPlanCreateNestedManyWithoutPersonInput = {
-    create?: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput> | WeekPlanCreateWithoutPersonInput[] | WeekPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WeekPlanCreateOrConnectWithoutPersonInput | WeekPlanCreateOrConnectWithoutPersonInput[]
-    createMany?: WeekPlanCreateManyPersonInputEnvelope
-    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-  }
-
-  export type DayPlanCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput> | DayPlanCreateWithoutPersonInput[] | DayPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutPersonInput | DayPlanCreateOrConnectWithoutPersonInput[]
-    createMany?: DayPlanCreateManyPersonInputEnvelope
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-  }
-
-  export type ShoppingListCreateNestedManyWithoutPersonInput = {
-    create?: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput> | ShoppingListCreateWithoutPersonInput[] | ShoppingListUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: ShoppingListCreateOrConnectWithoutPersonInput | ShoppingListCreateOrConnectWithoutPersonInput[]
-    createMany?: ShoppingListCreateManyPersonInputEnvelope
-    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-  }
-
-  export type UserLanguageCreateNestedManyWithoutPersonInput = {
-    create?: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput> | UserLanguageCreateWithoutPersonInput[] | UserLanguageUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: UserLanguageCreateOrConnectWithoutPersonInput | UserLanguageCreateOrConnectWithoutPersonInput[]
-    createMany?: UserLanguageCreateManyPersonInputEnvelope
-    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-  }
-
-  export type TaskCreateNestedManyWithoutPersonInput = {
-    create?: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput> | TaskCreateWithoutPersonInput[] | TaskUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutPersonInput | TaskCreateOrConnectWithoutPersonInput[]
-    createMany?: TaskCreateManyPersonInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type DailyEntryCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput> | DailyEntryCreateWithoutPersonInput[] | DailyEntryUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DailyEntryCreateOrConnectWithoutPersonInput | DailyEntryCreateOrConnectWithoutPersonInput[]
-    createMany?: DailyEntryCreateManyPersonInputEnvelope
-    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-  }
-
-  export type HabitCreateNestedManyWithoutPersonInput = {
-    create?: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput> | HabitCreateWithoutPersonInput[] | HabitUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutPersonInput | HabitCreateOrConnectWithoutPersonInput[]
-    createMany?: HabitCreateManyPersonInputEnvelope
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-  }
-
-  export type LifeSphereCreateNestedManyWithoutPersonInput = {
-    create?: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput> | LifeSphereCreateWithoutPersonInput[] | LifeSphereUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LifeSphereCreateOrConnectWithoutPersonInput | LifeSphereCreateOrConnectWithoutPersonInput[]
-    createMany?: LifeSphereCreateManyPersonInputEnvelope
-    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-  }
-
-  export type LibraryItemCreateNestedManyWithoutPersonInput = {
-    create?: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput> | LibraryItemCreateWithoutPersonInput[] | LibraryItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LibraryItemCreateOrConnectWithoutPersonInput | LibraryItemCreateOrConnectWithoutPersonInput[]
-    createMany?: LibraryItemCreateManyPersonInputEnvelope
-    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-  }
-
-  export type WishlistItemCreateNestedManyWithoutPersonInput = {
-    create?: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput> | WishlistItemCreateWithoutPersonInput[] | WishlistItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WishlistItemCreateOrConnectWithoutPersonInput | WishlistItemCreateOrConnectWithoutPersonInput[]
-    createMany?: WishlistItemCreateManyPersonInputEnvelope
-    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-  }
-
-  export type VisionCreateNestedManyWithoutPersonInput = {
-    create?: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput> | VisionCreateWithoutPersonInput[] | VisionUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: VisionCreateOrConnectWithoutPersonInput | VisionCreateOrConnectWithoutPersonInput[]
-    createMany?: VisionCreateManyPersonInputEnvelope
-    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-  }
-
-  export type MilestoneCreateNestedManyWithoutPersonInput = {
-    create?: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput> | MilestoneCreateWithoutPersonInput[] | MilestoneUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: MilestoneCreateOrConnectWithoutPersonInput | MilestoneCreateOrConnectWithoutPersonInput[]
-    createMany?: MilestoneCreateManyPersonInputEnvelope
-    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-  }
-
-  export type SprintCreateNestedManyWithoutPersonInput = {
-    create?: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput> | SprintCreateWithoutPersonInput[] | SprintUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: SprintCreateOrConnectWithoutPersonInput | SprintCreateOrConnectWithoutPersonInput[]
-    createMany?: SprintCreateManyPersonInputEnvelope
-    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-  }
-
-  export type DishUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput> | DishCreateWithoutPersonInput[] | DishUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DishCreateOrConnectWithoutPersonInput | DishCreateOrConnectWithoutPersonInput[]
-    createMany?: DishCreateManyPersonInputEnvelope
-    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-  }
-
-  export type DayTemplateUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput> | DayTemplateCreateWithoutPersonInput[] | DayTemplateUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutPersonInput | DayTemplateCreateOrConnectWithoutPersonInput[]
-    createMany?: DayTemplateCreateManyPersonInputEnvelope
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-  }
-
-  export type WeekPlanUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput> | WeekPlanCreateWithoutPersonInput[] | WeekPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WeekPlanCreateOrConnectWithoutPersonInput | WeekPlanCreateOrConnectWithoutPersonInput[]
-    createMany?: WeekPlanCreateManyPersonInputEnvelope
-    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-  }
-
-  export type DayPlanUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput> | DayPlanCreateWithoutPersonInput[] | DayPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutPersonInput | DayPlanCreateOrConnectWithoutPersonInput[]
-    createMany?: DayPlanCreateManyPersonInputEnvelope
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-  }
-
-  export type ShoppingListUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput> | ShoppingListCreateWithoutPersonInput[] | ShoppingListUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: ShoppingListCreateOrConnectWithoutPersonInput | ShoppingListCreateOrConnectWithoutPersonInput[]
-    createMany?: ShoppingListCreateManyPersonInputEnvelope
-    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-  }
-
-  export type UserLanguageUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput> | UserLanguageCreateWithoutPersonInput[] | UserLanguageUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: UserLanguageCreateOrConnectWithoutPersonInput | UserLanguageCreateOrConnectWithoutPersonInput[]
-    createMany?: UserLanguageCreateManyPersonInputEnvelope
-    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-  }
-
-  export type TaskUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput> | TaskCreateWithoutPersonInput[] | TaskUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutPersonInput | TaskCreateOrConnectWithoutPersonInput[]
-    createMany?: TaskCreateManyPersonInputEnvelope
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-  }
-
-  export type DailyEntryUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput> | DailyEntryCreateWithoutPersonInput[] | DailyEntryUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DailyEntryCreateOrConnectWithoutPersonInput | DailyEntryCreateOrConnectWithoutPersonInput[]
-    createMany?: DailyEntryCreateManyPersonInputEnvelope
-    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-  }
-
-  export type HabitUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput> | HabitCreateWithoutPersonInput[] | HabitUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutPersonInput | HabitCreateOrConnectWithoutPersonInput[]
-    createMany?: HabitCreateManyPersonInputEnvelope
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-  }
-
-  export type LifeSphereUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput> | LifeSphereCreateWithoutPersonInput[] | LifeSphereUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LifeSphereCreateOrConnectWithoutPersonInput | LifeSphereCreateOrConnectWithoutPersonInput[]
-    createMany?: LifeSphereCreateManyPersonInputEnvelope
-    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-  }
-
-  export type LibraryItemUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput> | LibraryItemCreateWithoutPersonInput[] | LibraryItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LibraryItemCreateOrConnectWithoutPersonInput | LibraryItemCreateOrConnectWithoutPersonInput[]
-    createMany?: LibraryItemCreateManyPersonInputEnvelope
-    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-  }
-
-  export type WishlistItemUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput> | WishlistItemCreateWithoutPersonInput[] | WishlistItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WishlistItemCreateOrConnectWithoutPersonInput | WishlistItemCreateOrConnectWithoutPersonInput[]
-    createMany?: WishlistItemCreateManyPersonInputEnvelope
-    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-  }
-
-  export type VisionUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput> | VisionCreateWithoutPersonInput[] | VisionUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: VisionCreateOrConnectWithoutPersonInput | VisionCreateOrConnectWithoutPersonInput[]
-    createMany?: VisionCreateManyPersonInputEnvelope
-    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-  }
-
-  export type MilestoneUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput> | MilestoneCreateWithoutPersonInput[] | MilestoneUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: MilestoneCreateOrConnectWithoutPersonInput | MilestoneCreateOrConnectWithoutPersonInput[]
-    createMany?: MilestoneCreateManyPersonInputEnvelope
-    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-  }
-
-  export type SprintUncheckedCreateNestedManyWithoutPersonInput = {
-    create?: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput> | SprintCreateWithoutPersonInput[] | SprintUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: SprintCreateOrConnectWithoutPersonInput | SprintCreateOrConnectWithoutPersonInput[]
-    createMany?: SprintCreateManyPersonInputEnvelope
-    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -60102,432 +59029,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type ProfileUpdateOneRequiredWithoutPersonsNestedInput = {
-    create?: XOR<ProfileCreateWithoutPersonsInput, ProfileUncheckedCreateWithoutPersonsInput>
-    connectOrCreate?: ProfileCreateOrConnectWithoutPersonsInput
-    upsert?: ProfileUpsertWithoutPersonsInput
-    connect?: ProfileWhereUniqueInput
-    update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutPersonsInput, ProfileUpdateWithoutPersonsInput>, ProfileUncheckedUpdateWithoutPersonsInput>
-  }
-
-  export type DishUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput> | DishCreateWithoutPersonInput[] | DishUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DishCreateOrConnectWithoutPersonInput | DishCreateOrConnectWithoutPersonInput[]
-    upsert?: DishUpsertWithWhereUniqueWithoutPersonInput | DishUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DishCreateManyPersonInputEnvelope
-    set?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    disconnect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    delete?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    update?: DishUpdateWithWhereUniqueWithoutPersonInput | DishUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DishUpdateManyWithWhereWithoutPersonInput | DishUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DishScalarWhereInput | DishScalarWhereInput[]
-  }
-
-  export type DayTemplateUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput> | DayTemplateCreateWithoutPersonInput[] | DayTemplateUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutPersonInput | DayTemplateCreateOrConnectWithoutPersonInput[]
-    upsert?: DayTemplateUpsertWithWhereUniqueWithoutPersonInput | DayTemplateUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DayTemplateCreateManyPersonInputEnvelope
-    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    update?: DayTemplateUpdateWithWhereUniqueWithoutPersonInput | DayTemplateUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DayTemplateUpdateManyWithWhereWithoutPersonInput | DayTemplateUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-  }
-
-  export type WeekPlanUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput> | WeekPlanCreateWithoutPersonInput[] | WeekPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WeekPlanCreateOrConnectWithoutPersonInput | WeekPlanCreateOrConnectWithoutPersonInput[]
-    upsert?: WeekPlanUpsertWithWhereUniqueWithoutPersonInput | WeekPlanUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: WeekPlanCreateManyPersonInputEnvelope
-    set?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    disconnect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    delete?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    update?: WeekPlanUpdateWithWhereUniqueWithoutPersonInput | WeekPlanUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: WeekPlanUpdateManyWithWhereWithoutPersonInput | WeekPlanUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
-  }
-
-  export type DayPlanUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput> | DayPlanCreateWithoutPersonInput[] | DayPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutPersonInput | DayPlanCreateOrConnectWithoutPersonInput[]
-    upsert?: DayPlanUpsertWithWhereUniqueWithoutPersonInput | DayPlanUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DayPlanCreateManyPersonInputEnvelope
-    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    update?: DayPlanUpdateWithWhereUniqueWithoutPersonInput | DayPlanUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DayPlanUpdateManyWithWhereWithoutPersonInput | DayPlanUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type ShoppingListUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput> | ShoppingListCreateWithoutPersonInput[] | ShoppingListUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: ShoppingListCreateOrConnectWithoutPersonInput | ShoppingListCreateOrConnectWithoutPersonInput[]
-    upsert?: ShoppingListUpsertWithWhereUniqueWithoutPersonInput | ShoppingListUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: ShoppingListCreateManyPersonInputEnvelope
-    set?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    disconnect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    delete?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    update?: ShoppingListUpdateWithWhereUniqueWithoutPersonInput | ShoppingListUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: ShoppingListUpdateManyWithWhereWithoutPersonInput | ShoppingListUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
-  }
-
-  export type UserLanguageUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput> | UserLanguageCreateWithoutPersonInput[] | UserLanguageUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: UserLanguageCreateOrConnectWithoutPersonInput | UserLanguageCreateOrConnectWithoutPersonInput[]
-    upsert?: UserLanguageUpsertWithWhereUniqueWithoutPersonInput | UserLanguageUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: UserLanguageCreateManyPersonInputEnvelope
-    set?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    disconnect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    delete?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    update?: UserLanguageUpdateWithWhereUniqueWithoutPersonInput | UserLanguageUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: UserLanguageUpdateManyWithWhereWithoutPersonInput | UserLanguageUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
-  }
-
-  export type TaskUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput> | TaskCreateWithoutPersonInput[] | TaskUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutPersonInput | TaskCreateOrConnectWithoutPersonInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutPersonInput | TaskUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: TaskCreateManyPersonInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutPersonInput | TaskUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutPersonInput | TaskUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type DailyEntryUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput> | DailyEntryCreateWithoutPersonInput[] | DailyEntryUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DailyEntryCreateOrConnectWithoutPersonInput | DailyEntryCreateOrConnectWithoutPersonInput[]
-    upsert?: DailyEntryUpsertWithWhereUniqueWithoutPersonInput | DailyEntryUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DailyEntryCreateManyPersonInputEnvelope
-    set?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    disconnect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    delete?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    update?: DailyEntryUpdateWithWhereUniqueWithoutPersonInput | DailyEntryUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DailyEntryUpdateManyWithWhereWithoutPersonInput | DailyEntryUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
-  }
-
-  export type HabitUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput> | HabitCreateWithoutPersonInput[] | HabitUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutPersonInput | HabitCreateOrConnectWithoutPersonInput[]
-    upsert?: HabitUpsertWithWhereUniqueWithoutPersonInput | HabitUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: HabitCreateManyPersonInputEnvelope
-    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    update?: HabitUpdateWithWhereUniqueWithoutPersonInput | HabitUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: HabitUpdateManyWithWhereWithoutPersonInput | HabitUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
-  }
-
-  export type LifeSphereUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput> | LifeSphereCreateWithoutPersonInput[] | LifeSphereUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LifeSphereCreateOrConnectWithoutPersonInput | LifeSphereCreateOrConnectWithoutPersonInput[]
-    upsert?: LifeSphereUpsertWithWhereUniqueWithoutPersonInput | LifeSphereUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: LifeSphereCreateManyPersonInputEnvelope
-    set?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    disconnect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    delete?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    update?: LifeSphereUpdateWithWhereUniqueWithoutPersonInput | LifeSphereUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: LifeSphereUpdateManyWithWhereWithoutPersonInput | LifeSphereUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
-  }
-
-  export type LibraryItemUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput> | LibraryItemCreateWithoutPersonInput[] | LibraryItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LibraryItemCreateOrConnectWithoutPersonInput | LibraryItemCreateOrConnectWithoutPersonInput[]
-    upsert?: LibraryItemUpsertWithWhereUniqueWithoutPersonInput | LibraryItemUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: LibraryItemCreateManyPersonInputEnvelope
-    set?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    disconnect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    delete?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    update?: LibraryItemUpdateWithWhereUniqueWithoutPersonInput | LibraryItemUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: LibraryItemUpdateManyWithWhereWithoutPersonInput | LibraryItemUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
-  }
-
-  export type WishlistItemUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput> | WishlistItemCreateWithoutPersonInput[] | WishlistItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WishlistItemCreateOrConnectWithoutPersonInput | WishlistItemCreateOrConnectWithoutPersonInput[]
-    upsert?: WishlistItemUpsertWithWhereUniqueWithoutPersonInput | WishlistItemUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: WishlistItemCreateManyPersonInputEnvelope
-    set?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    disconnect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    delete?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    update?: WishlistItemUpdateWithWhereUniqueWithoutPersonInput | WishlistItemUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: WishlistItemUpdateManyWithWhereWithoutPersonInput | WishlistItemUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
-  }
-
-  export type VisionUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput> | VisionCreateWithoutPersonInput[] | VisionUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: VisionCreateOrConnectWithoutPersonInput | VisionCreateOrConnectWithoutPersonInput[]
-    upsert?: VisionUpsertWithWhereUniqueWithoutPersonInput | VisionUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: VisionCreateManyPersonInputEnvelope
-    set?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    disconnect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    delete?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    update?: VisionUpdateWithWhereUniqueWithoutPersonInput | VisionUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: VisionUpdateManyWithWhereWithoutPersonInput | VisionUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: VisionScalarWhereInput | VisionScalarWhereInput[]
-  }
-
-  export type MilestoneUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput> | MilestoneCreateWithoutPersonInput[] | MilestoneUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: MilestoneCreateOrConnectWithoutPersonInput | MilestoneCreateOrConnectWithoutPersonInput[]
-    upsert?: MilestoneUpsertWithWhereUniqueWithoutPersonInput | MilestoneUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: MilestoneCreateManyPersonInputEnvelope
-    set?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    disconnect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    delete?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    update?: MilestoneUpdateWithWhereUniqueWithoutPersonInput | MilestoneUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: MilestoneUpdateManyWithWhereWithoutPersonInput | MilestoneUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
-  }
-
-  export type SprintUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput> | SprintCreateWithoutPersonInput[] | SprintUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: SprintCreateOrConnectWithoutPersonInput | SprintCreateOrConnectWithoutPersonInput[]
-    upsert?: SprintUpsertWithWhereUniqueWithoutPersonInput | SprintUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: SprintCreateManyPersonInputEnvelope
-    set?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    disconnect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    delete?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    update?: SprintUpdateWithWhereUniqueWithoutPersonInput | SprintUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: SprintUpdateManyWithWhereWithoutPersonInput | SprintUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
-  }
-
-  export type DishUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput> | DishCreateWithoutPersonInput[] | DishUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DishCreateOrConnectWithoutPersonInput | DishCreateOrConnectWithoutPersonInput[]
-    upsert?: DishUpsertWithWhereUniqueWithoutPersonInput | DishUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DishCreateManyPersonInputEnvelope
-    set?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    disconnect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    delete?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    connect?: DishWhereUniqueInput | DishWhereUniqueInput[]
-    update?: DishUpdateWithWhereUniqueWithoutPersonInput | DishUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DishUpdateManyWithWhereWithoutPersonInput | DishUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DishScalarWhereInput | DishScalarWhereInput[]
-  }
-
-  export type DayTemplateUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput> | DayTemplateCreateWithoutPersonInput[] | DayTemplateUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutPersonInput | DayTemplateCreateOrConnectWithoutPersonInput[]
-    upsert?: DayTemplateUpsertWithWhereUniqueWithoutPersonInput | DayTemplateUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DayTemplateCreateManyPersonInputEnvelope
-    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    update?: DayTemplateUpdateWithWhereUniqueWithoutPersonInput | DayTemplateUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DayTemplateUpdateManyWithWhereWithoutPersonInput | DayTemplateUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-  }
-
-  export type WeekPlanUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput> | WeekPlanCreateWithoutPersonInput[] | WeekPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WeekPlanCreateOrConnectWithoutPersonInput | WeekPlanCreateOrConnectWithoutPersonInput[]
-    upsert?: WeekPlanUpsertWithWhereUniqueWithoutPersonInput | WeekPlanUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: WeekPlanCreateManyPersonInputEnvelope
-    set?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    disconnect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    delete?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    connect?: WeekPlanWhereUniqueInput | WeekPlanWhereUniqueInput[]
-    update?: WeekPlanUpdateWithWhereUniqueWithoutPersonInput | WeekPlanUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: WeekPlanUpdateManyWithWhereWithoutPersonInput | WeekPlanUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
-  }
-
-  export type DayPlanUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput> | DayPlanCreateWithoutPersonInput[] | DayPlanUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutPersonInput | DayPlanCreateOrConnectWithoutPersonInput[]
-    upsert?: DayPlanUpsertWithWhereUniqueWithoutPersonInput | DayPlanUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DayPlanCreateManyPersonInputEnvelope
-    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    update?: DayPlanUpdateWithWhereUniqueWithoutPersonInput | DayPlanUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DayPlanUpdateManyWithWhereWithoutPersonInput | DayPlanUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type ShoppingListUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput> | ShoppingListCreateWithoutPersonInput[] | ShoppingListUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: ShoppingListCreateOrConnectWithoutPersonInput | ShoppingListCreateOrConnectWithoutPersonInput[]
-    upsert?: ShoppingListUpsertWithWhereUniqueWithoutPersonInput | ShoppingListUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: ShoppingListCreateManyPersonInputEnvelope
-    set?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    disconnect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    delete?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
-    update?: ShoppingListUpdateWithWhereUniqueWithoutPersonInput | ShoppingListUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: ShoppingListUpdateManyWithWhereWithoutPersonInput | ShoppingListUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
-  }
-
-  export type UserLanguageUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput> | UserLanguageCreateWithoutPersonInput[] | UserLanguageUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: UserLanguageCreateOrConnectWithoutPersonInput | UserLanguageCreateOrConnectWithoutPersonInput[]
-    upsert?: UserLanguageUpsertWithWhereUniqueWithoutPersonInput | UserLanguageUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: UserLanguageCreateManyPersonInputEnvelope
-    set?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    disconnect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    delete?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    connect?: UserLanguageWhereUniqueInput | UserLanguageWhereUniqueInput[]
-    update?: UserLanguageUpdateWithWhereUniqueWithoutPersonInput | UserLanguageUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: UserLanguageUpdateManyWithWhereWithoutPersonInput | UserLanguageUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
-  }
-
-  export type TaskUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput> | TaskCreateWithoutPersonInput[] | TaskUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: TaskCreateOrConnectWithoutPersonInput | TaskCreateOrConnectWithoutPersonInput[]
-    upsert?: TaskUpsertWithWhereUniqueWithoutPersonInput | TaskUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: TaskCreateManyPersonInputEnvelope
-    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
-    update?: TaskUpdateWithWhereUniqueWithoutPersonInput | TaskUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: TaskUpdateManyWithWhereWithoutPersonInput | TaskUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
-  }
-
-  export type DailyEntryUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput> | DailyEntryCreateWithoutPersonInput[] | DailyEntryUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: DailyEntryCreateOrConnectWithoutPersonInput | DailyEntryCreateOrConnectWithoutPersonInput[]
-    upsert?: DailyEntryUpsertWithWhereUniqueWithoutPersonInput | DailyEntryUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: DailyEntryCreateManyPersonInputEnvelope
-    set?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    disconnect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    delete?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    connect?: DailyEntryWhereUniqueInput | DailyEntryWhereUniqueInput[]
-    update?: DailyEntryUpdateWithWhereUniqueWithoutPersonInput | DailyEntryUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: DailyEntryUpdateManyWithWhereWithoutPersonInput | DailyEntryUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
-  }
-
-  export type HabitUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput> | HabitCreateWithoutPersonInput[] | HabitUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: HabitCreateOrConnectWithoutPersonInput | HabitCreateOrConnectWithoutPersonInput[]
-    upsert?: HabitUpsertWithWhereUniqueWithoutPersonInput | HabitUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: HabitCreateManyPersonInputEnvelope
-    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
-    update?: HabitUpdateWithWhereUniqueWithoutPersonInput | HabitUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: HabitUpdateManyWithWhereWithoutPersonInput | HabitUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
-  }
-
-  export type LifeSphereUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput> | LifeSphereCreateWithoutPersonInput[] | LifeSphereUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LifeSphereCreateOrConnectWithoutPersonInput | LifeSphereCreateOrConnectWithoutPersonInput[]
-    upsert?: LifeSphereUpsertWithWhereUniqueWithoutPersonInput | LifeSphereUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: LifeSphereCreateManyPersonInputEnvelope
-    set?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    disconnect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    delete?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    connect?: LifeSphereWhereUniqueInput | LifeSphereWhereUniqueInput[]
-    update?: LifeSphereUpdateWithWhereUniqueWithoutPersonInput | LifeSphereUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: LifeSphereUpdateManyWithWhereWithoutPersonInput | LifeSphereUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
-  }
-
-  export type LibraryItemUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput> | LibraryItemCreateWithoutPersonInput[] | LibraryItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: LibraryItemCreateOrConnectWithoutPersonInput | LibraryItemCreateOrConnectWithoutPersonInput[]
-    upsert?: LibraryItemUpsertWithWhereUniqueWithoutPersonInput | LibraryItemUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: LibraryItemCreateManyPersonInputEnvelope
-    set?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    disconnect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    delete?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    connect?: LibraryItemWhereUniqueInput | LibraryItemWhereUniqueInput[]
-    update?: LibraryItemUpdateWithWhereUniqueWithoutPersonInput | LibraryItemUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: LibraryItemUpdateManyWithWhereWithoutPersonInput | LibraryItemUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
-  }
-
-  export type WishlistItemUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput> | WishlistItemCreateWithoutPersonInput[] | WishlistItemUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: WishlistItemCreateOrConnectWithoutPersonInput | WishlistItemCreateOrConnectWithoutPersonInput[]
-    upsert?: WishlistItemUpsertWithWhereUniqueWithoutPersonInput | WishlistItemUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: WishlistItemCreateManyPersonInputEnvelope
-    set?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    disconnect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    delete?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-    update?: WishlistItemUpdateWithWhereUniqueWithoutPersonInput | WishlistItemUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: WishlistItemUpdateManyWithWhereWithoutPersonInput | WishlistItemUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
-  }
-
-  export type VisionUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput> | VisionCreateWithoutPersonInput[] | VisionUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: VisionCreateOrConnectWithoutPersonInput | VisionCreateOrConnectWithoutPersonInput[]
-    upsert?: VisionUpsertWithWhereUniqueWithoutPersonInput | VisionUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: VisionCreateManyPersonInputEnvelope
-    set?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    disconnect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    delete?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    connect?: VisionWhereUniqueInput | VisionWhereUniqueInput[]
-    update?: VisionUpdateWithWhereUniqueWithoutPersonInput | VisionUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: VisionUpdateManyWithWhereWithoutPersonInput | VisionUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: VisionScalarWhereInput | VisionScalarWhereInput[]
-  }
-
-  export type MilestoneUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput> | MilestoneCreateWithoutPersonInput[] | MilestoneUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: MilestoneCreateOrConnectWithoutPersonInput | MilestoneCreateOrConnectWithoutPersonInput[]
-    upsert?: MilestoneUpsertWithWhereUniqueWithoutPersonInput | MilestoneUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: MilestoneCreateManyPersonInputEnvelope
-    set?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    disconnect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    delete?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    connect?: MilestoneWhereUniqueInput | MilestoneWhereUniqueInput[]
-    update?: MilestoneUpdateWithWhereUniqueWithoutPersonInput | MilestoneUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: MilestoneUpdateManyWithWhereWithoutPersonInput | MilestoneUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
-  }
-
-  export type SprintUncheckedUpdateManyWithoutPersonNestedInput = {
-    create?: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput> | SprintCreateWithoutPersonInput[] | SprintUncheckedCreateWithoutPersonInput[]
-    connectOrCreate?: SprintCreateOrConnectWithoutPersonInput | SprintCreateOrConnectWithoutPersonInput[]
-    upsert?: SprintUpsertWithWhereUniqueWithoutPersonInput | SprintUpsertWithWhereUniqueWithoutPersonInput[]
-    createMany?: SprintCreateManyPersonInputEnvelope
-    set?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    disconnect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    delete?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
-    update?: SprintUpdateWithWhereUniqueWithoutPersonInput | SprintUpdateWithWhereUniqueWithoutPersonInput[]
-    updateMany?: SprintUpdateManyWithWhereWithoutPersonInput | SprintUpdateManyWithWhereWithoutPersonInput[]
-    deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
+  export type UserUpdateOneRequiredWithoutNutritionPersonNestedInput = {
+    create?: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonInput
+    upsert?: UserUpsertWithoutNutritionPersonInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNutritionPersonInput, UserUpdateWithoutNutritionPersonInput>, UserUncheckedUpdateWithoutNutritionPersonInput>
   }
 
   export type DishIngredientCreateNestedManyWithoutProductInput = {
@@ -60634,10 +59141,10 @@ export namespace Prisma {
     deleteMany?: ShoppingListItemScalarWhereInput | ShoppingListItemScalarWhereInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutDishesInput = {
-    create?: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDishesInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutDishesInput = {
+    create?: XOR<UserCreateWithoutDishesInput, UserUncheckedCreateWithoutDishesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDishesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type DishIngredientCreateNestedManyWithoutDishInput = {
@@ -60686,12 +59193,12 @@ export namespace Prisma {
     set?: $Enums.Priority
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutDishesNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDishesInput
-    upsert?: NutritionPersonUpsertWithoutDishesInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDishesInput, NutritionPersonUpdateWithoutDishesInput>, NutritionPersonUncheckedUpdateWithoutDishesInput>
+  export type UserUpdateOneRequiredWithoutDishesNestedInput = {
+    create?: XOR<UserCreateWithoutDishesInput, UserUncheckedCreateWithoutDishesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDishesInput
+    upsert?: UserUpsertWithoutDishesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDishesInput, UserUpdateWithoutDishesInput>, UserUncheckedUpdateWithoutDishesInput>
   }
 
   export type DishIngredientUpdateManyWithoutDishNestedInput = {
@@ -60814,10 +59321,10 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutDishIngredientsInput, ProductUpdateWithoutDishIngredientsInput>, ProductUncheckedUpdateWithoutDishIngredientsInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutDayTemplatesInput = {
-    create?: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayTemplatesInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutDayTemplatesInput = {
+    create?: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDayTemplatesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type DayTemplateEntryCreateNestedManyWithoutTemplateInput = {
@@ -60848,12 +59355,12 @@ export namespace Prisma {
     connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayTemplatesInput
-    upsert?: NutritionPersonUpsertWithoutDayTemplatesInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDayTemplatesInput, NutritionPersonUpdateWithoutDayTemplatesInput>, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
+  export type UserUpdateOneRequiredWithoutDayTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDayTemplatesInput
+    upsert?: UserUpsertWithoutDayTemplatesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDayTemplatesInput, UserUpdateWithoutDayTemplatesInput>, UserUncheckedUpdateWithoutDayTemplatesInput>
   }
 
   export type DayTemplateEntryUpdateManyWithoutTemplateNestedInput = {
@@ -60944,10 +59451,10 @@ export namespace Prisma {
     update?: XOR<XOR<DishUpdateToOneWithWhereWithoutTemplateEntriesInput, DishUpdateWithoutTemplateEntriesInput>, DishUncheckedUpdateWithoutTemplateEntriesInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutWeekPlansInput = {
-    create?: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWeekPlansInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutWeekPlansInput = {
+    create?: XOR<UserCreateWithoutWeekPlansInput, UserUncheckedCreateWithoutWeekPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWeekPlansInput
+    connect?: UserWhereUniqueInput
   }
 
   export type DayPlanCreateNestedManyWithoutWeekPlanInput = {
@@ -60978,12 +59485,12 @@ export namespace Prisma {
     connect?: ShoppingListWhereUniqueInput | ShoppingListWhereUniqueInput[]
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWeekPlansInput
-    upsert?: NutritionPersonUpsertWithoutWeekPlansInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutWeekPlansInput, NutritionPersonUpdateWithoutWeekPlansInput>, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
+  export type UserUpdateOneRequiredWithoutWeekPlansNestedInput = {
+    create?: XOR<UserCreateWithoutWeekPlansInput, UserUncheckedCreateWithoutWeekPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWeekPlansInput
+    upsert?: UserUpsertWithoutWeekPlansInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWeekPlansInput, UserUpdateWithoutWeekPlansInput>, UserUncheckedUpdateWithoutWeekPlansInput>
   }
 
   export type DayPlanUpdateManyWithoutWeekPlanNestedInput = {
@@ -61042,10 +59549,10 @@ export namespace Prisma {
     deleteMany?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutDayPlansInput = {
-    create?: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayPlansInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutDayPlansInput = {
+    create?: XOR<UserCreateWithoutDayPlansInput, UserUncheckedCreateWithoutDayPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDayPlansInput
+    connect?: UserWhereUniqueInput
   }
 
   export type WeekPlanCreateNestedOneWithoutDayPlansInput = {
@@ -61078,12 +59585,12 @@ export namespace Prisma {
     set?: $Enums.PlanAdherence
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDayPlansInput
-    upsert?: NutritionPersonUpsertWithoutDayPlansInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDayPlansInput, NutritionPersonUpdateWithoutDayPlansInput>, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
+  export type UserUpdateOneRequiredWithoutDayPlansNestedInput = {
+    create?: XOR<UserCreateWithoutDayPlansInput, UserUncheckedCreateWithoutDayPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDayPlansInput
+    upsert?: UserUpsertWithoutDayPlansInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDayPlansInput, UserUpdateWithoutDayPlansInput>, UserUncheckedUpdateWithoutDayPlansInput>
   }
 
   export type WeekPlanUpdateOneWithoutDayPlansNestedInput = {
@@ -61162,10 +59669,10 @@ export namespace Prisma {
     update?: XOR<XOR<DishUpdateToOneWithWhereWithoutDayPlanEntriesInput, DishUpdateWithoutDayPlanEntriesInput>, DishUncheckedUpdateWithoutDayPlanEntriesInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutShoppingListsInput = {
-    create?: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutShoppingListsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutShoppingListsInput = {
+    create?: XOR<UserCreateWithoutShoppingListsInput, UserUncheckedCreateWithoutShoppingListsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutShoppingListsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type WeekPlanCreateNestedOneWithoutShoppingListsInput = {
@@ -61188,12 +59695,12 @@ export namespace Prisma {
     connect?: ShoppingListItemWhereUniqueInput | ShoppingListItemWhereUniqueInput[]
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutShoppingListsInput
-    upsert?: NutritionPersonUpsertWithoutShoppingListsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutShoppingListsInput, NutritionPersonUpdateWithoutShoppingListsInput>, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
+  export type UserUpdateOneRequiredWithoutShoppingListsNestedInput = {
+    create?: XOR<UserCreateWithoutShoppingListsInput, UserUncheckedCreateWithoutShoppingListsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutShoppingListsInput
+    upsert?: UserUpsertWithoutShoppingListsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutShoppingListsInput, UserUpdateWithoutShoppingListsInput>, UserUncheckedUpdateWithoutShoppingListsInput>
   }
 
   export type WeekPlanUpdateOneWithoutShoppingListsNestedInput = {
@@ -61266,10 +59773,10 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutShoppingListItemsInput, ProductUpdateWithoutShoppingListItemsInput>, ProductUncheckedUpdateWithoutShoppingListItemsInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutLifeSpheresInput = {
-    create?: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLifeSpheresInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutLifeSpheresInput = {
+    create?: XOR<UserCreateWithoutLifeSpheresInput, UserUncheckedCreateWithoutLifeSpheresInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLifeSpheresInput
+    connect?: UserWhereUniqueInput
   }
 
   export type TaskCreateNestedManyWithoutSphereInput = {
@@ -61322,12 +59829,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLifeSpheresInput
-    upsert?: NutritionPersonUpsertWithoutLifeSpheresInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutLifeSpheresInput, NutritionPersonUpdateWithoutLifeSpheresInput>, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
+  export type UserUpdateOneRequiredWithoutLifeSpheresNestedInput = {
+    create?: XOR<UserCreateWithoutLifeSpheresInput, UserUncheckedCreateWithoutLifeSpheresInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLifeSpheresInput
+    upsert?: UserUpsertWithoutLifeSpheresInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLifeSpheresInput, UserUpdateWithoutLifeSpheresInput>, UserUncheckedUpdateWithoutLifeSpheresInput>
   }
 
   export type TaskUpdateManyWithoutSphereNestedInput = {
@@ -61414,10 +59921,10 @@ export namespace Prisma {
     deleteMany?: ObjectiveScalarWhereInput | ObjectiveScalarWhereInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutTasksInput = {
-    create?: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutTasksInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutTasksInput = {
+    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
+    connect?: UserWhereUniqueInput
   }
 
   export type TaskCreateNestedOneWithoutChildrenInput = {
@@ -61460,12 +59967,12 @@ export namespace Prisma {
     set?: $Enums.TaskPriority
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutTasksNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutTasksInput
-    upsert?: NutritionPersonUpsertWithoutTasksInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutTasksInput, NutritionPersonUpdateWithoutTasksInput>, NutritionPersonUncheckedUpdateWithoutTasksInput>
+  export type UserUpdateOneRequiredWithoutTasksNestedInput = {
+    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
+    upsert?: UserUpsertWithoutTasksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksInput, UserUpdateWithoutTasksInput>, UserUncheckedUpdateWithoutTasksInput>
   }
 
   export type TaskUpdateOneWithoutChildrenNestedInput = {
@@ -61526,28 +60033,28 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutDailyEntriesInput = {
-    create?: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDailyEntriesInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutDailyEntriesInput = {
+    create?: XOR<UserCreateWithoutDailyEntriesInput, UserUncheckedCreateWithoutDailyEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailyEntriesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type NullableBoolFieldUpdateOperationsInput = {
     set?: boolean | null
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutDailyEntriesNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutDailyEntriesInput
-    upsert?: NutritionPersonUpsertWithoutDailyEntriesInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutDailyEntriesInput, NutritionPersonUpdateWithoutDailyEntriesInput>, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
+  export type UserUpdateOneRequiredWithoutDailyEntriesNestedInput = {
+    create?: XOR<UserCreateWithoutDailyEntriesInput, UserUncheckedCreateWithoutDailyEntriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailyEntriesInput
+    upsert?: UserUpsertWithoutDailyEntriesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailyEntriesInput, UserUpdateWithoutDailyEntriesInput>, UserUncheckedUpdateWithoutDailyEntriesInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutHabitsInput = {
-    create?: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutHabitsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutHabitsInput = {
+    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type HabitCompletionCreateNestedManyWithoutHabitInput = {
@@ -61564,12 +60071,12 @@ export namespace Prisma {
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutHabitsInput
-    upsert?: NutritionPersonUpsertWithoutHabitsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutHabitsInput, NutritionPersonUpdateWithoutHabitsInput>, NutritionPersonUncheckedUpdateWithoutHabitsInput>
+  export type UserUpdateOneRequiredWithoutHabitsNestedInput = {
+    create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
+    upsert?: UserUpsertWithoutHabitsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHabitsInput, UserUpdateWithoutHabitsInput>, UserUncheckedUpdateWithoutHabitsInput>
   }
 
   export type HabitCompletionUpdateManyWithoutHabitNestedInput = {
@@ -61614,10 +60121,10 @@ export namespace Prisma {
     update?: XOR<XOR<HabitUpdateToOneWithWhereWithoutCompletionsInput, HabitUpdateWithoutCompletionsInput>, HabitUncheckedUpdateWithoutCompletionsInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutLibraryItemsInput = {
-    create?: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLibraryItemsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutLibraryItemsInput = {
+    create?: XOR<UserCreateWithoutLibraryItemsInput, UserUncheckedCreateWithoutLibraryItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLibraryItemsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EnumLibraryItemTypeFieldUpdateOperationsInput = {
@@ -61628,22 +60135,22 @@ export namespace Prisma {
     set?: $Enums.LibraryItemStatus
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutLibraryItemsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutLibraryItemsInput
-    upsert?: NutritionPersonUpsertWithoutLibraryItemsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutLibraryItemsInput, NutritionPersonUpdateWithoutLibraryItemsInput>, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
+  export type UserUpdateOneRequiredWithoutLibraryItemsNestedInput = {
+    create?: XOR<UserCreateWithoutLibraryItemsInput, UserUncheckedCreateWithoutLibraryItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLibraryItemsInput
+    upsert?: UserUpsertWithoutLibraryItemsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLibraryItemsInput, UserUpdateWithoutLibraryItemsInput>, UserUncheckedUpdateWithoutLibraryItemsInput>
   }
 
   export type WishlistItemCreatetagsInput = {
     set: string[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutWishlistItemsInput = {
-    create?: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWishlistItemsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutWishlistItemsInput = {
+    create?: XOR<UserCreateWithoutWishlistItemsInput, UserUncheckedCreateWithoutWishlistItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWishlistItemsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type EnumWishlistStatusFieldUpdateOperationsInput = {
@@ -61655,12 +60162,12 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutWishlistItemsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutWishlistItemsInput
-    upsert?: NutritionPersonUpsertWithoutWishlistItemsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutWishlistItemsInput, NutritionPersonUpdateWithoutWishlistItemsInput>, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
+  export type UserUpdateOneRequiredWithoutWishlistItemsNestedInput = {
+    create?: XOR<UserCreateWithoutWishlistItemsInput, UserUncheckedCreateWithoutWishlistItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWishlistItemsInput
+    upsert?: UserUpsertWithoutWishlistItemsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWishlistItemsInput, UserUpdateWithoutWishlistItemsInput>, UserUncheckedUpdateWithoutWishlistItemsInput>
   }
 
   export type UserLanguageCreateNestedManyWithoutLanguageInput = {
@@ -61705,10 +60212,10 @@ export namespace Prisma {
     deleteMany?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutUserLanguagesInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserLanguagesInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutUserLanguagesInput = {
+    create?: XOR<UserCreateWithoutUserLanguagesInput, UserUncheckedCreateWithoutUserLanguagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserLanguagesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type LanguageCreateNestedOneWithoutUserLanguagesInput = {
@@ -61777,12 +60284,12 @@ export namespace Prisma {
     set?: $Enums.CefrLevel
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserLanguagesInput
-    upsert?: NutritionPersonUpsertWithoutUserLanguagesInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserLanguagesInput, NutritionPersonUpdateWithoutUserLanguagesInput>, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
+  export type UserUpdateOneRequiredWithoutUserLanguagesNestedInput = {
+    create?: XOR<UserCreateWithoutUserLanguagesInput, UserUncheckedCreateWithoutUserLanguagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserLanguagesInput
+    upsert?: UserUpsertWithoutUserLanguagesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserLanguagesInput, UserUpdateWithoutUserLanguagesInput>, UserUncheckedUpdateWithoutUserLanguagesInput>
   }
 
   export type LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput = {
@@ -61973,24 +60480,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserLanguageUpdateToOneWithWhereWithoutResourcesInput, UserLanguageUpdateWithoutResourcesInput>, UserLanguageUncheckedUpdateWithoutResourcesInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutVisionsInput = {
-    create?: XOR<NutritionPersonCreateWithoutVisionsInput, NutritionPersonUncheckedCreateWithoutVisionsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutVisionsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutVisionsInput = {
+    create?: XOR<UserCreateWithoutVisionsInput, UserUncheckedCreateWithoutVisionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisionsInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutVisionsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutVisionsInput, NutritionPersonUncheckedCreateWithoutVisionsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutVisionsInput
-    upsert?: NutritionPersonUpsertWithoutVisionsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutVisionsInput, NutritionPersonUpdateWithoutVisionsInput>, NutritionPersonUncheckedUpdateWithoutVisionsInput>
+  export type UserUpdateOneRequiredWithoutVisionsNestedInput = {
+    create?: XOR<UserCreateWithoutVisionsInput, UserUncheckedCreateWithoutVisionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisionsInput
+    upsert?: UserUpsertWithoutVisionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVisionsInput, UserUpdateWithoutVisionsInput>, UserUncheckedUpdateWithoutVisionsInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutMilestonesInput = {
-    create?: XOR<NutritionPersonCreateWithoutMilestonesInput, NutritionPersonUncheckedCreateWithoutMilestonesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutMilestonesInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutMilestonesInput = {
+    create?: XOR<UserCreateWithoutMilestonesInput, UserUncheckedCreateWithoutMilestonesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMilestonesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type LifeSphereCreateNestedOneWithoutMilestonesInput = {
@@ -61999,12 +60506,12 @@ export namespace Prisma {
     connect?: LifeSphereWhereUniqueInput
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutMilestonesNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutMilestonesInput, NutritionPersonUncheckedCreateWithoutMilestonesInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutMilestonesInput
-    upsert?: NutritionPersonUpsertWithoutMilestonesInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutMilestonesInput, NutritionPersonUpdateWithoutMilestonesInput>, NutritionPersonUncheckedUpdateWithoutMilestonesInput>
+  export type UserUpdateOneRequiredWithoutMilestonesNestedInput = {
+    create?: XOR<UserCreateWithoutMilestonesInput, UserUncheckedCreateWithoutMilestonesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMilestonesInput
+    upsert?: UserUpsertWithoutMilestonesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMilestonesInput, UserUpdateWithoutMilestonesInput>, UserUncheckedUpdateWithoutMilestonesInput>
   }
 
   export type LifeSphereUpdateOneWithoutMilestonesNestedInput = {
@@ -62017,10 +60524,10 @@ export namespace Prisma {
     update?: XOR<XOR<LifeSphereUpdateToOneWithWhereWithoutMilestonesInput, LifeSphereUpdateWithoutMilestonesInput>, LifeSphereUncheckedUpdateWithoutMilestonesInput>
   }
 
-  export type NutritionPersonCreateNestedOneWithoutSprintsInput = {
-    create?: XOR<NutritionPersonCreateWithoutSprintsInput, NutritionPersonUncheckedCreateWithoutSprintsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutSprintsInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type UserCreateNestedOneWithoutSprintsInput = {
+    create?: XOR<UserCreateWithoutSprintsInput, UserUncheckedCreateWithoutSprintsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSprintsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ObjectiveCreateNestedManyWithoutSprintInput = {
@@ -62055,12 +60562,12 @@ export namespace Prisma {
     set?: $Enums.SprintStatus
   }
 
-  export type NutritionPersonUpdateOneRequiredWithoutSprintsNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutSprintsInput, NutritionPersonUncheckedCreateWithoutSprintsInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutSprintsInput
-    upsert?: NutritionPersonUpsertWithoutSprintsInput
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutSprintsInput, NutritionPersonUpdateWithoutSprintsInput>, NutritionPersonUncheckedUpdateWithoutSprintsInput>
+  export type UserUpdateOneRequiredWithoutSprintsNestedInput = {
+    create?: XOR<UserCreateWithoutSprintsInput, UserUncheckedCreateWithoutSprintsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSprintsInput
+    upsert?: UserUpsertWithoutSprintsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSprintsInput, UserUpdateWithoutSprintsInput>, UserUncheckedUpdateWithoutSprintsInput>
   }
 
   export type ObjectiveUpdateManyWithoutSprintNestedInput = {
@@ -63121,25 +61628,591 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProfileCreateWithoutUserInput = {
+  export type NutritionPersonCreateWithoutUserInput = {
+    id?: string
+    name: string
+    targetCalories?: number | null
+    targetProtein?: number | null
+    targetFat?: number | null
+    targetCarbs?: number | null
+    targetFiber?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NutritionPersonUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    targetCalories?: number | null
+    targetProtein?: number | null
+    targetFat?: number | null
+    targetCarbs?: number | null
+    targetFiber?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NutritionPersonCreateOrConnectWithoutUserInput = {
+    where: NutritionPersonWhereUniqueInput
+    create: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+  }
+
+  export type DishCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    priority?: $Enums.Priority
+    yield?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ingredients?: DishIngredientCreateNestedManyWithoutDishInput
+    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
+    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
+  }
+
+  export type DishUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    priority?: $Enums.Priority
+    yield?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
+    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
+    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
+  }
+
+  export type DishCreateOrConnectWithoutUserInput = {
+    where: DishWhereUniqueInput
+    create: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput>
+  }
+
+  export type DishCreateManyUserInputEnvelope = {
+    data: DishCreateManyUserInput | DishCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DayTemplateCreateWithoutUserInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    persons?: NutritionPersonCreateNestedManyWithoutProfileInput
+    entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
+    dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
   }
 
-  export type ProfileUncheckedCreateWithoutUserInput = {
+  export type DayTemplateUncheckedCreateWithoutUserInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    persons?: NutritionPersonUncheckedCreateNestedManyWithoutProfileInput
+    entries?: DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutTemplateInput
   }
 
-  export type ProfileCreateOrConnectWithoutUserInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
+  export type DayTemplateCreateOrConnectWithoutUserInput = {
+    where: DayTemplateWhereUniqueInput
+    create: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayTemplateCreateManyUserInputEnvelope = {
+    data: DayTemplateCreateManyUserInput | DayTemplateCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WeekPlanCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    startDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
+  }
+
+  export type WeekPlanUncheckedCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    startDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutWeekPlanInput
+  }
+
+  export type WeekPlanCreateOrConnectWithoutUserInput = {
+    where: WeekPlanWhereUniqueInput
+    create: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type WeekPlanCreateManyUserInputEnvelope = {
+    data: WeekPlanCreateManyUserInput | WeekPlanCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DayPlanCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    adherence?: $Enums.PlanAdherence
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
+    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
+    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
+  }
+
+  export type DayPlanUncheckedCreateWithoutUserInput = {
+    id?: string
+    weekPlanId?: string | null
+    templateId?: string | null
+    date: Date | string
+    adherence?: $Enums.PlanAdherence
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
+  }
+
+  export type DayPlanCreateOrConnectWithoutUserInput = {
+    where: DayPlanWhereUniqueInput
+    create: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayPlanCreateManyUserInputEnvelope = {
+    data: DayPlanCreateManyUserInput | DayPlanCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ShoppingListCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
+    items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
+  }
+
+  export type ShoppingListUncheckedCreateWithoutUserInput = {
+    id?: string
+    weekPlanId?: string | null
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: ShoppingListItemUncheckedCreateNestedManyWithoutShoppingListInput
+  }
+
+  export type ShoppingListCreateOrConnectWithoutUserInput = {
+    where: ShoppingListWhereUniqueInput
+    create: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput>
+  }
+
+  export type ShoppingListCreateManyUserInputEnvelope = {
+    data: ShoppingListCreateManyUserInput | ShoppingListCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserLanguageCreateWithoutUserInput = {
+    id?: string
+    level?: $Enums.CefrLevel
+    totalXp?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    language: LanguageCreateNestedOneWithoutUserLanguagesInput
+    sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
+    vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
+    immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
+    resources?: LanguageResourceCreateNestedManyWithoutUserLanguageInput
+  }
+
+  export type UserLanguageUncheckedCreateWithoutUserInput = {
+    id?: string
+    languageId: string
+    level?: $Enums.CefrLevel
+    totalXp?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphereProgress?: LanguageSphereProgressUncheckedCreateNestedManyWithoutUserLanguageInput
+    vocabularyItems?: VocabularyItemUncheckedCreateNestedManyWithoutUserLanguageInput
+    immersionLogs?: ImmersionLogUncheckedCreateNestedManyWithoutUserLanguageInput
+    resources?: LanguageResourceUncheckedCreateNestedManyWithoutUserLanguageInput
+  }
+
+  export type UserLanguageCreateOrConnectWithoutUserInput = {
+    where: UserLanguageWhereUniqueInput
+    create: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserLanguageCreateManyUserInputEnvelope = {
+    data: UserLanguageCreateManyUserInput | UserLanguageCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    icon?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    plannedDate?: Date | string | null
+    hasPlannedTime?: boolean
+    dueDate?: Date | string | null
+    hasDueTime?: boolean
+    depth?: number
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    parent?: TaskCreateNestedOneWithoutChildrenInput
+    children?: TaskCreateNestedManyWithoutParentInput
+    sphere?: LifeSphereCreateNestedOneWithoutTasksInput
+    project?: ProjectCreateNestedOneWithoutTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    icon?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    plannedDate?: Date | string | null
+    hasPlannedTime?: boolean
+    dueDate?: Date | string | null
+    hasDueTime?: boolean
+    depth?: number
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentId?: string | null
+    sphereId?: string | null
+    projectId?: string | null
+    completedAt?: Date | string | null
+    children?: TaskUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type TaskCreateOrConnectWithoutUserInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
+  }
+
+  export type TaskCreateManyUserInputEnvelope = {
+    data: TaskCreateManyUserInput | TaskCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DailyEntryCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    sleepBedtime?: Date | string | null
+    sleepWakeup?: Date | string | null
+    sleepHours?: number | null
+    sleepQuality?: number | null
+    sleepNote?: string | null
+    energy?: number | null
+    mood?: number | null
+    emotions?: NullableJsonNullValueInput | InputJsonValue
+    weight?: number | null
+    energyNote?: string | null
+    morningSunlight?: boolean | null
+    eveningEnergy?: number | null
+    nutrition?: number | null
+    nutritionNote?: string | null
+    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    routineNote?: string | null
+    winToday?: string | null
+    improveTomorrow?: string | null
+    gratitude?: string | null
+    brainDump?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailyEntryUncheckedCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    sleepBedtime?: Date | string | null
+    sleepWakeup?: Date | string | null
+    sleepHours?: number | null
+    sleepQuality?: number | null
+    sleepNote?: string | null
+    energy?: number | null
+    mood?: number | null
+    emotions?: NullableJsonNullValueInput | InputJsonValue
+    weight?: number | null
+    energyNote?: string | null
+    morningSunlight?: boolean | null
+    eveningEnergy?: number | null
+    nutrition?: number | null
+    nutritionNote?: string | null
+    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    routineNote?: string | null
+    winToday?: string | null
+    improveTomorrow?: string | null
+    gratitude?: string | null
+    brainDump?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailyEntryCreateOrConnectWithoutUserInput = {
+    where: DailyEntryWhereUniqueInput
+    create: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput>
+  }
+
+  export type DailyEntryCreateManyUserInputEnvelope = {
+    data: DailyEntryCreateManyUserInput | DailyEntryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HabitCreateWithoutUserInput = {
+    id?: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitCreateOrConnectWithoutUserInput = {
+    where: HabitWhereUniqueInput
+    create: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput>
+  }
+
+  export type HabitCreateManyUserInputEnvelope = {
+    data: HabitCreateManyUserInput | HabitCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LifeSphereCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskCreateNestedManyWithoutSphereInput
+    milestones?: MilestoneCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereCreateOrConnectWithoutUserInput = {
+    where: LifeSphereWhereUniqueInput
+    create: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput>
+  }
+
+  export type LifeSphereCreateManyUserInputEnvelope = {
+    data: LifeSphereCreateManyUserInput | LifeSphereCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LibraryItemCreateWithoutUserInput = {
+    id?: string
+    title: string
+    author?: string | null
+    url?: string | null
+    type?: $Enums.LibraryItemType
+    status?: $Enums.LibraryItemStatus
+    rating?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LibraryItemUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    author?: string | null
+    url?: string | null
+    type?: $Enums.LibraryItemType
+    status?: $Enums.LibraryItemStatus
+    rating?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LibraryItemCreateOrConnectWithoutUserInput = {
+    where: LibraryItemWhereUniqueInput
+    create: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type LibraryItemCreateManyUserInputEnvelope = {
+    data: LibraryItemCreateManyUserInput | LibraryItemCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WishlistItemCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    url?: string | null
+    imageUrl?: string | null
+    price?: number | null
+    currency?: string
+    priority?: $Enums.TaskPriority
+    status?: $Enums.WishlistStatus
+    category?: string | null
+    tags?: WishlistItemCreatetagsInput | string[]
+    necessity?: number | null
+    store?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistItemUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    url?: string | null
+    imageUrl?: string | null
+    price?: number | null
+    currency?: string
+    priority?: $Enums.TaskPriority
+    status?: $Enums.WishlistStatus
+    category?: string | null
+    tags?: WishlistItemCreatetagsInput | string[]
+    necessity?: number | null
+    store?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistItemCreateOrConnectWithoutUserInput = {
+    where: WishlistItemWhereUniqueInput
+    create: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type WishlistItemCreateManyUserInputEnvelope = {
+    data: WishlistItemCreateManyUserInput | WishlistItemCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisionCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisionUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisionCreateOrConnectWithoutUserInput = {
+    where: VisionWhereUniqueInput
+    create: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput>
+  }
+
+  export type VisionCreateManyUserInputEnvelope = {
+    data: VisionCreateManyUserInput | VisionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MilestoneCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    targetDate?: Date | string | null
+    completed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphere?: LifeSphereCreateNestedOneWithoutMilestonesInput
+  }
+
+  export type MilestoneUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    targetDate?: Date | string | null
+    completed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphereId?: string | null
+  }
+
+  export type MilestoneCreateOrConnectWithoutUserInput = {
+    where: MilestoneWhereUniqueInput
+    create: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput>
+  }
+
+  export type MilestoneCreateManyUserInputEnvelope = {
+    data: MilestoneCreateManyUserInput | MilestoneCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SprintCreateWithoutUserInput = {
+    id?: string
+    number: number
+    year: number
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.SprintStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    objectives?: ObjectiveCreateNestedManyWithoutSprintInput
+    reviews?: SprintReviewCreateNestedManyWithoutSprintInput
+  }
+
+  export type SprintUncheckedCreateWithoutUserInput = {
+    id?: string
+    number: number
+    year: number
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.SprintStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSprintInput
+    reviews?: SprintReviewUncheckedCreateNestedManyWithoutSprintInput
+  }
+
+  export type SprintCreateOrConnectWithoutUserInput = {
+    where: SprintWhereUniqueInput
+    create: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput>
+  }
+
+  export type SprintCreateManyUserInputEnvelope = {
+    data: SprintCreateManyUserInput | SprintCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -63202,31 +62275,523 @@ export namespace Prisma {
     expires?: DateTimeFilter<"Session"> | Date | string
   }
 
-  export type ProfileUpsertWithoutUserInput = {
-    update: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
-    create: XOR<ProfileCreateWithoutUserInput, ProfileUncheckedCreateWithoutUserInput>
-    where?: ProfileWhereInput
+  export type NutritionPersonUpsertWithoutUserInput = {
+    update: XOR<NutritionPersonUpdateWithoutUserInput, NutritionPersonUncheckedUpdateWithoutUserInput>
+    create: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
+    where?: NutritionPersonWhereInput
   }
 
-  export type ProfileUpdateToOneWithWhereWithoutUserInput = {
-    where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutUserInput, ProfileUncheckedUpdateWithoutUserInput>
+  export type NutritionPersonUpdateToOneWithWhereWithoutUserInput = {
+    where?: NutritionPersonWhereInput
+    data: XOR<NutritionPersonUpdateWithoutUserInput, NutritionPersonUncheckedUpdateWithoutUserInput>
   }
 
-  export type ProfileUpdateWithoutUserInput = {
+  export type NutritionPersonUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: NutritionPersonUpdateManyWithoutProfileNestedInput
   }
 
-  export type ProfileUncheckedUpdateWithoutUserInput = {
+  export type NutritionPersonUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    persons?: NutritionPersonUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
+  export type DishUpsertWithWhereUniqueWithoutUserInput = {
+    where: DishWhereUniqueInput
+    update: XOR<DishUpdateWithoutUserInput, DishUncheckedUpdateWithoutUserInput>
+    create: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput>
+  }
+
+  export type DishUpdateWithWhereUniqueWithoutUserInput = {
+    where: DishWhereUniqueInput
+    data: XOR<DishUpdateWithoutUserInput, DishUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DishUpdateManyWithWhereWithoutUserInput = {
+    where: DishScalarWhereInput
+    data: XOR<DishUpdateManyMutationInput, DishUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DishScalarWhereInput = {
+    AND?: DishScalarWhereInput | DishScalarWhereInput[]
+    OR?: DishScalarWhereInput[]
+    NOT?: DishScalarWhereInput | DishScalarWhereInput[]
+    id?: StringFilter<"Dish"> | string
+    userId?: StringFilter<"Dish"> | string
+    name?: StringFilter<"Dish"> | string
+    description?: StringNullableFilter<"Dish"> | string | null
+    priority?: EnumPriorityFilter<"Dish"> | $Enums.Priority
+    yield?: FloatNullableFilter<"Dish"> | number | null
+    createdAt?: DateTimeFilter<"Dish"> | Date | string
+    updatedAt?: DateTimeFilter<"Dish"> | Date | string
+  }
+
+  export type DayTemplateUpsertWithWhereUniqueWithoutUserInput = {
+    where: DayTemplateWhereUniqueInput
+    update: XOR<DayTemplateUpdateWithoutUserInput, DayTemplateUncheckedUpdateWithoutUserInput>
+    create: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayTemplateUpdateWithWhereUniqueWithoutUserInput = {
+    where: DayTemplateWhereUniqueInput
+    data: XOR<DayTemplateUpdateWithoutUserInput, DayTemplateUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DayTemplateUpdateManyWithWhereWithoutUserInput = {
+    where: DayTemplateScalarWhereInput
+    data: XOR<DayTemplateUpdateManyMutationInput, DayTemplateUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DayTemplateScalarWhereInput = {
+    AND?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
+    OR?: DayTemplateScalarWhereInput[]
+    NOT?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
+    id?: StringFilter<"DayTemplate"> | string
+    userId?: StringFilter<"DayTemplate"> | string
+    name?: StringFilter<"DayTemplate"> | string
+    createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
+  }
+
+  export type WeekPlanUpsertWithWhereUniqueWithoutUserInput = {
+    where: WeekPlanWhereUniqueInput
+    update: XOR<WeekPlanUpdateWithoutUserInput, WeekPlanUncheckedUpdateWithoutUserInput>
+    create: XOR<WeekPlanCreateWithoutUserInput, WeekPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type WeekPlanUpdateWithWhereUniqueWithoutUserInput = {
+    where: WeekPlanWhereUniqueInput
+    data: XOR<WeekPlanUpdateWithoutUserInput, WeekPlanUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WeekPlanUpdateManyWithWhereWithoutUserInput = {
+    where: WeekPlanScalarWhereInput
+    data: XOR<WeekPlanUpdateManyMutationInput, WeekPlanUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WeekPlanScalarWhereInput = {
+    AND?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
+    OR?: WeekPlanScalarWhereInput[]
+    NOT?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
+    id?: StringFilter<"WeekPlan"> | string
+    userId?: StringFilter<"WeekPlan"> | string
+    name?: StringNullableFilter<"WeekPlan"> | string | null
+    startDate?: DateTimeFilter<"WeekPlan"> | Date | string
+    createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
+  }
+
+  export type DayPlanUpsertWithWhereUniqueWithoutUserInput = {
+    where: DayPlanWhereUniqueInput
+    update: XOR<DayPlanUpdateWithoutUserInput, DayPlanUncheckedUpdateWithoutUserInput>
+    create: XOR<DayPlanCreateWithoutUserInput, DayPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayPlanUpdateWithWhereUniqueWithoutUserInput = {
+    where: DayPlanWhereUniqueInput
+    data: XOR<DayPlanUpdateWithoutUserInput, DayPlanUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DayPlanUpdateManyWithWhereWithoutUserInput = {
+    where: DayPlanScalarWhereInput
+    data: XOR<DayPlanUpdateManyMutationInput, DayPlanUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DayPlanScalarWhereInput = {
+    AND?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
+    OR?: DayPlanScalarWhereInput[]
+    NOT?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
+    id?: StringFilter<"DayPlan"> | string
+    userId?: StringFilter<"DayPlan"> | string
+    weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
+    templateId?: StringNullableFilter<"DayPlan"> | string | null
+    date?: DateTimeFilter<"DayPlan"> | Date | string
+    adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
+    createdAt?: DateTimeFilter<"DayPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
+  }
+
+  export type ShoppingListUpsertWithWhereUniqueWithoutUserInput = {
+    where: ShoppingListWhereUniqueInput
+    update: XOR<ShoppingListUpdateWithoutUserInput, ShoppingListUncheckedUpdateWithoutUserInput>
+    create: XOR<ShoppingListCreateWithoutUserInput, ShoppingListUncheckedCreateWithoutUserInput>
+  }
+
+  export type ShoppingListUpdateWithWhereUniqueWithoutUserInput = {
+    where: ShoppingListWhereUniqueInput
+    data: XOR<ShoppingListUpdateWithoutUserInput, ShoppingListUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ShoppingListUpdateManyWithWhereWithoutUserInput = {
+    where: ShoppingListScalarWhereInput
+    data: XOR<ShoppingListUpdateManyMutationInput, ShoppingListUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ShoppingListScalarWhereInput = {
+    AND?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
+    OR?: ShoppingListScalarWhereInput[]
+    NOT?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
+    id?: StringFilter<"ShoppingList"> | string
+    userId?: StringFilter<"ShoppingList"> | string
+    weekPlanId?: StringNullableFilter<"ShoppingList"> | string | null
+    name?: StringNullableFilter<"ShoppingList"> | string | null
+    createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
+    updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
+  }
+
+  export type UserLanguageUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserLanguageWhereUniqueInput
+    update: XOR<UserLanguageUpdateWithoutUserInput, UserLanguageUncheckedUpdateWithoutUserInput>
+    create: XOR<UserLanguageCreateWithoutUserInput, UserLanguageUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserLanguageUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserLanguageWhereUniqueInput
+    data: XOR<UserLanguageUpdateWithoutUserInput, UserLanguageUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserLanguageUpdateManyWithWhereWithoutUserInput = {
+    where: UserLanguageScalarWhereInput
+    data: XOR<UserLanguageUpdateManyMutationInput, UserLanguageUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserLanguageScalarWhereInput = {
+    AND?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
+    OR?: UserLanguageScalarWhereInput[]
+    NOT?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
+    id?: StringFilter<"UserLanguage"> | string
+    userId?: StringFilter<"UserLanguage"> | string
+    languageId?: StringFilter<"UserLanguage"> | string
+    level?: EnumCefrLevelFilter<"UserLanguage"> | $Enums.CefrLevel
+    totalXp?: IntFilter<"UserLanguage"> | number
+    createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
+    updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
+  }
+
+  export type TaskUpsertWithWhereUniqueWithoutUserInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
+    create: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutUserInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutUserInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TaskScalarWhereInput = {
+    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    OR?: TaskScalarWhereInput[]
+    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    id?: StringFilter<"Task"> | string
+    userId?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    icon?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    hasPlannedTime?: BoolFilter<"Task"> | boolean
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    hasDueTime?: BoolFilter<"Task"> | boolean
+    depth?: IntFilter<"Task"> | number
+    order?: IntFilter<"Task"> | number
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+    parentId?: StringNullableFilter<"Task"> | string | null
+    sphereId?: StringNullableFilter<"Task"> | string | null
+    projectId?: StringNullableFilter<"Task"> | string | null
+    completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+  }
+
+  export type DailyEntryUpsertWithWhereUniqueWithoutUserInput = {
+    where: DailyEntryWhereUniqueInput
+    update: XOR<DailyEntryUpdateWithoutUserInput, DailyEntryUncheckedUpdateWithoutUserInput>
+    create: XOR<DailyEntryCreateWithoutUserInput, DailyEntryUncheckedCreateWithoutUserInput>
+  }
+
+  export type DailyEntryUpdateWithWhereUniqueWithoutUserInput = {
+    where: DailyEntryWhereUniqueInput
+    data: XOR<DailyEntryUpdateWithoutUserInput, DailyEntryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DailyEntryUpdateManyWithWhereWithoutUserInput = {
+    where: DailyEntryScalarWhereInput
+    data: XOR<DailyEntryUpdateManyMutationInput, DailyEntryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DailyEntryScalarWhereInput = {
+    AND?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
+    OR?: DailyEntryScalarWhereInput[]
+    NOT?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
+    id?: StringFilter<"DailyEntry"> | string
+    userId?: StringFilter<"DailyEntry"> | string
+    date?: DateTimeFilter<"DailyEntry"> | Date | string
+    sleepBedtime?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
+    sleepWakeup?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
+    sleepHours?: FloatNullableFilter<"DailyEntry"> | number | null
+    sleepQuality?: IntNullableFilter<"DailyEntry"> | number | null
+    sleepNote?: StringNullableFilter<"DailyEntry"> | string | null
+    energy?: IntNullableFilter<"DailyEntry"> | number | null
+    mood?: IntNullableFilter<"DailyEntry"> | number | null
+    emotions?: JsonNullableFilter<"DailyEntry">
+    weight?: FloatNullableFilter<"DailyEntry"> | number | null
+    energyNote?: StringNullableFilter<"DailyEntry"> | string | null
+    morningSunlight?: BoolNullableFilter<"DailyEntry"> | boolean | null
+    eveningEnergy?: IntNullableFilter<"DailyEntry"> | number | null
+    nutrition?: IntNullableFilter<"DailyEntry"> | number | null
+    nutritionNote?: StringNullableFilter<"DailyEntry"> | string | null
+    morningRoutine?: JsonNullableFilter<"DailyEntry">
+    eveningRoutine?: JsonNullableFilter<"DailyEntry">
+    routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    winToday?: StringNullableFilter<"DailyEntry"> | string | null
+    improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
+    gratitude?: StringNullableFilter<"DailyEntry"> | string | null
+    brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
+  }
+
+  export type HabitUpsertWithWhereUniqueWithoutUserInput = {
+    where: HabitWhereUniqueInput
+    update: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
+    create: XOR<HabitCreateWithoutUserInput, HabitUncheckedCreateWithoutUserInput>
+  }
+
+  export type HabitUpdateWithWhereUniqueWithoutUserInput = {
+    where: HabitWhereUniqueInput
+    data: XOR<HabitUpdateWithoutUserInput, HabitUncheckedUpdateWithoutUserInput>
+  }
+
+  export type HabitUpdateManyWithWhereWithoutUserInput = {
+    where: HabitScalarWhereInput
+    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type HabitScalarWhereInput = {
+    AND?: HabitScalarWhereInput | HabitScalarWhereInput[]
+    OR?: HabitScalarWhereInput[]
+    NOT?: HabitScalarWhereInput | HabitScalarWhereInput[]
+    id?: StringFilter<"Habit"> | string
+    userId?: StringFilter<"Habit"> | string
+    name?: StringFilter<"Habit"> | string
+    anchor?: StringFilter<"Habit"> | string
+    action?: StringFilter<"Habit"> | string
+    celebration?: StringNullableFilter<"Habit"> | string | null
+    order?: IntFilter<"Habit"> | number
+    archived?: BoolFilter<"Habit"> | boolean
+    createdAt?: DateTimeFilter<"Habit"> | Date | string
+    updatedAt?: DateTimeFilter<"Habit"> | Date | string
+  }
+
+  export type LifeSphereUpsertWithWhereUniqueWithoutUserInput = {
+    where: LifeSphereWhereUniqueInput
+    update: XOR<LifeSphereUpdateWithoutUserInput, LifeSphereUncheckedUpdateWithoutUserInput>
+    create: XOR<LifeSphereCreateWithoutUserInput, LifeSphereUncheckedCreateWithoutUserInput>
+  }
+
+  export type LifeSphereUpdateWithWhereUniqueWithoutUserInput = {
+    where: LifeSphereWhereUniqueInput
+    data: XOR<LifeSphereUpdateWithoutUserInput, LifeSphereUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LifeSphereUpdateManyWithWhereWithoutUserInput = {
+    where: LifeSphereScalarWhereInput
+    data: XOR<LifeSphereUpdateManyMutationInput, LifeSphereUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LifeSphereScalarWhereInput = {
+    AND?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
+    OR?: LifeSphereScalarWhereInput[]
+    NOT?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
+    id?: StringFilter<"LifeSphere"> | string
+    userId?: StringFilter<"LifeSphere"> | string
+    name?: StringFilter<"LifeSphere"> | string
+    color?: StringFilter<"LifeSphere"> | string
+    icon?: StringFilter<"LifeSphere"> | string
+    order?: IntFilter<"LifeSphere"> | number
+    createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
+    updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
+  }
+
+  export type LibraryItemUpsertWithWhereUniqueWithoutUserInput = {
+    where: LibraryItemWhereUniqueInput
+    update: XOR<LibraryItemUpdateWithoutUserInput, LibraryItemUncheckedUpdateWithoutUserInput>
+    create: XOR<LibraryItemCreateWithoutUserInput, LibraryItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type LibraryItemUpdateWithWhereUniqueWithoutUserInput = {
+    where: LibraryItemWhereUniqueInput
+    data: XOR<LibraryItemUpdateWithoutUserInput, LibraryItemUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LibraryItemUpdateManyWithWhereWithoutUserInput = {
+    where: LibraryItemScalarWhereInput
+    data: XOR<LibraryItemUpdateManyMutationInput, LibraryItemUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LibraryItemScalarWhereInput = {
+    AND?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
+    OR?: LibraryItemScalarWhereInput[]
+    NOT?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
+    id?: StringFilter<"LibraryItem"> | string
+    userId?: StringFilter<"LibraryItem"> | string
+    title?: StringFilter<"LibraryItem"> | string
+    author?: StringNullableFilter<"LibraryItem"> | string | null
+    url?: StringNullableFilter<"LibraryItem"> | string | null
+    type?: EnumLibraryItemTypeFilter<"LibraryItem"> | $Enums.LibraryItemType
+    status?: EnumLibraryItemStatusFilter<"LibraryItem"> | $Enums.LibraryItemStatus
+    rating?: IntNullableFilter<"LibraryItem"> | number | null
+    notes?: StringNullableFilter<"LibraryItem"> | string | null
+    createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
+    updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
+  }
+
+  export type WishlistItemUpsertWithWhereUniqueWithoutUserInput = {
+    where: WishlistItemWhereUniqueInput
+    update: XOR<WishlistItemUpdateWithoutUserInput, WishlistItemUncheckedUpdateWithoutUserInput>
+    create: XOR<WishlistItemCreateWithoutUserInput, WishlistItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type WishlistItemUpdateWithWhereUniqueWithoutUserInput = {
+    where: WishlistItemWhereUniqueInput
+    data: XOR<WishlistItemUpdateWithoutUserInput, WishlistItemUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WishlistItemUpdateManyWithWhereWithoutUserInput = {
+    where: WishlistItemScalarWhereInput
+    data: XOR<WishlistItemUpdateManyMutationInput, WishlistItemUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WishlistItemScalarWhereInput = {
+    AND?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
+    OR?: WishlistItemScalarWhereInput[]
+    NOT?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
+    id?: StringFilter<"WishlistItem"> | string
+    userId?: StringFilter<"WishlistItem"> | string
+    name?: StringFilter<"WishlistItem"> | string
+    description?: StringNullableFilter<"WishlistItem"> | string | null
+    url?: StringNullableFilter<"WishlistItem"> | string | null
+    imageUrl?: StringNullableFilter<"WishlistItem"> | string | null
+    price?: FloatNullableFilter<"WishlistItem"> | number | null
+    currency?: StringFilter<"WishlistItem"> | string
+    priority?: EnumTaskPriorityFilter<"WishlistItem"> | $Enums.TaskPriority
+    status?: EnumWishlistStatusFilter<"WishlistItem"> | $Enums.WishlistStatus
+    category?: StringNullableFilter<"WishlistItem"> | string | null
+    tags?: StringNullableListFilter<"WishlistItem">
+    necessity?: IntNullableFilter<"WishlistItem"> | number | null
+    store?: StringNullableFilter<"WishlistItem"> | string | null
+    createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
+    updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
+  }
+
+  export type VisionUpsertWithWhereUniqueWithoutUserInput = {
+    where: VisionWhereUniqueInput
+    update: XOR<VisionUpdateWithoutUserInput, VisionUncheckedUpdateWithoutUserInput>
+    create: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput>
+  }
+
+  export type VisionUpdateWithWhereUniqueWithoutUserInput = {
+    where: VisionWhereUniqueInput
+    data: XOR<VisionUpdateWithoutUserInput, VisionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type VisionUpdateManyWithWhereWithoutUserInput = {
+    where: VisionScalarWhereInput
+    data: XOR<VisionUpdateManyMutationInput, VisionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type VisionScalarWhereInput = {
+    AND?: VisionScalarWhereInput | VisionScalarWhereInput[]
+    OR?: VisionScalarWhereInput[]
+    NOT?: VisionScalarWhereInput | VisionScalarWhereInput[]
+    id?: StringFilter<"Vision"> | string
+    userId?: StringFilter<"Vision"> | string
+    title?: StringFilter<"Vision"> | string
+    content?: StringNullableFilter<"Vision"> | string | null
+    createdAt?: DateTimeFilter<"Vision"> | Date | string
+    updatedAt?: DateTimeFilter<"Vision"> | Date | string
+  }
+
+  export type MilestoneUpsertWithWhereUniqueWithoutUserInput = {
+    where: MilestoneWhereUniqueInput
+    update: XOR<MilestoneUpdateWithoutUserInput, MilestoneUncheckedUpdateWithoutUserInput>
+    create: XOR<MilestoneCreateWithoutUserInput, MilestoneUncheckedCreateWithoutUserInput>
+  }
+
+  export type MilestoneUpdateWithWhereUniqueWithoutUserInput = {
+    where: MilestoneWhereUniqueInput
+    data: XOR<MilestoneUpdateWithoutUserInput, MilestoneUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MilestoneUpdateManyWithWhereWithoutUserInput = {
+    where: MilestoneScalarWhereInput
+    data: XOR<MilestoneUpdateManyMutationInput, MilestoneUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MilestoneScalarWhereInput = {
+    AND?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
+    OR?: MilestoneScalarWhereInput[]
+    NOT?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
+    id?: StringFilter<"Milestone"> | string
+    userId?: StringFilter<"Milestone"> | string
+    title?: StringFilter<"Milestone"> | string
+    description?: StringNullableFilter<"Milestone"> | string | null
+    targetDate?: DateTimeNullableFilter<"Milestone"> | Date | string | null
+    completed?: BoolFilter<"Milestone"> | boolean
+    createdAt?: DateTimeFilter<"Milestone"> | Date | string
+    updatedAt?: DateTimeFilter<"Milestone"> | Date | string
+    sphereId?: StringNullableFilter<"Milestone"> | string | null
+  }
+
+  export type SprintUpsertWithWhereUniqueWithoutUserInput = {
+    where: SprintWhereUniqueInput
+    update: XOR<SprintUpdateWithoutUserInput, SprintUncheckedUpdateWithoutUserInput>
+    create: XOR<SprintCreateWithoutUserInput, SprintUncheckedCreateWithoutUserInput>
+  }
+
+  export type SprintUpdateWithWhereUniqueWithoutUserInput = {
+    where: SprintWhereUniqueInput
+    data: XOR<SprintUpdateWithoutUserInput, SprintUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SprintUpdateManyWithWhereWithoutUserInput = {
+    where: SprintScalarWhereInput
+    data: XOR<SprintUpdateManyMutationInput, SprintUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SprintScalarWhereInput = {
+    AND?: SprintScalarWhereInput | SprintScalarWhereInput[]
+    OR?: SprintScalarWhereInput[]
+    NOT?: SprintScalarWhereInput | SprintScalarWhereInput[]
+    id?: StringFilter<"Sprint"> | string
+    userId?: StringFilter<"Sprint"> | string
+    number?: IntFilter<"Sprint"> | number
+    year?: IntFilter<"Sprint"> | number
+    startDate?: DateTimeFilter<"Sprint"> | Date | string
+    endDate?: DateTimeFilter<"Sprint"> | Date | string
+    status?: EnumSprintStatusFilter<"Sprint"> | $Enums.SprintStatus
+    createdAt?: DateTimeFilter<"Sprint"> | Date | string
+    updatedAt?: DateTimeFilter<"Sprint"> | Date | string
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -63240,7 +62805,22 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -63254,7 +62834,22 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -63284,7 +62879,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -63298,7 +62908,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -63312,7 +62937,22 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
-    profile?: ProfileCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -63326,7 +62966,22 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    profile?: ProfileUncheckedCreateNestedOneWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -63356,7 +63011,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    profile?: ProfileUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -63370,10 +63040,25 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    profile?: ProfileUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutProfileInput = {
+  export type UserCreateWithoutNutritionPersonInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -63385,9 +63070,24 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutProfileInput = {
+  export type UserUncheckedCreateWithoutNutritionPersonInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -63399,89 +63099,40 @@ export namespace Prisma {
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutProfileInput = {
+  export type UserCreateOrConnectWithoutNutritionPersonInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
+    create: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
   }
 
-  export type NutritionPersonCreateWithoutProfileInput = {
-    id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
-  }
-
-  export type NutritionPersonUncheckedCreateWithoutProfileInput = {
-    id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
-  }
-
-  export type NutritionPersonCreateOrConnectWithoutProfileInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput>
-  }
-
-  export type NutritionPersonCreateManyProfileInputEnvelope = {
-    data: NutritionPersonCreateManyProfileInput | NutritionPersonCreateManyProfileInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutProfileInput = {
-    update: XOR<UserUpdateWithoutProfileInput, UserUncheckedUpdateWithoutProfileInput>
-    create: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
+  export type UserUpsertWithoutNutritionPersonInput = {
+    update: XOR<UserUpdateWithoutNutritionPersonInput, UserUncheckedUpdateWithoutNutritionPersonInput>
+    create: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutProfileInput = {
+  export type UserUpdateToOneWithWhereWithoutNutritionPersonInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutProfileInput, UserUncheckedUpdateWithoutProfileInput>
+    data: XOR<UserUpdateWithoutNutritionPersonInput, UserUncheckedUpdateWithoutNutritionPersonInput>
   }
 
-  export type UserUpdateWithoutProfileInput = {
+  export type UserUpdateWithoutNutritionPersonInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -63493,9 +63144,24 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutProfileInput = {
+  export type UserUncheckedUpdateWithoutNutritionPersonInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -63507,1128 +63173,21 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type NutritionPersonUpsertWithWhereUniqueWithoutProfileInput = {
-    where: NutritionPersonWhereUniqueInput
-    update: XOR<NutritionPersonUpdateWithoutProfileInput, NutritionPersonUncheckedUpdateWithoutProfileInput>
-    create: XOR<NutritionPersonCreateWithoutProfileInput, NutritionPersonUncheckedCreateWithoutProfileInput>
-  }
-
-  export type NutritionPersonUpdateWithWhereUniqueWithoutProfileInput = {
-    where: NutritionPersonWhereUniqueInput
-    data: XOR<NutritionPersonUpdateWithoutProfileInput, NutritionPersonUncheckedUpdateWithoutProfileInput>
-  }
-
-  export type NutritionPersonUpdateManyWithWhereWithoutProfileInput = {
-    where: NutritionPersonScalarWhereInput
-    data: XOR<NutritionPersonUpdateManyMutationInput, NutritionPersonUncheckedUpdateManyWithoutProfileInput>
-  }
-
-  export type NutritionPersonScalarWhereInput = {
-    AND?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
-    OR?: NutritionPersonScalarWhereInput[]
-    NOT?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
-    id?: StringFilter<"NutritionPerson"> | string
-    profileId?: StringFilter<"NutritionPerson"> | string
-    name?: StringFilter<"NutritionPerson"> | string
-    targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
-    targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
-    targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
-    targetCarbs?: FloatNullableFilter<"NutritionPerson"> | number | null
-    targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
-    createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-    updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-  }
-
-  export type ProfileCreateWithoutPersonsInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutProfileInput
-  }
-
-  export type ProfileUncheckedCreateWithoutPersonsInput = {
-    id?: string
-    userId?: string | null
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ProfileCreateOrConnectWithoutPersonsInput = {
-    where: ProfileWhereUniqueInput
-    create: XOR<ProfileCreateWithoutPersonsInput, ProfileUncheckedCreateWithoutPersonsInput>
-  }
-
-  export type DishCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    priority?: $Enums.Priority
-    yield?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
-  }
-
-  export type DishUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    priority?: $Enums.Priority
-    yield?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
-  }
-
-  export type DishCreateOrConnectWithoutPersonInput = {
-    where: DishWhereUniqueInput
-    create: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DishCreateManyPersonInputEnvelope = {
-    data: DishCreateManyPersonInput | DishCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DayTemplateCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateCreateOrConnectWithoutPersonInput = {
-    where: DayTemplateWhereUniqueInput
-    create: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DayTemplateCreateManyPersonInputEnvelope = {
-    data: DayTemplateCreateManyPersonInput | DayTemplateCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WeekPlanCreateWithoutPersonInput = {
-    id?: string
-    name?: string | null
-    startDate: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
-  }
-
-  export type WeekPlanUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name?: string | null
-    startDate: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutWeekPlanInput
-  }
-
-  export type WeekPlanCreateOrConnectWithoutPersonInput = {
-    where: WeekPlanWhereUniqueInput
-    create: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput>
-  }
-
-  export type WeekPlanCreateManyPersonInputEnvelope = {
-    data: WeekPlanCreateManyPersonInput | WeekPlanCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DayPlanCreateWithoutPersonInput = {
-    id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanUncheckedCreateWithoutPersonInput = {
-    id?: string
-    weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanCreateOrConnectWithoutPersonInput = {
-    where: DayPlanWhereUniqueInput
-    create: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DayPlanCreateManyPersonInputEnvelope = {
-    data: DayPlanCreateManyPersonInput | DayPlanCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ShoppingListCreateWithoutPersonInput = {
-    id?: string
-    name?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
-    items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
-  }
-
-  export type ShoppingListUncheckedCreateWithoutPersonInput = {
-    id?: string
-    weekPlanId?: string | null
-    name?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    items?: ShoppingListItemUncheckedCreateNestedManyWithoutShoppingListInput
-  }
-
-  export type ShoppingListCreateOrConnectWithoutPersonInput = {
-    where: ShoppingListWhereUniqueInput
-    create: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput>
-  }
-
-  export type ShoppingListCreateManyPersonInputEnvelope = {
-    data: ShoppingListCreateManyPersonInput | ShoppingListCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserLanguageCreateWithoutPersonInput = {
-    id?: string
-    level?: $Enums.CefrLevel
-    totalXp?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    language: LanguageCreateNestedOneWithoutUserLanguagesInput
-    sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
-    vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
-    immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
-    resources?: LanguageResourceCreateNestedManyWithoutUserLanguageInput
-  }
-
-  export type UserLanguageUncheckedCreateWithoutPersonInput = {
-    id?: string
-    languageId: string
-    level?: $Enums.CefrLevel
-    totalXp?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sphereProgress?: LanguageSphereProgressUncheckedCreateNestedManyWithoutUserLanguageInput
-    vocabularyItems?: VocabularyItemUncheckedCreateNestedManyWithoutUserLanguageInput
-    immersionLogs?: ImmersionLogUncheckedCreateNestedManyWithoutUserLanguageInput
-    resources?: LanguageResourceUncheckedCreateNestedManyWithoutUserLanguageInput
-  }
-
-  export type UserLanguageCreateOrConnectWithoutPersonInput = {
-    where: UserLanguageWhereUniqueInput
-    create: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput>
-  }
-
-  export type UserLanguageCreateManyPersonInputEnvelope = {
-    data: UserLanguageCreateManyPersonInput | UserLanguageCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TaskCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    icon?: string | null
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    plannedDate?: Date | string | null
-    hasPlannedTime?: boolean
-    dueDate?: Date | string | null
-    hasDueTime?: boolean
-    depth?: number
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    completedAt?: Date | string | null
-    parent?: TaskCreateNestedOneWithoutChildrenInput
-    children?: TaskCreateNestedManyWithoutParentInput
-    sphere?: LifeSphereCreateNestedOneWithoutTasksInput
-    project?: ProjectCreateNestedOneWithoutTasksInput
-  }
-
-  export type TaskUncheckedCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    icon?: string | null
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    plannedDate?: Date | string | null
-    hasPlannedTime?: boolean
-    dueDate?: Date | string | null
-    hasDueTime?: boolean
-    depth?: number
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parentId?: string | null
-    sphereId?: string | null
-    projectId?: string | null
-    completedAt?: Date | string | null
-    children?: TaskUncheckedCreateNestedManyWithoutParentInput
-  }
-
-  export type TaskCreateOrConnectWithoutPersonInput = {
-    where: TaskWhereUniqueInput
-    create: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput>
-  }
-
-  export type TaskCreateManyPersonInputEnvelope = {
-    data: TaskCreateManyPersonInput | TaskCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DailyEntryCreateWithoutPersonInput = {
-    id?: string
-    date: Date | string
-    sleepBedtime?: Date | string | null
-    sleepWakeup?: Date | string | null
-    sleepHours?: number | null
-    sleepQuality?: number | null
-    sleepNote?: string | null
-    energy?: number | null
-    mood?: number | null
-    emotions?: NullableJsonNullValueInput | InputJsonValue
-    weight?: number | null
-    energyNote?: string | null
-    morningSunlight?: boolean | null
-    eveningEnergy?: number | null
-    nutrition?: number | null
-    nutritionNote?: string | null
-    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    routineNote?: string | null
-    winToday?: string | null
-    improveTomorrow?: string | null
-    gratitude?: string | null
-    brainDump?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DailyEntryUncheckedCreateWithoutPersonInput = {
-    id?: string
-    date: Date | string
-    sleepBedtime?: Date | string | null
-    sleepWakeup?: Date | string | null
-    sleepHours?: number | null
-    sleepQuality?: number | null
-    sleepNote?: string | null
-    energy?: number | null
-    mood?: number | null
-    emotions?: NullableJsonNullValueInput | InputJsonValue
-    weight?: number | null
-    energyNote?: string | null
-    morningSunlight?: boolean | null
-    eveningEnergy?: number | null
-    nutrition?: number | null
-    nutritionNote?: string | null
-    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    routineNote?: string | null
-    winToday?: string | null
-    improveTomorrow?: string | null
-    gratitude?: string | null
-    brainDump?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DailyEntryCreateOrConnectWithoutPersonInput = {
-    where: DailyEntryWhereUniqueInput
-    create: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DailyEntryCreateManyPersonInputEnvelope = {
-    data: DailyEntryCreateManyPersonInput | DailyEntryCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type HabitCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    anchor: string
-    action: string
-    celebration?: string | null
-    order?: number
-    archived?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
-  }
-
-  export type HabitUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    anchor: string
-    action: string
-    celebration?: string | null
-    order?: number
-    archived?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
-  }
-
-  export type HabitCreateOrConnectWithoutPersonInput = {
-    where: HabitWhereUniqueInput
-    create: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput>
-  }
-
-  export type HabitCreateManyPersonInputEnvelope = {
-    data: HabitCreateManyPersonInput | HabitCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type LifeSphereCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    color: string
-    icon: string
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tasks?: TaskCreateNestedManyWithoutSphereInput
-    milestones?: MilestoneCreateNestedManyWithoutSphereInput
-    objectives?: ObjectiveCreateNestedManyWithoutSphereInput
-  }
-
-  export type LifeSphereUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    color: string
-    icon: string
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
-    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
-  }
-
-  export type LifeSphereCreateOrConnectWithoutPersonInput = {
-    where: LifeSphereWhereUniqueInput
-    create: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput>
-  }
-
-  export type LifeSphereCreateManyPersonInputEnvelope = {
-    data: LifeSphereCreateManyPersonInput | LifeSphereCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type LibraryItemCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    author?: string | null
-    url?: string | null
-    type?: $Enums.LibraryItemType
-    status?: $Enums.LibraryItemStatus
-    rating?: number | null
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type LibraryItemUncheckedCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    author?: string | null
-    url?: string | null
-    type?: $Enums.LibraryItemType
-    status?: $Enums.LibraryItemStatus
-    rating?: number | null
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type LibraryItemCreateOrConnectWithoutPersonInput = {
-    where: LibraryItemWhereUniqueInput
-    create: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput>
-  }
-
-  export type LibraryItemCreateManyPersonInputEnvelope = {
-    data: LibraryItemCreateManyPersonInput | LibraryItemCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WishlistItemCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    url?: string | null
-    imageUrl?: string | null
-    price?: number | null
-    currency?: string
-    priority?: $Enums.TaskPriority
-    status?: $Enums.WishlistStatus
-    category?: string | null
-    tags?: WishlistItemCreatetagsInput | string[]
-    necessity?: number | null
-    store?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type WishlistItemUncheckedCreateWithoutPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    url?: string | null
-    imageUrl?: string | null
-    price?: number | null
-    currency?: string
-    priority?: $Enums.TaskPriority
-    status?: $Enums.WishlistStatus
-    category?: string | null
-    tags?: WishlistItemCreatetagsInput | string[]
-    necessity?: number | null
-    store?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type WishlistItemCreateOrConnectWithoutPersonInput = {
-    where: WishlistItemWhereUniqueInput
-    create: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput>
-  }
-
-  export type WishlistItemCreateManyPersonInputEnvelope = {
-    data: WishlistItemCreateManyPersonInput | WishlistItemCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type VisionCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    content?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VisionUncheckedCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    content?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VisionCreateOrConnectWithoutPersonInput = {
-    where: VisionWhereUniqueInput
-    create: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput>
-  }
-
-  export type VisionCreateManyPersonInputEnvelope = {
-    data: VisionCreateManyPersonInput | VisionCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MilestoneCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    targetDate?: Date | string | null
-    completed?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sphere?: LifeSphereCreateNestedOneWithoutMilestonesInput
-  }
-
-  export type MilestoneUncheckedCreateWithoutPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    targetDate?: Date | string | null
-    completed?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sphereId?: string | null
-  }
-
-  export type MilestoneCreateOrConnectWithoutPersonInput = {
-    where: MilestoneWhereUniqueInput
-    create: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput>
-  }
-
-  export type MilestoneCreateManyPersonInputEnvelope = {
-    data: MilestoneCreateManyPersonInput | MilestoneCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SprintCreateWithoutPersonInput = {
-    id?: string
-    number: number
-    year: number
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.SprintStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    objectives?: ObjectiveCreateNestedManyWithoutSprintInput
-    reviews?: SprintReviewCreateNestedManyWithoutSprintInput
-  }
-
-  export type SprintUncheckedCreateWithoutPersonInput = {
-    id?: string
-    number: number
-    year: number
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.SprintStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSprintInput
-    reviews?: SprintReviewUncheckedCreateNestedManyWithoutSprintInput
-  }
-
-  export type SprintCreateOrConnectWithoutPersonInput = {
-    where: SprintWhereUniqueInput
-    create: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput>
-  }
-
-  export type SprintCreateManyPersonInputEnvelope = {
-    data: SprintCreateManyPersonInput | SprintCreateManyPersonInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ProfileUpsertWithoutPersonsInput = {
-    update: XOR<ProfileUpdateWithoutPersonsInput, ProfileUncheckedUpdateWithoutPersonsInput>
-    create: XOR<ProfileCreateWithoutPersonsInput, ProfileUncheckedCreateWithoutPersonsInput>
-    where?: ProfileWhereInput
-  }
-
-  export type ProfileUpdateToOneWithWhereWithoutPersonsInput = {
-    where?: ProfileWhereInput
-    data: XOR<ProfileUpdateWithoutPersonsInput, ProfileUncheckedUpdateWithoutPersonsInput>
-  }
-
-  export type ProfileUpdateWithoutPersonsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutProfileNestedInput
-  }
-
-  export type ProfileUncheckedUpdateWithoutPersonsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DishUpsertWithWhereUniqueWithoutPersonInput = {
-    where: DishWhereUniqueInput
-    update: XOR<DishUpdateWithoutPersonInput, DishUncheckedUpdateWithoutPersonInput>
-    create: XOR<DishCreateWithoutPersonInput, DishUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DishUpdateWithWhereUniqueWithoutPersonInput = {
-    where: DishWhereUniqueInput
-    data: XOR<DishUpdateWithoutPersonInput, DishUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type DishUpdateManyWithWhereWithoutPersonInput = {
-    where: DishScalarWhereInput
-    data: XOR<DishUpdateManyMutationInput, DishUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type DishScalarWhereInput = {
-    AND?: DishScalarWhereInput | DishScalarWhereInput[]
-    OR?: DishScalarWhereInput[]
-    NOT?: DishScalarWhereInput | DishScalarWhereInput[]
-    id?: StringFilter<"Dish"> | string
-    personId?: StringFilter<"Dish"> | string
-    name?: StringFilter<"Dish"> | string
-    description?: StringNullableFilter<"Dish"> | string | null
-    priority?: EnumPriorityFilter<"Dish"> | $Enums.Priority
-    yield?: FloatNullableFilter<"Dish"> | number | null
-    createdAt?: DateTimeFilter<"Dish"> | Date | string
-    updatedAt?: DateTimeFilter<"Dish"> | Date | string
-  }
-
-  export type DayTemplateUpsertWithWhereUniqueWithoutPersonInput = {
-    where: DayTemplateWhereUniqueInput
-    update: XOR<DayTemplateUpdateWithoutPersonInput, DayTemplateUncheckedUpdateWithoutPersonInput>
-    create: XOR<DayTemplateCreateWithoutPersonInput, DayTemplateUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DayTemplateUpdateWithWhereUniqueWithoutPersonInput = {
-    where: DayTemplateWhereUniqueInput
-    data: XOR<DayTemplateUpdateWithoutPersonInput, DayTemplateUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type DayTemplateUpdateManyWithWhereWithoutPersonInput = {
-    where: DayTemplateScalarWhereInput
-    data: XOR<DayTemplateUpdateManyMutationInput, DayTemplateUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type DayTemplateScalarWhereInput = {
-    AND?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-    OR?: DayTemplateScalarWhereInput[]
-    NOT?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-    id?: StringFilter<"DayTemplate"> | string
-    personId?: StringFilter<"DayTemplate"> | string
-    name?: StringFilter<"DayTemplate"> | string
-    createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-  }
-
-  export type WeekPlanUpsertWithWhereUniqueWithoutPersonInput = {
-    where: WeekPlanWhereUniqueInput
-    update: XOR<WeekPlanUpdateWithoutPersonInput, WeekPlanUncheckedUpdateWithoutPersonInput>
-    create: XOR<WeekPlanCreateWithoutPersonInput, WeekPlanUncheckedCreateWithoutPersonInput>
-  }
-
-  export type WeekPlanUpdateWithWhereUniqueWithoutPersonInput = {
-    where: WeekPlanWhereUniqueInput
-    data: XOR<WeekPlanUpdateWithoutPersonInput, WeekPlanUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type WeekPlanUpdateManyWithWhereWithoutPersonInput = {
-    where: WeekPlanScalarWhereInput
-    data: XOR<WeekPlanUpdateManyMutationInput, WeekPlanUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type WeekPlanScalarWhereInput = {
-    AND?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
-    OR?: WeekPlanScalarWhereInput[]
-    NOT?: WeekPlanScalarWhereInput | WeekPlanScalarWhereInput[]
-    id?: StringFilter<"WeekPlan"> | string
-    personId?: StringFilter<"WeekPlan"> | string
-    name?: StringNullableFilter<"WeekPlan"> | string | null
-    startDate?: DateTimeFilter<"WeekPlan"> | Date | string
-    createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
-    updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
-  }
-
-  export type DayPlanUpsertWithWhereUniqueWithoutPersonInput = {
-    where: DayPlanWhereUniqueInput
-    update: XOR<DayPlanUpdateWithoutPersonInput, DayPlanUncheckedUpdateWithoutPersonInput>
-    create: XOR<DayPlanCreateWithoutPersonInput, DayPlanUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DayPlanUpdateWithWhereUniqueWithoutPersonInput = {
-    where: DayPlanWhereUniqueInput
-    data: XOR<DayPlanUpdateWithoutPersonInput, DayPlanUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type DayPlanUpdateManyWithWhereWithoutPersonInput = {
-    where: DayPlanScalarWhereInput
-    data: XOR<DayPlanUpdateManyMutationInput, DayPlanUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type DayPlanScalarWhereInput = {
-    AND?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-    OR?: DayPlanScalarWhereInput[]
-    NOT?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-    id?: StringFilter<"DayPlan"> | string
-    personId?: StringFilter<"DayPlan"> | string
-    weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
-    templateId?: StringNullableFilter<"DayPlan"> | string | null
-    date?: DateTimeFilter<"DayPlan"> | Date | string
-    adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
-    createdAt?: DateTimeFilter<"DayPlan"> | Date | string
-    updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-  }
-
-  export type ShoppingListUpsertWithWhereUniqueWithoutPersonInput = {
-    where: ShoppingListWhereUniqueInput
-    update: XOR<ShoppingListUpdateWithoutPersonInput, ShoppingListUncheckedUpdateWithoutPersonInput>
-    create: XOR<ShoppingListCreateWithoutPersonInput, ShoppingListUncheckedCreateWithoutPersonInput>
-  }
-
-  export type ShoppingListUpdateWithWhereUniqueWithoutPersonInput = {
-    where: ShoppingListWhereUniqueInput
-    data: XOR<ShoppingListUpdateWithoutPersonInput, ShoppingListUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type ShoppingListUpdateManyWithWhereWithoutPersonInput = {
-    where: ShoppingListScalarWhereInput
-    data: XOR<ShoppingListUpdateManyMutationInput, ShoppingListUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type ShoppingListScalarWhereInput = {
-    AND?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
-    OR?: ShoppingListScalarWhereInput[]
-    NOT?: ShoppingListScalarWhereInput | ShoppingListScalarWhereInput[]
-    id?: StringFilter<"ShoppingList"> | string
-    personId?: StringFilter<"ShoppingList"> | string
-    weekPlanId?: StringNullableFilter<"ShoppingList"> | string | null
-    name?: StringNullableFilter<"ShoppingList"> | string | null
-    createdAt?: DateTimeFilter<"ShoppingList"> | Date | string
-    updatedAt?: DateTimeFilter<"ShoppingList"> | Date | string
-  }
-
-  export type UserLanguageUpsertWithWhereUniqueWithoutPersonInput = {
-    where: UserLanguageWhereUniqueInput
-    update: XOR<UserLanguageUpdateWithoutPersonInput, UserLanguageUncheckedUpdateWithoutPersonInput>
-    create: XOR<UserLanguageCreateWithoutPersonInput, UserLanguageUncheckedCreateWithoutPersonInput>
-  }
-
-  export type UserLanguageUpdateWithWhereUniqueWithoutPersonInput = {
-    where: UserLanguageWhereUniqueInput
-    data: XOR<UserLanguageUpdateWithoutPersonInput, UserLanguageUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type UserLanguageUpdateManyWithWhereWithoutPersonInput = {
-    where: UserLanguageScalarWhereInput
-    data: XOR<UserLanguageUpdateManyMutationInput, UserLanguageUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type UserLanguageScalarWhereInput = {
-    AND?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
-    OR?: UserLanguageScalarWhereInput[]
-    NOT?: UserLanguageScalarWhereInput | UserLanguageScalarWhereInput[]
-    id?: StringFilter<"UserLanguage"> | string
-    personId?: StringFilter<"UserLanguage"> | string
-    languageId?: StringFilter<"UserLanguage"> | string
-    level?: EnumCefrLevelFilter<"UserLanguage"> | $Enums.CefrLevel
-    totalXp?: IntFilter<"UserLanguage"> | number
-    createdAt?: DateTimeFilter<"UserLanguage"> | Date | string
-    updatedAt?: DateTimeFilter<"UserLanguage"> | Date | string
-  }
-
-  export type TaskUpsertWithWhereUniqueWithoutPersonInput = {
-    where: TaskWhereUniqueInput
-    update: XOR<TaskUpdateWithoutPersonInput, TaskUncheckedUpdateWithoutPersonInput>
-    create: XOR<TaskCreateWithoutPersonInput, TaskUncheckedCreateWithoutPersonInput>
-  }
-
-  export type TaskUpdateWithWhereUniqueWithoutPersonInput = {
-    where: TaskWhereUniqueInput
-    data: XOR<TaskUpdateWithoutPersonInput, TaskUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type TaskUpdateManyWithWhereWithoutPersonInput = {
-    where: TaskScalarWhereInput
-    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type TaskScalarWhereInput = {
-    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
-    OR?: TaskScalarWhereInput[]
-    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
-    id?: StringFilter<"Task"> | string
-    personId?: StringFilter<"Task"> | string
-    title?: StringFilter<"Task"> | string
-    description?: StringNullableFilter<"Task"> | string | null
-    icon?: StringNullableFilter<"Task"> | string | null
-    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
-    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
-    plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
-    hasPlannedTime?: BoolFilter<"Task"> | boolean
-    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
-    hasDueTime?: BoolFilter<"Task"> | boolean
-    depth?: IntFilter<"Task"> | number
-    order?: IntFilter<"Task"> | number
-    createdAt?: DateTimeFilter<"Task"> | Date | string
-    updatedAt?: DateTimeFilter<"Task"> | Date | string
-    parentId?: StringNullableFilter<"Task"> | string | null
-    sphereId?: StringNullableFilter<"Task"> | string | null
-    projectId?: StringNullableFilter<"Task"> | string | null
-    completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
-  }
-
-  export type DailyEntryUpsertWithWhereUniqueWithoutPersonInput = {
-    where: DailyEntryWhereUniqueInput
-    update: XOR<DailyEntryUpdateWithoutPersonInput, DailyEntryUncheckedUpdateWithoutPersonInput>
-    create: XOR<DailyEntryCreateWithoutPersonInput, DailyEntryUncheckedCreateWithoutPersonInput>
-  }
-
-  export type DailyEntryUpdateWithWhereUniqueWithoutPersonInput = {
-    where: DailyEntryWhereUniqueInput
-    data: XOR<DailyEntryUpdateWithoutPersonInput, DailyEntryUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type DailyEntryUpdateManyWithWhereWithoutPersonInput = {
-    where: DailyEntryScalarWhereInput
-    data: XOR<DailyEntryUpdateManyMutationInput, DailyEntryUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type DailyEntryScalarWhereInput = {
-    AND?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
-    OR?: DailyEntryScalarWhereInput[]
-    NOT?: DailyEntryScalarWhereInput | DailyEntryScalarWhereInput[]
-    id?: StringFilter<"DailyEntry"> | string
-    personId?: StringFilter<"DailyEntry"> | string
-    date?: DateTimeFilter<"DailyEntry"> | Date | string
-    sleepBedtime?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
-    sleepWakeup?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
-    sleepHours?: FloatNullableFilter<"DailyEntry"> | number | null
-    sleepQuality?: IntNullableFilter<"DailyEntry"> | number | null
-    sleepNote?: StringNullableFilter<"DailyEntry"> | string | null
-    energy?: IntNullableFilter<"DailyEntry"> | number | null
-    mood?: IntNullableFilter<"DailyEntry"> | number | null
-    emotions?: JsonNullableFilter<"DailyEntry">
-    weight?: FloatNullableFilter<"DailyEntry"> | number | null
-    energyNote?: StringNullableFilter<"DailyEntry"> | string | null
-    morningSunlight?: BoolNullableFilter<"DailyEntry"> | boolean | null
-    eveningEnergy?: IntNullableFilter<"DailyEntry"> | number | null
-    nutrition?: IntNullableFilter<"DailyEntry"> | number | null
-    nutritionNote?: StringNullableFilter<"DailyEntry"> | string | null
-    morningRoutine?: JsonNullableFilter<"DailyEntry">
-    eveningRoutine?: JsonNullableFilter<"DailyEntry">
-    routineNote?: StringNullableFilter<"DailyEntry"> | string | null
-    winToday?: StringNullableFilter<"DailyEntry"> | string | null
-    improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
-    gratitude?: StringNullableFilter<"DailyEntry"> | string | null
-    brainDump?: StringNullableFilter<"DailyEntry"> | string | null
-    createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-  }
-
-  export type HabitUpsertWithWhereUniqueWithoutPersonInput = {
-    where: HabitWhereUniqueInput
-    update: XOR<HabitUpdateWithoutPersonInput, HabitUncheckedUpdateWithoutPersonInput>
-    create: XOR<HabitCreateWithoutPersonInput, HabitUncheckedCreateWithoutPersonInput>
-  }
-
-  export type HabitUpdateWithWhereUniqueWithoutPersonInput = {
-    where: HabitWhereUniqueInput
-    data: XOR<HabitUpdateWithoutPersonInput, HabitUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type HabitUpdateManyWithWhereWithoutPersonInput = {
-    where: HabitScalarWhereInput
-    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type HabitScalarWhereInput = {
-    AND?: HabitScalarWhereInput | HabitScalarWhereInput[]
-    OR?: HabitScalarWhereInput[]
-    NOT?: HabitScalarWhereInput | HabitScalarWhereInput[]
-    id?: StringFilter<"Habit"> | string
-    personId?: StringFilter<"Habit"> | string
-    name?: StringFilter<"Habit"> | string
-    anchor?: StringFilter<"Habit"> | string
-    action?: StringFilter<"Habit"> | string
-    celebration?: StringNullableFilter<"Habit"> | string | null
-    order?: IntFilter<"Habit"> | number
-    archived?: BoolFilter<"Habit"> | boolean
-    createdAt?: DateTimeFilter<"Habit"> | Date | string
-    updatedAt?: DateTimeFilter<"Habit"> | Date | string
-  }
-
-  export type LifeSphereUpsertWithWhereUniqueWithoutPersonInput = {
-    where: LifeSphereWhereUniqueInput
-    update: XOR<LifeSphereUpdateWithoutPersonInput, LifeSphereUncheckedUpdateWithoutPersonInput>
-    create: XOR<LifeSphereCreateWithoutPersonInput, LifeSphereUncheckedCreateWithoutPersonInput>
-  }
-
-  export type LifeSphereUpdateWithWhereUniqueWithoutPersonInput = {
-    where: LifeSphereWhereUniqueInput
-    data: XOR<LifeSphereUpdateWithoutPersonInput, LifeSphereUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type LifeSphereUpdateManyWithWhereWithoutPersonInput = {
-    where: LifeSphereScalarWhereInput
-    data: XOR<LifeSphereUpdateManyMutationInput, LifeSphereUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type LifeSphereScalarWhereInput = {
-    AND?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
-    OR?: LifeSphereScalarWhereInput[]
-    NOT?: LifeSphereScalarWhereInput | LifeSphereScalarWhereInput[]
-    id?: StringFilter<"LifeSphere"> | string
-    personId?: StringFilter<"LifeSphere"> | string
-    name?: StringFilter<"LifeSphere"> | string
-    color?: StringFilter<"LifeSphere"> | string
-    icon?: StringFilter<"LifeSphere"> | string
-    order?: IntFilter<"LifeSphere"> | number
-    createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
-    updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
-  }
-
-  export type LibraryItemUpsertWithWhereUniqueWithoutPersonInput = {
-    where: LibraryItemWhereUniqueInput
-    update: XOR<LibraryItemUpdateWithoutPersonInput, LibraryItemUncheckedUpdateWithoutPersonInput>
-    create: XOR<LibraryItemCreateWithoutPersonInput, LibraryItemUncheckedCreateWithoutPersonInput>
-  }
-
-  export type LibraryItemUpdateWithWhereUniqueWithoutPersonInput = {
-    where: LibraryItemWhereUniqueInput
-    data: XOR<LibraryItemUpdateWithoutPersonInput, LibraryItemUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type LibraryItemUpdateManyWithWhereWithoutPersonInput = {
-    where: LibraryItemScalarWhereInput
-    data: XOR<LibraryItemUpdateManyMutationInput, LibraryItemUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type LibraryItemScalarWhereInput = {
-    AND?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
-    OR?: LibraryItemScalarWhereInput[]
-    NOT?: LibraryItemScalarWhereInput | LibraryItemScalarWhereInput[]
-    id?: StringFilter<"LibraryItem"> | string
-    personId?: StringFilter<"LibraryItem"> | string
-    title?: StringFilter<"LibraryItem"> | string
-    author?: StringNullableFilter<"LibraryItem"> | string | null
-    url?: StringNullableFilter<"LibraryItem"> | string | null
-    type?: EnumLibraryItemTypeFilter<"LibraryItem"> | $Enums.LibraryItemType
-    status?: EnumLibraryItemStatusFilter<"LibraryItem"> | $Enums.LibraryItemStatus
-    rating?: IntNullableFilter<"LibraryItem"> | number | null
-    notes?: StringNullableFilter<"LibraryItem"> | string | null
-    createdAt?: DateTimeFilter<"LibraryItem"> | Date | string
-    updatedAt?: DateTimeFilter<"LibraryItem"> | Date | string
-  }
-
-  export type WishlistItemUpsertWithWhereUniqueWithoutPersonInput = {
-    where: WishlistItemWhereUniqueInput
-    update: XOR<WishlistItemUpdateWithoutPersonInput, WishlistItemUncheckedUpdateWithoutPersonInput>
-    create: XOR<WishlistItemCreateWithoutPersonInput, WishlistItemUncheckedCreateWithoutPersonInput>
-  }
-
-  export type WishlistItemUpdateWithWhereUniqueWithoutPersonInput = {
-    where: WishlistItemWhereUniqueInput
-    data: XOR<WishlistItemUpdateWithoutPersonInput, WishlistItemUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type WishlistItemUpdateManyWithWhereWithoutPersonInput = {
-    where: WishlistItemScalarWhereInput
-    data: XOR<WishlistItemUpdateManyMutationInput, WishlistItemUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type WishlistItemScalarWhereInput = {
-    AND?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
-    OR?: WishlistItemScalarWhereInput[]
-    NOT?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
-    id?: StringFilter<"WishlistItem"> | string
-    personId?: StringFilter<"WishlistItem"> | string
-    name?: StringFilter<"WishlistItem"> | string
-    description?: StringNullableFilter<"WishlistItem"> | string | null
-    url?: StringNullableFilter<"WishlistItem"> | string | null
-    imageUrl?: StringNullableFilter<"WishlistItem"> | string | null
-    price?: FloatNullableFilter<"WishlistItem"> | number | null
-    currency?: StringFilter<"WishlistItem"> | string
-    priority?: EnumTaskPriorityFilter<"WishlistItem"> | $Enums.TaskPriority
-    status?: EnumWishlistStatusFilter<"WishlistItem"> | $Enums.WishlistStatus
-    category?: StringNullableFilter<"WishlistItem"> | string | null
-    tags?: StringNullableListFilter<"WishlistItem">
-    necessity?: IntNullableFilter<"WishlistItem"> | number | null
-    store?: StringNullableFilter<"WishlistItem"> | string | null
-    createdAt?: DateTimeFilter<"WishlistItem"> | Date | string
-    updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
-  }
-
-  export type VisionUpsertWithWhereUniqueWithoutPersonInput = {
-    where: VisionWhereUniqueInput
-    update: XOR<VisionUpdateWithoutPersonInput, VisionUncheckedUpdateWithoutPersonInput>
-    create: XOR<VisionCreateWithoutPersonInput, VisionUncheckedCreateWithoutPersonInput>
-  }
-
-  export type VisionUpdateWithWhereUniqueWithoutPersonInput = {
-    where: VisionWhereUniqueInput
-    data: XOR<VisionUpdateWithoutPersonInput, VisionUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type VisionUpdateManyWithWhereWithoutPersonInput = {
-    where: VisionScalarWhereInput
-    data: XOR<VisionUpdateManyMutationInput, VisionUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type VisionScalarWhereInput = {
-    AND?: VisionScalarWhereInput | VisionScalarWhereInput[]
-    OR?: VisionScalarWhereInput[]
-    NOT?: VisionScalarWhereInput | VisionScalarWhereInput[]
-    id?: StringFilter<"Vision"> | string
-    personId?: StringFilter<"Vision"> | string
-    title?: StringFilter<"Vision"> | string
-    content?: StringNullableFilter<"Vision"> | string | null
-    createdAt?: DateTimeFilter<"Vision"> | Date | string
-    updatedAt?: DateTimeFilter<"Vision"> | Date | string
-  }
-
-  export type MilestoneUpsertWithWhereUniqueWithoutPersonInput = {
-    where: MilestoneWhereUniqueInput
-    update: XOR<MilestoneUpdateWithoutPersonInput, MilestoneUncheckedUpdateWithoutPersonInput>
-    create: XOR<MilestoneCreateWithoutPersonInput, MilestoneUncheckedCreateWithoutPersonInput>
-  }
-
-  export type MilestoneUpdateWithWhereUniqueWithoutPersonInput = {
-    where: MilestoneWhereUniqueInput
-    data: XOR<MilestoneUpdateWithoutPersonInput, MilestoneUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type MilestoneUpdateManyWithWhereWithoutPersonInput = {
-    where: MilestoneScalarWhereInput
-    data: XOR<MilestoneUpdateManyMutationInput, MilestoneUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type MilestoneScalarWhereInput = {
-    AND?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
-    OR?: MilestoneScalarWhereInput[]
-    NOT?: MilestoneScalarWhereInput | MilestoneScalarWhereInput[]
-    id?: StringFilter<"Milestone"> | string
-    personId?: StringFilter<"Milestone"> | string
-    title?: StringFilter<"Milestone"> | string
-    description?: StringNullableFilter<"Milestone"> | string | null
-    targetDate?: DateTimeNullableFilter<"Milestone"> | Date | string | null
-    completed?: BoolFilter<"Milestone"> | boolean
-    createdAt?: DateTimeFilter<"Milestone"> | Date | string
-    updatedAt?: DateTimeFilter<"Milestone"> | Date | string
-    sphereId?: StringNullableFilter<"Milestone"> | string | null
-  }
-
-  export type SprintUpsertWithWhereUniqueWithoutPersonInput = {
-    where: SprintWhereUniqueInput
-    update: XOR<SprintUpdateWithoutPersonInput, SprintUncheckedUpdateWithoutPersonInput>
-    create: XOR<SprintCreateWithoutPersonInput, SprintUncheckedCreateWithoutPersonInput>
-  }
-
-  export type SprintUpdateWithWhereUniqueWithoutPersonInput = {
-    where: SprintWhereUniqueInput
-    data: XOR<SprintUpdateWithoutPersonInput, SprintUncheckedUpdateWithoutPersonInput>
-  }
-
-  export type SprintUpdateManyWithWhereWithoutPersonInput = {
-    where: SprintScalarWhereInput
-    data: XOR<SprintUpdateManyMutationInput, SprintUncheckedUpdateManyWithoutPersonInput>
-  }
-
-  export type SprintScalarWhereInput = {
-    AND?: SprintScalarWhereInput | SprintScalarWhereInput[]
-    OR?: SprintScalarWhereInput[]
-    NOT?: SprintScalarWhereInput | SprintScalarWhereInput[]
-    id?: StringFilter<"Sprint"> | string
-    personId?: StringFilter<"Sprint"> | string
-    number?: IntFilter<"Sprint"> | number
-    year?: IntFilter<"Sprint"> | number
-    startDate?: DateTimeFilter<"Sprint"> | Date | string
-    endDate?: DateTimeFilter<"Sprint"> | Date | string
-    status?: EnumSprintStatusFilter<"Sprint"> | $Enums.SprintStatus
-    createdAt?: DateTimeFilter<"Sprint"> | Date | string
-    updatedAt?: DateTimeFilter<"Sprint"> | Date | string
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientCreateWithoutProductInput = {
@@ -64736,63 +63295,67 @@ export namespace Prisma {
     checked?: BoolFilter<"ShoppingListItem"> | boolean
   }
 
-  export type NutritionPersonCreateWithoutDishesInput = {
+  export type UserCreateWithoutDishesInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutDishesInput = {
+  export type UserUncheckedCreateWithoutDishesInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutDishesInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
+  export type UserCreateOrConnectWithoutDishesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDishesInput, UserUncheckedCreateWithoutDishesInput>
   }
 
   export type DishIngredientCreateWithoutDishInput = {
@@ -64871,69 +63434,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutDishesInput = {
-    update: XOR<NutritionPersonUpdateWithoutDishesInput, NutritionPersonUncheckedUpdateWithoutDishesInput>
-    create: XOR<NutritionPersonCreateWithoutDishesInput, NutritionPersonUncheckedCreateWithoutDishesInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutDishesInput = {
+    update: XOR<UserUpdateWithoutDishesInput, UserUncheckedUpdateWithoutDishesInput>
+    create: XOR<UserCreateWithoutDishesInput, UserUncheckedCreateWithoutDishesInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutDishesInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutDishesInput, NutritionPersonUncheckedUpdateWithoutDishesInput>
+  export type UserUpdateToOneWithWhereWithoutDishesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDishesInput, UserUncheckedUpdateWithoutDishesInput>
   }
 
-  export type NutritionPersonUpdateWithoutDishesInput = {
+  export type UserUpdateWithoutDishesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutDishesInput = {
+  export type UserUncheckedUpdateWithoutDishesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutDishInput = {
@@ -65016,14 +63583,14 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDishesInput
+    user: UserCreateNestedOneWithoutDishesInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
   }
 
   export type DishUncheckedCreateWithoutIngredientsInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     priority?: $Enums.Priority
@@ -65101,14 +63668,14 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
+    user?: UserUpdateOneRequiredWithoutDishesNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
 
   export type DishUncheckedUpdateWithoutIngredientsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -65168,63 +63735,67 @@ export namespace Prisma {
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type NutritionPersonCreateWithoutDayTemplatesInput = {
+  export type UserCreateWithoutDayTemplatesInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutDayTemplatesInput = {
+  export type UserUncheckedCreateWithoutDayTemplatesInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutDayTemplatesInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
+  export type UserCreateOrConnectWithoutDayTemplatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
   }
 
   export type DayTemplateEntryCreateWithoutTemplateInput = {
@@ -65259,14 +63830,14 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
+    user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutTemplateInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     date: Date | string
     adherence?: $Enums.PlanAdherence
@@ -65285,69 +63856,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutDayTemplatesInput = {
-    update: XOR<NutritionPersonUpdateWithoutDayTemplatesInput, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
-    create: XOR<NutritionPersonCreateWithoutDayTemplatesInput, NutritionPersonUncheckedCreateWithoutDayTemplatesInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutDayTemplatesInput = {
+    update: XOR<UserUpdateWithoutDayTemplatesInput, UserUncheckedUpdateWithoutDayTemplatesInput>
+    create: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutDayTemplatesInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutDayTemplatesInput, NutritionPersonUncheckedUpdateWithoutDayTemplatesInput>
+  export type UserUpdateToOneWithWhereWithoutDayTemplatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDayTemplatesInput, UserUncheckedUpdateWithoutDayTemplatesInput>
   }
 
-  export type NutritionPersonUpdateWithoutDayTemplatesInput = {
+  export type UserUpdateWithoutDayTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutDayTemplatesInput = {
+  export type UserUncheckedUpdateWithoutDayTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput = {
@@ -65387,13 +63962,13 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
+    user: UserCreateNestedOneWithoutDayTemplatesInput
     dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
   }
 
   export type DayTemplateUncheckedCreateWithoutEntriesInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65413,14 +63988,14 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDishesInput
+    user: UserCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
   }
 
   export type DishUncheckedCreateWithoutTemplateEntriesInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     priority?: $Enums.Priority
@@ -65452,13 +64027,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
     dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
   }
 
   export type DayTemplateUncheckedUpdateWithoutEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65484,14 +64059,14 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
+    user?: UserUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
   }
 
   export type DishUncheckedUpdateWithoutTemplateEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -65502,63 +64077,67 @@ export namespace Prisma {
     dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
-  export type NutritionPersonCreateWithoutWeekPlansInput = {
+  export type UserCreateWithoutWeekPlansInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutWeekPlansInput = {
+  export type UserUncheckedCreateWithoutWeekPlansInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutWeekPlansInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
+  export type UserCreateOrConnectWithoutWeekPlansInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWeekPlansInput, UserUncheckedCreateWithoutWeekPlansInput>
   }
 
   export type DayPlanCreateWithoutWeekPlanInput = {
@@ -65567,14 +64146,14 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
+    user: UserCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
     entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutWeekPlanInput = {
     id?: string
-    personId: string
+    userId: string
     templateId?: string | null
     date: Date | string
     adherence?: $Enums.PlanAdherence
@@ -65598,13 +64177,13 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
+    user: UserCreateNestedOneWithoutShoppingListsInput
     items?: ShoppingListItemCreateNestedManyWithoutShoppingListInput
   }
 
   export type ShoppingListUncheckedCreateWithoutWeekPlanInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65621,69 +64200,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutWeekPlansInput = {
-    update: XOR<NutritionPersonUpdateWithoutWeekPlansInput, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
-    create: XOR<NutritionPersonCreateWithoutWeekPlansInput, NutritionPersonUncheckedCreateWithoutWeekPlansInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutWeekPlansInput = {
+    update: XOR<UserUpdateWithoutWeekPlansInput, UserUncheckedUpdateWithoutWeekPlansInput>
+    create: XOR<UserCreateWithoutWeekPlansInput, UserUncheckedCreateWithoutWeekPlansInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutWeekPlansInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutWeekPlansInput, NutritionPersonUncheckedUpdateWithoutWeekPlansInput>
+  export type UserUpdateToOneWithWhereWithoutWeekPlansInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWeekPlansInput, UserUncheckedUpdateWithoutWeekPlansInput>
   }
 
-  export type NutritionPersonUpdateWithoutWeekPlansInput = {
+  export type UserUpdateWithoutWeekPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutWeekPlansInput = {
+  export type UserUncheckedUpdateWithoutWeekPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DayPlanUpsertWithWhereUniqueWithoutWeekPlanInput = {
@@ -65718,63 +64301,67 @@ export namespace Prisma {
     data: XOR<ShoppingListUpdateManyMutationInput, ShoppingListUncheckedUpdateManyWithoutWeekPlanInput>
   }
 
-  export type NutritionPersonCreateWithoutDayPlansInput = {
+  export type UserCreateWithoutDayPlansInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutDayPlansInput = {
+  export type UserUncheckedCreateWithoutDayPlansInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutDayPlansInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
+  export type UserCreateOrConnectWithoutDayPlansInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDayPlansInput, UserUncheckedCreateWithoutDayPlansInput>
   }
 
   export type WeekPlanCreateWithoutDayPlansInput = {
@@ -65783,13 +64370,13 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
+    user: UserCreateNestedOneWithoutWeekPlansInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutWeekPlanInput
   }
 
   export type WeekPlanUncheckedCreateWithoutDayPlansInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     startDate: Date | string
     createdAt?: Date | string
@@ -65807,13 +64394,13 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayTemplatesInput
+    user: UserCreateNestedOneWithoutDayTemplatesInput
     entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
   }
 
   export type DayTemplateUncheckedCreateWithoutDayPlansInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65851,69 +64438,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutDayPlansInput = {
-    update: XOR<NutritionPersonUpdateWithoutDayPlansInput, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
-    create: XOR<NutritionPersonCreateWithoutDayPlansInput, NutritionPersonUncheckedCreateWithoutDayPlansInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutDayPlansInput = {
+    update: XOR<UserUpdateWithoutDayPlansInput, UserUncheckedUpdateWithoutDayPlansInput>
+    create: XOR<UserCreateWithoutDayPlansInput, UserUncheckedCreateWithoutDayPlansInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutDayPlansInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutDayPlansInput, NutritionPersonUncheckedUpdateWithoutDayPlansInput>
+  export type UserUpdateToOneWithWhereWithoutDayPlansInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDayPlansInput, UserUncheckedUpdateWithoutDayPlansInput>
   }
 
-  export type NutritionPersonUpdateWithoutDayPlansInput = {
+  export type UserUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutDayPlansInput = {
+  export type UserUncheckedUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutDayPlansInput = {
@@ -65933,13 +64524,13 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutWeekPlanNestedInput
   }
 
   export type WeekPlanUncheckedUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65963,13 +64554,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayTemplatesNestedInput
+    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
     entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
   }
 
   export type DayTemplateUncheckedUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65998,14 +64589,14 @@ export namespace Prisma {
     adherence?: $Enums.PlanAdherence
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDayPlansInput
+    user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     template?: DayTemplateCreateNestedOneWithoutDayPlansInput
   }
 
   export type DayPlanUncheckedCreateWithoutEntriesInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     templateId?: string | null
     date: Date | string
@@ -66027,14 +64618,14 @@ export namespace Prisma {
     yield?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutDishesInput
+    user: UserCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
     templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
   }
 
   export type DishUncheckedCreateWithoutDayPlanEntriesInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     description?: string | null
     priority?: $Enums.Priority
@@ -66067,14 +64658,14 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66102,14 +64693,14 @@ export namespace Prisma {
     yield?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDishesNestedInput
+    user?: UserUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
 
   export type DishUncheckedUpdateWithoutDayPlanEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
@@ -66120,63 +64711,67 @@ export namespace Prisma {
     templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
-  export type NutritionPersonCreateWithoutShoppingListsInput = {
+  export type UserCreateWithoutShoppingListsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutShoppingListsInput = {
+  export type UserUncheckedCreateWithoutShoppingListsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutShoppingListsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
+  export type UserCreateOrConnectWithoutShoppingListsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutShoppingListsInput, UserUncheckedCreateWithoutShoppingListsInput>
   }
 
   export type WeekPlanCreateWithoutShoppingListsInput = {
@@ -66185,13 +64780,13 @@ export namespace Prisma {
     startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutWeekPlansInput
+    user: UserCreateNestedOneWithoutWeekPlansInput
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
   }
 
   export type WeekPlanUncheckedCreateWithoutShoppingListsInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     startDate: Date | string
     createdAt?: Date | string
@@ -66230,69 +64825,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutShoppingListsInput = {
-    update: XOR<NutritionPersonUpdateWithoutShoppingListsInput, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
-    create: XOR<NutritionPersonCreateWithoutShoppingListsInput, NutritionPersonUncheckedCreateWithoutShoppingListsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutShoppingListsInput = {
+    update: XOR<UserUpdateWithoutShoppingListsInput, UserUncheckedUpdateWithoutShoppingListsInput>
+    create: XOR<UserCreateWithoutShoppingListsInput, UserUncheckedCreateWithoutShoppingListsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutShoppingListsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutShoppingListsInput, NutritionPersonUncheckedUpdateWithoutShoppingListsInput>
+  export type UserUpdateToOneWithWhereWithoutShoppingListsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutShoppingListsInput, UserUncheckedUpdateWithoutShoppingListsInput>
   }
 
-  export type NutritionPersonUpdateWithoutShoppingListsInput = {
+  export type UserUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutShoppingListsInput = {
+  export type UserUncheckedUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutShoppingListsInput = {
@@ -66312,13 +64911,13 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutWeekPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
   }
 
   export type WeekPlanUncheckedUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66347,13 +64946,13 @@ export namespace Prisma {
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutShoppingListsInput
+    user: UserCreateNestedOneWithoutShoppingListsInput
     weekPlan?: WeekPlanCreateNestedOneWithoutShoppingListsInput
   }
 
   export type ShoppingListUncheckedCreateWithoutItemsInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     name?: string | null
     createdAt?: Date | string
@@ -66424,13 +65023,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    user?: UserUpdateOneRequiredWithoutShoppingListsNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutShoppingListsNestedInput
   }
 
   export type ShoppingListUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66486,63 +65085,67 @@ export namespace Prisma {
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
   }
 
-  export type NutritionPersonCreateWithoutLifeSpheresInput = {
+  export type UserCreateWithoutLifeSpheresInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutLifeSpheresInput = {
+  export type UserUncheckedCreateWithoutLifeSpheresInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutLifeSpheresInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
+  export type UserCreateOrConnectWithoutLifeSpheresInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLifeSpheresInput, UserUncheckedCreateWithoutLifeSpheresInput>
   }
 
   export type TaskCreateWithoutSphereInput = {
@@ -66561,7 +65164,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: NutritionPersonCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -66569,7 +65172,7 @@ export namespace Prisma {
 
   export type TaskUncheckedCreateWithoutSphereInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -66607,12 +65210,12 @@ export namespace Prisma {
     completed?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutMilestonesInput
+    user: UserCreateNestedOneWithoutMilestonesInput
   }
 
   export type MilestoneUncheckedCreateWithoutSphereInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     targetDate?: Date | string | null
@@ -66665,69 +65268,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutLifeSpheresInput = {
-    update: XOR<NutritionPersonUpdateWithoutLifeSpheresInput, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
-    create: XOR<NutritionPersonCreateWithoutLifeSpheresInput, NutritionPersonUncheckedCreateWithoutLifeSpheresInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutLifeSpheresInput = {
+    update: XOR<UserUpdateWithoutLifeSpheresInput, UserUncheckedUpdateWithoutLifeSpheresInput>
+    create: XOR<UserCreateWithoutLifeSpheresInput, UserUncheckedCreateWithoutLifeSpheresInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutLifeSpheresInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutLifeSpheresInput, NutritionPersonUncheckedUpdateWithoutLifeSpheresInput>
+  export type UserUpdateToOneWithWhereWithoutLifeSpheresInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLifeSpheresInput, UserUncheckedUpdateWithoutLifeSpheresInput>
   }
 
-  export type NutritionPersonUpdateWithoutLifeSpheresInput = {
+  export type UserUpdateWithoutLifeSpheresInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutLifeSpheresInput = {
+  export type UserUncheckedUpdateWithoutLifeSpheresInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskUpsertWithWhereUniqueWithoutSphereInput = {
@@ -66792,63 +65399,67 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Objective"> | Date | string
   }
 
-  export type NutritionPersonCreateWithoutTasksInput = {
+  export type UserCreateWithoutTasksInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutTasksInput = {
+  export type UserUncheckedCreateWithoutTasksInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutTasksInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
+  export type UserCreateOrConnectWithoutTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
   }
 
   export type TaskCreateWithoutChildrenInput = {
@@ -66867,7 +65478,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: NutritionPersonCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -66875,7 +65486,7 @@ export namespace Prisma {
 
   export type TaskUncheckedCreateWithoutChildrenInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -66916,7 +65527,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: NutritionPersonCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutTasksInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -66924,7 +65535,7 @@ export namespace Prisma {
 
   export type TaskUncheckedCreateWithoutParentInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -66962,14 +65573,14 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
+    user: UserCreateNestedOneWithoutLifeSpheresInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutTasksInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -67014,69 +65625,73 @@ export namespace Prisma {
     create: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
   }
 
-  export type NutritionPersonUpsertWithoutTasksInput = {
-    update: XOR<NutritionPersonUpdateWithoutTasksInput, NutritionPersonUncheckedUpdateWithoutTasksInput>
-    create: XOR<NutritionPersonCreateWithoutTasksInput, NutritionPersonUncheckedCreateWithoutTasksInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutTasksInput = {
+    update: XOR<UserUpdateWithoutTasksInput, UserUncheckedUpdateWithoutTasksInput>
+    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutTasksInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutTasksInput, NutritionPersonUncheckedUpdateWithoutTasksInput>
+  export type UserUpdateToOneWithWhereWithoutTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTasksInput, UserUncheckedUpdateWithoutTasksInput>
   }
 
-  export type NutritionPersonUpdateWithoutTasksInput = {
+  export type UserUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutTasksInput = {
+  export type UserUncheckedUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskUpsertWithoutChildrenInput = {
@@ -67106,7 +65721,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -67114,7 +65729,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateWithoutChildrenInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67169,14 +65784,14 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
@@ -67222,187 +65837,199 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NutritionPersonCreateWithoutDailyEntriesInput = {
+  export type UserCreateWithoutDailyEntriesInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutDailyEntriesInput = {
+  export type UserUncheckedCreateWithoutDailyEntriesInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutDailyEntriesInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
+  export type UserCreateOrConnectWithoutDailyEntriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDailyEntriesInput, UserUncheckedCreateWithoutDailyEntriesInput>
   }
 
-  export type NutritionPersonUpsertWithoutDailyEntriesInput = {
-    update: XOR<NutritionPersonUpdateWithoutDailyEntriesInput, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
-    create: XOR<NutritionPersonCreateWithoutDailyEntriesInput, NutritionPersonUncheckedCreateWithoutDailyEntriesInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutDailyEntriesInput = {
+    update: XOR<UserUpdateWithoutDailyEntriesInput, UserUncheckedUpdateWithoutDailyEntriesInput>
+    create: XOR<UserCreateWithoutDailyEntriesInput, UserUncheckedCreateWithoutDailyEntriesInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutDailyEntriesInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutDailyEntriesInput, NutritionPersonUncheckedUpdateWithoutDailyEntriesInput>
+  export type UserUpdateToOneWithWhereWithoutDailyEntriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDailyEntriesInput, UserUncheckedUpdateWithoutDailyEntriesInput>
   }
 
-  export type NutritionPersonUpdateWithoutDailyEntriesInput = {
+  export type UserUpdateWithoutDailyEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutDailyEntriesInput = {
+  export type UserUncheckedUpdateWithoutDailyEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonCreateWithoutHabitsInput = {
+  export type UserCreateWithoutHabitsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutHabitsInput = {
+  export type UserUncheckedCreateWithoutHabitsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutHabitsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
+  export type UserCreateOrConnectWithoutHabitsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
   }
 
   export type HabitCompletionCreateWithoutHabitInput = {
@@ -67427,69 +66054,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutHabitsInput = {
-    update: XOR<NutritionPersonUpdateWithoutHabitsInput, NutritionPersonUncheckedUpdateWithoutHabitsInput>
-    create: XOR<NutritionPersonCreateWithoutHabitsInput, NutritionPersonUncheckedCreateWithoutHabitsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutHabitsInput = {
+    update: XOR<UserUpdateWithoutHabitsInput, UserUncheckedUpdateWithoutHabitsInput>
+    create: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutHabitsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutHabitsInput, NutritionPersonUncheckedUpdateWithoutHabitsInput>
+  export type UserUpdateToOneWithWhereWithoutHabitsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutHabitsInput, UserUncheckedUpdateWithoutHabitsInput>
   }
 
-  export type NutritionPersonUpdateWithoutHabitsInput = {
+  export type UserUpdateWithoutHabitsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutHabitsInput = {
+  export type UserUncheckedUpdateWithoutHabitsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -67528,12 +66159,12 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutHabitsInput
+    user: UserCreateNestedOneWithoutHabitsInput
   }
 
   export type HabitUncheckedCreateWithoutCompletionsInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     anchor: string
     action: string
@@ -67570,12 +66201,12 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutHabitsNestedInput
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
   }
 
   export type HabitUncheckedUpdateWithoutCompletionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -67586,252 +66217,268 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NutritionPersonCreateWithoutLibraryItemsInput = {
+  export type UserCreateWithoutLibraryItemsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutLibraryItemsInput = {
+  export type UserUncheckedCreateWithoutLibraryItemsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutLibraryItemsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
+  export type UserCreateOrConnectWithoutLibraryItemsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLibraryItemsInput, UserUncheckedCreateWithoutLibraryItemsInput>
   }
 
-  export type NutritionPersonUpsertWithoutLibraryItemsInput = {
-    update: XOR<NutritionPersonUpdateWithoutLibraryItemsInput, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
-    create: XOR<NutritionPersonCreateWithoutLibraryItemsInput, NutritionPersonUncheckedCreateWithoutLibraryItemsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutLibraryItemsInput = {
+    update: XOR<UserUpdateWithoutLibraryItemsInput, UserUncheckedUpdateWithoutLibraryItemsInput>
+    create: XOR<UserCreateWithoutLibraryItemsInput, UserUncheckedCreateWithoutLibraryItemsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutLibraryItemsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutLibraryItemsInput, NutritionPersonUncheckedUpdateWithoutLibraryItemsInput>
+  export type UserUpdateToOneWithWhereWithoutLibraryItemsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLibraryItemsInput, UserUncheckedUpdateWithoutLibraryItemsInput>
   }
 
-  export type NutritionPersonUpdateWithoutLibraryItemsInput = {
+  export type UserUpdateWithoutLibraryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutLibraryItemsInput = {
+  export type UserUncheckedUpdateWithoutLibraryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonCreateWithoutWishlistItemsInput = {
+  export type UserCreateWithoutWishlistItemsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutWishlistItemsInput = {
+  export type UserUncheckedCreateWithoutWishlistItemsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutWishlistItemsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
+  export type UserCreateOrConnectWithoutWishlistItemsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWishlistItemsInput, UserUncheckedCreateWithoutWishlistItemsInput>
   }
 
-  export type NutritionPersonUpsertWithoutWishlistItemsInput = {
-    update: XOR<NutritionPersonUpdateWithoutWishlistItemsInput, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
-    create: XOR<NutritionPersonCreateWithoutWishlistItemsInput, NutritionPersonUncheckedCreateWithoutWishlistItemsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutWishlistItemsInput = {
+    update: XOR<UserUpdateWithoutWishlistItemsInput, UserUncheckedUpdateWithoutWishlistItemsInput>
+    create: XOR<UserCreateWithoutWishlistItemsInput, UserUncheckedCreateWithoutWishlistItemsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutWishlistItemsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutWishlistItemsInput, NutritionPersonUncheckedUpdateWithoutWishlistItemsInput>
+  export type UserUpdateToOneWithWhereWithoutWishlistItemsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWishlistItemsInput, UserUncheckedUpdateWithoutWishlistItemsInput>
   }
 
-  export type NutritionPersonUpdateWithoutWishlistItemsInput = {
+  export type UserUpdateWithoutWishlistItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutWishlistItemsInput = {
+  export type UserUncheckedUpdateWithoutWishlistItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserLanguageCreateWithoutLanguageInput = {
@@ -67840,7 +66487,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -67849,7 +66496,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateWithoutLanguageInput = {
     id?: string
-    personId: string
+    userId: string
     level?: $Enums.CefrLevel
     totalXp?: number
     createdAt?: Date | string
@@ -67886,63 +66533,67 @@ export namespace Prisma {
     data: XOR<UserLanguageUpdateManyMutationInput, UserLanguageUncheckedUpdateManyWithoutLanguageInput>
   }
 
-  export type NutritionPersonCreateWithoutUserLanguagesInput = {
+  export type UserCreateWithoutUserLanguagesInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutUserLanguagesInput = {
+  export type UserUncheckedCreateWithoutUserLanguagesInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutUserLanguagesInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
+  export type UserCreateOrConnectWithoutUserLanguagesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserLanguagesInput, UserUncheckedCreateWithoutUserLanguagesInput>
   }
 
   export type LanguageCreateWithoutUserLanguagesInput = {
@@ -68090,69 +66741,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutUserLanguagesInput = {
-    update: XOR<NutritionPersonUpdateWithoutUserLanguagesInput, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
-    create: XOR<NutritionPersonCreateWithoutUserLanguagesInput, NutritionPersonUncheckedCreateWithoutUserLanguagesInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutUserLanguagesInput = {
+    update: XOR<UserUpdateWithoutUserLanguagesInput, UserUncheckedUpdateWithoutUserLanguagesInput>
+    create: XOR<UserCreateWithoutUserLanguagesInput, UserUncheckedCreateWithoutUserLanguagesInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutUserLanguagesInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutUserLanguagesInput, NutritionPersonUncheckedUpdateWithoutUserLanguagesInput>
+  export type UserUpdateToOneWithWhereWithoutUserLanguagesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserLanguagesInput, UserUncheckedUpdateWithoutUserLanguagesInput>
   }
 
-  export type NutritionPersonUpdateWithoutUserLanguagesInput = {
+  export type UserUpdateWithoutUserLanguagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutUserLanguagesInput = {
+  export type UserUncheckedUpdateWithoutUserLanguagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LanguageUpsertWithoutUserLanguagesInput = {
@@ -68311,7 +66966,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -68320,7 +66975,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateWithoutSphereProgressInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -68353,7 +67008,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput
@@ -68362,7 +67017,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateWithoutSphereProgressInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -68379,7 +67034,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     immersionLogs?: ImmersionLogCreateNestedManyWithoutUserLanguageInput
@@ -68388,7 +67043,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateWithoutVocabularyItemsInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -68421,7 +67076,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput
@@ -68430,7 +67085,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateWithoutVocabularyItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -68447,7 +67102,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -68456,7 +67111,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateWithoutImmersionLogsInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -68489,7 +67144,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -68498,7 +67153,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateWithoutImmersionLogsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -68515,7 +67170,7 @@ export namespace Prisma {
     totalXp?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutUserLanguagesInput
+    user: UserCreateNestedOneWithoutUserLanguagesInput
     language: LanguageCreateNestedOneWithoutUserLanguagesInput
     sphereProgress?: LanguageSphereProgressCreateNestedManyWithoutUserLanguageInput
     vocabularyItems?: VocabularyItemCreateNestedManyWithoutUserLanguageInput
@@ -68524,7 +67179,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedCreateWithoutResourcesInput = {
     id?: string
-    personId: string
+    userId: string
     languageId: string
     level?: $Enums.CefrLevel
     totalXp?: number
@@ -68557,7 +67212,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     language?: LanguageUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
@@ -68566,7 +67221,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateWithoutResourcesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -68577,187 +67232,199 @@ export namespace Prisma {
     immersionLogs?: ImmersionLogUncheckedUpdateManyWithoutUserLanguageNestedInput
   }
 
-  export type NutritionPersonCreateWithoutVisionsInput = {
+  export type UserCreateWithoutVisionsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutVisionsInput = {
+  export type UserUncheckedCreateWithoutVisionsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutVisionsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutVisionsInput, NutritionPersonUncheckedCreateWithoutVisionsInput>
+  export type UserCreateOrConnectWithoutVisionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutVisionsInput, UserUncheckedCreateWithoutVisionsInput>
   }
 
-  export type NutritionPersonUpsertWithoutVisionsInput = {
-    update: XOR<NutritionPersonUpdateWithoutVisionsInput, NutritionPersonUncheckedUpdateWithoutVisionsInput>
-    create: XOR<NutritionPersonCreateWithoutVisionsInput, NutritionPersonUncheckedCreateWithoutVisionsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutVisionsInput = {
+    update: XOR<UserUpdateWithoutVisionsInput, UserUncheckedUpdateWithoutVisionsInput>
+    create: XOR<UserCreateWithoutVisionsInput, UserUncheckedCreateWithoutVisionsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutVisionsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutVisionsInput, NutritionPersonUncheckedUpdateWithoutVisionsInput>
+  export type UserUpdateToOneWithWhereWithoutVisionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutVisionsInput, UserUncheckedUpdateWithoutVisionsInput>
   }
 
-  export type NutritionPersonUpdateWithoutVisionsInput = {
+  export type UserUpdateWithoutVisionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutVisionsInput = {
+  export type UserUncheckedUpdateWithoutVisionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonCreateWithoutMilestonesInput = {
+  export type UserCreateWithoutMilestonesInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    sprints?: SprintCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutMilestonesInput = {
+  export type UserUncheckedCreateWithoutMilestonesInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutMilestonesInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutMilestonesInput, NutritionPersonUncheckedCreateWithoutMilestonesInput>
+  export type UserCreateOrConnectWithoutMilestonesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMilestonesInput, UserUncheckedCreateWithoutMilestonesInput>
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -68768,14 +67435,14 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
+    user: UserCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutMilestonesInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -68791,69 +67458,73 @@ export namespace Prisma {
     create: XOR<LifeSphereCreateWithoutMilestonesInput, LifeSphereUncheckedCreateWithoutMilestonesInput>
   }
 
-  export type NutritionPersonUpsertWithoutMilestonesInput = {
-    update: XOR<NutritionPersonUpdateWithoutMilestonesInput, NutritionPersonUncheckedUpdateWithoutMilestonesInput>
-    create: XOR<NutritionPersonCreateWithoutMilestonesInput, NutritionPersonUncheckedCreateWithoutMilestonesInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutMilestonesInput = {
+    update: XOR<UserUpdateWithoutMilestonesInput, UserUncheckedUpdateWithoutMilestonesInput>
+    create: XOR<UserCreateWithoutMilestonesInput, UserUncheckedCreateWithoutMilestonesInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutMilestonesInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutMilestonesInput, NutritionPersonUncheckedUpdateWithoutMilestonesInput>
+  export type UserUpdateToOneWithWhereWithoutMilestonesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMilestonesInput, UserUncheckedUpdateWithoutMilestonesInput>
   }
 
-  export type NutritionPersonUpdateWithoutMilestonesInput = {
+  export type UserUpdateWithoutMilestonesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutMilestonesInput = {
+  export type UserUncheckedUpdateWithoutMilestonesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereUpsertWithoutMilestonesInput = {
@@ -68875,14 +67546,14 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutMilestonesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
@@ -68893,63 +67564,67 @@ export namespace Prisma {
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
   }
 
-  export type NutritionPersonCreateWithoutSprintsInput = {
+  export type UserCreateWithoutSprintsInput = {
     id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    profile: ProfileCreateNestedOneWithoutPersonsInput
-    dishes?: DishCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutPersonInput
-    tasks?: TaskCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutPersonInput
-    habits?: HabitCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutPersonInput
-    visions?: VisionCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneCreateNestedManyWithoutPersonInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonUncheckedCreateWithoutSprintsInput = {
+  export type UserUncheckedCreateWithoutSprintsInput = {
     id?: string
-    profileId: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
-    dishes?: DishUncheckedCreateNestedManyWithoutPersonInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutPersonInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutPersonInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutPersonInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutPersonInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutPersonInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutPersonInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutPersonInput
-    habits?: HabitUncheckedCreateNestedManyWithoutPersonInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutPersonInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutPersonInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutPersonInput
-    visions?: VisionUncheckedCreateNestedManyWithoutPersonInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutPersonInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NutritionPersonCreateOrConnectWithoutSprintsInput = {
-    where: NutritionPersonWhereUniqueInput
-    create: XOR<NutritionPersonCreateWithoutSprintsInput, NutritionPersonUncheckedCreateWithoutSprintsInput>
+  export type UserCreateOrConnectWithoutSprintsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSprintsInput, UserUncheckedCreateWithoutSprintsInput>
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -69020,69 +67695,73 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NutritionPersonUpsertWithoutSprintsInput = {
-    update: XOR<NutritionPersonUpdateWithoutSprintsInput, NutritionPersonUncheckedUpdateWithoutSprintsInput>
-    create: XOR<NutritionPersonCreateWithoutSprintsInput, NutritionPersonUncheckedCreateWithoutSprintsInput>
-    where?: NutritionPersonWhereInput
+  export type UserUpsertWithoutSprintsInput = {
+    update: XOR<UserUpdateWithoutSprintsInput, UserUncheckedUpdateWithoutSprintsInput>
+    create: XOR<UserCreateWithoutSprintsInput, UserUncheckedCreateWithoutSprintsInput>
+    where?: UserWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutSprintsInput = {
-    where?: NutritionPersonWhereInput
-    data: XOR<NutritionPersonUpdateWithoutSprintsInput, NutritionPersonUncheckedUpdateWithoutSprintsInput>
+  export type UserUpdateToOneWithWhereWithoutSprintsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSprintsInput, UserUncheckedUpdateWithoutSprintsInput>
   }
 
-  export type NutritionPersonUpdateWithoutSprintsInput = {
+  export type UserUpdateWithoutSprintsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: ProfileUpdateOneRequiredWithoutPersonsNestedInput
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutSprintsInput = {
+  export type UserUncheckedUpdateWithoutSprintsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    profileId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveUpsertWithWhereUniqueWithoutSprintInput = {
@@ -69142,13 +67821,13 @@ export namespace Prisma {
     status?: $Enums.SprintStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutSprintsInput
+    user: UserCreateNestedOneWithoutSprintsInput
     reviews?: SprintReviewCreateNestedManyWithoutSprintInput
   }
 
   export type SprintUncheckedCreateWithoutObjectivesInput = {
     id?: string
-    personId: string
+    userId: string
     number: number
     year: number
     startDate: Date | string
@@ -69172,14 +67851,14 @@ export namespace Prisma {
     order?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutLifeSpheresInput
+    user: UserCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutObjectivesInput = {
     id?: string
-    personId: string
+    userId: string
     name: string
     color: string
     icon: string
@@ -69281,13 +67960,13 @@ export namespace Prisma {
     status?: EnumSprintStatusFieldUpdateOperationsInput | $Enums.SprintStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutSprintsNestedInput
+    user?: UserUpdateOneRequiredWithoutSprintsNestedInput
     reviews?: SprintReviewUpdateManyWithoutSprintNestedInput
   }
 
   export type SprintUncheckedUpdateWithoutObjectivesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69317,14 +67996,14 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutLifeSpheresNestedInput
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutObjectivesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
@@ -69564,7 +68243,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
-    person: NutritionPersonCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutTasksInput
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -69572,7 +68251,7 @@ export namespace Prisma {
 
   export type TaskUncheckedCreateWithoutProjectInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -69829,13 +68508,13 @@ export namespace Prisma {
     status?: $Enums.SprintStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    person: NutritionPersonCreateNestedOneWithoutSprintsInput
+    user: UserCreateNestedOneWithoutSprintsInput
     objectives?: ObjectiveCreateNestedManyWithoutSprintInput
   }
 
   export type SprintUncheckedCreateWithoutReviewsInput = {
     id?: string
-    personId: string
+    userId: string
     number: number
     year: number
     startDate: Date | string
@@ -69871,13 +68550,13 @@ export namespace Prisma {
     status?: EnumSprintStatusFieldUpdateOperationsInput | $Enums.SprintStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutSprintsNestedInput
+    user?: UserUpdateOneRequiredWithoutSprintsNestedInput
     objectives?: ObjectiveUpdateManyWithoutSprintNestedInput
   }
 
   export type SprintUncheckedUpdateWithoutReviewsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69906,6 +68585,190 @@ export namespace Prisma {
     id?: string
     sessionToken: string
     expires: Date | string
+  }
+
+  export type DishCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    priority?: $Enums.Priority
+    yield?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayTemplateCreateManyUserInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WeekPlanCreateManyUserInput = {
+    id?: string
+    name?: string | null
+    startDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayPlanCreateManyUserInput = {
+    id?: string
+    weekPlanId?: string | null
+    templateId?: string | null
+    date: Date | string
+    adherence?: $Enums.PlanAdherence
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShoppingListCreateManyUserInput = {
+    id?: string
+    weekPlanId?: string | null
+    name?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserLanguageCreateManyUserInput = {
+    id?: string
+    languageId: string
+    level?: $Enums.CefrLevel
+    totalXp?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateManyUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    icon?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    plannedDate?: Date | string | null
+    hasPlannedTime?: boolean
+    dueDate?: Date | string | null
+    hasDueTime?: boolean
+    depth?: number
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentId?: string | null
+    sphereId?: string | null
+    projectId?: string | null
+    completedAt?: Date | string | null
+  }
+
+  export type DailyEntryCreateManyUserInput = {
+    id?: string
+    date: Date | string
+    sleepBedtime?: Date | string | null
+    sleepWakeup?: Date | string | null
+    sleepHours?: number | null
+    sleepQuality?: number | null
+    sleepNote?: string | null
+    energy?: number | null
+    mood?: number | null
+    emotions?: NullableJsonNullValueInput | InputJsonValue
+    weight?: number | null
+    energyNote?: string | null
+    morningSunlight?: boolean | null
+    eveningEnergy?: number | null
+    nutrition?: number | null
+    nutritionNote?: string | null
+    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
+    routineNote?: string | null
+    winToday?: string | null
+    improveTomorrow?: string | null
+    gratitude?: string | null
+    brainDump?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HabitCreateManyUserInput = {
+    id?: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LifeSphereCreateManyUserInput = {
+    id?: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LibraryItemCreateManyUserInput = {
+    id?: string
+    title: string
+    author?: string | null
+    url?: string | null
+    type?: $Enums.LibraryItemType
+    status?: $Enums.LibraryItemStatus
+    rating?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WishlistItemCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    url?: string | null
+    imageUrl?: string | null
+    price?: number | null
+    currency?: string
+    priority?: $Enums.TaskPriority
+    status?: $Enums.WishlistStatus
+    category?: string | null
+    tags?: WishlistItemCreatetagsInput | string[]
+    necessity?: number | null
+    store?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisionCreateManyUserInput = {
+    id?: string
+    title: string
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MilestoneCreateManyUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    targetDate?: Date | string | null
+    completed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphereId?: string | null
+  }
+
+  export type SprintCreateManyUserInput = {
+    id?: string
+    number: number
+    year: number
+    startDate: Date | string
+    endDate: Date | string
+    status?: $Enums.SprintStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -69968,269 +68831,7 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NutritionPersonCreateManyProfileInput = {
-    id?: string
-    name: string
-    targetCalories?: number | null
-    targetProtein?: number | null
-    targetFat?: number | null
-    targetCarbs?: number | null
-    targetFiber?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NutritionPersonUpdateWithoutProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutPersonNestedInput
-    habits?: HabitUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutPersonNestedInput
-    visions?: VisionUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUpdateManyWithoutPersonNestedInput
-  }
-
-  export type NutritionPersonUncheckedUpdateWithoutProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishes?: DishUncheckedUpdateManyWithoutPersonNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutPersonNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutPersonNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutPersonNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutPersonNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutPersonNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutPersonNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutPersonNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutPersonNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutPersonNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutPersonNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutPersonNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutPersonNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutPersonNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutPersonNestedInput
-  }
-
-  export type NutritionPersonUncheckedUpdateManyWithoutProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetCarbs?: NullableFloatFieldUpdateOperationsInput | number | null
-    targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DishCreateManyPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    priority?: $Enums.Priority
-    yield?: number | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayTemplateCreateManyPersonInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type WeekPlanCreateManyPersonInput = {
-    id?: string
-    name?: string | null
-    startDate: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayPlanCreateManyPersonInput = {
-    id?: string
-    weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ShoppingListCreateManyPersonInput = {
-    id?: string
-    weekPlanId?: string | null
-    name?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserLanguageCreateManyPersonInput = {
-    id?: string
-    languageId: string
-    level?: $Enums.CefrLevel
-    totalXp?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type TaskCreateManyPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    icon?: string | null
-    status?: $Enums.TaskStatus
-    priority?: $Enums.TaskPriority
-    plannedDate?: Date | string | null
-    hasPlannedTime?: boolean
-    dueDate?: Date | string | null
-    hasDueTime?: boolean
-    depth?: number
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parentId?: string | null
-    sphereId?: string | null
-    projectId?: string | null
-    completedAt?: Date | string | null
-  }
-
-  export type DailyEntryCreateManyPersonInput = {
-    id?: string
-    date: Date | string
-    sleepBedtime?: Date | string | null
-    sleepWakeup?: Date | string | null
-    sleepHours?: number | null
-    sleepQuality?: number | null
-    sleepNote?: string | null
-    energy?: number | null
-    mood?: number | null
-    emotions?: NullableJsonNullValueInput | InputJsonValue
-    weight?: number | null
-    energyNote?: string | null
-    morningSunlight?: boolean | null
-    eveningEnergy?: number | null
-    nutrition?: number | null
-    nutritionNote?: string | null
-    morningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
-    routineNote?: string | null
-    winToday?: string | null
-    improveTomorrow?: string | null
-    gratitude?: string | null
-    brainDump?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type HabitCreateManyPersonInput = {
-    id?: string
-    name: string
-    anchor: string
-    action: string
-    celebration?: string | null
-    order?: number
-    archived?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type LifeSphereCreateManyPersonInput = {
-    id?: string
-    name: string
-    color: string
-    icon: string
-    order?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type LibraryItemCreateManyPersonInput = {
-    id?: string
-    title: string
-    author?: string | null
-    url?: string | null
-    type?: $Enums.LibraryItemType
-    status?: $Enums.LibraryItemStatus
-    rating?: number | null
-    notes?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type WishlistItemCreateManyPersonInput = {
-    id?: string
-    name: string
-    description?: string | null
-    url?: string | null
-    imageUrl?: string | null
-    price?: number | null
-    currency?: string
-    priority?: $Enums.TaskPriority
-    status?: $Enums.WishlistStatus
-    category?: string | null
-    tags?: WishlistItemCreatetagsInput | string[]
-    necessity?: number | null
-    store?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type VisionCreateManyPersonInput = {
-    id?: string
-    title: string
-    content?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MilestoneCreateManyPersonInput = {
-    id?: string
-    title: string
-    description?: string | null
-    targetDate?: Date | string | null
-    completed?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sphereId?: string | null
-  }
-
-  export type SprintCreateManyPersonInput = {
-    id?: string
-    number: number
-    year: number
-    startDate: Date | string
-    endDate: Date | string
-    status?: $Enums.SprintStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DishUpdateWithoutPersonInput = {
+  export type DishUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70243,7 +68844,7 @@ export namespace Prisma {
     templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
 
-  export type DishUncheckedUpdateWithoutPersonInput = {
+  export type DishUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70256,7 +68857,7 @@ export namespace Prisma {
     templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
-  export type DishUncheckedUpdateManyWithoutPersonInput = {
+  export type DishUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70266,7 +68867,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayTemplateUpdateWithoutPersonInput = {
+  export type DayTemplateUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70275,7 +68876,7 @@ export namespace Prisma {
     dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
   }
 
-  export type DayTemplateUncheckedUpdateWithoutPersonInput = {
+  export type DayTemplateUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70284,14 +68885,14 @@ export namespace Prisma {
     dayPlans?: DayPlanUncheckedUpdateManyWithoutTemplateNestedInput
   }
 
-  export type DayTemplateUncheckedUpdateManyWithoutPersonInput = {
+  export type DayTemplateUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WeekPlanUpdateWithoutPersonInput = {
+  export type WeekPlanUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70301,7 +68902,7 @@ export namespace Prisma {
     shoppingLists?: ShoppingListUpdateManyWithoutWeekPlanNestedInput
   }
 
-  export type WeekPlanUncheckedUpdateWithoutPersonInput = {
+  export type WeekPlanUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70311,7 +68912,7 @@ export namespace Prisma {
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutWeekPlanNestedInput
   }
 
-  export type WeekPlanUncheckedUpdateManyWithoutPersonInput = {
+  export type WeekPlanUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70319,7 +68920,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayPlanUpdateWithoutPersonInput = {
+  export type DayPlanUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
@@ -70330,7 +68931,7 @@ export namespace Prisma {
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
 
-  export type DayPlanUncheckedUpdateWithoutPersonInput = {
+  export type DayPlanUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70341,7 +68942,7 @@ export namespace Prisma {
     entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
-  export type DayPlanUncheckedUpdateManyWithoutPersonInput = {
+  export type DayPlanUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70351,7 +68952,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ShoppingListUpdateWithoutPersonInput = {
+  export type ShoppingListUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70360,7 +68961,7 @@ export namespace Prisma {
     items?: ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   }
 
-  export type ShoppingListUncheckedUpdateWithoutPersonInput = {
+  export type ShoppingListUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70369,7 +68970,7 @@ export namespace Prisma {
     items?: ShoppingListItemUncheckedUpdateManyWithoutShoppingListNestedInput
   }
 
-  export type ShoppingListUncheckedUpdateManyWithoutPersonInput = {
+  export type ShoppingListUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70377,7 +68978,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserLanguageUpdateWithoutPersonInput = {
+  export type UserLanguageUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
@@ -70390,7 +68991,7 @@ export namespace Prisma {
     resources?: LanguageResourceUpdateManyWithoutUserLanguageNestedInput
   }
 
-  export type UserLanguageUncheckedUpdateWithoutPersonInput = {
+  export type UserLanguageUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
@@ -70403,7 +69004,7 @@ export namespace Prisma {
     resources?: LanguageResourceUncheckedUpdateManyWithoutUserLanguageNestedInput
   }
 
-  export type UserLanguageUncheckedUpdateManyWithoutPersonInput = {
+  export type UserLanguageUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     languageId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
@@ -70412,7 +69013,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type TaskUpdateWithoutPersonInput = {
+  export type TaskUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70434,7 +69035,7 @@ export namespace Prisma {
     project?: ProjectUpdateOneWithoutTasksNestedInput
   }
 
-  export type TaskUncheckedUpdateWithoutPersonInput = {
+  export type TaskUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70456,7 +69057,7 @@ export namespace Prisma {
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
-  export type TaskUncheckedUpdateManyWithoutPersonInput = {
+  export type TaskUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70477,7 +69078,7 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type DailyEntryUpdateWithoutPersonInput = {
+  export type DailyEntryUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sleepBedtime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70505,7 +69106,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DailyEntryUncheckedUpdateWithoutPersonInput = {
+  export type DailyEntryUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sleepBedtime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70533,7 +69134,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DailyEntryUncheckedUpdateManyWithoutPersonInput = {
+  export type DailyEntryUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     sleepBedtime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70561,7 +69162,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type HabitUpdateWithoutPersonInput = {
+  export type HabitUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
@@ -70574,7 +69175,7 @@ export namespace Prisma {
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
 
-  export type HabitUncheckedUpdateWithoutPersonInput = {
+  export type HabitUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
@@ -70587,7 +69188,7 @@ export namespace Prisma {
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
-  export type HabitUncheckedUpdateManyWithoutPersonInput = {
+  export type HabitUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
@@ -70599,7 +69200,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LifeSphereUpdateWithoutPersonInput = {
+  export type LifeSphereUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
@@ -70612,7 +69213,7 @@ export namespace Prisma {
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
   }
 
-  export type LifeSphereUncheckedUpdateWithoutPersonInput = {
+  export type LifeSphereUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
@@ -70625,7 +69226,7 @@ export namespace Prisma {
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
   }
 
-  export type LifeSphereUncheckedUpdateManyWithoutPersonInput = {
+  export type LifeSphereUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
@@ -70635,7 +69236,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LibraryItemUpdateWithoutPersonInput = {
+  export type LibraryItemUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70648,7 +69249,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LibraryItemUncheckedUpdateWithoutPersonInput = {
+  export type LibraryItemUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70661,7 +69262,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type LibraryItemUncheckedUpdateManyWithoutPersonInput = {
+  export type LibraryItemUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     author?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70674,7 +69275,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WishlistItemUpdateWithoutPersonInput = {
+  export type WishlistItemUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70692,7 +69293,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WishlistItemUncheckedUpdateWithoutPersonInput = {
+  export type WishlistItemUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70710,7 +69311,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WishlistItemUncheckedUpdateManyWithoutPersonInput = {
+  export type WishlistItemUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70728,7 +69329,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VisionUpdateWithoutPersonInput = {
+  export type VisionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70736,7 +69337,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VisionUncheckedUpdateWithoutPersonInput = {
+  export type VisionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70744,7 +69345,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VisionUncheckedUpdateManyWithoutPersonInput = {
+  export type VisionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70752,7 +69353,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MilestoneUpdateWithoutPersonInput = {
+  export type MilestoneUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70763,7 +69364,7 @@ export namespace Prisma {
     sphere?: LifeSphereUpdateOneWithoutMilestonesNestedInput
   }
 
-  export type MilestoneUncheckedUpdateWithoutPersonInput = {
+  export type MilestoneUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70774,7 +69375,7 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type MilestoneUncheckedUpdateManyWithoutPersonInput = {
+  export type MilestoneUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70785,7 +69386,7 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type SprintUpdateWithoutPersonInput = {
+  export type SprintUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
@@ -70798,7 +69399,7 @@ export namespace Prisma {
     reviews?: SprintReviewUpdateManyWithoutSprintNestedInput
   }
 
-  export type SprintUncheckedUpdateWithoutPersonInput = {
+  export type SprintUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
@@ -70811,7 +69412,7 @@ export namespace Prisma {
     reviews?: SprintReviewUncheckedUpdateManyWithoutSprintNestedInput
   }
 
-  export type SprintUncheckedUpdateManyWithoutPersonInput = {
+  export type SprintUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     number?: IntFieldUpdateOperationsInput | number
     year?: IntFieldUpdateOperationsInput | number
@@ -70984,7 +69585,7 @@ export namespace Prisma {
 
   export type DayPlanCreateManyTemplateInput = {
     id?: string
-    personId: string
+    userId: string
     weekPlanId?: string | null
     date: Date | string
     adherence?: $Enums.PlanAdherence
@@ -71022,14 +69623,14 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
@@ -71040,7 +69641,7 @@ export namespace Prisma {
 
   export type DayPlanUncheckedUpdateManyWithoutTemplateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
@@ -71050,7 +69651,7 @@ export namespace Prisma {
 
   export type DayPlanCreateManyWeekPlanInput = {
     id?: string
-    personId: string
+    userId: string
     templateId?: string | null
     date: Date | string
     adherence?: $Enums.PlanAdherence
@@ -71060,7 +69661,7 @@ export namespace Prisma {
 
   export type ShoppingListCreateManyWeekPlanInput = {
     id?: string
-    personId: string
+    userId: string
     name?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -71072,14 +69673,14 @@ export namespace Prisma {
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutDayPlansNestedInput
+    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
     entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
@@ -71090,7 +69691,7 @@ export namespace Prisma {
 
   export type DayPlanUncheckedUpdateManyWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     templateId?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
@@ -71103,13 +69704,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutShoppingListsNestedInput
+    user?: UserUpdateOneRequiredWithoutShoppingListsNestedInput
     items?: ShoppingListItemUpdateManyWithoutShoppingListNestedInput
   }
 
   export type ShoppingListUncheckedUpdateWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71118,7 +69719,7 @@ export namespace Prisma {
 
   export type ShoppingListUncheckedUpdateManyWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71190,7 +69791,7 @@ export namespace Prisma {
 
   export type TaskCreateManySphereInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -71211,7 +69812,7 @@ export namespace Prisma {
 
   export type MilestoneCreateManySphereInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     targetDate?: Date | string | null
@@ -71246,7 +69847,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -71254,7 +69855,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71276,7 +69877,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateManyWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71303,12 +69904,12 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutMilestonesNestedInput
+    user?: UserUpdateOneRequiredWithoutMilestonesNestedInput
   }
 
   export type MilestoneUncheckedUpdateWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71319,7 +69920,7 @@ export namespace Prisma {
 
   export type MilestoneUncheckedUpdateManyWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     targetDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71364,7 +69965,7 @@ export namespace Prisma {
 
   export type TaskCreateManyParentInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -71399,7 +70000,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -71407,7 +70008,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateWithoutParentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71429,7 +70030,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateManyWithoutParentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71474,7 +70075,7 @@ export namespace Prisma {
 
   export type UserLanguageCreateManyLanguageInput = {
     id?: string
-    personId: string
+    userId: string
     level?: $Enums.CefrLevel
     totalXp?: number
     createdAt?: Date | string
@@ -71487,7 +70088,7 @@ export namespace Prisma {
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    person?: NutritionPersonUpdateOneRequiredWithoutUserLanguagesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserLanguagesNestedInput
     sphereProgress?: LanguageSphereProgressUpdateManyWithoutUserLanguageNestedInput
     vocabularyItems?: VocabularyItemUpdateManyWithoutUserLanguageNestedInput
     immersionLogs?: ImmersionLogUpdateManyWithoutUserLanguageNestedInput
@@ -71496,7 +70097,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateWithoutLanguageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71509,7 +70110,7 @@ export namespace Prisma {
 
   export type UserLanguageUncheckedUpdateManyWithoutLanguageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     level?: EnumCefrLevelFieldUpdateOperationsInput | $Enums.CefrLevel
     totalXp?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71900,7 +70501,7 @@ export namespace Prisma {
 
   export type TaskCreateManyProjectInput = {
     id?: string
-    personId: string
+    userId: string
     title: string
     description?: string | null
     icon?: string | null
@@ -71935,7 +70536,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    person?: NutritionPersonUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutTasksNestedInput
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -71943,7 +70544,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71965,7 +70566,7 @@ export namespace Prisma {
 
   export type TaskUncheckedUpdateManyWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null

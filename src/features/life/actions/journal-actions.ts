@@ -1,27 +1,26 @@
 "use server";
 
-// Force recompile to pick up generated Prisma client changes
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import * as journalService from "../services/journal-service";
 import type { UpsertDailyEntryInput } from "../types";
 
-async function getPersonId() {
+async function getUserId() {
   const session = await auth();
-  const personId = (session?.user as any)?.personId;
-  if (!personId) throw new Error("Unauthorized: No personId found in session");
-  return personId;
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized: No userId found in session");
+  return userId;
 }
 
 export async function upsertEntryAction(data: UpsertDailyEntryInput) {
-  const personId = await getPersonId();
-  const entry = await journalService.upsertEntry(personId, data);
+  const userId = await getUserId();
+  const entry = await journalService.upsertEntry(userId, data);
   revalidatePath("/life/journal");
   return entry;
 }
 
 export async function deleteEntryAction(id: string) {
-  const personId = await getPersonId();
-  await journalService.deleteEntry(personId, id);
+  const userId = await getUserId();
+  await journalService.deleteEntry(userId, id);
   revalidatePath("/life/journal");
 }

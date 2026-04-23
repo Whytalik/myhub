@@ -23,7 +23,7 @@ export default async function DashboardLayout({
     try { initialOrder = JSON.parse(orderCookie.value); } catch {}
   }
 
-  let initialCustomizations: Record<string, any> = {};
+  let initialCustomizations: Record<string, { icon?: string; color?: string }> = {};
   if (customizationsCookie) {
     try { initialCustomizations = JSON.parse(customizationsCookie.value); } catch {}
   }

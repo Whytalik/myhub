@@ -27,20 +27,14 @@ import {
   Sparkles,
   Target,
   TrendingUp,
-  User,
   Users,
   Zap,
-  Briefcase,
-  Shield,
-  Brain,
-  Database,
   Pin,
-  PinOff,
   X
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 // --- Navigation Data ---
 const foodNav = [
@@ -112,64 +106,59 @@ export function Sidebar({
   const pathname = usePathname();
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const { activeDomain } = useSpace();
-  const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [customizations, setCustomizations] = useState(initialCustomizations);
   const isAdmin = user?.role === "ADMIN";
 
-  const [order, setOrder] = useState<string[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
-  const loadCustomizations = () => {
-    if (typeof window === 'undefined') return;
-    const saved = localStorage.getItem("system-customizations");
-    if (saved) setCustomizations(JSON.parse(saved));
+  const ALL_DOMAINS = isAdmin
+    ? ["operations", "health", "mind", "wealth", "vault"]
+    : ["operations", "vault"];
+
+  const mergeOrder = (saved: string[]) => {
+    const filteredSaved = saved.filter(s => ALL_DOMAINS.includes(s));
+    return [
+      ...filteredSaved,
+      ...ALL_DOMAINS.filter((s) => !filteredSaved.includes(s)),
+    ];
   };
 
-  useEffect(() => {
-    setMounted(true);
-    loadCustomizations();
-    window.addEventListener("system-customizations-updated", loadCustomizations);
-    return () => window.removeEventListener("system-customizations-updated", loadCustomizations);
+  const getInitialOrder = useCallback(() => {
+    if (initialOrder) {
+      return mergeOrder(initialOrder);
+    }
+    if (typeof window !== 'undefined') {
+      const savedOrder = localStorage.getItem("sidebar-domains-order");
+      if (savedOrder) {
+        try {
+          return mergeOrder(JSON.parse(savedOrder));
+        } catch {
+          return ["operations", "vault"];
+        }
+      }
+    }
+    return ["operations", "vault"];
+  }, [initialOrder, mergeOrder]);
+
+  const [order, setOrder] = useState<string[]>(getInitialOrder);
+
+  const loadCustomizations = useCallback(() => {
+    if (typeof window === 'undefined') return {};
+    const saved = localStorage.getItem("system-customizations");
+    return saved ? JSON.parse(saved) : {};
   }, []);
+  const [customizations, setCustomizations] = useState(() => loadCustomizations());
+
+  useEffect(() => {
+    const handler = () => setCustomizations(loadCustomizations());
+    window.addEventListener("system-customizations-updated", handler);
+    return () => window.removeEventListener("system-customizations-updated", handler);
+  }, [loadCustomizations]);
 
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname, setIsMobileOpen]);
-
-  useEffect(() => {
-    const ALL_DOMAINS_CURRENT = isAdmin
-      ? ["operations", "health", "mind", "wealth", "vault"]
-      : ["operations", "vault"];
-
-    const mergeOrder = (saved: string[]) => {
-      const filteredSaved = saved.filter(s => ALL_DOMAINS_CURRENT.includes(s));
-      return [
-        ...filteredSaved,
-        ...ALL_DOMAINS_CURRENT.filter((s) => !filteredSaved.includes(s)),
-      ];
-    };
-
-    if (initialOrder) {
-      setOrder(mergeOrder(initialOrder));
-    } else {
-      if (typeof window !== 'undefined') {
-        const savedOrder = localStorage.getItem("sidebar-domains-order");
-        if (savedOrder) {
-          try {
-            setOrder(mergeOrder(JSON.parse(savedOrder)));
-          } catch {
-            setOrder(ALL_DOMAINS_CURRENT);
-          }
-        } else {
-          setOrder(ALL_DOMAINS_CURRENT);
-        }
-      } else {
-        setOrder(ALL_DOMAINS_CURRENT);
-      }
-    }
-  }, [initialOrder, isAdmin]);
 
   const toggleSection = (label: string) => {
     setOpenSections((prev) => {

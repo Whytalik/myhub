@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { aggregateShoppingList } from "../logic/shopping-list";
 
-export async function getShoppingLists(personId: string) {
+export async function getShoppingLists(userId: string) {
   return await prisma.shoppingList.findMany({
-    where: { personId },
+    where: { userId },
     include: {
       items: {
         include: {
@@ -15,9 +15,9 @@ export async function getShoppingLists(personId: string) {
   });
 }
 
-export async function createShoppingListFromWeekPlan(personId: string, weekPlanId: string) {
+export async function createShoppingListFromWeekPlan(userId: string, weekPlanId: string) {
   const weekPlan = await prisma.weekPlan.findFirst({
-    where: { id: weekPlanId, personId },
+    where: { id: weekPlanId, userId },
     include: {
       dayPlans: {
         include: {
@@ -46,7 +46,7 @@ export async function createShoppingListFromWeekPlan(personId: string, weekPlanI
 
   return await prisma.shoppingList.create({
     data: {
-      personId,
+      userId,
       weekPlanId: weekPlan.id,
       name: `Shopping for ${weekPlan.name || "week"}`,
       items: {
@@ -64,18 +64,18 @@ export async function createShoppingListFromWeekPlan(personId: string, weekPlanI
   });
 }
 
-export async function updateShoppingListItemStatus(personId: string, id: string, checked: boolean) {
+export async function updateShoppingListItemStatus(userId: string, id: string, checked: boolean) {
   return await prisma.shoppingListItem.update({
     where: { 
       id,
-      shoppingList: { personId }
+      shoppingList: { userId }
     },
     data: { checked },
   });
 }
 
-export async function deleteShoppingList(personId: string, id: string) {
+export async function deleteShoppingList(userId: string, id: string) {
   return await prisma.shoppingList.delete({
-    where: { id, personId },
+    where: { id, userId },
   });
 }

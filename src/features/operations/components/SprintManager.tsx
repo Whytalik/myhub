@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Zap, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SprintBoard } from "./SprintBoard";

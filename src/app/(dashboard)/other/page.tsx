@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function OtherSpacePage() {
   const session = await auth();
-  if ((session?.user as any)?.role !== "ADMIN") redirect("/life");
+  if ((session?.user as { role?: string })?.role !== "ADMIN") redirect("/life");
   const sections = [
     {
       title: "Wishlist",
