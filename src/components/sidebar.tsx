@@ -331,7 +331,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile Overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -339,7 +338,7 @@ export function Sidebar({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-bg/60 backdrop-blur-sm z-[105] lg:hidden"
+            className="fixed inset-0 bg-bg/60 backdrop-blur-sm z-[1000] lg:hidden"
             onClick={() => setIsMobileOpen(false)}
           />
         )}
@@ -354,7 +353,7 @@ export function Sidebar({
         initial={false}
         transition={SIDEBAR_SPRING}
         className={`
-          fixed inset-y-0 left-0 z-[999] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
+          fixed inset-y-0 left-0 z-[1001] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
           transition-transform duration-300 ease-out
           ${isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
         `}
