@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { Anchor, Zap, PartyPopper } from "lucide-react";
+import { Anchor, Zap, PartyPopper, Bell } from "lucide-react";
 
 interface HabitFormDialogProps {
   isOpen: boolean;
@@ -23,6 +23,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
   const [anchor, setAnchor] = useState(() => habit?.anchor ?? "");
   const [action, setAction] = useState(() => habit?.action ?? "");
   const [celebration, setCelebration] = useState(() => habit?.celebration ?? "");
+  const [reminderTime, setReminderTime] = useState(() => habit?.reminderTime ?? "");
   const [archived, setArchived] = useState(() => habit?.archived ?? false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,6 +42,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
           anchor: anchor.trim(),
           action: action.trim(),
           celebration: celebration.trim() || null,
+          reminderTime: reminderTime || null,
           archived,
         });
         toast.success(isEditing ? "Habit updated" : "Habit created");
@@ -130,6 +132,26 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
               onChange={(e) => setCelebration(e.target.value)} 
               placeholder="And then I will [say 'Good job!']"
             />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Bell size={14} className="text-blue-500" />
+              <label className="text-[10px] font-mono tracking-widest text-muted">Daily Reminder (Optional)</label>
+            </div>
+            <div className="relative">
+              <Input 
+                type="time"
+                value={reminderTime} 
+                onChange={(e) => setReminderTime(e.target.value)} 
+                className="w-full"
+              />
+              {!reminderTime && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <span className="text-[9px] text-muted font-mono uppercase">Auto (3x day)</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </form>

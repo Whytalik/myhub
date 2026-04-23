@@ -22,28 +22,40 @@ model User {
   image                   String?
   passwordHash            String? // For credentials provider
   privateTaskPasswordHash String? // For private tasks
-  role                    Role      @default(USER)
+  role                    Role      @default(ADMIN)
   createdAt               DateTime  @default(now())
   updatedAt               DateTime  @updatedAt
 
-  accounts        Account[]
-  sessions        Session[]
-  nutritionPerson NutritionPerson?
-  dishes          Dish[]
-  dayTemplates    DayTemplate[]
-  weekPlans       WeekPlan[]
-  dayPlans        DayPlan[]
-  shoppingLists   ShoppingList[]
-  userLanguages   UserLanguage[]
-  tasks           Task[]
-  dailyEntries    DailyEntry[]
-  habits          Habit[]
-  lifeSpheres     LifeSphere[]
-  libraryItems    LibraryItem[]
-  wishlistItems   WishlistItem[]
-  visions         Vision[]
-  milestones      Milestone[]
-  sprints         Sprint[]
+  accounts          Account[]
+  sessions          Session[]
+  nutritionPerson   NutritionPerson?
+  dishes            Dish[]
+  dayTemplates      DayTemplate[]
+  weekPlans         WeekPlan[]
+  dayPlans          DayPlan[]
+  shoppingLists     ShoppingList[]
+  userLanguages     UserLanguage[]
+  tasks             Task[]
+  dailyEntries      DailyEntry[]
+  habits            Habit[]
+  lifeSpheres       LifeSphere[]
+  libraryItems      LibraryItem[]
+  wishlistItems     WishlistItem[]
+  visions           Vision[]
+  milestones        Milestone[]
+  sprints           Sprint[]
+  pushSubscriptions PushSubscription[]
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -419,16 +431,17 @@ model DailyEntry {
 }
 
 model Habit {
-  id          String   @id @default(cuid())
-  userId      String
-  name        String
-  anchor      String // "After I [Anchor]"
-  action      String // "I will [Action]"
-  celebration String? // "And then I will Celebrate"
-  order       Int      @default(0)
-  archived    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  userId       String
+  name         String
+  anchor       String // "After I [Anchor]"
+  action       String // "I will [Action]"
+  celebration  String? // "And then I will Celebrate"
+  reminderTime String? // "HH:mm" format for specific daily reminder
+  order        Int      @default(0)
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   completions HabitCompletion[]

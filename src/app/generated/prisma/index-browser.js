@@ -133,6 +133,15 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PushSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  endpoint: 'endpoint',
+  p256dh: 'p256dh',
+  auth: 'auth',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -345,6 +354,7 @@ exports.Prisma.HabitScalarFieldEnum = {
   anchor: 'anchor',
   action: 'action',
   celebration: 'celebration',
+  reminderTime: 'reminderTime',
   order: 'order',
   archived: 'archived',
   createdAt: 'createdAt',
@@ -728,6 +738,7 @@ exports.TacticFrequency = exports.$Enums.TacticFrequency = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  PushSubscription: 'PushSubscription',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',

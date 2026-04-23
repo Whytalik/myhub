@@ -164,6 +164,7 @@ export interface HabitData {
   anchor?: string | null;
   action?: string | null;
   celebration?: string | null;
+  reminderTime?: string | null;
   archived: boolean;
   order: number;
   completions: HabitCompletionData[];
@@ -185,6 +186,7 @@ export interface UpsertHabitInput {
   anchor?: string;
   action?: string;
   celebration?: string | null;
+  reminderTime?: string | null;
   order?: number;
   archived?: boolean;
 }

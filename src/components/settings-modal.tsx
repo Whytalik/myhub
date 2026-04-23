@@ -29,7 +29,9 @@ import {
   Check,
   Loader2,
   ChevronDown,
-  Lock
+  Lock,
+  Bell,
+  Smartphone
 } from "lucide-react";
 import {
   DndContext, 
@@ -114,6 +116,17 @@ function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelec
       ))}
     </div>
   );
+}
+
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
 // --- Sortable Item Component ---
@@ -242,6 +255,69 @@ export function SettingsModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  // Notifications Logic
+  const [isNotificationSupported, setIsNotificationSupported] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const checkSubscription = useCallback(async () => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      setIsSubscribed(!!subscription);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator && "PushManager" in window) {
+      setIsNotificationSupported(true);
+      checkSubscription();
+    }
+  }, [checkSubscription]);
+
+  const subscribeToPush = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        toast.error("Permission denied for notifications");
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.register("/sw.js");
+      const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+      
+      if (!publicKey) {
+        toast.error("VAPID Public Key not found in environment");
+        return;
+      }
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey)
+      });
+
+      const res = await savePushSubscriptionAction(JSON.parse(JSON.stringify(subscription)));
+      if (res.success) {
+        setIsSubscribed(true);
+        toast.success("Notifications enabled!");
+      } else {
+        toast.error(res.error || "Failed to save subscription");
+      }
+    } catch (error) {
+      console.error("Subscription error:", error);
+      toast.error("Failed to subscribe to push notifications");
+    }
+  };
+
+  const testPush = async () => {
+    const res = await sendTestNotificationAction();
+    if (res.success) {
+      toast.success("Test notification sent!");
+    } else {
+      toast.error(res.error || "Failed to send test push");
+    }
+  };
+
   const loadCustomizations = useCallback(() => {
     if (typeof window === 'undefined') return {};
     const saved = localStorage.getItem("system-customizations");
@@ -356,8 +432,9 @@ export function SettingsModal({
   const tabs = [
     { id: "general", label: "General", icon: User },
     { id: "appearance", label: "Appearance", icon: Palette },
-    { id: "domains", label: "Domains", icon: Briefcase },
+    {id: "domains", label: "Domains", icon: Briefcase },
     { id: "spaces", label: "Spaces", icon: Layout },
+    { id: "notifications", label: "Notifications", icon: Bell },
     { id: "data", label: "Data", icon: Database },
   ] as const;
 
@@ -562,6 +639,67 @@ export function SettingsModal({
                           <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
                      </div>
                   </div>
+                </div>
+              )}
+
+              {activeTab === "notifications" && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
+                  <section>
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Push Notifications</h4>
+                    {!isNotificationSupported ? (
+                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-[10px] leading-relaxed">
+                          Your browser does not support push notifications. If you are on iPhone, make sure to "Add to Home Screen" first.
+                       </div>
+                    ) : (
+                      <div className="space-y-3">
+                         <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                               <div className={`p-2 rounded-lg ${isSubscribed ? "bg-emerald-500/10 text-emerald-500" : "bg-accent/10 text-accent"}`}>
+                                  <Smartphone size={16} />
+                               </div>
+                               <div>
+                                  <h5 className="text-[11px] font-bold">This Device</h5>
+                                  <p className="text-[9px] text-muted">{isSubscribed ? "Notifications enabled" : "Receive alerts on this device"}</p>
+                               </div>
+                            </div>
+                            <button 
+                              onClick={subscribeToPush}
+                              disabled={isSubscribed}
+                              className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${
+                                isSubscribed 
+                                  ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 opacity-50 cursor-default" 
+                                  : "bg-accent text-bg hover:scale-105 active:scale-95"
+                              }`}
+                            >
+                               {isSubscribed ? "Active" : "Enable"}
+                            </button>
+                         </div>
+
+                         {isSubscribed && (
+                            <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                               <div className="flex items-center gap-3">
+                                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                                     <Bell size={16} />
+                                  </div>
+                                  <div>
+                                     <h5 className="text-[11px] font-bold">Connection Test</h5>
+                                     <p className="text-[9px] text-muted">Send a test notification to check delivery.</p>
+                                  </div>
+                               </div>
+                               <button 
+                                 onClick={testPush}
+                                 className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"
+                               >
+                                  <Check size={14} className="text-muted" />
+                               </button>
+                            </div>
+                         )}
+                      </div>
+                    )}
+                  </section>
+                  <p className="text-[9px] text-muted leading-relaxed italic opacity-70">
+                    Notifications are sent directly from your Hub instance. Data is stored securely and linked only to your account.
+                  </p>
                 </div>
               )}
             </div>

@@ -44,6 +44,18 @@ model User {
   visions         Vision[]
   milestones     Milestone[]
   sprints        Sprint[]
+  pushSubscriptions PushSubscription[]
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -425,6 +437,7 @@ model Habit {
   anchor     String   // "After I [Anchor]"
   action     String   // "I will [Action]"
   celebration String? // "And then I will Celebrate"
+  reminderTime String? // "HH:mm" format for specific daily reminder
   order      Int      @default(0)
   archived   Boolean  @default(false)
   createdAt  DateTime @default(now())

@@ -5,7 +5,7 @@ import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/featur
 import { calculateStreak } from "@/features/life/logic/habit-utils";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive } from "lucide-react";
+import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell } from "lucide-react";
 
 interface HabitCardProps {
   habit: HabitData;
@@ -67,6 +67,12 @@ const handleArchive = () => {
               <div className="flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                 <Flame size={10} className="text-amber-500 fill-amber-500" />
                 <span className="text-[10px] font-bold text-amber-600 font-mono">{streak} day streak</span>
+              </div>
+            )}
+            {habit.reminderTime && (
+              <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+                <Bell size={10} className="text-blue-500" />
+                <span className="text-[10px] font-bold text-blue-600 font-mono">{habit.reminderTime}</span>
               </div>
             )}
           </div>
