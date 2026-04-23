@@ -53,6 +53,7 @@ model PushSubscription {
   endpoint  String   @unique
   p256dh    String
   auth      String
+  userAgent String?  // To identify the device
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

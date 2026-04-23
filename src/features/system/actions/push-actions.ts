@@ -11,6 +11,8 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 );
 
+import { headers } from "next/headers";
+
 export async function savePushSubscriptionAction(subscription: {
   endpoint: string;
   keys: {
@@ -21,17 +23,18 @@ export async function savePushSubscriptionAction(subscription: {
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Unauthorized" };
 
+  const headerList = await headers();
+  const userAgent = headerList.get("user-agent") || "Unknown Device";
+
   try {
     const { endpoint, keys } = subscription;
-    if (!endpoint || !keys?.p256dh || !keys?.auth) {
-      return { success: false, error: "Invalid subscription data" };
-    }
-
+    
     await prisma.pushSubscription.upsert({
       where: { endpoint },
       update: {
         p256dh: keys.p256dh,
         auth: keys.auth,
+        userAgent,
         userId: session.user.id,
       },
       create: {
@@ -39,6 +42,7 @@ export async function savePushSubscriptionAction(subscription: {
         endpoint,
         p256dh: keys.p256dh,
         auth: keys.auth,
+        userAgent,
       },
     });
     return { success: true };

@@ -290,13 +290,12 @@ export function SettingsModal({
         return;
       }
 
-      await navigator.serviceWorker.register("/sw.js");
       const registration = await navigator.serviceWorker.ready;
       
-      // Переконуємося, що Service Worker активний
-      if (!registration.active) {
-        toast.error("Service Worker is registering... please try again in a second.");
-        return;
+      // 1. Примусово видаляємо стару підписку, щоб згенерувати новий endpoint
+      const existingSub = await registration.pushManager.getSubscription();
+      if (existingSub) {
+        await existingSub.unsubscribe();
       }
 
       const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
@@ -306,6 +305,7 @@ export function SettingsModal({
         return;
       }
 
+      // 2. Створюємо нову підписку
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicKey)
@@ -314,13 +314,15 @@ export function SettingsModal({
       const res = await savePushSubscriptionAction(JSON.parse(JSON.stringify(subscription)));
       if (res.success) {
         setIsSubscribed(true);
-        toast.success("Notifications enabled!");
+        const countRes = await getPushSubscriptionCountAction();
+        setDeviceCount(countRes.count);
+        toast.success("Device linked successfully!");
       } else {
         toast.error(res.error || "Failed to save subscription");
       }
     } catch (error) {
       console.error("Subscription error:", error);
-      toast.error("Failed to subscribe to push notifications");
+      toast.error("Failed to link device");
     }
   };
 

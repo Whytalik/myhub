@@ -1,7 +1,13 @@
-// Service Worker Version: 1.0.3
+// Service Worker Version: 1.0.4
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
+
 self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
-  
   if (event.data) {
     try {
       const data = event.data.json();
@@ -23,7 +29,6 @@ self.addEventListener('push', function(event) {
         self.registration.showNotification(data.title, options)
       );
     } catch (e) {
-      console.error('[Service Worker] Error parsing push data:', e);
       event.waitUntil(
         self.registration.showNotification('Hub Notification', {
           body: event.data.text(),
