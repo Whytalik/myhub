@@ -5,9 +5,9 @@ import webpush from "web-push";
 
 // Налаштування VAPID для web-push
 webpush.setVapidDetails(
-  "mailto:vitalii@hub.local",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
+  "mailto:hanmaster05@gmail.com",
+  (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "").trim(),
+  (process.env.VAPID_PRIVATE_KEY || "").trim()
 );
 
 /**
