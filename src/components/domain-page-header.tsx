@@ -10,7 +10,7 @@ interface DomainPageHeaderProps {
 export function DomainPageHeader({ label, title, description }: DomainPageHeaderProps) {
   return (
     <div className="flex flex-col mb-16">
-      <Breadcrumb items={[{ label }]} className="mb-6" />
+      <Breadcrumb items={[{ label }]} />
       <Heading title={title} />
       <p className="text-secondary max-w-2xl leading-relaxed">
         {description}
