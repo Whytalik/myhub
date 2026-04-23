@@ -5223,6 +5223,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     passwordHash: string | null
+    privateTaskPasswordHash: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5235,6 +5236,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     passwordHash: string | null
+    privateTaskPasswordHash: string | null
     role: $Enums.Role | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5247,6 +5249,7 @@ export namespace Prisma {
     emailVerified: number
     image: number
     passwordHash: number
+    privateTaskPasswordHash: number
     role: number
     createdAt: number
     updatedAt: number
@@ -5261,6 +5264,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     passwordHash?: true
+    privateTaskPasswordHash?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -5273,6 +5277,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     passwordHash?: true
+    privateTaskPasswordHash?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -5285,6 +5290,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     passwordHash?: true
+    privateTaskPasswordHash?: true
     role?: true
     createdAt?: true
     updatedAt?: true
@@ -5370,6 +5376,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     passwordHash: string | null
+    privateTaskPasswordHash: string | null
     role: $Enums.Role
     createdAt: Date
     updatedAt: Date
@@ -5399,6 +5406,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     passwordHash?: boolean
+    privateTaskPasswordHash?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5430,6 +5438,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     passwordHash?: boolean
+    privateTaskPasswordHash?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5442,6 +5451,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     passwordHash?: boolean
+    privateTaskPasswordHash?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5454,12 +5464,13 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     passwordHash?: boolean
+    privateTaskPasswordHash?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "privateTaskPasswordHash" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -5513,6 +5524,7 @@ export namespace Prisma {
       emailVerified: Date | null
       image: string | null
       passwordHash: string | null
+      privateTaskPasswordHash: string | null
       role: $Enums.Role
       createdAt: Date
       updatedAt: Date
@@ -5963,6 +5975,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
+    readonly privateTaskPasswordHash: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -10229,8 +10242,8 @@ export namespace Prisma {
 
   export type NutritionPersonGroupByOutputType = {
     id: string
-    userId: string
-    name: string
+    userId: string | null
+    name: string | null
     targetCalories: number | null
     targetProtein: number | null
     targetFat: number | null
@@ -10270,7 +10283,7 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10284,7 +10297,7 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10298,7 +10311,7 @@ export namespace Prisma {
     targetFiber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }, ExtArgs["result"]["nutritionPerson"]>
 
   export type NutritionPersonSelectScalar = {
@@ -10316,24 +10329,24 @@ export namespace Prisma {
 
   export type NutritionPersonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "targetCalories" | "targetProtein" | "targetFat" | "targetCarbs" | "targetFiber" | "createdAt" | "updatedAt", ExtArgs["result"]["nutritionPerson"]>
   export type NutritionPersonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }
   export type NutritionPersonIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }
   export type NutritionPersonIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | NutritionPerson$userArgs<ExtArgs>
   }
 
   export type $NutritionPersonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "NutritionPerson"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
-      name: string
+      userId: string | null
+      name: string | null
       targetCalories: number | null
       targetProtein: number | null
       targetFat: number | null
@@ -10735,7 +10748,7 @@ export namespace Prisma {
    */
   export interface Prisma__NutritionPersonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends NutritionPerson$userArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPerson$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11173,6 +11186,25 @@ export namespace Prisma {
      * Limit how many NutritionPeople to delete.
      */
     limit?: number
+  }
+
+  /**
+   * NutritionPerson.user
+   */
+  export type NutritionPerson$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -23988,6 +24020,7 @@ export namespace Prisma {
     icon: string | null
     status: $Enums.TaskStatus | null
     priority: $Enums.TaskPriority | null
+    isPrivate: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
     dueDate: Date | null
@@ -24010,6 +24043,7 @@ export namespace Prisma {
     icon: string | null
     status: $Enums.TaskStatus | null
     priority: $Enums.TaskPriority | null
+    isPrivate: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
     dueDate: Date | null
@@ -24032,6 +24066,7 @@ export namespace Prisma {
     icon: number
     status: number
     priority: number
+    isPrivate: number
     plannedDate: number
     hasPlannedTime: number
     dueDate: number
@@ -24066,6 +24101,7 @@ export namespace Prisma {
     icon?: true
     status?: true
     priority?: true
+    isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -24088,6 +24124,7 @@ export namespace Prisma {
     icon?: true
     status?: true
     priority?: true
+    isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -24110,6 +24147,7 @@ export namespace Prisma {
     icon?: true
     status?: true
     priority?: true
+    isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -24219,6 +24257,7 @@ export namespace Prisma {
     icon: string | null
     status: $Enums.TaskStatus
     priority: $Enums.TaskPriority
+    isPrivate: boolean
     plannedDate: Date | null
     hasPlannedTime: boolean
     dueDate: Date | null
@@ -24260,6 +24299,7 @@ export namespace Prisma {
     icon?: boolean
     status?: boolean
     priority?: boolean
+    isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -24288,6 +24328,7 @@ export namespace Prisma {
     icon?: boolean
     status?: boolean
     priority?: boolean
+    isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -24314,6 +24355,7 @@ export namespace Prisma {
     icon?: boolean
     status?: boolean
     priority?: boolean
+    isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -24340,6 +24382,7 @@ export namespace Prisma {
     icon?: boolean
     status?: boolean
     priority?: boolean
+    isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -24354,7 +24397,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
@@ -24393,6 +24436,7 @@ export namespace Prisma {
       icon: string | null
       status: $Enums.TaskStatus
       priority: $Enums.TaskPriority
+      isPrivate: boolean
       plannedDate: Date | null
       hasPlannedTime: boolean
       dueDate: Date | null
@@ -24840,6 +24884,7 @@ export namespace Prisma {
     readonly icon: FieldRef<"Task", 'String'>
     readonly status: FieldRef<"Task", 'TaskStatus'>
     readonly priority: FieldRef<"Task", 'TaskPriority'>
+    readonly isPrivate: FieldRef<"Task", 'Boolean'>
     readonly plannedDate: FieldRef<"Task", 'DateTime'>
     readonly hasPlannedTime: FieldRef<"Task", 'Boolean'>
     readonly dueDate: FieldRef<"Task", 'DateTime'>
@@ -48570,6 +48615,7 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     passwordHash: 'passwordHash',
+    privateTaskPasswordHash: 'privateTaskPasswordHash',
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -48784,6 +48830,7 @@ export namespace Prisma {
     icon: 'icon',
     status: 'status',
     priority: 'priority',
+    isPrivate: 'isPrivate',
     plannedDate: 'plannedDate',
     hasPlannedTime: 'hasPlannedTime',
     dueDate: 'dueDate',
@@ -49507,6 +49554,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
+    privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -49537,6 +49585,7 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    privateTaskPasswordHash?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -49570,6 +49619,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
+    privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -49600,6 +49650,7 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
+    privateTaskPasswordHash?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -49618,6 +49669,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
+    privateTaskPasswordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -49814,8 +49866,8 @@ export namespace Prisma {
     OR?: NutritionPersonWhereInput[]
     NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     id?: StringFilter<"NutritionPerson"> | string
-    userId?: StringFilter<"NutritionPerson"> | string
-    name?: StringFilter<"NutritionPerson"> | string
+    userId?: StringNullableFilter<"NutritionPerson"> | string | null
+    name?: StringNullableFilter<"NutritionPerson"> | string | null
     targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
@@ -49823,13 +49875,13 @@ export namespace Prisma {
     targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
     createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type NutritionPersonOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
     targetCalories?: SortOrderInput | SortOrder
     targetProtein?: SortOrderInput | SortOrder
     targetFat?: SortOrderInput | SortOrder
@@ -49846,7 +49898,7 @@ export namespace Prisma {
     AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     OR?: NutritionPersonWhereInput[]
     NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
-    name?: StringFilter<"NutritionPerson"> | string
+    name?: StringNullableFilter<"NutritionPerson"> | string | null
     targetCalories?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableFilter<"NutritionPerson"> | number | null
     targetFat?: FloatNullableFilter<"NutritionPerson"> | number | null
@@ -49854,13 +49906,13 @@ export namespace Prisma {
     targetFiber?: FloatNullableFilter<"NutritionPerson"> | number | null
     createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "userId">
 
   export type NutritionPersonOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    name?: SortOrderInput | SortOrder
     targetCalories?: SortOrderInput | SortOrder
     targetProtein?: SortOrderInput | SortOrder
     targetFat?: SortOrderInput | SortOrder
@@ -49880,8 +49932,8 @@ export namespace Prisma {
     OR?: NutritionPersonScalarWhereWithAggregatesInput[]
     NOT?: NutritionPersonScalarWhereWithAggregatesInput | NutritionPersonScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"NutritionPerson"> | string
-    userId?: StringWithAggregatesFilter<"NutritionPerson"> | string
-    name?: StringWithAggregatesFilter<"NutritionPerson"> | string
+    userId?: StringNullableWithAggregatesFilter<"NutritionPerson"> | string | null
+    name?: StringNullableWithAggregatesFilter<"NutritionPerson"> | string | null
     targetCalories?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
     targetProtein?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
     targetFat?: FloatNullableWithAggregatesFilter<"NutritionPerson"> | number | null
@@ -50702,6 +50754,7 @@ export namespace Prisma {
     icon?: StringNullableFilter<"Task"> | string | null
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -50729,6 +50782,7 @@ export namespace Prisma {
     icon?: SortOrderInput | SortOrder
     status?: SortOrder
     priority?: SortOrder
+    isPrivate?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
@@ -50759,6 +50813,7 @@ export namespace Prisma {
     icon?: StringNullableFilter<"Task"> | string | null
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -50786,6 +50841,7 @@ export namespace Prisma {
     icon?: SortOrderInput | SortOrder
     status?: SortOrder
     priority?: SortOrder
+    isPrivate?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
@@ -50816,6 +50872,7 @@ export namespace Prisma {
     icon?: StringNullableWithAggregatesFilter<"Task"> | string | null
     status?: EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority
+    isPrivate?: BoolWithAggregatesFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolWithAggregatesFilter<"Task"> | boolean
     dueDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
@@ -52431,6 +52488,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52461,6 +52519,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52491,6 +52550,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52521,6 +52581,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52551,6 +52612,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52563,6 +52625,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52575,6 +52638,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52776,7 +52840,7 @@ export namespace Prisma {
 
   export type NutritionPersonCreateInput = {
     id?: string
-    name: string
+    name?: string | null
     targetCalories?: number | null
     targetProtein?: number | null
     targetFat?: number | null
@@ -52784,13 +52848,13 @@ export namespace Prisma {
     targetFiber?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutNutritionPersonInput
+    user?: UserCreateNestedOneWithoutNutritionPersonInput
   }
 
   export type NutritionPersonUncheckedCreateInput = {
     id?: string
-    userId: string
-    name: string
+    userId?: string | null
+    name?: string | null
     targetCalories?: number | null
     targetProtein?: number | null
     targetFat?: number | null
@@ -52802,7 +52866,7 @@ export namespace Prisma {
 
   export type NutritionPersonUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52810,13 +52874,13 @@ export namespace Prisma {
     targetFiber?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutNutritionPersonNestedInput
+    user?: UserUpdateOneWithoutNutritionPersonNestedInput
   }
 
   export type NutritionPersonUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52828,8 +52892,8 @@ export namespace Prisma {
 
   export type NutritionPersonCreateManyInput = {
     id?: string
-    userId: string
-    name: string
+    userId?: string | null
+    name?: string | null
     targetCalories?: number | null
     targetProtein?: number | null
     targetFat?: number | null
@@ -52841,7 +52905,7 @@ export namespace Prisma {
 
   export type NutritionPersonUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52853,8 +52917,8 @@ export namespace Prisma {
 
   export type NutritionPersonUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -53694,6 +53758,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -53718,6 +53783,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -53740,6 +53806,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53764,6 +53831,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53787,6 +53855,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -53808,6 +53877,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -53827,6 +53897,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55825,6 +55896,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     passwordHash?: SortOrder
+    privateTaskPasswordHash?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -55837,6 +55909,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     passwordHash?: SortOrder
+    privateTaskPasswordHash?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -55849,6 +55922,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     passwordHash?: SortOrder
+    privateTaskPasswordHash?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -56071,6 +56145,11 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type NutritionPersonCountOrderByAggregateInput = {
@@ -56876,6 +56955,7 @@ export namespace Prisma {
     icon?: SortOrder
     status?: SortOrder
     priority?: SortOrder
+    isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -56903,6 +56983,7 @@ export namespace Prisma {
     icon?: SortOrder
     status?: SortOrder
     priority?: SortOrder
+    isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -56925,6 +57006,7 @@ export namespace Prisma {
     icon?: SortOrder
     status?: SortOrder
     priority?: SortOrder
+    isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -59029,10 +59111,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneRequiredWithoutNutritionPersonNestedInput = {
+  export type UserUpdateOneWithoutNutritionPersonNestedInput = {
     create?: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
     connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonInput
     upsert?: UserUpsertWithoutNutritionPersonInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNutritionPersonInput, UserUpdateWithoutNutritionPersonInput>, UserUncheckedUpdateWithoutNutritionPersonInput>
   }
@@ -61630,7 +61714,7 @@ export namespace Prisma {
 
   export type NutritionPersonCreateWithoutUserInput = {
     id?: string
-    name: string
+    name?: string | null
     targetCalories?: number | null
     targetProtein?: number | null
     targetFat?: number | null
@@ -61642,7 +61726,7 @@ export namespace Prisma {
 
   export type NutritionPersonUncheckedCreateWithoutUserInput = {
     id?: string
-    name: string
+    name?: string | null
     targetCalories?: number | null
     targetProtein?: number | null
     targetFat?: number | null
@@ -61854,6 +61938,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -61876,6 +61961,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -62288,7 +62374,7 @@ export namespace Prisma {
 
   export type NutritionPersonUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -62300,7 +62386,7 @@ export namespace Prisma {
 
   export type NutritionPersonUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
     targetCalories?: NullableFloatFieldUpdateOperationsInput | number | null
     targetProtein?: NullableFloatFieldUpdateOperationsInput | number | null
     targetFat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -62509,6 +62595,7 @@ export namespace Prisma {
     icon?: StringNullableFilter<"Task"> | string | null
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -62801,6 +62888,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -62830,6 +62918,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -62875,6 +62964,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62904,6 +62994,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -62933,6 +63024,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -62962,6 +63054,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63007,6 +63100,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63036,6 +63130,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63065,6 +63160,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63094,6 +63190,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63139,6 +63236,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63168,6 +63266,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63302,6 +63401,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63331,6 +63431,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63452,6 +63553,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63481,6 +63583,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63742,6 +63845,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63771,6 +63875,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63874,6 +63979,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63903,6 +64009,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64084,6 +64191,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64113,6 +64221,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64218,6 +64327,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64247,6 +64357,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64308,6 +64419,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64337,6 +64449,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64456,6 +64569,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64485,6 +64599,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64718,6 +64833,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64747,6 +64863,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64843,6 +64960,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64872,6 +64990,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65092,6 +65211,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65121,6 +65241,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65155,6 +65276,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65178,6 +65300,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65286,6 +65409,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65315,6 +65439,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65406,6 +65531,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65435,6 +65561,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65469,6 +65596,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65492,6 +65620,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65518,6 +65647,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65541,6 +65671,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -65643,6 +65774,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65672,6 +65804,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65712,6 +65845,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65735,6 +65869,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65844,6 +65979,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65873,6 +66009,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65918,6 +66055,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65947,6 +66085,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65976,6 +66115,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66005,6 +66145,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66072,6 +66213,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66101,6 +66243,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66224,6 +66367,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66253,6 +66397,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66298,6 +66443,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66327,6 +66473,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66356,6 +66503,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66385,6 +66533,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66430,6 +66579,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66459,6 +66609,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66540,6 +66691,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66569,6 +66721,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66759,6 +66912,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66788,6 +66942,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67239,6 +67394,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67268,6 +67424,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67313,6 +67470,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67342,6 +67500,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67371,6 +67530,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67400,6 +67560,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67476,6 +67637,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67505,6 +67667,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67571,6 +67734,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67600,6 +67764,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67713,6 +67878,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67742,6 +67908,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -68234,6 +68401,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -68257,6 +68425,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -68646,6 +68815,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -69020,6 +69190,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69042,6 +69213,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69064,6 +69236,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69797,6 +69970,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -69838,6 +70012,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69861,6 +70036,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69883,6 +70059,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69971,6 +70148,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -69991,6 +70169,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70014,6 +70193,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70036,6 +70216,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70507,6 +70688,7 @@ export namespace Prisma {
     icon?: string | null
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
+    isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -70527,6 +70709,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70550,6 +70733,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70572,6 +70756,7 @@ export namespace Prisma {
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

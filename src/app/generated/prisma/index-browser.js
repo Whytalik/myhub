@@ -127,6 +127,7 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   passwordHash: 'passwordHash',
+  privateTaskPasswordHash: 'privateTaskPasswordHash',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -293,6 +294,7 @@ exports.Prisma.TaskScalarFieldEnum = {
   icon: 'icon',
   status: 'status',
   priority: 'priority',
+  isPrivate: 'isPrivate',
   plannedDate: 'plannedDate',
   hasPlannedTime: 'hasPlannedTime',
   dueDate: 'dueDate',

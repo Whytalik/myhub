@@ -3,7 +3,7 @@
 import { useState, useTransition, useRef, useEffect, useCallback } from "react";
 import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { useSpace } from "./space-provider";
-import { updateUserNameAction } from "@/features/profile/actions";
+import { updateUserNameAction, setPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { exportSystemAction, resetSystemAction, importSystemAction } from "@/features/system/actions/system-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,8 @@ import {
   Trash2,
   Check,
   Loader2,
-  ChevronDown
+  ChevronDown,
+  Lock
 } from "lucide-react";
 import {
   DndContext, 
@@ -220,6 +221,23 @@ export function SettingsModal({
       }
     });
   }, [displayName, userName, router]);
+
+  const [privatePassword, setPrivatePassword] = useState("");
+  const [isPasswordSaved, setIsPasswordSaved] = useState(false);
+  const handleUpdatePassword = useCallback(() => {
+    startTransition(async () => {
+      const result = privatePassword 
+        ? await setPrivateTaskPasswordAction(privatePassword)
+        : await setPrivateTaskPasswordAction(null);
+      if (result.success) {
+        toast.success(privatePassword ? "Private password set" : "Private password removed");
+        setPrivatePassword("");
+        setIsPasswordSaved(true);
+        setTimeout(() => setIsPasswordSaved(false), 2000);
+      }
+    });
+  }, [privatePassword]);
+
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -403,6 +421,27 @@ export function SettingsModal({
                         <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                         <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
+                        </button>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3 flex items-center gap-2">
+                      <Lock size={12} /> Private Tasks
+                    </h4>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase text-muted">Password</label>
+                      <div className="flex gap-2">
+                        <input 
+                          type="password"
+                          className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" 
+                          value={privatePassword} 
+                          onChange={(e) => setPrivatePassword(e.target.value)} 
+                          placeholder="Set password to hide tasks"
+                        />
+                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                          {isPending ? <Loader2 size={12} className="animate-spin" /> : isPasswordSaved ? <Check size={12} /> : "Save"}
                         </button>
                       </div>
                     </div>
