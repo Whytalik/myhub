@@ -39,7 +39,7 @@ export function calculateNextReview(
 
 export const LanguageService = {
   // Розрахунок XP за активність
-  calculateXpGain(durationMinutes: number, sphere: LanguageSphere) {
+  calculateXpGain(durationMinutes: number, _sphere: LanguageSphere) {
     // Базовий XP: 1 хвилина = 10 XP
     // Можна додати множники для різних сфер
     return durationMinutes * 10;

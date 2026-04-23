@@ -46,7 +46,6 @@ export default async function ResourcesPage({ params }: { params: Promise<{ id: 
       </div>
 
       <ResourceManager 
-        userLanguageId={id} 
         initialItems={resources} 
       />
     </div>

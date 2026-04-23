@@ -93,14 +93,12 @@ const SUBMENU_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
 interface SidebarProps {
   user?: { name: string; email: string; role?: string };
   initialOrder?: string[];
-  initialCustomizations?: Record<string, { icon?: string, color?: string }>;
   initialOpenSections?: Record<string, boolean>;
 }
 
 export function Sidebar({
   user,
   initialOrder,
-  initialCustomizations = {},
   initialOpenSections = {}
 }: SidebarProps) {
   const pathname = usePathname();

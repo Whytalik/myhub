@@ -8,9 +8,7 @@ import type {
   UpsertTaskInput,
   UpsertSphereInput,
   TaskStats,
-  SphereTaskStat,
   DayTaskStat,
-  ProjectProgressStat,
 } from "../types";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

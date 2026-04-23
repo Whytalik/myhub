@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { Search, Plus, ExternalLink, Book, Headphones, Mic, PenTool, Library, Trash2, Globe } from "lucide-react";
 
 interface ResourceManagerProps {
-  userLanguageId: string;
   initialItems: LanguageResource[];
 }
 
@@ -22,13 +21,13 @@ const sphereIcons: Record<string, LucideIcon> = {
   [LanguageSphere.WRITING]: PenTool,
 };
 
-export function ResourceManager({ userLanguageId, initialItems }: ResourceManagerProps) {
-  const [items, setItems] = useState<LanguageResource[]>(initialItems);
+export function ResourceManager({ initialItems }: ResourceManagerProps) {
+  const [items] = useState<LanguageResource[]>(initialItems);
   const [search, setSearch] = useState("");
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
-  const [sphere, setSphere] = useState<LanguageSphere>(LanguageSphere.READING);
-  const [level, setLevel] = useState<CefrLevel>(CefrLevel.A1);
+  useState<LanguageSphere>(LanguageSphere.READING);
+  useState<CefrLevel>(CefrLevel.A1);
   const [isAdding, setIsAdding] = useState(false);
 
   const handleAdd = async (e: React.FormEvent) => {

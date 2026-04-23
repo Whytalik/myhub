@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CustomSelect } from "@/components/ui/custom-select";
-import { upsertWishlistItemAction } from "../actions/wishlist-actions";
 import type { WishlistItemData, UpsertWishlistItemInput, WishlistStatus } from "../types";
 import type { TaskPriority } from "@/features/life/types";
 

@@ -198,12 +198,10 @@ function SortableItem({
 export function SettingsModal({ 
   isOpen, 
   onClose,
-  initialOrder,
   userName
 }: { 
   isOpen: boolean; 
   onClose: () => void;
-  initialOrder?: string[];
   userName?: string;
 }) {
   const router = useRouter();

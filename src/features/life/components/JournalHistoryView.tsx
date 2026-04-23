@@ -56,7 +56,7 @@ export function JournalHistoryView({ entries }: Props) {
   const [activeTab, setActiveTab] = useState("all");
   const [visibleGroups, setVisibleGroups] = useState(3);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
