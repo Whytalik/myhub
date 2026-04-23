@@ -321,11 +321,24 @@ export function SettingsModal({
   };
 
   const testPush = async () => {
+    toast.info("Sending test notification...");
+    
+    // 1. Спробуємо надіслати через сервер
     const res = await sendTestNotificationAction();
+    
     if (res.success) {
-      toast.success("Test notification sent!");
+      toast.success("Server dispatched the notification!");
     } else {
-      toast.error(res.error || "Failed to send test push");
+      toast.error(res.error || "Server failed to send test push");
+      
+      // 2. Локальний фолбек, якщо сервер не зміг (щоб перевірити лише браузер)
+      if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+        const reg = await navigator.serviceWorker.ready;
+        reg.showNotification("Local Test", {
+          body: "Server failed, but your browser is ready for notifications! Check your VAPID keys in .env",
+          icon: "/icon.svg"
+        });
+      }
     }
   };
 
