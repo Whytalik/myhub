@@ -480,18 +480,18 @@ export function SettingsModal({
         <div className="flex flex-col sm:flex-row h-[calc(100dvh-160px)] sm:h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
 
           {/* Mobile: horizontal scrollable tabs */}
-          <div className="sm:hidden flex overflow-x-auto scrollbar-hide border-b border-border/30 bg-raised/30 shrink-0">
+          <div className="sm:hidden flex overflow-x-auto scrollbar-hide border-b border-border/30 bg-raised/30 shrink-0 sticky top-0 z-20">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex flex-col items-center gap-1 px-4 py-3 text-[10px] font-bold whitespace-nowrap transition-all shrink-0 border-b-2 ${
+                className={`flex flex-col items-center justify-center gap-1.5 px-6 py-4 text-[10px] font-bold whitespace-nowrap transition-all shrink-0 border-b-2 min-w-[80px] active:bg-accent/5 ${
                   activeTab === tab.id
-                    ? "border-accent text-accent"
+                    ? "border-accent text-accent bg-accent/5"
                     : "border-transparent text-muted"
                 }`}
               >
-                <tab.icon size={16} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
+                <tab.icon size={18} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
                 {tab.label}
               </button>
             ))}
@@ -704,21 +704,41 @@ export function SettingsModal({
                          </div>
 
                          {isSubscribed && (
-                            <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                               <div className="flex items-center gap-3">
-                                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-                                     <Bell size={16} />
+                            <div className="space-y-2">
+                               <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                                  <div className="flex items-center gap-3">
+                                     <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                                        <Bell size={16} />
+                                     </div>
+                                     <div>
+                                        <h5 className="text-[11px] font-bold">Server Sync Test</h5>
+                                        <p className="text-[9px] text-muted">Test end-to-end delivery from server.</p>
+                                     </div>
                                   </div>
-                                  <div>
-                                     <h5 className="text-[11px] font-bold">Connection Test</h5>
-                                     <p className="text-[9px] text-muted">Send a test notification to check delivery.</p>
-                                  </div>
+                                  <button 
+                                    type="button"
+                                    onClick={testPush}
+                                    className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"
+                                  >
+                                     <Check size={14} className="text-muted" />
+                                  </button>
                                </div>
+
                                <button 
-                                 onClick={testPush}
-                                 className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"
+                                 type="button"
+                                 onClick={async () => {
+                                   if ("serviceWorker" in navigator) {
+                                     const reg = await navigator.serviceWorker.ready;
+                                     reg.showNotification("Local Browser Test", {
+                                       body: "If you see this, your browser permission is OK! The issue might be in your .env keys or Server Action.",
+                                       icon: "/icon.svg"
+                                     });
+                                     toast.success("Local trigger sent!");
+                                   }
+                                 }}
+                                 className="w-full py-2 border border-dashed border-border rounded-xl text-[9px] font-mono text-muted hover:text-accent hover:border-accent/50 transition-all"
                                >
-                                  <Check size={14} className="text-muted" />
+                                 Verify Browser Display (No Server)
                                </button>
                             </div>
                          )}

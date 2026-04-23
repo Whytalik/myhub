@@ -347,15 +347,16 @@ export function Sidebar({
       <motion.aside
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{ viewTransitionName: 'sidebar' } as any}
         animate={{
           width: isMobileOpen ? 288 : (isExpanded ? 256 : 80),
         }}
         initial={false}
         transition={SIDEBAR_SPRING}
         className={`
-          fixed inset-y-0 left-0 z-[1001] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
+          fixed inset-y-0 left-0 z-[2000] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
           transition-transform duration-300 ease-out
-          ${isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
+          ${isMobileOpen ? "translate-x-0 shadow-[20px_0_50px_rgba(0,0,0,0.5)]" : "-translate-x-full lg:translate-x-0"}
         `}
       >
         {/* Sidebar Header */}
@@ -487,7 +488,10 @@ export function Sidebar({
                     className="flex items-center gap-0.5 shrink-0"
                   >
                     <button
-                      onClick={() => setIsSettingsOpen(true)}
+                      onClick={() => {
+                        setIsSettingsOpen(true);
+                        setIsMobileOpen(false);
+                      }}
                       className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-all duration-200"
                     >
                       <Settings2 size={13} />
