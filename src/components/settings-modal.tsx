@@ -257,15 +257,19 @@ export function SettingsModal({
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Notifications Logic
+  // Notifications State
   const [isNotificationSupported, setIsNotificationSupported] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [deviceCount, setDeviceCount] = useState<number>(0);
 
   const checkSubscription = useCallback(async () => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.getSubscription();
       setIsSubscribed(!!subscription);
+      
+      const res = await getPushSubscriptionCountAction();
+      setDeviceCount(res.count);
     }
   }, []);
 
