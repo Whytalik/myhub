@@ -665,7 +665,15 @@ export function SettingsModal({
               {activeTab === "notifications" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Push Notifications</h4>
+                    <div className="flex justify-between items-center mb-3">
+                       <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Push Notifications</h4>
+                       {deviceCount > 0 && (
+                         <span className="text-[9px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
+                           {deviceCount} Linked Device{deviceCount > 1 ? 's' : ''}
+                         </span>
+                       )}
+                    </div>
+
                     {!isNotificationSupported ? (
                        <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-[10px] leading-relaxed">
                           Your browser does not support push notifications. If you are on iPhone, make sure to &quot;Add to Home Screen&quot; first.
@@ -678,24 +686,19 @@ export function SettingsModal({
                                   <Smartphone size={16} />
                                </div>
                                <div>
-                                  <h5 className="text-[11px] font-bold">This Device</h5>
-                                  <p className="text-[9px] text-muted">{isSubscribed ? "Notifications enabled" : "Receive alerts on this device"}</p>
+                                  <h5 className="text-[11px] font-bold">Current Device</h5>
+                                  <p className="text-[9px] text-muted">{isSubscribed ? "Connection established" : "Ready to link"}</p>
                                </div>
                             </div>
                             <button 
                               onClick={subscribeToPush}
-                              disabled={isSubscribed}
-                              className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${
-                                isSubscribed 
-                                  ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 opacity-50 cursor-default" 
-                                  : "bg-accent text-bg hover:scale-105 active:scale-95"
-                              }`}
+                              className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all bg-accent text-bg hover:scale-105 active:scale-95`}
                             >
-                               {isSubscribed ? "Active" : "Enable"}
+                               {isSubscribed ? "Re-link" : "Link"}
                             </button>
                          </div>
 
-                         {isSubscribed && (
+                         {deviceCount > 0 && (
                             <div className="space-y-2">
                                <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
                                   <div className="flex items-center gap-3">
@@ -703,8 +706,8 @@ export function SettingsModal({
                                         <Bell size={16} />
                                      </div>
                                      <div>
-                                        <h5 className="text-[11px] font-bold">Server Sync Test</h5>
-                                        <p className="text-[9px] text-muted">Test end-to-end delivery from server.</p>
+                                        <h5 className="text-[11px] font-bold">Broadcast Test</h5>
+                                        <p className="text-[9px] text-muted">Ping all {deviceCount} linked devices.</p>
                                      </div>
                                   </div>
                                   <button 
@@ -715,30 +718,13 @@ export function SettingsModal({
                                      <Check size={14} className="text-muted" />
                                   </button>
                                </div>
-
-                               <button 
-                                 type="button"
-                                 onClick={async () => {
-                                   if ("serviceWorker" in navigator) {
-                                     const reg = await navigator.serviceWorker.ready;
-                                     reg.showNotification("Local Browser Test", {
-                                       body: "If you see this, your browser permission is OK! The issue might be in your .env keys or Server Action.",
-                                       icon: "/icon.svg"
-                                     });
-                                     toast.success("Local trigger sent!");
-                                   }
-                                 }}
-                                 className="w-full py-2 border border-dashed border-border rounded-xl text-[9px] font-mono text-muted hover:text-accent hover:border-accent/50 transition-all"
-                               >
-                                 Verify Browser Display (No Server)
-                               </button>
                             </div>
                          )}
                       </div>
                     )}
                   </section>
                   <p className="text-[9px] text-muted leading-relaxed italic opacity-70">
-                    Notifications are sent directly from your Hub instance. Data is stored securely and linked only to your account.
+                    To link your iPhone, open the app from your Home Screen and click &quot;Link&quot; here.
                   </p>
                 </div>
               )}
