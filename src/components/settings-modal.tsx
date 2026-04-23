@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useRef, useEffect } from "react";
+import { useState, useTransition, useRef, useEffect, useCallback } from "react";
 import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { useSpace } from "./space-provider";
 import { updateUserNameAction } from "@/features/profile/actions";
@@ -210,20 +210,31 @@ export function SettingsModal({
   const { theme, setTheme } = useSpace();
   const [isPending, startTransition] = useTransition();
   const [displayName, setDisplayName] = useState(userName || "");
+  const handleUpdateName = useCallback(() => {
+    if (!displayName || displayName === userName) return;
+    startTransition(async () => {
+      const result = await updateUserNameAction(displayName);
+      if (result.success) {
+        toast.success("Name updated");
+        router.refresh();
+      }
+    });
+  }, [displayName, userName, router]);
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Selection & Customization
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [customizations, setCustomizations] = useState<Record<string, { icon?: string, color?: string }>>({});
+  const loadCustomizations = useCallback(() => {
+    const saved = localStorage.getItem("system-customizations");
+    return saved ? JSON.parse(saved) : {};
+  }, []);
+  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>(() => loadCustomizations());
 
   useEffect(() => {
-    if (isOpen) {
-      setDisplayName(userName || "");
-      const saved = localStorage.getItem("system-customizations");
-      if (saved) setCustomizations(JSON.parse(saved));
-    }
-  }, [userName, isOpen]);
+    const handler = () => setCustomizations(loadCustomizations());
+    window.addEventListener("system-customizations-updated", handler);
+    return () => window.removeEventListener("system-customizations-updated", handler);
+  }, [loadCustomizations]);
   
   const [domains, setDomains] = useState<Domain[]>(DEFAULT_DOMAINS);
   const [spaces, setSpaces] = useState<Space[]>(DEFAULT_SPACES);
@@ -280,17 +291,6 @@ export function SettingsModal({
     setCustomizations(next);
     localStorage.setItem("system-customizations", JSON.stringify(next));
     window.dispatchEvent(new Event("system-customizations-updated"));
-  };
-
-  const handleUpdateName = () => {
-    if (!displayName || displayName === userName) return;
-    startTransition(async () => {
-      const result = await updateUserNameAction(displayName);
-      if (result.success) {
-        toast.success("Name updated");
-        router.refresh();
-      }
-    });
   };
 
   const handleExport = async () => {
@@ -440,7 +440,7 @@ export function SettingsModal({
                         {domains.map((domain) => {
                           const custom = customizations[domain.id];
                           // Беремо дефолтний колір з SPACE_THEMES за ID домену
-                          const activeColor = custom?.color || (SPACE_THEMES as any)[domain.id]?.accent || "#fbbf24";
+                          const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[domain.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || domain.icon) : domain.icon;
 
                           return (
@@ -476,7 +476,7 @@ export function SettingsModal({
                         {spaces.map((space) => {
                           const custom = customizations[space.id];
                           // Беремо дефолтний колір з SPACE_THEMES за ID спейсу
-                          const activeColor = custom?.color || (SPACE_THEMES as any)[space.id]?.accent || "#fbbf24";
+                          const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[space.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || space.icon) : space.icon;
 
                           return (

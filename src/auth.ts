@@ -1,5 +1,4 @@
 import NextAuth, { type DefaultSession } from "next-auth";
-import { type JWT } from "next-auth/jwt";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
@@ -11,24 +10,11 @@ declare module "next-auth" {
     user: {
       id: string;
       role: Role;
-      profileId?: string;
-      personId?: string;
     } & DefaultSession["user"];
   }
 
   interface User {
     role?: Role;
-    profileId?: string;
-    personId?: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    role: Role;
-    profileId?: string;
-    personId?: string;
   }
 }
 
@@ -49,14 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const user = await prisma.user.findUnique({
           where: { email },
           include: {
-            profile: {
-              include: {
-                persons: {
-                  take: 1,
-                  orderBy: { createdAt: "asc" },
-                },
-              },
-            },
+            nutritionPerson: true,
           },
         });
 
@@ -70,48 +49,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           name: user.name,
           role: user.role,
-          profileId: user.profile?.id,
-          personId: user.profile?.persons[0]?.id,
         };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // On initial sign in, add data to token
       if (user) {
         token.id = user.id as string;
         token.role = user.role as Role;
-        token.profileId = user.profileId;
-        token.personId = user.personId;
       }
       
-      // FETCH FRESH DATA: Ensure role, name, and linked IDs are always current from DB
       if (token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
           select: { 
             role: true, 
             name: true,
-            profile: {
-              select: {
-                id: true,
-                persons: {
-                  take: 1,
-                  orderBy: { createdAt: "asc" },
-                  select: { id: true }
-                }
-              }
-            }
           }
         });
         if (dbUser) {
           token.role = dbUser.role;
           token.name = dbUser.name;
-          if (dbUser.profile) {
-            token.profileId = dbUser.profile.id;
-            token.personId = dbUser.profile.persons[0]?.id;
-          }
         }
       }
 
@@ -119,11 +78,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.name = token.name; // Pass fresh name to session
-        session.user.profileId = token.profileId;
-        session.user.personId = token.personId;
+        session.user.id = token.id as string;
+        session.user.role = token.role as Role;
+        session.user.name = token.name as string;
       }
       return session;
     },

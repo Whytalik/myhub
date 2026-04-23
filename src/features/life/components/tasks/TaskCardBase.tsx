@@ -9,6 +9,7 @@ import { ConfirmationDialog } from "@/components/ui/dialog";
 import { StatusToggle } from "./StatusToggle";
 import { PriorityToggle } from "./PriorityToggle";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
+import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 
 export interface TaskCardBaseProps {
   task:         TaskData;
@@ -20,8 +21,8 @@ export interface TaskCardBaseProps {
   isDragging?:  boolean;
   className?:   string;
   style?:       React.CSSProperties;
-  listeners?:   any;
-  attributes?:  any;
+  listeners?:   DraggableSyntheticListeners;
+  attributes?:  DraggableAttributes;
   setNodeRef?:  (node: HTMLElement | null) => void;
 }
 
@@ -115,19 +116,17 @@ export function TaskCardBase({
       style={style}
       {...listeners}
       {...attributes}
-      onClick={(e) => {
-        // Prevent click if we're dragging (dnd-kit specific check)
+      onClick={() => {
         if (style?.transform) return;
         onEdit(task);
       }}
-      className={`
-        group relative flex flex-col transition-all cursor-grab active:cursor-grabbing
-        ${isCompact ? 'gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0' : 'gap-3 p-4 pt-5 rounded-2xl border h-full'}
-        ${isDragging ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' : isDone ? 'bg-surface/30 border-border/40 opacity-70' : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'}
-        ${className}
-      `}
+className={`
+         group relative flex flex-col transition-all cursor-grab active:cursor-grabbing
+         ${isCompact ? 'gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0' : 'gap-3 p-4 pt-5 rounded-2xl border h-full'}
+         ${isDragging ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' : isDone ? 'bg-surface/30 border-border/40 opacity-70' : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'}
+         ${className}
+       `}
     >
-      {/* Floating Actions */}
       <div className={`absolute ${isCompact ? 'top-1 right-1' : 'top-3 right-3'} flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20`}>
         {onDuplicate && (
           <button

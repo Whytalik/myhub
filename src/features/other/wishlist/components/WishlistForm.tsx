@@ -13,6 +13,7 @@ interface WishlistFormProps {
   initialData?: WishlistItemData | null;
   onSuccess: () => void;
   onCancel: () => void;
+  onSubmit: (data: UpsertWishlistItemInput) => Promise<void>;
 }
 
 const STATUS_OPTIONS: { id: WishlistStatus; label: string; description: string }[] = [
@@ -41,7 +42,7 @@ const CURRENCY_OPTIONS = [
   { id: "EUR", label: "EUR", description: "Euro" },
 ];
 
-export function WishlistForm({ initialData, onSuccess, onCancel }: WishlistFormProps) {
+export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: WishlistFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -67,28 +68,19 @@ export function WishlistForm({ initialData, onSuccess, onCancel }: WishlistFormP
   const selectedPriority = watch("priority");
   const selectedCurrency = watch("currency");
 
-  const onSubmit = async (data: UpsertWishlistItemInput) => {
+  return (
+    <form onSubmit={handleSubmit(async (data) => {
     setIsSubmitting(true);
     setError(null);
-
-    // Ensure tags are submitted as an array of strings
-    const payload = {
-      ...data,
-      tags: Array.isArray(data.tags) ? data.tags : (data.tags as unknown as string).split(',').map((t: string) => t.trim()).filter(Boolean),
-    };
-
-    const result = await upsertWishlistItemAction(payload);
-
-    if (result.success) {
+    try {
+      await onSubmit(data);
       onSuccess();
-    } else {
-      setError(result.error || "Something went wrong");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to save");
+    } finally {
       setIsSubmitting(false);
     }
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+  })} className="space-y-6">
       <div className="space-y-4">
         {/* Name */}
         <div className="flex flex-col gap-1.5">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition, useEffect } from "react";
+import { useRef, useState, useTransition, useCallback } from "react";
 import Link from "next/link";
 import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, CalendarDays, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -34,15 +34,41 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
 
-  const [data, setData] = useState<Omit<UpsertDailyEntryInput, "date">>(() => {
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const computeInitialData = useCallback(() => {
     let morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
     
-    // Default _isTrainingDay based on day of week (Mon=1, Wed=3, Fri=5) if not set
     if (morningRoutine && morningRoutine["_isTrainingDay"] === undefined) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
       morningRoutine = { ...morningRoutine, _isTrainingDay: isTrainDay };
-    } else if (!morningRoutine) {
+      return {
+        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
+        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
+        sleepHours:      initialEntry?.sleepHours ?? null,
+        sleepQuality:    initialEntry?.sleepQuality ?? null,
+        sleepNote:       initialEntry?.sleepNote ?? null,
+        energy:          initialEntry?.energy ?? null,
+        mood:            initialEntry?.mood ?? null,
+        emotions:        (initialEntry?.emotions as string[] | null) ?? null,
+        weight:          initialEntry?.weight ?? null,
+        energyNote:      initialEntry?.energyNote ?? null,
+        morningSunlight: initialEntry?.morningSunlight ?? null,
+        eveningEnergy:   initialEntry?.eveningEnergy ?? null,
+        nutrition:       initialEntry?.nutrition ?? null,
+        nutritionNote:   initialEntry?.nutritionNote ?? null,
+        morningRoutine,
+        eveningRoutine:  (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
+        routineNote:     initialEntry?.routineNote ?? null,
+        winToday:        initialEntry?.winToday ?? null,
+        improveTomorrow: initialEntry?.improveTomorrow ?? null,
+        gratitude:       initialEntry?.gratitude ?? null,
+        brainDump:       initialEntry?.brainDump ?? null,
+      };
+    }
+    
+    if (!morningRoutine) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
       return {
@@ -92,76 +118,13 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       gratitude:       initialEntry?.gratitude ?? null,
       brainDump:       initialEntry?.brainDump ?? null,
     };
-  });
+  }, [initialEntry, todayStr]);
 
   const [savedAt, setSavedAt] = useState<Date | null>(
     initialEntry ? new Date(initialEntry.updatedAt ?? new Date()) : null
   );
   const [isPending, startTransition] = useTransition();
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    let morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
-    
-    // Default _isTrainingDay based on day of week (Mon=1, Wed=3, Fri=5) if not set
-    if (morningRoutine && morningRoutine["_isTrainingDay"] === undefined) {
-      const day = new Date(todayStr).getDay();
-      const isTrainDay = [1, 3, 5].includes(day);
-      morningRoutine = { ...morningRoutine, _isTrainingDay: isTrainDay };
-    } else if (!morningRoutine) {
-      const day = new Date(todayStr).getDay();
-      const isTrainDay = [1, 3, 5].includes(day);
-      setData({
-        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
-        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
-        sleepHours:      initialEntry?.sleepHours ?? null,
-        sleepQuality:    initialEntry?.sleepQuality ?? null,
-        sleepNote:       initialEntry?.sleepNote ?? null,
-        energy:          initialEntry?.energy ?? null,
-        mood:            initialEntry?.mood ?? null,
-        emotions:        (initialEntry?.emotions as string[] | null) ?? null,
-        weight:          initialEntry?.weight ?? null,
-        energyNote:      initialEntry?.energyNote ?? null,
-        morningSunlight: initialEntry?.morningSunlight ?? null,
-        eveningEnergy:   initialEntry?.eveningEnergy ?? null,
-        nutrition:       initialEntry?.nutrition ?? null,
-        nutritionNote:   initialEntry?.nutritionNote ?? null,
-        morningRoutine:  { _isTrainingDay: isTrainDay },
-        eveningRoutine:  (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
-        routineNote:     initialEntry?.routineNote ?? null,
-        winToday:        initialEntry?.winToday ?? null,
-        improveTomorrow: initialEntry?.improveTomorrow ?? null,
-        gratitude:       initialEntry?.gratitude ?? null,
-        brainDump:       initialEntry?.brainDump ?? null,
-      });
-      setSavedAt(initialEntry ? new Date(initialEntry.updatedAt ?? new Date()) : null);
-      return;
-    }
-
-    setData({
-      sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
-      sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
-      sleepHours:      initialEntry?.sleepHours ?? null,
-      sleepQuality:    initialEntry?.sleepQuality ?? null,
-      sleepNote:       initialEntry?.sleepNote ?? null,
-      energy:          initialEntry?.energy ?? null,
-      mood:            initialEntry?.mood ?? null,
-      emotions:        (initialEntry?.emotions as string[] | null) ?? null,
-      weight:          initialEntry?.weight ?? null,
-      energyNote:      initialEntry?.energyNote ?? null,
-      morningSunlight: initialEntry?.morningSunlight ?? null,
-      nutrition:       initialEntry?.nutrition ?? null,
-      nutritionNote:   initialEntry?.nutritionNote ?? null,
-      morningRoutine,
-      eveningRoutine:  (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
-      routineNote:     initialEntry?.routineNote ?? null,
-      winToday:        initialEntry?.winToday ?? null,
-      improveTomorrow: initialEntry?.improveTomorrow ?? null,
-      gratitude:       initialEntry?.gratitude ?? null,
-      brainDump:       initialEntry?.brainDump ?? null,
-    });
-    setSavedAt(initialEntry ? new Date(initialEntry.updatedAt ?? new Date()) : null);
-  }, [initialEntry, todayStr]);
+  const [data, setData] = useState<Omit<UpsertDailyEntryInput, "date">>(computeInitialData);
 
   const patch = (update: Partial<typeof data>) => {
     if (!isToday) return;
@@ -415,6 +378,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       )}
 
       <TaskFormDialog
+        key={`task-form-${editingTask?.id ?? 'new'}`}
         isOpen={taskDialogOpen}
         onClose={() => setTaskDialogOpen(false)}
         task={editingTask}

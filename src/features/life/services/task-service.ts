@@ -71,7 +71,7 @@ function mapTask(task: any): TaskData {
   };
 }
 
-async function resolveDepth(personId: string, parentId: string | null | undefined): Promise<number> {
+async function resolveDepth(userId: string, parentId: string | null | undefined): Promise<number> {
   if (!parentId) return 0;
   const parent = await prisma.task.findUniqueOrThrow({
     where: { id: parentId },
@@ -125,19 +125,19 @@ function sortTasks(tasks: TaskData[]): TaskData[] {
 
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 
-export async function getAllTasks(personId: string): Promise<TaskData[]> {
+export async function getAllTasks(userId: string): Promise<TaskData[]> {
   const tasks = await prisma.task.findMany({
-    where: { personId },
+    where: { userId },
     include: TASK_INCLUDE,
     orderBy: [{ order: "asc" }, { createdAt: "asc" }],
   });
   return sortTasks(tasks.map(mapTask));
 }
 
-export async function getCalendarTasks(personId: string): Promise<TaskData[]> {
+export async function getCalendarTasks(userId: string): Promise<TaskData[]> {
   const tasks = await prisma.task.findMany({
     where: {
-      personId,
+      userId,
       plannedDate: { not: null },
     },
     include: TASK_INCLUDE,
@@ -145,7 +145,7 @@ export async function getCalendarTasks(personId: string): Promise<TaskData[]> {
   return sortTasks(tasks.map(mapTask));
 }
 
-export async function getTasksByDate(personId: string, date: Date): Promise<TaskData[]> {
+export async function getTasksByDate(userId: string, date: Date): Promise<TaskData[]> {
   const start = new Date(date);
   start.setHours(0, 0, 0, 0);
   const end = new Date(date);
@@ -153,7 +153,7 @@ export async function getTasksByDate(personId: string, date: Date): Promise<Task
 
   const tasks = await prisma.task.findMany({
     where: {
-      personId,
+      userId,
       plannedDate: {
         gte: start,
         lte: end,
@@ -165,7 +165,7 @@ export async function getTasksByDate(personId: string, date: Date): Promise<Task
   return sortTasks(tasks.map(mapTask));
 }
 
-export async function upsertTask(personId: string, input: UpsertTaskInput): Promise<TaskData> {
+export async function upsertTask(userId: string, input: UpsertTaskInput): Promise<TaskData> {
   const {
     id,
     title,
@@ -219,11 +219,11 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
     // Perform Create
     if (!title) throw new Error("Title is required for new tasks");
     
-    const depth = await resolveDepth(personId, parentId);
+    const depth = await resolveDepth(userId, parentId);
 
     const saved = await prisma.task.create({
       data: {
-        personId,
+        userId,
         title,
         description: description ?? null,
         icon:        icon ?? null,
@@ -245,24 +245,24 @@ export async function upsertTask(personId: string, input: UpsertTaskInput): Prom
   }
 }
 
-export async function deleteTask(personId: string, id: string): Promise<void> {
+export async function deleteTask(userId: string, id: string): Promise<void> {
   await prisma.task.delete({ where: { id } });
 }
 
-export async function updateTaskStatus(personId: string, id: string, status: TaskStatus): Promise<void> {
+export async function updateTaskStatus(userId: string, id: string, status: TaskStatus): Promise<void> {
   const completedAt = status === 'DONE' ? new Date() : null;
   await prisma.task.update({ where: { id }, data: { status, completedAt } });
 }
 
-export async function updateTaskPriority(personId: string, id: string, priority: TaskPriority): Promise<void> {
+export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {
   await prisma.task.update({ where: { id }, data: { priority } });
 }
 
 // ─── Spheres ──────────────────────────────────────────────────────────────────
 
-export async function getAllSpheres(personId: string): Promise<LifeSphereData[]> {
+export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
   const spheres = await prisma.lifeSphere.findMany({
-    where: { personId },
+    where: { userId },
     orderBy: { order: "asc" },
     include: { _count: { select: { tasks: true } } },
   });
@@ -278,11 +278,11 @@ export async function getAllSpheres(personId: string): Promise<LifeSphereData[]>
   }));
 }
 
-export async function upsertSphere(personId: string, input: UpsertSphereInput): Promise<LifeSphereData> {
+export async function upsertSphere(userId: string, input: UpsertSphereInput): Promise<LifeSphereData> {
   const { id, name, color, icon, order = 0 } = input;
   const sphere = await prisma.lifeSphere.upsert({
     where: { id: id ?? "" },
-    create: { personId, name, color, icon, order },
+    create: { userId, name, color, icon, order },
     update: { name, color, icon, order },
     include: { _count: { select: { tasks: true } } },
   });
@@ -298,11 +298,11 @@ export async function upsertSphere(personId: string, input: UpsertSphereInput): 
   };
 }
 
-export async function deleteSphere(personId: string, id: string): Promise<void> {
+export async function deleteSphere(userId: string, id: string): Promise<void> {
   await prisma.lifeSphere.delete({ where: { id } });
 }
 
-export async function getTaskStats(personId: string): Promise<TaskStats> {
+export async function getTaskStats(userId: string): Promise<TaskStats> {
   const now = new Date();
   
   // Parallel execution of summary statistics
@@ -314,30 +314,30 @@ export async function getTaskStats(personId: string): Promise<TaskStats> {
     sphereAggregates,
     completedTasksWithDates
   ] = await Promise.all([
-    prisma.task.count({ where: { personId } }),
-    prisma.task.count({ where: { personId, status: "DONE" } }),
+    prisma.task.count({ where: { userId } }),
+    prisma.task.count({ where: { userId, status: "DONE" } }),
     prisma.task.count({ 
       where: { 
-        personId, 
+        userId, 
         status: { notIn: ["DONE", "CANCELLED"] },
         dueDate: { lt: now }
       } 
     }),
     prisma.task.count({
       where: {
-        personId,
+        userId,
         priority: { in: ["URGENT", "HIGH"] },
         status: { notIn: ["DONE", "CANCELLED"] }
       }
     }),
     prisma.task.groupBy({
       by: ["sphereId"],
-      where: { personId, sphereId: { not: null } },
+      where: { userId, sphereId: { not: null } },
       _count: { _all: true, status: true },
     }),
     // We still need some details for rates and lead time
     prisma.task.findMany({
-      where: { personId, status: "DONE", completedAt: { not: null } },
+      where: { userId, status: "DONE", completedAt: { not: null } },
       select: { createdAt: true, completedAt: true, dueDate: true }
     })
   ]);
@@ -360,7 +360,7 @@ export async function getTaskStats(personId: string): Promise<TaskStats> {
 
   // Sphere distribution needs names and colors
   const spheres = await prisma.lifeSphere.findMany({
-    where: { personId },
+    where: { userId },
     select: { id: true, name: true, color: true }
   });
 
@@ -390,8 +390,8 @@ export async function getTaskStats(personId: string): Promise<TaskStats> {
     end.setHours(23, 59, 59, 999);
 
     const [created, completed] = await Promise.all([
-      prisma.task.count({ where: { personId, createdAt: { gte: start, lte: end } } }),
-      prisma.task.count({ where: { personId, completedAt: { gte: start, lte: end } } })
+      prisma.task.count({ where: { userId, createdAt: { gte: start, lte: end } } }),
+      prisma.task.count({ where: { userId, completedAt: { gte: start, lte: end } } })
     ]);
     
     last7Days.push({ date: dateStr, created, completed });
@@ -399,7 +399,7 @@ export async function getTaskStats(personId: string): Promise<TaskStats> {
 
   // Top Projects
   const topTasks = await prisma.task.findMany({
-    where: { personId, depth: 0 },
+    where: { userId, depth: 0 },
     include: { _count: { select: { children: true } } },
     orderBy: { children: { _count: "desc" } },
     take: 5

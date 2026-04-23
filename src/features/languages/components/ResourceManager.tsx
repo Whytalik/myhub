@@ -12,7 +12,9 @@ interface ResourceManagerProps {
   initialItems: LanguageResource[];
 }
 
-const sphereIcons: Record<string, any> = {
+import type { LucideIcon } from "lucide-react";
+
+const sphereIcons: Record<string, LucideIcon> = {
   [LanguageSphere.VOCABULARY]: Library,
   [LanguageSphere.LISTENING]: Headphones,
   [LanguageSphere.READING]: Book,

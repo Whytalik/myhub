@@ -31,23 +31,16 @@ export async function registerAction(
         },
       });
 
-      const profile = await tx.profile.create({
-        data: {
-          name: `${name}'s Profile`,
-          userId: user.id,
-        },
-      });
-
       await tx.nutritionPerson.create({
         data: {
+          userId: user.id,
           name: name,
-          profileId: profile.id,
         },
       });
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Registration error:", error);
-    return error?.message || "Something went wrong. Please try again.";
+    return error instanceof Error ? error.message : "Something went wrong. Please try again.";
   }
 
   try {

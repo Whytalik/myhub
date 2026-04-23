@@ -83,7 +83,7 @@ export function TaskStatsView({ stats }: Props) {
            </div>
 
            <div className="h-[240px] w-full flex items-end justify-between gap-4 px-2">
-              {stats.last7Days.map((day, i) => {
+              {stats.last7Days.map((day) => {
                  const completedHeight = (day.completed / maxVelocity) * 100;
                  const createdHeight = (day.created / maxVelocity) * 100;
                  const date = new Date(day.date);
@@ -166,18 +166,26 @@ export function TaskStatsView({ stats }: Props) {
             <div className="flex flex-col md:flex-row items-center gap-12">
                {/* Donut SVG */}
                <div className="relative w-48 h-48 shrink-0">
-                  <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                     {(() => {
-                        const total = stats.totalTasks || 1;
-                        
-                        // Pre-calculate offsets to avoid variable reassignment during render
-                        let currentOffset = 0;
-                        const segments = stats.sphereDistribution.map(sphere => {
-                           const percentage = (sphere.count / total) * 100;
-                           const offset = currentOffset;
-                           currentOffset += percentage;
-                           return { ...sphere, percentage, offset };
-                        });
+<svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                      {(() => {
+                         const total = stats.totalTasks || 1;
+                         const segments = stats.sphereDistribution.reduce<Array<{
+                      id: string;
+                      color: string;
+                      count: number;
+                      completed: number;
+                      percentage: number;
+                      offset: number;
+                      name: string;
+                    }>>((acc, sphere) => {
+                      const percentage = (sphere.count / total) * 100;
+                      const prevOffset = acc.length > 0 ? acc[acc.length - 1].offset : 0;
+                      return [...acc, {
+                        ...sphere,
+                        percentage,
+                        offset: prevOffset
+                      }];
+                    }, []);
 
                         return segments.map((segment) => (
                            <circle

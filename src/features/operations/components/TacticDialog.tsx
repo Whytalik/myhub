@@ -8,6 +8,8 @@ import { Select } from "@/components/ui/select";
 import { upsertTacticAction } from "../actions/sprint-actions";
 import type { TacticData } from "../types";
 
+type TacticFrequency = "DAILY" | "WEEKLY";
+
 interface TacticDialogProps {
   keyResultId: string;
   tactic?: TacticData;
@@ -20,7 +22,7 @@ export function TacticDialog({ keyResultId, tactic, onSuccess, children }: Tacti
   const [loading, setLoading] = useState(false);
   
   const [title, setTitle] = useState(tactic?.title || "");
-  const [frequency, setFrequency] = useState<any>(tactic?.frequency || "WEEKLY");
+  const [frequency, setFrequency] = useState<TacticFrequency>(tactic?.frequency || "WEEKLY");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +76,7 @@ export function TacticDialog({ keyResultId, tactic, onSuccess, children }: Tacti
 
           <div className="space-y-2">
             <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Frequency</label>
-            <Select value={frequency} onChange={(e) => setFrequency(e.target.value)}>
+            <Select value={frequency} onChange={(e) => setFrequency(e.target.value as TacticFrequency)}>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
             </Select>

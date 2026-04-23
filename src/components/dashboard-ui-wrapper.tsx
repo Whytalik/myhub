@@ -3,7 +3,6 @@
 import { Sidebar } from "@/components/sidebar";
 import { DomainHeader } from "@/components/domain-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
-import { useSidebar } from "./sidebar-provider";
 
 export function DashboardUIWrapper({
   children,
@@ -14,7 +13,7 @@ export function DashboardUIWrapper({
 }: {
   children: React.ReactNode;
   initialOrder?: string[];
-  initialCustomizations?: Record<string, any>;
+  initialCustomizations?: Record<string, { icon?: string; color?: string }>;
   initialOpenSections?: Record<string, boolean>;
   user?: { name: string; email: string; role?: string };
 }) {

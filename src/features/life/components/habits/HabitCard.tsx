@@ -33,18 +33,17 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
         if (!isCompletedOnDate) {
           toast.success("Great job! Keep the streak alive.");
         }
-      } catch (err) {
+      } catch {
         toast.error("Failed to update habit");
       }
     });
   };
 
-  const handleArchive = () => {
+const handleArchive = () => {
     startTransition(async () => {
       try {
         await toggleHabitArchivedAction(habit.id);
-        toast.success(habit.archived ? "Habit restored" : "Habit archived");
-      } catch (err) {
+      } catch {
         toast.error("Failed to archive habit");
       }
     });

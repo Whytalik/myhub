@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
 import { Tabs } from "@/components/ui/tabs";
 import { Moon, Zap, Utensils, CheckCircle2, ChevronDown, Smile, Weight, Trash2 } from "lucide-react";
 import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/routine-items";
 import { deleteEntryAction } from "../actions/journal-actions";
 import { ConfirmationDialog } from "@/components/ui/dialog";
-import { useTransition } from "react";
 
 interface HistoryEntry {
   id: string;
@@ -56,8 +55,8 @@ function getWeekNumber(d: Date) {
 export function JournalHistoryView({ entries }: Props) {
   const [activeTab, setActiveTab] = useState("all");
   const [visibleGroups, setVisibleGroups] = useState(3);
-  const [isPending, startTransition] = useTransition();
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
     startTransition(async () => {

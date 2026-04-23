@@ -122,8 +122,9 @@ export function RoutineSection({ type, routine, onChange }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {items.map((item) => {
           const checked = !!map[item.id];
-          // @ts-ignore
-          const IconComponent = LucideIcons[item.icon] || Circle;
+          const iconName = item.icon as string;
+          // @ts-expect-error dynamic icon property from string key
+          const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[iconName] || Circle;
 
           return (
             <button
@@ -141,8 +142,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    {/* @ts-ignore */}
-                    {item.time && <span className="text-[9px] font-mono font-bold text-accent shrink-0">{item.time}</span>}
+                    <span className="text-[9px] font-mono font-bold text-accent shrink-0">{item.time}</span>
                     <span className="text-[11px] font-bold leading-none truncate">{item.label}</span>
                   </div>
                   <span className={`text-[9px] font-medium leading-none truncate ${checked ? "text-accent/80" : "text-secondary/70"}`}>

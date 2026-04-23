@@ -5,7 +5,9 @@ import { Plus, ShoppingCart, ExternalLink, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { WishlistForm } from "@/features/other/wishlist/components/WishlistForm";
+import { upsertWishlistItemAction } from "@/features/other/wishlist/actions/wishlist-actions";
 import type { WishlistItemData } from "@/features/other/wishlist/types";
+import type { UpsertWishlistItemInput } from "@/features/other/wishlist/types";
 
 interface WishlistPageClientProps {
   items: WishlistItemData[];
@@ -32,9 +34,12 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
           title="Add to Wishlist"
           maxWidth="600px"
         >
-          <WishlistForm 
+<WishlistForm 
             onSuccess={() => setIsDialogOpen(false)}
-            onCancel={() => setIsDialogOpen(false)} 
+            onCancel={() => setIsDialogOpen(false)}
+            onSubmit={async (data: UpsertWishlistItemInput) => {
+              await upsertWishlistItemAction(data);
+            }}
           />
         </Dialog>
       </div>
