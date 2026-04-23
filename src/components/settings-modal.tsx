@@ -330,9 +330,10 @@ export function SettingsModal({
     const res = await sendTestNotificationAction();
     
     if (res.success) {
-      toast.success("Test notification sent!");
+      toast.success("Broadcast successful!");
     } else {
-      toast.error(res.error || "Failed to send test push");
+      const errorMsg = res.results?.find((r: any) => !r.success)?.message || "Failed";
+      toast.error(`Broadcast incomplete: ${errorMsg}`);
     }
   };
 

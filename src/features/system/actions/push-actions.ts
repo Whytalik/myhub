@@ -81,20 +81,32 @@ export async function sendTestNotificationAction() {
     url: "/home"
   });
 
-  const results = await Promise.allSettled(
-    subscriptions.map(sub => 
-      webpush.sendNotification(
-        {
-          endpoint: sub.endpoint,
-          keys: {
-            p256dh: sub.p256dh,
-            auth: sub.auth
-          }
-        },
-        payload
-      )
-    )
+  const results = await Promise.all(
+    subscriptions.map(async (sub) => {
+      try {
+        await webpush.sendNotification(
+          {
+            endpoint: sub.endpoint,
+            keys: {
+              p256dh: sub.p256dh,
+              auth: sub.auth
+            }
+          },
+          payload
+        );
+        return { success: true, device: sub.userAgent || "Unknown" };
+      } catch (error: any) {
+        console.error(`[Push Error] Device: ${sub.userAgent}`, error);
+        return { 
+          success: false, 
+          device: sub.userAgent || "Unknown", 
+          statusCode: error.statusCode,
+          message: error.body || error.message 
+        };
+      }
+    })
   );
 
-  return { success: true, results };
+  const allSuccessful = results.every(r => r.success);
+  return { success: allSuccessful, results };
 }

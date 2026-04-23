@@ -1,4 +1,4 @@
-// Service Worker Version: 1.0.4
+// Service Worker Version: 1.0.5
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
@@ -8,49 +8,51 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('push', function(event) {
+  console.log('[Service Worker] Push Received.');
+  
+  let data = { title: 'Hub', body: 'New notification', url: '/' };
+  
   if (event.data) {
     try {
-      const data = event.data.json();
-      const options = {
-        body: data.body,
-        icon: data.icon || '/icon.svg',
-        badge: '/favicon-192.png',
-        vibrate: [100, 50, 100],
-        requireInteraction: true,
-        data: {
-          url: data.url || '/'
-        },
-        actions: [
-          { action: 'open', title: 'Open Hub' }
-        ]
-      };
-
-      event.waitUntil(
-        self.registration.showNotification(data.title, options)
-      );
+      data = event.data.json();
     } catch (e) {
-      event.waitUntil(
-        self.registration.showNotification('Hub Notification', {
-          body: event.data.text(),
-          icon: '/icon.svg'
-        })
-      );
+      data.body = event.data.text();
     }
   }
+
+  const options = {
+    body: data.body,
+    icon: '/favicon-192.png', // Спробуємо використати PNG замість SVG для кращої сумісності
+    badge: '/favicon-192.png',
+    vibrate: [200, 100, 200],
+    requireInteraction: true,
+    data: {
+      url: data.url || '/'
+    },
+    actions: [
+      { action: 'open', title: 'View Hub' }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
 });
 
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
+  const targetUrl = event.notification.data.url;
+
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then(windowClients => {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
       for (var i = 0; i < windowClients.length; i++) {
         var client = windowClients[i];
-        if (client.url === event.notification.data.url && 'focus' in client) {
+        if (client.url === targetUrl && 'focus' in client) {
           return client.focus();
         }
       }
       if (clients.openWindow) {
-        return clients.openWindow(event.notification.data.url);
+        return clients.openWindow(targetUrl);
       }
     })
   );
