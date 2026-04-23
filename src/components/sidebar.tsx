@@ -114,6 +114,11 @@ export function Sidebar({
     ? ["operations", "health", "mind", "wealth", "vault"]
     : ["operations", "vault"], [isAdmin]);
 
+  const effectiveDomain = useMemo(() => {
+    if (ALL_DOMAINS.includes(activeDomain)) return activeDomain;
+    return "operations";
+  }, [activeDomain, ALL_DOMAINS]);
+
   const getInitialOrder = useCallback(() => {
     const mergeOrder = (saved: string[]) => {
       const filteredSaved = saved.filter(s => ALL_DOMAINS.includes(s));
@@ -416,7 +421,7 @@ export function Sidebar({
         <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth px-3 pt-4">
           <nav className="flex flex-col gap-4">
             {order.map((section) => {
-              if (section !== activeDomain) return null;
+              if (section !== effectiveDomain) return null;
 
               if (section === "operations")
                 return renderNavGroup("Operations", [

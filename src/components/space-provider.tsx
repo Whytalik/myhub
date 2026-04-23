@@ -22,11 +22,14 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
 
   // Domain Logic - Derived directly from pathname to prevent sync lag
   const getDomainFromPath = (path: string): DomainId => {
-    if (path === "/operations" || path.startsWith("/planning") || path.startsWith("/life")) return "operations";
-    if (path === "/health" || path.startsWith("/food") || path.startsWith("/fitness")) return "health";
-    if (path === "/mind" || path.startsWith("/languages") || path.startsWith("/library")) return "mind";
-    if (path === "/wealth" || path.startsWith("/trading")) return "wealth";
-    return "vault";
+    if (path.startsWith("/operations") || path.startsWith("/planning") || path.startsWith("/life")) return "operations";
+    if (path.startsWith("/health") || path.startsWith("/food") || path.startsWith("/fitness")) return "health";
+    if (path.startsWith("/mind") || path.startsWith("/languages") || path.startsWith("/library")) return "mind";
+    if (path.startsWith("/wealth") || path.startsWith("/trading")) return "wealth";
+    if (path.startsWith("/vault") || path.startsWith("/other")) return "vault";
+    
+    // Default to operations for home, profile, and other general pages
+    return "operations";
   };
 
   const activeDomain = getDomainFromPath(pathname);
