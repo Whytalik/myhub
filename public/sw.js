@@ -11,6 +11,7 @@ self.addEventListener('push', function(event) {
         icon: data.icon || '/icon.svg',
         badge: '/favicon-192.png',
         vibrate: [100, 50, 100],
+        requireInteraction: true, // Повідомлення не зникне, поки користувач не клікне або не закриє
         data: {
           url: data.url || '/'
         },
