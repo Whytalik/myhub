@@ -454,7 +454,10 @@ export function Sidebar({
         </div>
 
         {/* User Footer */}
-        <div className="shrink-0 flex items-center justify-between relative pl-5 pr-4 py-4 overflow-hidden border-t border-border">
+        <div className={`
+          shrink-0 flex items-center justify-between relative pl-5 pr-4 py-4 overflow-hidden border-t border-border bg-surface
+          ${isMobileOpen ? "pb-24 lg:pb-4" : "pb-4"}
+        `}>
           {user && (
             <>
               <Link href="/profile" className="flex items-center gap-4 group/profile-link">
