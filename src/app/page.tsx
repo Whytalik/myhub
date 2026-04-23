@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Sparkles, BookHeart, Utensils, Languages, Dumbbell, BookOpen, ShoppingBag, ArrowRight } from "lucide-react";
+import { Suspense } from "react";
 
 const spaces = [
   { label: "Life", description: "Habits, journal, tasks & energy", icon: BookHeart },
@@ -12,12 +13,19 @@ const spaces = [
   { label: "Other", description: "Wishlist & miscellaneous tools", icon: ShoppingBag },
 ];
 
-export default async function LandingPage() {
+async function AuthCheck() {
   const session = await auth().catch(() => null);
   if (session) redirect("/home");
+  return null;
+}
 
+export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-bg text-text flex flex-col">
+      <Suspense fallback={null}>
+        <AuthCheck />
+      </Suspense>
+
       {/* Nav */}
       <header className="flex items-center justify-between px-8 py-5 border-b border-border/40">
         <div className="flex items-center gap-2.5">

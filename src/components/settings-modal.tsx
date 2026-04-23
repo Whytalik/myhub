@@ -221,7 +221,7 @@ export function SettingsModal({
   userName?: string;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"general" | "appearance" | "domains" | "spaces" | "data">("general");
+  const [activeTab, setActiveTab] = useState<"general" | "appearance" | "domains" | "spaces" | "data" | "notifications">("general");
   const { theme, setTheme } = useSpace();
   const [isPending, startTransition] = useTransition();
   const [displayName, setDisplayName] = useState(userName || "");
@@ -271,8 +271,10 @@ export function SettingsModal({
 
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator && "PushManager" in window) {
-      setIsNotificationSupported(true);
-      checkSubscription();
+      startTransition(() => {
+        setIsNotificationSupported(true);
+        checkSubscription();
+      });
     }
   }, [checkSubscription]);
 
@@ -329,7 +331,11 @@ export function SettingsModal({
   useEffect(() => {
     setCustomizations(loadCustomizations());
     
-    const handler = () => setCustomizations(loadCustomizations());
+    const handler = () => {
+      startTransition(() => {
+        setCustomizations(loadCustomizations());
+      });
+    };
     window.addEventListener("system-customizations-updated", handler);
     return () => window.removeEventListener("system-customizations-updated", handler);
   }, [loadCustomizations]);
@@ -649,7 +655,7 @@ export function SettingsModal({
                     <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Push Notifications</h4>
                     {!isNotificationSupported ? (
                        <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-[10px] leading-relaxed">
-                          Your browser does not support push notifications. If you are on iPhone, make sure to "Add to Home Screen" first.
+                          Your browser does not support push notifications. If you are on iPhone, make sure to &quot;Add to Home Screen&quot; first.
                        </div>
                     ) : (
                       <div className="space-y-3">

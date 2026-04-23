@@ -4,19 +4,19 @@ import { Sidebar } from "@/components/sidebar";
 import { DomainHeader } from "@/components/domain-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 
-export function DashboardUIWrapper({
+export function DashboardUIWrapper({ 
   children,
   initialOrder,
-  initialCustomizations,
   initialOpenSections,
-  user,
-}: {
+  user
+}: { 
   children: React.ReactNode;
   initialOrder?: string[];
   initialCustomizations?: Record<string, { icon?: string; color?: string }>;
   initialOpenSections?: Record<string, boolean>;
-  user?: { name: string; email: string; role?: string };
+  user?: { name: string, email: string, role?: string };
 }) {
+
   return (
     <div className="flex h-screen overflow-hidden w-full bg-bg relative">
       {/* Sidebar - Desktop Sticky / Mobile Drawer */}

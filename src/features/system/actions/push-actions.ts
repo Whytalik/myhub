@@ -11,7 +11,13 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 );
 
-export async function savePushSubscriptionAction(subscription: any) {
+export async function savePushSubscriptionAction(subscription: {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}) {
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Unauthorized" };
 
