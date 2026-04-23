@@ -5,6 +5,15 @@ import { hash } from "bcryptjs";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
+const DEFAULT_SPHERES = [
+  { name: "Health", color: "#22c55e", icon: "Heart", order: 0 },
+  { name: "Work", color: "#3b82f6", icon: "Briefcase", order: 1 },
+  { name: "Family", color: "#f59e0b", icon: "Users", order: 2 },
+  { name: "Finance", color: "#10b981", icon: "DollarSign", order: 3 },
+  { name: "Personal Growth", color: "#8b5cf6", icon: "BookOpen", order: 4 },
+  { name: "Fun", color: "#ec4899", icon: "Smile", order: 5 },
+];
+
 export async function registerAction(
   _prev: string | null,
   formData: FormData,
@@ -37,6 +46,18 @@ export async function registerAction(
           name: name,
         } as never,
       });
+
+      for (const sphere of DEFAULT_SPHERES) {
+        await tx.lifeSphere.create({
+          data: {
+            userId: user.id,
+            name: sphere.name,
+            color: sphere.color,
+            icon: sphere.icon,
+            order: sphere.order,
+          },
+        });
+      }
     });
   } catch (error) {
     console.error("Registration error:", error);
