@@ -143,7 +143,11 @@ export function Sidebar({
     return ["operations", "vault"];
   }, [initialOrder, ALL_DOMAINS]);
 
-  const [order] = useState<string[]>(getInitialOrder);
+  const [order, setOrder] = useState<string[]>(getInitialOrder);
+
+  useEffect(() => {
+    setOrder(getInitialOrder());
+  }, [getInitialOrder]);
 
   const loadCustomizations = useCallback(() => {
     if (typeof window === 'undefined') return {};
