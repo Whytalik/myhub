@@ -11,8 +11,6 @@ export const metadata: Metadata = {
   title: "Food Space",
 };
 
-export const experimental_ppr = true;
-
 async function FoodModuleCards() {
   const [productCount, dishCount, planCount, shoppingCount] = await Promise.all([
     prisma.product.count(),
