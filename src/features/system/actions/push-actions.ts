@@ -48,6 +48,17 @@ export async function savePushSubscriptionAction(subscription: {
   }
 }
 
+export async function getPushSubscriptionCountAction() {
+  const session = await auth();
+  if (!session?.user?.id) return { count: 0 };
+  
+  const count = await prisma.pushSubscription.count({
+    where: { userId: session.user.id }
+  });
+  
+  return { count };
+}
+
 export async function sendTestNotificationAction() {
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Unauthorized" };
