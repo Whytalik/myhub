@@ -110,14 +110,12 @@ export function Sidebar({
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
-  const ALL_DOMAINS = useMemo(() => isAdmin
-    ? ["operations", "health", "mind", "wealth", "vault"]
-    : ["operations", "vault"], [isAdmin]);
+  const ALL_DOMAINS = ["operations", "health", "mind", "wealth", "vault"];
 
   const effectiveDomain = useMemo(() => {
     if (ALL_DOMAINS.includes(activeDomain)) return activeDomain;
     return "operations";
-  }, [activeDomain, ALL_DOMAINS]);
+  }, [activeDomain]);
 
   const getInitialOrder = useCallback(() => {
     const mergeOrder = (saved: string[]) => {
@@ -136,12 +134,12 @@ export function Sidebar({
         try {
           return mergeOrder(JSON.parse(savedOrder));
         } catch {
-          return ["operations", "vault"];
+          return ALL_DOMAINS;
         }
       }
     }
-    return ["operations", "vault"];
-  }, [initialOrder, ALL_DOMAINS]);
+    return ALL_DOMAINS;
+  }, [initialOrder]);
 
   const [order, setOrder] = useState<string[]>(getInitialOrder);
 

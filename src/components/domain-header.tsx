@@ -30,12 +30,8 @@ interface DomainHeaderProps {
 export function DomainHeader({ user }: DomainHeaderProps) {
   const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
-  const isAdmin = user?.role === "ADMIN";
 
-  const visibleDomains = useMemo(() => {
-    if (isAdmin) return DOMAINS_CONFIG;
-    return DOMAINS_CONFIG.filter(d => d.id === "operations" || d.id === "vault");
-  }, [isAdmin]);
+  const visibleDomains = DOMAINS_CONFIG;
 
   return (
     <header className="h-16 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
