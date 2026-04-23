@@ -15,17 +15,17 @@ export const revalidate = 0;
 
 export default async function ProfilesPage() {
   const session = await auth();
-  const profileId = session?.user?.profileId;
-  if (!profileId) redirect("/login");
+  const userId = session?.user?.id;
+  if (!userId) redirect("/login");
 
-  const persons = await getPersons(profileId);
+  const persons = await getPersons(userId);
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "profiles" }]} />
       <Heading title="Profiles & Goals" />
       
-      <PersonForm initialPersons={persons} profileId={profileId} />
+      <PersonForm initialPersons={persons} />
     </div>
   );
 }
