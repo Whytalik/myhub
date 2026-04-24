@@ -16,7 +16,14 @@ webpush.setVapidDetails(
  */
 export async function processAutomatedNotificationsAction() {
   const now = new Date();
-  const currentTimeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  // Конвертуємо UTC час сервера в київський час (Europe/Kyiv)
+  const kyivTimeStr = now.toLocaleString("en-GB", { 
+    timeZone: "Europe/Kyiv", 
+    hour: "2-digit", 
+    minute: "2-digit", 
+    hour12: false 
+  });
+  const currentTimeStr = kyivTimeStr;
   
   const notificationsSent: string[] = [];
 
@@ -125,13 +132,14 @@ export async function processAutomatedNotificationsAction() {
     }
   }
 
-  console.log(`[Cron] Running at ${currentTimeStr}`);
+  console.log(`[Cron] Server UTC: ${now.toISOString()}`);
+  console.log(`[Cron] Kyiv time: ${currentTimeStr}`);
   console.log(`[Cron] Due tasks found: ${dueTasks.length}`);
   console.log(`[Cron] Planned tasks found: ${plannedTasks.length}`);
   console.log(`[Cron] Timed habits found: ${timedHabits.length}`);
   console.log(`[Cron] Auto habit check: ${autoReminderTimes.includes(currentTimeStr) ? 'YES' : 'NO'}`);
   
-  return { success: true, sent: notificationsSent, debug: { time: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, habits: timedHabits.length } };
+  return { success: true, sent: notificationsSent, debug: { utc: now.toISOString(), kyiv: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, habits: timedHabits.length } };
 }
 
 async function sendPushToUser(userId: string, payload: { title: string, body: string, url: string }) {
