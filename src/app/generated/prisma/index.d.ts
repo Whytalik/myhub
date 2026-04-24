@@ -6961,6 +6961,7 @@ export namespace Prisma {
     endpoint: string | null
     p256dh: string | null
     auth: string | null
+    userAgent: string | null
     createdAt: Date | null
   }
 
@@ -6970,6 +6971,7 @@ export namespace Prisma {
     endpoint: string | null
     p256dh: string | null
     auth: string | null
+    userAgent: string | null
     createdAt: Date | null
   }
 
@@ -6979,6 +6981,7 @@ export namespace Prisma {
     endpoint: number
     p256dh: number
     auth: number
+    userAgent: number
     createdAt: number
     _all: number
   }
@@ -6990,6 +6993,7 @@ export namespace Prisma {
     endpoint?: true
     p256dh?: true
     auth?: true
+    userAgent?: true
     createdAt?: true
   }
 
@@ -6999,6 +7003,7 @@ export namespace Prisma {
     endpoint?: true
     p256dh?: true
     auth?: true
+    userAgent?: true
     createdAt?: true
   }
 
@@ -7008,6 +7013,7 @@ export namespace Prisma {
     endpoint?: true
     p256dh?: true
     auth?: true
+    userAgent?: true
     createdAt?: true
     _all?: true
   }
@@ -7090,6 +7096,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent: string | null
     createdAt: Date
     _count: PushSubscriptionCountAggregateOutputType | null
     _min: PushSubscriptionMinAggregateOutputType | null
@@ -7116,6 +7123,7 @@ export namespace Prisma {
     endpoint?: boolean
     p256dh?: boolean
     auth?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pushSubscription"]>
@@ -7126,6 +7134,7 @@ export namespace Prisma {
     endpoint?: boolean
     p256dh?: boolean
     auth?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pushSubscription"]>
@@ -7136,6 +7145,7 @@ export namespace Prisma {
     endpoint?: boolean
     p256dh?: boolean
     auth?: boolean
+    userAgent?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pushSubscription"]>
@@ -7146,10 +7156,11 @@ export namespace Prisma {
     endpoint?: boolean
     p256dh?: boolean
     auth?: boolean
+    userAgent?: boolean
     createdAt?: boolean
   }
 
-  export type PushSubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "endpoint" | "p256dh" | "auth" | "createdAt", ExtArgs["result"]["pushSubscription"]>
+  export type PushSubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "endpoint" | "p256dh" | "auth" | "userAgent" | "createdAt", ExtArgs["result"]["pushSubscription"]>
   export type PushSubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7171,6 +7182,7 @@ export namespace Prisma {
       endpoint: string
       p256dh: string
       auth: string
+      userAgent: string | null
       createdAt: Date
     }, ExtArgs["result"]["pushSubscription"]>
     composites: {}
@@ -7601,6 +7613,7 @@ export namespace Prisma {
     readonly endpoint: FieldRef<"PushSubscription", 'String'>
     readonly p256dh: FieldRef<"PushSubscription", 'String'>
     readonly auth: FieldRef<"PushSubscription", 'String'>
+    readonly userAgent: FieldRef<"PushSubscription", 'String'>
     readonly createdAt: FieldRef<"PushSubscription", 'DateTime'>
   }
     
@@ -49847,6 +49860,7 @@ export namespace Prisma {
     endpoint: 'endpoint',
     p256dh: 'p256dh',
     auth: 'auth',
+    userAgent: 'userAgent',
     createdAt: 'createdAt'
   };
 
@@ -50917,6 +50931,7 @@ export namespace Prisma {
     endpoint?: StringFilter<"PushSubscription"> | string
     p256dh?: StringFilter<"PushSubscription"> | string
     auth?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
     createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -50927,6 +50942,7 @@ export namespace Prisma {
     endpoint?: SortOrder
     p256dh?: SortOrder
     auth?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -50940,6 +50956,7 @@ export namespace Prisma {
     userId?: StringFilter<"PushSubscription"> | string
     p256dh?: StringFilter<"PushSubscription"> | string
     auth?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
     createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "endpoint">
@@ -50950,6 +50967,7 @@ export namespace Prisma {
     endpoint?: SortOrder
     p256dh?: SortOrder
     auth?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PushSubscriptionCountOrderByAggregateInput
     _max?: PushSubscriptionMaxOrderByAggregateInput
@@ -50965,6 +50983,7 @@ export namespace Prisma {
     endpoint?: StringWithAggregatesFilter<"PushSubscription"> | string
     p256dh?: StringWithAggregatesFilter<"PushSubscription"> | string
     auth?: StringWithAggregatesFilter<"PushSubscription"> | string
+    userAgent?: StringNullableWithAggregatesFilter<"PushSubscription"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PushSubscription"> | Date | string
   }
 
@@ -53951,6 +53970,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutPushSubscriptionsInput
   }
@@ -53961,6 +53981,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -53969,6 +53990,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPushSubscriptionsNestedInput
   }
@@ -53979,6 +54001,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -53988,6 +54011,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -53996,6 +54020,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -54005,6 +54030,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -57394,6 +57420,7 @@ export namespace Prisma {
     endpoint?: SortOrder
     p256dh?: SortOrder
     auth?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -57403,6 +57430,7 @@ export namespace Prisma {
     endpoint?: SortOrder
     p256dh?: SortOrder
     auth?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -57412,6 +57440,7 @@ export namespace Prisma {
     endpoint?: SortOrder
     p256dh?: SortOrder
     auth?: SortOrder
+    userAgent?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -63775,6 +63804,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -63783,6 +63813,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -64402,6 +64433,7 @@ export namespace Prisma {
     endpoint?: StringFilter<"PushSubscription"> | string
     p256dh?: StringFilter<"PushSubscription"> | string
     auth?: StringFilter<"PushSubscription"> | string
+    userAgent?: StringNullableFilter<"PushSubscription"> | string | null
     createdAt?: DateTimeFilter<"PushSubscription"> | Date | string
   }
 
@@ -70687,6 +70719,7 @@ export namespace Prisma {
     endpoint: string
     p256dh: string
     auth: string
+    userAgent?: string | null
     createdAt?: Date | string
   }
 
@@ -71353,6 +71386,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -71361,6 +71395,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -71369,6 +71404,7 @@ export namespace Prisma {
     endpoint?: StringFieldUpdateOperationsInput | string
     p256dh?: StringFieldUpdateOperationsInput | string
     auth?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
