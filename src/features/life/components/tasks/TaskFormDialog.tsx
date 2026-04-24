@@ -600,7 +600,7 @@ export function TaskFormDialog({
           showErrors={showErrors} onSubmit={handleSubmit} isPending={isPending} />
       ) : (
         <WizardForm
-          spheres={spheres} allTasks={allTasks} parentTask={parentTask}
+          spheres={spheres} allTasks={allTasks} parentTask={parentTask ?? null}
           title={title} setTitle={setTitle} description={description} setDescription={setDescription}
           icon={icon} setIcon={setIcon} iconPickerOpen={iconPickerOpen} setIconPickerOpen={setIconPickerOpen}
           status={status} setStatus={setStatus} priority={priority} setPriority={setPriority}
