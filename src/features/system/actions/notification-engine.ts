@@ -87,6 +87,12 @@ export async function processAutomatedNotificationsAction() {
   }
 
   // 2. Обробка Habits (специфічний час)
+  const allHabits = await prisma.habit.findMany({
+    where: { archived: false },
+    select: { id: true, name: true, reminderTime: true, userId: true }
+  });
+  console.log(`[Cron] All non-archived habits in DB:`, allHabits.map(h => ({ name: h.name, reminderTime: h.reminderTime })));
+
   const timedHabits = await prisma.habit.findMany({
     where: {
       archived: false,
@@ -139,7 +145,7 @@ export async function processAutomatedNotificationsAction() {
   console.log(`[Cron] Timed habits found: ${timedHabits.length}`);
   console.log(`[Cron] Auto habit check: ${autoReminderTimes.includes(currentTimeStr) ? 'YES' : 'NO'}`);
   
-  return { success: true, sent: notificationsSent, debug: { utc: now.toISOString(), kyiv: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, habits: timedHabits.length } };
+  return { success: true, sent: notificationsSent, debug: { utc: now.toISOString(), kyiv: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, allHabits: allHabits.map(h => ({ name: h.name, reminderTime: h.reminderTime })), matchedHabits: timedHabits.length } };
 }
 
 async function sendPushToUser(userId: string, payload: { title: string, body: string, url: string }) {
