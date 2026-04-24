@@ -46,8 +46,9 @@ export async function processAutomatedNotificationsAction() {
   });
 
   for (const task of dueTasks) {
+    if (!task.hasDueTime) continue;
     const diff = Math.abs(now.getTime() - task.dueDate!.getTime()) / 1000 / 60;
-    if (diff < 10) {
+    if (diff < 5) {
        const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
        await sendPushToUser(task.user.id, {
          title: `${priorityEmoji} Task Deadline`,
@@ -76,8 +77,9 @@ export async function processAutomatedNotificationsAction() {
   });
 
   for (const task of plannedTasks) {
+    if (!task.hasPlannedTime) continue;
     const diff = Math.abs(now.getTime() - task.plannedDate!.getTime()) / 1000 / 60;
-    if (diff < 10) {
+    if (diff < 5) {
        const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
        await sendPushToUser(task.user.id, {
          title: `${priorityEmoji} Time to Start`,
