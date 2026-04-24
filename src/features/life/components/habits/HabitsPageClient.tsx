@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ConfirmationDialog } from "@/components/ui/dialog";
 import { Heading } from "@/components/ui/heading";
 import { Tabs } from "@/components/ui/tabs";
 import { deleteHabitAction } from "@/features/life/actions/habit-actions";
@@ -24,6 +25,7 @@ export function HabitsPageClient({
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<HabitData | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [habitToDelete, setHabitToDelete] = useState<string | null>(null);
 
   const activeHabits = initialHabits.filter((h) => !h.archived);
   const archivedHabits = initialHabits.filter((h) => h.archived);
@@ -34,14 +36,18 @@ export function HabitsPageClient({
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this habit?")) {
-      try {
-        await deleteHabitAction(id);
-        toast.success("Habit deleted");
-      } catch {
-        toast.error("Failed to delete habit");
-      }
+    setHabitToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!habitToDelete) return;
+    try {
+      await deleteHabitAction(habitToDelete);
+      toast.success("Habit deleted");
+    } catch {
+      toast.error("Failed to delete habit");
     }
+    setHabitToDelete(null);
   };
 
   const handleAdd = () => {
@@ -176,6 +182,16 @@ export function HabitsPageClient({
             ),
           },
         ]}
+      />
+
+      <ConfirmationDialog
+        isOpen={!!habitToDelete}
+        onClose={() => setHabitToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete habit?"
+        description="This action cannot be undone. All completion history will be lost."
+        confirmLabel="Delete"
+        variant="danger"
       />
 
       <HabitFormDialog
