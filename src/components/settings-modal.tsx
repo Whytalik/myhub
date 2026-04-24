@@ -328,11 +328,11 @@ export function SettingsModal({
 
   const testPush = async () => {
     const res = await sendTestNotificationAction();
-    
+
     if (res.success) {
       toast.success("Broadcast successful!");
     } else {
-      const errorMsg = res.results?.find((r: any) => !r.success)?.message || "Failed";
+      const errorMsg = res.results?.find((r: { success: boolean; message?: string }) => !r.success)?.message || "Failed";
       toast.error(`Broadcast incomplete: ${errorMsg}`);
     }
   };
@@ -342,17 +342,14 @@ export function SettingsModal({
     const saved = localStorage.getItem("system-customizations");
     return saved ? JSON.parse(saved) : {};
   }, []);
-  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>({});
+  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>(loadCustomizations());
 
   useEffect(() => {
-    setCustomizations(loadCustomizations());
-    
     const handler = () => {
       startTransition(() => {
         setCustomizations(loadCustomizations());
       });
-    };
-    window.addEventListener("system-customizations-updated", handler);
+    };    window.addEventListener("system-customizations-updated", handler);
     return () => window.removeEventListener("system-customizations-updated", handler);
   }, [loadCustomizations]);
   

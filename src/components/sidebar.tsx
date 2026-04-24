@@ -347,7 +347,8 @@ export function Sidebar({
       <motion.aside
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{ viewTransitionName: 'sidebar' } as any}
+        // @ts-expect-error - viewTransitionName is not yet in standard CSS properties for TypeScript
+        style={{ viewTransitionName: 'sidebar' }}
         animate={{
           width: isMobileOpen ? 288 : (isExpanded ? 256 : 80),
         }}

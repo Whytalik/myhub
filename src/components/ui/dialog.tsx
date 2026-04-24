@@ -44,7 +44,7 @@ export function Dialog({
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[1100] flex items-end sm:items-center justify-center sm:p-4">
+    <div className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center sm:p-4">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-bg/90 backdrop-blur-md animate-in fade-in duration-300"

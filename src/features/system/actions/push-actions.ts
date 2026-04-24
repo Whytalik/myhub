@@ -95,13 +95,14 @@ export async function sendTestNotificationAction() {
           payload
         );
         return { success: true, device: sub.userAgent || "Unknown" };
-      } catch (error: any) {
-        console.error(`[Push Error] Device: ${sub.userAgent}`, error);
+      } catch (error) {
+        const err = error as { statusCode?: number; body?: string; message: string };
+        console.error(`[Push Error] Device: ${sub.userAgent}`, err);
         return { 
           success: false, 
           device: sub.userAgent || "Unknown", 
-          statusCode: error.statusCode,
-          message: error.body || error.message 
+          statusCode: err.statusCode,
+          message: err.body || err.message 
         };
       }
     })

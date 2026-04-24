@@ -98,7 +98,12 @@ export async function processAutomatedNotificationsAction() {
     }
   }
 
-  return { success: true, sent: notificationsSent };
+  console.log(`[Cron] Running at ${currentTimeStr}`);
+  console.log(`[Cron] Due tasks found: ${dueTasks.length}`);
+  console.log(`[Cron] Timed habits found: ${timedHabits.length}`);
+  console.log(`[Cron] Auto habit check: ${autoReminderTimes.includes(currentTimeStr) ? 'YES' : 'NO'}`);
+  
+  return { success: true, sent: notificationsSent, debug: { time: currentTimeStr, tasks: dueTasks.length, habits: timedHabits.length } };
 }
 
 async function sendPushToUser(userId: string, payload: { title: string, body: string, url: string }) {
