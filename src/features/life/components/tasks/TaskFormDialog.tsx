@@ -16,7 +16,7 @@ import type { TaskData, LifeSphereData, TaskStatus, TaskPriority } from "@/featu
 import { toast } from "sonner";
 import {
   AlertCircle, CalendarClock, Flag, Pencil, FileText,
-  Link2Off, Eye, ChevronRight
+  Link2Off, Eye, ChevronRight, Lock
 } from "lucide-react";
 
 interface TaskFormDialogProps {
@@ -75,6 +75,7 @@ export function TaskFormDialog({
   const [priority, setPriority]       = useState<TaskPriority>(getInitialPriority);
   const [sphereId, setSphereId]       = useState(getInitialSphereId);
   const [parentId, setParentId]       = useState<string | null>(getInitialParentId);
+  const [isPrivate, setIsPrivate]     = useState(() => task?.isPrivate ?? false);
 
   const [plannedDate, setPlannedDate] = useState(getInitialPlannedDate);
   const [plannedTime, setPlannedTime] = useState(getInitialPlannedTime);
@@ -94,6 +95,7 @@ export function TaskFormDialog({
       setPriority("MEDIUM");
       setSphereId(spheres[0]?.id ?? "");
       setParentId(null);
+      setIsPrivate(false);
       setPlannedDate("");
       setPlannedTime("");
       setHasPlannedTime(false);
@@ -145,6 +147,7 @@ export function TaskFormDialog({
           hasDueTime,
           parentId,
           sphereId,
+          isPrivate,
         });
         toast.success(isEditing ? "Task updated" : isDuplicate ? "Task duplicated" : "Task created");
         handleClose();
@@ -260,6 +263,34 @@ export function TaskFormDialog({
                   })()
                 ]}
               />
+            </div>
+
+            {/* Private Task Toggle */}
+            <div className="flex flex-col gap-2.5">
+              <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1">Visibility</label>
+              <button
+                type="button"
+                onClick={() => setIsPrivate(!isPrivate)}
+                className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                  isPrivate
+                    ? "bg-amber-500/10 border-amber-500/30 text-amber-500"
+                    : "bg-surface/50 border-border/40 text-muted hover:text-text"
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  isPrivate ? "bg-amber-500/20" : "bg-raised"
+                }`}>
+                  <Lock size={14} className={isPrivate ? "text-amber-500" : "text-muted/50"} />
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className={`text-[12px] font-bold ${isPrivate ? "text-amber-500" : "text-text"}`}>
+                    {isPrivate ? "Private Task" : "Public Task"}
+                  </span>
+                  <span className="text-[9px] font-mono text-muted tracking-wider">
+                    {isPrivate ? "Password protected" : "Visible to everyone"}
+                  </span>
+                </div>
+              </button>
             </div>
 
             {/* Icon Picker */}
