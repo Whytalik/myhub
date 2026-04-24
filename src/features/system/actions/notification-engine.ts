@@ -39,16 +39,43 @@ export async function processAutomatedNotificationsAction() {
   });
 
   for (const task of dueTasks) {
-    // Тут можна додати логіку, щоб не спамити (наприклад, зберігати completedNotificationId)
-    // Для простоти поки що просто шлемо, якщо дедлайн саме зараз +- 5 хв
     const diff = Math.abs(now.getTime() - task.dueDate!.getTime()) / 1000 / 60;
     if (diff < 10) {
        await sendPushToUser(task.user.id, {
-         title: "Task Reminder",
+         title: "Task Deadline",
          body: `Deadline for: ${task.title}`,
          url: `/life/tasks`
        });
-       notificationsSent.push(`Task: ${task.title}`);
+       notificationsSent.push(`Task (Deadline): ${task.title}`);
+    }
+  }
+
+  // 1.1 Обробка Tasks (plannedDate — запланована дата)
+  const plannedTasks = await prisma.task.findMany({
+    where: {
+      status: { not: "DONE" },
+      plannedDate: {
+        not: null,
+        lte: now
+      },
+      completedAt: null
+    },
+    include: {
+      user: {
+        include: { pushSubscriptions: true }
+      }
+    }
+  });
+
+  for (const task of plannedTasks) {
+    const diff = Math.abs(now.getTime() - task.plannedDate!.getTime()) / 1000 / 60;
+    if (diff < 10) {
+       await sendPushToUser(task.user.id, {
+         title: "Planned Task",
+         body: `Time to start: ${task.title}`,
+         url: `/life/tasks`
+       });
+       notificationsSent.push(`Task (Planned): ${task.title}`);
     }
   }
 
@@ -100,10 +127,11 @@ export async function processAutomatedNotificationsAction() {
 
   console.log(`[Cron] Running at ${currentTimeStr}`);
   console.log(`[Cron] Due tasks found: ${dueTasks.length}`);
+  console.log(`[Cron] Planned tasks found: ${plannedTasks.length}`);
   console.log(`[Cron] Timed habits found: ${timedHabits.length}`);
   console.log(`[Cron] Auto habit check: ${autoReminderTimes.includes(currentTimeStr) ? 'YES' : 'NO'}`);
   
-  return { success: true, sent: notificationsSent, debug: { time: currentTimeStr, tasks: dueTasks.length, habits: timedHabits.length } };
+  return { success: true, sent: notificationsSent, debug: { time: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, habits: timedHabits.length } };
 }
 
 async function sendPushToUser(userId: string, payload: { title: string, body: string, url: string }) {
