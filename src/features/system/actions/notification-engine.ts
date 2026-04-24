@@ -48,9 +48,10 @@ export async function processAutomatedNotificationsAction() {
   for (const task of dueTasks) {
     const diff = Math.abs(now.getTime() - task.dueDate!.getTime()) / 1000 / 60;
     if (diff < 10) {
+       const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
        await sendPushToUser(task.user.id, {
-         title: "Task Deadline",
-         body: `Deadline for: ${task.title}`,
+         title: `${priorityEmoji} Task Deadline`,
+         body: `⏰ ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
          url: `/life/tasks`
        });
        notificationsSent.push(`Task (Deadline): ${task.title}`);
@@ -77,9 +78,10 @@ export async function processAutomatedNotificationsAction() {
   for (const task of plannedTasks) {
     const diff = Math.abs(now.getTime() - task.plannedDate!.getTime()) / 1000 / 60;
     if (diff < 10) {
+       const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
        await sendPushToUser(task.user.id, {
-         title: "Planned Task",
-         body: `Time to start: ${task.title}`,
+         title: `${priorityEmoji} Time to Start`,
+         body: `📋 ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
          url: `/life/tasks`
        });
        notificationsSent.push(`Task (Planned): ${task.title}`);
@@ -91,7 +93,6 @@ export async function processAutomatedNotificationsAction() {
     where: { archived: false },
     select: { id: true, name: true, reminderTime: true, userId: true }
   });
-  console.log(`[Cron] All non-archived habits in DB:`, allHabits.map(h => ({ name: h.name, reminderTime: h.reminderTime })));
 
   const timedHabits = await prisma.habit.findMany({
     where: {
@@ -107,8 +108,8 @@ export async function processAutomatedNotificationsAction() {
 
   for (const habit of timedHabits) {
     await sendPushToUser(habit.userId, {
-      title: "Habit Time!",
-      body: `It's time for: ${habit.action}. Remember: After I ${habit.anchor}...`,
+      title: "⚡ Habit Time",
+      body: `🎯 ${habit.action}\n🔗 After: ${habit.anchor}`,
       url: `/life/habits`
     });
     notificationsSent.push(`Habit (Timed): ${habit.name}`);
@@ -117,6 +118,7 @@ export async function processAutomatedNotificationsAction() {
   // 3. Автоматичні Habits (3 рази на день: 09:00, 14:00, 21:00)
   const autoReminderTimes = ["09:00", "14:00", "21:00"];
   if (autoReminderTimes.includes(currentTimeStr)) {
+    const timeLabel = currentTimeStr === "09:00" ? "Morning" : currentTimeStr === "14:00" ? "Afternoon" : "Evening";
     const usersWithHabits = await prisma.user.findMany({
       where: {
         habits: { some: { archived: false, reminderTime: null } }
@@ -129,8 +131,8 @@ export async function processAutomatedNotificationsAction() {
     for (const user of usersWithHabits) {
       if (user.habits.length > 0) {
         await sendPushToUser(user.id, {
-          title: "Daily Habit Check",
-          body: `You have ${user.habits.length} habits to focus on today. Check your progress!`,
+          title: `☀️ ${timeLabel} Habit Check`,
+          body: `📊 ${user.habits.length} habit${user.habits.length > 1 ? "s" : ""} to focus on. Keep going!`,
           url: `/life/habits`
         });
         notificationsSent.push(`Habit (Auto) for ${user.email}`);

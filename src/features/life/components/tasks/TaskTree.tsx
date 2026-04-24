@@ -25,6 +25,31 @@ function getWeekNumber(d: Date) {
   return weekNo;
 }
 
+function getWeekStart(d: Date) {
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+function getWeekLabel(date: Date) {
+  const start = getWeekStart(date);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  const startMonth = start.toLocaleDateString("en-US", { month: "short" });
+  const endMonth = end.toLocaleDateString("en-US", { month: "short" });
+  if (startMonth === endMonth) {
+    return `${startMonth} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+  }
+  return `${startMonth} ${start.getDate()} – ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
+}
+
+function getWeekSortKey(date: Date) {
+  return getWeekStart(date).getTime();
+}
+
 const PRIMARY_TABS = [
   { id: "time",      label: "Time",      icon: Calendar },
   { id: "hierarchy", label: "Hierarchy", icon: LayoutList },
@@ -112,49 +137,77 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
     }
 
     // 2. Perform Grouping
-    const groups: Record<string, TaskData[]> = {};
+    const groups: Record<string, { tasks: TaskData[]; sortKey: number }> = {};
 
     if (activePrimary === "time" && activeSecondary !== "no-date") {
+      const now = new Date();
+      const currentWeekStart = getWeekStart(now);
+
       filtered.forEach(task => {
         if (!task.plannedDate) return;
         const date = new Date(task.plannedDate);
         let key = "";
+        let sortKey = 0;
         if (activeSecondary === "weeks") {
-          const week = getWeekNumber(date);
-          key = `Week ${week}, ${date.getFullYear()}`;
+          const weekStart = getWeekStart(date);
+          if (weekStart < currentWeekStart) return;
+          key = getWeekLabel(date);
+          sortKey = weekStart.getTime();
         } else if (activeSecondary === "months") {
+          if (date < new Date(now.getFullYear(), now.getMonth(), 1)) return;
           key = date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+          sortKey = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
         } else if (activeSecondary === "quarters") {
           const quarter = Math.floor(date.getMonth() / 3) + 1;
+          const currentQuarter = Math.floor(now.getMonth() / 3) + 1;
+          if (date.getFullYear() < now.getFullYear() || (date.getFullYear() === now.getFullYear() && quarter < currentQuarter)) return;
           key = `Q${quarter} ${date.getFullYear()}`;
+          sortKey = new Date(date.getFullYear(), (quarter - 1) * 3, 1).getTime();
         } else if (activeSecondary === "years") {
+          if (date.getFullYear() < now.getFullYear()) return;
           key = date.getFullYear().toString();
+          sortKey = new Date(date.getFullYear(), 0, 1).getTime();
         }
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(task);
+        if (!groups[key]) groups[key] = { tasks: [], sortKey };
+        groups[key].tasks.push(task);
       });
     } else if (activePrimary === "sphere" && activeSecondary === "all") {
       spheres.forEach(s => {
         const sphereTasks = filtered.filter(t => t.sphereId === s.id);
-        if (sphereTasks.length > 0) groups[s.name] = sphereTasks;
+        if (sphereTasks.length > 0) groups[s.name] = { tasks: sphereTasks, sortKey: 0 };
       });
     } else if (activePrimary === "status" && activeSecondary === "all") {
+      const statusOrder: Record<string, number> = { "BACKLOG": 0, "TODO": 1, "IN_PROGRESS": 2, "DONE": 3, "CANCELLED": 4 };
       Object.keys(STATUS_CONFIG).forEach(s => {
         const statusTasks = filtered.filter(t => t.status === s);
-        if (statusTasks.length > 0) groups[STATUS_CONFIG[s as TaskStatus].label] = statusTasks;
+        if (statusTasks.length > 0) groups[STATUS_CONFIG[s as TaskStatus].label] = { tasks: statusTasks, sortKey: statusOrder[s] ?? 99 };
       });
     } else {
-      // Single group (Hierarchy or filtered results)
       const label = activePrimary === "hierarchy" 
         ? (activeSecondary === "parents" ? "Main Tasks" : activeSecondary === "subtasks" ? "Subtasks" : "All Tasks")
         : activePrimary === "sphere" ? spheres.find(s => s.id === activeSecondary)?.name || "Sphere Tasks"
         : activePrimary === "status" ? STATUS_CONFIG[activeSecondary as TaskStatus]?.label || "Status Tasks"
         : "Unplanned Tasks";
       
-      if (filtered.length > 0) groups[label] = filtered;
+      if (filtered.length > 0) groups[label] = { tasks: filtered, sortKey: 0 };
     }
 
-    return groups;
+    // Sort time groups chronologically
+    if (activePrimary === "time" && activeSecondary !== "no-date") {
+      const sorted = Object.entries(groups).sort((a, b) => a[1].sortKey - b[1].sortKey);
+      const result: Record<string, TaskData[]> = {};
+      for (const [key, value] of sorted) {
+        result[key] = value.tasks;
+      }
+      return result;
+    }
+
+    // Convert to simple format for other groupings
+    const result: Record<string, TaskData[]> = {};
+    for (const [key, value] of Object.entries(groups)) {
+      result[key] = value.tasks;
+    }
+    return result;
   }, [tasks, activePrimary, activeSecondary, spheres]);
 
   const groupKeys = Object.keys(groupedTasks);
