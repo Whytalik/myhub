@@ -23,7 +23,7 @@ interface TasksPageClientProps {
 export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialView }: TasksPageClientProps) {
   const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
-  const [view, setView] = useState(initialView ?? "gallery");
+  const [view, setView] = useState(initialView ?? "calendar");
   const [privateUnlocked, setPrivateUnlocked] = useState(false);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");

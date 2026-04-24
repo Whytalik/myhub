@@ -164,6 +164,7 @@ function CalendarDayCell({
 
   const isCurrentMonth = isSameMonth(day, currentMonth);
   const isTodayDate = isToday(day);
+  const isWeekend = day.getDay() === 0 || day.getDay() === 6;
   const sortedTasks = useMemo(() => sortTasks(tasks), [tasks]);
 
   return (
@@ -172,7 +173,7 @@ function CalendarDayCell({
       className={`
         p-1 md:p-2 border-r border-b border-white/[0.03] transition-colors flex flex-col gap-1 group/cell
         ${mode === 'month' ? 'min-h-[100px] md:min-h-[160px]' : 'min-h-[300px] md:min-h-[400px] flex-1'}
-        ${!isCurrentMonth && mode === 'month' ? "bg-bg/40 opacity-20" : "bg-[#141414]"}
+        ${!isCurrentMonth && mode === 'month' ? "bg-bg/40 opacity-20" : isWeekend ? "bg-[#11100e]" : "bg-[#141414]"}
         ${isOver ? "bg-accent/[0.05] border-accent/20" : ""}
         ${isDraggingAny ? "overflow-visible" : "overflow-hidden"}
       `}
@@ -225,7 +226,7 @@ export function TaskCalendar({
   tasks: initialTasks, 
   allTasks, 
   spheres, 
-  defaultMode = "month", 
+  defaultMode = "week", 
   onDuplicate 
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -421,8 +422,8 @@ export function TaskCalendar({
         <div className="overflow-x-auto scrollbar-hide">
           <div className="min-w-[600px] md:min-w-0">
             <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
-                <div key={day} className="py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] text-muted/20">
+              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
+                <div key={day} className={`py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
                   {day}
                 </div>
               ))}
