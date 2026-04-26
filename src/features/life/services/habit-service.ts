@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import type { UpsertHabitInput, HabitStats } from "../types";
-import { getStartOfDay, calculateStreak } from "../logic/habit-utils";
+import type { UpsertHabitInput } from "../types";
+import { getStartOfDay } from "../logic/habit-utils";
 
 export async function getActiveHabits(userId: string) {
   return prisma.habit.findMany({
@@ -80,44 +80,5 @@ export async function toggleHabitCompletion(userId: string, habitId: string, dat
       habitId,
       date: startOfDay,
     },
-  });
-}
-
-export async function getHabitStats(userId: string): Promise<HabitStats[]> {
-  const habits = await prisma.habit.findMany({
-    where: { userId, archived: false },
-    include: {
-      completions: {
-        orderBy: { date: "desc" },
-      },
-    },
-  });
-
-  const today = getStartOfDay();
-
-  return habits.map((habit) => {
-    const streak = calculateStreak(habit.completions);
-    const completionDates = new Set(habit.completions.map(c => new Date(c.date).setHours(0, 0, 0, 0)));
-
-    // Last 7 days
-    const last7Days: boolean[] = [];
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(today.getTime() - i * 86400000);
-      last7Days.push(completionDates.has(d.setHours(0, 0, 0, 0)));
-    }
-
-    // Completion rate last 30 days
-    const thirtyDaysAgo = new Date(today.getTime() - 30 * 86400000);
-    const recentCompletions = habit.completions.filter(c => new Date(c.date) >= thirtyDaysAgo).length;
-    const completionRate = Math.round((recentCompletions / 30) * 100);
-
-    return {
-      id: habit.id,
-      name: habit.name,
-      streak,
-      totalCompletions: habit.completions.length,
-      completionRate,
-      last7Days,
-    };
   });
 }

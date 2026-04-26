@@ -3,24 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { Heading } from "@/components/ui/heading";
-import { Tabs } from "@/components/ui/tabs";
 import { deleteHabitAction } from "@/features/life/actions/habit-actions";
-import type { HabitData, HabitStats } from "@/features/life/types";
-import { ListChecks, PieChart, Plus, Sparkles } from "lucide-react";
+import type { HabitData } from "@/features/life/types";
+import { ListChecks, Plus, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { HabitCard } from "./HabitCard";
 import { HabitFormDialog } from "./HabitFormDialog";
-import { HabitStatsView } from "./HabitStatsView";
 
 interface HabitsPageClientProps {
   initialHabits: HabitData[];
-  initialStats: HabitStats[];
 }
 
 export function HabitsPageClient({
   initialHabits,
-  initialStats,
 }: HabitsPageClientProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<HabitData | null>(null);
@@ -78,111 +74,74 @@ export function HabitsPageClient({
         </div>
       </div>
 
-      <Tabs
-        tabs={[
-          {
-            id: "practice",
-            label: "Today's practice",
-            icon: <ListChecks size={14} />,
-            content: (
-              <div className="space-y-8 animate-in fade-in duration-500 pt-6">
-                <div className="flex items-center justify-between border-b border-border/40 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
-                      <ListChecks size={18} />
-                    </div>
-                    <h2 className="text-[11px] font-mono font-bold tracking-[0.1em] text-secondary">
-                      Daily disciplines
-                    </h2>
-                  </div>
-                  {archivedHabits.length > 0 && (
-                    <button
-                      onClick={() => setShowArchived(!showArchived)}
-                      className="text-[9px] font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
-                    >
-                      {showArchived
-                        ? "Hide archived"
-                        : `Show archived (${archivedHabits.length})`}
-                    </button>
-                  )}
-                </div>
+      <div className="space-y-8 animate-in fade-in duration-500 pt-6">
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
+              <ListChecks size={18} />
+            </div>
+            <h2 className="text-[11px] font-mono font-bold tracking-[0.1em] text-secondary">
+              Daily disciplines
+            </h2>
+          </div>
+          {archivedHabits.length > 0 && (
+            <button
+              onClick={() => setShowArchived(!showArchived)}
+              className="text-[9px] font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
+            >
+              {showArchived
+                ? "Hide archived"
+                : `Show archived (${archivedHabits.length})`}
+            </button>
+          )}
+        </div>
 
-                {activeHabits.length === 0 && !showArchived ? (
-                  <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4">
-                    <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
-                      <Sparkles size={32} className="text-muted/40" />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-sm font-bold text-text">
-                        No habits defined yet
-                      </p>
-                      <p className="text-[11px] text-muted max-w-[280px]">
-                        Start with something small. Follow the BJ Fogg
-                        methodology to build habits that last.
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleAdd}
-                      className="mt-2"
-                    >
-                      Configure your first habit
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {activeHabits.map((habit) => (
-                      <HabitCard
-                        key={habit.id}
-                        habit={habit}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                      />
-                    ))}
+        {activeHabits.length === 0 && !showArchived ? (
+          <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4">
+            <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
+              <Sparkles size={32} className="text-muted/40" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-bold text-text">
+                No habits defined yet
+              </p>
+              <p className="text-[11px] text-muted max-w-[280px]">
+                Start with something small. Follow the BJ Fogg
+                methodology to build habits that last.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleAdd}
+              className="mt-2"
+            >
+              Configure your first habit
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {activeHabits.map((habit) => (
+              <HabitCard
+                key={habit.id}
+                habit={habit}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
 
-                    {showArchived &&
-                      archivedHabits.map((habit) => (
-                        <HabitCard
-                          key={habit.id}
-                          habit={habit}
-                          onEdit={handleEdit}
-                          onDelete={handleDelete}
-                        />
-                      ))}
-                  </div>
-                )}
-              </div>
-            ),
-          },
-          {
-            id: "analytics",
-            label: "Success analytics",
-            icon: <PieChart size={14} />,
-            content: (
-              <div className="space-y-8 animate-in fade-in duration-500 pt-6">
-                <div className="flex items-center gap-3 border-b border-border/40 pb-4">
-                  <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-500">
-                    <PieChart size={18} />
-                  </div>
-                  <h2 className="text-[11px] font-mono font-bold tracking-[0.1em] text-secondary">
-                    Performance data
-                  </h2>
-                </div>
-
-                {initialStats.length > 0 ? (
-                  <HabitStatsView stats={initialStats} />
-                ) : (
-                  <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4 text-muted">
-                    <PieChart size={32} strokeWidth={1} />
-                    <p className="text-sm font-bold">No data to analyze yet</p>
-                  </div>
-                )}
-              </div>
-            ),
-          },
-        ]}
-      />
+            {showArchived &&
+              archivedHabits.map((habit) => (
+                <HabitCard
+                  key={habit.id}
+                  habit={habit}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+          </div>
+        )}
+      </div>
 
       <ConfirmationDialog
         isOpen={!!habitToDelete}

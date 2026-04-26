@@ -1,19 +1,17 @@
 import type { 
   TaskStatus as PrismaTaskStatus,
   TaskPriority as PrismaTaskPriority,
-  WishlistStatus as PrismaWishlistStatus,
   Prisma,
 } from "@/app/generated/prisma";
+import type { RoutineMap } from "@/lib/routine-items";
 
 type JsonValue = Prisma.JsonValue;
-import type { RoutineMap } from "@/lib/routine-items";
 
 //
 // --- Base Enums ---
 //
 export type TaskStatus = PrismaTaskStatus;
 export type TaskPriority = PrismaTaskPriority;
-export type WishlistStatus = PrismaWishlistStatus;
 
 //
 // --- Life Sphere ---
@@ -102,7 +100,6 @@ export interface DailyEntryData {
   emotions: JsonValue | null;
   weight: number | null;
   energyNote: string | null;
-  morningSunlight: boolean | null;
   // Evening Energy
   eveningEnergy: number | null;
   // Nutrition
@@ -136,7 +133,6 @@ export interface UpsertDailyEntryInput {
   emotions?: string[] | null;
   weight?: number | null;
   energyNote?: string | null;
-  morningSunlight?: boolean | null;
   // Evening Energy
   eveningEnergy?: number | null;
   // Nutrition
@@ -189,67 +185,4 @@ export interface UpsertHabitInput {
   reminderTime?: string | null;
   order?: number;
   archived?: boolean;
-}
-
-//
-// --- Stats ---
-//
-export interface RecentEntry {
-  date: Date;
-  energy: number | null;
-  sleepHours: number | null;
-  routineScore: number | null;
-}
-
-export interface DailyStats {
-  streak: number;
-  avgSleep: number | null;
-  avgEnergy: number | null;
-  avgMood: number | null;
-  recentEntries: RecentEntry[];
-}
-
-export interface SphereTaskStat {
-  id: string;
-  name: string;
-  color: string;
-  count: number;
-  completed: number;
-}
-
-export interface DayTaskStat {
-  date: string;
-  created: number;
-  completed: number;
-}
-
-export interface ProjectProgressStat {
-  id: string;
-  title: string;
-  totalSubtasks: number;
-  completedSubtasks: number;
-  progress: number;
-}
-
-export interface TaskStats {
-  totalTasks: number;
-  completedTasks: number;
-  completionRate: number;
-  overdueTasks: number;
-  onTimeRate: number;
-  mostActiveSphere: string | null;
-  activeHighPriorityTasks: number;
-  avgLeadTimeHours: number | null;
-  sphereDistribution: SphereTaskStat[];
-  last7Days: DayTaskStat[];
-  topProjects: ProjectProgressStat[];
-}
-
-export interface HabitStats {
-  id: string;
-  name: string;
-  streak: number;
-  totalCompletions: number;
-  completionRate: number;
-  last7Days: boolean[];
 }

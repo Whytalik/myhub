@@ -63,8 +63,3 @@ export async function getAllSpheresAction() {
   const userId = await getUserId();
   return taskService.getAllSpheres(userId);
 }
-
-export async function getTaskStatsAction() {
-  const userId = await getUserId();
-  return taskService.getTaskStats(userId);
-}

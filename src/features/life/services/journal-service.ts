@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/routine-items";
-import type { UpsertDailyEntryInput, DailyStats, RecentEntry } from "../types";
+import type { UpsertDailyEntryInput } from "../types";
 
 function todayDate(): Date {
   const now = new Date();
@@ -58,74 +57,4 @@ export async function getAllEntries(userId: string) {
       winToday: true,
     },
   });
-}
-
-export async function getDailyStats(userId: string): Promise<DailyStats> {
-  const entries = await prisma.dailyEntry.findMany({
-    where: { userId },
-    orderBy: { date: "desc" },
-    take: 30,
-    select: {
-      date: true,
-      energy: true,
-      mood: true,
-      sleepHours: true,
-      morningRoutine: true,
-      eveningRoutine: true,
-    },
-  });
-
-  // Streak: consecutive days ending today
-  const today = todayDate().getTime();
-  let streak = 0;
-  for (let i = 0; i < entries.length; i++) {
-    const entryDay = entries[i].date.getTime();
-    const expected = today - i * 86400000;
-    if (entryDay === expected) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  const withSleep = entries.filter((e) => e.sleepHours !== null);
-  const withEnergy = entries.filter((e) => e.energy !== null);
-  const withMood = entries.filter((e) => e.mood !== null);
-
-  const avgSleep =
-    withSleep.length > 0
-      ? withSleep.reduce((s, e) => s + e.sleepHours!, 0) / withSleep.length
-      : null;
-
-  const avgEnergy =
-    withEnergy.length > 0
-      ? withEnergy.reduce((s, e) => s + e.energy!, 0) / withEnergy.length
-      : null;
-
-  const avgMood =
-    withMood.length > 0
-      ? withMood.reduce((s, e) => s + e.mood!, 0) / withMood.length
-      : null;
-
-  const recentEntries: RecentEntry[] = entries.slice(0, 7).map((e) => {
-    let routineScore: number | null = null;
-    const morning = e.morningRoutine as RoutineMap | null;
-    const evening = e.eveningRoutine as RoutineMap | null;
-    
-    if (morning || evening) {
-      const total = ROUTINE_ITEMS.length;
-      const done = ROUTINE_ITEMS.filter((item) => 
-        (morning && morning[item.id]) || (evening && evening[item.id])
-      ).length;
-      routineScore = total > 0 ? Math.round((done / total) * 100) : null;
-    }
-    return {
-      date: e.date,
-      energy: e.energy,
-      sleepHours: e.sleepHours,
-      routineScore,
-    };
-  });
-
-  return { streak, avgSleep, avgEnergy, avgMood, recentEntries };
 }
