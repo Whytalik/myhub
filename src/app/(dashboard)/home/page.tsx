@@ -7,7 +7,8 @@ import {
   Flame, BookText, Zap, TrendingUp, Compass,
   Briefcase, Shield, Brain, Database, Package,
 } from "lucide-react";
-import { getTodayEntry, getDailyStats } from "@/features/life/services/journal-service";
+import { getTodayEntry } from "@/features/life/services/journal-service";
+import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 
 const domainGroups = [
@@ -68,13 +69,34 @@ export default async function HomePage() {
   let avgEnergy: number | null = null;
 
   if (userId) {
-    const [stats, todayEntry] = await Promise.all([
-      getDailyStats(userId).catch(() => null),
+    const [todayEntry, entries] = await Promise.all([
       getTodayEntry(userId).catch(() => null),
+      prisma.dailyEntry.findMany({
+        where: { userId },
+        orderBy: { date: "desc" },
+        take: 30,
+        select: { date: true, energy: true },
+      }).catch(() => []),
     ]);
-    streak = stats?.streak ?? 0;
     todayDone = !!todayEntry;
-    avgEnergy = stats?.avgEnergy ?? null;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    for (let i = 0; i < entries.length; i++) {
+      const entryDay = new Date(entries[i].date);
+      entryDay.setHours(0, 0, 0, 0);
+      const expected = new Date(today.getTime() - i * 86400000);
+      if (entryDay.getTime() === expected.getTime()) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+
+    const withEnergy = entries.filter((e) => e.energy !== null);
+    avgEnergy = withEnergy.length > 0
+      ? withEnergy.reduce((s, e) => s + e.energy!, 0) / withEnergy.length
+      : null;
   }
 
   return (
