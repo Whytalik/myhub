@@ -16,7 +16,7 @@ export default async function VaultPage() {
       icon={Package}
       color="#a3a3a3"
       spaces={[
-        { label: "Misc / Other", description: "Wishlist, standalone tools, and system archives.", icon: ShoppingBag, href: "/other", color: "#a3a3a3" },
+        { label: "Misc / Other", description: "Wishlist, standalone tools, and system archives.", icon: ShoppingBag, href: "/other", color: "#a3a3a3", status: "disabled" },
       ]}
       metrics={[
         { label: "System Integrity", value: "Secure" },

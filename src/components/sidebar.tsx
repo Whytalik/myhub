@@ -19,7 +19,6 @@ import {
   Dumbbell,
   History,
   Languages,
-  LayoutDashboard,
   LogOut,
   Package,
   Settings2,
@@ -30,11 +29,30 @@ import {
   Users,
   Zap,
   Pin,
-  X
+  X,
+  Lock
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo } from "react";
+
+type SpaceStatus = "active" | "dev" | "soon" | "disabled";
+
+const STATUS_CONFIG: Record<SpaceStatus, { label: string; color: string; bg: string }> = {
+  active: { label: "Active", color: "text-emerald-400", bg: "bg-emerald-400/10" },
+  dev: { label: "In Dev", color: "text-amber-400", bg: "bg-amber-400/10" },
+  soon: { label: "Soon", color: "text-blue-400", bg: "bg-blue-400/10" },
+  disabled: { label: "Disabled", color: "text-muted/40", bg: "bg-muted/5" },
+};
+
+interface SpaceNavItem {
+  id: string;
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  status: SpaceStatus;
+  subItems?: { href: string; label: string; icon: LucideIcon }[];
+}
 
 // --- Navigation Data ---
 const foodNav = [
@@ -55,7 +73,6 @@ const lifeSpaceNav = [
   { href: "/life/journal", label: "Journal", icon: BookText },
   { href: "/life/habits", label: "Habits", icon: Zap },
   { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
-  { href: "/life/journal/stats", label: "Statistics", icon: LayoutDashboard },
 ];
 
 const planningNav = [
@@ -110,12 +127,12 @@ export function Sidebar({
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
-  const ALL_DOMAINS = ["operations", "health", "mind", "wealth", "vault"];
+  const ALL_DOMAINS = useMemo(() => ["operations", "health", "mind", "wealth", "vault"], []);
 
   const effectiveDomain = useMemo(() => {
     if (ALL_DOMAINS.includes(activeDomain)) return activeDomain;
     return "operations";
-  }, [activeDomain]);
+  }, [activeDomain, ALL_DOMAINS]);
 
   const getInitialOrder = useCallback(() => {
     const mergeOrder = (saved: string[]) => {
@@ -139,7 +156,7 @@ export function Sidebar({
       }
     }
     return ALL_DOMAINS;
-  }, [initialOrder]);
+  }, [initialOrder, ALL_DOMAINS]);
 
   const [order, setOrder] = useState<string[]>(getInitialOrder);
 
@@ -177,19 +194,21 @@ export function Sidebar({
 
   const renderNavGroup = (
     label: string,
-    items: { href: string; label: string; icon: LucideIcon, id: string; subItems?: { href: string; label: string; icon: LucideIcon }[] }[],
+    items: SpaceNavItem[],
+    groupDisabled = false,
   ) => {
     return (
-      <div key={label} className="flex flex-col gap-4 w-full">
+      <div key={label} className={`flex flex-col gap-4 w-full ${groupDisabled ? "opacity-30 pointer-events-none" : ""}`}>
         <div className="flex flex-col gap-2 w-full">
           {items.map((item) => {
             const isItemActive = pathname.startsWith(item.href);
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? false;
+            const isDisabled = item.status === "disabled" || groupDisabled;
 
             const custom = customizations[item.id];
             const ItemIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || item.icon) : item.icon;
-            const baseColor = custom?.color || DEFAULT_SPACE_COLORS[item.label]?.text || "#a3a3a3";
+            const baseColor = isDisabled ? "#525252" : (custom?.color || DEFAULT_SPACE_COLORS[item.label]?.text || "#a3a3a3");
 
             const color = {
               text: baseColor,
@@ -201,15 +220,63 @@ export function Sidebar({
               glow: `${baseColor}20`
             };
 
+            const statusBadge = STATUS_CONFIG[item.status];
+
+            const linkContent = (
+              <motion.div
+                initial={false}
+                animate={{ paddingLeft: isExpanded ? 12 : 10 }}
+                transition={SIDEBAR_SPRING}
+                className="flex items-center w-full h-full"
+              >
+              <div className={`w-9 h-9 flex items-center justify-center shrink-0 rounded-xl transition-all duration-200 ${
+                !isExpanded && isItemActive && !isDisabled ? "shadow-[0_0_15px_-3px_var(--glow-color)]" : ""
+              } ${!isExpanded && !isDisabled ? "group-hover/item:scale-110" : ""}`}
+              style={{ backgroundColor: !isExpanded && isItemActive && !isDisabled ? `${color.text}15` : undefined }}>
+                <ItemIcon
+                  size={18}
+                  style={{ color: color.text }}
+                  strokeWidth={isItemActive && !isDisabled ? 2.5 : 2}
+                  className="transition-colors duration-200"
+                />
+              </div>
+
+              <motion.div
+                initial={false}
+                animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
+                transition={LABEL_TRANSITION}
+                className="ml-3 overflow-hidden flex items-center gap-2"
+                style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+              >
+                <span
+                  className="text-[13px] font-bold whitespace-nowrap"
+                  style={{ color: color.text }}
+                >
+                  {item.label}
+                </span>
+                {isExpanded && isDisabled && (
+                  <Lock size={10} className="text-muted/30 shrink-0" />
+                )}
+                {isExpanded && item.status !== "disabled" && (
+                  <span className={`text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
+                    {statusBadge.label}
+                  </span>
+                )}
+              </motion.div>
+              </motion.div>
+            );
+
             return (
               <div
                 key={item.href}
-                className={`flex flex-col border transition-colors duration-200 group/item overflow-hidden rounded-2xl bg-[var(--item-bg)] border-[var(--item-border)] hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)] ${
-                  isItemActive ? "shadow-[0_8px_20px_-6px_var(--glow-color)]" : ""
+                className={`flex flex-col border transition-colors duration-200 group/item overflow-hidden rounded-2xl bg-[var(--item-bg)] border-[var(--item-border)] ${
+                  !isDisabled ? "hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)]" : ""
+                } ${
+                  isItemActive && !isDisabled ? "shadow-[0_8px_20px_-6px_var(--glow-color)]" : ""
                 }`}
                 style={{
-                  "--item-bg": isItemActive ? color.bgActive : "transparent",
-                  "--item-border": isItemActive ? color.borderActive : `${baseColor}25`,
+                  "--item-bg": isItemActive && !isDisabled ? color.bgActive : "transparent",
+                  "--item-border": isItemActive && !isDisabled ? color.borderActive : `${baseColor}25`,
                   "--hover-bg": color.bgHover,
                   "--hover-border": color.borderHover,
                   "--hover-text": color.text,
@@ -217,46 +284,17 @@ export function Sidebar({
                 } as React.CSSProperties}
               >
                 <div className="flex items-center group/link relative w-full">
-                  <Link
-                    href={item.href}
-                    className="flex-1 flex items-center h-12"
-                  >
-                    <motion.div
-                      initial={false}
-                      animate={{ paddingLeft: isExpanded ? 12 : 10 }}
-                      transition={SIDEBAR_SPRING}
-                      className="flex items-center w-full h-full"
-                    >
-                    <div className={`w-9 h-9 flex items-center justify-center shrink-0 rounded-xl transition-all duration-200 ${
-                      !isExpanded && isItemActive ? "shadow-[0_0_15px_-3px_var(--glow-color)]" : ""
-                    } ${!isExpanded ? "group-hover/item:scale-110" : ""}`}
-                    style={{ backgroundColor: !isExpanded && isItemActive ? `${color.text}15` : undefined }}>
-                      <ItemIcon
-                        size={18}
-                        style={{ color: color.text }}
-                        strokeWidth={isItemActive ? 2.5 : 2}
-                        className="transition-colors duration-200"
-                      />
+                  {isDisabled ? (
+                    <div className="flex-1 flex items-center h-12 opacity-40 cursor-not-allowed">
+                      {linkContent}
                     </div>
+                  ) : (
+                    <Link href={item.href} className="flex-1 flex items-center h-12">
+                      {linkContent}
+                    </Link>
+                  )}
 
-                    <motion.div
-                      initial={false}
-                      animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
-                      transition={LABEL_TRANSITION}
-                      className="ml-3 overflow-hidden"
-                      style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-                    >
-                      <span
-                        className="text-[13px] font-bold whitespace-nowrap"
-                        style={{ color: color.text }}
-                      >
-                        {item.label}
-                      </span>
-                    </motion.div>
-                    </motion.div>
-                  </Link>
-
-                  {item.subItems && (
+                  {item.subItems && !isDisabled && (
                     <motion.button
                       initial={false}
                       animate={{ opacity: isExpanded ? 1 : 0 }}
@@ -276,7 +314,7 @@ export function Sidebar({
                   )}
                 </div>
 
-                {item.subItems && (
+                {item.subItems && !isDisabled && (
                   <motion.div
                     initial={false}
                     animate={{
@@ -427,27 +465,27 @@ export function Sidebar({
 
               if (section === "operations")
                 return renderNavGroup("Operations", [
-                  { id: "planning", label: "Planning Space", href: "/planning", icon: Compass, subItems: planningNav },
-                  { id: "life", label: "Life Space", href: "/life", icon: Sparkles, subItems: lifeSpaceNav },
+                  { id: "planning", label: "Planning Space", href: "/planning", icon: Compass, status: "soon", subItems: planningNav },
+                  { id: "life", label: "Life Space", href: "/life", icon: Sparkles, status: "active", subItems: lifeSpaceNav },
                 ]);
               if (section === "health" && isAdmin)
                 return renderNavGroup("Health", [
-                  { id: "food", label: "Food Space", href: "/food", icon: ChefHat, subItems: foodNav },
-                  { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, subItems: fitnessNav },
+                  { id: "food", label: "Food Space", href: "/food", icon: ChefHat, status: "dev", subItems: foodNav },
+                  { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, status: "disabled", subItems: fitnessNav },
                 ]);
               if (section === "mind" && isAdmin)
                 return renderNavGroup("Mind", [
-                  { id: "languages", label: "Language Space", href: "/languages", icon: Languages, subItems: languagesNav },
-                  { id: "library", label: "Library Space", href: "/library", icon: BookText, subItems: libraryNav },
-                ]);
+                  { id: "languages", label: "Language Space", href: "/languages", icon: Languages, status: "disabled", subItems: languagesNav },
+                  { id: "library", label: "Library Space", href: "/library", icon: BookText, status: "disabled", subItems: libraryNav },
+                ], true);
               if (section === "wealth" && isAdmin)
                 return renderNavGroup("Wealth", [
-                  { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, subItems: tradingNav },
-                ]);
+                  { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, status: "disabled", subItems: tradingNav },
+                ], true);
               if (section === "vault")
                 return renderNavGroup("Vault", [
-                  { id: "other", label: "Misc / Other", href: "/other", icon: Package, subItems: otherNav },
-                ]);
+                  { id: "other", label: "Misc / Other", href: "/other", icon: Package, status: "disabled", subItems: otherNav },
+                ], true);
               return null;
             })}
           </nav>
@@ -516,7 +554,6 @@ export function Sidebar({
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
-        initialOrder={order}
         userName={user?.name}
       />
     </>

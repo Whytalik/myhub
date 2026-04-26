@@ -17,7 +17,7 @@ export default async function WealthPage() {
       icon={Database}
       color="#22c55e"
       spaces={[
-        { label: "Trading Space", description: "Live market telemetry, trade journaling, and portfolio allocation.", icon: TrendingUp, href: "/trading", color: "#22c55e" },
+        { label: "Trading Space", description: "Live market telemetry, trade journaling, and portfolio allocation.", icon: TrendingUp, href: "/trading", color: "#22c55e", status: "disabled" },
       ]}
       metrics={[
         { label: "Portfolio Health", value: "Balanced" },

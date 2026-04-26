@@ -17,8 +17,8 @@ export default async function HealthPage() {
       icon={Shield}
       color="#ff8c00"
       spaces={[
-        { label: "Food Space", description: "Precision nutrition, macro tracking, and meal architecture.", icon: Utensils, href: "/food", color: "#ff8c00" },
-        { label: "Fitness Space", description: "High-performance training, progressive overload, and volume tracking.", icon: Dumbbell, href: "/fitness", color: "#e87d88" },
+        { label: "Food Space", description: "Precision nutrition, macro tracking, and meal architecture.", icon: Utensils, href: "/food", color: "#ff8c00", status: "dev" },
+        { label: "Fitness Space", description: "High-performance training, progressive overload, and volume tracking.", icon: Dumbbell, href: "/fitness", color: "#e87d88", status: "disabled" },
       ]}
       metrics={[
         { label: "Metabolic Status", value: "Optimized" },

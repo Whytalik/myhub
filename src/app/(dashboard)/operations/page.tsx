@@ -21,14 +21,16 @@ export default async function OperationsPage() {
           description: "Level 1-5 Strategic Framework. North Star, Milestones, and 12-Week Cycles.", 
           icon: Compass, 
           href: "/planning",
-          color: "#fbbf24"
+          color: "#fbbf24",
+          status: "soon"
         },
         { 
           label: "Life Space", 
           description: "Execution engine. Daily journal, habit compounding, and task management.", 
           icon: Sparkles, 
           href: "/life",
-          color: "#6fbfbf"
+          color: "#6fbfbf",
+          status: "active"
         },
       ]}
       metrics={[

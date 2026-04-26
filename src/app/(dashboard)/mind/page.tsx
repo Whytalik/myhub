@@ -17,8 +17,8 @@ export default async function MindPage() {
       icon={Brain}
       color="#818cf8"
       spaces={[
-        { label: "Language Space", description: "Linguistic neural growth, vocabulary retention, and immersion density.", icon: Languages, href: "/languages", color: "#c084fc" },
-        { label: "Library Space", description: "Personal knowledge base, curated reading lists, and mental models.", icon: BookOpen, href: "/library", color: "#818cf8" },
+        { label: "Language Space", description: "Linguistic neural growth, vocabulary retention, and immersion density.", icon: Languages, href: "/languages", color: "#c084fc", status: "disabled" },
+        { label: "Library Space", description: "Personal knowledge base, curated reading lists, and mental models.", icon: BookOpen, href: "/library", color: "#818cf8", status: "disabled" },
       ]}
       metrics={[
         { label: "Retention Rate", value: "94%" },
