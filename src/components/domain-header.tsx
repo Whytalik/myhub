@@ -10,10 +10,18 @@ import {
   Package,
   Menu,
   X,
-  Sparkles
+  Sparkles,
+  Lock
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo } from "react";
+
+const DOMAIN_STATUS: Record<string, "active" | "locked"> = {
+  operations: "active",
+  health: "active",
+  mind: "locked",
+  wealth: "locked",
+  vault: "locked",
+};
 
 const DOMAINS_CONFIG = [
   { id: "operations", label: "Operations", icon: Briefcase, href: "/operations" },
@@ -23,11 +31,7 @@ const DOMAINS_CONFIG = [
   { id: "vault",      label: "Vault",      icon: Package,   href: "/vault" },
 ];
 
-interface DomainHeaderProps {
-  user?: { role?: string };
-}
-
-export function DomainHeader({ user }: DomainHeaderProps) {
+export function DomainHeader() {
   const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
 
@@ -59,27 +63,36 @@ export function DomainHeader({ user }: DomainHeaderProps) {
           {visibleDomains.map((domain) => {
             const Icon = domain.icon;
             const isActive = activeDomain === domain.id;
+            const status = DOMAIN_STATUS[domain.id] ?? "active";
+            const isLocked = status === "locked";
             
             return (
-              <Link
+              <div
                 key={domain.id}
-                href={domain.href}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all duration-500 shrink-0 group ${
-                  isActive 
-                    ? "bg-accent/10 border border-accent/20" 
-                    : "hover:bg-raised border border-transparent"
+                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all duration-500 shrink-0 ${
+                  isLocked
+                    ? "opacity-30 cursor-not-allowed"
+                    : isActive 
+                      ? "bg-accent/10 border border-accent/20" 
+                      : "hover:bg-raised border border-transparent"
                 }`}
               >
                 <Icon 
                   size={14} 
-                  className={`transition-colors duration-300 ${isActive ? "text-accent" : "text-muted group-hover:text-text"}`} 
+                  className={`transition-colors duration-300 ${
+                    isLocked ? "text-muted" : isActive ? "text-accent" : "text-muted group-hover:text-text"
+                  }`} 
                 />
                 <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 ${
-                  isActive ? "text-text" : "text-muted group-hover:text-text"
+                  isLocked ? "text-muted" : isActive ? "text-text" : "text-muted"
                 }`}>
                   {domain.label}
                 </span>
-              </Link>
+                {isLocked && <Lock size={10} className="text-muted/40" />}
+                {!isLocked && (
+                  <Link href={domain.href} className="absolute inset-0" />
+                )}
+              </div>
             );
           })}
         </div>
