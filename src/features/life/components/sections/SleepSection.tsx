@@ -47,11 +47,20 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
     if (bedtime && wakeup) {
       const start = new Date(bedtime);
       const end = new Date(wakeup);
-      if (end < start) end.setDate(end.getDate() + 1);
-      const diffMs = end.getTime() - start.getTime();
-      const calculatedHours = Math.round((diffMs / (1000 * 60 * 60)) * 10) / 10;
-      if (calculatedHours !== hours) {
-        onChange({ sleepHours: calculatedHours });
+      if (end < start) {
+        const adjustedEnd = new Date(end);
+        adjustedEnd.setDate(adjustedEnd.getDate() + 1);
+        const diffMs = adjustedEnd.getTime() - start.getTime();
+        const calculatedHours = Math.round((diffMs / (1000 * 60 * 60)) * 10) / 10;
+        if (calculatedHours !== hours) {
+          onChange({ sleepHours: calculatedHours });
+        }
+      } else {
+        const diffMs = end.getTime() - start.getTime();
+        const calculatedHours = Math.round((diffMs / (1000 * 60 * 60)) * 10) / 10;
+        if (calculatedHours !== hours) {
+          onChange({ sleepHours: calculatedHours });
+        }
       }
     }
   }, [bedtime, wakeup, hours, onChange]);

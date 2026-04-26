@@ -17,7 +17,7 @@ interface HabitCardProps {
 export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   const [isPending, startTransition] = useTransition();
 
-  const activeDate = date || new Date();
+  const activeDate = date ? new Date(date) : new Date();
   activeDate.setHours(0, 0, 0, 0);
   
   const isCompletedOnDate = habit.completions.some(

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
@@ -15,14 +13,6 @@ interface TaskTreeProps {
   onDuplicate:  (task: TaskData) => void;
   onAddChild:   (parent: TaskData) => void;
   hideHeader?:  boolean;
-}
-
-function getWeekNumber(d: Date) {
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
-  return weekNo;
 }
 
 function getWeekStart(d: Date) {
@@ -44,10 +34,6 @@ function getWeekLabel(date: Date) {
     return `${startMonth} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
   }
   return `${startMonth} ${start.getDate()} – ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
-}
-
-function getWeekSortKey(date: Date) {
-  return getWeekStart(date).getTime();
 }
 
 const PRIMARY_TABS = [

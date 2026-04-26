@@ -22,8 +22,8 @@ export default async function JournalHistoryPage() {
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb
         items={[
-          { label: "life system", href: "/life" },
-          { label: "daily journal", href: "/life/journal" },
+          { label: "life space", href: "/life" },
+          { label: "journal", href: "/life/journal" },
           { label: "history" },
         ]}
       />
