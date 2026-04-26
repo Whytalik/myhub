@@ -31,12 +31,12 @@ export async function resetSystemAction() {
   }
 }
 
-export async function importSystemAction(data: Record<string, unknown>) {
+export async function importSystemAction() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   try {
-    await systemService.importData(session.user.id, data);
+    await systemService.importData(session.user.id);
     revalidatePath("/");
     return { success: true };
   } catch (error) {

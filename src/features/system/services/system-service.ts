@@ -67,7 +67,7 @@ export const systemService = {
     ]);
   },
 
-  async importData(userId: string, _data: unknown) {
+  async importData(userId: string) {
     await this.resetSystem(userId);
   },
 };

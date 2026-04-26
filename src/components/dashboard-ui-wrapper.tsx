@@ -28,7 +28,7 @@ export function DashboardUIWrapper({
 
       {/* Main Container */}
       <div className="flex flex-col flex-1 min-w-0 relative h-full overflow-hidden z-0">
-        <DomainHeader user={user} />
+        <DomainHeader />
         
         <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0" style={{ viewTransitionName: 'page-content' }}>
           {children}

@@ -212,12 +212,10 @@ function SortableItem({
 export function SettingsModal({ 
   isOpen, 
   onClose,
-  initialOrder,
   userName
 }: { 
   isOpen: boolean; 
   onClose: () => void;
-  initialOrder?: string[];
   userName?: string;
 }) {
   const router = useRouter();
@@ -437,9 +435,9 @@ export function SettingsModal({
     const reader = new FileReader();
     reader.onload = async (event) => {
       try {
-        const data = JSON.parse(event.target?.result as string);
+        JSON.parse(event.target?.result as string);
         startTransition(async () => {
-          const result = await importSystemAction(data);
+          const result = await importSystemAction();
           if (result.success) {
             toast.success("Imported"); onClose(); window.location.reload();
           }

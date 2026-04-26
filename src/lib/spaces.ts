@@ -14,6 +14,7 @@ export const SPACE_THEMES = {
   languages:  { accent: "#c084fc", accentMuted: "#2e1a4a" },
   trading:    { accent: "#22c55e", accentMuted: "#052e16" },
   other:      { accent: "#a3a3a3", accentMuted: "#262626" },
+  fishing:    { accent: "#38bdf8", accentMuted: "#0c2d4a" },
   
   default:    { accent: "#fbbf24", accentMuted: "#2d2005" },
 } as const;
@@ -37,6 +38,7 @@ export function getSpaceFromPath(pathname: string): SpaceKey {
   if (pathname.startsWith("/languages")) return "languages";
   if (pathname.startsWith("/trading"))   return "trading";
   if (pathname.startsWith("/other"))     return "other";
+  if (pathname.startsWith("/fishing"))   return "fishing";
   
   return "default";
 }
