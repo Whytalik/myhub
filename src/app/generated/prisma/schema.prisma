@@ -402,9 +402,6 @@ model DailyEntry {
   weight     Float?
   energyNote String?
 
-  // Environment & Health
-  morningSunlight Boolean? @default(false)
-
   // Evening Energy (1-10)
   eveningEnergy Int?
 

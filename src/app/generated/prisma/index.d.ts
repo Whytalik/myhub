@@ -26659,7 +26659,6 @@ export namespace Prisma {
     mood: number | null
     weight: number | null
     energyNote: string | null
-    morningSunlight: boolean | null
     eveningEnergy: number | null
     nutrition: number | null
     nutritionNote: string | null
@@ -26685,7 +26684,6 @@ export namespace Prisma {
     mood: number | null
     weight: number | null
     energyNote: string | null
-    morningSunlight: boolean | null
     eveningEnergy: number | null
     nutrition: number | null
     nutritionNote: string | null
@@ -26712,7 +26710,6 @@ export namespace Prisma {
     emotions: number
     weight: number
     energyNote: number
-    morningSunlight: number
     eveningEnergy: number
     nutrition: number
     nutritionNote: number
@@ -26762,7 +26759,6 @@ export namespace Prisma {
     mood?: true
     weight?: true
     energyNote?: true
-    morningSunlight?: true
     eveningEnergy?: true
     nutrition?: true
     nutritionNote?: true
@@ -26788,7 +26784,6 @@ export namespace Prisma {
     mood?: true
     weight?: true
     energyNote?: true
-    morningSunlight?: true
     eveningEnergy?: true
     nutrition?: true
     nutritionNote?: true
@@ -26815,7 +26810,6 @@ export namespace Prisma {
     emotions?: true
     weight?: true
     energyNote?: true
-    morningSunlight?: true
     eveningEnergy?: true
     nutrition?: true
     nutritionNote?: true
@@ -26931,7 +26925,6 @@ export namespace Prisma {
     emotions: JsonValue | null
     weight: number | null
     energyNote: string | null
-    morningSunlight: boolean | null
     eveningEnergy: number | null
     nutrition: number | null
     nutritionNote: string | null
@@ -26979,7 +26972,6 @@ export namespace Prisma {
     emotions?: boolean
     weight?: boolean
     energyNote?: boolean
-    morningSunlight?: boolean
     eveningEnergy?: boolean
     nutrition?: boolean
     nutritionNote?: boolean
@@ -27009,7 +27001,6 @@ export namespace Prisma {
     emotions?: boolean
     weight?: boolean
     energyNote?: boolean
-    morningSunlight?: boolean
     eveningEnergy?: boolean
     nutrition?: boolean
     nutritionNote?: boolean
@@ -27039,7 +27030,6 @@ export namespace Prisma {
     emotions?: boolean
     weight?: boolean
     energyNote?: boolean
-    morningSunlight?: boolean
     eveningEnergy?: boolean
     nutrition?: boolean
     nutritionNote?: boolean
@@ -27069,7 +27059,6 @@ export namespace Prisma {
     emotions?: boolean
     weight?: boolean
     energyNote?: boolean
-    morningSunlight?: boolean
     eveningEnergy?: boolean
     nutrition?: boolean
     nutritionNote?: boolean
@@ -27084,7 +27073,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "morningSunlight" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -27114,7 +27103,6 @@ export namespace Prisma {
       emotions: Prisma.JsonValue | null
       weight: number | null
       energyNote: string | null
-      morningSunlight: boolean | null
       eveningEnergy: number | null
       nutrition: number | null
       nutritionNote: string | null
@@ -27564,7 +27552,6 @@ export namespace Prisma {
     readonly emotions: FieldRef<"DailyEntry", 'Json'>
     readonly weight: FieldRef<"DailyEntry", 'Float'>
     readonly energyNote: FieldRef<"DailyEntry", 'String'>
-    readonly morningSunlight: FieldRef<"DailyEntry", 'Boolean'>
     readonly eveningEnergy: FieldRef<"DailyEntry", 'Int'>
     readonly nutrition: FieldRef<"DailyEntry", 'Int'>
     readonly nutritionNote: FieldRef<"DailyEntry", 'String'>
@@ -50105,7 +50092,6 @@ export namespace Prisma {
     emotions: 'emotions',
     weight: 'weight',
     energyNote: 'energyNote',
-    morningSunlight: 'morningSunlight',
     eveningEnergy: 'eveningEnergy',
     nutrition: 'nutrition',
     nutritionNote: 'nutritionNote',
@@ -52216,7 +52202,6 @@ export namespace Prisma {
     emotions?: JsonNullableFilter<"DailyEntry">
     weight?: FloatNullableFilter<"DailyEntry"> | number | null
     energyNote?: StringNullableFilter<"DailyEntry"> | string | null
-    morningSunlight?: BoolNullableFilter<"DailyEntry"> | boolean | null
     eveningEnergy?: IntNullableFilter<"DailyEntry"> | number | null
     nutrition?: IntNullableFilter<"DailyEntry"> | number | null
     nutritionNote?: StringNullableFilter<"DailyEntry"> | string | null
@@ -52246,7 +52231,6 @@ export namespace Prisma {
     emotions?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
     energyNote?: SortOrderInput | SortOrder
-    morningSunlight?: SortOrderInput | SortOrder
     eveningEnergy?: SortOrderInput | SortOrder
     nutrition?: SortOrderInput | SortOrder
     nutritionNote?: SortOrderInput | SortOrder
@@ -52280,7 +52264,6 @@ export namespace Prisma {
     emotions?: JsonNullableFilter<"DailyEntry">
     weight?: FloatNullableFilter<"DailyEntry"> | number | null
     energyNote?: StringNullableFilter<"DailyEntry"> | string | null
-    morningSunlight?: BoolNullableFilter<"DailyEntry"> | boolean | null
     eveningEnergy?: IntNullableFilter<"DailyEntry"> | number | null
     nutrition?: IntNullableFilter<"DailyEntry"> | number | null
     nutritionNote?: StringNullableFilter<"DailyEntry"> | string | null
@@ -52310,7 +52293,6 @@ export namespace Prisma {
     emotions?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
     energyNote?: SortOrderInput | SortOrder
-    morningSunlight?: SortOrderInput | SortOrder
     eveningEnergy?: SortOrderInput | SortOrder
     nutrition?: SortOrderInput | SortOrder
     nutritionNote?: SortOrderInput | SortOrder
@@ -52347,7 +52329,6 @@ export namespace Prisma {
     emotions?: JsonNullableWithAggregatesFilter<"DailyEntry">
     weight?: FloatNullableWithAggregatesFilter<"DailyEntry"> | number | null
     energyNote?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
-    morningSunlight?: BoolNullableWithAggregatesFilter<"DailyEntry"> | boolean | null
     eveningEnergy?: IntNullableWithAggregatesFilter<"DailyEntry"> | number | null
     nutrition?: IntNullableWithAggregatesFilter<"DailyEntry"> | number | null
     nutritionNote?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
@@ -55315,7 +55296,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -55345,7 +55325,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -55373,7 +55352,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55403,7 +55381,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55432,7 +55409,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -55460,7 +55436,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55489,7 +55464,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58506,11 +58480,6 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type BoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type DailyEntryUserIdDateCompoundUniqueInput = {
     userId: string
     date: Date | string
@@ -58530,7 +58499,6 @@ export namespace Prisma {
     emotions?: SortOrder
     weight?: SortOrder
     energyNote?: SortOrder
-    morningSunlight?: SortOrder
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
     nutritionNote?: SortOrder
@@ -58568,7 +58536,6 @@ export namespace Prisma {
     mood?: SortOrder
     weight?: SortOrder
     energyNote?: SortOrder
-    morningSunlight?: SortOrder
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
     nutritionNote?: SortOrder
@@ -58594,7 +58561,6 @@ export namespace Prisma {
     mood?: SortOrder
     weight?: SortOrder
     energyNote?: SortOrder
-    morningSunlight?: SortOrder
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
     nutritionNote?: SortOrder
@@ -58641,14 +58607,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
-
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type HabitCompletionListRelationFilter = {
@@ -61619,10 +61577,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
-  }
-
   export type UserUpdateOneRequiredWithoutDailyEntriesNestedInput = {
     create?: XOR<UserCreateWithoutDailyEntriesInput, UserUncheckedCreateWithoutDailyEntriesInput>
     connectOrCreate?: UserCreateOrConnectWithoutDailyEntriesInput
@@ -62941,11 +62895,6 @@ export namespace Prisma {
     _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
     _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
   }
-
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -62968,14 +62917,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumLibraryItemTypeFilter<$PrismaModel = never> = {
@@ -63496,7 +63437,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -63524,7 +63464,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -64169,7 +64108,6 @@ export namespace Prisma {
     emotions?: JsonNullableFilter<"DailyEntry">
     weight?: FloatNullableFilter<"DailyEntry"> | number | null
     energyNote?: StringNullableFilter<"DailyEntry"> | string | null
-    morningSunlight?: BoolNullableFilter<"DailyEntry"> | boolean | null
     eveningEnergy?: IntNullableFilter<"DailyEntry"> | number | null
     nutrition?: IntNullableFilter<"DailyEntry"> | number | null
     nutritionNote?: StringNullableFilter<"DailyEntry"> | string | null
@@ -70615,7 +70553,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: number | null
     energyNote?: string | null
-    morningSunlight?: boolean | null
     eveningEnergy?: number | null
     nutrition?: number | null
     nutritionNote?: string | null
@@ -71046,7 +70983,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71074,7 +71010,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71102,7 +71037,6 @@ export namespace Prisma {
     emotions?: NullableJsonNullValueInput | InputJsonValue
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     energyNote?: NullableStringFieldUpdateOperationsInput | string | null
-    morningSunlight?: NullableBoolFieldUpdateOperationsInput | boolean | null
     eveningEnergy?: NullableIntFieldUpdateOperationsInput | number | null
     nutrition?: NullableIntFieldUpdateOperationsInput | number | null
     nutritionNote?: NullableStringFieldUpdateOperationsInput | string | null

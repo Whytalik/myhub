@@ -333,7 +333,6 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   emotions: 'emotions',
   weight: 'weight',
   energyNote: 'energyNote',
-  morningSunlight: 'morningSunlight',
   eveningEnergy: 'eveningEnergy',
   nutrition: 'nutrition',
   nutritionNote: 'nutritionNote',
