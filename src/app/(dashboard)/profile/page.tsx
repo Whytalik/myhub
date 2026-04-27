@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getUserProfile } from "@/features/profile/services/profile-service";
-import { ProfileForm } from "./ProfileForm";
+import { ProfileDisplay } from "./ProfileDisplay";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 export default async function ProfilePage() {
@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "identity", href: "/profile" }]} />
-      <ProfileForm initialUser={user as { id: string; name: string | null; email: string | null; createdAt: Date }} />
+      <ProfileDisplay user={user as { id: string; name: string | null; email: string | null; createdAt: Date }} />
     </div>
   );
 }
