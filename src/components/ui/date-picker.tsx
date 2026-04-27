@@ -121,6 +121,7 @@ export function DatePicker({ value, onChange, placeholder = "Select date", class
         </div>
         {selectedDate && !disabled && (
           <button 
+            type="button"
             onClick={clearDate}
             className="p-1 hover:bg-raised rounded-md text-muted hover:text-text transition-colors"
           >
@@ -148,12 +149,14 @@ export function DatePicker({ value, onChange, placeholder = "Select date", class
             </h4>
             <div className="flex gap-1">
               <button 
+                type="button"
                 onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
                 className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
               >
                 <ChevronLeft size={14} />
               </button>
               <button 
+                type="button"
                 onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
                 className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
               >
@@ -179,6 +182,7 @@ export function DatePicker({ value, onChange, placeholder = "Select date", class
               return (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => handleDateSelect(day)}
                   className={`
                     h-8 w-full rounded-lg text-[11px] font-mono transition-all flex items-center justify-center
@@ -195,12 +199,14 @@ export function DatePicker({ value, onChange, placeholder = "Select date", class
 
           <div className="mt-4 pt-3 border-t border-border/40 flex justify-between gap-2">
             <button
+              type="button"
               onClick={() => handleDateSelect(new Date())}
               className="text-[10px] font-mono uppercase tracking-wider text-accent hover:underline font-bold"
             >
               Today
             </button>
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="text-[10px] font-mono uppercase tracking-wider text-muted hover:text-text"
             >

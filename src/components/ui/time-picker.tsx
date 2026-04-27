@@ -113,6 +113,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
             {/* Hours */}
             <div className="flex flex-col items-center gap-1">
               <button 
+                type="button"
                 onClick={() => setHours(hours + 1)}
                 className="p-1 hover:bg-raised rounded-lg text-muted hover:text-accent transition-all"
               >
@@ -122,6 +123,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
                 {hours.toString().padStart(2, "0")}
               </div>
               <button 
+                type="button"
                 onClick={() => setHours(hours - 1)}
                 className="p-1 hover:bg-raised rounded-lg text-muted hover:text-accent transition-all"
               >
@@ -135,6 +137,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
             {/* Minutes */}
             <div className="flex flex-col items-center gap-1">
               <button 
+                type="button"
                 onClick={() => setMinutes(minutes + 5)}
                 className="p-1 hover:bg-raised rounded-lg text-muted hover:text-accent transition-all"
               >
@@ -144,6 +147,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
                 {minutes.toString().padStart(2, "0")}
               </div>
               <button 
+                type="button"
                 onClick={() => setMinutes(minutes - 5)}
                 className="p-1 hover:bg-raised rounded-lg text-muted hover:text-accent transition-all"
               >
@@ -155,6 +159,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
 
           <div className="mt-4 pt-3 border-t border-border/40 flex justify-center">
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="text-[10px] font-mono uppercase tracking-widest text-accent hover:text-accent/80 font-bold"
             >

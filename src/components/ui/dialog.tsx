@@ -44,7 +44,10 @@ export function Dialog({
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center sm:p-4">
+    <div 
+      className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center sm:p-4"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-bg/90 backdrop-blur-md animate-in fade-in duration-300"
@@ -53,36 +56,34 @@ export function Dialog({
 
       {/* Content */}
       <div
-        className="relative w-full bg-surface border border-border rounded-t-2xl sm:rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 overflow-hidden"
+        className={`relative w-full bg-surface border border-border rounded-t-2xl sm:rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
-        <div className={`px-6 pt-5 pb-6 ${noScroll ? "" : "overflow-y-auto max-h-[90dvh]"}`}>
-          <div className="flex items-start justify-between mb-3">
-            <div className="space-y-0.5">
-              {title && (
-                <h3 className="text-lg font-black text-text tracking-tight leading-none">
-                  {title}
-                </h3>
-              )}
-              {description && (
-                <p className="text-[10px] font-mono text-muted tracking-wider">
-                  {description}
-                </p>
-              )}
-            </div>
-            <button 
-              onClick={onClose}
-              className="p-1 hover:bg-raised rounded text-muted hover:text-text transition-all active:scale-90"
-            >
-              <X size={18} />
-            </button>
-          </div>
-          
-          {bare ? children : (
-            <div className="text-secondary leading-normal py-0.5">
-              {children}
+        <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
+          {!bare && (
+            <div className="flex items-start justify-between mb-3">
+              <div className="space-y-0.5">
+                {title && (
+                  <h3 className="text-lg font-black text-text tracking-tight leading-none">
+                    {title}
+                  </h3>
+                )}
+                {description && (
+                  <p className="text-[10px] font-mono text-muted tracking-wider">
+                    {description}
+                  </p>
+                )}
+              </div>
+              <button 
+                onClick={onClose}
+                className="p-1 hover:bg-raised rounded text-muted hover:text-text transition-all active:scale-90"
+              >
+                <X size={18} />
+              </button>
             </div>
           )}
+          
+          {children}
         </div>
 
         {footer && (

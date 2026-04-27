@@ -32,7 +32,8 @@ import {
   ChevronDown,
   Lock,
   Bell,
-  Smartphone
+  Smartphone,
+  X
 } from "lucide-react";
 import {
   DndContext, 
@@ -465,9 +466,15 @@ export function SettingsModal({
         description="Configure your Personal OS"
         maxWidth="800px"
         bare
-        noScroll
       >
-        <div className="flex flex-col sm:flex-row h-[calc(100dvh-160px)] sm:h-[460px] -mx-6 -mb-6 mt-4 border-t border-border/30 overflow-hidden text-text">
+        <div className="flex flex-col sm:flex-row w-full sm:w-[800px] min-h-[600px] sm:min-h-[650px] text-text">
+
+          {/* Close button - mobile */}
+          <div className="sm:hidden flex justify-end p-3 border-b border-border/30 bg-raised/30">
+            <button onClick={onClose} className="p-1 hover:bg-raised rounded text-muted hover:text-text transition-all">
+              <X size={18} />
+            </button>
+          </div>
 
           {/* Mobile: horizontal scrollable tabs */}
           <div className="sm:hidden flex overflow-x-auto scrollbar-hide border-b border-border/30 bg-raised/30 shrink-0 sticky top-0 z-20">
@@ -506,8 +513,13 @@ export function SettingsModal({
             </div>
           </div>
 
-          <div className="flex-1 bg-surface overflow-hidden relative">
-            <div className="h-full overflow-y-auto scrollbar-hide p-4 sm:p-5">
+          <div className="flex-1 bg-surface relative flex flex-col">
+            <div className="flex justify-end p-3 border-b border-border/30">
+              <button onClick={onClose} className="p-1 hover:bg-raised rounded text-muted hover:text-text transition-all">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5">
               
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
