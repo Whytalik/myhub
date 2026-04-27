@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
+import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, Lock } from "lucide-react";
 import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ export interface TaskCardBaseProps {
   onEdit:       (task: TaskData) => void;
   onDuplicate?: (task: TaskData) => void;
   onAddChild?:  (parent: TaskData) => void;
+  onDelete?:    () => void;
   allTasks?:     TaskData[];
   variant?:     "default" | "compact";
   isDragging?:  boolean;
@@ -31,6 +32,7 @@ export function TaskCardBase({
   onEdit, 
   onDuplicate, 
   onAddChild, 
+  onDelete,
   allTasks = [], 
   variant = "default",
   isDragging = false,
@@ -50,6 +52,7 @@ export function TaskCardBase({
   const handleDelete = () => {
     startTransition(async () => {
       try {
+        onDelete?.();
         await deleteTaskAction(task.id);
         toast.success("Task deleted");
       } catch {
@@ -123,7 +126,14 @@ export function TaskCardBase({
 className={`
          group relative flex flex-col transition-all cursor-grab active:cursor-grabbing
          ${isCompact ? 'gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0' : 'gap-3 p-4 pt-5 rounded-2xl border h-full'}
-         ${isDragging ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' : isDone ? 'bg-surface/30 border-border/40 opacity-70' : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'}
+         ${isDragging 
+           ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' 
+           : isDone 
+             ? 'bg-surface/30 border-border/40 opacity-70' 
+             : task.isPrivate
+               ? 'bg-amber-500/[0.05] !border-amber-500/80 ring-1 ring-amber-500/20 shadow-md shadow-amber-500/5'
+               : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'
+         }
          ${className}
        `}
     >
@@ -166,7 +176,9 @@ className={`
              const PIcon = ALL_ICONS[task.parentIcon];
              return <PIcon size={isCompact ? 8 : 10} className="shrink-0 opacity-40" />;
           })()}
-          <span className="truncate underline decoration-dotted underline-offset-2">{task.parentTitle || 'Parent Task'}</span>
+          <span className="truncate underline decoration-dotted underline-offset-2">
+            {task.isPrivate ? "••••••••" : (task.parentTitle || 'Parent Task')}
+          </span>
         </div>
       )}
 
@@ -181,9 +193,14 @@ className={`
           )}
           <h3 
             className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-[10px] md:text-xs' : 'text-[16px]'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
-            dangerouslySetInnerHTML={{ __html: formatText(task.title) }}
-            title={task.title}
+            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "••••••••" : task.title) }}
+            title={task.isPrivate ? "Private Task" : task.title}
           />
+          {task.isPrivate && (
+             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 text-[8px] font-black uppercase tracking-tighter border border-amber-500/20 whitespace-nowrap h-fit mt-0.5">
+               Private
+             </span>
+          )}
         </div>
 
         {/* Metadata Row */}
@@ -218,7 +235,7 @@ className={`
         {!isCompact && task.description && (
           <div 
             className={`text-[12px] leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
-            dangerouslySetInnerHTML={{ __html: formatText(task.description) }}
+            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "Content is hidden" : task.description) }}
           />
         )}
       </div>

@@ -46,6 +46,7 @@ export interface TaskData {
   status: TaskStatus;
   priority: TaskPriority;
   isPrivate: boolean;
+  isBlocked: boolean;
   plannedDate: Date | null;
   hasPlannedTime: boolean;
   dueDate: Date | null;
@@ -73,6 +74,7 @@ export interface UpsertTaskInput {
   status?: TaskStatus;
   priority?: TaskPriority;
   isPrivate?: boolean;
+  isBlocked?: boolean;
   plannedDate?: string | null;
   hasPlannedTime?: boolean;
   dueDate?: string | null;

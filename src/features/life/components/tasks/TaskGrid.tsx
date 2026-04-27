@@ -8,10 +8,11 @@ interface TaskGridProps {
   onEdit:       (task: TaskData) => void;
   onDuplicate:  (task: TaskData) => void;
   onAddChild:   (parent: TaskData) => void;
+  onDelete?:     () => void;
   allTasks:     TaskData[];
 }
 
-export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, allTasks = [] }: TaskGridProps) {
+export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, onDelete, allTasks = [] }: TaskGridProps) {
   if (tasks.length === 0) {
     return (
       <div className="bg-surface border border-border border-dashed rounded-3xl p-12 text-center">
@@ -29,6 +30,7 @@ export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, allTasks = []
           onAddChild={onAddChild}
           onEdit={onEdit}
           onDuplicate={onDuplicate}
+          onDelete={onDelete}
           allTasks={allTasks}
         />
       ))}

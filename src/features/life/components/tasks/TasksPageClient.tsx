@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Layers, Plus, Lock, Unlock } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
-import { Dialog } from "@/components/ui/dialog";
+import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
@@ -27,45 +27,70 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [privateUnlocked, setPrivateUnlocked] = useState(false);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [pendingTaskAction, setPendingTaskAction] = useState<{ type: 'edit' | 'duplicate' | 'addChild', task: TaskData } | null>(null);
 
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [dialogVersion, setDialogVersion] = useState(0);
+
+  const checkPrivate = (task: TaskData, action: () => void, type: 'edit' | 'duplicate' | 'addChild') => {
+    if (task.isPrivate) {
+      setPendingTaskAction({ type, task });
+      setPasswordDialogOpen(true);
+    } else {
+      action();
+    }
+  };
 
   const handleEdit = (task: TaskData) => {
-    setEditingTask(task);
-    setParentTask(null);
-    setIsDuplicate(false);
-    setTaskFormOpen(true);
+    checkPrivate(task, () => {
+      setEditingTask(task);
+      setParentTask(null);
+      setIsDuplicate(false);
+      setDialogVersion(v => v + 1);
+      setTaskFormOpen(true);
+    }, 'edit');
   };
 
   const handleDuplicate = (task: TaskData) => {
-    setEditingTask(task);
-    setParentTask(null);
-    setIsDuplicate(true);
-    setTaskFormOpen(true);
+    checkPrivate(task, () => {
+      setEditingTask(task);
+      setParentTask(null);
+      setIsDuplicate(true);
+      setDialogVersion(v => v + 1);
+      setTaskFormOpen(true);
+    }, 'duplicate');
   };
 
   const handleAddChild = (parent: TaskData) => {
-    setEditingTask(null);
-    setParentTask(parent);
-    setIsDuplicate(false);
-    setTaskFormOpen(true);
+    checkPrivate(parent, () => {
+      setEditingTask(null);
+      setParentTask(parent);
+      setIsDuplicate(false);
+      setDialogVersion(v => v + 1);
+      setTaskFormOpen(true);
+    }, 'addChild');
   };
 
   const handleAddNew = () => {
     setEditingTask(null);
     setParentTask(null);
     setIsDuplicate(false);
+    setDialogVersion(v => v + 1);
     setTaskFormOpen(true);
   };
 
-  const [passwordError, setPasswordError] = useState(false);
-  const handleUnlock = () => {
-    setPasswordDialogOpen(true);
+  const handleTaskDeleted = () => {
+    setDialogVersion(v => v + 1);
+    setTaskFormOpen(false);
+    setEditingTask(null);
+    setParentTask(null);
+    setIsDuplicate(false);
   };
 
-  const tasks = privateUnlocked ? initialTasks : initialTasks.filter(t => !t.isPrivate);
+  const tasks = initialTasks;
   const privateCount = initialTasks.filter(t => t.isPrivate).length;
 
   return (
@@ -100,18 +125,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
-              {privateCount > 0 && (
-                <Button 
-                  variant={privateUnlocked ? "secondary" : "outline"} 
-                  size="sm" 
-                  onClick={handleUnlock} 
-                  className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-[11px] font-bold"
-                >
-                  {privateUnlocked ? <Unlock size={14} className="mr-2" /> : <Lock size={14} className="mr-2" />}
-                  {privateUnlocked ? "Private" : `${privateCount} Private`}
-                </Button>
-              )}
-
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -144,14 +157,16 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             onEdit={handleEdit}
             onDuplicate={handleDuplicate}
             onAddChild={handleAddChild}
+            onDelete={handleTaskDeleted}
             hideHeader 
           />
         ) : (
           <TaskCalendar 
-            tasks={privateUnlocked ? calendarTasks : calendarTasks.filter(t => !t.isPrivate)} 
+            tasks={calendarTasks} 
             allTasks={initialTasks}
             spheres={spheres} 
             onDuplicate={handleDuplicate}
+            onDelete={handleTaskDeleted}
           />
         )}
       </div>
@@ -168,7 +183,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
       </Dialog>
 
       <TaskFormDialog
-        key={`task-form-${editingTask?.id ?? parentTask?.id ?? 'new'}`}
+        key={`task-form-${dialogVersion}-${editingTask?.id ?? 'new'}`}
         isOpen={taskFormOpen}
         onClose={() => setTaskFormOpen(false)}
         task={editingTask}
@@ -176,44 +191,71 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         spheres={spheres}
         allTasks={initialTasks}
         isDuplicate={isDuplicate}
+        onViewTask={(t) => handleEdit(t)}
       />
 
       <Dialog
         isOpen={passwordDialogOpen}
-        onClose={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); }}
-        title="Unlock Private Tasks"
+        onClose={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); setPendingTaskAction(null); }}
+        title="Verification Required"
+        description="Enter password to access private entry"
       >
         <div className="space-y-4">
           <Input
+            autoFocus
             type="password"
             value={passwordInput}
             onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
-            placeholder="Enter your private tasks password"
+            placeholder="••••••••"
+            onKeyDown={(e) => { if (e.key === 'Enter') document.getElementById('unlock-btn')?.click(); }}
           />
           {passwordError && <p className="text-[10px] font-bold text-rose-500">Invalid password</p>}
           <div className="flex gap-2">
             <Button
               variant="ghost"
-              onClick={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); }}
+              onClick={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); setPendingTaskAction(null); }}
               className="flex-1"
             >
               Cancel
             </Button>
             <Button
+              id="unlock-btn"
               variant="primary"
               onClick={async () => {
                 const result = await verifyPrivateTaskPasswordAction(passwordInput);
                 if (result.success) {
-                  setPrivateUnlocked(true);
+                  const { type, task } = pendingTaskAction!;
                   setPasswordDialogOpen(false);
                   setPasswordInput("");
+                  setPendingTaskAction(null);
+                  
+                  // Execute the actual action
+                  if (type === 'edit') {
+                    setEditingTask(task);
+                    setParentTask(null);
+                    setIsDuplicate(false);
+                    setDialogVersion(v => v + 1);
+                    setTaskFormOpen(true);
+                  } else if (type === 'duplicate') {
+                    setEditingTask(task);
+                    setParentTask(null);
+                    setIsDuplicate(true);
+                    setDialogVersion(v => v + 1);
+                    setTaskFormOpen(true);
+                  } else if (type === 'addChild') {
+                    setEditingTask(null);
+                    setParentTask(task);
+                    setIsDuplicate(false);
+                    setDialogVersion(v => v + 1);
+                    setTaskFormOpen(true);
+                  }
                 } else {
                   setPasswordError(true);
                 }
               }}
               className="flex-1"
             >
-              Unlock
+              Verify
             </Button>
           </div>
         </div>

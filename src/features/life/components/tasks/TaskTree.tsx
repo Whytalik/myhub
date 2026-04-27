@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
-import { TaskFormDialog } from "./TaskFormDialog";
 import { Tabs } from "@/components/ui/tabs";
 import type { TaskData, LifeSphereData, TaskStatus } from "@/features/life/types";
 import { STATUS_CONFIG } from "./StatusToggle";
@@ -43,14 +42,10 @@ const PRIMARY_TABS = [
   { id: "status",    label: "Status",    icon: Activity },
 ];
 
-export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: TaskTreeProps) {
+export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDelete }: TaskTreeProps & { onDelete?: () => void }) {
   const [activePrimary, setActivePrimary] = useState("time");
   const [activeSecondary, setActiveSecondary] = useState("weeks");
   const [visibleGroups, setVisibleGroups] = useState(3);
-  const [editingTask, setEditingTask] = useState<TaskData | null>(null);
-  const [parentTask, setParentTask]   = useState<TaskData | null>(null);
-  const [isDuplicate, setIsDuplicate] = useState(false);
-  const [dialogOpen, setDialogOpen]   = useState(false);
 
   const secondaryTabs = useMemo(() => {
     switch (activePrimary) {
@@ -95,13 +90,6 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
     else if (id === "hierarchy") setActiveSecondary("all");
     else if (id === "sphere") setActiveSecondary("all");
     else if (id === "status") setActiveSecondary("all");
-  };
-
-  const handleClose = () => {
-    setDialogOpen(false);
-    setEditingTask(null);
-    setParentTask(null);
-    setIsDuplicate(false);
   };
 
   const groupedTasks = useMemo(() => {
@@ -264,6 +252,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
                 onEdit={onEdit}
                 onDuplicate={onDuplicate}
                 onAddChild={onAddChild}
+                onDelete={onDelete ?? (() => {})}
                 allTasks={tasks}
               />
             </div>
@@ -280,18 +269,6 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild }: Ta
           Show More Groups
         </button>
       )}
-
-      <TaskFormDialog
-        key={`task-form-${editingTask?.id ?? 'new'}`}
-        isOpen={dialogOpen}
-        onClose={handleClose}
-        task={editingTask}
-        parentTask={parentTask}
-        spheres={spheres}
-        allTasks={tasks}
-        onViewTask={(t) => setEditingTask(t)}
-        isDuplicate={isDuplicate}
-      />
     </div>
   );
 }

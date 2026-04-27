@@ -9,16 +9,18 @@ interface TaskRowProps {
   onAddChild:   (parent: TaskData) => void;
   onEdit:       (task: TaskData) => void;
   onDuplicate:  (task: TaskData) => void;
+  onDelete?:    () => void;
   allTasks:     TaskData[];
 }
 
-export function TaskRow({ task, onAddChild, onEdit, onDuplicate, allTasks }: TaskRowProps) {
+export function TaskRow({ task, onAddChild, onEdit, onDuplicate, onDelete, allTasks }: TaskRowProps) {
   return (
     <TaskCardBase
       task={task}
       onEdit={onEdit}
       onDuplicate={onDuplicate}
       onAddChild={onAddChild}
+      onDelete={onDelete}
       allTasks={allTasks}
       variant="default"
     />

@@ -19,7 +19,7 @@ export function IconPickerDialog({
   onClose,
   value,
   onChange,
-  color = "var(--color-accent)",
+  color = "#fbbf24",
   title = "Pick an icon"
 }: IconPickerDialogProps) {
   const [search, setSearch] = useState("");

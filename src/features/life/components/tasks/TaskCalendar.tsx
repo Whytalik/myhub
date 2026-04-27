@@ -45,6 +45,7 @@ interface TaskCalendarProps {
   spheres: LifeSphereData[];
   defaultMode?: "month" | "week";
   onDuplicate?: (task: TaskData) => void;
+  onDelete?: () => void;
 }
 
 const PRIORITY_ORDER: Record<TaskPriority, number> = {
@@ -94,12 +95,14 @@ function DraggableTask({
   onEdit, 
   onDuplicate, 
   onAddChild,
+  onDelete,
   allTasks 
 }: { 
   task: TaskData, 
   onEdit: (t: TaskData) => void, 
   onDuplicate?: (t: TaskData) => void,
   onAddChild?: (t: TaskData) => void,
+  onDelete?: () => void,
   allTasks: TaskData[] 
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -127,6 +130,7 @@ function DraggableTask({
       onEdit={onEdit}
       onDuplicate={onDuplicate}
       onAddChild={onAddChild}
+      onDelete={onDelete}
       allTasks={allTasks}
     />
   );
@@ -141,6 +145,7 @@ function CalendarDayCell({
   onEdit,
   onDuplicate,
   onAddChild,
+  onDelete,
   onAdd,
   isDraggingAny,
   mode,
@@ -152,6 +157,7 @@ function CalendarDayCell({
   onEdit: (t: TaskData) => void,
   onDuplicate?: (t: TaskData) => void,
   onAddChild?: (t: TaskData) => void,
+  onDelete?: () => void,
   onAdd?: (date: Date) => void,
   isDraggingAny: boolean,
   mode: "month" | "week",
@@ -212,6 +218,7 @@ function CalendarDayCell({
             onEdit={onEdit} 
             onDuplicate={onDuplicate} 
             onAddChild={onAddChild}
+            onDelete={onDelete}
             allTasks={allTasks} 
           />
         ))}
@@ -227,7 +234,8 @@ export function TaskCalendar({
   allTasks, 
   spheres, 
   defaultMode = "week", 
-  onDuplicate 
+  onDuplicate,
+  onDelete
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week">(defaultMode);
@@ -235,6 +243,7 @@ export function TaskCalendar({
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [dialogVersion, setDialogVersion] = useState(0);
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
@@ -246,6 +255,7 @@ export function TaskCalendar({
     setEditingTask(t);
     setParentTask(null);
     setIsDuplicate(false);
+    setDialogVersion(v => v + 1);
     setDialogOpen(true);
   };
 
@@ -256,6 +266,7 @@ export function TaskCalendar({
       setEditingTask(t);
       setParentTask(null);
       setIsDuplicate(true);
+      setDialogVersion(v => v + 1);
       setDialogOpen(true);
     }
   };
@@ -264,7 +275,17 @@ export function TaskCalendar({
     setEditingTask(null);
     setParentTask(parent);
     setIsDuplicate(false);
+    setDialogVersion(v => v + 1);
     setDialogOpen(true);
+  };
+
+  const handleTaskDeleted = () => {
+    setDialogVersion(v => v + 1);
+    setDialogOpen(false);
+    setEditingTask(null);
+    setParentTask(null);
+    setIsDuplicate(false);
+    onDelete?.();
   };
 
   const handleCloseDialog = () => {
@@ -440,10 +461,12 @@ export function TaskCalendar({
                   onEdit={handleEdit}
                   onDuplicate={handleDuplicate}
                   onAddChild={handleAddChild}
+                  onDelete={handleTaskDeleted}
                   onAdd={(date) => {
                     setEditingTask({ plannedDate: date } as TaskData);
                     setParentTask(null);
                     setIsDuplicate(false);
+                    setDialogVersion(v => v + 1);
                     setDialogOpen(true);
                   }}
                   isDraggingAny={isDraggingAny}
@@ -457,7 +480,7 @@ export function TaskCalendar({
       </div>
 
       <TaskFormDialog
-        key={`task-form-${editingTask?.id ?? 'new'}`}
+        key={`task-form-${dialogVersion}-${editingTask?.id ?? 'new'}`}
         isOpen={dialogOpen}
         onClose={handleCloseDialog}
         task={editingTask}

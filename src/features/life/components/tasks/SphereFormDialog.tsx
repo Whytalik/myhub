@@ -30,13 +30,11 @@ export function SphereFormDialog({
   const [color, setColor] = useState(sphere?.color ?? "#6fbfbf");
   const [icon, setIcon]   = useState(sphere?.icon ?? SPHERE_ICON_NAMES[0]);
 
-  // Reset form when dialog opens with new data
+  // Reset form when dialog closes
   const handleClose = () => {
-    if (!isEditing) {
-      setName("");
-      setColor("#6fbfbf");
-      setIcon(SPHERE_ICON_NAMES[0]);
-    }
+    setName("");
+    setColor("#6fbfbf");
+    setIcon(SPHERE_ICON_NAMES[0]);
     onClose();
   };
 
