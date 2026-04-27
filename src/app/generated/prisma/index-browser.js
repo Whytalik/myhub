@@ -305,6 +305,7 @@ exports.Prisma.TaskScalarFieldEnum = {
   status: 'status',
   priority: 'priority',
   isPrivate: 'isPrivate',
+  isBlocked: 'isBlocked',
   plannedDate: 'plannedDate',
   hasPlannedTime: 'hasPlannedTime',
   dueDate: 'dueDate',
@@ -358,7 +359,8 @@ exports.Prisma.HabitScalarFieldEnum = {
   order: 'order',
   archived: 'archived',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sphereId: 'sphereId'
 };
 
 exports.Prisma.HabitCompletionScalarFieldEnum = {

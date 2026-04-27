@@ -4937,12 +4937,14 @@ export namespace Prisma {
     tasks: number
     milestones: number
     objectives: number
+    habits: number
   }
 
   export type LifeSphereCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tasks?: boolean | LifeSphereCountOutputTypeCountTasksArgs
     milestones?: boolean | LifeSphereCountOutputTypeCountMilestonesArgs
     objectives?: boolean | LifeSphereCountOutputTypeCountObjectivesArgs
+    habits?: boolean | LifeSphereCountOutputTypeCountHabitsArgs
   }
 
   // Custom InputTypes
@@ -4975,6 +4977,13 @@ export namespace Prisma {
    */
   export type LifeSphereCountOutputTypeCountObjectivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ObjectiveWhereInput
+  }
+
+  /**
+   * LifeSphereCountOutputType without action
+   */
+  export type LifeSphereCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HabitWhereInput
   }
 
 
@@ -24211,6 +24220,7 @@ export namespace Prisma {
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
+    habits?: boolean | LifeSphere$habitsArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
@@ -24255,6 +24265,7 @@ export namespace Prisma {
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
+    habits?: boolean | LifeSphere$habitsArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24271,6 +24282,7 @@ export namespace Prisma {
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       objectives: Prisma.$ObjectivePayload<ExtArgs>[]
+      habits: Prisma.$HabitPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -24679,6 +24691,7 @@ export namespace Prisma {
     tasks<T extends LifeSphere$tasksArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     milestones<T extends LifeSphere$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     objectives<T extends LifeSphere$objectivesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$objectivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    habits<T extends LifeSphere$habitsArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -25189,6 +25202,30 @@ export namespace Prisma {
   }
 
   /**
+   * LifeSphere.habits
+   */
+  export type LifeSphere$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Habit
+     */
+    select?: HabitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Habit
+     */
+    omit?: HabitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitInclude<ExtArgs> | null
+    where?: HabitWhereInput
+    orderBy?: HabitOrderByWithRelationInput | HabitOrderByWithRelationInput[]
+    cursor?: HabitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HabitScalarFieldEnum | HabitScalarFieldEnum[]
+  }
+
+  /**
    * LifeSphere without action
    */
   export type LifeSphereDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -25238,6 +25275,7 @@ export namespace Prisma {
     status: $Enums.TaskStatus | null
     priority: $Enums.TaskPriority | null
     isPrivate: boolean | null
+    isBlocked: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
     dueDate: Date | null
@@ -25261,6 +25299,7 @@ export namespace Prisma {
     status: $Enums.TaskStatus | null
     priority: $Enums.TaskPriority | null
     isPrivate: boolean | null
+    isBlocked: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
     dueDate: Date | null
@@ -25284,6 +25323,7 @@ export namespace Prisma {
     status: number
     priority: number
     isPrivate: number
+    isBlocked: number
     plannedDate: number
     hasPlannedTime: number
     dueDate: number
@@ -25319,6 +25359,7 @@ export namespace Prisma {
     status?: true
     priority?: true
     isPrivate?: true
+    isBlocked?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -25342,6 +25383,7 @@ export namespace Prisma {
     status?: true
     priority?: true
     isPrivate?: true
+    isBlocked?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -25365,6 +25407,7 @@ export namespace Prisma {
     status?: true
     priority?: true
     isPrivate?: true
+    isBlocked?: true
     plannedDate?: true
     hasPlannedTime?: true
     dueDate?: true
@@ -25475,6 +25518,7 @@ export namespace Prisma {
     status: $Enums.TaskStatus
     priority: $Enums.TaskPriority
     isPrivate: boolean
+    isBlocked: boolean
     plannedDate: Date | null
     hasPlannedTime: boolean
     dueDate: Date | null
@@ -25517,6 +25561,7 @@ export namespace Prisma {
     status?: boolean
     priority?: boolean
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -25546,6 +25591,7 @@ export namespace Prisma {
     status?: boolean
     priority?: boolean
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -25573,6 +25619,7 @@ export namespace Prisma {
     status?: boolean
     priority?: boolean
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -25600,6 +25647,7 @@ export namespace Prisma {
     status?: boolean
     priority?: boolean
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
     dueDate?: boolean
@@ -25614,7 +25662,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "isBlocked" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     parent?: boolean | Task$parentArgs<ExtArgs>
@@ -25654,6 +25702,7 @@ export namespace Prisma {
       status: $Enums.TaskStatus
       priority: $Enums.TaskPriority
       isPrivate: boolean
+      isBlocked: boolean
       plannedDate: Date | null
       hasPlannedTime: boolean
       dueDate: Date | null
@@ -26102,6 +26151,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Task", 'TaskStatus'>
     readonly priority: FieldRef<"Task", 'TaskPriority'>
     readonly isPrivate: FieldRef<"Task", 'Boolean'>
+    readonly isBlocked: FieldRef<"Task", 'Boolean'>
     readonly plannedDate: FieldRef<"Task", 'DateTime'>
     readonly hasPlannedTime: FieldRef<"Task", 'Boolean'>
     readonly dueDate: FieldRef<"Task", 'DateTime'>
@@ -28015,6 +28065,7 @@ export namespace Prisma {
     archived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    sphereId: string | null
   }
 
   export type HabitMaxAggregateOutputType = {
@@ -28029,6 +28080,7 @@ export namespace Prisma {
     archived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    sphereId: string | null
   }
 
   export type HabitCountAggregateOutputType = {
@@ -28043,6 +28095,7 @@ export namespace Prisma {
     archived: number
     createdAt: number
     updatedAt: number
+    sphereId: number
     _all: number
   }
 
@@ -28067,6 +28120,7 @@ export namespace Prisma {
     archived?: true
     createdAt?: true
     updatedAt?: true
+    sphereId?: true
   }
 
   export type HabitMaxAggregateInputType = {
@@ -28081,6 +28135,7 @@ export namespace Prisma {
     archived?: true
     createdAt?: true
     updatedAt?: true
+    sphereId?: true
   }
 
   export type HabitCountAggregateInputType = {
@@ -28095,6 +28150,7 @@ export namespace Prisma {
     archived?: true
     createdAt?: true
     updatedAt?: true
+    sphereId?: true
     _all?: true
   }
 
@@ -28196,6 +28252,7 @@ export namespace Prisma {
     archived: boolean
     createdAt: Date
     updatedAt: Date
+    sphereId: string | null
     _count: HabitCountAggregateOutputType | null
     _avg: HabitAvgAggregateOutputType | null
     _sum: HabitSumAggregateOutputType | null
@@ -28229,8 +28286,10 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sphereId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
@@ -28246,7 +28305,9 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sphereId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -28261,7 +28322,9 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sphereId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
   export type HabitSelectScalar = {
@@ -28276,19 +28339,23 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    sphereId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HabitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
   }
   export type HabitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    sphere?: boolean | Habit$sphereArgs<ExtArgs>
   }
 
   export type $HabitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -28296,6 +28363,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       completions: Prisma.$HabitCompletionPayload<ExtArgs>[]
+      sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -28309,6 +28377,7 @@ export namespace Prisma {
       archived: boolean
       createdAt: Date
       updatedAt: Date
+      sphereId: string | null
     }, ExtArgs["result"]["habit"]>
     composites: {}
   }
@@ -28705,6 +28774,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     completions<T extends Habit$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sphere<T extends Habit$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Habit$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -28745,6 +28815,7 @@ export namespace Prisma {
     readonly archived: FieldRef<"Habit", 'Boolean'>
     readonly createdAt: FieldRef<"Habit", 'DateTime'>
     readonly updatedAt: FieldRef<"Habit", 'DateTime'>
+    readonly sphereId: FieldRef<"Habit", 'String'>
   }
     
 
@@ -29167,6 +29238,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HabitCompletionScalarFieldEnum | HabitCompletionScalarFieldEnum[]
+  }
+
+  /**
+   * Habit.sphere
+   */
+  export type Habit$sphereArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LifeSphere
+     */
+    select?: LifeSphereSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LifeSphere
+     */
+    omit?: LifeSphereOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LifeSphereInclude<ExtArgs> | null
+    where?: LifeSphereWhereInput
   }
 
   /**
@@ -50061,6 +50151,7 @@ export namespace Prisma {
     status: 'status',
     priority: 'priority',
     isPrivate: 'isPrivate',
+    isBlocked: 'isBlocked',
     plannedDate: 'plannedDate',
     hasPlannedTime: 'hasPlannedTime',
     dueDate: 'dueDate',
@@ -50120,7 +50211,8 @@ export namespace Prisma {
     order: 'order',
     archived: 'archived',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    sphereId: 'sphereId'
   };
 
   export type HabitScalarFieldEnum = (typeof HabitScalarFieldEnum)[keyof typeof HabitScalarFieldEnum]
@@ -51976,6 +52068,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
+    habits?: HabitListRelationFilter
   }
 
   export type LifeSphereOrderByWithRelationInput = {
@@ -51991,6 +52084,7 @@ export namespace Prisma {
     tasks?: TaskOrderByRelationAggregateInput
     milestones?: MilestoneOrderByRelationAggregateInput
     objectives?: ObjectiveOrderByRelationAggregateInput
+    habits?: HabitOrderByRelationAggregateInput
   }
 
   export type LifeSphereWhereUniqueInput = Prisma.AtLeast<{
@@ -52009,6 +52103,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
+    habits?: HabitListRelationFilter
   }, "id">
 
   export type LifeSphereOrderByWithAggregationInput = {
@@ -52053,6 +52148,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
     isPrivate?: BoolFilter<"Task"> | boolean
+    isBlocked?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -52081,6 +52177,7 @@ export namespace Prisma {
     status?: SortOrder
     priority?: SortOrder
     isPrivate?: SortOrder
+    isBlocked?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
@@ -52112,6 +52209,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
     isPrivate?: BoolFilter<"Task"> | boolean
+    isBlocked?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -52140,6 +52238,7 @@ export namespace Prisma {
     status?: SortOrder
     priority?: SortOrder
     isPrivate?: SortOrder
+    isBlocked?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
@@ -52171,6 +52270,7 @@ export namespace Prisma {
     status?: EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority
     isPrivate?: BoolWithAggregatesFilter<"Task"> | boolean
+    isBlocked?: BoolWithAggregatesFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolWithAggregatesFilter<"Task"> | boolean
     dueDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
@@ -52358,8 +52458,10 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
+    sphereId?: StringNullableFilter<"Habit"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
+    sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }
 
   export type HabitOrderByWithRelationInput = {
@@ -52374,8 +52476,10 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sphereId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     completions?: HabitCompletionOrderByRelationAggregateInput
+    sphere?: LifeSphereOrderByWithRelationInput
   }
 
   export type HabitWhereUniqueInput = Prisma.AtLeast<{
@@ -52393,8 +52497,10 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
+    sphereId?: StringNullableFilter<"Habit"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
+    sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }, "id">
 
   export type HabitOrderByWithAggregationInput = {
@@ -52409,6 +52515,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sphereId?: SortOrderInput | SortOrder
     _count?: HabitCountOrderByAggregateInput
     _avg?: HabitAvgOrderByAggregateInput
     _max?: HabitMaxOrderByAggregateInput
@@ -52431,6 +52538,7 @@ export namespace Prisma {
     archived?: BoolWithAggregatesFilter<"Habit"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
+    sphereId?: StringNullableWithAggregatesFilter<"Habit"> | string | null
   }
 
   export type HabitCompletionWhereInput = {
@@ -55046,6 +55154,7 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutSphereInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    habits?: HabitCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateInput = {
@@ -55060,6 +55169,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUpdateInput = {
@@ -55074,6 +55184,7 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    habits?: HabitUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateInput = {
@@ -55088,6 +55199,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereCreateManyInput = {
@@ -55130,6 +55242,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -55155,6 +55268,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -55178,6 +55292,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55203,6 +55318,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55227,6 +55343,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -55249,6 +55366,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55269,6 +55387,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55491,6 +55610,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+    sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
   }
 
   export type HabitUncheckedCreateInput = {
@@ -55505,6 +55625,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    sphereId?: string | null
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
@@ -55521,6 +55642,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+    sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
   }
 
   export type HabitUncheckedUpdateInput = {
@@ -55535,6 +55657,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
@@ -55550,6 +55673,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    sphereId?: string | null
   }
 
   export type HabitUpdateManyMutationInput = {
@@ -55577,6 +55701,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HabitCompletionCreateInput = {
@@ -58367,6 +58492,7 @@ export namespace Prisma {
     status?: SortOrder
     priority?: SortOrder
     isPrivate?: SortOrder
+    isBlocked?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -58395,6 +58521,7 @@ export namespace Prisma {
     status?: SortOrder
     priority?: SortOrder
     isPrivate?: SortOrder
+    isBlocked?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -58418,6 +58545,7 @@ export namespace Prisma {
     status?: SortOrder
     priority?: SortOrder
     isPrivate?: SortOrder
+    isBlocked?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
     dueDate?: SortOrder
@@ -58631,6 +58759,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sphereId?: SortOrder
   }
 
   export type HabitAvgOrderByAggregateInput = {
@@ -58649,6 +58778,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sphereId?: SortOrder
   }
 
   export type HabitMinOrderByAggregateInput = {
@@ -58663,6 +58793,7 @@ export namespace Prisma {
     archived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    sphereId?: SortOrder
   }
 
   export type HabitSumOrderByAggregateInput = {
@@ -61338,6 +61469,13 @@ export namespace Prisma {
     connect?: ObjectiveWhereUniqueInput | ObjectiveWhereUniqueInput[]
   }
 
+  export type HabitCreateNestedManyWithoutSphereInput = {
+    create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
+    createMany?: HabitCreateManySphereInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
   export type TaskUncheckedCreateNestedManyWithoutSphereInput = {
     create?: XOR<TaskCreateWithoutSphereInput, TaskUncheckedCreateWithoutSphereInput> | TaskCreateWithoutSphereInput[] | TaskUncheckedCreateWithoutSphereInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutSphereInput | TaskCreateOrConnectWithoutSphereInput[]
@@ -61357,6 +61495,13 @@ export namespace Prisma {
     connectOrCreate?: ObjectiveCreateOrConnectWithoutSphereInput | ObjectiveCreateOrConnectWithoutSphereInput[]
     createMany?: ObjectiveCreateManySphereInputEnvelope
     connect?: ObjectiveWhereUniqueInput | ObjectiveWhereUniqueInput[]
+  }
+
+  export type HabitUncheckedCreateNestedManyWithoutSphereInput = {
+    create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
+    createMany?: HabitCreateManySphereInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -61417,6 +61562,20 @@ export namespace Prisma {
     deleteMany?: ObjectiveScalarWhereInput | ObjectiveScalarWhereInput[]
   }
 
+  export type HabitUpdateManyWithoutSphereNestedInput = {
+    create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutSphereInput | HabitUpsertWithWhereUniqueWithoutSphereInput[]
+    createMany?: HabitCreateManySphereInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutSphereInput | HabitUpdateWithWhereUniqueWithoutSphereInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutSphereInput | HabitUpdateManyWithWhereWithoutSphereInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
   export type TaskUncheckedUpdateManyWithoutSphereNestedInput = {
     create?: XOR<TaskCreateWithoutSphereInput, TaskUncheckedCreateWithoutSphereInput> | TaskCreateWithoutSphereInput[] | TaskUncheckedCreateWithoutSphereInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutSphereInput | TaskCreateOrConnectWithoutSphereInput[]
@@ -61457,6 +61616,20 @@ export namespace Prisma {
     update?: ObjectiveUpdateWithWhereUniqueWithoutSphereInput | ObjectiveUpdateWithWhereUniqueWithoutSphereInput[]
     updateMany?: ObjectiveUpdateManyWithWhereWithoutSphereInput | ObjectiveUpdateManyWithWhereWithoutSphereInput[]
     deleteMany?: ObjectiveScalarWhereInput | ObjectiveScalarWhereInput[]
+  }
+
+  export type HabitUncheckedUpdateManyWithoutSphereNestedInput = {
+    create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutSphereInput | HabitUpsertWithWhereUniqueWithoutSphereInput[]
+    createMany?: HabitCreateManySphereInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutSphereInput | HabitUpdateWithWhereUniqueWithoutSphereInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutSphereInput | HabitUpdateManyWithWhereWithoutSphereInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTasksInput = {
@@ -61598,6 +61771,12 @@ export namespace Prisma {
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
   }
 
+  export type LifeSphereCreateNestedOneWithoutHabitsInput = {
+    create?: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutHabitsInput
+    connect?: LifeSphereWhereUniqueInput
+  }
+
   export type HabitCompletionUncheckedCreateNestedManyWithoutHabitInput = {
     create?: XOR<HabitCompletionCreateWithoutHabitInput, HabitCompletionUncheckedCreateWithoutHabitInput> | HabitCompletionCreateWithoutHabitInput[] | HabitCompletionUncheckedCreateWithoutHabitInput[]
     connectOrCreate?: HabitCompletionCreateOrConnectWithoutHabitInput | HabitCompletionCreateOrConnectWithoutHabitInput[]
@@ -61625,6 +61804,16 @@ export namespace Prisma {
     update?: HabitCompletionUpdateWithWhereUniqueWithoutHabitInput | HabitCompletionUpdateWithWhereUniqueWithoutHabitInput[]
     updateMany?: HabitCompletionUpdateManyWithWhereWithoutHabitInput | HabitCompletionUpdateManyWithWhereWithoutHabitInput[]
     deleteMany?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
+  }
+
+  export type LifeSphereUpdateOneWithoutHabitsNestedInput = {
+    create?: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutHabitsInput
+    upsert?: LifeSphereUpsertWithoutHabitsInput
+    disconnect?: LifeSphereWhereInput | boolean
+    delete?: LifeSphereWhereInput | boolean
+    connect?: LifeSphereWhereUniqueInput
+    update?: XOR<XOR<LifeSphereUpdateToOneWithWhereWithoutHabitsInput, LifeSphereUpdateWithoutHabitsInput>, LifeSphereUncheckedUpdateWithoutHabitsInput>
   }
 
   export type HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput = {
@@ -63376,6 +63565,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -63399,6 +63589,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -63500,6 +63691,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+    sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
   }
 
   export type HabitUncheckedCreateWithoutUserInput = {
@@ -63513,6 +63705,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    sphereId?: string | null
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
@@ -63537,6 +63730,7 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutSphereInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    habits?: HabitCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutUserInput = {
@@ -63550,6 +63744,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutUserInput = {
@@ -64061,6 +64256,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
     priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
     isPrivate?: BoolFilter<"Task"> | boolean
+    isBlocked?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
@@ -64153,6 +64349,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
+    sphereId?: StringNullableFilter<"Habit"> | string | null
   }
 
   export type LifeSphereUpsertWithWhereUniqueWithoutUserInput = {
@@ -66945,6 +67142,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -66969,6 +67167,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -67056,6 +67255,46 @@ export namespace Prisma {
 
   export type ObjectiveCreateManySphereInputEnvelope = {
     data: ObjectiveCreateManySphereInput | ObjectiveCreateManySphereInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HabitCreateWithoutSphereInput = {
+    id?: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutHabitsInput
+    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitUncheckedCreateWithoutSphereInput = {
+    id?: string
+    userId: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitCreateOrConnectWithoutSphereInput = {
+    where: HabitWhereUniqueInput
+    create: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput>
+  }
+
+  export type HabitCreateManySphereInputEnvelope = {
+    data: HabitCreateManySphereInput | HabitCreateManySphereInput[]
     skipDuplicates?: boolean
   }
 
@@ -67194,6 +67433,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Objective"> | Date | string
   }
 
+  export type HabitUpsertWithWhereUniqueWithoutSphereInput = {
+    where: HabitWhereUniqueInput
+    update: XOR<HabitUpdateWithoutSphereInput, HabitUncheckedUpdateWithoutSphereInput>
+    create: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput>
+  }
+
+  export type HabitUpdateWithWhereUniqueWithoutSphereInput = {
+    where: HabitWhereUniqueInput
+    data: XOR<HabitUpdateWithoutSphereInput, HabitUncheckedUpdateWithoutSphereInput>
+  }
+
+  export type HabitUpdateManyWithWhereWithoutSphereInput = {
+    where: HabitScalarWhereInput
+    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutSphereInput>
+  }
+
   export type UserCreateWithoutTasksInput = {
     id?: string
     name?: string | null
@@ -67269,6 +67524,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -67293,6 +67549,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -67320,6 +67577,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -67344,6 +67602,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -67379,6 +67638,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    habits?: HabitCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutTasksInput = {
@@ -67392,6 +67652,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutTasksInput = {
@@ -67520,6 +67781,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -67544,6 +67806,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -67596,6 +67859,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    habits?: HabitUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutTasksInput = {
@@ -67609,6 +67873,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type ProjectUpsertWithoutTasksInput = {
@@ -67875,6 +68140,39 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LifeSphereCreateWithoutHabitsInput = {
+    id?: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutLifeSpheresInput
+    tasks?: TaskCreateNestedManyWithoutSphereInput
+    milestones?: MilestoneCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereUncheckedCreateWithoutHabitsInput = {
+    id?: string
+    userId: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereCreateOrConnectWithoutHabitsInput = {
+    where: LifeSphereWhereUniqueInput
+    create: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
+  }
+
   export type UserUpsertWithoutHabitsInput = {
     update: XOR<UserUpdateWithoutHabitsInput, UserUncheckedUpdateWithoutHabitsInput>
     create: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
@@ -67974,6 +68272,45 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"HabitCompletion"> | Date | string
   }
 
+  export type LifeSphereUpsertWithoutHabitsInput = {
+    update: XOR<LifeSphereUpdateWithoutHabitsInput, LifeSphereUncheckedUpdateWithoutHabitsInput>
+    create: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
+    where?: LifeSphereWhereInput
+  }
+
+  export type LifeSphereUpdateToOneWithWhereWithoutHabitsInput = {
+    where?: LifeSphereWhereInput
+    data: XOR<LifeSphereUpdateWithoutHabitsInput, LifeSphereUncheckedUpdateWithoutHabitsInput>
+  }
+
+  export type LifeSphereUpdateWithoutHabitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
+    tasks?: TaskUpdateManyWithoutSphereNestedInput
+    milestones?: MilestoneUpdateManyWithoutSphereNestedInput
+    objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+  }
+
+  export type LifeSphereUncheckedUpdateWithoutHabitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
+    objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+  }
+
   export type HabitCreateWithoutCompletionsInput = {
     id?: string
     name: string
@@ -67986,6 +68323,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutHabitsInput
+    sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
   }
 
   export type HabitUncheckedCreateWithoutCompletionsInput = {
@@ -68000,6 +68338,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    sphereId?: string | null
   }
 
   export type HabitCreateOrConnectWithoutCompletionsInput = {
@@ -68030,6 +68369,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
+    sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
   }
 
   export type HabitUncheckedUpdateWithoutCompletionsInput = {
@@ -68044,6 +68384,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateWithoutLibraryItemsInput = {
@@ -69303,6 +69644,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    habits?: HabitCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutMilestonesInput = {
@@ -69316,6 +69658,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutMilestonesInput = {
@@ -69418,6 +69761,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    habits?: HabitUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutMilestonesInput = {
@@ -69431,6 +69775,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type UserCreateWithoutSprintsInput = {
@@ -69731,6 +70076,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
+    habits?: HabitCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutObjectivesInput = {
@@ -69744,6 +70090,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutObjectivesInput = {
@@ -69876,6 +70223,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
+    habits?: HabitUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutObjectivesInput = {
@@ -69889,6 +70237,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type KeyResultUpsertWithWhereUniqueWithoutObjectiveInput = {
@@ -70112,6 +70461,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -70136,6 +70486,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -70526,6 +70877,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -70578,6 +70930,7 @@ export namespace Prisma {
     archived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    sphereId?: string | null
   }
 
   export type LifeSphereCreateManyUserInput = {
@@ -70910,6 +71263,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70933,6 +71287,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -70956,6 +71311,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71063,6 +71419,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+    sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
   }
 
   export type HabitUncheckedUpdateWithoutUserInput = {
@@ -71076,6 +71433,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
@@ -71090,6 +71448,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LifeSphereUpdateWithoutUserInput = {
@@ -71103,6 +71462,7 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    habits?: HabitUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutUserInput = {
@@ -71116,6 +71476,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateManyWithoutUserInput = {
@@ -71717,6 +72078,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -71751,6 +72113,20 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type HabitCreateManySphereInput = {
+    id?: string
+    userId: string
+    name: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type TaskUpdateWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -71759,6 +72135,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71783,6 +72160,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71806,6 +72184,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71886,6 +72265,50 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type HabitUpdateWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
+    completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+  }
+
+  export type HabitUncheckedUpdateWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
+  }
+
+  export type HabitUncheckedUpdateManyWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TaskCreateManyParentInput = {
     id?: string
     userId: string
@@ -71895,6 +72318,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -71916,6 +72340,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71940,6 +72365,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -71963,6 +72389,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72435,6 +72862,7 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     priority?: $Enums.TaskPriority
     isPrivate?: boolean
+    isBlocked?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
     dueDate?: Date | string | null
@@ -72456,6 +72884,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72480,6 +72909,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72503,6 +72933,7 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
