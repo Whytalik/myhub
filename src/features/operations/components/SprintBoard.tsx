@@ -11,6 +11,10 @@ import type { SprintData, ObjectiveData } from "../types";
 import { calculateSprintWeek } from "../logic/sprint-logic";
 import { TacticDialog } from "./TacticDialog";
 import { TacticTracker } from "./TacticTracker";
+import { ProjectDialog } from "./ProjectDialog";
+import { Tabs } from "@/components/ui/tabs";
+import { SprintBacklog } from "./SprintBacklog";
+import { ListTodo } from "lucide-react";
 
 interface SprintBoardProps {
   sprint: SprintData;
@@ -52,88 +56,105 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Objectives Column */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2">
-              <Target size={14} className="text-emerald-500" />
-              Strategic Objectives
-            </h3>
-            <ObjectiveDialog sprintId={sprint.id} onSuccess={onRefresh}>
-              <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase tracking-tighter">
-                <Plus size={12} className="mr-1" /> Add Goal
-              </Button>
-            </ObjectiveDialog>
-          </div>
+      <Tabs 
+        tabs={[
+          {
+            id: "roadmap",
+            label: "Strategic Roadmap",
+            icon: <Target size={14} />,
+            content: (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Objectives Column */}
+                <div className="lg:col-span-2 space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2">
+                      <Target size={14} className="text-emerald-500" />
+                      Strategic Objectives
+                    </h3>
+                    <ObjectiveDialog sprintId={sprint.id} onSuccess={onRefresh}>
+                      <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase tracking-tighter">
+                        <Plus size={12} className="mr-1" /> Add Goal
+                      </Button>
+                    </ObjectiveDialog>
+                  </div>
 
-          <div className="space-y-4">
-            {sprint.objectives.length === 0 ? (
-              <div className="p-12 border border-dashed border-border rounded-2xl text-center">
-                <p className="text-xs text-secondary italic">No objectives defined for this sprint.</p>
-                <ObjectiveDialog sprintId={sprint.id} onSuccess={onRefresh}>
-                  <Button variant="outline" size="sm" className="mt-4">
-                    Define first objective
-                  </Button>
-                </ObjectiveDialog>
-              </div>
-            ) : (
-              sprint.objectives.map((obj) => (
-                <ObjectiveCard key={obj.id} objective={obj} onRefresh={onRefresh} currentWeek={currentWeek} />
-              ))
-            )}
-          </div>
-        </div>
+                  <div className="space-y-4">
+                    {sprint.objectives.length === 0 ? (
+                      <div className="p-12 border border-dashed border-border rounded-2xl text-center">
+                        <p className="text-xs text-secondary italic">No objectives defined for this sprint.</p>
+                        <ObjectiveDialog sprintId={sprint.id} onSuccess={onRefresh}>
+                          <Button variant="outline" size="sm" className="mt-4">
+                            Define first objective
+                          </Button>
+                        </ObjectiveDialog>
+                      </div>
+                    ) : (
+                      sprint.objectives.map((obj) => (
+                        <ObjectiveCard key={obj.id} objective={obj} onRefresh={onRefresh} currentWeek={currentWeek} />
+                      ))
+                    )}
+                  </div>
+                </div>
 
-        {/* Pipeline / Stats Column */}
-        <div className="space-y-8">
-           <div>
-             <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2 mb-6">
-               <Activity size={14} className="text-emerald-500" />
-               Project Pipeline
-             </h3>
-             <div className="space-y-3">
-               {sprint.objectives.flatMap(obj => obj.projects).length === 0 ? (
-                 <p className="text-[10px] text-muted italic">No active projects linked to objectives.</p>
-               ) : (
-                 sprint.objectives.flatMap(obj => obj.projects).map(project => (
-                   <div key={project.id} className="p-4 bg-surface border border-border rounded-xl">
-                     <div className="flex justify-between items-start mb-2">
-                        <span className="text-[10px] font-bold uppercase text-text truncate pr-2">
-                          {project.title}
-                        </span>
-                        <span className="text-[10px] font-mono text-muted">
-                          {Math.round(project.progress)}%
-                        </span>
-                     </div>
-                     <div className="w-full h-1 bg-border/40 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-accent transition-all duration-500" 
-                          style={{ width: `${project.progress}%` }}
-                        />
+                {/* Pipeline / Stats Column */}
+                <div className="space-y-8">
+                   <div>
+                     <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2 mb-6">
+                       <Activity size={14} className="text-emerald-500" />
+                       Project Pipeline
+                     </h3>
+                     <div className="space-y-3">
+                       {sprint.objectives.flatMap(obj => obj.projects).length === 0 ? (
+                         <p className="text-[10px] text-muted italic">No active projects linked to objectives.</p>
+                       ) : (
+                         sprint.objectives.flatMap(obj => obj.projects).map(project => (
+                           <div key={project.id} className="p-4 bg-surface border border-border rounded-xl">
+                             <div className="flex justify-between items-start mb-2">
+                                <span className="text-[10px] font-bold uppercase text-text truncate pr-2">
+                                  {project.title}
+                                </span>
+                                <span className="text-[10px] font-mono text-muted">
+                                  {Math.round(project.progress)}%
+                                </span>
+                             </div>
+                             <div className="w-full h-1 bg-border/40 rounded-full overflow-hidden">
+                                <div 
+                                  className="h-full bg-accent transition-all duration-500" 
+                                  style={{ width: `${project.progress}%` }}
+                                />
+                             </div>
+                           </div>
+                         ))
+                       )}
                      </div>
                    </div>
-                 ))
-               )}
-             </div>
-           </div>
 
-           <div className="p-6 bg-surface border border-border rounded-2xl">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-text">Weekly Execution Score</h4>
-              <div className="flex items-center gap-4">
-                 <div className="text-4xl font-heading text-emerald-500">
-                   {Math.round(calculateExecutionScore(sprint, currentWeek))}%
-                 </div>
-                 <div className="flex-1">
-                    <div className="h-2 w-full bg-border/30 rounded-full overflow-hidden">
-                       <div className="h-full bg-emerald-500" style={{ width: `${calculateExecutionScore(sprint, currentWeek)}%` }} />
-                    </div>
-                    <p className="text-[10px] text-muted mt-2">Tactical completion (Week {currentWeek})</p>
-                 </div>
+                   <div className="p-6 bg-surface border border-border rounded-2xl">
+                      <h4 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-text">Weekly Execution Score</h4>
+                      <div className="flex items-center gap-4">
+                         <div className="text-4xl font-heading text-emerald-500">
+                           {Math.round(calculateExecutionScore(sprint, currentWeek))}%
+                         </div>
+                         <div className="flex-1">
+                            <div className="h-2 w-full bg-border/30 rounded-full overflow-hidden">
+                               <div className="h-full bg-emerald-500" style={{ width: `${calculateExecutionScore(sprint, currentWeek)}%` }} />
+                            </div>
+                            <p className="text-[10px] text-muted mt-2">Tactical completion (Week {currentWeek})</p>
+                         </div>
+                      </div>
+                   </div>
+                </div>
               </div>
-           </div>
-        </div>
-      </div>
+            )
+          },
+          {
+            id: "backlog",
+            label: "Sprint Backlog",
+            icon: <ListTodo size={14} />,
+            content: <SprintBacklog sprint={sprint} onRefresh={onRefresh} />
+          }
+        ]}
+      />
     </div>
   );
 }
@@ -230,9 +251,11 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
                </span>
             </div>
          </div>
-         <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase font-bold text-accent">
-           Manage
-         </Button>
+         <ProjectDialog objectiveId={objective.id} onSuccess={onRefresh}>
+            <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase font-bold text-accent">
+              <Plus size={10} className="mr-1" /> Add Project
+            </Button>
+         </ProjectDialog>
       </div>
     </div>
   );
