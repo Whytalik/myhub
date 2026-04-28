@@ -44,11 +44,11 @@ export default async function PlanningSpacePage() {
 
   const modules = [
     {
-      title: "Vision & Milestones",
+      title: "Alignment Map",
       href: "/planning/vision",
-      description: "Ultimate North Star (10-25 years) and Strategic 3-Year Milestones. The 'Why' and 'Where'.",
+      description: "Visual lineage from your North Star (Vision) through Strategic Pillars (Life Spheres) to current Sprint Objectives.",
       icon: Target,
-      badge: "Level 01 & 02",
+      badge: "Level 01, 02 & 04",
     },
     {
       title: "Annual Compass",
