@@ -15,16 +15,17 @@ enum Role {
 }
 
 model User {
-  id                      String    @id @default(cuid())
+  id                      String       @id @default(cuid())
   name                    String?
-  email                   String?   @unique
+  email                   String?      @unique
   emailVerified           DateTime?
   image                   String?
   passwordHash            String? // For credentials provider
   privateTaskPasswordHash String? // For private tasks
-  role                    Role      @default(ADMIN)
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
+  role                    Role         @default(ADMIN)
+  systemStatus            SystemStatus @default(STABLE)
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
 
   accounts          Account[]
   sessions          Session[]
@@ -139,6 +140,13 @@ enum PreparationMethod {
   BAKED
   STEAMED
   OTHER
+}
+
+enum SystemStatus {
+  STABLE
+  CRISIS_SURVIVAL // Phase 0
+  CRISIS_STABILIZATION // Phase 1
+  CRISIS_RE_ENTRY // Phase 2
 }
 
 enum IngredientInputState {
@@ -433,6 +441,10 @@ model DailyEntry {
   morningRoutine Json?
   eveningRoutine Json?
   routineNote    String?
+
+  // Recovery tracking
+  recoveryRoutine Json? // Checkboxes for daily recovery tasks
+  recoveryScore   Float? // Computed 0-100 score for recovery adherence
 
   // Reflection & Scrum Standup
   winToday        String?

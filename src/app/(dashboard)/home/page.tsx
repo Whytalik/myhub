@@ -10,6 +10,9 @@ import {
 import { getTodayEntry } from "@/features/life/services/journal-service";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
+import { runDailySystemCheckAction } from "@/features/system/actions/recovery-actions";
+import { CrisisDashboard } from "@/features/system/components/crisis-dashboard";
+import { SOSButton } from "@/features/system/components/sos-button";
 
 const domainGroups = [
   {
@@ -60,6 +63,16 @@ export default async function HomePage() {
   const userId = session.user.id;
   const name = session.user?.name?.split(" ")[0] ?? "there";
 
+  // Run automated system check once per day/session
+  if (userId) {
+    await runDailySystemCheckAction().catch(() => null);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { systemStatus: true }
+  });
+
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const today = format(new Date(), "EEEE, MMMM d");
@@ -99,91 +112,124 @@ export default async function HomePage() {
       : null;
   }
 
+  const isCrisis = user?.systemStatus && user.systemStatus !== "STABLE";
+
+  // Fetch crisis specific data if needed
+  let recoveryRoutine = {};
+  let recoveryScore = 0;
+  if (isCrisis) {
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    const entry = await prisma.dailyEntry.findUnique({
+      where: { userId_date: { userId: userId!, date: todayDate } }
+    });
+    recoveryRoutine = (entry?.recoveryRoutine as Record<string, boolean>) || {};
+    recoveryScore = entry?.recoveryScore || 0;
+  }
+
   return (
     <div className="px-6 py-8 md:px-14 md:py-12 w-full">
       {/* Header */}
-      <div className="mb-10">
-        <p className="text-[11px] font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
-        <p className="text-[11px] font-mono text-accent uppercase tracking-[0.2em] mb-3">{greeting}</p>
-        <h1 className="font-heading text-5xl md:text-7xl text-text leading-none tracking-tight">{name}</h1>
-        <div className="h-0.5 w-12 bg-accent mt-4" />
-      </div>
-
-      {/* Stats strip */}
-      {userId && (
-        <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-12">
-          <div className="flex items-center gap-2.5">
-            <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
-            <div>
-              <p className="text-lg font-heading text-text leading-none">{streak}</p>
-              <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Streak</p>
-            </div>
-          </div>
-          <div className="hidden sm:block w-px h-8 bg-border" />
-          <div className="flex items-center gap-2.5">
-            <Zap size={15} className="text-muted" />
-            <div>
-              <p className="text-lg font-heading text-text leading-none">
-                {avgEnergy !== null ? avgEnergy.toFixed(1) : "—"}
-              </p>
-              <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Avg Energy</p>
-            </div>
-          </div>
-          <div className="hidden sm:block w-px h-8 bg-border" />
-          <div className="flex items-center gap-2.5">
-            <BookText size={15} className={todayDone ? "text-accent" : "text-muted"} />
-            <div>
-              <p className="text-[13px] font-semibold text-text leading-none">
-                {todayDone ? "Logged" : "Pending"}
-              </p>
-              <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Today&apos;s Entry</p>
-            </div>
-          </div>
-          <div className="w-full md:w-auto md:ml-auto pt-2 md:pt-0 border-t md:border-none border-border/40">
-            <Link
-              href="/life/journal"
-              className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent hover:underline uppercase tracking-wider"
-            >
-              {todayDone ? "View entry" : "Log today"}
-              <ArrowRight size={12} />
-            </Link>
-          </div>
+      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <p className="text-[11px] font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
+          <p className="text-[11px] font-mono text-accent uppercase tracking-[0.2em] mb-3">{greeting}</p>
+          <h1 className="font-heading text-5xl md:text-7xl text-text leading-none tracking-tight">{name}</h1>
+          <div className="h-0.5 w-12 bg-accent mt-4" />
         </div>
-      )}
+        
+        {!isCrisis && (
+          <div className="flex items-center gap-3">
+            <SOSButton />
+          </div>
+        )}
+      </div>
 
-      {/* Domain Groups */}
-      <div className="flex flex-col gap-12">
-        {domainGroups.map((group) => {
-          const visibleSpaces = group.spaces.filter(s => !s.adminOnly || isAdmin);
-          if (visibleSpaces.length === 0) return null;
-
-          return (
-            <div key={group.name}>
-              <div className="flex items-center gap-2 mb-4">
-                 <group.icon size={14} className="text-accent" />
-                 <h2 className="text-[11px] font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
+      {isCrisis ? (
+        <CrisisDashboard 
+          status={user!.systemStatus} 
+          routine={recoveryRoutine} 
+          score={recoveryScore} 
+        />
+      ) : (
+        <>
+          {/* Stats strip */}
+          {userId && (
+            <div className="flex flex-wrap md:flex-nowrap items-center gap-6 bg-surface border border-border rounded-2xl px-6 py-4 mb-12">
+              <div className="flex items-center gap-2.5">
+                <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
+                <div>
+                  <p className="text-lg font-heading text-text leading-none">{streak}</p>
+                  <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Streak</p>
+                </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                {visibleSpaces.map(({ label, description, icon: Icon, href }) => (
-                  <Link
-                    key={label}
-                    href={href}
-                    className="group flex flex-col items-center justify-center gap-3 aspect-square rounded-2xl border border-border bg-surface hover:border-accent/50 hover:bg-surface/80 hover:shadow-lg hover:shadow-accent/5 transition-all"
-                  >
-                    <div className="p-3 rounded-xl border bg-accent/10 border-accent/20 group-hover:bg-accent/20 transition-colors">
-                      <Icon size={22} className="text-accent" />
-                    </div>
-                    <div className="text-center px-2">
-                      <p className="text-[12px] font-semibold text-text leading-none mb-1">{label}</p>
-                      <p className="text-[10px] text-muted leading-snug">{description}</p>
-                    </div>
-                  </Link>
-                ))}
+              <div className="hidden sm:block w-px h-8 bg-border" />
+              <div className="flex items-center gap-2.5">
+                <Zap size={15} className="text-muted" />
+                <div>
+                  <p className="text-lg font-heading text-text leading-none">
+                    {avgEnergy !== null ? avgEnergy.toFixed(1) : "—"}
+                  </p>
+                  <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Avg Energy</p>
+                </div>
+              </div>
+              <div className="hidden sm:block w-px h-8 bg-border" />
+              <div className="flex items-center gap-2.5">
+                <BookText size={15} className={todayDone ? "text-accent" : "text-muted"} />
+                <div>
+                  <p className="text-[13px] font-semibold text-text leading-none">
+                    {todayDone ? "Logged" : "Pending"}
+                  </p>
+                  <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Today&apos;s Entry</p>
+                </div>
+              </div>
+              <div className="w-full md:w-auto md:ml-auto pt-2 md:pt-0 border-t md:border-none border-border/40">
+                <Link
+                  href="/life/journal"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent hover:underline uppercase tracking-wider"
+                >
+                  {todayDone ? "View entry" : "Log today"}
+                  <ArrowRight size={12} />
+                </Link>
               </div>
             </div>
-          );
-        })}
-      </div>
+          )}
+
+          {/* Domain Groups */}
+          <div className="flex flex-col gap-12">
+            {domainGroups.map((group) => {
+              const visibleSpaces = group.spaces.filter(s => !s.adminOnly || isAdmin);
+              if (visibleSpaces.length === 0) return null;
+
+              return (
+                <div key={group.name}>
+                  <div className="flex items-center gap-2 mb-4">
+                     <group.icon size={14} className="text-accent" />
+                     <h2 className="text-[11px] font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    {visibleSpaces.map(({ label, description, icon: Icon, href }) => (
+                      <Link
+                        key={label}
+                        href={href}
+                        className="group flex flex-col items-center justify-center gap-3 aspect-square rounded-2xl border border-border bg-surface hover:border-accent/50 hover:bg-surface/80 hover:shadow-lg hover:shadow-accent/5 transition-all"
+                      >
+                        <div className="p-3 rounded-xl border bg-accent/10 border-accent/20 group-hover:bg-accent/20 transition-colors">
+                          <Icon size={22} className="text-accent" />
+                        </div>
+                        <div className="text-center px-2">
+                          <p className="text-[12px] font-semibold text-text leading-none mb-1">{label}</p>
+                          <p className="text-[10px] text-muted leading-snug">{description}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }

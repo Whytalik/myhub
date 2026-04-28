@@ -280,6 +280,16 @@ export const PreparationMethod: {
 export type PreparationMethod = (typeof PreparationMethod)[keyof typeof PreparationMethod]
 
 
+export const SystemStatus: {
+  STABLE: 'STABLE',
+  CRISIS_SURVIVAL: 'CRISIS_SURVIVAL',
+  CRISIS_STABILIZATION: 'CRISIS_STABILIZATION',
+  CRISIS_RE_ENTRY: 'CRISIS_RE_ENTRY'
+};
+
+export type SystemStatus = (typeof SystemStatus)[keyof typeof SystemStatus]
+
+
 export const IngredientInputState: {
   RAW: 'RAW',
   COOKED: 'COOKED'
@@ -462,6 +472,10 @@ export const ProductState: typeof $Enums.ProductState
 export type PreparationMethod = $Enums.PreparationMethod
 
 export const PreparationMethod: typeof $Enums.PreparationMethod
+
+export type SystemStatus = $Enums.SystemStatus
+
+export const SystemStatus: typeof $Enums.SystemStatus
 
 export type IngredientInputState = $Enums.IngredientInputState
 
@@ -5462,6 +5476,7 @@ export namespace Prisma {
     passwordHash: string | null
     privateTaskPasswordHash: string | null
     role: $Enums.Role | null
+    systemStatus: $Enums.SystemStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5475,6 +5490,7 @@ export namespace Prisma {
     passwordHash: string | null
     privateTaskPasswordHash: string | null
     role: $Enums.Role | null
+    systemStatus: $Enums.SystemStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5488,6 +5504,7 @@ export namespace Prisma {
     passwordHash: number
     privateTaskPasswordHash: number
     role: number
+    systemStatus: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5503,6 +5520,7 @@ export namespace Prisma {
     passwordHash?: true
     privateTaskPasswordHash?: true
     role?: true
+    systemStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5516,6 +5534,7 @@ export namespace Prisma {
     passwordHash?: true
     privateTaskPasswordHash?: true
     role?: true
+    systemStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5529,6 +5548,7 @@ export namespace Prisma {
     passwordHash?: true
     privateTaskPasswordHash?: true
     role?: true
+    systemStatus?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5615,6 +5635,7 @@ export namespace Prisma {
     passwordHash: string | null
     privateTaskPasswordHash: string | null
     role: $Enums.Role
+    systemStatus: $Enums.SystemStatus
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -5645,6 +5666,7 @@ export namespace Prisma {
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
     role?: boolean
+    systemStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -5679,6 +5701,7 @@ export namespace Prisma {
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
     role?: boolean
+    systemStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -5692,6 +5715,7 @@ export namespace Prisma {
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
     role?: boolean
+    systemStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -5705,11 +5729,12 @@ export namespace Prisma {
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
     role?: boolean
+    systemStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "privateTaskPasswordHash" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "privateTaskPasswordHash" | "role" | "systemStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -5769,6 +5794,7 @@ export namespace Prisma {
       passwordHash: string | null
       privateTaskPasswordHash: string | null
       role: $Enums.Role
+      systemStatus: $Enums.SystemStatus
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -6222,6 +6248,7 @@ export namespace Prisma {
     readonly passwordHash: FieldRef<"User", 'String'>
     readonly privateTaskPasswordHash: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
+    readonly systemStatus: FieldRef<"User", 'SystemStatus'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -26883,6 +26910,7 @@ export namespace Prisma {
     weight: number | null
     eveningEnergy: number | null
     nutrition: number | null
+    recoveryScore: number | null
   }
 
   export type DailyEntrySumAggregateOutputType = {
@@ -26893,6 +26921,7 @@ export namespace Prisma {
     weight: number | null
     eveningEnergy: number | null
     nutrition: number | null
+    recoveryScore: number | null
   }
 
   export type DailyEntryMinAggregateOutputType = {
@@ -26912,6 +26941,7 @@ export namespace Prisma {
     nutrition: number | null
     nutritionNote: string | null
     routineNote: string | null
+    recoveryScore: number | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -26940,6 +26970,7 @@ export namespace Prisma {
     nutrition: number | null
     nutritionNote: string | null
     routineNote: string | null
+    recoveryScore: number | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -26971,6 +27002,8 @@ export namespace Prisma {
     morningRoutine: number
     eveningRoutine: number
     routineNote: number
+    recoveryRoutine: number
+    recoveryScore: number
     winToday: number
     improveTomorrow: number
     gratitude: number
@@ -26992,6 +27025,7 @@ export namespace Prisma {
     weight?: true
     eveningEnergy?: true
     nutrition?: true
+    recoveryScore?: true
   }
 
   export type DailyEntrySumAggregateInputType = {
@@ -27002,6 +27036,7 @@ export namespace Prisma {
     weight?: true
     eveningEnergy?: true
     nutrition?: true
+    recoveryScore?: true
   }
 
   export type DailyEntryMinAggregateInputType = {
@@ -27021,6 +27056,7 @@ export namespace Prisma {
     nutrition?: true
     nutritionNote?: true
     routineNote?: true
+    recoveryScore?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -27049,6 +27085,7 @@ export namespace Prisma {
     nutrition?: true
     nutritionNote?: true
     routineNote?: true
+    recoveryScore?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -27080,6 +27117,8 @@ export namespace Prisma {
     morningRoutine?: true
     eveningRoutine?: true
     routineNote?: true
+    recoveryRoutine?: true
+    recoveryScore?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -27198,6 +27237,8 @@ export namespace Prisma {
     morningRoutine: JsonValue | null
     eveningRoutine: JsonValue | null
     routineNote: string | null
+    recoveryRoutine: JsonValue | null
+    recoveryScore: number | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -27248,6 +27289,8 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    recoveryRoutine?: boolean
+    recoveryScore?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -27280,6 +27323,8 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    recoveryRoutine?: boolean
+    recoveryScore?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -27312,6 +27357,8 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    recoveryRoutine?: boolean
+    recoveryScore?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -27344,6 +27391,8 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    recoveryRoutine?: boolean
+    recoveryScore?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -27355,7 +27404,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "standupDone" | "standupPlan" | "standupBlockers" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "recoveryRoutine" | "recoveryScore" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "standupDone" | "standupPlan" | "standupBlockers" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -27391,6 +27440,8 @@ export namespace Prisma {
       morningRoutine: Prisma.JsonValue | null
       eveningRoutine: Prisma.JsonValue | null
       routineNote: string | null
+      recoveryRoutine: Prisma.JsonValue | null
+      recoveryScore: number | null
       winToday: string | null
       improveTomorrow: string | null
       gratitude: string | null
@@ -27843,6 +27894,8 @@ export namespace Prisma {
     readonly morningRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly eveningRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly routineNote: FieldRef<"DailyEntry", 'String'>
+    readonly recoveryRoutine: FieldRef<"DailyEntry", 'Json'>
+    readonly recoveryScore: FieldRef<"DailyEntry", 'Float'>
     readonly winToday: FieldRef<"DailyEntry", 'String'>
     readonly improveTomorrow: FieldRef<"DailyEntry", 'String'>
     readonly gratitude: FieldRef<"DailyEntry", 'String'>
@@ -51298,6 +51351,7 @@ export namespace Prisma {
     passwordHash: 'passwordHash',
     privateTaskPasswordHash: 'privateTaskPasswordHash',
     role: 'role',
+    systemStatus: 'systemStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -51566,6 +51620,8 @@ export namespace Prisma {
     morningRoutine: 'morningRoutine',
     eveningRoutine: 'eveningRoutine',
     routineNote: 'routineNote',
+    recoveryRoutine: 'recoveryRoutine',
+    recoveryScore: 'recoveryScore',
     winToday: 'winToday',
     improveTomorrow: 'improveTomorrow',
     gratitude: 'gratitude',
@@ -51957,6 +52013,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SystemStatus'
+   */
+  export type EnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SystemStatus[]'
+   */
+  export type ListEnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -52300,6 +52370,7 @@ export namespace Prisma {
     passwordHash?: StringNullableFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    systemStatus?: EnumSystemStatusFilter<"User"> | $Enums.SystemStatus
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
@@ -52333,6 +52404,7 @@ export namespace Prisma {
     passwordHash?: SortOrderInput | SortOrder
     privateTaskPasswordHash?: SortOrderInput | SortOrder
     role?: SortOrder
+    systemStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
@@ -52369,6 +52441,7 @@ export namespace Prisma {
     passwordHash?: StringNullableFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
     role?: EnumRoleFilter<"User"> | $Enums.Role
+    systemStatus?: EnumSystemStatusFilter<"User"> | $Enums.SystemStatus
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
@@ -52402,6 +52475,7 @@ export namespace Prisma {
     passwordHash?: SortOrderInput | SortOrder
     privateTaskPasswordHash?: SortOrderInput | SortOrder
     role?: SortOrder
+    systemStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -52421,6 +52495,7 @@ export namespace Prisma {
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+    systemStatus?: EnumSystemStatusWithAggregatesFilter<"User"> | $Enums.SystemStatus
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -53748,6 +53823,8 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    recoveryRoutine?: JsonNullableFilter<"DailyEntry">
+    recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -53780,6 +53857,8 @@ export namespace Prisma {
     morningRoutine?: SortOrderInput | SortOrder
     eveningRoutine?: SortOrderInput | SortOrder
     routineNote?: SortOrderInput | SortOrder
+    recoveryRoutine?: SortOrderInput | SortOrder
+    recoveryScore?: SortOrderInput | SortOrder
     winToday?: SortOrderInput | SortOrder
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
@@ -53816,6 +53895,8 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    recoveryRoutine?: JsonNullableFilter<"DailyEntry">
+    recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -53848,6 +53929,8 @@ export namespace Prisma {
     morningRoutine?: SortOrderInput | SortOrder
     eveningRoutine?: SortOrderInput | SortOrder
     routineNote?: SortOrderInput | SortOrder
+    recoveryRoutine?: SortOrderInput | SortOrder
+    recoveryScore?: SortOrderInput | SortOrder
     winToday?: SortOrderInput | SortOrder
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
@@ -53887,6 +53970,8 @@ export namespace Prisma {
     morningRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     eveningRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     routineNote?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    recoveryRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
+    recoveryScore?: FloatNullableWithAggregatesFilter<"DailyEntry"> | number | null
     winToday?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
@@ -55424,6 +55509,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -55457,6 +55543,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -55490,6 +55577,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -55523,6 +55611,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -55556,6 +55645,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55569,6 +55659,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55582,6 +55673,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56974,6 +57066,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -57006,6 +57100,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -57036,6 +57132,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57068,6 +57166,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57099,6 +57199,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -57129,6 +57231,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57160,6 +57264,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -58844,6 +58950,13 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
+  export type EnumSystemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSystemStatusFilter<$PrismaModel> | $Enums.SystemStatus
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -59064,6 +59177,7 @@ export namespace Prisma {
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
     role?: SortOrder
+    systemStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59077,6 +59191,7 @@ export namespace Prisma {
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
     role?: SortOrder
+    systemStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59090,6 +59205,7 @@ export namespace Prisma {
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
     role?: SortOrder
+    systemStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59152,6 +59268,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type EnumSystemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel> | $Enums.SystemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSystemStatusFilter<$PrismaModel>
+    _max?: NestedEnumSystemStatusFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -60338,6 +60464,8 @@ export namespace Prisma {
     morningRoutine?: SortOrder
     eveningRoutine?: SortOrder
     routineNote?: SortOrder
+    recoveryRoutine?: SortOrder
+    recoveryScore?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -60357,6 +60485,7 @@ export namespace Prisma {
     weight?: SortOrder
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
+    recoveryScore?: SortOrder
   }
 
   export type DailyEntryMaxOrderByAggregateInput = {
@@ -60376,6 +60505,7 @@ export namespace Prisma {
     nutrition?: SortOrder
     nutritionNote?: SortOrder
     routineNote?: SortOrder
+    recoveryScore?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -60404,6 +60534,7 @@ export namespace Prisma {
     nutrition?: SortOrder
     nutritionNote?: SortOrder
     routineNote?: SortOrder
+    recoveryScore?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -60423,6 +60554,7 @@ export namespace Prisma {
     weight?: SortOrder
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
+    recoveryScore?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -61876,6 +62008,10 @@ export namespace Prisma {
 
   export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role
+  }
+
+  export type EnumSystemStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SystemStatus
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -64535,6 +64671,13 @@ export namespace Prisma {
     not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
+  export type NestedEnumSystemStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSystemStatusFilter<$PrismaModel> | $Enums.SystemStatus
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -64624,6 +64767,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRoleFilter<$PrismaModel>
     _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel> | $Enums.SystemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSystemStatusFilter<$PrismaModel>
+    _max?: NestedEnumSystemStatusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -65492,6 +65645,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -65522,6 +65677,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -66204,6 +66361,8 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    recoveryRoutine?: JsonNullableFilter<"DailyEntry">
+    recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -66508,6 +66667,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -66540,6 +66700,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -66588,6 +66749,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -66620,6 +66782,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -66652,6 +66815,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -66684,6 +66848,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -66732,6 +66897,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -66764,6 +66930,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -66796,6 +66963,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -66828,6 +66996,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -66876,6 +67045,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -66908,6 +67078,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -66940,6 +67111,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -66972,6 +67144,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -67020,6 +67193,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -67052,6 +67226,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -67198,6 +67373,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -67230,6 +67406,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -67360,6 +67537,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -67392,6 +67570,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -67656,6 +67835,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -67688,6 +67868,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -67794,6 +67975,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -67826,6 +68008,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -68010,6 +68193,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -68042,6 +68226,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -68150,6 +68335,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -68182,6 +68368,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -68246,6 +68433,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -68278,6 +68466,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -68400,6 +68589,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -68432,6 +68622,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -68668,6 +68859,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -68700,6 +68892,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -68799,6 +68992,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -68831,6 +69025,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -69054,6 +69249,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -69086,6 +69282,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -69298,6 +69495,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -69330,6 +69528,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -69440,6 +69639,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -69472,6 +69672,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -69693,6 +69894,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -69725,6 +69927,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -69906,6 +70109,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -69938,6 +70142,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -69986,6 +70191,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -70018,6 +70224,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -70050,6 +70257,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -70082,6 +70290,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -70185,6 +70394,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -70217,6 +70427,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -70390,6 +70601,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -70422,6 +70634,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -70470,6 +70683,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -70502,6 +70716,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -70534,6 +70749,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -70566,6 +70782,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -70614,6 +70831,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -70646,6 +70864,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -70730,6 +70949,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -70762,6 +70982,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -70955,6 +71176,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -70987,6 +71209,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -71441,6 +71664,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -71473,6 +71697,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -71521,6 +71746,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -71553,6 +71779,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -71585,6 +71812,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -71617,6 +71845,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -71665,6 +71894,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -71697,6 +71927,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -71729,6 +71960,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -71761,6 +71993,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -71842,6 +72075,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -71874,6 +72108,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -71945,6 +72180,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
@@ -71977,6 +72213,7 @@ export namespace Prisma {
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
     role?: $Enums.Role
+    systemStatus?: $Enums.SystemStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
@@ -72093,6 +72330,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
@@ -72125,6 +72363,7 @@ export namespace Prisma {
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -73073,6 +73312,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: number | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -73520,6 +73761,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73550,6 +73793,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73580,6 +73825,8 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
+    recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null

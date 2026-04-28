@@ -129,6 +129,7 @@ exports.Prisma.UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   privateTaskPasswordHash: 'privateTaskPasswordHash',
   role: 'role',
+  systemStatus: 'systemStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -343,6 +344,8 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   morningRoutine: 'morningRoutine',
   eveningRoutine: 'eveningRoutine',
   routineNote: 'routineNote',
+  recoveryRoutine: 'recoveryRoutine',
+  recoveryScore: 'recoveryScore',
   winToday: 'winToday',
   improveTomorrow: 'improveTomorrow',
   gratitude: 'gratitude',
@@ -610,6 +613,13 @@ exports.Prisma.JsonNullValueFilter = {
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
   ADMIN: 'ADMIN'
+};
+
+exports.SystemStatus = exports.$Enums.SystemStatus = {
+  STABLE: 'STABLE',
+  CRISIS_SURVIVAL: 'CRISIS_SURVIVAL',
+  CRISIS_STABILIZATION: 'CRISIS_STABILIZATION',
+  CRISIS_RE_ENTRY: 'CRISIS_RE_ENTRY'
 };
 
 exports.ProductCategory = exports.$Enums.ProductCategory = {
