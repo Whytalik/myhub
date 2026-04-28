@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { TacticFrequency, TaskStatus, ObjectiveStatus, SprintStatus } from "@/app/generated/prisma";
+import { TacticFrequency, TaskStatus, ObjectiveStatus, SprintStatus, TaskPriority } from "@/app/generated/prisma";
 import type { 
   SprintData, 
   ObjectiveData, 
@@ -10,8 +10,10 @@ import type {
   UpsertSprintInput,
   UpsertObjectiveInput,
   UpsertKeyResultInput,
-  UpsertTacticInput
+  UpsertTacticInput,
+  UpsertProjectInput
 } from "../types";
+import type { TaskData } from "@/features/life/types";
 
 // ─── Mapping Functions ───────────────────────────────────────────────────────
 
@@ -63,6 +65,14 @@ function mapProject(p: Record<string, unknown>): ProjectData {
     taskCount,
     completedTaskCount,
     progress,
+    tasks: (tasks as Record<string, unknown>[])?.map(t => ({
+      id: t.id as string,
+      title: t.title as string,
+      status: t.status as TaskStatus,
+      priority: t.priority as TaskPriority,
+      createdAt: t.createdAt as Date,
+      updatedAt: t.updatedAt as Date,
+    })) as unknown as TaskData[], 
     createdAt: p.createdAt as Date,
     updatedAt: p.updatedAt as Date,
   };
@@ -267,4 +277,134 @@ export async function toggleTacticCompletion(tacticId: string, weekNumber: numbe
       where: { tacticId, weekNumber }
     });
   }
+}
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+
+export async function upsertProject(userId: string, input: UpsertProjectInput): Promise<ProjectData> {
+  const { id, objectiveId, title, description, status, startDate, endDate } = input;
+  
+  const saved = await prisma.project.upsert({
+    where: { id: id ?? "" },
+    create: { objectiveId, title, description, status: status ?? "TODO", startDate, endDate },
+    update: { title, description, status, startDate, endDate },
+    include: { tasks: true }
+  });
+  return mapProject(saved);
+}
+
+export async function deleteProject(userId: string, id: string): Promise<void> {
+  // Check ownership through objective -> sprint
+  const proj = await prisma.project.findUnique({
+    where: { id },
+    include: { objective: { include: { sprint: true } } }
+  });
+  
+  if (proj && proj.objective.sprint.userId === userId) {
+    await prisma.project.delete({ where: { id } });
+  }
+}
+
+// ─── Alignment ────────────────────────────────────────────────────────────────
+
+export async function getAlignmentData(userId: string) {
+  const [vision, spheres, activeSprint] = await Promise.all([
+    prisma.vision.findFirst({ where: { userId } }),
+    prisma.lifeSphere.findMany({ 
+      where: { userId }, 
+      orderBy: { order: "asc" },
+      include: { _count: { select: { tasks: true } } } 
+    }),
+    prisma.sprint.findFirst({
+      where: { userId, status: "ACTIVE" },
+      include: {
+        objectives: {
+          include: {
+            sphere: true,
+            keyResults: true,
+            projects: { include: { tasks: true } }
+          }
+        }
+      }
+    })
+  ]);
+
+  return {
+    vision,
+    spheres: spheres.map(s => ({
+      id: s.id,
+      name: s.name,
+      color: s.color,
+      icon: s.icon,
+      order: s.order,
+      taskCount: s._count.tasks,
+      createdAt: s.createdAt,
+      updatedAt: s.updatedAt,
+    })),
+    activeObjectives: activeSprint?.objectives.map(mapObjective) || []
+  };
+}
+
+export async function upsertVision(userId: string, title: string, content: string) {
+  const existing = await prisma.vision.findFirst({ where: { userId } });
+  
+  return prisma.vision.upsert({
+    where: { id: existing?.id || "" },
+    create: { userId, title, content },
+    update: { title, content }
+  });
+}
+
+// ─── Sprint Reviews ───────────────────────────────────────────────────────────
+
+export async function upsertSprintReview(userId: string, input: {
+  id?: string;
+  sprintId: string;
+  weekNumber: number;
+  score?: number | null;
+  wins?: string | null;
+  challenges?: string | null;
+  adjustments?: string | null;
+}) {
+  const { id, sprintId, weekNumber, ...data } = input;
+  
+  // Check ownership
+  const sprint = await prisma.sprint.findUnique({ where: { id: sprintId } });
+  if (!sprint || sprint.userId !== userId) throw new Error("Unauthorized");
+
+  return prisma.sprintReview.upsert({
+    where: { id: id ?? "" },
+    create: { sprintId, weekNumber, date: new Date(), ...data },
+    update: data
+  });
+}
+
+export async function getSprintReview(sprintId: string, weekNumber: number) {
+  return prisma.sprintReview.findFirst({
+    where: { sprintId, weekNumber }
+  });
+}
+
+// ─── Annual Compass ───────────────────────────────────────────────────────────
+
+export async function getAnnualCompass(userId: string, year: number) {
+  return prisma.annualCompass.findUnique({
+    where: { userId_year: { userId, year } }
+  });
+}
+
+export async function upsertAnnualCompass(userId: string, input: {
+  id?: string;
+  year: number;
+  theme?: string | null;
+  wigs?: string | null;
+  focusAreas?: string | null;
+}) {
+  const { id, year, ...data } = input;
+  
+  return prisma.annualCompass.upsert({
+    where: { id: id ?? "" },
+    create: { userId, year, ...data },
+    update: data
+  });
 }
