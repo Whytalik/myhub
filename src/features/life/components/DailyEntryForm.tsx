@@ -10,6 +10,7 @@ import { EmotionsSection } from "./sections/EmotionsSection";
 import { NutritionSection } from "./sections/NutritionSection";
 import { RoutineSection } from "./sections/RoutineSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
+import { StandupSection } from "./sections/StandupSection";
 import { upsertEntryAction } from "../actions/journal-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
 import { TaskFormDialog } from "./tasks/TaskFormDialog";
@@ -64,6 +65,9 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         improveTomorrow: initialEntry?.improveTomorrow ?? null,
         gratitude:       initialEntry?.gratitude ?? null,
         brainDump:       initialEntry?.brainDump ?? null,
+        standupDone:     initialEntry?.standupDone ?? null,
+        standupPlan:     initialEntry?.standupPlan ?? null,
+        standupBlockers: initialEntry?.standupBlockers ?? null,
       };
     }
     
@@ -91,6 +95,9 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         improveTomorrow: initialEntry?.improveTomorrow ?? null,
         gratitude:       initialEntry?.gratitude ?? null,
         brainDump:       initialEntry?.brainDump ?? null,
+        standupDone:     initialEntry?.standupDone ?? null,
+        standupPlan:     initialEntry?.standupPlan ?? null,
+        standupBlockers: initialEntry?.standupBlockers ?? null,
       };
     }
 
@@ -114,6 +121,9 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       improveTomorrow: initialEntry?.improveTomorrow ?? null,
       gratitude:       initialEntry?.gratitude ?? null,
       brainDump:       initialEntry?.brainDump ?? null,
+      standupDone:     initialEntry?.standupDone ?? null,
+      standupPlan:     initialEntry?.standupPlan ?? null,
+      standupBlockers: initialEntry?.standupBlockers ?? null,
     };
   }, [initialEntry, todayStr]);
 
@@ -230,6 +240,20 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
             emotions={data.emotions ?? null}
             onChange={patch}
           />
+
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3 px-2">
+              <div className="h-px flex-1 bg-border/40" />
+              <span className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap text-emerald-500">Daily Scrum Standup</span>
+              <div className="h-px flex-1 bg-border/40" />
+            </div>
+            <StandupSection
+              done={data.standupDone ?? null}
+              plan={data.standupPlan ?? null}
+              blockers={data.standupBlockers ?? null}
+              onChange={patch}
+            />
+          </div>
 
           {/* Body Metrics */}
           <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-2xl px-5 py-4">
