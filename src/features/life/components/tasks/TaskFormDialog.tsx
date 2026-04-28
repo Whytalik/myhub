@@ -13,7 +13,7 @@ import type { TaskData, LifeSphereData, TaskStatus, TaskPriority } from "@/featu
 import { toast } from "sonner";
 import {
   CalendarClock, Flag, Pencil, FileText,
-  Link2Off, Eye, EyeOff, Lock,
+  Link2Off, Eye, EyeOff,
   Trash2, Calendar, LayoutGrid,
   Check, ChevronRight, ChevronLeft, X, Plus
 } from "lucide-react";
@@ -115,14 +115,14 @@ interface UnifiedTaskFormProps {
 function UnifiedTaskForm({
   spheres, allTasks,
   title, setTitle, description, setDescription,
-  icon, setIcon, iconPickerOpen, setIconPickerOpen,
+  icon, setIconPickerOpen,
   status, setStatus, priority, setPriority, sphereId, setSphereId,
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
   dueTime, setDueTime, hasDueTime, setHasDueTime,
-  onSubmit, isPending, showErrors, setShowErrors,
+  onSubmit, isPending,
 }: UnifiedTaskFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, 4));
@@ -419,14 +419,14 @@ interface TaskDetailProps {
 function TaskDetail({
   task, spheres, allTasks, onViewTask,
   title, setTitle, description, setDescription,
-  icon, setIcon, iconPickerOpen, setIconPickerOpen,
+  icon, setIconPickerOpen,
   status, setStatus, priority, setPriority, sphereId,
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
   dueTime, setDueTime, hasDueTime, setHasDueTime,
-  hasChanges, onSave, onClose,
+  hasChanges, onClose,
 }: TaskDetailProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();

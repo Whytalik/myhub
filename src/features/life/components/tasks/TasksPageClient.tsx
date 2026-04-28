@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, Plus, Lock, Unlock } from "lucide-react";
+import { Layers, Plus } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
-import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
@@ -24,7 +24,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "calendar");
-  const [privateUnlocked, setPrivateUnlocked] = useState(false);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -91,7 +90,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   };
 
   const tasks = initialTasks;
-  const privateCount = initialTasks.filter(t => t.isPrivate).length;
 
   return (
     <div className="flex flex-col gap-8">
@@ -176,10 +174,10 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         onClose={() => setSpheresOpen(false)}
         title="Life Spheres"
         description="Areas of your life"
-        maxWidth="680px"
+        maxWidth="720px"
         bare
       >
-        <SphereGrid spheres={spheres} />
+        <SphereGrid spheres={spheres} onClose={() => setSpheresOpen(false)} />
       </Dialog>
 
       <TaskFormDialog

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SphereCard } from "./SphereCard";
 import { SphereFormDialog } from "./SphereFormDialog";
@@ -9,9 +9,10 @@ import type { LifeSphereData } from "@/features/life/types";
 
 interface SphereGridProps {
   spheres: LifeSphereData[];
+  onClose: () => void;
 }
 
-export function SphereGrid({ spheres }: SphereGridProps) {
+export function SphereGrid({ spheres, onClose }: SphereGridProps) {
   const [dialogOpen, setDialogOpen]     = useState(false);
   const [editingSphere, setEditingSphere] = useState<LifeSphereData | null>(null);
 
@@ -26,20 +27,28 @@ export function SphereGrid({ spheres }: SphereGridProps) {
   };
 
   return (
-    <div>
+    <div className="p-5 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-5">
         <p className="text-[11px] font-mono text-muted uppercase tracking-wider">
           {spheres.length} sphere{spheres.length !== 1 ? "s" : ""}
         </p>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => { setEditingSphere(null); setDialogOpen(true); }}
-        >
-          <Plus size={14} className="mr-1" />
-          Add Life Sphere
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => { setEditingSphere(null); setDialogOpen(true); }}
+          >
+            <Plus size={14} className="mr-1" />
+            Add Life Sphere
+          </Button>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-all"
+          >
+            <X size={16} />
+          </button>
+        </div>
       </div>
 
       {spheres.length === 0 ? (
@@ -50,7 +59,7 @@ export function SphereGrid({ spheres }: SphereGridProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto pr-1">
           {spheres.map((sphere) => (
             <SphereCard key={sphere.id} sphere={sphere} onEdit={handleEdit} />
           ))}

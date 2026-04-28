@@ -31,12 +31,12 @@ export function DataTable<T>({
     <div className={`w-full overflow-x-auto ${className}`}>
       <table className="w-full border-collapse font-sans text-sm table-fixed">
         <thead>
-          <tr className="border-b border-border">
+          <tr className="border-b border-border/50">
             {columns.map((column, i) => (
               <th
                 key={i}
                 style={{ width: column.width }}
-                className={`px-4 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal ${
+                className={`px-5 py-4 font-mono text-[10px] text-muted tracking-[0.18em] font-normal ${
                   column.align === "center" ? "text-center" : column.align === "right" ? "text-right" : "text-left"
                 } ${column.headerClassName || ""}`}
               >
@@ -65,13 +65,15 @@ export function DataTable<T>({
               return (
                 <tr
                   key={key}
-                  className="border-b border-border/50 hover:bg-raised/50 transition-colors group"
+                  className={`border-b border-border/30 hover:bg-raised/50 transition-colors group ${
+                    rowIndex === 0 ? "" : ""
+                  }`}
                 >
                   {columns.map((column, colIndex) => (
                     <td 
                       key={colIndex} 
                       style={{ width: column.width }}
-                      className={`px-4 py-3 text-text overflow-hidden ${
+                      className={`px-5 py-4 text-text overflow-hidden ${
                         column.align === "center" ? "text-center" : column.align === "right" ? "text-right" : "text-left"
                       } ${column.cellClassName || ""}`}
                     >

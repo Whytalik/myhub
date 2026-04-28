@@ -10,6 +10,8 @@ A Next.js application designed to manage personal data, modeled as a modular "Pe
 - **Architecture:** Domain-Driven Modular Monolith.
 - **Database:** PostgreSQL via Prisma 7.
 - **Authentication:** NextAuth v5 (Beta) with Session-DB sync.
+- **PowerShell**
+- **Always use Engineering Standards**
 
 ## Core Architecture: The Domain Model
 
@@ -59,15 +61,49 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 - **Safe Build**: Uses `prisma db push` (without data loss flags) on Vercel to protect data while ensuring schema alignment.
 - **Session Sync**: Authentication callbacks are configured to fetch fresh data from the DB on every refresh, ensuring UI elements like "User Name" are always current.
 
-## Engineering Standards
+# Engineering Standards
 
-- **Source Control**: NEVER stage, commit, or push changes without explicit user permission. Always ask before performing any Git write operations.
-- **Research First**: Document findings in `docs/research/` before implementation (e.g., `space-vs-system.md`).
-- **Changelog Maintenance**: After fixing a bug or adding a feature, ALWAYS append a 1-2 sentence summary AND a brief verification checklist to a domain-specific markdown file in the `docs/changelog/` directory (e.g., `docs/changelog/planning.md`, `docs/changelog/food.md`). The checklist should confirm steps like: `[x] Logic implemented`, `[x] UI updated`, `[x] Verified with tsc/lint/build`. Divide the logs by domain to save tokens. Before starting a new task or making fixes in a specific domain, ALWAYS read its corresponding changelog file first to understand recent context.
-- **Stable Layouts**: Use `DomainTemplate` for hub pages to prevent layout shifts during navigation.
-- **Verification Mandate**: After every significant code modification, ALWAYS run `pnpm tsc --noEmit`, `pnpm lint`, and `pnpm build` to ensure the project's integrity. Never consider a task finished until these checks pass.
-- **Component Integrity**: ALWAYS use custom UI components from `src/components/ui`. NEVER use native browser methods (`alert`, `prompt`).
-- **Type Safety**: Avoid `any`. Use module augmentation for NextAuth types to maintain a strictly typed environment.
+## 🔴 MANDATORY WORKFLOW — NEVER SKIP THESE STEPS
+
+### BEFORE any implementation:
+
+0. **Clarify before acting** — if the task is ambiguous or lacks details, ask
+   targeted clarifying questions BEFORE reading changelogs or writing any code.
+   Do NOT make assumptions. Ask about:
+   - Exact scope ("which domain / space / component?")
+   - Expected behavior ("what should happen when...?")
+   - Edge cases or constraints ("should this work offline / for all users?")
+   Ask all questions in ONE message — do not ask one at a time.
+
+1. **Read the changelog** for the relevant domain:
+   `docs/changelog/{domain}.md`
+   — Understand recent context before touching any code.
+
+2. **Research first** — if the task involves a non-trivial decision (architecture,
+   library choice, pattern), create a research note in `docs/research/`
+   (e.g., `space-vs-system.md`) BEFORE writing any code.
+
+### AFTER any fix or feature:
+
+1. **Append to the domain changelog** `docs/changelog/{domain}.md`:
+   - 1-2 sentence summary of what changed.
+   - Verification checklist:
+     - [ ] Logic implemented
+     - [ ] UI updated
+     - [ ] Verified with tsc / lint / build
+   **This step is not optional. A task is NOT complete without a changelog entry.**
+
+---
+
+## Other Standards
+
+- **Source Control**: NEVER stage, commit, or push without explicit user permission.
+- **Verification Mandate**: After every significant change, run:
+  `pnpm tsc --noEmit`, `pnpm lint`, `pnpm build` — task is not done until all pass.
+- **Stable Layouts**: Use `DomainTemplate` for hub pages.
+- **Component Integrity**: Use custom UI from `src/components/ui`.
+  NEVER use `alert`, `prompt`, or other native browser methods.
+- **Type Safety**: Avoid `any`. Use module augmentation for NextAuth types.
 
 ## Building and Running
 

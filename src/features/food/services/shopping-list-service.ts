@@ -41,6 +41,11 @@ export async function createShoppingListFromWeekPlan(userId: string, weekPlanId:
 
   if (!weekPlan) throw new Error("Week plan not found");
 
+  // Delete existing lists for this week plan to "update" it
+  await prisma.shoppingList.deleteMany({
+    where: { userId, weekPlanId: weekPlan.id }
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const aggregatedItems = aggregateShoppingList(weekPlan as any);
 

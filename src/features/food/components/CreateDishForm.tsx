@@ -10,10 +10,10 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ProductSearch } from "./ProductSearch";
 import { Product } from "@/app/generated/prisma/client";
-import { Unit } from "@/app/generated/prisma";
+import { Unit, PreparationMethod, IngredientInputState } from "@/app/generated/prisma";
 import { CreateDishInput, DishIngredientInput } from "../types";
 import { createDishAction } from "../actions/dish-actions";
-import { calculateRawIngredientStats, PlanSummary } from "../logic/recalculator";
+import { calculateIngredientStats, PlanSummary, IngredientWithProduct } from "../logic/recalculator";
 
 interface CreateDishFormProps {
   userId: string;
@@ -25,7 +25,6 @@ interface CreateDishFormProps {
 interface IngredientRow extends DishIngredientInput {
   productName: string;
   tempId: string;
-  calories: number;
 }
 
 export function CreateDishForm({ userId, products, onSuccess, onCancel }: CreateDishFormProps) {
@@ -42,7 +41,11 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
       const p = products.find(prod => prod.id === ing.productId);
       if (!p) return acc;
       
-      const stats = calculateRawIngredientStats(p, ing.amount, ing.unit);
+      const stats = calculateIngredientStats({
+        ...ing,
+        product: p,
+      } as IngredientWithProduct);
+
       return {
         calories: acc.calories + stats.calories,
         protein: acc.protein + stats.protein,
@@ -65,7 +68,9 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
       productName: product.name,
       amount: 100,
       unit: product.unit as Unit,
-      calories: product.calories || 0,
+      preparationMethod: "RAW" as PreparationMethod,
+      inputState: "RAW" as IngredientInputState,
+      yieldFactor: 1.0,
     };
     setIngredients([...ingredients, newIng]);
   };
@@ -97,10 +102,13 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
           name,
           description,
           yield: yieldValue,
-          ingredients: ingredients.map(({ productId, amount, unit }) => ({
+          ingredients: ingredients.map(({ productId, amount, unit, preparationMethod, inputState, yieldFactor }) => ({
             productId,
             amount,
-            unit
+            unit,
+            preparationMethod,
+            inputState,
+            yieldFactor
           }))
         };
 
@@ -119,7 +127,7 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
       {/* Header Fields */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 space-y-2">
-          <label className="text-[11px] font-mono text-muted uppercase tracking-wider pl-1">Dish Name</label>
+          <label className="text-[11px] font-mono text-muted tracking-wider pl-1">Dish Name</label>
           <Input 
             placeholder="e.g. Morning Oatmeal with Berries" 
             value={name}
@@ -128,7 +136,7 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
           />
         </div>
         <div className="space-y-2">
-          <label className="text-[11px] font-mono text-muted uppercase tracking-wider pl-1">Final Yield / Factor</label>
+          <label className="text-[11px] font-mono text-muted tracking-wider pl-1">Final Yield / Factor</label>
           <div className="relative flex items-center">
             <Input 
               type="number" 
@@ -143,7 +151,7 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
       </div>
 
       <div className="space-y-2">
-        <label className="text-[11px] font-mono text-muted uppercase tracking-wider pl-1 flex items-center gap-1.5">
+        <label className="text-[11px] font-mono text-muted tracking-wider pl-1 flex items-center gap-1.5">
           <Info size={12} /> Optional Description
         </label>
         <Input 
@@ -158,17 +166,50 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
         <table className="w-full border-collapse text-left font-sans text-sm">
           <thead>
             <tr className="border-b border-border bg-raised/30">
-              <th className="px-4 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal">Ingredient</th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal w-[120px] text-center">Amount</th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal w-[100px] text-center">Unit</th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal w-[100px] text-center border-l border-border/50">Cals</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal">Ingredient / Method</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[100px] text-center">State</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[100px] text-center">Amount</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[80px] text-center">Unit</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[70px] text-center">Factor</th>
+              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[80px] text-center border-l border-border/50">Cals</th>
               <th className="px-4 py-3 w-[50px] text-right"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border/50">
             {ingredients.map((ing) => (
               <tr key={ing.tempId} className="hover:bg-raised/30 transition-colors group">
-                <td className="px-4 py-3 font-medium text-text">{ing.productName}</td>
+                <td className="px-4 py-3">
+                  <div className="font-medium text-text">{ing.productName}</div>
+                  <Select
+                    variant="inline"
+                    className="text-[10px] h-6 mt-1 opacity-60 group-hover:opacity-100 transition-opacity"
+                    value={ing.preparationMethod}
+                    onChange={(e) => {
+                      const method = e.target.value as PreparationMethod;
+                      let factor = ing.yieldFactor;
+                      // Simple auto-factor defaults
+                      if (method === "BOILED") factor = 2.5;
+                      if (method === "FRIED" || method === "BAKED") factor = 0.8;
+                      if (method === "RAW") factor = 1.0;
+                      
+                      setIngredients(ingredients.map(i => 
+                        i.tempId === ing.tempId ? { ...i, preparationMethod: method, yieldFactor: factor } : i
+                      ));
+                    }}
+                  >
+                    {Object.values(PreparationMethod).map(m => <option key={m} value={m}>{m}</option>)}
+                  </Select>
+                </td>
+                <td className="px-4 py-3">
+                  <Select
+                    variant="inline"
+                    className="text-[10px] h-8"
+                    value={ing.inputState}
+                    onChange={(e) => updateIngredient(ing.tempId, "inputState", e.target.value)}
+                  >
+                    {Object.values(IngredientInputState).map(s => <option key={s} value={s}>{s}</option>)}
+                  </Select>
+                </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-center">
                     <Input
@@ -192,28 +233,37 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
                     </Select>
                   </div>
                 </td>
+                <td className="px-4 py-3">
+                   <Input
+                      type="number"
+                      step="0.1"
+                      variant="inline"
+                      className="w-[50px] text-center font-mono text-[10px] text-muted"
+                      value={ing.yieldFactor}
+                      onChange={(e) => updateIngredient(ing.tempId, "yieldFactor", parseFloat(e.target.value) || 1.0)}
+                    />
+                </td>
                 <td className="px-4 py-3 border-l border-border/50 text-center">
                   <span className="font-mono text-secondary">
-                    {Math.round(calculateRawIngredientStats(
-                      products.find(p => p.id === ing.productId)!, 
-                      ing.amount, 
-                      ing.unit
-                    ).calories)}
+                    {Math.round(calculateIngredientStats({
+                      ...ing,
+                      product: products.find(p => p.id === ing.productId)!,
+                    } as IngredientWithProduct).calories)}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <button 
                     onClick={() => removeIngredient(ing.tempId)}
-                    className="p-1 hover:bg-red-500/10 rounded text-muted hover:text-red-500 transition-colors"
+                    className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={13} />
                   </button>
                 </td>
               </tr>
             ))}
             {/* Add Row */}
             <tr>
-              <td colSpan={5} className="p-2 bg-raised/20">
+              <td colSpan={7} className="p-2 bg-raised/20">
                 <ProductSearch 
                   products={products} 
                   onSelect={addIngredient} 
@@ -223,16 +273,16 @@ export function CreateDishForm({ userId, products, onSuccess, onCancel }: Create
             </tr>
           </tbody>
           {/* Footer Summary */}
-          <tfoot className="bg-raised/50 font-mono text-[11px] uppercase tracking-wider">
+          <tfoot className="bg-raised/50 font-mono text-[11px] tracking-wider">
             <tr>
-              <td colSpan={3} className="px-4 py-4 font-bold text-text text-right">Total Nutrition (Raw)</td>
+              <td colSpan={5} className="px-4 py-4 font-bold text-text text-right">Total Nutrition (Base)</td>
               <td className="px-4 py-4 text-center font-bold text-accent border-l border-border/50">
                 {Math.round(totalNutrition.calories)} <span className="opacity-50 text-[9px]">kcal</span>
               </td>
               <td></td>
             </tr>
             <tr className="border-t border-border/50">
-              <td colSpan={3} className="px-4 py-4 text-right">
+              <td colSpan={5} className="px-4 py-4 text-right">
                 <div className="flex justify-end gap-6 text-muted">
                   <span>P: <b className="text-text">{totalNutrition.protein.toFixed(1)}g</b></span>
                   <span>F: <b className="text-text">{totalNutrition.fat.toFixed(1)}g</b></span>

@@ -32,7 +32,13 @@ export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] 
     for (const entry of dayPlan.entries) {
       for (const ingredient of entry.dish.ingredients) {
         const key = `${ingredient.productId}_${ingredient.unit}`;
-        const totalAmount = ingredient.amount * entry.servings;
+        
+        // Calculate the raw amount needed for shopping
+        const rawAmount = ingredient.inputState === "COOKED"
+          ? ingredient.amount / (ingredient.yieldFactor || 1.0)
+          : ingredient.amount;
+
+        const totalAmount = rawAmount * entry.servings;
         
         // Calculate price: (price per unit * amount)
         // Assume product.price is per 100 for GRAM/ML, per 1 for PIECE/TBSP/TSP

@@ -1,10 +1,17 @@
-import { Priority, Unit } from "@/app/generated/prisma";
-import { Product, Dish, DishIngredient, DayPlanEntry } from "@/app/generated/prisma/client";
+import { Priority, Unit, IngredientInputState } from "@/app/generated/prisma";
+import { Product, Dish, DayPlanEntry } from "@/app/generated/prisma/client";
 
 /**
  * Extended types for the pure logic functions
  */
-export type IngredientWithProduct = DishIngredient & { product: Product };
+export interface IngredientWithProduct {
+  productId: string;
+  amount: number;
+  unit: Unit;
+  inputState: IngredientInputState;
+  yieldFactor: number | null;
+  product: Product;
+}
 export type DishWithIngredients = Dish & { ingredients: IngredientWithProduct[] };
 export type EntryWithDish = DayPlanEntry & { dish: DishWithIngredients };
 
@@ -32,7 +39,13 @@ export function calculateRawIngredientStats(product: Product, amount: number, un
 }
 
 export function calculateIngredientStats(ing: IngredientWithProduct): PlanSummary {
-  return calculateRawIngredientStats(ing.product, ing.amount, ing.unit);
+  // If input is cooked, we need to find the raw weight to calculate nutrition
+  // because product stats (calories, etc.) are usually stored for raw state.
+  const rawAmount = ing.inputState === "COOKED" 
+    ? ing.amount / (ing.yieldFactor || 1.0) 
+    : ing.amount;
+
+  return calculateRawIngredientStats(ing.product, rawAmount, ing.unit);
 }
 
 export function calculateDishStats(dish: DishWithIngredients): PlanSummary {

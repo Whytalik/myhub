@@ -117,7 +117,7 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
     <div className="space-y-8 animate-in fade-in slide-in-from-top-2 duration-300">
       {/* Date Picker */}
       <div className="flex flex-col space-y-2 w-full max-w-[200px]">
-        <label className="text-[11px] font-mono text-muted uppercase tracking-wider pl-1 flex items-center gap-2">
+        <label className="text-[11px] font-mono text-muted tracking-wider pl-1 flex items-center gap-2">
           <CalendarIcon size={12} /> Target Date
         </label>
         <Input 
@@ -130,7 +130,7 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
 
       {/* Dish Search */}
       <div className="space-y-2">
-        <label className="text-[11px] font-mono text-muted uppercase tracking-wider pl-1 flex items-center gap-2">
+        <label className="text-[11px] font-mono text-muted tracking-wider pl-1 flex items-center gap-2">
           <ChefHat size={12} /> Add Dish to Plan
         </label>
         <div className="relative group max-w-md">
@@ -149,7 +149,7 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
                   onClick={() => addEntry(dish)}
                 >
                   <span className="font-medium group-hover:text-accent transition-colors">{dish.name}</span>
-                  <span className="text-[10px] font-mono text-muted uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-muted tracking-wider">
                     {Math.round(calculateDishStats(dish).calories)} kcal
                   </span>
                 </button>
@@ -164,10 +164,10 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
         <table className="w-full border-collapse text-left font-sans text-sm">
           <thead>
             <tr className="border-b border-border bg-raised/30">
-              <th className="px-6 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal">Slot</th>
-              <th className="px-6 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal">Dish</th>
-              <th className="px-6 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal w-[120px] text-center">Servings</th>
-              <th className="px-6 py-3 font-mono text-[10px] text-muted uppercase tracking-[0.18em] font-normal w-[150px] text-center border-l border-border/50">Priority</th>
+              <th className="px-6 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal">Slot</th>
+              <th className="px-6 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal">Dish</th>
+              <th className="px-6 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[120px] text-center">Servings</th>
+              <th className="px-6 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[150px] text-center border-l border-border/50">Priority</th>
               <th className="px-6 py-3 w-[50px] text-right"></th>
             </tr>
           </thead>
@@ -181,7 +181,7 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
                       <tr key={entry.tempId} className="hover:bg-raised/30 transition-colors group">
                         <td className="px-6 py-4">
                           {index === 0 && (
-                            <span className="px-2 py-0.5 rounded-full bg-accent-muted/20 border border-accent/20 text-accent text-[10px] font-mono uppercase font-bold tracking-wider">
+                            <span className="px-2 py-0.5 rounded-full bg-accent-muted/20 border border-accent/20 text-accent text-[10px] font-mono font-bold tracking-wider">
                               {slot}
                             </span>
                           )}
@@ -212,16 +212,16 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
                         <td className="px-6 py-4 text-right">
                           <button 
                             onClick={() => removeEntry(entry.tempId)}
-                            className="p-1 hover:bg-red-500/10 rounded text-muted hover:text-red-500 transition-colors"
+                            className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={13} />
                           </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr className="hover:bg-raised/10">
-                      <td className="px-6 py-3 opacity-40 font-mono text-[10px] uppercase tracking-widest">{slot}</td>
+                      <td className="px-6 py-3 opacity-40 font-mono text-[10px] tracking-widest">{slot}</td>
                       <td colSpan={4} className="px-6 py-3 italic text-muted text-[11px]">No dishes planned</td>
                     </tr>
                   )}
@@ -232,17 +232,17 @@ export function CreateDayPlanForm({ userId, dishes, onSuccess, onCancel }: Creat
           {/* Day Total */}
           <tfoot className="bg-accent/5 border-t border-accent/20">
             <tr>
-              <td colSpan={2} className="px-6 py-6 font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-text text-right">
+              <td colSpan={2} className="px-6 py-6 font-mono text-[11px] tracking-[0.2em] font-bold text-text text-right">
                 Daily Totals
               </td>
               <td className="px-6 py-6 text-center">
                 <div className="flex flex-col">
                   <span className="text-accent font-black text-xl leading-none">{Math.round(totalNutrition.calories)}</span>
-                  <span className="text-[9px] font-mono text-muted uppercase tracking-widest mt-1">kcal</span>
+                  <span className="text-[9px] font-mono text-muted tracking-widest mt-1">kcal</span>
                 </div>
               </td>
               <td className="px-6 py-6 border-l border-accent/20">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-[10px] uppercase">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-[10px]">
                   <div className="flex justify-between gap-2 border-b border-accent/10 pb-1">
                     <span className="text-muted">Prot</span>
                     <span className="text-text font-bold">{totalNutrition.protein.toFixed(1)}g</span>

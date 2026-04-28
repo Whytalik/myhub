@@ -76,7 +76,7 @@ export function ProductSearch({ products, onSelect, placeholder = "Search produc
                 }}
               >
                 <span className="font-medium group-hover:text-accent transition-colors">{p.name}</span>
-                <span className="text-[10px] font-mono text-muted uppercase tracking-wider">{p.category}</span>
+                <span className="text-[10px] font-mono text-muted tracking-wider">{p.category}</span>
               </button>
             ))}
           </div>

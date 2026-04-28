@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
 import { getShoppingLists } from "@/features/food/services/shopping-list-service";
 import { getWeekPlans } from "@/features/food/services/week-plan-service";
 import { ShoppingListView } from "@/features/food/components/ShoppingListView";
 import { createShoppingListAction } from "@/features/food/actions/shopping-list-actions";
+import { ShoppingBasket, ListTodo } from "lucide-react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -30,39 +32,56 @@ export default async function ShoppingPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "shopping" }]} />
+      <Breadcrumb items={[{ label: "food space", href: "/food" }, { label: "shopping" }]} />
       
-      <div className="flex justify-between items-start mb-12">
-        <Heading title="Shopping Lists" />
-        <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div className="flex flex-col gap-1">
+          <Heading title="Shopping Lists" />
+          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+            Aggregated ingredient lists from your meal plans.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
           {weekPlans.length > 0 && (
             <form action={handleGenerateFromLatest}>
-              <button 
-                type="submit"
-                className="bg-accent text-bg px-5 py-2 rounded text-[10px] font-mono uppercase tracking-[0.2em] hover:opacity-90 transition-opacity"
-              >
+              <Button type="submit" variant="primary" size="sm" className="rounded-xl">
+                <ShoppingBasket size={14} className="mr-1.5" />
                 Generate from Plan
-              </button>
+              </Button>
             </form>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-12">
-        {shoppingLists.length > 0 ? (
-          shoppingLists.map((list) => (
-            <section key={list.id}>
-              <ShoppingListView list={list} />
-            </section>
-          ))
-        ) : (
-          <div className="py-24 border border-dashed border-border rounded-lg text-center flex flex-col items-center gap-4">
-            <p className="text-secondary text-sm">No shopping lists generated yet.</p>
-            {weekPlans.length === 0 && (
-              <p className="text-muted text-xs">Create a Week Plan first to generate a list.</p>
-            )}
-          </div>
-        )}
+      <div className="animate-in fade-in duration-500">
+        <div className="flex flex-col gap-12">
+          {shoppingLists.length > 0 ? (
+            shoppingLists.map((list) => (
+              <section key={list.id}>
+                <ShoppingListView list={list} />
+              </section>
+            ))
+          ) : (
+            <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4">
+              <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
+                <ListTodo size={32} className="text-muted/40" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-bold text-text">
+                  No shopping lists generated yet
+                </p>
+                <p className="text-[11px] text-muted max-w-[280px]">
+                  Create a week plan first, then generate a shopping list from it.
+                </p>
+              </div>
+              {weekPlans.length === 0 && (
+                <p className="text-[10px] font-mono text-muted/60 mt-2">
+                  Go to Meal Plans to get started.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

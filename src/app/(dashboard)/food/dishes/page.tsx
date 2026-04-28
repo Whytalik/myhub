@@ -4,11 +4,12 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
 import { DishTable } from "@/features/food/components/DishTable";
 import { CreateDishForm } from "@/features/food/components/CreateDishForm";
 import { getDishes } from "@/features/food/services/dish-service";
 import { getProducts } from "@/features/food/services/product-service";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Dishes",
@@ -34,37 +35,47 @@ export default async function DishesPage({
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "food", href: "/food" }, { label: "dishes" }]} />
+      <Breadcrumb items={[{ label: "food space", href: "/food" }, { label: "dishes" }]} />
       
-      <div className="flex justify-between items-start mb-8">
-        <Heading title={isCreating ? "New Dish" : "Dishes"} />
-        {isCreating ? (
-          <Link 
-            href="/food/dishes"
-            className="flex items-center gap-2 bg-raised border border-border px-4 py-2 rounded text-[10px] font-mono uppercase tracking-[0.2em] hover:text-text transition-colors"
-          >
-            <X size={14} /> Cancel
-          </Link>
-        ) : (
-          <Link 
-            href="/food/dishes?create=true"
-            className="flex items-center gap-2 bg-accent text-bg border border-accent px-4 py-2 rounded text-[10px] font-mono uppercase tracking-[0.2em] font-bold hover:bg-accent/90 transition-colors shadow-[0_0_15px_rgba(224,155,47,0.2)]"
-          >
-            Create Dish
-          </Link>
-        )}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div className="flex flex-col gap-1">
+          <Heading title={isCreating ? "New Dish" : "Dishes"} />
+          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+            Recipe repository with automated macro scaling.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {isCreating ? (
+            <Link href="/food/dishes">
+              <Button variant="outline" size="sm" className="rounded-xl">
+                <X size={14} className="mr-1.5" />
+                Cancel
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/food/dishes?create=true">
+              <Button variant="primary" size="sm" className="rounded-xl px-5">
+                <Plus size={16} className="mr-1.5" />
+                New Dish
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
-      {isCreating ? (
-        <CreateDishForm 
-          userId={userId} 
-          products={products} 
-        />
-      ) : (
-        <div className="bg-surface border border-border rounded-lg overflow-hidden">
-          <DishTable initialDishes={dishes} />
-        </div>
-      )}
+      <div className="animate-in fade-in duration-500">
+        {isCreating ? (
+          <CreateDishForm 
+            userId={userId} 
+            products={products} 
+          />
+        ) : (
+          <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+            <DishTable initialDishes={dishes} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

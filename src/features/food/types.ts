@@ -1,4 +1,4 @@
-import { Unit, Priority, MealSlot, ProductSource, ProductStatus, ProductState, ProductCategory } from "@/app/generated/prisma";
+import { Unit, Priority, MealSlot, ProductSource, ProductStatus, ProductState, ProductCategory, PreparationMethod, IngredientInputState } from "@/app/generated/prisma";
 
 export interface CreateProductInput {
   name: string;
@@ -12,6 +12,7 @@ export interface CreateProductInput {
   fat?: number;
   carbs?: number;
   fiber?: number;
+  price?: number;
 }
 
 export interface UpdateProductInput extends Partial<CreateProductInput> {
@@ -22,6 +23,9 @@ export interface DishIngredientInput {
   productId: string;
   amount: number;
   unit: Unit;
+  preparationMethod?: PreparationMethod;
+  inputState?: IngredientInputState;
+  yieldFactor?: number;
 }
 
 export interface CreateDishInput {

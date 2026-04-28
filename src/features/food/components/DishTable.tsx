@@ -52,7 +52,7 @@ export function DishTable({ initialDishes }: DishTableProps) {
           <div className="flex items-center gap-4 font-mono text-[11px]">
             <div className="flex flex-col">
               <span className="text-accent font-bold">{Math.round(stats.calories)}</span>
-              <span className="text-[9px] text-muted uppercase">kcal</span>
+              <span className="text-[9px] text-muted">kcal</span>
             </div>
             <div className="flex gap-3 text-secondary/60">
               <span title="Protein">P: <b className="text-secondary">{stats.protein.toFixed(1)}</b></span>

@@ -3,12 +3,11 @@
 import { useState, useTransition, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { Save, X, Plus, Trash2 } from "lucide-react";
+import { Save, X, Plus, Trash2, Wand2, Loader2 } from "lucide-react";
 
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Tabs } from "@/components/ui/tabs";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/app/generated/prisma/client";
@@ -49,6 +48,7 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
     fat: number;
     carbs: number;
     fiber: number;
+    price: number;
   }>({
     name: "",
     category: ProductCategory.OTHER,
@@ -61,7 +61,41 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
     fat: 0,
     carbs: 0,
     fiber: 0,
+    price: 0,
   });
+
+  const [importUrl, setImportUrl] = useState("");
+  const [isImporting, setIsImporting] = useState(false);
+
+  const handleImport = async () => {
+    if (!importUrl) return;
+    setIsImporting(true);
+    try {
+      const { parseProductLinkAction } = await import("../actions/product-actions");
+      const result = await parseProductLinkAction(importUrl);
+      if (result.success && result.data) {
+        const d = result.data;
+        setNewData(prev => ({
+          ...prev,
+          name: d.name || prev.name,
+          price: d.price || prev.price,
+          calories: d.calories || prev.calories,
+          protein: d.protein || prev.protein,
+          fat: d.fat || prev.fat,
+          carbs: d.carbs || prev.carbs,
+          source: ProductSource.IMPORTED,
+        }));
+        toast.success("Data imported successfully!");
+        setImportUrl("");
+      } else {
+        toast.error(result.error || "Failed to parse link");
+      }
+    } catch {
+      toast.error("Import error");
+    } finally {
+      setIsImporting(false);
+    }
+  };
 
   useEffect(() => {
     if (activeCategory !== "ALL" && Object.values(ProductCategory).includes(activeCategory as ProductCategory)) {
@@ -157,6 +191,7 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
           fat: 0,
           carbs: 0,
           fiber: 0,
+          price: 0,
         });
         toast.success("Created successfully");
         router.push("/food/products");
@@ -225,13 +260,13 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       width: "280px",
       cell: (p: Product) => (
         <div className="flex gap-2 items-center">
-          <span className="text-[11px] font-mono text-accent uppercase tracking-wider bg-accent-muted/20 px-1.5 py-0.5 rounded border border-accent/20 whitespace-nowrap">
+          <span className="text-[11px] font-mono text-accent tracking-wider bg-accent-muted/20 px-1.5 py-0.5 rounded border border-accent/20 whitespace-nowrap">
             {String((p as Record<string, unknown>).category || "OTHER").replace(/_/g, " ")}
           </span>
-          <span className="text-[11px] font-mono text-secondary uppercase tracking-wider bg-raised px-1.5 py-0.5 rounded border border-border/50 whitespace-nowrap">
+          <span className="text-[11px] font-mono text-secondary tracking-wider bg-raised px-1.5 py-0.5 rounded border border-border/50 whitespace-nowrap">
             {p.state}
           </span>
-          <span className="text-[11px] font-mono text-secondary uppercase tracking-wider bg-raised px-1.5 py-0.5 rounded border border-border/50 whitespace-nowrap">
+          <span className="text-[11px] font-mono text-secondary tracking-wider bg-raised px-1.5 py-0.5 rounded border border-border/50 whitespace-nowrap">
             {p.unit}
           </span>
         </div>
@@ -343,6 +378,27 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
       ),
     },
     {
+      header: "Price",
+      accessorKey: "price",
+      width: "80px",
+      cell: (p: Product) => (
+        <div className="flex items-center gap-1">
+          {isEditMode ? (
+            <Input
+              type="number"
+              variant="inline"
+              className="w-[45px] px-0 text-amber-500 font-bold text-[11px]"
+              defaultValue={p.price || 0}
+              onBlur={(e) => handleUpdate(p.id, "price", parseFloat(e.target.value))}
+            />
+          ) : (
+            <span className="text-amber-500 font-mono text-[11px] font-bold">{p.price || 0}</span>
+          )}
+          <span className="text-muted text-[10px] opacity-50">₴</span>
+        </div>
+      ),
+    },
+    {
       header: "",
       accessorKey: "actions",
       width: "60px",
@@ -424,48 +480,99 @@ export function ProductTable({ initialProducts, isEditModeExternal = false }: Pr
           <span className="text-muted text-[10px] opacity-50">g</span>
         </div>
       </td>
+      <td className="px-4 py-3" style={{ width: "80px" }}>
+        <div className="flex items-center gap-1">
+          <Input type="number" step="1" variant="inline" className="w-[45px] px-0 text-amber-500 font-bold text-[11px]" value={newData.price} onChange={e => setNewData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))} title="Price" />
+          <span className="text-muted text-[10px] opacity-50">₴</span>
+        </div>
+      </td>
       <td className="px-4 py-3" style={{ width: "60px" }}>
         <div className="flex gap-1 justify-end">
-          <button 
+          <Button
+            variant="primary"
+            size="sm"
             onClick={handleCreate}
             disabled={isPending || !newData.name}
-            className="p-1 hover:bg-accent-muted rounded text-accent transition-colors disabled:opacity-50"
+            className="h-7 px-3 rounded-lg text-[10px]"
           >
-            <Save size={14} />
-          </button>
-          <button 
+            <Save size={12} className="mr-1" />
+            Save
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={cancelCreate}
-            className="p-1 hover:bg-raised rounded text-muted transition-colors"
+            className="h-7 px-2 rounded-lg text-[10px]"
           >
-            <X size={14} />
-          </button>
+            <X size={12} />
+          </Button>
         </div>
       </td>
     </tr>
   );
 
   return (
-    <div className="space-y-2">
-      <Tabs 
-        tabs={categoryTabs} 
-        activeTab={activeCategory} 
-        onTabChange={setActiveCategory} 
-      />
+    <div className="space-y-4">
+      {isCreating && (
+        <div className="bg-accent/5 border border-accent/20 p-5 rounded-2xl flex flex-col md:flex-row items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent shrink-0">
+             <Wand2 size={22} />
+          </div>
+          <div className="flex-1 w-full">
+            <p className="text-[10px] font-mono text-accent tracking-widest mb-1.5 font-bold">Smart Import (Silpo, Zakaz.ua)</p>
+            <Input 
+              placeholder="Paste product link here..." 
+              value={importUrl}
+              onChange={e => setImportUrl(e.target.value)}
+              className="bg-bg/50 border-accent/20 focus:border-accent"
+              onKeyDown={e => e.key === 'Enter' && handleImport()}
+            />
+          </div>
+          <Button 
+            variant="primary" 
+            onClick={handleImport} 
+            disabled={isImporting || !importUrl}
+            className="shrink-0 h-10 px-6 rounded-xl"
+          >
+            {isImporting ? <Loader2 size={16} className="animate-spin" /> : "Import Data"}
+          </Button>
+        </div>
+      )}
+
+      <div className="flex flex-nowrap items-center gap-2 bg-surface/50 border border-border p-1.5 rounded-xl w-full overflow-x-auto scrollbar-hide">
+        {categoryTabs.map((tab) => (
+          <Button
+            key={tab.id}
+            variant={activeCategory === tab.id ? "primary" : "ghost"}
+            size="sm"
+            onClick={() => setActiveCategory(tab.id)}
+            className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[10px] whitespace-nowrap font-mono tracking-widest"
+          >
+            {tab.label}
+          </Button>
+        ))}
+      </div>
       
-      <div className="bg-surface border border-border rounded-lg overflow-hidden">
+      <div className="bg-surface border border-border rounded-2xl overflow-hidden">
         <DataTable 
           data={filteredProducts} 
           columns={columns} 
           prependRow={isCreating ? CreateRow : null}
           emptyState={
-            <div className="flex flex-col items-center py-8">
-              <p className="mb-4 text-secondary italic">No products found in this category.</p>
-              <button 
+            <div className="flex flex-col items-center py-16">
+              <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border mb-4">
+                <Plus size={32} className="text-muted/40" />
+              </div>
+              <p className="text-sm font-bold text-text mb-1">No products in this category</p>
+              <p className="text-[11px] text-muted mb-4">Add your first ingredient to start building recipes.</p>
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => router.push("/food/products?create=true")}
-                className="text-accent text-xs font-mono uppercase tracking-widest hover:underline flex items-center gap-2"
               >
-                <Plus size={14} /> Add your first product
-              </button>
+                <Plus size={14} className="mr-1.5" />
+                Add product
+              </Button>
             </div>
           }
         />

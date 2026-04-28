@@ -80,7 +80,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
     <div className="space-y-12">
       {/* Add New Person */}
       <div className="bg-surface border border-border p-6 rounded-2xl max-w-md">
-        <h3 className="text-[11px] font-mono uppercase tracking-[0.2em] text-muted mb-4">Add New Profile</h3>
+        <h3 className="text-[11px] font-mono tracking-[0.2em] text-muted mb-4">Add New Profile</h3>
         <div className="flex gap-2">
           <Input 
             placeholder="Person Name..." 
@@ -88,8 +88,8 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleCreate()}
           />
-          <Button onClick={handleCreate} disabled={isPending || !newName}>
-            <UserPlus size={14} className="mr-2" /> Add
+          <Button variant="primary" size="sm" className="rounded-xl" onClick={handleCreate} disabled={isPending || !newName}>
+            <UserPlus size={14} className="mr-1.5" /> Add
           </Button>
         </div>
       </div>
@@ -107,18 +107,18 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
             <div key={person.id} className="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm">
               <div className="bg-raised/50 px-6 py-4 border-b border-border flex justify-between items-center">
                 <div>
-                  <h4 className="text-xl font-heading text-text tracking-tight uppercase">{person.name}</h4>
-                  <p className="text-[10px] font-mono text-muted uppercase tracking-wider mt-0.5">Custom Nutrition Split</p>
+                  <h4 className="text-xl font-heading text-text tracking-tight">{person.name}</h4>
+                  <p className="text-[10px] font-mono text-muted tracking-wider mt-0.5">Custom Nutrition Split</p>
                 </div>
-                <Button variant="danger" size="sm" onClick={() => setPersonToDelete(person)}>
-                  <Trash2 size={14} className="mr-2" /> Delete
+                <Button variant="danger" size="sm" className="rounded-xl" onClick={() => setPersonToDelete(person)}>
+                  <Trash2 size={14} className="mr-1.5" /> Delete
                 </Button>
               </div>
               
               <div className="p-8 space-y-8">
                 {/* Calories Row */}
                 <div className="max-w-[200px] space-y-2">
-                  <label className="text-[10px] font-mono text-muted uppercase tracking-widest pl-1">Daily Calories</label>
+                  <label className="text-[10px] font-mono text-muted tracking-widest pl-1">Daily Calories</label>
                   <div className="flex items-center gap-3">
                     <Input 
                       type="number" 
@@ -126,7 +126,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
                       onBlur={(e) => handleGoalUpdate(person.id, parseFloat(e.target.value), currentPPct, currentFPct, currentCPct, person.targetFiber || 30)}
                       className="text-2xl font-black text-accent h-12"
                     />
-                    <span className="text-xs font-mono text-muted uppercase">kcal</span>
+                    <span className="text-xs font-mono text-muted">kcal</span>
                   </div>
                 </div>
 
@@ -134,7 +134,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-accent uppercase tracking-widest font-bold">Protein</label>
+                      <label className="text-[10px] font-mono text-accent tracking-widest font-bold">Protein</label>
                       <span className="text-[10px] font-mono text-muted">{(totalCals * currentPPct / 100).toFixed(0)} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -151,7 +151,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-secondary uppercase tracking-widest font-bold">Fat</label>
+                      <label className="text-[10px] font-mono text-secondary tracking-widest font-bold">Fat</label>
                       <span className="text-[10px] font-mono text-muted">{(totalCals * currentFPct / 100).toFixed(0)} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-text uppercase tracking-widest font-bold">Carbs</label>
+                      <label className="text-[10px] font-mono text-text tracking-widest font-bold">Carbs</label>
                       <span className="text-[10px] font-mono text-muted">{(totalCals * currentCPct / 100).toFixed(0)} kcal</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -185,7 +185,7 @@ export function PersonForm({ initialPersons }: PersonFormProps) {
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-muted uppercase tracking-widest font-bold">Fiber</label>
+                      <label className="text-[10px] font-mono text-muted tracking-widest font-bold">Fiber</label>
                       <span className="text-[10px] font-mono text-muted">Goal</span>
                     </div>
                     <div className="flex items-center gap-2">
