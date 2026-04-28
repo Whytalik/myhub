@@ -218,7 +218,10 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   dishId: 'dishId',
   productId: 'productId',
   amount: 'amount',
-  unit: 'unit'
+  unit: 'unit',
+  preparationMethod: 'preparationMethod',
+  inputState: 'inputState',
+  yieldFactor: 'yieldFactor'
 };
 
 exports.Prisma.DayTemplateScalarFieldEnum = {
@@ -344,6 +347,9 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   improveTomorrow: 'improveTomorrow',
   gratitude: 'gratitude',
   brainDump: 'brainDump',
+  standupDone: 'standupDone',
+  standupPlan: 'standupPlan',
+  standupBlockers: 'standupBlockers',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -472,6 +478,17 @@ exports.Prisma.VisionScalarFieldEnum = {
   userId: 'userId',
   title: 'title',
   content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AnnualCompassScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  year: 'year',
+  theme: 'theme',
+  wigs: 'wigs',
+  focusAreas: 'focusAreas',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -644,6 +661,20 @@ exports.Priority = exports.$Enums.Priority = {
   AUTO: 'AUTO'
 };
 
+exports.PreparationMethod = exports.$Enums.PreparationMethod = {
+  RAW: 'RAW',
+  BOILED: 'BOILED',
+  FRIED: 'FRIED',
+  BAKED: 'BAKED',
+  STEAMED: 'STEAMED',
+  OTHER: 'OTHER'
+};
+
+exports.IngredientInputState = exports.$Enums.IngredientInputState = {
+  RAW: 'RAW',
+  COOKED: 'COOKED'
+};
+
 exports.MealSlot = exports.$Enums.MealSlot = {
   BREAKFAST: 'BREAKFAST',
   LUNCH: 'LUNCH',
@@ -769,6 +800,7 @@ exports.Prisma.ModelName = {
   ImmersionLog: 'ImmersionLog',
   LanguageResource: 'LanguageResource',
   Vision: 'Vision',
+  AnnualCompass: 'AnnualCompass',
   Milestone: 'Milestone',
   Sprint: 'Sprint',
   Objective: 'Objective',

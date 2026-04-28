@@ -116,6 +116,9 @@ export interface DailyEntryData {
   improveTomorrow: string | null;
   gratitude: string | null;
   brainDump: string | null;
+  standupDone: string | null;
+  standupPlan: string | null;
+  standupBlockers: string | null;
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
@@ -149,6 +152,9 @@ export interface UpsertDailyEntryInput {
   improveTomorrow?: string | null;
   gratitude?: string | null;
   brainDump?: string | null;
+  standupDone?: string | null;
+  standupPlan?: string | null;
+  standupBlockers?: string | null;
 }
 
 //

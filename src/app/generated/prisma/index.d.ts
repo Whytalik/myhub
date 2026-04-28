@@ -164,6 +164,11 @@ export type LanguageResource = $Result.DefaultSelection<Prisma.$LanguageResource
  */
 export type Vision = $Result.DefaultSelection<Prisma.$VisionPayload>
 /**
+ * Model AnnualCompass
+ * 
+ */
+export type AnnualCompass = $Result.DefaultSelection<Prisma.$AnnualCompassPayload>
+/**
  * Model Milestone
  * 
  */
@@ -261,6 +266,26 @@ export const ProductState: {
 };
 
 export type ProductState = (typeof ProductState)[keyof typeof ProductState]
+
+
+export const PreparationMethod: {
+  RAW: 'RAW',
+  BOILED: 'BOILED',
+  FRIED: 'FRIED',
+  BAKED: 'BAKED',
+  STEAMED: 'STEAMED',
+  OTHER: 'OTHER'
+};
+
+export type PreparationMethod = (typeof PreparationMethod)[keyof typeof PreparationMethod]
+
+
+export const IngredientInputState: {
+  RAW: 'RAW',
+  COOKED: 'COOKED'
+};
+
+export type IngredientInputState = (typeof IngredientInputState)[keyof typeof IngredientInputState]
 
 
 export const Priority: {
@@ -433,6 +458,14 @@ export const ProductSource: typeof $Enums.ProductSource
 export type ProductState = $Enums.ProductState
 
 export const ProductState: typeof $Enums.ProductState
+
+export type PreparationMethod = $Enums.PreparationMethod
+
+export const PreparationMethod: typeof $Enums.PreparationMethod
+
+export type IngredientInputState = $Enums.IngredientInputState
+
+export const IngredientInputState: typeof $Enums.IngredientInputState
 
 export type Priority = $Enums.Priority
 
@@ -910,6 +943,16 @@ export class PrismaClient<
     * ```
     */
   get vision(): Prisma.VisionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.annualCompass`: Exposes CRUD operations for the **AnnualCompass** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnnualCompasses
+    * const annualCompasses = await prisma.annualCompass.findMany()
+    * ```
+    */
+  get annualCompass(): Prisma.AnnualCompassDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.milestone`: Exposes CRUD operations for the **Milestone** model.
@@ -1454,6 +1497,7 @@ export namespace Prisma {
     ImmersionLog: 'ImmersionLog',
     LanguageResource: 'LanguageResource',
     Vision: 'Vision',
+    AnnualCompass: 'AnnualCompass',
     Milestone: 'Milestone',
     Sprint: 'Sprint',
     Objective: 'Objective',
@@ -1477,7 +1521,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "product" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3701,6 +3745,80 @@ export namespace Prisma {
           }
         }
       }
+      AnnualCompass: {
+        payload: Prisma.$AnnualCompassPayload<ExtArgs>
+        fields: Prisma.AnnualCompassFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnualCompassFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnualCompassFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnualCompassFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnualCompassFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          findMany: {
+            args: Prisma.AnnualCompassFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>[]
+          }
+          create: {
+            args: Prisma.AnnualCompassCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          createMany: {
+            args: Prisma.AnnualCompassCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnualCompassCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnualCompassDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          update: {
+            args: Prisma.AnnualCompassUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnualCompassDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnualCompassUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnualCompassUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnualCompassUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnualCompassPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnualCompassAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnualCompass>
+          }
+          groupBy: {
+            args: Prisma.AnnualCompassGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnualCompassGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnualCompassCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnualCompassCountAggregateOutputType> | number
+          }
+        }
+      }
       Milestone: {
         payload: Prisma.$MilestonePayload<ExtArgs>
         fields: Prisma.MilestoneFieldRefs
@@ -4431,6 +4549,7 @@ export namespace Prisma {
     immersionLog?: ImmersionLogOmit
     languageResource?: LanguageResourceOmit
     vision?: VisionOmit
+    annualCompass?: AnnualCompassOmit
     milestone?: MilestoneOmit
     sprint?: SprintOmit
     objective?: ObjectiveOmit
@@ -4536,6 +4655,7 @@ export namespace Prisma {
     visions: number
     milestones: number
     sprints: number
+    annualCompasses: number
     pushSubscriptions: number
   }
 
@@ -4557,6 +4677,7 @@ export namespace Prisma {
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     milestones?: boolean | UserCountOutputTypeCountMilestonesArgs
     sprints?: boolean | UserCountOutputTypeCountSprintsArgs
+    annualCompasses?: boolean | UserCountOutputTypeCountAnnualCompassesArgs
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
   }
 
@@ -4688,6 +4809,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSprintsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SprintWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnnualCompassesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnualCompassWhereInput
   }
 
   /**
@@ -5537,6 +5665,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     sprints?: boolean | User$sprintsArgs<ExtArgs>
+    annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -5600,6 +5729,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     sprints?: boolean | User$sprintsArgs<ExtArgs>
+    annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5627,6 +5757,7 @@ export namespace Prisma {
       visions: Prisma.$VisionPayload<ExtArgs>[]
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       sprints: Prisma.$SprintPayload<ExtArgs>[]
+      annualCompasses: Prisma.$AnnualCompassPayload<ExtArgs>[]
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6052,6 +6183,7 @@ export namespace Prisma {
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     milestones<T extends User$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, User$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sprints<T extends User$sprintsArgs<ExtArgs> = {}>(args?: Subset<T, User$sprintsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    annualCompasses<T extends User$annualCompassesArgs<ExtArgs> = {}>(args?: Subset<T, User$annualCompassesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6909,6 +7041,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SprintScalarFieldEnum | SprintScalarFieldEnum[]
+  }
+
+  /**
+   * User.annualCompasses
+   */
+  export type User$annualCompassesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    where?: AnnualCompassWhereInput
+    orderBy?: AnnualCompassOrderByWithRelationInput | AnnualCompassOrderByWithRelationInput[]
+    cursor?: AnnualCompassWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnualCompassScalarFieldEnum | AnnualCompassScalarFieldEnum[]
   }
 
   /**
@@ -14975,10 +15131,12 @@ export namespace Prisma {
 
   export type DishIngredientAvgAggregateOutputType = {
     amount: number | null
+    yieldFactor: number | null
   }
 
   export type DishIngredientSumAggregateOutputType = {
     amount: number | null
+    yieldFactor: number | null
   }
 
   export type DishIngredientMinAggregateOutputType = {
@@ -14987,6 +15145,9 @@ export namespace Prisma {
     productId: string | null
     amount: number | null
     unit: $Enums.Unit | null
+    preparationMethod: $Enums.PreparationMethod | null
+    inputState: $Enums.IngredientInputState | null
+    yieldFactor: number | null
   }
 
   export type DishIngredientMaxAggregateOutputType = {
@@ -14995,6 +15156,9 @@ export namespace Prisma {
     productId: string | null
     amount: number | null
     unit: $Enums.Unit | null
+    preparationMethod: $Enums.PreparationMethod | null
+    inputState: $Enums.IngredientInputState | null
+    yieldFactor: number | null
   }
 
   export type DishIngredientCountAggregateOutputType = {
@@ -15003,16 +15167,21 @@ export namespace Prisma {
     productId: number
     amount: number
     unit: number
+    preparationMethod: number
+    inputState: number
+    yieldFactor: number
     _all: number
   }
 
 
   export type DishIngredientAvgAggregateInputType = {
     amount?: true
+    yieldFactor?: true
   }
 
   export type DishIngredientSumAggregateInputType = {
     amount?: true
+    yieldFactor?: true
   }
 
   export type DishIngredientMinAggregateInputType = {
@@ -15021,6 +15190,9 @@ export namespace Prisma {
     productId?: true
     amount?: true
     unit?: true
+    preparationMethod?: true
+    inputState?: true
+    yieldFactor?: true
   }
 
   export type DishIngredientMaxAggregateInputType = {
@@ -15029,6 +15201,9 @@ export namespace Prisma {
     productId?: true
     amount?: true
     unit?: true
+    preparationMethod?: true
+    inputState?: true
+    yieldFactor?: true
   }
 
   export type DishIngredientCountAggregateInputType = {
@@ -15037,6 +15212,9 @@ export namespace Prisma {
     productId?: true
     amount?: true
     unit?: true
+    preparationMethod?: true
+    inputState?: true
+    yieldFactor?: true
     _all?: true
   }
 
@@ -15132,6 +15310,9 @@ export namespace Prisma {
     productId: string
     amount: number
     unit: $Enums.Unit
+    preparationMethod: $Enums.PreparationMethod
+    inputState: $Enums.IngredientInputState
+    yieldFactor: number
     _count: DishIngredientCountAggregateOutputType | null
     _avg: DishIngredientAvgAggregateOutputType | null
     _sum: DishIngredientSumAggregateOutputType | null
@@ -15159,6 +15340,9 @@ export namespace Prisma {
     productId?: boolean
     amount?: boolean
     unit?: boolean
+    preparationMethod?: boolean
+    inputState?: boolean
+    yieldFactor?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dishIngredient"]>
@@ -15169,6 +15353,9 @@ export namespace Prisma {
     productId?: boolean
     amount?: boolean
     unit?: boolean
+    preparationMethod?: boolean
+    inputState?: boolean
+    yieldFactor?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dishIngredient"]>
@@ -15179,6 +15366,9 @@ export namespace Prisma {
     productId?: boolean
     amount?: boolean
     unit?: boolean
+    preparationMethod?: boolean
+    inputState?: boolean
+    yieldFactor?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dishIngredient"]>
@@ -15189,9 +15379,12 @@ export namespace Prisma {
     productId?: boolean
     amount?: boolean
     unit?: boolean
+    preparationMethod?: boolean
+    inputState?: boolean
+    yieldFactor?: boolean
   }
 
-  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "amount" | "unit", ExtArgs["result"]["dishIngredient"]>
+  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "amount" | "unit" | "preparationMethod" | "inputState" | "yieldFactor", ExtArgs["result"]["dishIngredient"]>
   export type DishIngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -15217,6 +15410,9 @@ export namespace Prisma {
       productId: string
       amount: number
       unit: $Enums.Unit
+      preparationMethod: $Enums.PreparationMethod
+      inputState: $Enums.IngredientInputState
+      yieldFactor: number
     }, ExtArgs["result"]["dishIngredient"]>
     composites: {}
   }
@@ -15647,6 +15843,9 @@ export namespace Prisma {
     readonly productId: FieldRef<"DishIngredient", 'String'>
     readonly amount: FieldRef<"DishIngredient", 'Float'>
     readonly unit: FieldRef<"DishIngredient", 'Unit'>
+    readonly preparationMethod: FieldRef<"DishIngredient", 'PreparationMethod'>
+    readonly inputState: FieldRef<"DishIngredient", 'IngredientInputState'>
+    readonly yieldFactor: FieldRef<"DishIngredient", 'Float'>
   }
     
 
@@ -26717,6 +26916,9 @@ export namespace Prisma {
     improveTomorrow: string | null
     gratitude: string | null
     brainDump: string | null
+    standupDone: string | null
+    standupPlan: string | null
+    standupBlockers: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -26742,6 +26944,9 @@ export namespace Prisma {
     improveTomorrow: string | null
     gratitude: string | null
     brainDump: string | null
+    standupDone: string | null
+    standupPlan: string | null
+    standupBlockers: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -26770,6 +26975,9 @@ export namespace Prisma {
     improveTomorrow: number
     gratitude: number
     brainDump: number
+    standupDone: number
+    standupPlan: number
+    standupBlockers: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -26817,6 +27025,9 @@ export namespace Prisma {
     improveTomorrow?: true
     gratitude?: true
     brainDump?: true
+    standupDone?: true
+    standupPlan?: true
+    standupBlockers?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -26842,6 +27053,9 @@ export namespace Prisma {
     improveTomorrow?: true
     gratitude?: true
     brainDump?: true
+    standupDone?: true
+    standupPlan?: true
+    standupBlockers?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -26870,6 +27084,9 @@ export namespace Prisma {
     improveTomorrow?: true
     gratitude?: true
     brainDump?: true
+    standupDone?: true
+    standupPlan?: true
+    standupBlockers?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -26985,6 +27202,9 @@ export namespace Prisma {
     improveTomorrow: string | null
     gratitude: string | null
     brainDump: string | null
+    standupDone: string | null
+    standupPlan: string | null
+    standupBlockers: string | null
     createdAt: Date
     updatedAt: Date
     _count: DailyEntryCountAggregateOutputType | null
@@ -27032,6 +27252,9 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    standupDone?: boolean
+    standupPlan?: boolean
+    standupBlockers?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27061,6 +27284,9 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    standupDone?: boolean
+    standupPlan?: boolean
+    standupBlockers?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27090,6 +27316,9 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    standupDone?: boolean
+    standupPlan?: boolean
+    standupBlockers?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -27119,11 +27348,14 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    standupDone?: boolean
+    standupPlan?: boolean
+    standupBlockers?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "standupDone" | "standupPlan" | "standupBlockers" | "createdAt" | "updatedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -27163,6 +27395,9 @@ export namespace Prisma {
       improveTomorrow: string | null
       gratitude: string | null
       brainDump: string | null
+      standupDone: string | null
+      standupPlan: string | null
+      standupBlockers: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dailyEntry"]>
@@ -27612,6 +27847,9 @@ export namespace Prisma {
     readonly improveTomorrow: FieldRef<"DailyEntry", 'String'>
     readonly gratitude: FieldRef<"DailyEntry", 'String'>
     readonly brainDump: FieldRef<"DailyEntry", 'String'>
+    readonly standupDone: FieldRef<"DailyEntry", 'String'>
+    readonly standupPlan: FieldRef<"DailyEntry", 'String'>
+    readonly standupBlockers: FieldRef<"DailyEntry", 'String'>
     readonly createdAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DailyEntry", 'DateTime'>
   }
@@ -40684,6 +40922,1142 @@ export namespace Prisma {
 
 
   /**
+   * Model AnnualCompass
+   */
+
+  export type AggregateAnnualCompass = {
+    _count: AnnualCompassCountAggregateOutputType | null
+    _avg: AnnualCompassAvgAggregateOutputType | null
+    _sum: AnnualCompassSumAggregateOutputType | null
+    _min: AnnualCompassMinAggregateOutputType | null
+    _max: AnnualCompassMaxAggregateOutputType | null
+  }
+
+  export type AnnualCompassAvgAggregateOutputType = {
+    year: number | null
+  }
+
+  export type AnnualCompassSumAggregateOutputType = {
+    year: number | null
+  }
+
+  export type AnnualCompassMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    year: number | null
+    theme: string | null
+    wigs: string | null
+    focusAreas: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AnnualCompassMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    year: number | null
+    theme: string | null
+    wigs: string | null
+    focusAreas: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AnnualCompassCountAggregateOutputType = {
+    id: number
+    userId: number
+    year: number
+    theme: number
+    wigs: number
+    focusAreas: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AnnualCompassAvgAggregateInputType = {
+    year?: true
+  }
+
+  export type AnnualCompassSumAggregateInputType = {
+    year?: true
+  }
+
+  export type AnnualCompassMinAggregateInputType = {
+    id?: true
+    userId?: true
+    year?: true
+    theme?: true
+    wigs?: true
+    focusAreas?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AnnualCompassMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    year?: true
+    theme?: true
+    wigs?: true
+    focusAreas?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AnnualCompassCountAggregateInputType = {
+    id?: true
+    userId?: true
+    year?: true
+    theme?: true
+    wigs?: true
+    focusAreas?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AnnualCompassAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnualCompass to aggregate.
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnualCompasses to fetch.
+     */
+    orderBy?: AnnualCompassOrderByWithRelationInput | AnnualCompassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnualCompassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnualCompasses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnualCompasses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnnualCompasses
+    **/
+    _count?: true | AnnualCompassCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AnnualCompassAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AnnualCompassSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnualCompassMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnualCompassMaxAggregateInputType
+  }
+
+  export type GetAnnualCompassAggregateType<T extends AnnualCompassAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnualCompass]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnualCompass[P]>
+      : GetScalarType<T[P], AggregateAnnualCompass[P]>
+  }
+
+
+
+
+  export type AnnualCompassGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnualCompassWhereInput
+    orderBy?: AnnualCompassOrderByWithAggregationInput | AnnualCompassOrderByWithAggregationInput[]
+    by: AnnualCompassScalarFieldEnum[] | AnnualCompassScalarFieldEnum
+    having?: AnnualCompassScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnualCompassCountAggregateInputType | true
+    _avg?: AnnualCompassAvgAggregateInputType
+    _sum?: AnnualCompassSumAggregateInputType
+    _min?: AnnualCompassMinAggregateInputType
+    _max?: AnnualCompassMaxAggregateInputType
+  }
+
+  export type AnnualCompassGroupByOutputType = {
+    id: string
+    userId: string
+    year: number
+    theme: string | null
+    wigs: string | null
+    focusAreas: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AnnualCompassCountAggregateOutputType | null
+    _avg: AnnualCompassAvgAggregateOutputType | null
+    _sum: AnnualCompassSumAggregateOutputType | null
+    _min: AnnualCompassMinAggregateOutputType | null
+    _max: AnnualCompassMaxAggregateOutputType | null
+  }
+
+  type GetAnnualCompassGroupByPayload<T extends AnnualCompassGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnualCompassGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnualCompassGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnualCompassGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnualCompassGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnualCompassSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    year?: boolean
+    theme?: boolean
+    wigs?: boolean
+    focusAreas?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["annualCompass"]>
+
+  export type AnnualCompassSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    year?: boolean
+    theme?: boolean
+    wigs?: boolean
+    focusAreas?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["annualCompass"]>
+
+  export type AnnualCompassSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    year?: boolean
+    theme?: boolean
+    wigs?: boolean
+    focusAreas?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["annualCompass"]>
+
+  export type AnnualCompassSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    year?: boolean
+    theme?: boolean
+    wigs?: boolean
+    focusAreas?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AnnualCompassOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "year" | "theme" | "wigs" | "focusAreas" | "createdAt" | "updatedAt", ExtArgs["result"]["annualCompass"]>
+  export type AnnualCompassInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnualCompassIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnualCompassIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AnnualCompassPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnnualCompass"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      year: number
+      theme: string | null
+      wigs: string | null
+      focusAreas: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["annualCompass"]>
+    composites: {}
+  }
+
+  type AnnualCompassGetPayload<S extends boolean | null | undefined | AnnualCompassDefaultArgs> = $Result.GetResult<Prisma.$AnnualCompassPayload, S>
+
+  type AnnualCompassCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnualCompassFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnualCompassCountAggregateInputType | true
+    }
+
+  export interface AnnualCompassDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnnualCompass'], meta: { name: 'AnnualCompass' } }
+    /**
+     * Find zero or one AnnualCompass that matches the filter.
+     * @param {AnnualCompassFindUniqueArgs} args - Arguments to find a AnnualCompass
+     * @example
+     * // Get one AnnualCompass
+     * const annualCompass = await prisma.annualCompass.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnualCompassFindUniqueArgs>(args: SelectSubset<T, AnnualCompassFindUniqueArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnnualCompass that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnualCompassFindUniqueOrThrowArgs} args - Arguments to find a AnnualCompass
+     * @example
+     * // Get one AnnualCompass
+     * const annualCompass = await prisma.annualCompass.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnualCompassFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnualCompassFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnualCompass that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassFindFirstArgs} args - Arguments to find a AnnualCompass
+     * @example
+     * // Get one AnnualCompass
+     * const annualCompass = await prisma.annualCompass.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnualCompassFindFirstArgs>(args?: SelectSubset<T, AnnualCompassFindFirstArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnualCompass that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassFindFirstOrThrowArgs} args - Arguments to find a AnnualCompass
+     * @example
+     * // Get one AnnualCompass
+     * const annualCompass = await prisma.annualCompass.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnualCompassFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnualCompassFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnnualCompasses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnnualCompasses
+     * const annualCompasses = await prisma.annualCompass.findMany()
+     * 
+     * // Get first 10 AnnualCompasses
+     * const annualCompasses = await prisma.annualCompass.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const annualCompassWithIdOnly = await prisma.annualCompass.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnualCompassFindManyArgs>(args?: SelectSubset<T, AnnualCompassFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnnualCompass.
+     * @param {AnnualCompassCreateArgs} args - Arguments to create a AnnualCompass.
+     * @example
+     * // Create one AnnualCompass
+     * const AnnualCompass = await prisma.annualCompass.create({
+     *   data: {
+     *     // ... data to create a AnnualCompass
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnualCompassCreateArgs>(args: SelectSubset<T, AnnualCompassCreateArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnnualCompasses.
+     * @param {AnnualCompassCreateManyArgs} args - Arguments to create many AnnualCompasses.
+     * @example
+     * // Create many AnnualCompasses
+     * const annualCompass = await prisma.annualCompass.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnualCompassCreateManyArgs>(args?: SelectSubset<T, AnnualCompassCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnnualCompasses and returns the data saved in the database.
+     * @param {AnnualCompassCreateManyAndReturnArgs} args - Arguments to create many AnnualCompasses.
+     * @example
+     * // Create many AnnualCompasses
+     * const annualCompass = await prisma.annualCompass.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnnualCompasses and only return the `id`
+     * const annualCompassWithIdOnly = await prisma.annualCompass.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnualCompassCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnualCompassCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnnualCompass.
+     * @param {AnnualCompassDeleteArgs} args - Arguments to delete one AnnualCompass.
+     * @example
+     * // Delete one AnnualCompass
+     * const AnnualCompass = await prisma.annualCompass.delete({
+     *   where: {
+     *     // ... filter to delete one AnnualCompass
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnualCompassDeleteArgs>(args: SelectSubset<T, AnnualCompassDeleteArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnnualCompass.
+     * @param {AnnualCompassUpdateArgs} args - Arguments to update one AnnualCompass.
+     * @example
+     * // Update one AnnualCompass
+     * const annualCompass = await prisma.annualCompass.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnualCompassUpdateArgs>(args: SelectSubset<T, AnnualCompassUpdateArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnnualCompasses.
+     * @param {AnnualCompassDeleteManyArgs} args - Arguments to filter AnnualCompasses to delete.
+     * @example
+     * // Delete a few AnnualCompasses
+     * const { count } = await prisma.annualCompass.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnualCompassDeleteManyArgs>(args?: SelectSubset<T, AnnualCompassDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnualCompasses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnnualCompasses
+     * const annualCompass = await prisma.annualCompass.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnualCompassUpdateManyArgs>(args: SelectSubset<T, AnnualCompassUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnualCompasses and returns the data updated in the database.
+     * @param {AnnualCompassUpdateManyAndReturnArgs} args - Arguments to update many AnnualCompasses.
+     * @example
+     * // Update many AnnualCompasses
+     * const annualCompass = await prisma.annualCompass.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnnualCompasses and only return the `id`
+     * const annualCompassWithIdOnly = await prisma.annualCompass.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnualCompassUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnualCompassUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnnualCompass.
+     * @param {AnnualCompassUpsertArgs} args - Arguments to update or create a AnnualCompass.
+     * @example
+     * // Update or create a AnnualCompass
+     * const annualCompass = await prisma.annualCompass.upsert({
+     *   create: {
+     *     // ... data to create a AnnualCompass
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnnualCompass we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnualCompassUpsertArgs>(args: SelectSubset<T, AnnualCompassUpsertArgs<ExtArgs>>): Prisma__AnnualCompassClient<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnnualCompasses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassCountArgs} args - Arguments to filter AnnualCompasses to count.
+     * @example
+     * // Count the number of AnnualCompasses
+     * const count = await prisma.annualCompass.count({
+     *   where: {
+     *     // ... the filter for the AnnualCompasses we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnualCompassCountArgs>(
+      args?: Subset<T, AnnualCompassCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnualCompassCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnnualCompass.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnualCompassAggregateArgs>(args: Subset<T, AnnualCompassAggregateArgs>): Prisma.PrismaPromise<GetAnnualCompassAggregateType<T>>
+
+    /**
+     * Group by AnnualCompass.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnualCompassGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnualCompassGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnualCompassGroupByArgs['orderBy'] }
+        : { orderBy?: AnnualCompassGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnualCompassGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnualCompassGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnnualCompass model
+   */
+  readonly fields: AnnualCompassFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnnualCompass.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnualCompassClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnnualCompass model
+   */
+  interface AnnualCompassFieldRefs {
+    readonly id: FieldRef<"AnnualCompass", 'String'>
+    readonly userId: FieldRef<"AnnualCompass", 'String'>
+    readonly year: FieldRef<"AnnualCompass", 'Int'>
+    readonly theme: FieldRef<"AnnualCompass", 'String'>
+    readonly wigs: FieldRef<"AnnualCompass", 'String'>
+    readonly focusAreas: FieldRef<"AnnualCompass", 'String'>
+    readonly createdAt: FieldRef<"AnnualCompass", 'DateTime'>
+    readonly updatedAt: FieldRef<"AnnualCompass", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnnualCompass findUnique
+   */
+  export type AnnualCompassFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnualCompass to fetch.
+     */
+    where: AnnualCompassWhereUniqueInput
+  }
+
+  /**
+   * AnnualCompass findUniqueOrThrow
+   */
+  export type AnnualCompassFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnualCompass to fetch.
+     */
+    where: AnnualCompassWhereUniqueInput
+  }
+
+  /**
+   * AnnualCompass findFirst
+   */
+  export type AnnualCompassFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnualCompass to fetch.
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnualCompasses to fetch.
+     */
+    orderBy?: AnnualCompassOrderByWithRelationInput | AnnualCompassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnualCompasses.
+     */
+    cursor?: AnnualCompassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnualCompasses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnualCompasses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnualCompasses.
+     */
+    distinct?: AnnualCompassScalarFieldEnum | AnnualCompassScalarFieldEnum[]
+  }
+
+  /**
+   * AnnualCompass findFirstOrThrow
+   */
+  export type AnnualCompassFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnualCompass to fetch.
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnualCompasses to fetch.
+     */
+    orderBy?: AnnualCompassOrderByWithRelationInput | AnnualCompassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnualCompasses.
+     */
+    cursor?: AnnualCompassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnualCompasses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnualCompasses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnualCompasses.
+     */
+    distinct?: AnnualCompassScalarFieldEnum | AnnualCompassScalarFieldEnum[]
+  }
+
+  /**
+   * AnnualCompass findMany
+   */
+  export type AnnualCompassFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnualCompasses to fetch.
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnualCompasses to fetch.
+     */
+    orderBy?: AnnualCompassOrderByWithRelationInput | AnnualCompassOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnnualCompasses.
+     */
+    cursor?: AnnualCompassWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnualCompasses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnualCompasses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnualCompasses.
+     */
+    distinct?: AnnualCompassScalarFieldEnum | AnnualCompassScalarFieldEnum[]
+  }
+
+  /**
+   * AnnualCompass create
+   */
+  export type AnnualCompassCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AnnualCompass.
+     */
+    data: XOR<AnnualCompassCreateInput, AnnualCompassUncheckedCreateInput>
+  }
+
+  /**
+   * AnnualCompass createMany
+   */
+  export type AnnualCompassCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnnualCompasses.
+     */
+    data: AnnualCompassCreateManyInput | AnnualCompassCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnnualCompass createManyAndReturn
+   */
+  export type AnnualCompassCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnnualCompasses.
+     */
+    data: AnnualCompassCreateManyInput | AnnualCompassCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnualCompass update
+   */
+  export type AnnualCompassUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AnnualCompass.
+     */
+    data: XOR<AnnualCompassUpdateInput, AnnualCompassUncheckedUpdateInput>
+    /**
+     * Choose, which AnnualCompass to update.
+     */
+    where: AnnualCompassWhereUniqueInput
+  }
+
+  /**
+   * AnnualCompass updateMany
+   */
+  export type AnnualCompassUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnnualCompasses.
+     */
+    data: XOR<AnnualCompassUpdateManyMutationInput, AnnualCompassUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnualCompasses to update
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * Limit how many AnnualCompasses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnualCompass updateManyAndReturn
+   */
+  export type AnnualCompassUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * The data used to update AnnualCompasses.
+     */
+    data: XOR<AnnualCompassUpdateManyMutationInput, AnnualCompassUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnualCompasses to update
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * Limit how many AnnualCompasses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnualCompass upsert
+   */
+  export type AnnualCompassUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AnnualCompass to update in case it exists.
+     */
+    where: AnnualCompassWhereUniqueInput
+    /**
+     * In case the AnnualCompass found by the `where` argument doesn't exist, create a new AnnualCompass with this data.
+     */
+    create: XOR<AnnualCompassCreateInput, AnnualCompassUncheckedCreateInput>
+    /**
+     * In case the AnnualCompass was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnualCompassUpdateInput, AnnualCompassUncheckedUpdateInput>
+  }
+
+  /**
+   * AnnualCompass delete
+   */
+  export type AnnualCompassDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+    /**
+     * Filter which AnnualCompass to delete.
+     */
+    where: AnnualCompassWhereUniqueInput
+  }
+
+  /**
+   * AnnualCompass deleteMany
+   */
+  export type AnnualCompassDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnualCompasses to delete
+     */
+    where?: AnnualCompassWhereInput
+    /**
+     * Limit how many AnnualCompasses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnualCompass without action
+   */
+  export type AnnualCompassDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnualCompass
+     */
+    select?: AnnualCompassSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnualCompass
+     */
+    omit?: AnnualCompassOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnualCompassInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Milestone
    */
 
@@ -50037,7 +51411,10 @@ export namespace Prisma {
     dishId: 'dishId',
     productId: 'productId',
     amount: 'amount',
-    unit: 'unit'
+    unit: 'unit',
+    preparationMethod: 'preparationMethod',
+    inputState: 'inputState',
+    yieldFactor: 'yieldFactor'
   };
 
   export type DishIngredientScalarFieldEnum = (typeof DishIngredientScalarFieldEnum)[keyof typeof DishIngredientScalarFieldEnum]
@@ -50193,6 +51570,9 @@ export namespace Prisma {
     improveTomorrow: 'improveTomorrow',
     gratitude: 'gratitude',
     brainDump: 'brainDump',
+    standupDone: 'standupDone',
+    standupPlan: 'standupPlan',
+    standupBlockers: 'standupBlockers',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -50359,6 +51739,20 @@ export namespace Prisma {
   };
 
   export type VisionScalarFieldEnum = (typeof VisionScalarFieldEnum)[keyof typeof VisionScalarFieldEnum]
+
+
+  export const AnnualCompassScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    year: 'year',
+    theme: 'theme',
+    wigs: 'wigs',
+    focusAreas: 'focusAreas',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AnnualCompassScalarFieldEnum = (typeof AnnualCompassScalarFieldEnum)[keyof typeof AnnualCompassScalarFieldEnum]
 
 
   export const MilestoneScalarFieldEnum: {
@@ -50675,6 +52069,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'PreparationMethod'
+   */
+  export type EnumPreparationMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PreparationMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'PreparationMethod[]'
+   */
+  export type ListEnumPreparationMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PreparationMethod[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'IngredientInputState'
+   */
+  export type EnumIngredientInputStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IngredientInputState'>
+    
+
+
+  /**
+   * Reference to a field of type 'IngredientInputState[]'
+   */
+  export type ListEnumIngredientInputStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IngredientInputState[]'>
+    
+
+
+  /**
    * Reference to a field of type 'MealSlot'
    */
   export type EnumMealSlotFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MealSlot'>
@@ -50898,6 +52320,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     milestones?: MilestoneListRelationFilter
     sprints?: SprintListRelationFilter
+    annualCompasses?: AnnualCompassListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
   }
 
@@ -50930,6 +52353,7 @@ export namespace Prisma {
     visions?: VisionOrderByRelationAggregateInput
     milestones?: MilestoneOrderByRelationAggregateInput
     sprints?: SprintOrderByRelationAggregateInput
+    annualCompasses?: AnnualCompassOrderByRelationAggregateInput
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
   }
 
@@ -50965,6 +52389,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     milestones?: MilestoneListRelationFilter
     sprints?: SprintListRelationFilter
+    annualCompasses?: AnnualCompassListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
   }, "id" | "email">
 
@@ -51533,6 +52958,9 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     amount?: FloatFilter<"DishIngredient"> | number
     unit?: EnumUnitFilter<"DishIngredient"> | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFilter<"DishIngredient"> | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFilter<"DishIngredient"> | $Enums.IngredientInputState
+    yieldFactor?: FloatFilter<"DishIngredient"> | number
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
@@ -51543,6 +52971,9 @@ export namespace Prisma {
     productId?: SortOrder
     amount?: SortOrder
     unit?: SortOrder
+    preparationMethod?: SortOrder
+    inputState?: SortOrder
+    yieldFactor?: SortOrder
     dish?: DishOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
   }
@@ -51557,6 +52988,9 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     amount?: FloatFilter<"DishIngredient"> | number
     unit?: EnumUnitFilter<"DishIngredient"> | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFilter<"DishIngredient"> | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFilter<"DishIngredient"> | $Enums.IngredientInputState
+    yieldFactor?: FloatFilter<"DishIngredient"> | number
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id" | "dishId_productId">
@@ -51567,6 +53001,9 @@ export namespace Prisma {
     productId?: SortOrder
     amount?: SortOrder
     unit?: SortOrder
+    preparationMethod?: SortOrder
+    inputState?: SortOrder
+    yieldFactor?: SortOrder
     _count?: DishIngredientCountOrderByAggregateInput
     _avg?: DishIngredientAvgOrderByAggregateInput
     _max?: DishIngredientMaxOrderByAggregateInput
@@ -51583,6 +53020,9 @@ export namespace Prisma {
     productId?: StringWithAggregatesFilter<"DishIngredient"> | string
     amount?: FloatWithAggregatesFilter<"DishIngredient"> | number
     unit?: EnumUnitWithAggregatesFilter<"DishIngredient"> | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodWithAggregatesFilter<"DishIngredient"> | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateWithAggregatesFilter<"DishIngredient"> | $Enums.IngredientInputState
+    yieldFactor?: FloatWithAggregatesFilter<"DishIngredient"> | number
   }
 
   export type DayTemplateWhereInput = {
@@ -52312,6 +53752,9 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
+    standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
+    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -52341,6 +53784,9 @@ export namespace Prisma {
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
     brainDump?: SortOrderInput | SortOrder
+    standupDone?: SortOrderInput | SortOrder
+    standupPlan?: SortOrderInput | SortOrder
+    standupBlockers?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -52374,6 +53820,9 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
+    standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
+    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -52403,6 +53852,9 @@ export namespace Prisma {
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
     brainDump?: SortOrderInput | SortOrder
+    standupDone?: SortOrderInput | SortOrder
+    standupPlan?: SortOrderInput | SortOrder
+    standupBlockers?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DailyEntryCountOrderByAggregateInput
@@ -52439,6 +53891,9 @@ export namespace Prisma {
     improveTomorrow?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    standupDone?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    standupPlan?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    standupBlockers?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
   }
@@ -53286,6 +54741,79 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Vision"> | Date | string
   }
 
+  export type AnnualCompassWhereInput = {
+    AND?: AnnualCompassWhereInput | AnnualCompassWhereInput[]
+    OR?: AnnualCompassWhereInput[]
+    NOT?: AnnualCompassWhereInput | AnnualCompassWhereInput[]
+    id?: StringFilter<"AnnualCompass"> | string
+    userId?: StringFilter<"AnnualCompass"> | string
+    year?: IntFilter<"AnnualCompass"> | number
+    theme?: StringNullableFilter<"AnnualCompass"> | string | null
+    wigs?: StringNullableFilter<"AnnualCompass"> | string | null
+    focusAreas?: StringNullableFilter<"AnnualCompass"> | string | null
+    createdAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+    updatedAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AnnualCompassOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    year?: SortOrder
+    theme?: SortOrderInput | SortOrder
+    wigs?: SortOrderInput | SortOrder
+    focusAreas?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AnnualCompassWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_year?: AnnualCompassUserIdYearCompoundUniqueInput
+    AND?: AnnualCompassWhereInput | AnnualCompassWhereInput[]
+    OR?: AnnualCompassWhereInput[]
+    NOT?: AnnualCompassWhereInput | AnnualCompassWhereInput[]
+    userId?: StringFilter<"AnnualCompass"> | string
+    year?: IntFilter<"AnnualCompass"> | number
+    theme?: StringNullableFilter<"AnnualCompass"> | string | null
+    wigs?: StringNullableFilter<"AnnualCompass"> | string | null
+    focusAreas?: StringNullableFilter<"AnnualCompass"> | string | null
+    createdAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+    updatedAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_year">
+
+  export type AnnualCompassOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    year?: SortOrder
+    theme?: SortOrderInput | SortOrder
+    wigs?: SortOrderInput | SortOrder
+    focusAreas?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AnnualCompassCountOrderByAggregateInput
+    _avg?: AnnualCompassAvgOrderByAggregateInput
+    _max?: AnnualCompassMaxOrderByAggregateInput
+    _min?: AnnualCompassMinOrderByAggregateInput
+    _sum?: AnnualCompassSumOrderByAggregateInput
+  }
+
+  export type AnnualCompassScalarWhereWithAggregatesInput = {
+    AND?: AnnualCompassScalarWhereWithAggregatesInput | AnnualCompassScalarWhereWithAggregatesInput[]
+    OR?: AnnualCompassScalarWhereWithAggregatesInput[]
+    NOT?: AnnualCompassScalarWhereWithAggregatesInput | AnnualCompassScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnnualCompass"> | string
+    userId?: StringWithAggregatesFilter<"AnnualCompass"> | string
+    year?: IntWithAggregatesFilter<"AnnualCompass"> | number
+    theme?: StringNullableWithAggregatesFilter<"AnnualCompass"> | string | null
+    wigs?: StringNullableWithAggregatesFilter<"AnnualCompass"> | string | null
+    focusAreas?: StringNullableWithAggregatesFilter<"AnnualCompass"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AnnualCompass"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AnnualCompass"> | Date | string
+  }
+
   export type MilestoneWhereInput = {
     AND?: MilestoneWhereInput | MilestoneWhereInput[]
     OR?: MilestoneWhereInput[]
@@ -53916,6 +55444,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -53948,6 +55477,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -53980,6 +55510,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -54012,6 +55543,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -54633,6 +56165,9 @@ export namespace Prisma {
     id?: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
     dish: DishCreateNestedOneWithoutIngredientsInput
     product: ProductCreateNestedOneWithoutDishIngredientsInput
   }
@@ -54643,12 +56178,18 @@ export namespace Prisma {
     productId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type DishIngredientUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     product?: ProductUpdateOneRequiredWithoutDishIngredientsNestedInput
   }
@@ -54659,6 +56200,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DishIngredientCreateManyInput = {
@@ -54667,12 +56211,18 @@ export namespace Prisma {
     productId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type DishIngredientUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DishIngredientUncheckedUpdateManyInput = {
@@ -54681,6 +56231,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DayTemplateCreateInput = {
@@ -55425,6 +56978,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDailyEntriesInput
@@ -55454,6 +57010,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55481,6 +57040,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDailyEntriesNestedInput
@@ -55510,6 +57072,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55538,6 +57103,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55565,6 +57133,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55593,6 +57164,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56505,6 +58079,82 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AnnualCompassCreateInput = {
+    id?: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAnnualCompassesInput
+  }
+
+  export type AnnualCompassUncheckedCreateInput = {
+    id?: string
+    userId: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnualCompassUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAnnualCompassesNestedInput
+  }
+
+  export type AnnualCompassUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnualCompassCreateManyInput = {
+    id?: string
+    userId: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnualCompassUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnualCompassUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MilestoneCreateInput = {
     id?: string
     title: string
@@ -57312,6 +58962,12 @@ export namespace Prisma {
     none?: SprintWhereInput
   }
 
+  export type AnnualCompassListRelationFilter = {
+    every?: AnnualCompassWhereInput
+    some?: AnnualCompassWhereInput
+    none?: AnnualCompassWhereInput
+  }
+
   export type PushSubscriptionListRelationFilter = {
     every?: PushSubscriptionWhereInput
     some?: PushSubscriptionWhereInput
@@ -57388,6 +59044,10 @@ export namespace Prisma {
   }
 
   export type SprintOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnualCompassOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -58025,6 +59685,20 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type EnumPreparationMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.PreparationMethod | EnumPreparationMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumPreparationMethodFilter<$PrismaModel> | $Enums.PreparationMethod
+  }
+
+  export type EnumIngredientInputStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateFilter<$PrismaModel> | $Enums.IngredientInputState
+  }
+
   export type DishScalarRelationFilter = {
     is?: DishWhereInput
     isNot?: DishWhereInput
@@ -58046,10 +59720,14 @@ export namespace Prisma {
     productId?: SortOrder
     amount?: SortOrder
     unit?: SortOrder
+    preparationMethod?: SortOrder
+    inputState?: SortOrder
+    yieldFactor?: SortOrder
   }
 
   export type DishIngredientAvgOrderByAggregateInput = {
     amount?: SortOrder
+    yieldFactor?: SortOrder
   }
 
   export type DishIngredientMaxOrderByAggregateInput = {
@@ -58058,6 +59736,9 @@ export namespace Prisma {
     productId?: SortOrder
     amount?: SortOrder
     unit?: SortOrder
+    preparationMethod?: SortOrder
+    inputState?: SortOrder
+    yieldFactor?: SortOrder
   }
 
   export type DishIngredientMinOrderByAggregateInput = {
@@ -58066,10 +59747,14 @@ export namespace Prisma {
     productId?: SortOrder
     amount?: SortOrder
     unit?: SortOrder
+    preparationMethod?: SortOrder
+    inputState?: SortOrder
+    yieldFactor?: SortOrder
   }
 
   export type DishIngredientSumOrderByAggregateInput = {
     amount?: SortOrder
+    yieldFactor?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -58086,6 +59771,26 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type EnumPreparationMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PreparationMethod | EnumPreparationMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumPreparationMethodWithAggregatesFilter<$PrismaModel> | $Enums.PreparationMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPreparationMethodFilter<$PrismaModel>
+    _max?: NestedEnumPreparationMethodFilter<$PrismaModel>
+  }
+
+  export type EnumIngredientInputStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel> | $Enums.IngredientInputState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIngredientInputStateFilter<$PrismaModel>
+    _max?: NestedEnumIngredientInputStateFilter<$PrismaModel>
   }
 
   export type DayTemplateCountOrderByAggregateInput = {
@@ -58637,6 +60342,9 @@ export namespace Prisma {
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
     brainDump?: SortOrder
+    standupDone?: SortOrder
+    standupPlan?: SortOrder
+    standupBlockers?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58672,6 +60380,9 @@ export namespace Prisma {
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
     brainDump?: SortOrder
+    standupDone?: SortOrder
+    standupPlan?: SortOrder
+    standupBlockers?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58697,6 +60408,9 @@ export namespace Prisma {
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
     brainDump?: SortOrder
+    standupDone?: SortOrder
+    standupPlan?: SortOrder
+    standupBlockers?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59388,6 +61102,52 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type AnnualCompassUserIdYearCompoundUniqueInput = {
+    userId: string
+    year: number
+  }
+
+  export type AnnualCompassCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    year?: SortOrder
+    theme?: SortOrder
+    wigs?: SortOrder
+    focusAreas?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AnnualCompassAvgOrderByAggregateInput = {
+    year?: SortOrder
+  }
+
+  export type AnnualCompassMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    year?: SortOrder
+    theme?: SortOrder
+    wigs?: SortOrder
+    focusAreas?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AnnualCompassMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    year?: SortOrder
+    theme?: SortOrder
+    wigs?: SortOrder
+    focusAreas?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AnnualCompassSumOrderByAggregateInput = {
+    year?: SortOrder
+  }
+
   export type MilestoneCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -59949,6 +61709,13 @@ export namespace Prisma {
     connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
   }
 
+  export type AnnualCompassCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput> | AnnualCompassCreateWithoutUserInput[] | AnnualCompassUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnualCompassCreateOrConnectWithoutUserInput | AnnualCompassCreateOrConnectWithoutUserInput[]
+    createMany?: AnnualCompassCreateManyUserInputEnvelope
+    connect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+  }
+
   export type PushSubscriptionCreateNestedManyWithoutUserInput = {
     create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
@@ -60079,6 +61846,13 @@ export namespace Prisma {
     connectOrCreate?: SprintCreateOrConnectWithoutUserInput | SprintCreateOrConnectWithoutUserInput[]
     createMany?: SprintCreateManyUserInputEnvelope
     connect?: SprintWhereUniqueInput | SprintWhereUniqueInput[]
+  }
+
+  export type AnnualCompassUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput> | AnnualCompassCreateWithoutUserInput[] | AnnualCompassUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnualCompassCreateOrConnectWithoutUserInput | AnnualCompassCreateOrConnectWithoutUserInput[]
+    createMany?: AnnualCompassCreateManyUserInputEnvelope
+    connect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
   }
 
   export type PushSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
@@ -60356,6 +62130,20 @@ export namespace Prisma {
     deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
   }
 
+  export type AnnualCompassUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput> | AnnualCompassCreateWithoutUserInput[] | AnnualCompassUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnualCompassCreateOrConnectWithoutUserInput | AnnualCompassCreateOrConnectWithoutUserInput[]
+    upsert?: AnnualCompassUpsertWithWhereUniqueWithoutUserInput | AnnualCompassUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnualCompassCreateManyUserInputEnvelope
+    set?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    disconnect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    delete?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    connect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    update?: AnnualCompassUpdateWithWhereUniqueWithoutUserInput | AnnualCompassUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnualCompassUpdateManyWithWhereWithoutUserInput | AnnualCompassUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnualCompassScalarWhereInput | AnnualCompassScalarWhereInput[]
+  }
+
   export type PushSubscriptionUpdateManyWithoutUserNestedInput = {
     create?: XOR<PushSubscriptionCreateWithoutUserInput, PushSubscriptionUncheckedCreateWithoutUserInput> | PushSubscriptionCreateWithoutUserInput[] | PushSubscriptionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PushSubscriptionCreateOrConnectWithoutUserInput | PushSubscriptionCreateOrConnectWithoutUserInput[]
@@ -60616,6 +62404,20 @@ export namespace Prisma {
     update?: SprintUpdateWithWhereUniqueWithoutUserInput | SprintUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SprintUpdateManyWithWhereWithoutUserInput | SprintUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SprintScalarWhereInput | SprintScalarWhereInput[]
+  }
+
+  export type AnnualCompassUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput> | AnnualCompassCreateWithoutUserInput[] | AnnualCompassUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnualCompassCreateOrConnectWithoutUserInput | AnnualCompassCreateOrConnectWithoutUserInput[]
+    upsert?: AnnualCompassUpsertWithWhereUniqueWithoutUserInput | AnnualCompassUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnualCompassCreateManyUserInputEnvelope
+    set?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    disconnect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    delete?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    connect?: AnnualCompassWhereUniqueInput | AnnualCompassWhereUniqueInput[]
+    update?: AnnualCompassUpdateWithWhereUniqueWithoutUserInput | AnnualCompassUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnualCompassUpdateManyWithWhereWithoutUserInput | AnnualCompassUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnualCompassScalarWhereInput | AnnualCompassScalarWhereInput[]
   }
 
   export type PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -60972,6 +62774,14 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumPreparationMethodFieldUpdateOperationsInput = {
+    set?: $Enums.PreparationMethod
+  }
+
+  export type EnumIngredientInputStateFieldUpdateOperationsInput = {
+    set?: $Enums.IngredientInputState
   }
 
   export type DishUpdateOneRequiredWithoutIngredientsNestedInput = {
@@ -62217,6 +64027,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVisionsInput, UserUpdateWithoutVisionsInput>, UserUncheckedUpdateWithoutVisionsInput>
   }
 
+  export type UserCreateNestedOneWithoutAnnualCompassesInput = {
+    create?: XOR<UserCreateWithoutAnnualCompassesInput, UserUncheckedCreateWithoutAnnualCompassesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnualCompassesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAnnualCompassesNestedInput = {
+    create?: XOR<UserCreateWithoutAnnualCompassesInput, UserUncheckedCreateWithoutAnnualCompassesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnualCompassesInput
+    upsert?: UserUpsertWithoutAnnualCompassesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnualCompassesInput, UserUpdateWithoutAnnualCompassesInput>, UserUncheckedUpdateWithoutAnnualCompassesInput>
+  }
+
   export type UserCreateNestedOneWithoutMilestonesInput = {
     create?: XOR<UserCreateWithoutMilestonesInput, UserUncheckedCreateWithoutMilestonesInput>
     connectOrCreate?: UserCreateOrConnectWithoutMilestonesInput
@@ -62972,6 +64796,20 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumPreparationMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.PreparationMethod | EnumPreparationMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumPreparationMethodFilter<$PrismaModel> | $Enums.PreparationMethod
+  }
+
+  export type NestedEnumIngredientInputStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateFilter<$PrismaModel> | $Enums.IngredientInputState
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -62986,6 +64824,26 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPreparationMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PreparationMethod | EnumPreparationMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PreparationMethod[] | ListEnumPreparationMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumPreparationMethodWithAggregatesFilter<$PrismaModel> | $Enums.PreparationMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPreparationMethodFilter<$PrismaModel>
+    _max?: NestedEnumPreparationMethodFilter<$PrismaModel>
+  }
+
+  export type NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel> | $Enums.IngredientInputState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIngredientInputStateFilter<$PrismaModel>
+    _max?: NestedEnumIngredientInputStateFilter<$PrismaModel>
   }
 
   export type NestedEnumMealSlotFilter<$PrismaModel = never> = {
@@ -63638,6 +65496,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -63665,6 +65526,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -63930,6 +65794,36 @@ export namespace Prisma {
 
   export type SprintCreateManyUserInputEnvelope = {
     data: SprintCreateManyUserInput | SprintCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnualCompassCreateWithoutUserInput = {
+    id?: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnualCompassUncheckedCreateWithoutUserInput = {
+    id?: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnualCompassCreateOrConnectWithoutUserInput = {
+    where: AnnualCompassWhereUniqueInput
+    create: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnualCompassCreateManyUserInputEnvelope = {
+    data: AnnualCompassCreateManyUserInput | AnnualCompassCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -64314,6 +66208,9 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
+    standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
+    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
   }
@@ -64543,6 +66440,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Sprint"> | Date | string
   }
 
+  export type AnnualCompassUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnnualCompassWhereUniqueInput
+    update: XOR<AnnualCompassUpdateWithoutUserInput, AnnualCompassUncheckedUpdateWithoutUserInput>
+    create: XOR<AnnualCompassCreateWithoutUserInput, AnnualCompassUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnualCompassUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnnualCompassWhereUniqueInput
+    data: XOR<AnnualCompassUpdateWithoutUserInput, AnnualCompassUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnnualCompassUpdateManyWithWhereWithoutUserInput = {
+    where: AnnualCompassScalarWhereInput
+    data: XOR<AnnualCompassUpdateManyMutationInput, AnnualCompassUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnnualCompassScalarWhereInput = {
+    AND?: AnnualCompassScalarWhereInput | AnnualCompassScalarWhereInput[]
+    OR?: AnnualCompassScalarWhereInput[]
+    NOT?: AnnualCompassScalarWhereInput | AnnualCompassScalarWhereInput[]
+    id?: StringFilter<"AnnualCompass"> | string
+    userId?: StringFilter<"AnnualCompass"> | string
+    year?: IntFilter<"AnnualCompass"> | number
+    theme?: StringNullableFilter<"AnnualCompass"> | string | null
+    wigs?: StringNullableFilter<"AnnualCompass"> | string | null
+    focusAreas?: StringNullableFilter<"AnnualCompass"> | string | null
+    createdAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+    updatedAt?: DateTimeFilter<"AnnualCompass"> | Date | string
+  }
+
   export type PushSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
     where: PushSubscriptionWhereUniqueInput
     update: XOR<PushSubscriptionUpdateWithoutUserInput, PushSubscriptionUncheckedUpdateWithoutUserInput>
@@ -64601,6 +66528,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -64632,6 +66560,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -64679,6 +66608,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -64710,6 +66640,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -64740,6 +66671,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -64771,6 +66703,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -64818,6 +66751,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -64849,6 +66783,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -64880,6 +66815,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -64911,6 +66847,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -64958,6 +66895,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -64989,6 +66927,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -65020,6 +66959,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -65051,6 +66991,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -65098,6 +67039,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -65129,6 +67071,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -65136,6 +67079,9 @@ export namespace Prisma {
     id?: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
     dish: DishCreateNestedOneWithoutIngredientsInput
   }
 
@@ -65144,6 +67090,9 @@ export namespace Prisma {
     dishId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type DishIngredientCreateOrConnectWithoutProductInput = {
@@ -65207,6 +67156,9 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     amount?: FloatFilter<"DishIngredient"> | number
     unit?: EnumUnitFilter<"DishIngredient"> | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFilter<"DishIngredient"> | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFilter<"DishIngredient"> | $Enums.IngredientInputState
+    yieldFactor?: FloatFilter<"DishIngredient"> | number
   }
 
   export type ShoppingListItemUpsertWithWhereUniqueWithoutProductInput = {
@@ -65265,6 +67217,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -65296,6 +67249,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -65308,6 +67262,9 @@ export namespace Prisma {
     id?: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
     product: ProductCreateNestedOneWithoutDishIngredientsInput
   }
 
@@ -65316,6 +67273,9 @@ export namespace Prisma {
     productId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type DishIngredientCreateOrConnectWithoutDishInput = {
@@ -65419,6 +67379,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -65450,6 +67411,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -65713,6 +67675,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -65744,6 +67707,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -65849,6 +67813,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -65880,6 +67845,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -66063,6 +68029,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -66094,6 +68061,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66201,6 +68169,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -66232,6 +68201,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -66295,6 +68265,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -66326,6 +68297,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66447,6 +68419,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -66478,6 +68451,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -66713,6 +68687,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -66744,6 +68719,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -66842,6 +68818,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -66873,6 +68850,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67095,6 +69073,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -67126,6 +69105,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -67337,6 +69317,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -67368,6 +69349,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67477,6 +69459,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -67508,6 +69491,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -67728,6 +69712,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -67759,6 +69744,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -67939,6 +69925,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -67970,6 +69957,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -68017,6 +70005,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -68048,6 +70037,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -68079,6 +70069,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -68110,6 +70101,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -68212,6 +70204,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -68243,6 +70236,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -68415,6 +70409,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -68446,6 +70441,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -68493,6 +70489,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -68524,6 +70521,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -68555,6 +70553,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -68586,6 +70585,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -68633,6 +70633,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -68664,6 +70665,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -68747,6 +70749,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -68778,6 +70781,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -68970,6 +70974,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -69001,6 +71006,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -69454,6 +71460,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -69485,6 +71492,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -69532,6 +71540,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -69561,6 +71570,151 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAnnualCompassesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAnnualCompassesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAnnualCompassesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnnualCompassesInput, UserUncheckedCreateWithoutAnnualCompassesInput>
+  }
+
+  export type UserUpsertWithoutAnnualCompassesInput = {
+    update: XOR<UserUpdateWithoutAnnualCompassesInput, UserUncheckedUpdateWithoutAnnualCompassesInput>
+    create: XOR<UserCreateWithoutAnnualCompassesInput, UserUncheckedCreateWithoutAnnualCompassesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnnualCompassesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnnualCompassesInput, UserUncheckedUpdateWithoutAnnualCompassesInput>
+  }
+
+  export type UserUpdateWithoutAnnualCompassesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -69594,6 +71748,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -69625,6 +71780,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -69705,6 +71861,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -69736,6 +71893,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -69806,6 +71964,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
   }
 
@@ -69837,6 +71996,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -69952,6 +72112,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
   }
 
@@ -69983,6 +72144,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -70915,6 +73077,9 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    standupDone?: string | null
+    standupPlan?: string | null
+    standupBlockers?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -71000,6 +73165,16 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     status?: $Enums.SprintStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnualCompassCreateManyUserInput = {
+    id?: string
+    year: number
+    theme?: string | null
+    wigs?: string | null
+    focusAreas?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -71349,6 +73524,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -71376,6 +73554,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -71403,6 +73584,9 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
+    standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -71676,6 +73860,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AnnualCompassUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnualCompassUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnualCompassUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    theme?: NullableStringFieldUpdateOperationsInput | string | null
+    wigs?: NullableStringFieldUpdateOperationsInput | string | null
+    focusAreas?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PushSubscriptionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     endpoint?: StringFieldUpdateOperationsInput | string
@@ -71708,6 +73922,9 @@ export namespace Prisma {
     dishId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type ShoppingListItemCreateManyProductInput = {
@@ -71722,6 +73939,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
   }
 
@@ -71730,6 +73950,9 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DishIngredientUncheckedUpdateManyWithoutProductInput = {
@@ -71737,6 +73960,9 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type ShoppingListItemUpdateWithoutProductInput = {
@@ -71768,6 +73994,9 @@ export namespace Prisma {
     productId: string
     amount: number
     unit?: $Enums.Unit
+    preparationMethod?: $Enums.PreparationMethod
+    inputState?: $Enums.IngredientInputState
+    yieldFactor?: number
   }
 
   export type DayPlanEntryCreateManyDishInput = {
@@ -71790,6 +74019,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
     product?: ProductUpdateOneRequiredWithoutDishIngredientsNestedInput
   }
 
@@ -71798,6 +74030,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DishIngredientUncheckedUpdateManyWithoutDishInput = {
@@ -71805,6 +74040,9 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
+    preparationMethod?: EnumPreparationMethodFieldUpdateOperationsInput | $Enums.PreparationMethod
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    yieldFactor?: FloatFieldUpdateOperationsInput | number
   }
 
   export type DayPlanEntryUpdateWithoutDishInput = {

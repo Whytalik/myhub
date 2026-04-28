@@ -1,4 +1,5 @@
 import { SprintStatus, ObjectiveStatus, TacticFrequency, TaskStatus } from "@/app/generated/prisma";
+import type { TaskData } from "@/features/life/types";
 
 export interface SprintData {
   id: string;
@@ -51,6 +52,7 @@ export interface ProjectData {
   taskCount: number;
   completedTaskCount: number;
   progress: number;
+  tasks: TaskData[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -120,4 +122,14 @@ export interface UpsertTacticInput {
   title: string;
   description?: string | null;
   frequency?: TacticFrequency;
+}
+
+export interface UpsertProjectInput {
+  id?: string;
+  objectiveId: string;
+  title: string;
+  description?: string | null;
+  status?: TaskStatus;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
