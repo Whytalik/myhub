@@ -129,9 +129,9 @@ exports.Prisma.UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   privateTaskPasswordHash: 'privateTaskPasswordHash',
   role: 'role',
-  systemStatus: 'systemStatus',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  systemStatus: 'systemStatus'
 };
 
 exports.Prisma.PushSubscriptionScalarFieldEnum = {
@@ -220,8 +220,8 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   productId: 'productId',
   amount: 'amount',
   unit: 'unit',
-  preparationMethod: 'preparationMethod',
   inputState: 'inputState',
+  preparationMethod: 'preparationMethod',
   yieldFactor: 'yieldFactor'
 };
 
@@ -309,7 +309,6 @@ exports.Prisma.TaskScalarFieldEnum = {
   status: 'status',
   priority: 'priority',
   isPrivate: 'isPrivate',
-  isBlocked: 'isBlocked',
   plannedDate: 'plannedDate',
   hasPlannedTime: 'hasPlannedTime',
   dueDate: 'dueDate',
@@ -321,7 +320,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   parentId: 'parentId',
   sphereId: 'sphereId',
   projectId: 'projectId',
-  completedAt: 'completedAt'
+  completedAt: 'completedAt',
+  isBlocked: 'isBlocked'
 };
 
 exports.Prisma.DailyEntryScalarFieldEnum = {
@@ -344,17 +344,17 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   morningRoutine: 'morningRoutine',
   eveningRoutine: 'eveningRoutine',
   routineNote: 'routineNote',
-  recoveryRoutine: 'recoveryRoutine',
-  recoveryScore: 'recoveryScore',
   winToday: 'winToday',
   improveTomorrow: 'improveTomorrow',
   gratitude: 'gratitude',
   brainDump: 'brainDump',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  standupBlockers: 'standupBlockers',
   standupDone: 'standupDone',
   standupPlan: 'standupPlan',
-  standupBlockers: 'standupBlockers',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  recoveryRoutine: 'recoveryRoutine',
+  recoveryScore: 'recoveryScore'
 };
 
 exports.Prisma.HabitScalarFieldEnum = {
@@ -671,6 +671,11 @@ exports.Priority = exports.$Enums.Priority = {
   AUTO: 'AUTO'
 };
 
+exports.IngredientInputState = exports.$Enums.IngredientInputState = {
+  RAW: 'RAW',
+  COOKED: 'COOKED'
+};
+
 exports.PreparationMethod = exports.$Enums.PreparationMethod = {
   RAW: 'RAW',
   BOILED: 'BOILED',
@@ -678,11 +683,6 @@ exports.PreparationMethod = exports.$Enums.PreparationMethod = {
   BAKED: 'BAKED',
   STEAMED: 'STEAMED',
   OTHER: 'OTHER'
-};
-
-exports.IngredientInputState = exports.$Enums.IngredientInputState = {
-  RAW: 'RAW',
-  COOKED: 'COOKED'
 };
 
 exports.MealSlot = exports.$Enums.MealSlot = {

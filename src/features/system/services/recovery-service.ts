@@ -116,4 +116,24 @@ export const recoveryService = {
 
     return newStatus;
   },
+
+  /**
+   * Consolidates the daily system evaluation.
+   * Can be safely called from Server Components during render.
+   */
+  async runDailyCheck(userId: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // 1. Evaluate yesterday's score
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    await this.evaluateDailyRecovery(userId, yesterday);
+
+    // 2. Evaluate today's score
+    await this.evaluateDailyRecovery(userId, today);
+
+    // 3. Process transitions
+    return await this.processRecoveryTransition(userId);
+  },
 };

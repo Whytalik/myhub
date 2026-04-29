@@ -10,14 +10,30 @@ import { SystemStatus } from "@/app/generated/prisma";
  */
 export async function triggerSOSAction() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+  
+  if (!userId) {
+    console.error("SOS trigger attempt without valid session/userId");
+    throw new Error("Unauthorized");
+  }
 
   try {
-    await recoveryService.activateCrisisMode(session.user.id);
+    const { prisma } = await import("@/lib/prisma");
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true }
+    });
+
+    if (!userExists) {
+      console.error(`SOS trigger failed: User ${userId} not found in database`);
+      return { success: false, error: "User profile not found. Please log in again." };
+    }
+
+    await recoveryService.activateCrisisMode(userId);
     revalidatePath("/");
     return { success: true };
   } catch (error) {
-    console.error("SOS trigger failed:", error);
+    console.error(`SOS trigger failed for user ${userId}:`, error);
     return { success: false, error: "Failed to activate Crisis Mode" };
   }
 }
@@ -27,14 +43,30 @@ export async function triggerSOSAction() {
  */
 export async function exitCrisisModeAction() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    console.error("Exit Crisis Mode attempt without valid session/userId");
+    throw new Error("Unauthorized");
+  }
 
   try {
-    await recoveryService.deactivateCrisisMode(session.user.id);
+    const { prisma } = await import("@/lib/prisma");
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true }
+    });
+
+    if (!userExists) {
+      console.error(`Exit Crisis Mode failed: User ${userId} not found in database`);
+      return { success: false, error: "User profile not found. Please log in again." };
+    }
+
+    await recoveryService.deactivateCrisisMode(userId);
     revalidatePath("/");
     return { success: true };
   } catch (error) {
-    console.error("Manual exit failed:", error);
+    console.error(`Manual exit failed for user ${userId}:`, error);
     return { success: false, error: "Failed to exit Crisis Mode" };
   }
 }
@@ -48,21 +80,7 @@ export async function runDailySystemCheckAction() {
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   try {
-    const userId = session.user.id;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // 1. Evaluate yesterday's score first
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    await recoveryService.evaluateDailyRecovery(userId, yesterday);
-
-    // 2. Evaluate today's score (up to now)
-    await recoveryService.evaluateDailyRecovery(userId, today);
-
-    // 3. Process transitions
-    const newStatus = await recoveryService.processRecoveryTransition(userId);
-    
+    const newStatus = await recoveryService.runDailyCheck(session.user.id);
     revalidatePath("/");
     return { success: true, status: newStatus };
   } catch (error) {

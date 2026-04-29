@@ -10,7 +10,7 @@ import {
 import { getTodayEntry } from "@/features/life/services/journal-service";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
-import { runDailySystemCheckAction } from "@/features/system/actions/recovery-actions";
+import { recoveryService } from "@/features/system/services/recovery-service";
 import { CrisisDashboard } from "@/features/system/components/crisis-dashboard";
 import { SOSButton } from "@/features/system/components/sos-button";
 
@@ -65,7 +65,7 @@ export default async function HomePage() {
 
   // Run automated system check once per day/session
   if (userId) {
-    await runDailySystemCheckAction().catch(() => null);
+    await recoveryService.runDailyCheck(userId).catch(() => null);
   }
 
   const user = await prisma.user.findUnique({
