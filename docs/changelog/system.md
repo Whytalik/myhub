@@ -1,4 +1,14 @@
-# System Changelog
+## [2026-04-29] - Fix Supabase Build Timeout (directUrl)
+
+### Fixed
+- Fixed Vercel build timeout (45m) caused by `prisma db push` hanging on Supabase connection pooler (port 6543).
+- Configured `directUrl` in `prisma.config.ts` to use a direct connection (port 5432) for schema modifications.
+- Support for both standard `DIRECT_URL` and Vercel-specific `POSTGRES_URL_NON_POOLING` environment variables.
+
+### Verification
+- [x] Verified `prisma.config.ts` validity with `pnpm prisma validate`.
+- [x] Verified `prisma/schema.prisma` compatibility with Prisma 7 (removed deprecated `url`/`directUrl` from schema file).
+- [ ] Needs verification on Vercel after adding `DIRECT_URL` to environment variables.
 
 ## [2026-04-29] - Fix revalidatePath during render
 
