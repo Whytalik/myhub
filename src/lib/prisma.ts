@@ -14,7 +14,12 @@ const connectionString = process.env.POSTGRES_PRISMA_URL ||
 // Prisma client singleton with Driver Adapter
 export const prisma = globalForPrisma.prisma ?? (() => {
   if (connectionString) {
-    const pool = new pg.Pool({ connectionString });
+    const pool = new pg.Pool({ 
+      connectionString,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
     const adapter = new PrismaPg(pool);
     return new PrismaClient({ 
       adapter,
