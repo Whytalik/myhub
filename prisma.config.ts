@@ -3,9 +3,20 @@ import { defineConfig, env } from "prisma/config";
 
 const fixUrl = (url: string | undefined) => {
   if (!url) return url;
-  if (url.includes('sslmode=')) return url;
-  const separator = url.includes('?') ? '&' : '?';
-  return `${url}${separator}sslmode=no-verify&schema=public`;
+  let fixed = url;
+  if (fixed.includes('sslmode=')) {
+    fixed = fixed.replace(/sslmode=[^&]*/, 'sslmode=prefer');
+  } else {
+    const separator = fixed.includes('?') ? '&' : '?';
+    fixed = `${fixed}${separator}sslmode=prefer`;
+  }
+  if (!fixed.includes('uselibpqcompat=')) {
+    fixed = `${fixed}&uselibpqcompat=true`;
+  }
+  if (!fixed.includes('schema=')) {
+    fixed = `${fixed}&schema=public`;
+  }
+  return fixed;
 };
 
 export default defineConfig({
