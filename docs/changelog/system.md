@@ -17,7 +17,20 @@
 ### Verification
 - [x] Verified user record existence via `npx tsx`.
 - [x] Verified manual `prisma.user.update` success for known ID.
-- [x] Verified build stability with `pnpm build`.
+- Verified build stability with `pnpm build`.
+
+## [2026-04-29] - DB Migration & Build Optimization
+
+### Changed
+- Migrated database provider from Prisma Postgres to Supabase (Neon/Supabase compatible).
+- Optimized `src/lib/prisma.ts` for standard PostgreSQL connection pooling.
+- Decoupled database synchronization from the build process by removing `prisma db push` from `package.json`.
+- Standardized build script to `prisma generate && next build`.
+
+### Verification
+- [x] `package.json` scripts updated.
+- [x] Prisma singleton simplified for production scaling.
+- [x] Local type check passed.
 
 ### Verification
 - [x] Logic implemented in `recoveryService`.
