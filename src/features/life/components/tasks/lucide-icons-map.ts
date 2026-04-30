@@ -66,6 +66,7 @@ import {
   Coins,
   Banknote,
   CreditCard,
+  DollarSign,
   Flag,
   MapPin,
   Map,
@@ -120,12 +121,12 @@ export const ALL_ICONS: Record<string, LucideIcon> = {
 
   // Travel & Money
   Home, Key, Lock, Shield, User, Users, Backpack, Gift, ShoppingBag, ShoppingCart,
-  Wallet, Coins, Banknote, CreditCard, Flag, MapPin, Map, Compass, Navigation,
+  Wallet, Coins, Banknote, CreditCard, DollarSign, Flag, MapPin, Map, Compass, Navigation,
   Anchor, Plane, Car, Bike, Bus,
 
   // Creativity & Media
   Music, Mic, Headphones, Camera, Video, Image, Palette, Brush, PenTool, Pencil,
-  Book, BookOpen, Library, GraduationCap, Microscope, Star, Sparkles, Megaphone,
+  Book, BookOpen, Library, GraduationCap, University: GraduationCap, Microscope, Star, Sparkles, Megaphone,
   Mail, MessageSquare, Phone, Radio, Gamepad2, Tv
 };
 

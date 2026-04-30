@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { SystemStatus } from "@/app/generated/prisma";
+import { sphereSyncService } from "./sphere-sync-service";
 
 export const recoveryService = {
   /**
@@ -134,6 +135,13 @@ export const recoveryService = {
     await this.evaluateDailyRecovery(userId, today);
 
     // 3. Process transitions
-    return await this.processRecoveryTransition(userId);
+    const newStatus = await this.processRecoveryTransition(userId);
+
+    // 4. Sync spheres
+    await sphereSyncService.syncUserSpheres(userId).catch(err => {
+      console.error("Failed to sync spheres:", err);
+    });
+
+    return newStatus;
   },
 };

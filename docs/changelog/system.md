@@ -47,3 +47,17 @@
 - [x] `HomePage` updated to avoid Server Action call during render.
 - [x] Verified with `pnpm tsc --noEmit`.
 - [x] Verified with `pnpm build`.
+
+## [2026-04-30] - Life Sphere Sync & Icon Fixes
+### Added
+- Implemented \sphereSyncService\ to automatically ensure all users have the default life spheres (Finance, University, etc.).
+- Integrated sphere sync into the daily system check (\unDailyCheck\).
+
+### Fixed
+- Fixed missing 'Finance' and 'University' icons in the Task creation form by updating \lucide-icons-map.ts\.
+- Standardized \DEFAULT_SPHERES\ in a shared constants file (\src/features/life/constants.ts\).
+
+### Verification Checklist:
+- [x] Logic implemented (Sync service + Daily check)
+- [x] UI updated (Icon mapping fixed)
+- [x] Verified with tsc --noEmit

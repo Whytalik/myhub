@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,15 +26,21 @@ export function SphereFormDialog({
   const [isPending, startTransition] = useTransition();
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
-  const [name, setName]   = useState(sphere?.name ?? "");
-  const [color, setColor] = useState(sphere?.color ?? "#6fbfbf");
-  const [icon, setIcon]   = useState(sphere?.icon ?? SPHERE_ICON_NAMES[0]);
+  const [name, setName]   = useState("");
+  const [color, setColor] = useState("#6fbfbf");
+  const [icon, setIcon]   = useState(SPHERE_ICON_NAMES[0]);
+
+  // Sync state with prop when it opens or sphere changes
+  useEffect(() => {
+    if (isOpen) {
+      setName(sphere?.name ?? "");
+      setColor(sphere?.color ?? "#6fbfbf");
+      setIcon(sphere?.icon ?? SPHERE_ICON_NAMES[0]);
+    }
+  }, [isOpen, sphere]);
 
   // Reset form when dialog closes
   const handleClose = () => {
-    setName("");
-    setColor("#6fbfbf");
-    setIcon(SPHERE_ICON_NAMES[0]);
     onClose();
   };
 
