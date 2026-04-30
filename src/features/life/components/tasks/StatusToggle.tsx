@@ -62,8 +62,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
   const [currentStatus, setCurrentStatus] = useState<TaskStatus>(initialStatus);
   const [isPending, startTransition] = useTransition();
   
-  const { isOpen, coords, triggerRef, close, toggle } = useDynamicPositioning<HTMLButtonElement>({
-    contentHeight: 220,
+  const { isOpen, coords, triggerRef, contentRef, close, toggle } = useDynamicPositioning<HTMLButtonElement>({
     contentWidth: 160,
     offset: 8
   });
@@ -114,6 +113,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
 
         {isOpen && coords && typeof document !== "undefined" && createPortal(
           <div 
+            ref={contentRef as React.RefObject<HTMLDivElement>}
             className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
               coords.align === 'top' ? 'origin-bottom' : 'origin-top'
             }`}
@@ -170,6 +170,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
 
       {isOpen && coords && typeof document !== "undefined" && createPortal(
         <div 
+          ref={contentRef as React.RefObject<HTMLDivElement>}
           className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
             coords.align === 'top' ? 'origin-bottom' : 'origin-top'
           }`}

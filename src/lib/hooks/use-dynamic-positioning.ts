@@ -7,15 +7,20 @@ export interface PositionCoords {
 }
 
 interface UseDynamicPositioningOptions {
-  contentHeight: number;
-  contentWidth: number;
+  contentHeight?: number;
+  contentWidth?: number;
   offset?: number;
 }
 
-export function useDynamicPositioning<T extends HTMLElement = HTMLElement>({ contentHeight, contentWidth, offset = 8 }: UseDynamicPositioningOptions) {
+export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C extends HTMLElement = HTMLElement>({ 
+  contentHeight = 0, 
+  contentWidth = 0, 
+  offset = 8 
+}: UseDynamicPositioningOptions = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<PositionCoords | null>(null);
   const triggerRef = useRef<T | null>(null);
+  const contentRef = useRef<C | null>(null);
 
   const updateCoords = useCallback(() => {
     if (triggerRef.current) {
@@ -23,26 +28,39 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement>({ con
       const windowHeight = window.innerHeight;
       const windowWidth = window.innerWidth;
       
-      const spaceBelow = windowHeight - rect.bottom;
+      // Measure actual content if available, fallback to options
+      const h = contentRef.current?.offsetHeight ?? contentHeight;
+      const w = contentRef.current?.offsetWidth ?? contentWidth;
       
-      // Determine vertical alignment
+      const spaceBelow = windowHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      
+      // Determine vertical alignment: prefer bottom, flip to top if space below is insufficient 
+      // AND space above is better.
       let align: 'top' | 'bottom' = 'bottom';
-      let top = rect.bottom + offset;
-
-      if (spaceBelow < contentHeight && rect.top > contentHeight) {
+      
+      if (spaceBelow < h + offset && spaceAbove > spaceBelow) {
         align = 'top';
-        top = rect.top - offset;
       }
 
+      let top = align === 'bottom' ? rect.bottom + offset : rect.top - offset;
+      
       // Determine horizontal position (ensure it doesn't overflow window)
       let left = rect.left;
-      if (left + contentWidth > windowWidth) {
-        left = Math.max(8, windowWidth - contentWidth - 16);
+      if (left + w > windowWidth) {
+        left = Math.max(8, windowWidth - w - 16);
       }
 
       setCoords({ top, left, align });
     }
   }, [contentHeight, contentWidth, offset]);
+
+  // Re-calculate when content height changes (e.g. after portal render)
+  useEffect(() => {
+    if (isOpen) {
+      updateCoords();
+    }
+  }, [isOpen, updateCoords]);
 
   const toggle = useCallback(() => {
     if (!isOpen) updateCoords();
@@ -73,6 +91,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement>({ con
     isOpen,
     coords,
     triggerRef,
+    contentRef,
     toggle,
     open,
     close,

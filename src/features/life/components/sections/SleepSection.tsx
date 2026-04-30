@@ -93,8 +93,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
   };
 
   const ScaleHint = () => {
-    const { isOpen, coords, triggerRef, open, close } = useDynamicPositioning({
-      contentHeight: 250,
+    const { isOpen, coords, triggerRef, contentRef, open, close } = useDynamicPositioning({
       contentWidth: 288,
       offset: 12
     });
@@ -112,6 +111,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
         
         {isOpen && coords && typeof document !== "undefined" && createPortal(
           <div 
+            ref={contentRef as React.RefObject<HTMLDivElement>}
             className={`fixed z-[9999] w-72 p-4 bg-surface border border-border rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200 ${
               coords.align === 'top' ? 'origin-bottom' : 'origin-top'
             }`}

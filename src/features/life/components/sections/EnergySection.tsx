@@ -2,6 +2,7 @@
 
 import { Zap, Smile, FileText, Info } from "lucide-react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 interface Props {
@@ -40,10 +41,20 @@ const MOOD_DESCS: Record<number, string> = {
 
 export function EnergySection({ energy, mood, note, onChange }: Props) {
   const hasValue = energy !== null || mood !== null || !!note;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "0px";
+      const scrollHeight = textarea.scrollHeight;
+      textarea.style.height = Math.max(36, scrollHeight) + "px";
+    }
+  }, [note]);
 
   const ScaleHint = ({ type }: { type: "energy" | "mood" }) => {
-    const { isOpen, coords, triggerRef, open, close } = useDynamicPositioning({
-      contentHeight: 250,
+    const { isOpen, coords, triggerRef, contentRef, open, close } = useDynamicPositioning({
       contentWidth: 288, // w-72 = 18rem = 288px
       offset: 12
     });
@@ -61,6 +72,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
         
         {isOpen && coords && typeof document !== "undefined" && createPortal(
           <div 
+            ref={contentRef as React.RefObject<HTMLDivElement>}
             className={`fixed z-[9999] w-72 p-4 bg-surface border border-border rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200 ${
               coords.align === 'top' ? 'origin-bottom' : 'origin-top'
             }`}
@@ -193,11 +205,12 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
           <span className="text-[10px] font-mono uppercase tracking-wider text-muted">Notes</span>
         </div>
         <textarea
+          ref={textareaRef}
           value={note ?? ""}
           onChange={(e) => onChange({ energyNote: e.target.value || null })}
           placeholder="Mood/energy notes..."
           rows={1}
-          className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed h-9 flex items-center ${
+          className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
             note
               ? "border-accent/50 text-text bg-accent/[0.02]"
               : "border-border text-secondary placeholder:text-muted/50 focus:border-accent/40"

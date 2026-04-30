@@ -20,8 +20,7 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
   const [currentPriority, setCurrentPriority] = useState<TaskPriority>(initialPriority);
   const [isPending, startTransition] = useTransition();
   
-  const { isOpen, coords, triggerRef, toggle, close } = useDynamicPositioning<HTMLButtonElement>({
-    contentHeight: 180,
+  const { isOpen, coords, triggerRef, contentRef, toggle, close } = useDynamicPositioning<HTMLButtonElement>({
     contentWidth: 160,
     offset: 8
   });
@@ -71,6 +70,7 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
 
       {isOpen && coords && typeof document !== "undefined" && createPortal(
         <div 
+          ref={contentRef as React.RefObject<HTMLDivElement>}
           className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
             coords.align === 'top' ? 'origin-bottom' : 'origin-top'
           }`}
