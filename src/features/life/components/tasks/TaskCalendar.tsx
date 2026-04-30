@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
   format,
   startOfMonth,
@@ -65,30 +65,23 @@ const STATUS_SORT_ORDER: Record<string, number> = {
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
-    // 1. Sort by Status
     const sA = STATUS_SORT_ORDER[a.status] ?? 99;
     const sB = STATUS_SORT_ORDER[b.status] ?? 99;
     if (sA !== sB) return sA - sB;
 
-    // 2. Sort by Priority (desc)
     const pA = PRIORITY_ORDER[a.priority] ?? 0;
     const pB = PRIORITY_ORDER[b.priority] ?? 0;
     if (pA !== pB) return pB - pA;
 
-    // 3. Sort by plannedDate (asc)
     const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() : Infinity;
     const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() : Infinity;
     if (timeA !== timeB) return timeA - timeB;
 
-    // 4. Fallback to manually set order (asc)
     if (a.order !== b.order) return a.order - b.order;
 
-    // 5. Fallback to creation date (asc)
     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
-
-// ─── Draggable Wrapper ───────────────────────────────────────────────────────
 
 function DraggableTask({ 
   task, 
@@ -135,111 +128,6 @@ function DraggableTask({
     />
   );
 }
-
-// ─── Spanning Milestone (Parent Task across date range) ──────────────────────
-
-function SpanningMilestone({
-  task,
-  day,
-  onEdit,
-  onAddChild,
-}: {
-  task: TaskData,
-  day: Date,
-  onEdit: (t: TaskData) => void,
-  onAddChild?: (t: TaskData) => void,
-}) {
-  const completedSubtasks = task.children.filter(c => c.status === 'DONE').length;
-  const totalSubtasks = task.children.length;
-  const pct = Math.round((completedSubtasks / totalSubtasks) * 100);
-  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
-
-  const allDates: Date[] = [];
-  task.children.forEach(child => {
-    if (child.plannedDate) allDates.push(new Date(child.plannedDate));
-  });
-  if (task.dueDate) allDates.push(new Date(task.dueDate));
-
-  const isSingleDay = allDates.length <= 1;
-  let isRangeStart = true;
-  let isRangeEnd = true;
-
-  if (!isSingleDay) {
-    const rangeStart = new Date(Math.min(...allDates.map(d => d.getTime())));
-    const rangeEnd = new Date(Math.max(...allDates.map(d => d.getTime())));
-    isRangeStart = format(day, "yyyy-MM-dd") === format(rangeStart, "yyyy-MM-dd");
-    isRangeEnd = format(day, "yyyy-MM-dd") === format(rangeEnd, "yyyy-MM-dd");
-  }
-
-  const sphereColor = task.sphere?.color || '#888';
-
-  return (
-    <div
-      onClick={() => onEdit(task)}
-      className="group relative w-full mb-1 last:mb-0 cursor-pointer"
-      style={{ height: '8px' }}
-    >
-      <div
-        className={`w-full h-full transition-all ${isDone ? 'opacity-20' : 'opacity-50 group-hover:opacity-90'}`}
-        style={{
-          backgroundColor: sphereColor,
-          borderRadius: `${isRangeStart ? '4px' : '0'} ${isRangeEnd ? '4px' : '0'} ${isRangeEnd ? '4px' : '0'} ${isRangeStart ? '4px' : '0'}`,
-        }}
-      />
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <span className="text-[7px] font-mono text-muted/60 bg-bg/90 px-1 rounded">{pct}%</span>
-      </div>
-      {onAddChild && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
-          className="absolute -right-1 -top-1 p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100 pointer-events-auto"
-        >
-          <Plus size={8} />
-        </button>
-      )}
-    </div>
-  );
-}
-
-// ─── Spanning Task continuation bar (multi-day task) ─────────────────────────
-
-function SpanningTask({
-  task,
-  day,
-}: {
-  task: TaskData,
-  day: Date,
-}) {
-  const sphereColor = task.sphere?.color || '#888';
-  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
-  const startDate = task.plannedDate ? new Date(task.plannedDate) : null;
-  const endDate = task.plannedEndDate ? new Date(task.plannedEndDate) : null;
-
-  let isRangeStart = true;
-  let isRangeEnd = true;
-
-  if (startDate && endDate) {
-    isRangeStart = format(day, "yyyy-MM-dd") === format(startDate, "yyyy-MM-dd");
-    isRangeEnd = format(day, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd");
-  }
-
-  return (
-    <div
-      className="group relative w-full mb-1 last:mb-0 cursor-pointer"
-      style={{ height: '6px' }}
-    >
-      <div
-        className={`w-full h-full transition-all ${isDone ? 'opacity-20' : 'opacity-40 group-hover:opacity-80'}`}
-        style={{
-          backgroundColor: sphereColor,
-          borderRadius: `${isRangeStart ? '3px' : '0'} ${isRangeEnd ? '3px' : '0'} ${isRangeEnd ? '3px' : '0'} ${isRangeStart ? '3px' : '0'}`,
-        }}
-      />
-    </div>
-  );
-}
-
-// ─── Droppable Cell ──────────────────────────────────────────────────────────
 
 function CalendarDayCell({ 
   day, 
@@ -314,65 +202,171 @@ function CalendarDayCell({
       </div>
       
       <div className={`flex-1 flex flex-col ${isDraggingAny ? "overflow-visible" : "overflow-y-auto scrollbar-hide"}`}>
-        {sortedTasks.map(task => {
-          const hasChildren = task.children.length > 0;
-          const hasDateRange = !!task.plannedDate && !!task.plannedEndDate;
-          const isSpanningTask = hasDateRange && format(day, "yyyy-MM-dd") !== format(new Date(task.plannedDate!), "yyyy-MM-dd");
-
-          if (hasChildren) {
-            return (
-              <SpanningMilestone
-                key={task.id}
-                task={task}
-                day={day}
-                onEdit={onEdit}
-                onAddChild={onAddChild}
-              />
-            );
-          }
-
-          if (hasDateRange) {
-            if (isSpanningTask) {
-              return (
-                <SpanningTask
-                  key={task.id}
-                  task={task}
-                  day={day}
-                />
-              );
-            }
-            return (
-              <div key={task.id} className="relative">
-                <DraggableTask
-                  task={task}
-                  onEdit={onEdit}
-                  onDuplicate={onDuplicate}
-                  onAddChild={onAddChild}
-                  onDelete={onDelete}
-                  allTasks={allTasks}
-                />
-              </div>
-            );
-          }
-
-          return (
-            <DraggableTask
-              key={task.id}
-              task={task}
-              onEdit={onEdit}
-              onDuplicate={onDuplicate}
-              onAddChild={onAddChild}
-              onDelete={onDelete}
-              allTasks={allTasks}
-            />
-          );
-        })}
+        {sortedTasks.map(task => (
+          <DraggableTask 
+            key={task.id} 
+            task={task} 
+            onEdit={onEdit} 
+            onDuplicate={onDuplicate} 
+            onAddChild={onAddChild}
+            onDelete={onDelete}
+            allTasks={allTasks} 
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-// ─── Main Component ─────────────────────────────────────────────────────────
+interface SpanningTaskOverlayProps {
+  task: TaskData;
+  days: Date[];
+  onEdit: (t: TaskData) => void;
+  onAddChild?: (t: TaskData) => void;
+}
+
+function SpanningTaskOverlay({ task, days, onEdit, onAddChild }: SpanningTaskOverlayProps) {
+  const startDate = task.plannedDate ? new Date(task.plannedDate) : null;
+  const endDate = task.plannedEndDate ? new Date(task.plannedEndDate) : null;
+  
+  if (!startDate || !endDate) return null;
+
+  const startKey = format(startDate, "yyyy-MM-dd");
+  const endKey = format(endDate, "yyyy-MM-dd");
+  
+  const startIdx = days.findIndex(d => format(d, "yyyy-MM-dd") === startKey);
+  const endIdx = days.findIndex(d => format(d, "yyyy-MM-dd") === endKey);
+  
+  if (startIdx === -1 || endIdx === -1) return null;
+
+  const colSpan = endIdx - startIdx + 1;
+  const sphereColor = task.sphere?.color || '#888';
+  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
+
+  return (
+    <div
+      onClick={() => onEdit(task)}
+      className="absolute z-10 cursor-pointer group"
+      style={{
+        gridColumnStart: startIdx + 1,
+        gridColumnEnd: startIdx + 1 + colSpan,
+        top: '4px',
+        left: '2px',
+        right: '2px',
+      }}
+    >
+      <div
+        className={`
+          relative flex items-center gap-2 px-3 py-2 rounded-xl border transition-all
+          ${isDone
+            ? 'bg-white/[0.03] border-white/[0.05] opacity-40'
+            : 'hover:brightness-110'
+          }
+        `}
+        style={{
+          backgroundColor: isDone ? undefined : `${sphereColor}12`,
+          borderColor: `${sphereColor}30`,
+        }}
+      >
+        <div
+          className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl"
+          style={{ backgroundColor: sphereColor }}
+        />
+        <span className={`text-[11px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/80'}`}>
+          {task.title}
+        </span>
+        <span className="text-[8px] font-mono text-muted/40 tabular-nums shrink-0">
+          {format(startDate, "MMM d")} – {format(endDate, "MMM d")}
+        </span>
+        {onAddChild && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
+            className="p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100"
+          >
+            <Plus size={10} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+interface SpanningMilestoneOverlayProps {
+  task: TaskData;
+  days: Date[];
+  onEdit: (t: TaskData) => void;
+  onAddChild?: (t: TaskData) => void;
+}
+
+function SpanningMilestoneOverlay({ task, days, onEdit, onAddChild }: SpanningMilestoneOverlayProps) {
+  const allDates: Date[] = [];
+  task.children.forEach(child => {
+    if (child.plannedDate) allDates.push(new Date(child.plannedDate));
+  });
+  if (task.dueDate) allDates.push(new Date(task.dueDate));
+  
+  if (allDates.length === 0) return null;
+
+  const rangeStart = new Date(Math.min(...allDates.map(d => d.getTime())));
+  const rangeEnd = new Date(Math.max(...allDates.map(d => d.getTime())));
+  
+  const startKey = format(rangeStart, "yyyy-MM-dd");
+  const endKey = format(rangeEnd, "yyyy-MM-dd");
+  
+  const startIdx = days.findIndex(d => format(d, "yyyy-MM-dd") === startKey);
+  const endIdx = days.findIndex(d => format(d, "yyyy-MM-dd") === endKey);
+  
+  if (startIdx === -1 || endIdx === -1) return null;
+
+  const colSpan = endIdx - startIdx + 1;
+  const sphereColor = task.sphere?.color || '#888';
+  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
+  const completedSubtasks = task.children.filter(c => c.status === 'DONE').length;
+  const totalSubtasks = task.children.length;
+  const pct = Math.round((completedSubtasks / totalSubtasks) * 100);
+
+  return (
+    <div
+      onClick={() => onEdit(task)}
+      className="absolute z-10 cursor-pointer group"
+      style={{
+        gridColumnStart: startIdx + 1,
+        gridColumnEnd: startIdx + 1 + colSpan,
+        top: '4px',
+        left: '2px',
+        right: '2px',
+      }}
+    >
+      <div
+        className={`
+          relative flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all
+          ${isDone
+            ? 'bg-accent/5 border-accent/10 opacity-40'
+            : 'hover:brightness-110'
+          }
+        `}
+        style={{
+          backgroundColor: isDone ? undefined : `${sphereColor}10`,
+          borderColor: `${sphereColor}25`,
+        }}
+      >
+        <span className="text-[8px] text-accent/50 shrink-0">◆</span>
+        <span className={`text-[10px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/70'}`}>
+          {task.title}
+        </span>
+        <span className="text-[8px] font-mono text-muted/40 tabular-nums shrink-0">{pct}%</span>
+        {onAddChild && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
+            className="p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100"
+          >
+            <Plus size={10} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function TaskCalendar({ 
   tasks: initialTasks, 
@@ -393,8 +387,8 @@ export function TaskCalendar({
   
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   
-  // Use provided allTasks or fallback to localTasks for parent resolution
   const parentResolutionTasks = allTasks || localTasks;
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const handleEdit = (t: TaskData) => {
     setEditingTask(t);
@@ -464,51 +458,49 @@ export function TaskCalendar({
     }
   }, [currentDate, mode]);
 
-  const tasksByDay = useMemo(() => {
-    const map: Record<string, TaskData[]> = {};
+  const { singleDayTasks, spanningTasks, milestoneTasks } = useMemo(() => {
+    const singleDay: TaskData[] = [];
+    const spanning: TaskData[] = [];
+    const milestones: TaskData[] = [];
 
     localTasks.forEach(task => {
       const hasChildren = task.children.length > 0;
 
-      if (!hasChildren) {
-        if (task.plannedDate && task.plannedEndDate) {
-          const start = new Date(task.plannedDate);
-          const end = new Date(task.plannedEndDate);
-          const days = eachDayOfInterval({ start, end });
-          days.forEach(day => {
-            const key = format(day, "yyyy-MM-dd");
-            if (!map[key]) map[key] = [];
-            map[key].push(task);
-          });
+      if (hasChildren) {
+        milestones.push(task);
+      } else if (task.plannedDate && task.plannedEndDate) {
+        const start = new Date(task.plannedDate);
+        const end = new Date(task.plannedEndDate);
+        if (format(start, "yyyy-MM-dd") !== format(end, "yyyy-MM-dd")) {
+          spanning.push(task);
         } else {
-          const displayDate = task.plannedDate || task.dueDate;
-          if (displayDate) {
-            const key = format(new Date(displayDate), "yyyy-MM-dd");
-            if (!map[key]) map[key] = [];
-            map[key].push(task);
-          }
+          singleDay.push(task);
         }
       } else {
-        const allDates: Date[] = [];
-        task.children.forEach(child => {
-          if (child.plannedDate) allDates.push(new Date(child.plannedDate));
-        });
-        if (task.dueDate) allDates.push(new Date(task.dueDate));
-        if (allDates.length === 0) return;
+        const displayDate = task.plannedDate || task.dueDate;
+        if (displayDate) {
+          singleDay.push(task);
+        }
+      }
+    });
 
-        const rangeStart = new Date(Math.min(...allDates.map(d => d.getTime())));
-        const rangeEnd = new Date(Math.max(...allDates.map(d => d.getTime())));
-        const days = eachDayOfInterval({ start: rangeStart, end: rangeEnd });
-        days.forEach(day => {
-          const key = format(day, "yyyy-MM-dd");
-          if (!map[key]) map[key] = [];
-          map[key].push(task);
-        });
+    return { singleDayTasks: singleDay, spanningTasks: spanning, milestoneTasks: milestones };
+  }, [localTasks]);
+
+  const tasksByDay = useMemo(() => {
+    const map: Record<string, TaskData[]> = {};
+
+    singleDayTasks.forEach(task => {
+      const displayDate = task.plannedDate || task.dueDate;
+      if (displayDate) {
+        const key = format(new Date(displayDate), "yyyy-MM-dd");
+        if (!map[key]) map[key] = [];
+        map[key].push(task);
       }
     });
 
     return map;
-  }, [localTasks]);
+  }, [singleDayTasks]);
 
   const handleDragStart = () => {
     setIsDraggingAny(true);
@@ -562,7 +554,6 @@ export function TaskCalendar({
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col bg-[#0f0d0a] border border-[#2e2e2e] rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
-        {/* Calendar Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 md:gap-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-accent/10 rounded-xl">
@@ -617,7 +608,6 @@ export function TaskCalendar({
           </div>
         </div>
 
-        {/* Days Header */}
         <div className="overflow-x-auto scrollbar-hide">
           <div className="min-w-[600px] md:min-w-0">
             <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
@@ -628,30 +618,57 @@ export function TaskCalendar({
               ))}
             </div>
 
-            {/* Calendar Grid */}
-            <div className={`grid grid-cols-7 border-l border-t border-white/[0.03] ${mode === 'week' ? 'flex-1' : ''}`}>
-              {days.map((day, i) => (
-                <CalendarDayCell 
-                  key={i} 
-                  day={day} 
-                  currentMonth={currentDate} 
-                  tasks={tasksByDay[format(day, "yyyy-MM-dd")] || []}
-                  onEdit={handleEdit}
-                  onDuplicate={handleDuplicate}
-                  onAddChild={handleAddChild}
-                  onDelete={handleTaskDeleted}
-                  onAdd={(date) => {
-                    setEditingTask({ plannedDate: date } as TaskData);
-                    setParentTask(null);
-                    setIsDuplicate(false);
-                    setDialogVersion(v => v + 1);
-                    setDialogOpen(true);
-                  }}
-                  isDraggingAny={isDraggingAny}
-                  mode={mode}
-                  allTasks={parentResolutionTasks}
-                />
-              ))}
+            <div className="relative">
+              <div 
+                ref={gridRef}
+                className={`grid grid-cols-7 border-l border-t border-white/[0.03] ${mode === 'week' ? 'flex-1' : ''}`}
+              >
+                {days.map((day, i) => (
+                  <CalendarDayCell 
+                    key={i} 
+                    day={day} 
+                    currentMonth={currentDate} 
+                    tasks={tasksByDay[format(day, "yyyy-MM-dd")] || []}
+                    onEdit={handleEdit}
+                    onDuplicate={handleDuplicate}
+                    onAddChild={handleAddChild}
+                    onDelete={handleTaskDeleted}
+                    onAdd={(date) => {
+                      setEditingTask({ plannedDate: date } as TaskData);
+                      setParentTask(null);
+                      setIsDuplicate(false);
+                      setDialogVersion(v => v + 1);
+                      setDialogOpen(true);
+                    }}
+                    isDraggingAny={isDraggingAny}
+                    mode={mode}
+                    allTasks={parentResolutionTasks}
+                  />
+                ))}
+              </div>
+
+              <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
+                {spanningTasks.map(task => (
+                  <div key={`spanning-${task.id}`} className="pointer-events-auto">
+                    <SpanningTaskOverlay
+                      task={task}
+                      days={days}
+                      onEdit={handleEdit}
+                      onAddChild={handleAddChild}
+                    />
+                  </div>
+                ))}
+                {milestoneTasks.map(task => (
+                  <div key={`milestone-${task.id}`} className="pointer-events-auto">
+                    <SpanningMilestoneOverlay
+                      task={task}
+                      days={days}
+                      onEdit={handleEdit}
+                      onAddChild={handleAddChild}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
