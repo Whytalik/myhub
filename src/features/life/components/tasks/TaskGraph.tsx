@@ -3,18 +3,18 @@
 import React, { useMemo } from 'react';
 import {
   ReactFlow,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
   ConnectionMode,
   Edge,
   MarkerType,
+  Node,
 } from '@xyflow/react';
 import dagre from 'dagre';
 import '@xyflow/react/dist/style.css';
 
-import { TaskNode, TaskNodeType } from './TaskNode';
+import { TaskNode, TaskNodeData } from './TaskNode';
 import type { TaskData, LifeSphereData } from '@/features/life/types';
 
 interface TaskGraphProps {
@@ -29,14 +29,14 @@ const nodeTypes = {
   task: TaskNode,
 };
 
-const getLayoutedElements = (nodes: TaskNodeType[], edges: Edge[]) => {
+const getLayoutedElements = (nodes: Node<TaskNodeData>[], edges: Edge[]) => {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
   const nodeWidth = 320;
-  const nodeHeight = 180;
+  const nodeHeight = 160;
 
-  dagreGraph.setGraph({ rankdir: 'LR', nodesep: 50, ranksep: 100 });
+  dagreGraph.setGraph({ rankdir: 'LR', nodesep: 40, ranksep: 140, marginx: 80, marginy: 80 });
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
@@ -61,7 +61,7 @@ const getLayoutedElements = (nodes: TaskNodeType[], edges: Edge[]) => {
 
 export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphProps) {
   const { layoutedNodes, layoutedEdges } = useMemo(() => {
-    const nodes: TaskNodeType[] = tasks.map((task) => ({
+    const nodes: Node<TaskNodeData>[] = tasks.map((task) => ({
       id: task.id,
       type: 'task',
       data: {
@@ -82,10 +82,10 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
           source: task.parentId,
           target: task.id,
           animated: true,
-          style: { stroke: 'rgba(192, 132, 252, 0.4)', strokeWidth: 2 },
+          style: { stroke: 'rgba(192, 132, 252, 0.35)', strokeWidth: 2 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
-            color: 'rgba(192, 132, 252, 0.4)',
+            color: 'rgba(192, 132, 252, 0.35)',
           },
         });
       }
@@ -98,14 +98,13 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
-  // Sync state if tasks change
   React.useEffect(() => {
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
   }, [layoutedNodes, layoutedEdges, setNodes, setEdges]);
 
   return (
-    <div className="w-full h-[70vh] bg-[#0a0a0a] border border-border rounded-[2.5rem] overflow-hidden relative">
+    <div className="w-full h-[85vh] min-h-[700px] bg-[#141414] border border-border rounded-[2.5rem] overflow-hidden relative">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -115,15 +114,25 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
         connectionMode={ConnectionMode.Loose}
         fitView
         minZoom={0.1}
-        maxZoom={1.5}
+        maxZoom={2}
+        autoPanOnConnect={false}
+        autoPanOnNodeDrag={false}
+        zoomOnPinch={true}
+        zoomOnScroll={true}
+        panOnScroll={true}
+        panOnDrag={true}
+        selectionOnDrag={false}
+        proOptions={{ hideAttribution: true }}
+        defaultEdgeOptions={{
+          type: 'smoothstep',
+        }}
       >
-        <Background color="#1a1a1a" gap={20} />
-        <Controls className="!bg-surface !border-border !fill-text" />
+        <Background color="#2a2a2a" gap={24} size={1} />
       </ReactFlow>
       
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
-        <p className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] bg-bg/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50">
-          Mind Map View
+        <p className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] bg-[#1a1a1a]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50">
+          Mind Map — Horizontal
         </p>
       </div>
     </div>

@@ -124,14 +124,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 Gallery
               </Button>
               <Button
-                variant={view === "tree" ? "primary" : "ghost"}
-                size="sm"
-                onClick={() => setView("tree")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
-              >
-                Hierarchy
-              </Button>
-              <Button
                 variant={view === "calendar" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("calendar")}
@@ -188,18 +180,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           <TaskTree 
             tasks={tasks} 
             spheres={spheres} 
-            onEdit={handleEdit}
-            onDuplicate={handleDuplicate}
-            onAddChild={handleAddChild}
-            onDelete={handleTaskDeleted}
-            hideHeader 
-          />
-        )}
-        {view === "tree" && (
-          <TaskTree 
-            tasks={tasks} 
-            spheres={spheres} 
-            onEdit={handleEdit}
+            onEdit={handleEdit} 
             onDuplicate={handleDuplicate}
             onAddChild={handleAddChild}
             onDelete={handleTaskDeleted}
@@ -225,7 +206,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           />
         )}
       </div>
-
       <Dialog
         isOpen={spheresOpen}
         onClose={() => setSpheresOpen(false)}

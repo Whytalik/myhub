@@ -136,14 +136,16 @@ function DraggableTask({
   );
 }
 
-// ─── Milestone (Parent Task) ─────────────────────────────────────────────────
+// ─── Spanning Milestone (Parent Task across date range) ──────────────────────
 
-function MilestoneTask({ 
-  task, 
+function SpanningMilestone({
+  task,
+  day,
   onEdit,
   onAddChild,
-}: { 
-  task: TaskData, 
+}: {
+  task: TaskData,
+  day: Date,
   onEdit: (t: TaskData) => void,
   onAddChild?: (t: TaskData) => void,
 }) {
@@ -152,41 +154,107 @@ function MilestoneTask({
   const pct = Math.round((completedSubtasks / totalSubtasks) * 100);
   const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
 
+  const allDates: Date[] = [];
+  task.children.forEach(child => {
+    if (child.plannedDate) allDates.push(new Date(child.plannedDate));
+  });
+  if (task.dueDate) allDates.push(new Date(task.dueDate));
+
+  const isSingleDay = allDates.length <= 1;
+  let isRangeStart = true;
+  let isRangeEnd = true;
+
+  if (!isSingleDay) {
+    const rangeStart = new Date(Math.min(...allDates.map(d => d.getTime())));
+    const rangeEnd = new Date(Math.max(...allDates.map(d => d.getTime())));
+    isRangeStart = format(day, "yyyy-MM-dd") === format(rangeStart, "yyyy-MM-dd");
+    isRangeEnd = format(day, "yyyy-MM-dd") === format(rangeEnd, "yyyy-MM-dd");
+  }
+
   return (
     <div
       onClick={() => onEdit(task)}
       className={`
-        group relative flex items-center gap-2 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0 cursor-pointer transition-all
-        ${isDone 
-          ? 'bg-accent/5 border-accent/20 opacity-60' 
-          : 'bg-gradient-to-r from-accent/10 to-transparent border-accent/30 hover:border-accent/50 hover:shadow-md hover:shadow-accent/5'
+        group relative flex items-center gap-1.5 px-1.5 py-1 w-full mb-1 last:mb-0 cursor-pointer transition-all
+        ${isDone
+          ? 'bg-accent/5 border-accent/10 opacity-50'
+          : 'bg-gradient-to-r from-accent/15 to-accent/5 border-accent/20 hover:from-accent/25 hover:to-accent/10'
         }
+        border
       `}
+      style={{
+        borderRadius: `${isRangeStart ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeStart ? '8px' : '0'}`,
+      }}
     >
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-accent/60 shrink-0">
-            ◆
-          </span>
-          <span className={`text-[10px] md:text-xs font-bold truncate ${isDone ? 'text-muted/40 line-through' : 'text-text'}`}>
-            {task.title}
-          </span>
-        </div>
-        <div className="flex items-center gap-2 mt-1 ml-3.5">
-          <div className="flex-1 h-0.5 bg-white/[0.08] rounded-full overflow-hidden">
-            <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: `${pct}%` }} />
-          </div>
-          <span className="text-[7px] md:text-[8px] font-mono text-muted/50 tabular-nums">{completedSubtasks}/{totalSubtasks}</span>
-        </div>
-      </div>
+      <span className="text-[7px] text-accent/50 shrink-0">◆</span>
+      <span className={`text-[9px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/70'}`}>
+        {task.title}
+      </span>
+      <span className="text-[7px] font-mono text-muted/40 tabular-nums shrink-0">{pct}%</span>
       {onAddChild && (
         <button
           onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
-          className="p-1 rounded-lg text-muted/30 hover:text-accent hover:bg-accent/10 transition-all opacity-0 group-hover:opacity-100"
-          title="Add subtask"
+          className="p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100"
         >
-          <Plus size={10} />
+          <Plus size={8} />
         </button>
+      )}
+    </div>
+  );
+}
+
+// ─── Spanning Task (multi-day regular task) ──────────────────────────────────
+
+function SpanningTask({
+  task,
+  day,
+  onEdit,
+}: {
+  task: TaskData,
+  day: Date,
+  onEdit: (t: TaskData) => void,
+}) {
+  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
+  const startDate = task.plannedDate ? new Date(task.plannedDate) : null;
+  const endDate = task.plannedEndDate ? new Date(task.plannedEndDate) : null;
+  const isSingleDay = !endDate || (startDate && format(startDate, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd"));
+
+  let isRangeStart = true;
+  let isRangeEnd = true;
+
+  if (!isSingleDay && startDate && endDate) {
+    isRangeStart = format(day, "yyyy-MM-dd") === format(startDate, "yyyy-MM-dd");
+    isRangeEnd = format(day, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd");
+  }
+
+  const sphereColor = task.sphere?.color || '#888';
+
+  return (
+    <div
+      onClick={() => onEdit(task)}
+      className={`
+        group relative flex items-center gap-1.5 px-1.5 py-1 w-full mb-1 last:mb-0 cursor-pointer transition-all
+        ${isDone
+          ? 'bg-white/[0.03] border-white/[0.05] opacity-50'
+          : `border-[${sphereColor}30] hover:brightness-110`
+        }
+        border
+      `}
+      style={{
+        borderRadius: `${isRangeStart ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeStart ? '8px' : '0'}`,
+        backgroundColor: isDone ? undefined : `${sphereColor}10`,
+      }}
+    >
+      {!isRangeStart && (
+        <div className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: sphereColor }} />
+      )}
+      <span className={`text-[9px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/70'}`}>
+        {task.title}
+      </span>
+      {isRangeEnd && (
+        <span className="text-[7px] font-mono text-muted/40 tabular-nums shrink-0">
+          {task.sphere?.name || ''}
+        </span>
       )}
     </div>
   );
@@ -269,22 +337,41 @@ function CalendarDayCell({
       <div className={`flex-1 flex flex-col ${isDraggingAny ? "overflow-visible" : "overflow-y-auto scrollbar-hide"}`}>
         {sortedTasks.map(task => {
           const hasChildren = task.children.length > 0;
-          return hasChildren ? (
-            <MilestoneTask 
-              key={task.id} 
-              task={task} 
-              onEdit={onEdit} 
-              onAddChild={onAddChild}
-            />
-          ) : (
-            <DraggableTask 
-              key={task.id} 
-              task={task} 
-              onEdit={onEdit} 
-              onDuplicate={onDuplicate} 
+          const hasDateRange = !!task.plannedDate && !!task.plannedEndDate;
+          const isSpanningTask = hasDateRange && format(day, "yyyy-MM-dd") !== format(new Date(task.plannedDate!), "yyyy-MM-dd");
+
+          if (hasChildren) {
+            return (
+              <SpanningMilestone
+                key={task.id}
+                task={task}
+                day={day}
+                onEdit={onEdit}
+                onAddChild={onAddChild}
+              />
+            );
+          }
+
+          if (isSpanningTask) {
+            return (
+              <SpanningTask
+                key={task.id}
+                task={task}
+                day={day}
+                onEdit={onEdit}
+              />
+            );
+          }
+
+          return (
+            <DraggableTask
+              key={task.id}
+              task={task}
+              onEdit={onEdit}
+              onDuplicate={onDuplicate}
               onAddChild={onAddChild}
               onDelete={onDelete}
-              allTasks={allTasks} 
+              allTasks={allTasks}
             />
           );
         })}
@@ -387,17 +474,47 @@ export function TaskCalendar({
 
   const tasksByDay = useMemo(() => {
     const map: Record<string, TaskData[]> = {};
+
     localTasks.forEach(task => {
       const hasChildren = task.children.length > 0;
-      const displayDate = hasChildren
-        ? task.dueDate
-        : (task.plannedDate || task.dueDate);
-      if (displayDate) {
-        const key = format(new Date(displayDate), "yyyy-MM-dd");
-        if (!map[key]) map[key] = [];
-        map[key].push(task);
+
+      if (!hasChildren) {
+        if (task.plannedDate && task.plannedEndDate) {
+          const start = new Date(task.plannedDate);
+          const end = new Date(task.plannedEndDate);
+          const days = eachDayOfInterval({ start, end });
+          days.forEach(day => {
+            const key = format(day, "yyyy-MM-dd");
+            if (!map[key]) map[key] = [];
+            map[key].push(task);
+          });
+        } else {
+          const displayDate = task.plannedDate || task.dueDate;
+          if (displayDate) {
+            const key = format(new Date(displayDate), "yyyy-MM-dd");
+            if (!map[key]) map[key] = [];
+            map[key].push(task);
+          }
+        }
+      } else {
+        const allDates: Date[] = [];
+        task.children.forEach(child => {
+          if (child.plannedDate) allDates.push(new Date(child.plannedDate));
+        });
+        if (task.dueDate) allDates.push(new Date(task.dueDate));
+        if (allDates.length === 0) return;
+
+        const rangeStart = new Date(Math.min(...allDates.map(d => d.getTime())));
+        const rangeEnd = new Date(Math.max(...allDates.map(d => d.getTime())));
+        const days = eachDayOfInterval({ start: rangeStart, end: rangeEnd });
+        days.forEach(day => {
+          const key = format(day, "yyyy-MM-dd");
+          if (!map[key]) map[key] = [];
+          map[key].push(task);
+        });
       }
     });
+
     return map;
   }, [localTasks]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from 'react';
-import { Handle, Position, NodeProps, Node } from '@xyflow/react';
+import { Handle, Position, Node, NodeProps } from '@xyflow/react';
 import { TaskCardBase } from './TaskCardBase';
 import type { TaskData } from '@/features/life/types';
 
@@ -13,14 +13,13 @@ export type TaskNodeData = {
   onAddChild: (parent: TaskData) => void;
 };
 
-export type TaskNodeType = Node<TaskNodeData, 'task'>;
+type TaskNodeType = Node<TaskNodeData, 'task'>;
 
-export const TaskNode = memo(({ data }: NodeProps<TaskNodeType>) => {
-  const { task, allTasks, onEdit, onDuplicate, onAddChild } = data;
+export const TaskNode = memo((props: NodeProps<TaskNodeType>) => {
+  const { task, allTasks, onEdit, onDuplicate, onAddChild } = props.data;
 
   return (
     <div className="relative group min-w-[280px] max-w-[320px]">
-      {/* Input Handle (Left for Horizontal Layout) */}
       <Handle
         type="target"
         position={Position.Left}
@@ -36,7 +35,6 @@ export const TaskNode = memo(({ data }: NodeProps<TaskNodeType>) => {
         className="shadow-xl"
       />
 
-      {/* Output Handle (Right for Horizontal Layout) */}
       <Handle
         type="source"
         position={Position.Right}
