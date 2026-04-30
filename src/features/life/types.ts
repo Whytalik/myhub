@@ -49,6 +49,8 @@ export interface TaskData {
   isBlocked: boolean;
   plannedDate: Date | null;
   hasPlannedTime: boolean;
+  plannedEndDate: Date | null;
+  hasPlannedEndTime: boolean;
   dueDate: Date | null;
   hasDueTime: boolean;
   depth: number;
@@ -77,6 +79,8 @@ export interface UpsertTaskInput {
   isBlocked?: boolean;
   plannedDate?: string | null;
   hasPlannedTime?: boolean;
+  plannedEndDate?: string | null;
+  hasPlannedEndTime?: boolean;
   dueDate?: string | null;
   hasDueTime?: boolean;
   parentId?: string | null;

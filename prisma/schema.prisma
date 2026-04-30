@@ -260,6 +260,8 @@ model Task {
   isPrivate      Boolean      @default(false)
   plannedDate    DateTime?
   hasPlannedTime Boolean      @default(false)
+  plannedEndDate DateTime?
+  hasPlannedEndTime Boolean   @default(false)
   dueDate        DateTime?
   hasDueTime     Boolean      @default(false)
   depth          Int          @default(0)

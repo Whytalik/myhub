@@ -311,6 +311,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   isPrivate: 'isPrivate',
   plannedDate: 'plannedDate',
   hasPlannedTime: 'hasPlannedTime',
+  plannedEndDate: 'plannedEndDate',
+  hasPlannedEndTime: 'hasPlannedEndTime',
   dueDate: 'dueDate',
   hasDueTime: 'hasDueTime',
   depth: 'depth',

@@ -51,6 +51,8 @@ function mapTask(task: any): TaskData {
     isBlocked: task.isBlocked ?? false,
     plannedDate: task.plannedDate,
     hasPlannedTime: task.hasPlannedTime,
+    plannedEndDate: task.plannedEndDate,
+    hasPlannedEndTime: task.hasPlannedEndTime,
     dueDate: task.dueDate,
     hasDueTime: task.hasDueTime,
     depth: task.depth,
@@ -152,10 +154,18 @@ export async function getTasksByDate(userId: string, date: Date): Promise<TaskDa
   const tasks = await prisma.task.findMany({
     where: {
       userId,
-      plannedDate: {
-        gte: start,
-        lte: end,
-      },
+      OR: [
+        // Exact match or single day task
+        {
+          plannedDate: { gte: start, lte: end },
+          plannedEndDate: null,
+        },
+        // Date range match (target day is within the range)
+        {
+          plannedEndDate: { not: null, gte: start },
+          plannedDate: { lte: end },
+        }
+      ]
     },
     include: TASK_INCLUDE,
   });
@@ -175,6 +185,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     isBlocked,
     plannedDate,
     hasPlannedTime = false,
+    plannedEndDate,
+    hasPlannedEndTime = false,
     dueDate,
     hasDueTime = false,
     parentId,
@@ -183,6 +195,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
   } = input;
 
   const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
+  const parsedPlannedEndDate = plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
   const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
 
   // Auto-set completedAt
@@ -207,6 +220,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         isBlocked:  isBlocked ?? undefined,
         plannedDate: parsedPlannedDate ?? undefined,
         hasPlannedTime: hasPlannedTime ?? undefined,
+        plannedEndDate: parsedPlannedEndDate ?? undefined,
+        hasPlannedEndTime: hasPlannedEndTime ?? undefined,
         dueDate:     parsedDueDate,
         hasDueTime:  hasDueTime ?? undefined,
         completedAt,
@@ -235,6 +250,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         isBlocked:  isBlocked ?? false,
         plannedDate: (parsedPlannedDate as Date | null) ?? null,
         hasPlannedTime,
+        plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
+        hasPlannedEndTime,
         dueDate: (parsedDueDate as Date | null) ?? null,
         hasDueTime,
         depth,

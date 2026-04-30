@@ -25503,6 +25503,8 @@ export namespace Prisma {
     isPrivate: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
+    plannedEndDate: Date | null
+    hasPlannedEndTime: boolean | null
     dueDate: Date | null
     hasDueTime: boolean | null
     depth: number | null
@@ -25527,6 +25529,8 @@ export namespace Prisma {
     isPrivate: boolean | null
     plannedDate: Date | null
     hasPlannedTime: boolean | null
+    plannedEndDate: Date | null
+    hasPlannedEndTime: boolean | null
     dueDate: Date | null
     hasDueTime: boolean | null
     depth: number | null
@@ -25551,6 +25555,8 @@ export namespace Prisma {
     isPrivate: number
     plannedDate: number
     hasPlannedTime: number
+    plannedEndDate: number
+    hasPlannedEndTime: number
     dueDate: number
     hasDueTime: number
     depth: number
@@ -25587,6 +25593,8 @@ export namespace Prisma {
     isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
+    plannedEndDate?: true
+    hasPlannedEndTime?: true
     dueDate?: true
     hasDueTime?: true
     depth?: true
@@ -25611,6 +25619,8 @@ export namespace Prisma {
     isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
+    plannedEndDate?: true
+    hasPlannedEndTime?: true
     dueDate?: true
     hasDueTime?: true
     depth?: true
@@ -25635,6 +25645,8 @@ export namespace Prisma {
     isPrivate?: true
     plannedDate?: true
     hasPlannedTime?: true
+    plannedEndDate?: true
+    hasPlannedEndTime?: true
     dueDate?: true
     hasDueTime?: true
     depth?: true
@@ -25746,6 +25758,8 @@ export namespace Prisma {
     isPrivate: boolean
     plannedDate: Date | null
     hasPlannedTime: boolean
+    plannedEndDate: Date | null
+    hasPlannedEndTime: boolean
     dueDate: Date | null
     hasDueTime: boolean
     depth: number
@@ -25789,6 +25803,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
+    plannedEndDate?: boolean
+    hasPlannedEndTime?: boolean
     dueDate?: boolean
     hasDueTime?: boolean
     depth?: boolean
@@ -25819,6 +25835,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
+    plannedEndDate?: boolean
+    hasPlannedEndTime?: boolean
     dueDate?: boolean
     hasDueTime?: boolean
     depth?: boolean
@@ -25847,6 +25865,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
+    plannedEndDate?: boolean
+    hasPlannedEndTime?: boolean
     dueDate?: boolean
     hasDueTime?: boolean
     depth?: boolean
@@ -25875,6 +25895,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: boolean
     hasPlannedTime?: boolean
+    plannedEndDate?: boolean
+    hasPlannedEndTime?: boolean
     dueDate?: boolean
     hasDueTime?: boolean
     depth?: boolean
@@ -25888,7 +25910,7 @@ export namespace Prisma {
     isBlocked?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "isBlocked", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "isBlocked", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
@@ -25930,6 +25952,8 @@ export namespace Prisma {
       isPrivate: boolean
       plannedDate: Date | null
       hasPlannedTime: boolean
+      plannedEndDate: Date | null
+      hasPlannedEndTime: boolean
       dueDate: Date | null
       hasDueTime: boolean
       depth: number
@@ -26379,6 +26403,8 @@ export namespace Prisma {
     readonly isPrivate: FieldRef<"Task", 'Boolean'>
     readonly plannedDate: FieldRef<"Task", 'DateTime'>
     readonly hasPlannedTime: FieldRef<"Task", 'Boolean'>
+    readonly plannedEndDate: FieldRef<"Task", 'DateTime'>
+    readonly hasPlannedEndTime: FieldRef<"Task", 'Boolean'>
     readonly dueDate: FieldRef<"Task", 'DateTime'>
     readonly hasDueTime: FieldRef<"Task", 'Boolean'>
     readonly depth: FieldRef<"Task", 'Int'>
@@ -51584,6 +51610,8 @@ export namespace Prisma {
     isPrivate: 'isPrivate',
     plannedDate: 'plannedDate',
     hasPlannedTime: 'hasPlannedTime',
+    plannedEndDate: 'plannedEndDate',
+    hasPlannedEndTime: 'hasPlannedEndTime',
     dueDate: 'dueDate',
     hasDueTime: 'hasDueTime',
     depth: 'depth',
@@ -53665,6 +53693,8 @@ export namespace Prisma {
     isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
+    plannedEndDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    hasPlannedEndTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasDueTime?: BoolFilter<"Task"> | boolean
     depth?: IntFilter<"Task"> | number
@@ -53694,6 +53724,8 @@ export namespace Prisma {
     isPrivate?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
+    plannedEndDate?: SortOrderInput | SortOrder
+    hasPlannedEndTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     hasDueTime?: SortOrder
     depth?: SortOrder
@@ -53726,6 +53758,8 @@ export namespace Prisma {
     isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
+    plannedEndDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    hasPlannedEndTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasDueTime?: BoolFilter<"Task"> | boolean
     depth?: IntFilter<"Task"> | number
@@ -53755,6 +53789,8 @@ export namespace Prisma {
     isPrivate?: SortOrder
     plannedDate?: SortOrderInput | SortOrder
     hasPlannedTime?: SortOrder
+    plannedEndDate?: SortOrderInput | SortOrder
+    hasPlannedEndTime?: SortOrder
     dueDate?: SortOrderInput | SortOrder
     hasDueTime?: SortOrder
     depth?: SortOrder
@@ -53787,6 +53823,8 @@ export namespace Prisma {
     isPrivate?: BoolWithAggregatesFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolWithAggregatesFilter<"Task"> | boolean
+    plannedEndDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    hasPlannedEndTime?: BoolWithAggregatesFilter<"Task"> | boolean
     dueDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     hasDueTime?: BoolWithAggregatesFilter<"Task"> | boolean
     depth?: IntWithAggregatesFilter<"Task"> | number
@@ -56889,6 +56927,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -56915,6 +56955,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -56939,6 +56981,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -56965,6 +57009,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -56990,6 +57036,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -57013,6 +57061,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -57034,6 +57084,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -60325,6 +60377,8 @@ export namespace Prisma {
     isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
+    plannedEndDate?: SortOrder
+    hasPlannedEndTime?: SortOrder
     dueDate?: SortOrder
     hasDueTime?: SortOrder
     depth?: SortOrder
@@ -60354,6 +60408,8 @@ export namespace Prisma {
     isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
+    plannedEndDate?: SortOrder
+    hasPlannedEndTime?: SortOrder
     dueDate?: SortOrder
     hasDueTime?: SortOrder
     depth?: SortOrder
@@ -60378,6 +60434,8 @@ export namespace Prisma {
     isPrivate?: SortOrder
     plannedDate?: SortOrder
     hasPlannedTime?: SortOrder
+    plannedEndDate?: SortOrder
+    hasPlannedEndTime?: SortOrder
     dueDate?: SortOrder
     hasDueTime?: SortOrder
     depth?: SortOrder
@@ -65826,6 +65884,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -65850,6 +65910,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -66522,6 +66584,8 @@ export namespace Prisma {
     isPrivate?: BoolFilter<"Task"> | boolean
     plannedDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasPlannedTime?: BoolFilter<"Task"> | boolean
+    plannedEndDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    hasPlannedEndTime?: BoolFilter<"Task"> | boolean
     dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     hasDueTime?: BoolFilter<"Task"> | boolean
     depth?: IntFilter<"Task"> | number
@@ -69427,6 +69491,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69452,6 +69518,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69640,6 +69708,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69665,6 +69735,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69693,6 +69765,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69718,6 +69792,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -69895,6 +69971,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -69920,6 +69998,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -72864,6 +72944,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -72889,6 +72971,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -73373,6 +73457,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -73962,6 +74048,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -73986,6 +74074,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74010,6 +74100,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74600,6 +74692,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -74733,6 +74827,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74758,6 +74854,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74782,6 +74880,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74805,6 +74905,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -74827,6 +74929,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74852,6 +74956,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -74876,6 +74982,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -75349,6 +75457,8 @@ export namespace Prisma {
     isPrivate?: boolean
     plannedDate?: Date | string | null
     hasPlannedTime?: boolean
+    plannedEndDate?: Date | string | null
+    hasPlannedEndTime?: boolean
     dueDate?: Date | string | null
     hasDueTime?: boolean
     depth?: number
@@ -75371,6 +75481,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -75396,6 +75508,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number
@@ -75420,6 +75534,8 @@ export namespace Prisma {
     isPrivate?: BoolFieldUpdateOperationsInput | boolean
     plannedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasPlannedTime?: BoolFieldUpdateOperationsInput | boolean
+    plannedEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    hasPlannedEndTime?: BoolFieldUpdateOperationsInput | boolean
     dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     hasDueTime?: BoolFieldUpdateOperationsInput | boolean
     depth?: IntFieldUpdateOperationsInput | number

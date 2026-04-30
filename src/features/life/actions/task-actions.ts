@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import * as taskService from "../services/task-service";
-import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority } from "../types";
+import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority, TaskData } from "../types";
 
 const PATH = "/life/tasks";
 
@@ -62,4 +62,34 @@ export async function deleteSphereAction(id: string) {
 export async function getAllSpheresAction() {
   const userId = await getUserId();
   return taskService.getAllSpheres(userId);
+}
+
+export async function instantDuplicateTaskAction(task: TaskData) {
+  const userId = await getUserId();
+  const { id: _id, children: _children, ...rest } = task;
+  
+  const newTask = await taskService.upsertTask(userId, {
+    ...rest,
+    title: `${task.title} (Copy)`,
+    plannedDate: task.plannedDate ? new Date(task.plannedDate).toISOString() : null,
+    plannedEndDate: task.plannedEndDate ? new Date(task.plannedEndDate).toISOString() : null,
+    dueDate: task.dueDate ? new Date(task.dueDate).toISOString() : null,
+  });
+  
+  revalidatePath(PATH);
+  return newTask;
+}
+
+export async function instantAddSubtaskAction(parentId: string, sphereId: string | null) {
+  const userId = await getUserId();
+  const newTask = await taskService.upsertTask(userId, {
+    title: "New Subtask",
+    parentId,
+    sphereId,
+    status: "TODO",
+    priority: "MEDIUM",
+  });
+  
+  revalidatePath(PATH);
+  return newTask;
 }

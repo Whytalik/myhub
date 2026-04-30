@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, Plus } from "lucide-react";
+import { Layers, Plus, Loader2 } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { instantDuplicateTaskAction, instantAddSubtaskAction } from "@/features/life/actions/task-actions";
+import { useTransition } from "react";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
 import { TaskCalendar } from "./TaskCalendar";
@@ -28,6 +31,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [pendingTaskAction, setPendingTaskAction] = useState<{ type: 'edit' | 'duplicate' | 'addChild', task: TaskData } | null>(null);
+  const [isActionPending, startActionTransition] = useTransition();
 
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
@@ -55,21 +59,27 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
   const handleDuplicate = (task: TaskData) => {
     checkPrivate(task, () => {
-      setEditingTask(task);
-      setParentTask(null);
-      setIsDuplicate(true);
-      setDialogVersion(v => v + 1);
-      setTaskFormOpen(true);
+      startActionTransition(async () => {
+        try {
+          await instantDuplicateTaskAction(task);
+          toast.success("Task duplicated instantly");
+        } catch (err) {
+          toast.error("Failed to duplicate task");
+        }
+      });
     }, 'duplicate');
   };
 
   const handleAddChild = (parent: TaskData) => {
     checkPrivate(parent, () => {
-      setEditingTask(null);
-      setParentTask(parent);
-      setIsDuplicate(false);
-      setDialogVersion(v => v + 1);
-      setTaskFormOpen(true);
+      startActionTransition(async () => {
+        try {
+          await instantAddSubtaskAction(parent.id, parent.sphereId);
+          toast.success("Subtask added instantly");
+        } catch (err) {
+          toast.error("Failed to add subtask");
+        }
+      });
     }, 'addChild');
   };
 
@@ -235,17 +245,23 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                     setDialogVersion(v => v + 1);
                     setTaskFormOpen(true);
                   } else if (type === 'duplicate') {
-                    setEditingTask(task);
-                    setParentTask(null);
-                    setIsDuplicate(true);
-                    setDialogVersion(v => v + 1);
-                    setTaskFormOpen(true);
+                    startActionTransition(async () => {
+                      try {
+                        await instantDuplicateTaskAction(task);
+                        toast.success("Task duplicated instantly");
+                      } catch (err) {
+                        toast.error("Failed to duplicate task");
+                      }
+                    });
                   } else if (type === 'addChild') {
-                    setEditingTask(null);
-                    setParentTask(task);
-                    setIsDuplicate(false);
-                    setDialogVersion(v => v + 1);
-                    setTaskFormOpen(true);
+                    startActionTransition(async () => {
+                      try {
+                        await instantAddSubtaskAction(task.id, task.sphereId);
+                        toast.success("Subtask added instantly");
+                      } catch (err) {
+                        toast.error("Failed to add subtask");
+                      }
+                    });
                   }
                 } else {
                   setPasswordError(true);

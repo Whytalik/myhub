@@ -6,6 +6,7 @@ import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { TimePicker } from "@/components/ui/time-picker";
 import { CustomSelect } from "@/components/ui/custom-select";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
@@ -98,6 +99,10 @@ interface UnifiedTaskFormProps {
   setPlannedTime: (v: string) => void;
   hasPlannedTime: boolean;
   setHasPlannedTime: (v: boolean) => void;
+  plannedEndDate: string | null;
+  setPlannedEndDate: (v: string | null) => void;
+  hasPlannedEndTime: boolean;
+  setHasPlannedEndTime: (v: boolean) => void;
   useDeadline:  boolean;
   setUseDeadline: (v: boolean) => void;
   dueDate:      string;
@@ -120,6 +125,8 @@ function UnifiedTaskForm({
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
+  plannedEndDate, setPlannedEndDate,
+  hasPlannedEndTime, setHasPlannedEndTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
   dueTime, setDueTime, hasDueTime, setHasDueTime,
   onSubmit, isPending,
@@ -251,9 +258,17 @@ function UnifiedTaskForm({
               <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
                 <div className="flex items-center gap-2 text-accent">
                   <Calendar size={12} />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">Planned Day</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">Planned Range</span>
                 </div>
-                <DatePicker value={plannedDate} onChange={setPlannedDate} placeholder="Select day" />
+                <DateRangePicker 
+                  startDate={plannedDate} 
+                  endDate={plannedEndDate} 
+                  onChange={(start, end) => {
+                    setPlannedDate(start);
+                    setPlannedEndDate(end);
+                  }} 
+                  placeholder="Select range" 
+                />
                 <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
                   <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
                   <span>Set specific time</span>
@@ -403,6 +418,10 @@ interface TaskDetailProps {
   setPlannedTime: (v: string) => void;
   hasPlannedTime: boolean;
   setHasPlannedTime: (v: boolean) => void;
+  plannedEndDate: string | null;
+  setPlannedEndDate: (v: string | null) => void;
+  hasPlannedEndTime: boolean;
+  setHasPlannedEndTime: (v: boolean) => void;
   useDeadline: boolean;
   setUseDeadline: (v: boolean) => void;
   dueDate: string;
@@ -424,6 +443,8 @@ function TaskDetail({
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
+  plannedEndDate, setPlannedEndDate,
+  hasPlannedEndTime, setHasPlannedEndTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
   dueTime, setDueTime, hasDueTime, setHasDueTime,
   hasChanges, onClose,
@@ -562,7 +583,14 @@ function TaskDetail({
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <CalendarClock size={13} className="text-accent/30" />
-                    <DatePicker value={plannedDate} onChange={setPlannedDate} />
+                    <DateRangePicker 
+                      startDate={plannedDate} 
+                      endDate={plannedEndDate} 
+                      onChange={(start, end) => {
+                        setPlannedDate(start);
+                        setPlannedEndDate(end);
+                      }} 
+                    />
                   </div>
                   <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
                     <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
@@ -659,6 +687,8 @@ export function TaskFormDialog({
   const [plannedDate, setPlannedDate] = useState(() => task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "");
   const [plannedTime, setPlannedTime] = useState(() => task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "");
   const [hasPlannedTime, setHasPlannedTime] = useState(() => task?.hasPlannedTime ?? false);
+  const [plannedEndDate, setPlannedEndDate] = useState<string | null>(() => task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null);
+  const [hasPlannedEndTime, setHasPlannedEndTime] = useState(() => task?.hasPlannedEndTime ?? false);
   
   const [useDeadline, setUseDeadline] = useState(() => !!task?.dueDate);
   const [dueDate, setDueDate] = useState(() => useDeadline && task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "");
@@ -669,6 +699,7 @@ export function TaskFormDialog({
     setTitle(""); setDescription(""); setIcon(null); setStatus("TODO"); setPriority("MEDIUM");
     setSphereId(""); setParentId(null); setIsPrivate(false);
     setPlannedDate(""); setPlannedTime(""); setHasPlannedTime(false);
+    setPlannedEndDate(null); setHasPlannedEndTime(false);
     setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false);
     setShowErrors(false);
   };
@@ -681,6 +712,8 @@ export function TaskFormDialog({
     plannedDate !== (task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "") ||
     plannedTime !== (task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "") ||
     hasPlannedTime !== (task?.hasPlannedTime ?? false) ||
+    plannedEndDate !== (task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null) ||
+    hasPlannedEndTime !== (task?.hasPlannedEndTime ?? false) ||
     useDeadline !== (!!task?.dueDate) ||
     dueDate !== (task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "") ||
     dueTime !== (task?.dueDate && task?.hasDueTime ? new Date(task.dueDate).toTimeString().slice(0, 5) : "") ||
@@ -708,6 +741,7 @@ export function TaskFormDialog({
     }
 
     const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
+    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedTime ? plannedTime : "12:00"}:00` : null;
     const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
 
     startTransition(async () => {
@@ -715,6 +749,7 @@ export function TaskFormDialog({
         await upsertTaskAction({
           id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
           icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
+          plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
           dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
         });
         if (!isEditing) toast.success(isDuplicate ? "Duplicated" : "Created");
@@ -742,6 +777,8 @@ export function TaskFormDialog({
           isPrivate={isPrivate} setIsPrivate={setIsPrivate}
           plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
           hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
+          plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
+          hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
           useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}
           dueTime={dueTime} setDueTime={setDueTime} hasDueTime={hasDueTime} setHasDueTime={setHasDueTime}
           hasChanges={hasChanges} onSave={doSubmit} onClose={handleClose}
@@ -757,6 +794,8 @@ export function TaskFormDialog({
           isPrivate={isPrivate} setIsPrivate={setIsPrivate}
           plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
           hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
+          plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
+          hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
           useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}
           dueTime={dueTime} setDueTime={setDueTime} hasDueTime={hasDueTime} setHasDueTime={setHasDueTime}
           onSubmit={doSubmit} isPending={isPending} showErrors={showErrors} setShowErrors={setShowErrors}

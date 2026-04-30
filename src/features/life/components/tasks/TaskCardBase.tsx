@@ -76,7 +76,15 @@ export function TaskCardBase({
     return d.toLocaleString("en-US", options);
   };
 
-  const plannedLabel = formatDateTime(task.plannedDate, task.hasPlannedTime);
+  const plannedLabel = React.useMemo(() => {
+    const start = formatDateTime(task.plannedDate, task.hasPlannedTime);
+    if (!task.plannedEndDate) return start;
+
+    const end = formatDateTime(task.plannedEndDate, task.hasPlannedEndTime);
+    if (!start) return `Until ${end}`;
+    return `${start} - ${end}`;
+  }, [task.plannedDate, task.hasPlannedTime, task.plannedEndDate, task.hasPlannedEndTime, variant]);
+
   const dueLabel = formatDateTime(task.dueDate, task.hasDueTime);
   
   const isOverdue =
@@ -192,7 +200,7 @@ className={`
             <FileText size={isCompact ? 10 : 16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />
           )}
           <h3 
-            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-[10px] md:text-xs' : 'text-[16px]'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
+            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-[10px] md:text-xs' : 'text-[14px]'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "••••••••" : task.title) }}
             title={task.isPrivate ? "Private Task" : task.title}
           />
