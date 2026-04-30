@@ -203,59 +203,25 @@ function SpanningMilestone({
   );
 }
 
-// ─── Spanning Task (multi-day regular task) ──────────────────────────────────
+// ─── Spanning Task continuation bar (multi-day task) ─────────────────────────
 
 function SpanningTask({
   task,
-  day,
-  onEdit,
 }: {
   task: TaskData,
-  day: Date,
-  onEdit: (t: TaskData) => void,
 }) {
-  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
-  const startDate = task.plannedDate ? new Date(task.plannedDate) : null;
-  const endDate = task.plannedEndDate ? new Date(task.plannedEndDate) : null;
-  const isSingleDay = !endDate || (startDate && format(startDate, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd"));
-
-  let isRangeStart = true;
-  let isRangeEnd = true;
-
-  if (!isSingleDay && startDate && endDate) {
-    isRangeStart = format(day, "yyyy-MM-dd") === format(startDate, "yyyy-MM-dd");
-    isRangeEnd = format(day, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd");
-  }
-
   const sphereColor = task.sphere?.color || '#888';
+  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
 
   return (
     <div
-      onClick={() => onEdit(task)}
-      className={`
-        group relative flex items-center gap-1.5 px-1.5 py-1 w-full mb-1 last:mb-0 cursor-pointer transition-all
-        ${isDone
-          ? 'bg-white/[0.03] border-white/[0.05] opacity-50'
-          : `border-[${sphereColor}30] hover:brightness-110`
-        }
-        border
-      `}
-      style={{
-        borderRadius: `${isRangeStart ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeStart ? '8px' : '0'}`,
-        backgroundColor: isDone ? undefined : `${sphereColor}10`,
-      }}
+      className={`w-full mb-1 last:mb-0 transition-all ${isDone ? 'opacity-30' : 'opacity-80 hover:opacity-100'}`}
+      style={{ height: '4px' }}
     >
-      {!isRangeStart && (
-        <div className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: sphereColor }} />
-      )}
-      <span className={`text-[9px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/70'}`}>
-        {task.title}
-      </span>
-      {isRangeEnd && (
-        <span className="text-[7px] font-mono text-muted/40 tabular-nums shrink-0">
-          {task.sphere?.name || ''}
-        </span>
-      )}
+      <div
+        className="w-full h-full rounded-full"
+        style={{ backgroundColor: isDone ? 'rgba(255,255,255,0.1)' : sphereColor }}
+      />
     </div>
   );
 }
@@ -352,14 +318,27 @@ function CalendarDayCell({
             );
           }
 
-          if (isSpanningTask) {
+          if (hasDateRange) {
+            if (isSpanningTask) {
+              return (
+                <SpanningTask
+                  key={task.id}
+                  task={task}
+                />
+              );
+            }
             return (
-              <SpanningTask
-                key={task.id}
-                task={task}
-                day={day}
-                onEdit={onEdit}
-              />
+              <div key={task.id} className="relative">
+                <DraggableTask
+                  task={task}
+                  onEdit={onEdit}
+                  onDuplicate={onDuplicate}
+                  onAddChild={onAddChild}
+                  onDelete={onDelete}
+                  allTasks={allTasks}
+                />
+                <div className="absolute -bottom-1 left-2 right-2 h-1 rounded-full opacity-60" style={{ backgroundColor: task.sphere?.color || '#888' }} />
+              </div>
             );
           }
 

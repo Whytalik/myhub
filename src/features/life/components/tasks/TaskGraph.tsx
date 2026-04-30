@@ -11,7 +11,6 @@ import {
   MarkerType,
   Node,
 } from '@xyflow/react';
-import dagre from 'dagre';
 import '@xyflow/react/dist/style.css';
 
 import { TaskNode, TaskNodeData } from './TaskNode';
@@ -29,35 +28,108 @@ const nodeTypes = {
   task: TaskNode,
 };
 
+const NODE_WIDTH = 320;
+const NODE_HEIGHT = 160;
+const RANK_SEP = 120;
+const NODE_SEP = 30;
+
+interface TreeNode {
+  id: string;
+  children: TreeNode[];
+}
+
+function buildTree(tasks: TaskData[]): TreeNode[] {
+  const nodeMap = new Map<string, TreeNode>();
+  const roots: TreeNode[] = [];
+
+  tasks.forEach(task => {
+    nodeMap.set(task.id, { id: task.id, children: [] });
+  });
+
+  tasks.forEach(task => {
+    const node = nodeMap.get(task.id)!;
+    if (task.parentId && nodeMap.has(task.parentId)) {
+      nodeMap.get(task.parentId)!.children.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+
+  return roots;
+}
+
+function subtreeHeight(node: TreeNode): number {
+  if (node.children.length === 0) return NODE_HEIGHT;
+  const childHeights = node.children.map(c => subtreeHeight(c));
+  const total = childHeights.reduce((a, b) => a + b, 0);
+  return Math.max(NODE_HEIGHT, total + NODE_SEP * (node.children.length - 1));
+}
+
+function layoutTree(
+  node: TreeNode,
+  x: number,
+  y: number,
+  positions: Map<string, { x: number; y: number }>
+): void {
+  positions.set(node.id, { x, y });
+
+  if (node.children.length === 0) return;
+
+  const totalHeight = node.children.reduce((sum, c) => sum + subtreeHeight(c), 0)
+    + NODE_SEP * (node.children.length - 1);
+
+  let currentY = y - totalHeight / 2;
+
+  node.children.forEach(child => {
+    const childH = subtreeHeight(child);
+    const childY = currentY + childH / 2;
+    layoutTree(child, x + NODE_WIDTH + RANK_SEP, childY, positions);
+    currentY += childH + NODE_SEP;
+  });
+}
+
 const getLayoutedElements = (nodes: Node<TaskNodeData>[], edges: Edge[]) => {
-  const dagreGraph = new dagre.graphlib.Graph();
-  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  const allTasks = nodes.map(n => n.data.task);
+  const roots = buildTree(allTasks);
 
-  const nodeWidth = 320;
-  const nodeHeight = 160;
+  const positions = new Map<string, { x: number; y: number }>();
 
-  dagreGraph.setGraph({ rankdir: 'LR', nodesep: 40, ranksep: 140, marginx: 80, marginy: 80 });
+  if (roots.length === 0) {
+    nodes.forEach((node, i) => {
+      node.position = { x: 0, y: i * (NODE_HEIGHT + NODE_SEP) };
+    });
+    return { nodes, edges };
+  }
 
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-  });
+  if (roots.length === 1) {
+    layoutTree(roots[0], 0, 0, positions);
+  } else {
+    const totalWidth = roots.reduce((max, r) => {
+      const w = getMaxDepth(r) * (NODE_WIDTH + RANK_SEP);
+      return Math.max(max, w);
+    }, 0);
 
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
-  });
+    let currentX = 0;
+    roots.forEach(root => {
+      layoutTree(root, currentX, 0, positions);
+      currentX += totalWidth + RANK_SEP * 2;
+    });
+  }
 
-  dagre.layout(dagreGraph);
-
-  nodes.forEach((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    node.position = {
-      x: nodeWithPosition.x - nodeWidth / 2,
-      y: nodeWithPosition.y - nodeHeight / 2,
-    };
+  nodes.forEach(node => {
+    const pos = positions.get(node.id);
+    if (pos) {
+      node.position = { x: pos.x, y: pos.y };
+    }
   });
 
   return { nodes, edges };
 };
+
+function getMaxDepth(node: TreeNode): number {
+  if (node.children.length === 0) return 1;
+  return 1 + Math.max(...node.children.map(getMaxDepth));
+}
 
 export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphProps) {
   const { layoutedNodes, layoutedEdges } = useMemo(() => {
