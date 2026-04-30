@@ -36,7 +36,10 @@ import {
   Lightbulb,
   ListTodo,
   Star,
-  Trophy
+  Trophy,
+  GraduationCap,
+  Smile,
+  Users
 } from "lucide-react";
 
 export const ICON_LIBRARY = {
@@ -73,11 +76,15 @@ export const ICON_LIBRARY = {
   "List": ListTodo,
   "Wallet": Wallet,
   "Dollar": DollarSign,
+  "DollarSign": DollarSign,
   "Box": Box,
   "Sun": Sun,
   "Moon": Moon,
   "Cloud": Cloud,
   "Game": Gamepad2,
+  "University": GraduationCap,
+  "Smile": Smile,
+  "Users": Users,
 } as const;
 
 export type IconName = keyof typeof ICON_LIBRARY;

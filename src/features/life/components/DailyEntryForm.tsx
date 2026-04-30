@@ -74,9 +74,16 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
     if (!morningRoutine) {
       const day = new Date(todayStr).getDay();
       const isTrainDay = [1, 3, 5].includes(day);
+
+      // Default times: 22:00 and 08:00
+      const defaultBedtime = new Date(todayStr);
+      defaultBedtime.setHours(22, 0, 0, 0);
+      const defaultWakeup = new Date(todayStr);
+      defaultWakeup.setHours(8, 0, 0, 0);
+
       return {
-        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
-        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
+        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : defaultBedtime.toISOString(),
+        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : defaultWakeup.toISOString(),
         sleepHours:      initialEntry?.sleepHours ?? null,
         sleepQuality:    initialEntry?.sleepQuality ?? null,
         sleepNote:       initialEntry?.sleepNote ?? null,
@@ -101,9 +108,15 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       };
     }
 
+    // Fallback default times for existing entries with missing values
+    const defaultBedtime = new Date(todayStr);
+    defaultBedtime.setHours(22, 0, 0, 0);
+    const defaultWakeup = new Date(todayStr);
+    defaultWakeup.setHours(8, 0, 0, 0);
+
     return {
-      sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
-      sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
+      sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : defaultBedtime.toISOString(),
+      sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : defaultWakeup.toISOString(),
       sleepHours:      initialEntry?.sleepHours ?? null,
       sleepQuality:    initialEntry?.sleepQuality ?? null,
       sleepNote:       initialEntry?.sleepNote ?? null,

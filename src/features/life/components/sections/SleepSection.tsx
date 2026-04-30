@@ -157,20 +157,32 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-        {/* Bedtime */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-1 h-4">
-            <Bed size={12} className="text-muted" />
-            <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Bedtime</label>
+      <div className="flex flex-col gap-5">
+        {/* Row 1: Bedtime & Wakeup */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 px-1 h-4">
+              <Bed size={12} className="text-muted" />
+              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Bedtime</label>
+            </div>
+            <TimePicker 
+              value={getTimeValue(bedtime)} 
+              onChange={(val) => handleTimeChange('sleepBedtime', val)}
+            />
           </div>
-          <TimePicker 
-            value={getTimeValue(bedtime)} 
-            onChange={(val) => handleTimeChange('sleepBedtime', val)}
-          />
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 px-1 h-4">
+              <Sun size={12} className="text-muted" />
+              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Wakeup</label>
+            </div>
+            <TimePicker 
+              value={getTimeValue(wakeup)} 
+              onChange={(val) => handleTimeChange('sleepWakeup', val)}
+            />
+          </div>
         </div>
 
-        {/* Quality */}
+        {/* Row 2: Quality */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2 px-1 h-4">
             <div className="flex items-center gap-2">
@@ -179,13 +191,13 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
             </div>
             <ScaleHint />
           </div>
-          <div className="flex gap-1 h-9 -mx-1 px-1">
+          <div className="flex gap-1 h-9">
             {LEVELS.map(({ value }) => (
               <button
                 key={value}
                 type="button"
                 onClick={() => onChange({ sleepQuality: quality === value ? null : value })}
-                className={`flex-1 w-full rounded-lg border text-[10px] font-mono transition-all ${
+                className={`flex-1 rounded-lg border text-[10px] font-mono transition-all ${
                   quality === value
                     ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                     : quality !== null && value <= quality
@@ -199,19 +211,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           </div>
         </div>
 
-        {/* Wakeup */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-1 h-4">
-            <Sun size={12} className="text-muted" />
-            <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Wakeup</label>
-          </div>
-          <TimePicker 
-            value={getTimeValue(wakeup)} 
-            onChange={(val) => handleTimeChange('sleepWakeup', val)}
-          />
-        </div>
-
-        {/* Notes */}
+        {/* Row 3: Notes */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 px-1 h-4">
             <FileText size={12} className="text-muted" />
