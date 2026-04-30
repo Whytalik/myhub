@@ -2,7 +2,7 @@
 
 import { Moon, Bed, Sun, Star, FileText, Info } from "lucide-react";
 import { TimePicker } from "@/components/ui/time-picker";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { createPortal } from "react-dom";
 
@@ -41,6 +41,17 @@ const SLEEP_DESCS: Record<number, string> = {
 
 export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }: Props) {
   const hasValue = bedtime !== null || wakeup !== null || quality !== null || !!note;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "0px";
+      const scrollHeight = textarea.scrollHeight;
+      textarea.style.height = Math.max(36, scrollHeight) + "px";
+    }
+  }, [note]);
 
   // Calculate hours whenever bedtime or wakeup changes
   useEffect(() => {
@@ -218,11 +229,12 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
             <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Notes</label>
           </div>
           <textarea
+            ref={textareaRef}
             value={note ?? ""}
             onChange={(e) => onChange({ sleepNote: e.target.value || null })}
             placeholder="Sleep details..."
             rows={1}
-            className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed h-9 flex items-center ${
+            className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
               note 
                 ? "border-accent/50 text-text bg-accent/[0.02]" 
                 : "border-border text-secondary placeholder:text-muted/50 focus:border-accent/40"
