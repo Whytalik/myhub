@@ -460,9 +460,9 @@ function TaskDetail({
   const priorityCfg = PRIORITY_CONFIG[priority];
 
   return (
-    <div className="flex flex-col h-[85vh] lg:h-[750px]">
+    <div className="flex flex-col w-full max-h-[90vh]">
       {/* Header */}
-      <div className="flex items-center gap-4 px-6 py-4 border-b border-border/30 bg-raised/10">
+      <div className="flex items-center gap-4 px-6 py-4 border-b border-border/30 bg-raised/10 sticky top-0 z-10">
         <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20 shrink-0 cursor-pointer hover:bg-accent/20 transition-all" onClick={() => setIconPickerOpen(true)}>
           {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={20} className="text-accent" />; })() : <FileText size={20} className="text-muted/40" />}
         </div>
@@ -729,7 +729,7 @@ export function TaskFormDialog({
       isOpen={isOpen} onClose={handleClose}
       title={isEditing ? "" : isDuplicate ? "Duplicate Task" : "New Life Task"}
       description={isEditing ? "" : "Define your next objective"}
-      maxWidth={isEditing ? "1000px" : "850px"}
+      maxWidth={isEditing ? "900px" : "850px"}
       bare={isEditing}
     >
       {isEditing && task ? (
