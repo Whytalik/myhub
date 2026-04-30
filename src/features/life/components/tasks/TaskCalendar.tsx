@@ -171,30 +171,28 @@ function SpanningMilestone({
     isRangeEnd = format(day, "yyyy-MM-dd") === format(rangeEnd, "yyyy-MM-dd");
   }
 
+  const sphereColor = task.sphere?.color || '#888';
+
   return (
     <div
       onClick={() => onEdit(task)}
-      className={`
-        group relative flex items-center gap-1.5 px-1.5 py-1 w-full mb-1 last:mb-0 cursor-pointer transition-all
-        ${isDone
-          ? 'bg-accent/5 border-accent/10 opacity-50'
-          : 'bg-gradient-to-r from-accent/15 to-accent/5 border-accent/20 hover:from-accent/25 hover:to-accent/10'
-        }
-        border
-      `}
-      style={{
-        borderRadius: `${isRangeStart ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeEnd ? '8px' : '0'} ${isRangeStart ? '8px' : '0'}`,
-      }}
+      className="group relative w-full mb-1 last:mb-0 cursor-pointer"
+      style={{ height: '8px' }}
     >
-      <span className="text-[7px] text-accent/50 shrink-0">◆</span>
-      <span className={`text-[9px] font-bold truncate flex-1 ${isDone ? 'text-muted/30 line-through' : 'text-text/70'}`}>
-        {task.title}
-      </span>
-      <span className="text-[7px] font-mono text-muted/40 tabular-nums shrink-0">{pct}%</span>
+      <div
+        className={`w-full h-full transition-all ${isDone ? 'opacity-20' : 'opacity-50 group-hover:opacity-90'}`}
+        style={{
+          backgroundColor: sphereColor,
+          borderRadius: `${isRangeStart ? '4px' : '0'} ${isRangeEnd ? '4px' : '0'} ${isRangeEnd ? '4px' : '0'} ${isRangeStart ? '4px' : '0'}`,
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <span className="text-[7px] font-mono text-muted/60 bg-bg/90 px-1 rounded">{pct}%</span>
+      </div>
       {onAddChild && (
         <button
           onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
-          className="p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100"
+          className="absolute -right-1 -top-1 p-0.5 rounded text-muted/20 hover:text-accent transition-all opacity-0 group-hover:opacity-100 pointer-events-auto"
         >
           <Plus size={8} />
         </button>
@@ -207,20 +205,35 @@ function SpanningMilestone({
 
 function SpanningTask({
   task,
+  day,
 }: {
   task: TaskData,
+  day: Date,
 }) {
   const sphereColor = task.sphere?.color || '#888';
   const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
+  const startDate = task.plannedDate ? new Date(task.plannedDate) : null;
+  const endDate = task.plannedEndDate ? new Date(task.plannedEndDate) : null;
+
+  let isRangeStart = true;
+  let isRangeEnd = true;
+
+  if (startDate && endDate) {
+    isRangeStart = format(day, "yyyy-MM-dd") === format(startDate, "yyyy-MM-dd");
+    isRangeEnd = format(day, "yyyy-MM-dd") === format(endDate, "yyyy-MM-dd");
+  }
 
   return (
     <div
-      className={`w-full mb-1 last:mb-0 transition-all ${isDone ? 'opacity-30' : 'opacity-80 hover:opacity-100'}`}
-      style={{ height: '4px' }}
+      className="group relative w-full mb-1 last:mb-0 cursor-pointer"
+      style={{ height: '6px' }}
     >
       <div
-        className="w-full h-full rounded-full"
-        style={{ backgroundColor: isDone ? 'rgba(255,255,255,0.1)' : sphereColor }}
+        className={`w-full h-full transition-all ${isDone ? 'opacity-20' : 'opacity-40 group-hover:opacity-80'}`}
+        style={{
+          backgroundColor: sphereColor,
+          borderRadius: `${isRangeStart ? '3px' : '0'} ${isRangeEnd ? '3px' : '0'} ${isRangeEnd ? '3px' : '0'} ${isRangeStart ? '3px' : '0'}`,
+        }}
       />
     </div>
   );
@@ -324,6 +337,7 @@ function CalendarDayCell({
                 <SpanningTask
                   key={task.id}
                   task={task}
+                  day={day}
                 />
               );
             }
@@ -337,7 +351,6 @@ function CalendarDayCell({
                   onDelete={onDelete}
                   allTasks={allTasks}
                 />
-                <div className="absolute -bottom-1 left-2 right-2 h-1 rounded-full opacity-60" style={{ backgroundColor: task.sphere?.color || '#888' }} />
               </div>
             );
           }
