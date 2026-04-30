@@ -273,6 +273,33 @@ export async function deleteTask(userId: string, id: string): Promise<void> {
 export async function updateTaskStatus(userId: string, id: string, status: TaskStatus): Promise<void> {
   const completedAt = status === 'DONE' ? new Date() : null;
   await prisma.task.update({ where: { id }, data: { status, completedAt } });
+
+  if (status === 'DONE') {
+    await autoCompleteParentIfAllChildrenDone(userId, id);
+  }
+}
+
+async function autoCompleteParentIfAllChildrenDone(userId: string, childId: string): Promise<void> {
+  const child = await prisma.task.findUnique({ where: { id: childId }, select: { parentId: true } });
+  if (!child?.parentId) return;
+
+  const siblings = await prisma.task.findMany({
+    where: { parentId: child.parentId },
+    select: { id: true, status: true },
+  });
+
+  const allDone = siblings.every(s => s.status === 'DONE' || s.status === 'CANCELLED');
+  if (allDone) {
+    await prisma.task.update({
+      where: { id: child.parentId },
+      data: { status: 'DONE', completedAt: new Date() },
+    });
+
+    const parent = await prisma.task.findUnique({ where: { id: child.parentId }, select: { parentId: true } });
+    if (parent?.parentId) {
+      await autoCompleteParentIfAllChildrenDone(userId, child.parentId);
+    }
+  }
 }
 
 export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {

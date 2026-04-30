@@ -136,6 +136,62 @@ function DraggableTask({
   );
 }
 
+// ─── Milestone (Parent Task) ─────────────────────────────────────────────────
+
+function MilestoneTask({ 
+  task, 
+  onEdit,
+  onAddChild,
+}: { 
+  task: TaskData, 
+  onEdit: (t: TaskData) => void,
+  onAddChild?: (t: TaskData) => void,
+}) {
+  const completedSubtasks = task.children.filter(c => c.status === 'DONE').length;
+  const totalSubtasks = task.children.length;
+  const pct = Math.round((completedSubtasks / totalSubtasks) * 100);
+  const isDone = task.status === 'DONE' || task.status === 'CANCELLED';
+
+  return (
+    <div
+      onClick={() => onEdit(task)}
+      className={`
+        group relative flex items-center gap-2 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0 cursor-pointer transition-all
+        ${isDone 
+          ? 'bg-accent/5 border-accent/20 opacity-60' 
+          : 'bg-gradient-to-r from-accent/10 to-transparent border-accent/30 hover:border-accent/50 hover:shadow-md hover:shadow-accent/5'
+        }
+      `}
+    >
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5">
+          <span className="text-[8px] md:text-[10px] font-black uppercase tracking-wider text-accent/60 shrink-0">
+            ◆
+          </span>
+          <span className={`text-[10px] md:text-xs font-bold truncate ${isDone ? 'text-muted/40 line-through' : 'text-text'}`}>
+            {task.title}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 mt-1 ml-3.5">
+          <div className="flex-1 h-0.5 bg-white/[0.08] rounded-full overflow-hidden">
+            <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: `${pct}%` }} />
+          </div>
+          <span className="text-[7px] md:text-[8px] font-mono text-muted/50 tabular-nums">{completedSubtasks}/{totalSubtasks}</span>
+        </div>
+      </div>
+      {onAddChild && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
+          className="p-1 rounded-lg text-muted/30 hover:text-accent hover:bg-accent/10 transition-all opacity-0 group-hover:opacity-100"
+          title="Add subtask"
+        >
+          <Plus size={10} />
+        </button>
+      )}
+    </div>
+  );
+}
+
 // ─── Droppable Cell ──────────────────────────────────────────────────────────
 
 function CalendarDayCell({ 
@@ -211,17 +267,27 @@ function CalendarDayCell({
       </div>
       
       <div className={`flex-1 flex flex-col ${isDraggingAny ? "overflow-visible" : "overflow-y-auto scrollbar-hide"}`}>
-        {sortedTasks.map(task => (
-          <DraggableTask 
-            key={task.id} 
-            task={task} 
-            onEdit={onEdit} 
-            onDuplicate={onDuplicate} 
-            onAddChild={onAddChild}
-            onDelete={onDelete}
-            allTasks={allTasks} 
-          />
-        ))}
+        {sortedTasks.map(task => {
+          const hasChildren = task.children.length > 0;
+          return hasChildren ? (
+            <MilestoneTask 
+              key={task.id} 
+              task={task} 
+              onEdit={onEdit} 
+              onAddChild={onAddChild}
+            />
+          ) : (
+            <DraggableTask 
+              key={task.id} 
+              task={task} 
+              onEdit={onEdit} 
+              onDuplicate={onDuplicate} 
+              onAddChild={onAddChild}
+              onDelete={onDelete}
+              allTasks={allTasks} 
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -322,7 +388,10 @@ export function TaskCalendar({
   const tasksByDay = useMemo(() => {
     const map: Record<string, TaskData[]> = {};
     localTasks.forEach(task => {
-      const displayDate = task.plannedDate || task.dueDate;
+      const hasChildren = task.children.length > 0;
+      const displayDate = hasChildren
+        ? task.dueDate
+        : (task.plannedDate || task.dueDate);
       if (displayDate) {
         const key = format(new Date(displayDate), "yyyy-MM-dd");
         if (!map[key]) map[key] = [];

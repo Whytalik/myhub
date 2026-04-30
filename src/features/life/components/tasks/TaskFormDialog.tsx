@@ -253,53 +253,81 @@ function UnifiedTaskForm({
       case 3:
         return (
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Planning</label>
-              <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
-                <div className="flex items-center gap-2 text-accent">
-                  <Calendar size={12} />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">Planned Range</span>
-                </div>
-                <DateRangePicker 
-                  startDate={plannedDate} 
-                  endDate={plannedEndDate} 
-                  onChange={(start, end) => {
-                    setPlannedDate(start);
-                    setPlannedEndDate(end);
-                  }} 
-                  placeholder="Select range" 
-                />
-                <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
-                  <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
-                  <span>Set specific time</span>
-                </label>
-                {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col gap-3 p-4 bg-rose-500/5 rounded-xl border border-rose-500/20">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-rose-400">
-                    <Flag size={12} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Due Date</span>
+            {parentId ? (
+              <div className="flex flex-col gap-2">
+                <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Subtask Planning</label>
+                <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
+                  <div className="flex items-center gap-2 text-accent">
+                    <Calendar size={12} />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">When will you do this?</span>
                   </div>
-                  <button type="button" onClick={() => setUseDeadline(!useDeadline)} className={`text-[8px] font-mono uppercase px-1.5 py-0.5 rounded border transition-all ${useDeadline ? "bg-rose-500 text-white border-rose-500" : "bg-surface text-muted border-border"}`}>
-                    {useDeadline ? "Active" : "Add"}
-                  </button>
+                  <DateRangePicker 
+                    startDate={plannedDate} 
+                    endDate={plannedEndDate} 
+                    onChange={(start, end) => {
+                      setPlannedDate(start);
+                      setPlannedEndDate(end);
+                    }} 
+                    placeholder="Select range" 
+                  />
+                  <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                    <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                    <span>Set specific time</span>
+                  </label>
+                  {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
                 </div>
-                {useDeadline && (
-                  <div className="flex flex-col gap-3">
-                    <DatePicker value={dueDate} onChange={setDueDate} />
-                    <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer">
-                      <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3.5 h-3.5" />
-                      <span>Specific time</span>
+              </div>
+            ) : (
+              <>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Planning (Optional)</label>
+                  <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
+                    <div className="flex items-center gap-2 text-accent">
+                      <Calendar size={12} />
+                      <span className="text-[10px] font-bold uppercase tracking-wider">Planned Range</span>
+                    </div>
+                    <DateRangePicker 
+                      startDate={plannedDate} 
+                      endDate={plannedEndDate} 
+                      onChange={(start, end) => {
+                        setPlannedDate(start);
+                        setPlannedEndDate(end);
+                      }} 
+                      placeholder="Select range" 
+                    />
+                    <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                      <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                      <span>Set specific time</span>
                     </label>
-                    {hasDueTime && <TimePicker value={dueTime} onChange={setDueTime} />}
+                    {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3 p-4 bg-rose-500/5 rounded-xl border border-rose-500/20">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-rose-400">
+                        <Flag size={12} />
+                        <span className="text-[10px] font-bold uppercase tracking-wider">Deadline</span>
+                      </div>
+                      <button type="button" onClick={() => setUseDeadline(!useDeadline)} className={`text-[8px] font-mono uppercase px-1.5 py-0.5 rounded border transition-all ${useDeadline ? "bg-rose-500 text-white border-rose-500" : "bg-surface text-muted border-border"}`}>
+                        {useDeadline ? "Active" : "Add"}
+                      </button>
+                    </div>
+                    {useDeadline && (
+                      <div className="flex flex-col gap-3">
+                        <DatePicker value={dueDate} onChange={setDueDate} />
+                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer">
+                          <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3.5 h-3.5" />
+                          <span>Specific time</span>
+                        </label>
+                        {hasDueTime && <TimePicker value={dueTime} onChange={setDueTime} />}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         );
 
@@ -579,41 +607,62 @@ function TaskDetail({
             {/* Planning Block */}
             <div className="p-3.5 rounded-xl bg-raised/15 border border-border/30 flex flex-col gap-3 h-fit shadow-sm">
               <section className="flex flex-col gap-2.5">
-                <label className="text-[8px] font-mono uppercase tracking-widest text-accent/60 font-bold ml-0.5">Planning</label>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <CalendarClock size={13} className="text-accent/30" />
-                    <DateRangePicker 
-                      startDate={plannedDate} 
-                      endDate={plannedEndDate} 
-                      onChange={(start, end) => {
-                        setPlannedDate(start);
-                        setPlannedEndDate(end);
-                      }} 
-                    />
+                <label className="text-[8px] font-mono uppercase tracking-widest text-accent/60 font-bold ml-0.5">
+                  {task.children.length > 0 ? "Deadline" : parentId ? "When to do" : "Planning"}
+                </label>
+                {task.children.length > 0 ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Flag size={13} className="text-rose-400/30" />
+                      {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-[9px] text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                    </div>
+                    {useDeadline && (
+                      <>
+                        <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                          <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3 h-3 opacity-50" />
+                          <span>Exact time</span>
+                        </label>
+                        {hasDueTime && <div className="ml-5"><TimePicker value={dueTime} onChange={setDueTime} /></div>}
+                      </>
+                    )}
                   </div>
-                  <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
-                    <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
-                    <span>Exact time</span>
-                  </label>
-                  {hasPlannedTime && <div className="ml-5"><TimePicker value={plannedTime} onChange={setPlannedTime} /></div>}
-                </div>
-
-                <div className="flex flex-col gap-2 mt-1 border-t border-border/10 pt-2.5">
-                  <div className="flex items-center gap-2">
-                    <Flag size={13} className="text-rose-400/30" />
-                    {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-[9px] text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
-                  </div>
-                  {useDeadline && (
-                    <>
+                ) : (
+                  <>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <CalendarClock size={13} className="text-accent/30" />
+                        <DateRangePicker 
+                          startDate={plannedDate} 
+                          endDate={plannedEndDate} 
+                          onChange={(start, end) => {
+                            setPlannedDate(start);
+                            setPlannedEndDate(end);
+                          }} 
+                        />
+                      </div>
                       <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
-                        <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3 h-3 opacity-50" />
+                        <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
                         <span>Exact time</span>
                       </label>
-                      {hasDueTime && <div className="ml-5"><TimePicker value={dueTime} onChange={setDueTime} /></div>}
-                    </>
-                  )}
-                </div>
+                      {hasPlannedTime && <div className="ml-5"><TimePicker value={plannedTime} onChange={setPlannedTime} /></div>}
+                    </div>
+                    <div className="flex flex-col gap-2 mt-1 border-t border-border/10 pt-2.5">
+                      <div className="flex items-center gap-2">
+                        <Flag size={13} className="text-rose-400/30" />
+                        {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-[9px] text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                      </div>
+                      {useDeadline && (
+                        <>
+                          <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                            <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3 h-3 opacity-50" />
+                            <span>Exact time</span>
+                          </label>
+                          {hasDueTime && <div className="ml-5"><TimePicker value={dueTime} onChange={setDueTime} /></div>}
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
               </section>
             </div>
 
@@ -720,9 +769,25 @@ export function TaskFormDialog({
     hasDueTime !== (task?.hasDueTime ?? false)
   ) : false;
 
+  const saveInBackground = () => {
+    if (!title.trim() || !sphereId) return;
+
+    const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
+    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedTime ? plannedTime : "12:00"}:00` : null;
+    const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
+
+    upsertTaskAction({
+      id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
+      icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
+      plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
+      dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
+    }).catch(() => toast.error("Error saving task"));
+  };
+
   const handleClose = () => {
     if (isEditing && hasChanges) {
-      doSubmit();
+      saveInBackground();
+      onClose();
     } else {
       if (!isEditing) resetForm();
       onClose();

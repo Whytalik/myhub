@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Layers, Plus, Loader2 } from "lucide-react";
+import { Layers, Plus, Loader2, Share2 } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { useTransition } from "react";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
 import { TaskCalendar } from "./TaskCalendar";
+import { TaskGraph } from "./TaskGraph";
 import { SphereGrid } from "./SphereGrid";
 import { TaskFormDialog } from "./TaskFormDialog";
 import type { TaskData, LifeSphereData } from "@/features/life/types";
@@ -113,22 +114,38 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex flex-nowrap items-center gap-2 bg-surface/50 border border-border p-1.5 rounded-xl w-full sm:w-auto">
+            <div className="flex items-center gap-1.5 p-1 bg-surface border border-border rounded-xl w-full sm:w-auto">
               <Button
                 variant={view === "gallery" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("gallery")}
-                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px] whitespace-nowrap"
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
               >
                 Gallery
+              </Button>
+              <Button
+                variant={view === "tree" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setView("tree")}
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
+              >
+                Hierarchy
               </Button>
               <Button
                 variant={view === "calendar" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("calendar")}
-                className="flex-1 sm:flex-none rounded-lg px-6 h-8 text-[11px] whitespace-nowrap"
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
               >
                 Calendar
+              </Button>
+              <Button
+                variant={view === "graph" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setView("graph")}
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
+              >
+                Graph
               </Button>
             </div>
 
@@ -157,8 +174,17 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         </div>
       </div>
 
+      {isActionPending && (
+        <div className="fixed inset-0 z-[9999] bg-bg/20 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
+          <div className="bg-surface border border-border p-4 rounded-2xl shadow-2xl flex items-center gap-3">
+            <Loader2 size={20} className="text-accent animate-spin" />
+            <span className="text-[11px] font-mono uppercase tracking-widest text-muted">Updating...</span>
+          </div>
+        </div>
+      )}
+
       <div className="animate-in fade-in duration-500">
-        {view === "gallery" ? (
+        {view === "gallery" && (
           <TaskTree 
             tasks={tasks} 
             spheres={spheres} 
@@ -168,13 +194,34 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             onDelete={handleTaskDeleted}
             hideHeader 
           />
-        ) : (
+        )}
+        {view === "tree" && (
+          <TaskTree 
+            tasks={tasks} 
+            spheres={spheres} 
+            onEdit={handleEdit}
+            onDuplicate={handleDuplicate}
+            onAddChild={handleAddChild}
+            onDelete={handleTaskDeleted}
+            hideHeader 
+          />
+        )}
+        {view === "calendar" && (
           <TaskCalendar 
             tasks={calendarTasks} 
             allTasks={initialTasks}
             spheres={spheres} 
             onDuplicate={handleDuplicate}
             onDelete={handleTaskDeleted}
+          />
+        )}
+        {view === "graph" && (
+          <TaskGraph 
+            tasks={tasks}
+            spheres={spheres}
+            onEdit={handleEdit}
+            onDuplicate={handleDuplicate}
+            onAddChild={handleAddChild}
           />
         )}
       </div>
