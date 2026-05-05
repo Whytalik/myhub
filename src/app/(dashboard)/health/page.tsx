@@ -6,7 +6,6 @@ import { Utensils, Dumbbell, Shield } from "lucide-react";
 export default async function HealthPage() {
   const session = await auth();
   if (!session) redirect("/login");
-  if (session.user.role !== "ADMIN") redirect("/home");
 
   return (
     <DomainTemplate
@@ -17,7 +16,7 @@ export default async function HealthPage() {
       icon={Shield}
       color="#ff8c00"
       spaces={[
-        { label: "Food Space", description: "Precision nutrition, macro tracking, and meal architecture.", icon: Utensils, href: "/food", color: "#ff8c00", status: "dev" },
+        { label: "Nutrition Space", description: "Precision nutrition, macro tracking, and meal architecture.", icon: Utensils, href: "/nutrition", color: "#ff8c00", status: "dev" },
         { label: "Fitness Space", description: "High-performance training, progressive overload, and volume tracking.", icon: Dumbbell, href: "/fitness", color: "#e87d88", status: "disabled" },
       ]}
       metrics={[
