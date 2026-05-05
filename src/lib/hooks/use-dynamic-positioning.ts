@@ -43,7 +43,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
         align = 'top';
       }
 
-      let top = align === 'bottom' ? rect.bottom + offset : rect.top - offset;
+      const top = align === 'bottom' ? rect.bottom + offset : rect.top - offset;
       
       // Determine horizontal position (ensure it doesn't overflow window)
       let left = rect.left;
@@ -58,6 +58,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
   // Re-calculate when content height changes (e.g. after portal render)
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       updateCoords();
     }
   }, [isOpen, updateCoords]);
