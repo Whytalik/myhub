@@ -15,7 +15,6 @@ model User {
   image                   String?
   passwordHash            String?
   privateTaskPasswordHash String?
-  role                    Role               @default(ADMIN)
   createdAt               DateTime           @default(now())
   updatedAt               DateTime           @updatedAt
   systemStatus            SystemStatus       @default(STABLE)
@@ -29,6 +28,7 @@ model User {
   libraryItems            LibraryItem[]
   lifeSpheres             LifeSphere[]
   milestones              Milestone[]
+  foodProducts          FoodProduct[]
   nutritionPerson         NutritionPerson?
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
@@ -39,6 +39,9 @@ model User {
   visions                 Vision[]
   weekPlans               WeekPlan[]
   wishlistItems           WishlistItem[]
+  aiChats                 AIChat[]
+  aiSuggestions           AISuggestion[]
+  aiUsage                 AIUsage[]
 }
 
 model PushSubscription {
@@ -50,6 +53,8 @@ model PushSubscription {
   userAgent String?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Account {
@@ -90,64 +95,81 @@ model NutritionPerson {
   id             String   @id @default(cuid())
   userId         String?  @unique
   name           String?
-  targetCalories Float?   @default(2000)
-  targetProtein  Float?   @default(150)
-  targetFat      Float?   @default(70)
-  targetCarbs    Float?   @default(200)
-  targetFiber    Float?   @default(30)
+  goal           Goal     @default(MAINTAIN)
+  targetKcal     Float?   @default(2000)
+  proteinPct     Float?   @default(30)
+  fatPct         Float?   @default(25)
+  carbsPct       Float?   @default(45)
+  fiberGrams     Float?   @default(30)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   user           User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mealSlots      MealSlotInstance[]
 }
 
-model Product {
-  id                String             @id @default(cuid())
-  name              String
-  category          ProductCategory    @default(OTHER)
-  status            ProductStatus      @default(ACTIVE)
-  source            ProductSource      @default(MANUAL)
-  state             ProductState       @default(RAW)
-  unit              Unit               @default(GRAM)
-  calories          Float?
-  protein           Float?
-  fat               Float?
-  carbs             Float?
-  fiber             Float?
-  price             Float?             @default(0)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  dishIngredients   DishIngredient[]
-  shoppingListItems ShoppingListItem[]
+model FoodProduct {
+  id                    String           @id @default(uuid())
+  userId                String?
+  name                  String
+  caloriesPer100        Float
+  proteinPer100         Float
+  fatPer100             Float
+  carbsPer100           Float
+  fiberPer100           Float
+  unit                  String
+  standardPackageAmount Float
+  price                 Float?           @default(0)
+  priceSource           PriceSource      @default(MANUAL)
+  priceUpdatedAt        DateTime?
+  nutritionSource       NutritionSource  @default(MANUAL)
+  category              String
+  status                ProductStatus    @default(ACTIVE)
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  user                  User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  dishIngredients       DishIngredient[]
+  cartItems             CartItem[]
+  shoppingListItems     ShoppingListItem[]
+
+  @@index([userId])
+}
+
+model CookingMethod {
+  id              String           @id @default(uuid())
+  name            String           @unique
+  coefficient     Float
+  description     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  dishIngredients DishIngredient[]
 }
 
 model Dish {
-  id              String             @id @default(cuid())
+  id              String           @id @default(uuid())
   userId          String
   name            String
   description     String?
-  priority        Priority           @default(FLEXIBLE)
-  yield           Float?             @default(1.0)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  servings        Int              @default(1)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ingredients     DishIngredient[]
   dayPlanEntries  DayPlanEntry[]
   templateEntries DayTemplateEntry[]
-  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ingredients     DishIngredient[]
+  dishEntries     DishEntry[]
 }
 
 model DishIngredient {
-  id                String               @id @default(cuid())
-  dishId            String
-  productId         String
-  amount            Float
-  unit              Unit                 @default(GRAM)
-  inputState        IngredientInputState @default(RAW)
-  preparationMethod PreparationMethod    @default(RAW)
-  yieldFactor       Float                @default(1.0)
-  dish              Dish                 @relation(fields: [dishId], references: [id], onDelete: Cascade)
-  product           Product              @relation(fields: [productId], references: [id])
+  id              String         @id @default(uuid())
+  dishId          String
+  productId       String
+  cookingMethodId String?
+  rawWeight       Float
+  dish            Dish           @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  product         FoodProduct    @relation(fields: [productId], references: [id])
+  cookingMethod   CookingMethod? @relation(fields: [cookingMethodId], references: [id])
 
-  @@unique([dishId, productId])
+  @@unique([dishId, productId, cookingMethodId])
 }
 
 model DayTemplate {
@@ -156,9 +178,9 @@ model DayTemplate {
   name      String
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
-  dayPlans  DayPlan[]
   user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   entries   DayTemplateEntry[]
+  dayPlans  DayPlan[]
 }
 
 model DayTemplateEntry {
@@ -179,24 +201,26 @@ model WeekPlan {
   startDate     DateTime
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   dayPlans      DayPlan[]
   shoppingLists ShoppingList[]
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cart          ShoppingCart?
 }
 
 model DayPlan {
-  id         String         @id @default(cuid())
+  id         String             @id @default(cuid())
   userId     String
   weekPlanId String?
   templateId String?
-  date       DateTime       @db.Date
-  adherence  PlanAdherence  @default(PLANNED)
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
-  template   DayTemplate?   @relation(fields: [templateId], references: [id])
-  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  weekPlan   WeekPlan?      @relation(fields: [weekPlanId], references: [id])
+  date       DateTime           @db.Date
+  adherence  PlanAdherence      @default(PLANNED)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id])
+  template   DayTemplate?       @relation(fields: [templateId], references: [id])
   entries    DayPlanEntry[]
+  mealSlots  MealSlotInstance[]
 }
 
 model DayPlanEntry {
@@ -229,8 +253,80 @@ model ShoppingListItem {
   amount         Float
   unit           Unit         @default(GRAM)
   checked        Boolean      @default(false)
-  product        Product      @relation(fields: [productId], references: [id])
+  product        FoodProduct  @relation(fields: [productId], references: [id])
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+}
+
+model MealTemplateSlot {
+  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  goal            Goal
+  percentage      Float
+  order           Int
+  minProteinGrams Float?
+  maxPctOfDaily   Float?
+  fiberPct        Float
+  mealSlots       MealSlotInstance[]
+
+  @@unique([name, goal])
+}
+
+model MealSlotInstance {
+  id               String           @id @default(uuid())
+  dayPlanId        String
+  personId         String
+  templateSlotId   String           @db.Uuid
+  targetKcal       Float
+  targetFiberGrams Float
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  dayPlan          DayPlan          @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
+  person           NutritionPerson  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  templateSlot     MealTemplateSlot @relation(fields: [templateSlotId], references: [id])
+  dishEntries      DishEntry[]
+
+  @@unique([dayPlanId, personId, templateSlotId])
+}
+
+model DishEntry {
+  id            String           @id @default(uuid())
+  mealSlotId    String
+  dishId        String
+  portionWeight Float
+  isShared      Boolean          @default(false)
+  manualWeight  Boolean          @default(false)
+  fitScore      Float?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  dish          Dish             @relation(fields: [dishId], references: [id])
+  mealSlot      MealSlotInstance @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+}
+
+model ShoppingCart {
+  id         String     @id @default(uuid())
+  weekPlanId String     @unique
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  weekPlan   WeekPlan   @relation(fields: [weekPlanId], references: [id], onDelete: Cascade)
+  items      CartItem[]
+}
+
+model CartItem {
+  id               String         @id @default(uuid())
+  cartId           String
+  productId        String
+  requiredRawGrams Float
+  availableGrams   Float?
+  packagesCount    Int?
+  totalCost        Float?
+  status           CartItemStatus @default(TO_BUY)
+  manualOverride   Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  cart             ShoppingCart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product          FoodProduct    @relation(fields: [productId], references: [id])
+
+  @@unique([cartId, productId])
 }
 
 model LifeSphere {
@@ -250,34 +346,34 @@ model LifeSphere {
 }
 
 model Task {
-  id             String       @id @default(cuid())
-  userId         String
-  title          String
-  description    String?
-  icon           String?
-  status         TaskStatus   @default(TODO)
-  priority       TaskPriority @default(MEDIUM)
-  isPrivate      Boolean      @default(false)
-  plannedDate    DateTime?
-  hasPlannedTime Boolean      @default(false)
-  plannedEndDate DateTime?
-  hasPlannedEndTime Boolean   @default(false)
-  dueDate        DateTime?
-  hasDueTime     Boolean      @default(false)
-  depth          Int          @default(0)
-  order          Int          @default(0)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  parentId       String?
-  sphereId       String?
-  projectId      String?
-  completedAt    DateTime?
-  isBlocked      Boolean      @default(false)
-  parent         Task?        @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
-  children       Task[]       @relation("TaskChildren")
-  project        Project?     @relation(fields: [projectId], references: [id])
-  sphere         LifeSphere?  @relation(fields: [sphereId], references: [id])
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String       @id @default(cuid())
+  userId            String
+  title             String
+  description       String?
+  icon              String?
+  status            TaskStatus   @default(TODO)
+  priority          TaskPriority @default(MEDIUM)
+  isPrivate         Boolean      @default(false)
+  plannedDate       DateTime?
+  hasPlannedTime    Boolean      @default(false)
+  plannedEndDate    DateTime?
+  hasPlannedEndTime Boolean      @default(false)
+  dueDate           DateTime?
+  hasDueTime        Boolean      @default(false)
+  depth             Int          @default(0)
+  order             Int          @default(0)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  parentId          String?
+  sphereId          String?
+  projectId         String?
+  completedAt       DateTime?
+  isBlocked         Boolean      @default(false)
+  parent            Task?        @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children          Task[]       @relation("TaskChildren")
+  project           Project?     @relation(fields: [projectId], references: [id])
+  sphere            LifeSphere?  @relation(fields: [sphereId], references: [id])
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model DailyEntry {
@@ -592,27 +688,72 @@ model SprintReview {
   sprint      Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 }
 
-enum Role {
-  USER
-  ADMIN
+model AIChat {
+  id        String   @id @default(cuid())
+  userId    String
+  messages  Json     @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
-enum ProductCategory {
-  FRUITS
-  VEGETABLES
-  DAIRY
-  MEAT
-  POULTRY
-  SEAFOOD
-  GRAINS
-  LEGUMES
-  NUTS_SEEDS
-  EGGS
-  OILS_FATS
-  SWEETS
-  BEVERAGES
-  BAKERY
-  OTHER
+model AISuggestion {
+  id        String           @id @default(cuid())
+  userId    String
+  domain    AIDomain         @default(HEALTH)
+  action    String
+  payload   Json
+  status    SuggestionStatus @default(PENDING)
+  reason    String?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model AIUsage {
+  id           String   @id @default(cuid())
+  userId       String
+  date         DateTime @db.Date
+  inputTokens  Int      @default(0)
+  outputTokens Int      @default(0)
+  totalTokens  Int      @default(0)
+  requestCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+enum SystemStatus {
+  STABLE
+  CRISIS_SURVIVAL
+  CRISIS_STABILIZATION
+  CRISIS_RE_ENTRY
+}
+
+enum Goal {
+  GAIN
+  MAINTAIN
+  LOSE
+}
+
+enum PriceSource {
+  MANUAL
+  FETCHED
+}
+
+enum NutritionSource {
+  MANUAL
+  OPENFOODFACTS
+  USDA
+  FATSECRET
 }
 
 enum ProductStatus {
@@ -624,39 +765,13 @@ enum ProductStatus {
 enum ProductSource {
   MANUAL
   IMPORTED
+  OPENFOODFACTS
 }
 
 enum ProductState {
   RAW
   COOKED
   PROCESSED
-}
-
-enum PreparationMethod {
-  RAW
-  BOILED
-  FRIED
-  BAKED
-  STEAMED
-  OTHER
-}
-
-enum SystemStatus {
-  STABLE
-  CRISIS_SURVIVAL
-  CRISIS_STABILIZATION
-  CRISIS_RE_ENTRY
-}
-
-enum IngredientInputState {
-  RAW
-  COOKED
-}
-
-enum Priority {
-  FIXED
-  FLEXIBLE
-  AUTO
 }
 
 enum MealSlot {
@@ -666,18 +781,16 @@ enum MealSlot {
   SNACK
 }
 
-enum Unit {
-  GRAM
-  ML
-  PIECE
-  TBSP
-  TSP
-}
-
 enum PlanAdherence {
   PLANNED
   FOLLOWED
   DEVIATED
+}
+
+enum Priority {
+  FIXED
+  FLEXIBLE
+  AUTO
 }
 
 enum TaskStatus {
@@ -759,4 +872,45 @@ enum ObjectiveStatus {
 enum TacticFrequency {
   DAILY
   WEEKLY
+}
+
+enum Unit {
+  GRAM
+  ML
+  PIECE
+  TBSP
+  TSP
+}
+
+enum PreparationMethod {
+  RAW
+  BOILED
+  FRIED
+  BAKED
+  STEAMED
+  OTHER
+}
+
+enum IngredientInputState {
+  RAW
+  COOKED
+}
+
+enum CartItemStatus {
+  TO_BUY
+  IN_CART
+  BOUGHT
+  HAVE
+  SKIPPED
+}
+
+enum SuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum AIDomain {
+  OPERATIONS
+  HEALTH
 }

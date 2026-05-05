@@ -18,7 +18,7 @@ A Next.js application designed to manage personal data, modeled as a modular "Pe
 The system is organized into 5 high-level **Life Domains**, each serving as a self-contained hub:
 
 1.  **Operations**: The "Engine". Handles 5-level planning (Vision, Milestones, Theme, Sprints, Reviews) and daily execution (Journal, Habits, Tasks).
-2.  **Health**: Physical optimization. Nutrition (Food Space) and performance tracking (Fitness Space).
+2.  **Health**: Physical optimization. Nutrition (Nutrition Space) and performance tracking (Fitness Space).
 3.  **Mind**: Intellectual mastery. Knowledge management (Library Space) and skill acquisition (Language Space).
 4.  **Wealth**: Financial resources. Portfolio tracking and market telemetry (Trading Space).
 5.  **Vault**: System archives. Desires (Wishlist), utilities, and low-frequency tools.
@@ -46,7 +46,7 @@ The system is organized into 5 high-level **Life Domains**, each serving as a se
 ### Theme & Layout
 
 - **Dynamic Theming**: Global support for **Light** and **Dark** modes via `SpaceProvider`.
-- **Space Themes**: Each specific Space (e.g., Planning, Food) has its own accent color that propagates through the UI.
+- **Space Themes**: Each specific Space (e.g., Planning, Nutrition) has its own accent color that propagates through the UI.
 
 ## Data Integrity & Governance
 

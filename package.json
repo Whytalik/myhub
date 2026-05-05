@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "prisma generate && prisma db push --accept-data-loss && next build",
     "db:push": "prisma db push",
+    "db:seed:all-products": "tsx prisma/seed-all-products.ts",
+    "db:seed:fs-bootstrap": "tsx prisma/seed-fatsecret-bootstrap.ts",
     "db:migrate": "prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.67",
+    "@ai-sdk/openai": "^3.0.57",
     "@auth/prisma-adapter": "^2.11.2",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
@@ -23,10 +27,10 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "@xyflow/react": "^12.10.2",
+    "ai": "^6.0.173",
     "bcryptjs": "^3.0.3",
     "dagre": "^0.8.5",
     "date-fns": "^4.1.0",
-    "dotenv": "^17.4.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.8.0",
     "next": "16.2.3",
@@ -36,7 +40,8 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.72.1",
     "sonner": "^2.0.7",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "zod": "^4.4.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
