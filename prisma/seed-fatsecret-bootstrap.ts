@@ -25,7 +25,7 @@ async function getAccessToken(): Promise<string> {
 }
 
 async function apiRequest(token: string, method: string, params: Record<string, string>) {
-  const searchParams = new URLSearchParams({ method, format: 'json', ...params });
+  const searchParams = new URLSearchParams({ method, format: 'json', region: 'UA', language: 'uk', ...params });
   const response = await fetch(`${API_URL}?${searchParams.toString()}`, {
     headers: { 'Authorization': `Bearer ${token}` },
   });
@@ -33,21 +33,21 @@ async function apiRequest(token: string, method: string, params: Record<string, 
 }
 
 const CORE_FOODS = [
-  { name: 'Банан', category: 'FRUITS' },
-  { name: 'Яблуко', category: 'FRUITS' },
-  { name: 'Броколі', category: 'VEGETABLES' },
-  { name: 'Томат', category: 'VEGETABLES' },
-  { name: 'Куряче філе', category: 'POULTRY' },
-  { name: 'Яловичина', category: 'MEAT' },
-  { name: 'Гречка', category: 'GRAINS' },
-  { name: 'Рис', category: 'GRAINS' },
-  { name: 'Яйце', category: 'EGGS' },
-  { name: 'Мигдаль', category: 'NUTS_SEEDS' },
-  { name: 'Лосось', category: 'SEAFOOD' },
-  { name: 'Сир кисломолочний', category: 'DAIRY' },
-  { name: 'Молоко', category: 'DAIRY' },
-  { name: 'Вівсянка', category: 'GRAINS' },
-  { name: 'Сочевиця', category: 'LEGUMES' },
+  { name: 'Banana', category: 'FRUITS' },
+  { name: 'Apple', category: 'FRUITS' },
+  { name: 'Broccoli', category: 'VEGETABLES' },
+  { name: 'Tomato', category: 'VEGETABLES' },
+  { name: 'Chicken breast', category: 'POULTRY' },
+  { name: 'Beef', category: 'MEAT' },
+  { name: 'Buckwheat', category: 'GRAINS' },
+  { name: 'Rice', category: 'GRAINS' },
+  { name: 'Egg', category: 'EGGS' },
+  { name: 'Almond', category: 'NUTS_SEEDS' },
+  { name: 'Salmon', category: 'SEAFOOD' },
+  { name: 'Cottage cheese', category: 'DAIRY' },
+  { name: 'Milk', category: 'DAIRY' },
+  { name: 'Oatmeal', category: 'GRAINS' },
+  { name: 'Lentils', category: 'LEGUMES' },
 ];
 
 function normalizeTo100g(value: string | number | undefined, servingAmount: number): number {
@@ -76,7 +76,9 @@ interface FSSearchResponse {
   foods?: {
     food?: {
       food_id: string;
-    }
+    } | {
+      food_id: string;
+    }[]
   }
 }
 
@@ -92,8 +94,14 @@ async function main() {
   for (const item of CORE_FOODS) {
     console.log(`🔍 Searching for: ${item.name}...`);
     try {
-      const searchData = await apiRequest(token, 'foods.search.v2', { search_expression: item.name, max_results: '1' }) as FSSearchResponse;
-      const foodId = searchData.foods?.food?.food_id;
+      const searchData = await apiRequest(token, 'foods.search', { search_expression: item.name, max_results: '1' }) as FSSearchResponse;
+      
+      let foodId: string | undefined;
+      if (searchData.foods?.food) {
+        foodId = Array.isArray(searchData.foods.food) 
+          ? searchData.foods.food[0].food_id 
+          : searchData.foods.food.food_id;
+      }
       
       if (!foodId) {
         console.log(`  ⚠️ No results for ${item.name}`);
