@@ -4,40 +4,24 @@ export const systemService = {
   async getFullExport(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      include: {
-        nutritionPerson: true,
-        dishes: { include: { ingredients: true } },
-        weekPlans: { include: { dayPlans: { include: { entries: true } } } },
-        shoppingLists: { include: { items: true } },
-        tasks: true,
-        dailyEntries: true,
-        habits: { include: { completions: true } },
-        lifeSpheres: true,
-        libraryItems: true,
-        wishlistItems: true,
-        userLanguages: {
-          include: {
-            sphereProgress: true,
-            vocabularyItems: true,
-            immersionLogs: true,
-            resources: true,
-          }
-        }
+      select: {
+        id: true,
+        name: true,
+        email: true,
       }
     });
 
     if (!user) throw new Error("User not found");
 
+    const nutritionPerson = await prisma.nutritionPerson.findUnique({
+      where: { userId },
+    });
+
     return {
       version: "2.0",
       timestamp: new Date().toISOString(),
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      nutritionPerson: user.nutritionPerson,
+      user,
+      nutritionPerson,
     };
   },
 

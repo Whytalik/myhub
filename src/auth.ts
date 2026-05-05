@@ -3,18 +3,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcryptjs";
-import { type Role } from "@/app/generated/prisma";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: Role;
     } & DefaultSession["user"];
-  }
-
-  interface User {
-    role?: Role;
   }
 }
 
@@ -34,9 +28,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = (credentials.email as string).toLowerCase();
         const user = await prisma.user.findUnique({
           where: { email },
-          include: {
-            nutritionPerson: true,
-          },
+          select: { id: true, email: true, name: true, passwordHash: true },
         });
 
         if (!user || !user.passwordHash) return null;
@@ -48,7 +40,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
         };
       },
     }),
@@ -57,19 +48,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id as string;
-        token.role = user.role as Role;
       }
-      
-      if (token.email) {
+
+      if (token.email && !token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email },
-          select: { 
-            role: true, 
-            name: true,
-          }
+          select: { id: true, name: true }
         });
         if (dbUser) {
-          token.role = dbUser.role;
+          token.id = dbUser.id;
           token.name = dbUser.name;
         }
       }
@@ -79,7 +66,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as Role;
         session.user.name = token.name as string;
       }
       return session;

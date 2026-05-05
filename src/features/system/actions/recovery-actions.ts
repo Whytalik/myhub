@@ -2,12 +2,9 @@
 
 import { auth } from "@/auth";
 import { recoveryService } from "../services/recovery-service";
-import { revalidatePath } from "next/cache";
+import { invalidateRecoveryCache, invalidateUserCache } from "@/lib/revalidate";
 import { SystemStatus } from "@/app/generated/prisma";
 
-/**
- * Activates Crisis Mode immediately.
- */
 export async function triggerSOSAction() {
   const session = await auth();
   const userId = session?.user?.id;
@@ -30,7 +27,8 @@ export async function triggerSOSAction() {
     }
 
     await recoveryService.activateCrisisMode(userId);
-    revalidatePath("/");
+    invalidateRecoveryCache(userId);
+    invalidateUserCache(userId);
     return { success: true };
   } catch (error) {
     console.error(`SOS trigger failed for user ${userId}:`, error);
@@ -38,9 +36,6 @@ export async function triggerSOSAction() {
   }
 }
 
-/**
- * Manually exits Crisis Mode.
- */
 export async function exitCrisisModeAction() {
   const session = await auth();
   const userId = session?.user?.id;
@@ -63,7 +58,8 @@ export async function exitCrisisModeAction() {
     }
 
     await recoveryService.deactivateCrisisMode(userId);
-    revalidatePath("/");
+    invalidateRecoveryCache(userId);
+    invalidateUserCache(userId);
     return { success: true };
   } catch (error) {
     console.error(`Manual exit failed for user ${userId}:`, error);
@@ -71,17 +67,13 @@ export async function exitCrisisModeAction() {
   }
 }
 
-/**
- * Runs the daily system evaluation. 
- * Usually called on the first load of the day or after a routine update.
- */
 export async function runDailySystemCheckAction() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   try {
     const newStatus = await recoveryService.runDailyCheck(session.user.id);
-    revalidatePath("/");
+    invalidateRecoveryCache(session.user.id);
     return { success: true, status: newStatus };
   } catch (error) {
     console.error("System check failed:", error);
@@ -89,9 +81,6 @@ export async function runDailySystemCheckAction() {
   }
 }
 
-/**
- * Updates the recovery routine for the current day.
- */
 export async function updateRecoveryRoutineAction(routine: Record<string, boolean>) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
@@ -113,13 +102,10 @@ export async function updateRecoveryRoutineAction(routine: Record<string, boolea
       },
     });
 
-    // Re-evaluate score immediately
     await recoveryService.evaluateDailyRecovery(userId, today);
-    
-    // Check if we should move up/down
     await recoveryService.processRecoveryTransition(userId);
 
-    revalidatePath("/");
+    invalidateRecoveryCache(userId, today);
     return { success: true };
   } catch (error) {
     console.error("Routine update failed:", error);
@@ -127,9 +113,6 @@ export async function updateRecoveryRoutineAction(routine: Record<string, boolea
   }
 }
 
-/**
- * Manually sets the system status (phase).
- */
 export async function updateSystemStatusAction(status: SystemStatus) {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");
@@ -141,7 +124,8 @@ export async function updateSystemStatusAction(status: SystemStatus) {
       data: { systemStatus: status },
     });
     
-    revalidatePath("/");
+    invalidateRecoveryCache(session.user.id);
+    invalidateUserCache(session.user.id);
     return { success: true };
   } catch (error) {
     console.error("Status update failed:", error);

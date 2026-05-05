@@ -3,12 +3,34 @@
 import { prisma } from "@/lib/prisma";
 import webpush from "web-push";
 
-// Налаштування VAPID для web-push
 webpush.setVapidDetails(
   "mailto:hanmaster05@gmail.com",
   (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "").trim(),
   (process.env.VAPID_PRIVATE_KEY || "").trim()
 );
+
+type PushSub = { endpoint: string; p256dh: string; auth: string };
+
+async function sendPush(subscriptions: PushSub[], payload: { title: string; body: string; url: string }) {
+  if (subscriptions.length === 0) return;
+
+  const pushPayload = JSON.stringify(payload);
+
+  await Promise.allSettled(
+    subscriptions.map(sub =>
+      webpush.sendNotification(
+        {
+          endpoint: sub.endpoint,
+          keys: {
+            p256dh: sub.p256dh,
+            auth: sub.auth
+          }
+        },
+        pushPayload
+      )
+    )
+  );
+}
 
 /**
  * Основна функція для обробки нагадувань.
@@ -16,32 +38,24 @@ webpush.setVapidDetails(
  */
 export async function processAutomatedNotificationsAction() {
   const now = new Date();
-  // Конвертуємо UTC час сервера в київський час (Europe/Kyiv)
-  const kyivTimeStr = now.toLocaleString("en-GB", { 
-    timeZone: "Europe/Kyiv", 
-    hour: "2-digit", 
-    minute: "2-digit", 
-    hour12: false 
+  const kyivTimeStr = now.toLocaleString("en-GB", {
+    timeZone: "Europe/Kyiv",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
   });
   const currentTimeStr = kyivTimeStr;
-  
+
   const notificationsSent: string[] = [];
 
-  // 1. Обробка Tasks (дедлайни)
-  // Шукаємо таски, де дедлайн збігається з поточним часом (ігноруючи секунди)
   const dueTasks = await prisma.task.findMany({
     where: {
       status: { not: "DONE" },
-      dueDate: {
-        not: null,
-        lte: now // Вже настав або минув
-      },
+      dueDate: { not: null, lte: now },
       completedAt: null
     },
     include: {
-      user: {
-        include: { pushSubscriptions: true }
-      }
+      user: { select: { id: true, pushSubscriptions: { select: { endpoint: true, p256dh: true, auth: true } } } }
     }
   });
 
@@ -49,30 +63,24 @@ export async function processAutomatedNotificationsAction() {
     if (!task.hasDueTime) continue;
     const diff = Math.abs(now.getTime() - task.dueDate!.getTime()) / 1000 / 60;
     if (diff < 5) {
-       const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
-       await sendPushToUser(task.user.id, {
-         title: `${priorityEmoji} Task Deadline`,
-         body: `⏰ ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
-         url: `/life/tasks`
-       });
-       notificationsSent.push(`Task (Deadline): ${task.title}`);
+      const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
+      await sendPush(task.user.pushSubscriptions, {
+        title: `${priorityEmoji} Task Deadline`,
+        body: `⏰ ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
+        url: `/life/tasks`
+      });
+      notificationsSent.push(`Task (Deadline): ${task.title}`);
     }
   }
 
-  // 1.1 Обробка Tasks (plannedDate — запланована дата)
   const plannedTasks = await prisma.task.findMany({
     where: {
       status: { not: "DONE" },
-      plannedDate: {
-        not: null,
-        lte: now
-      },
+      plannedDate: { not: null, lte: now },
       completedAt: null
     },
     include: {
-      user: {
-        include: { pushSubscriptions: true }
-      }
+      user: { select: { id: true, pushSubscriptions: { select: { endpoint: true, p256dh: true, auth: true } } } }
     }
   });
 
@@ -80,21 +88,15 @@ export async function processAutomatedNotificationsAction() {
     if (!task.hasPlannedTime) continue;
     const diff = Math.abs(now.getTime() - task.plannedDate!.getTime()) / 1000 / 60;
     if (diff < 5) {
-       const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
-       await sendPushToUser(task.user.id, {
-         title: `${priorityEmoji} Time to Start`,
-         body: `📋 ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
-         url: `/life/tasks`
-       });
-       notificationsSent.push(`Task (Planned): ${task.title}`);
+      const priorityEmoji = { LOW: "🟢", MEDIUM: "🟡", HIGH: "🟠", URGENT: "🔴" }[task.priority] || "⚪";
+      await sendPush(task.user.pushSubscriptions, {
+        title: `${priorityEmoji} Time to Start`,
+        body: `📋 ${task.title}${task.description ? "\n" + task.description.slice(0, 50) : ""}`,
+        url: `/life/tasks`
+      });
+      notificationsSent.push(`Task (Planned): ${task.title}`);
     }
   }
-
-  // 2. Обробка Habits (специфічний час)
-  const allHabits = await prisma.habit.findMany({
-    where: { archived: false },
-    select: { id: true, name: true, reminderTime: true, userId: true }
-  });
 
   const timedHabits = await prisma.habit.findMany({
     where: {
@@ -102,14 +104,12 @@ export async function processAutomatedNotificationsAction() {
       reminderTime: currentTimeStr
     },
     include: {
-      user: {
-        include: { pushSubscriptions: true }
-      }
+      user: { select: { id: true, pushSubscriptions: { select: { endpoint: true, p256dh: true, auth: true } } } }
     }
   });
 
   for (const habit of timedHabits) {
-    await sendPushToUser(habit.userId, {
+    await sendPush(habit.user.pushSubscriptions, {
       title: "⚡ Habit Time",
       body: `🎯 ${habit.action}\n🔗 After: ${habit.anchor}`,
       url: `/life/habits`
@@ -117,7 +117,6 @@ export async function processAutomatedNotificationsAction() {
     notificationsSent.push(`Habit (Timed): ${habit.name}`);
   }
 
-  // 3. Автоматичні Habits (3 рази на день: 09:00, 14:00, 21:00)
   const autoReminderTimes = ["09:00", "14:00", "21:00"];
   if (autoReminderTimes.includes(currentTimeStr)) {
     const timeLabel = currentTimeStr === "09:00" ? "Morning" : currentTimeStr === "14:00" ? "Afternoon" : "Evening";
@@ -126,13 +125,14 @@ export async function processAutomatedNotificationsAction() {
         habits: { some: { archived: false, reminderTime: null } }
       },
       include: {
-        habits: { where: { archived: false, reminderTime: null } }
+        habits: { where: { archived: false, reminderTime: null }, select: { id: true } },
+        pushSubscriptions: { select: { endpoint: true, p256dh: true, auth: true } }
       }
     });
 
     for (const user of usersWithHabits) {
       if (user.habits.length > 0) {
-        await sendPushToUser(user.id, {
+        await sendPush(user.pushSubscriptions, {
           title: `☀️ ${timeLabel} Habit Check`,
           body: `📊 ${user.habits.length} habit${user.habits.length > 1 ? "s" : ""} to focus on. Keep going!`,
           url: `/life/habits`
@@ -148,31 +148,6 @@ export async function processAutomatedNotificationsAction() {
   console.log(`[Cron] Planned tasks found: ${plannedTasks.length}`);
   console.log(`[Cron] Timed habits found: ${timedHabits.length}`);
   console.log(`[Cron] Auto habit check: ${autoReminderTimes.includes(currentTimeStr) ? 'YES' : 'NO'}`);
-  
-  return { success: true, sent: notificationsSent, debug: { utc: now.toISOString(), kyiv: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, allHabits: allHabits.map(h => ({ name: h.name, reminderTime: h.reminderTime })), matchedHabits: timedHabits.length } };
-}
 
-async function sendPushToUser(userId: string, payload: { title: string, body: string, url: string }) {
-  const subscriptions = await prisma.pushSubscription.findMany({
-    where: { userId }
-  });
-
-  if (subscriptions.length === 0) return;
-
-  const pushPayload = JSON.stringify(payload);
-
-  await Promise.allSettled(
-    subscriptions.map(sub => 
-      webpush.sendNotification(
-        {
-          endpoint: sub.endpoint,
-          keys: {
-            p256dh: sub.p256dh,
-            auth: sub.auth
-          }
-        },
-        pushPayload
-      )
-    )
-  );
+  return { success: true, sent: notificationsSent, debug: { utc: now.toISOString(), kyiv: currentTimeStr, dueTasks: dueTasks.length, plannedTasks: plannedTasks.length, matchedHabits: timedHabits.length } };
 }

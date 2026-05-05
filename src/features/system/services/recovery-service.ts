@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedSystemStatus, getCachedRecentEntries, getCachedDailyEntry } from "@/lib/cache";
 import { SystemStatus } from "@/app/generated/prisma";
 import { sphereSyncService } from "./sphere-sync-service";
 
@@ -28,9 +29,7 @@ export const recoveryService = {
    * Score is based on the percentage of checked items in recoveryRoutine.
    */
   async evaluateDailyRecovery(userId: string, date: Date) {
-    const entry = await prisma.dailyEntry.findUnique({
-      where: { userId_date: { userId, date } },
-    });
+    const entry = await getCachedDailyEntry(userId, date);
 
     if (!entry || !entry.recoveryRoutine) return 0;
 
@@ -54,19 +53,11 @@ export const recoveryService = {
    * Checks recent performance and transitions the user between phases.
    */
   async processRecoveryTransition(userId: string) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { systemStatus: true },
-    });
+    const user = await getCachedSystemStatus(userId);
 
     if (!user || user.systemStatus === SystemStatus.STABLE) return null;
 
-    // Fetch the 3 most recent entries to evaluate streaks
-    const recentEntries = await prisma.dailyEntry.findMany({
-      where: { userId },
-      orderBy: { date: "desc" },
-      take: 3,
-    });
+    const recentEntries = await getCachedRecentEntries(userId, 3);
 
     if (recentEntries.length === 0) return user.systemStatus;
 

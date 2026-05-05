@@ -24,20 +24,7 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", nextUrl));
   }
 
-  // Admin and Role Restrictions
-  const user = req.auth?.user as { role?: string };
-  const role = user?.role;
-  const isAdmin = role === "ADMIN";
-
-  const restrictedPrefixes = ["/food", "/languages", "/library", "/fitness"];
-  const isRestrictedRoute = restrictedPrefixes.some(prefix => nextUrl.pathname.startsWith(prefix));
-
-  if (!isAdmin && isRestrictedRoute) {
-    return NextResponse.redirect(new URL("/life/journal", nextUrl));
-  }
-
-  // Allow everyone to see the root "/" and base "/life"
-  // No forced redirects from allowed base pages
+  // All authorized users have full access to all modules
 
   return NextResponse.next();
 });

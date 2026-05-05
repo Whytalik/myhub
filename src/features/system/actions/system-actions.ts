@@ -1,46 +1,25 @@
 "use server";
 
-import { auth } from "@/auth";
 import { systemService } from "../services/system-service";
 import { revalidatePath } from "next/cache";
+import { ActionResult, withAction } from "@/lib/action-utils";
 
-export async function exportSystemAction() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  try {
-    const data = await systemService.getFullExport(session.user.id);
-    return { success: true, data };
-  } catch (error) {
-    console.error("Export failed:", error);
-    return { success: false, error: "Failed to export system state" };
-  }
+export async function exportSystemAction(): Promise<ActionResult<unknown>> {
+  return withAction(async (userId) => {
+    return systemService.getFullExport(userId);
+  });
 }
 
-export async function resetSystemAction() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  try {
-    await systemService.resetSystem(session.user.id);
+export async function resetSystemAction(): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await systemService.resetSystem(userId);
     revalidatePath("/");
-    return { success: true };
-  } catch (error) {
-    console.error("Reset failed:", error);
-    return { success: false, error: "Failed to reset system" };
-  }
+  });
 }
 
-export async function importSystemAction() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  try {
-    await systemService.importData(session.user.id);
+export async function importSystemAction(): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await systemService.importData(userId);
     revalidatePath("/");
-    return { success: true };
-  } catch (error) {
-    console.error("Import failed:", error);
-    return { success: false, error: error instanceof Error ? error.message : "Failed to import data" };
-  }
+  });
 }
