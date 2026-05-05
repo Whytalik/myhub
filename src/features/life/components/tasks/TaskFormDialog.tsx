@@ -26,6 +26,7 @@ import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task
 interface TaskFormDialogProps {
   isOpen:       boolean;
   onClose:      () => void;
+  onSuccess?:   (task: TaskData) => void;
   task?:        TaskData | null;
   parentTask?:  TaskData | null;
   spheres:      LifeSphereData[];
@@ -99,6 +100,8 @@ interface UnifiedTaskFormProps {
   setPlannedTime: (v: string) => void;
   hasPlannedTime: boolean;
   setHasPlannedTime: (v: boolean) => void;
+  plannedEndTime: string;
+  setPlannedEndTime: (v: string) => void;
   plannedEndDate: string | null;
   setPlannedEndDate: (v: string | null) => void;
   hasPlannedEndTime: boolean;
@@ -125,6 +128,7 @@ function UnifiedTaskForm({
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
+  plannedEndTime, setPlannedEndTime,
   plannedEndDate, setPlannedEndDate,
   hasPlannedEndTime, setHasPlannedEndTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
@@ -138,6 +142,19 @@ function UnifiedTaskForm({
   const handleTogglePlannedTime = (checked: boolean) => {
     setHasPlannedTime(checked);
     if (checked && !plannedTime) setPlannedTime("12:00");
+  };
+
+  const handleTogglePlannedEndTime = (checked: boolean) => {
+    setHasPlannedEndTime(checked);
+    if (checked && !plannedEndTime) {
+      if (plannedTime) {
+        const [h, m] = plannedTime.split(":").map(Number);
+        const newH = (h + 1) % 24;
+        setPlannedEndTime(`${newH.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
+      } else {
+        setPlannedEndTime("13:00");
+      }
+    }
   };
 
   const handleToggleDueTime = (checked: boolean) => {
@@ -270,11 +287,22 @@ function UnifiedTaskForm({
                     }} 
                     placeholder="Select range" 
                   />
-                  <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
-                    <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
-                    <span>Set specific time</span>
-                  </label>
-                  {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                        <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                        <span>Start time</span>
+                      </label>
+                      {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                        <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                        <span>End time</span>
+                      </label>
+                      {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -295,11 +323,22 @@ function UnifiedTaskForm({
                       }} 
                       placeholder="Select range" 
                     />
-                    <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
-                      <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
-                      <span>Set specific time</span>
-                    </label>
-                    {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-2">
+                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                          <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                          <span>Start time</span>
+                        </label>
+                        {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                          <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
+                          <span>End time</span>
+                        </label>
+                        {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -446,6 +485,8 @@ interface TaskDetailProps {
   setPlannedTime: (v: string) => void;
   hasPlannedTime: boolean;
   setHasPlannedTime: (v: boolean) => void;
+  plannedEndTime: string;
+  setPlannedEndTime: (v: string) => void;
   plannedEndDate: string | null;
   setPlannedEndDate: (v: string | null) => void;
   hasPlannedEndTime: boolean;
@@ -471,6 +512,7 @@ function TaskDetail({
   parentId, setParentId, isPrivate, setIsPrivate,
   plannedDate, setPlannedDate, plannedTime, setPlannedTime,
   hasPlannedTime, setHasPlannedTime,
+  plannedEndTime, setPlannedEndTime,
   plannedEndDate, setPlannedEndDate,
   hasPlannedEndTime, setHasPlannedEndTime,
   useDeadline, setUseDeadline, dueDate, setDueDate,
@@ -483,6 +525,18 @@ function TaskDetail({
   const handleTogglePlannedTime = (checked: boolean) => {
     setHasPlannedTime(checked);
     if (checked && !plannedTime) setPlannedTime("12:00");
+  };
+  const handleTogglePlannedEndTime = (checked: boolean) => {
+    setHasPlannedEndTime(checked);
+    if (checked && !plannedEndTime) {
+      if (plannedTime) {
+        const [h, m] = plannedTime.split(":").map(Number);
+        const newH = (h + 1) % 24;
+        setPlannedEndTime(`${newH.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
+      } else {
+        setPlannedEndTime("13:00");
+      }
+    }
   };
   const handleToggleDueTime = (checked: boolean) => {
     setHasDueTime(checked);
@@ -640,11 +694,19 @@ function TaskDetail({
                           }} 
                         />
                       </div>
-                      <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
-                        <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
-                        <span>Exact time</span>
-                      </label>
-                      {hasPlannedTime && <div className="ml-5"><TimePicker value={plannedTime} onChange={setPlannedTime} /></div>}
+                      <div className="flex flex-col gap-2 ml-5">
+                        <label className="flex items-center gap-2 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                          <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
+                          <span>Start time</span>
+                        </label>
+                        {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                        
+                        <label className="flex items-center gap-2 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                          <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
+                          <span>End time</span>
+                        </label>
+                        {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2 mt-1 border-t border-border/10 pt-2.5">
                       <div className="flex items-center gap-2">
@@ -708,7 +770,7 @@ function TaskDetail({
 // ─── Main Dialog Wrapper ───────────────────────────────────────────────────
 
 export function TaskFormDialog({
-  isOpen, onClose, task, parentTask, spheres, allTasks = [], onViewTask, isDuplicate = false,
+  isOpen, onClose, onSuccess, task, parentTask, spheres, allTasks = [], onViewTask, isDuplicate = false,
 }: TaskFormDialogProps) {
   const isEditing = !!task?.id && !isDuplicate;
   const [isPending, startTransition] = useTransition();
@@ -734,10 +796,11 @@ export function TaskFormDialog({
   const [isPrivate, setIsPrivate] = useState(() => task?.isPrivate ?? false);
   
   const [plannedDate, setPlannedDate] = useState(() => task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "");
-  const [plannedTime, setPlannedTime] = useState(() => task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "");
-  const [hasPlannedTime, setHasPlannedTime] = useState(() => task?.hasPlannedTime ?? false);
+  const [plannedTime, setPlannedTime] = useState(() => task?.plannedDate ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "");
+  const [hasPlannedTime, setHasPlannedTime] = useState(() => task?.hasPlannedTime ?? !!task?.plannedDate);
   const [plannedEndDate, setPlannedEndDate] = useState<string | null>(() => task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null);
-  const [hasPlannedEndTime, setHasPlannedEndTime] = useState(() => task?.hasPlannedEndTime ?? false);
+  const [plannedEndTime, setPlannedEndTime] = useState(() => task?.plannedEndDate ? new Date(task.plannedEndDate).toTimeString().slice(0, 5) : "");
+  const [hasPlannedEndTime, setHasPlannedEndTime] = useState(() => task?.hasPlannedEndTime ?? !!task?.plannedEndDate);
   
   const [useDeadline, setUseDeadline] = useState(() => !!task?.dueDate);
   const [dueDate, setDueDate] = useState(() => useDeadline && task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "");
@@ -748,7 +811,7 @@ export function TaskFormDialog({
     setTitle(""); setDescription(""); setIcon(null); setStatus("TODO"); setPriority("MEDIUM");
     setSphereId(""); setParentId(null); setIsPrivate(false);
     setPlannedDate(""); setPlannedTime(""); setHasPlannedTime(false);
-    setPlannedEndDate(null); setHasPlannedEndTime(false);
+    setPlannedEndDate(null); setPlannedEndTime(""); setHasPlannedEndTime(false);
     setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false);
     setShowErrors(false);
   };
@@ -762,6 +825,7 @@ export function TaskFormDialog({
     plannedTime !== (task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "") ||
     hasPlannedTime !== (task?.hasPlannedTime ?? false) ||
     plannedEndDate !== (task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null) ||
+    plannedEndTime !== (task?.plannedEndDate && task?.hasPlannedEndTime ? new Date(task.plannedEndDate).toTimeString().slice(0, 5) : "") ||
     hasPlannedEndTime !== (task?.hasPlannedEndTime ?? false) ||
     useDeadline !== (!!task?.dueDate) ||
     dueDate !== (task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "") ||
@@ -773,7 +837,7 @@ export function TaskFormDialog({
     if (!title.trim() || !sphereId) return;
 
     const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
-    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedTime ? plannedTime : "12:00"}:00` : null;
+    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00` : null;
     const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
 
     upsertTaskAction({
@@ -806,18 +870,19 @@ export function TaskFormDialog({
     }
 
     const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
-    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedTime ? plannedTime : "12:00"}:00` : null;
+    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00` : null;
     const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
 
     startTransition(async () => {
       try {
-        await upsertTaskAction({
+        const savedTask = await upsertTaskAction({
           id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
           icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
           plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
           dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
         });
         if (!isEditing) toast.success(isDuplicate ? "Duplicated" : "Created");
+        if (savedTask) onSuccess?.(savedTask);
         onClose();
         if (!isEditing) resetForm();
       } catch { toast.error("Error saving task"); }
@@ -842,6 +907,7 @@ export function TaskFormDialog({
           isPrivate={isPrivate} setIsPrivate={setIsPrivate}
           plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
           hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
+          plannedEndTime={plannedEndTime} setPlannedEndTime={setPlannedEndTime}
           plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
           hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
           useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}
@@ -859,6 +925,7 @@ export function TaskFormDialog({
           isPrivate={isPrivate} setIsPrivate={setIsPrivate}
           plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
           hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
+          plannedEndTime={plannedEndTime} setPlannedEndTime={setPlannedEndTime}
           plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
           hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
           useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}

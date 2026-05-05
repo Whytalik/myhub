@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedDailyEntry, getCachedAllEntries } from "@/lib/cache";
 import type { UpsertDailyEntryInput } from "../types";
 
 function todayDate(): Date {
@@ -7,15 +8,11 @@ function todayDate(): Date {
 }
 
 export async function getTodayEntry(userId: string) {
-  return prisma.dailyEntry.findUnique({
-    where: { userId_date: { userId, date: todayDate() } },
-  });
+  return getCachedDailyEntry(userId, todayDate());
 }
 
 export async function getEntryByDate(userId: string, date: Date) {
-  return prisma.dailyEntry.findUnique({
-    where: { userId_date: { userId, date } },
-  });
+  return getCachedDailyEntry(userId, date);
 }
 
 export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {
@@ -40,21 +37,5 @@ export async function deleteEntry(userId: string, id: string) {
 }
 
 export async function getAllEntries(userId: string) {
-  return prisma.dailyEntry.findMany({
-    where: { userId },
-    orderBy: { date: "desc" },
-    select: {
-      id: true,
-      date: true,
-      energy: true,
-      mood: true,
-      weight: true,
-      sleepHours: true,
-      sleepQuality: true,
-      nutrition: true,
-      morningRoutine: true,
-      eveningRoutine: true,
-      winToday: true,
-    },
-  });
+  return getCachedAllEntries(userId);
 }

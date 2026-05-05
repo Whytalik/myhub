@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition, useCallback } from "react";
+import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
 import Link from "next/link";
 import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, CalendarDays, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,6 @@ import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
 import { EmotionsSection } from "./sections/EmotionsSection";
 import { NutritionSection } from "./sections/NutritionSection";
-import { RoutineSection } from "./sections/RoutineSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { StandupSection } from "./sections/StandupSection";
 import { upsertEntryAction } from "../actions/journal-actions";
@@ -20,6 +19,9 @@ import type { RoutineMap } from "@/lib/routine-items";
 import { Tabs } from "@/components/ui/tabs";
 import { Sparkles as SparklesIcon } from "lucide-react";
 
+const RoutineSection = lazy(() => import("./sections/RoutineSection").then(m => ({ default: m.RoutineSection })));
+const TaskCalendar = lazy(() => import("./tasks/TaskCalendar").then(m => ({ default: m.TaskCalendar })));
+
 interface Props {
   initialEntry: DailyEntryData | null;
   todayStr: string; // "YYYY-MM-DD"
@@ -30,6 +32,7 @@ interface Props {
 
 export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
+  const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
@@ -287,11 +290,13 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
 
           {/* Row 2: Routine */}
           <div className="grid grid-cols-1 gap-6">
-            <RoutineSection
-              type="morning"
-              routine={data.morningRoutine ?? null}
-              onChange={patch}
-            />
+            <Suspense fallback={<div className="bg-surface border rounded-2xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
+              <RoutineSection
+                type="morning"
+                routine={data.morningRoutine ?? null}
+                onChange={patch}
+              />
+            </Suspense>
           </div>
         </div>
       ) : activeTab === "habits" ? (
@@ -319,14 +324,39 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
            )}
         </div>
       ) : activeTab === "tasks" ? (
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <TaskGrid 
-            tasks={tasks} 
-            onEdit={handleEdit} 
-            onDuplicate={handleDuplicate}
-            onAddChild={handleAddChild} 
-            allTasks={tasks}
-          />
+        <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="flex justify-center">
+            <Tabs 
+              tabs={[
+                { id: "grid", label: "Grid" },
+                { id: "timeline", label: "Timeline" }
+              ]} 
+              activeTab={taskView} 
+              onTabChange={(id) => setTaskView(id as "grid" | "timeline")}
+              className="bg-raised/50"
+            />
+          </div>
+          
+          {taskView === "grid" ? (
+            <TaskGrid 
+              tasks={tasks} 
+              onEdit={handleEdit} 
+              onDuplicate={handleDuplicate}
+              onAddChild={handleAddChild} 
+              allTasks={tasks}
+            />
+          ) : (
+            <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+              <TaskCalendar
+                tasks={tasks}
+                allTasks={tasks}
+                spheres={spheres}
+                defaultMode="day"
+                onDuplicate={handleDuplicate}
+                onDelete={() => {}}
+              />
+            </Suspense>
+          )}
         </div>
       ) : (
         <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
@@ -336,11 +366,13 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
               note={data.nutritionNote ?? null}
               onChange={patch}
             />
-            <RoutineSection
-              type="evening"
-              routine={data.eveningRoutine ?? null}
-              onChange={patch}
-            />
+            <Suspense fallback={<div className="bg-surface border rounded-2xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
+              <RoutineSection
+                type="evening"
+                routine={data.eveningRoutine ?? null}
+                onChange={patch}
+              />
+            </Suspense>
           </div>
 
           {/* Evening Energy */}

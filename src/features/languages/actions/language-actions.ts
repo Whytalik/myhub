@@ -1,33 +1,34 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { LanguageService } from "../services/language-service";
-import { ActionResult, LogImmersionInput, AddVocabularyInput } from "../types";
+import * as languageService from "../services/language-service";
+import { ActionResult } from "@/lib/action-utils";
+import { LogImmersionInput, AddVocabularyInput } from "../types";
 import { auth } from "@/auth";
 
-export async function addLanguageAction(personId: string, languageId: string): Promise<ActionResult> {
-  try {
-    const session = await auth();
-    const currentPersonId = (session?.user as { personId?: string })?.personId;
-    if (!currentPersonId || currentPersonId !== personId) throw new Error("Unauthorized");
+async function getRequiredPersonId(): Promise<string> {
+  const session = await auth();
+  const personId = (session?.user as { personId?: string })?.personId;
+  if (!personId) throw new Error("Unauthorized");
+  return personId;
+}
 
-    const userLang = await LanguageService.addLanguage(personId, languageId);
+export async function addLanguageAction(personId: string, languageId: string): Promise<ActionResult<unknown>> {
+  try {
+    const sessionPersonId = await getRequiredPersonId();
+    if (sessionPersonId !== personId) throw new Error("Unauthorized");
+    const userLang = await languageService.addLanguage(personId, languageId);
     revalidatePath("/languages");
     return { success: true, data: userLang };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to add language";
-    console.error("Error adding language:", message);
-    return { success: false, error: message };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to add language" };
   }
 }
 
-export async function logImmersionAction(input: LogImmersionInput): Promise<ActionResult> {
+export async function logImmersionAction(input: LogImmersionInput): Promise<ActionResult<unknown>> {
   try {
-    const session = await auth();
-    const personId = (session?.user as { personId?: string })?.personId;
-    if (!personId) throw new Error("Unauthorized");
-
-    const log = await LanguageService.logImmersion(
+    const personId = await getRequiredPersonId();
+    const log = await languageService.logImmersion(
       personId,
       input.userLanguageId,
       input.sphere,
@@ -37,19 +38,14 @@ export async function logImmersionAction(input: LogImmersionInput): Promise<Acti
     revalidatePath(`/languages/${input.userLanguageId}`);
     return { success: true, data: log };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to log immersion";
-    console.error("Error logging immersion:", message);
-    return { success: false, error: message };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to log immersion" };
   }
 }
 
-export async function addVocabularyAction(input: AddVocabularyInput): Promise<ActionResult> {
+export async function addVocabularyAction(input: AddVocabularyInput): Promise<ActionResult<unknown>> {
   try {
-    const session = await auth();
-    const personId = (session?.user as { personId?: string })?.personId;
-    if (!personId) throw new Error("Unauthorized");
-
-    const item = await LanguageService.addVocabularyItem(
+    const personId = await getRequiredPersonId();
+    const item = await languageService.addVocabularyItem(
       personId,
       input.userLanguageId,
       input.word,
@@ -59,38 +55,31 @@ export async function addVocabularyAction(input: AddVocabularyInput): Promise<Ac
     revalidatePath(`/languages/${input.userLanguageId}/vocabulary`);
     return { success: true, data: item };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to add word";
-    console.error("Error adding vocabulary:", message);
-    return { success: false, error: message };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to add word" };
   }
 }
 
-export async function reviewVocabularyAction(id: string, userLanguageId: string, quality: number): Promise<ActionResult> {
+export async function reviewVocabularyAction(
+  id: string,
+  userLanguageId: string,
+  quality: number
+): Promise<ActionResult<unknown>> {
   try {
-    const session = await auth();
-    const personId = (session?.user as { personId?: string })?.personId;
-    if (!personId) throw new Error("Unauthorized");
-
-    const updated = await LanguageService.reviewVocabularyItem(personId, id, quality);
+    const personId = await getRequiredPersonId();
+    const updated = await languageService.reviewVocabularyItem(personId, id, quality);
     revalidatePath(`/languages/${userLanguageId}/vocabulary`);
     return { success: true, data: updated };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to review word";
-    console.error("Error reviewing vocabulary:", message);
-    return { success: false, error: message };
+    return { success: false, error: error instanceof Error ? error.message : "Failed to review word" };
   }
 }
 
-export async function getLanguageStatsAction(userLanguageId: string): Promise<ActionResult> {
+export async function getLanguageStatsAction(userLanguageId: string): Promise<ActionResult<unknown>> {
   try {
-    const session = await auth();
-    const personId = (session?.user as { personId?: string })?.personId;
-    if (!personId) throw new Error("Unauthorized");
-
-    const stats = await LanguageService.getLanguageStats(personId, userLanguageId);
+    const personId = await getRequiredPersonId();
+    const stats = await languageService.getLanguageStats(personId, userLanguageId);
     return { success: true, data: stats };
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    return { success: false, error: message };
+    return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
   }
 }

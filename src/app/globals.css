@@ -71,6 +71,26 @@ h1, h2, h3, h4, .font-heading {
   display: none;
 }
 
+.scrollbar-show {
+  scrollbar-width: auto !important;
+  -ms-overflow-style: auto !important;
+}
+
+.scrollbar-show::-webkit-scrollbar {
+  display: block !important;
+  height: 6px !important;
+  width: 6px !important;
+}
+
+.scrollbar-show::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.scrollbar-show::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 /* View Transitions */
 ::view-transition-old(root),
 ::view-transition-new(root) {

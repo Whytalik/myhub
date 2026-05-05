@@ -15,7 +15,6 @@ export default async function WishlistPage() {
   const userId = session?.user?.id;
   
   if (!session || !userId) redirect("/login");
-  if (session?.user?.role !== "ADMIN") redirect("/life");
 
   const items = await wishlistService.getAll(userId);
 

@@ -40,7 +40,7 @@ async function WishlistCount({ userId }: { userId: string }) {
 
 export default async function OtherSpacePage() {
   const session = await auth();
-  if ((session?.user as { role?: string })?.role !== "ADMIN") redirect("/life");
+  if (!session) redirect("/login");
 
   const modules = [
     {
@@ -61,7 +61,7 @@ export default async function OtherSpacePage() {
       }}
     >
       <Suspense fallback={<WishlistCountSkeleton />}>
-        <WishlistCount userId={session!.user!.id} />
+        <WishlistCount userId={session.user.id} />
       </Suspense>
       <ModuleQuickAccess modules={modules} />
       <div className="bg-surface/50 border border-border-dim border-dashed rounded-2xl p-10 flex flex-col items-center text-center gap-4 opacity-60">

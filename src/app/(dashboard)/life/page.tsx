@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getCachedActiveHabits, getCachedDailyEntry } from "@/lib/cache";
 import { SpaceLanding, SpaceError, ModuleQuickAccess, DailyOverview, QuickActions } from "@/components/space-landing";
 import { BookText, CheckCircle2, Zap, Plus, FileText } from "lucide-react";
 
@@ -13,12 +14,19 @@ async function fetchLifeData(userId: string) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const [habits, completions, tasks, journalEntry] = await Promise.all([
-    prisma.habit.findMany({ where: { userId, archived: false } }),
-    prisma.habitCompletion.count({ where: { habit: { userId }, date: today } }),
+  const [habits, tasks, journalEntry] = await Promise.all([
+    getCachedActiveHabits(userId),
     prisma.task.count({ where: { userId, NOT: { status: { in: ["DONE", "CANCELLED"] } } } }),
-    prisma.dailyEntry.findUnique({ where: { userId_date: { userId, date: today } } }),
+    getCachedDailyEntry(userId, today),
   ]);
+
+  const completions = habits.filter(h => 
+    h.completions.some(c => {
+      const d = new Date(c.date);
+      d.setHours(0, 0, 0, 0);
+      return d.getTime() === today.getTime();
+    })
+  ).length;
 
   return { habits, completions, tasks, journalEntry };
 }
@@ -26,7 +34,7 @@ async function fetchLifeData(userId: string) {
 async function fetchJournalStatus(userId: string) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return prisma.dailyEntry.findUnique({ where: { userId_date: { userId, date: today } } });
+  return getCachedDailyEntry(userId, today);
 }
 
 export default async function LifeSpacePage() {

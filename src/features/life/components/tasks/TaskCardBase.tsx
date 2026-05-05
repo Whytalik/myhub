@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useCallback } from "react";
 import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
 import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
@@ -61,7 +61,7 @@ export function TaskCardBase({
     });
   };
 
-  const formatDateTime = (date: Date | null, hasTime: boolean) => {
+  const formatDateTime = useCallback((date: Date | null, hasTime: boolean) => {
     if (!date) return null;
     const d = new Date(date);
     const options: Intl.DateTimeFormatOptions = variant === "compact" 
@@ -74,7 +74,7 @@ export function TaskCardBase({
       options.hour12 = false;
     }
     return d.toLocaleString("en-US", options);
-  };
+  }, [variant]);
 
   const plannedLabel = React.useMemo(() => {
     const start = formatDateTime(task.plannedDate, task.hasPlannedTime);
@@ -83,7 +83,7 @@ export function TaskCardBase({
     const end = formatDateTime(task.plannedEndDate, task.hasPlannedEndTime);
     if (!start) return `Until ${end}`;
     return `${start} - ${end}`;
-  }, [task.plannedDate, task.hasPlannedTime, task.plannedEndDate, task.hasPlannedEndTime, variant]);
+  }, [task.plannedDate, task.hasPlannedTime, task.plannedEndDate, task.hasPlannedEndTime, formatDateTime]);
 
   const dueLabel = formatDateTime(task.dueDate, task.hasDueTime);
   

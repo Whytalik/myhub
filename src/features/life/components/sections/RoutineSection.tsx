@@ -1,7 +1,6 @@
 "use client";
 
-import { CheckCircle2, Circle, Sun, Moon, Dumbbell, User, Gamepad2 } from "lucide-react";
-import * as LucideIcons from "lucide-react";
+import { CheckCircle2, Circle, Sun, Moon, Dumbbell, User, Gamepad2, AlarmClock, Droplets, Brain, Move, ClipboardCheck, Zap, Briefcase, Footprints, ThermometerSnowflake, LogOut, GraduationCap, Utensils, Sparkles, ShowerHead, ListTodo, Car } from "lucide-react";
 import { 
   MORNING_ROUTINE_TRAIN, 
   MORNING_ROUTINE_NO_TRAIN, 
@@ -10,6 +9,32 @@ import {
   EVENING_ROUTINE_FUN,
   type RoutineMap 
 } from "@/lib/routine-items";
+
+const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  AlarmClock,
+  Droplets,
+  Brain,
+  Move,
+  ClipboardCheck,
+  Sun,
+  Zap,
+  Briefcase,
+  Footprints,
+  Dumbbell,
+  ThermometerSnowflake,
+  LogOut,
+  GraduationCap,
+  Utensils,
+  Sparkles,
+  ShowerHead,
+  ListTodo,
+  Moon,
+  Car,
+  Gamepad2,
+  CheckCircle2,
+  Circle,
+  User,
+};
 
 interface Props {
   type: "morning" | "evening";
@@ -20,7 +45,6 @@ interface Props {
 export function RoutineSection({ type, routine, onChange }: Props) {
   const map: RoutineMap = routine ?? ({} as RoutineMap);
   
-  // Flags stored in the routine map
   const isTrainingDay = type === "morning" ? (map["_isTrainingDay"] ?? false) : false;
   const eveningMode = type === "evening" ? ((map["_eveningMode"] as unknown as string) ?? "normal") : "normal";
 
@@ -123,8 +147,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
         {items.map((item) => {
           const checked = !!map[item.id];
           const iconName = item.icon as string;
-          // @ts-expect-error dynamic icon property from string key
-          const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ size?: number; className?: string }>>)[iconName] || Circle;
+          const IconComponent = ROUTINE_ICONS[iconName] || Circle;
 
           return (
             <button

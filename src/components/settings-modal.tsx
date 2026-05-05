@@ -79,7 +79,7 @@ const DEFAULT_DOMAINS: Domain[] = [
 const DEFAULT_SPACES: Space[] = [
   { id: "planning",  label: "Planning Space",  icon: ICON_LIBRARY.Planning, domainId: "operations" },
   { id: "life",      label: "Life Space",      icon: ICON_LIBRARY.Life,     domainId: "operations" },
-  { id: "food",      label: "Food Space",      icon: ICON_LIBRARY.Food,     domainId: "health" },
+  { id: "nutrition", label: "Nutrition Space", icon: ICON_LIBRARY.Food,     domainId: "health" },
   { id: "fitness",   label: "Fitness Space",   icon: ICON_LIBRARY.Fitness,  domainId: "health" },
   { id: "languages", label: "Language Space",  icon: ICON_LIBRARY.Languages, domainId: "mind" },
   { id: "library",   label: "Library Space",   icon: ICON_LIBRARY.Library,   domainId: "mind" },

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import { Tabs } from "@/components/ui/tabs";
@@ -60,10 +61,14 @@ export default function LanguageDetailPage() {
   ];
 
   if (loading) return (
-    <div className="px-6 md:px-14 py-8 md:py-10 flex items-center justify-center min-h-[60vh]">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-        <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Initialising Space...</p>
+    <div className="px-6 md:px-14 py-8 md:py-10 space-y-6">
+      <Skeleton className="h-4 w-48 rounded-xl" />
+      <Skeleton className="h-10 w-72 rounded-xl" />
+      <Skeleton className="h-10 w-full rounded-2xl" />
+      <Skeleton className="h-64 w-full rounded-3xl" />
+      <div className="grid grid-cols-2 gap-4">
+        <Skeleton className="h-40 rounded-2xl" />
+        <Skeleton className="h-40 rounded-2xl" />
       </div>
     </div>
   );

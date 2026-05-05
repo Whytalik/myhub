@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { LanguageService } from "@/features/languages/services/language-service";
+import { getCachedUserLanguages, getCachedAllLanguageStats } from "@/lib/cache";
 import { LanguageRadarChart } from "@/features/languages/components/LanguageRadarChart";
 import { SpaceLanding, SpaceError, QuickActions } from "@/components/space-landing";
 import { Plus, Languages, Activity } from "lucide-react";
@@ -12,13 +12,14 @@ export const metadata: Metadata = {
 };
 
 async function fetchLanguageData(userId: string) {
-  const userLanguages = await LanguageService.getUserLanguages(userId);
-  const languagesWithStats = await Promise.all(
-    userLanguages.map(async (ul) => {
-      const stats = await LanguageService.getLanguageStats(userId, ul.id);
-      return { ...ul, stats };
-    })
-  );
+  const userLanguages = await getCachedUserLanguages(userId);
+  const allStats = await getCachedAllLanguageStats(userId);
+
+  const languagesWithStats = userLanguages.map((ul) => ({
+    ...ul,
+    stats: allStats[ul.id] || [],
+  }));
+
   return { userLanguages, languagesWithStats };
 }
 

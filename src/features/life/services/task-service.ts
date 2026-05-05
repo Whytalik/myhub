@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedAllTasks, getCachedCalendarTasks, getCachedTasksByDate, getCachedSpheres } from "@/lib/cache";
 import { Prisma } from "@/app/generated/prisma";
 import type {
   TaskData,
@@ -126,50 +127,17 @@ function sortTasks(tasks: TaskData[]): TaskData[] {
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 
 export async function getAllTasks(userId: string): Promise<TaskData[]> {
-  const tasks = await prisma.task.findMany({
-    where: { userId },
-    include: TASK_INCLUDE,
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-  });
+  const tasks = await getCachedAllTasks(userId);
   return sortTasks(tasks.map(mapTask));
 }
 
 export async function getCalendarTasks(userId: string): Promise<TaskData[]> {
-  const tasks = await prisma.task.findMany({
-    where: {
-      userId,
-      plannedDate: { not: null },
-    },
-    include: TASK_INCLUDE,
-  });
+  const tasks = await getCachedCalendarTasks(userId);
   return sortTasks(tasks.map(mapTask));
 }
 
 export async function getTasksByDate(userId: string, date: Date): Promise<TaskData[]> {
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(date);
-  end.setHours(23, 59, 59, 999);
-
-  const tasks = await prisma.task.findMany({
-    where: {
-      userId,
-      OR: [
-        // Exact match or single day task
-        {
-          plannedDate: { gte: start, lte: end },
-          plannedEndDate: null,
-        },
-        // Date range match (target day is within the range)
-        {
-          plannedEndDate: { not: null, gte: start },
-          plannedDate: { lte: end },
-        }
-      ]
-    },
-    include: TASK_INCLUDE,
-  });
-
+  const tasks = await getCachedTasksByDate(userId, date.toISOString());
   return sortTasks(tasks.map(mapTask));
 }
 
@@ -184,11 +152,11 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     isPrivate,
     isBlocked,
     plannedDate,
-    hasPlannedTime = false,
+    hasPlannedTime,
     plannedEndDate,
-    hasPlannedEndTime = false,
+    hasPlannedEndTime,
     dueDate,
-    hasDueTime = false,
+    hasDueTime,
     parentId,
     sphereId,
     projectId,
@@ -218,11 +186,11 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         priority:    priority ?? undefined,
         isPrivate:  isPrivate ?? undefined,
         isBlocked:  isBlocked ?? undefined,
-        plannedDate: parsedPlannedDate ?? undefined,
+        plannedDate: parsedPlannedDate !== undefined ? parsedPlannedDate : undefined,
         hasPlannedTime: hasPlannedTime ?? undefined,
-        plannedEndDate: parsedPlannedEndDate ?? undefined,
+        plannedEndDate: parsedPlannedEndDate !== undefined ? parsedPlannedEndDate : undefined,
         hasPlannedEndTime: hasPlannedEndTime ?? undefined,
-        dueDate:     parsedDueDate,
+        dueDate:     parsedDueDate !== undefined ? parsedDueDate : undefined,
         hasDueTime:  hasDueTime ?? undefined,
         completedAt,
         parent: parentId !== undefined ? (parentId ? { connect: { id: parentId } } : { disconnect: true }) : undefined,
@@ -249,11 +217,11 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         isPrivate:  isPrivate ?? false,
         isBlocked:  isBlocked ?? false,
         plannedDate: (parsedPlannedDate as Date | null) ?? null,
-        hasPlannedTime,
+        hasPlannedTime: hasPlannedTime ?? false,
         plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
-        hasPlannedEndTime,
+        hasPlannedEndTime: hasPlannedEndTime ?? false,
         dueDate: (parsedDueDate as Date | null) ?? null,
-        hasDueTime,
+        hasDueTime: hasDueTime ?? false,
         depth,
         completedAt: status === 'DONE' ? new Date() : null,
         parentId: parentId ?? null,
@@ -309,11 +277,7 @@ export async function updateTaskPriority(userId: string, id: string, priority: T
 // ─── Spheres ──────────────────────────────────────────────────────────────────
 
 export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
-  const spheres = await prisma.lifeSphere.findMany({
-    where: { userId },
-    orderBy: { order: "asc" },
-    include: { _count: { select: { tasks: true } } },
-  });
+  const spheres = await getCachedSpheres(userId);
   return spheres.map((s) => ({
     id: s.id,
     name: s.name,

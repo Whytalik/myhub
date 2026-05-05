@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getCachedActiveSprint } from "@/lib/cache";
 import { SpaceLanding, SpaceError, ModuleQuickAccess, StatsSummary, QuickActions } from "@/components/space-landing";
 import { Compass, Target, Zap, CheckCircle2, Brain, Plus, Eye } from "lucide-react";
 
@@ -12,17 +13,13 @@ export const metadata: Metadata = {
 async function fetchPlanningData(userId: string) {
   const today = new Date();
 
-  const [activeSprint, objectives, milestones, sprintCount] = await Promise.all([
-    prisma.sprint.findFirst({
-      where: { userId, status: "ACTIVE" },
-      orderBy: { startDate: "desc" },
-    }),
-    prisma.objective.count({
-      where: { sprint: { userId, status: "ACTIVE" }, status: "IN_PROGRESS" },
-    }),
+  const [activeSprint, milestones, sprintCount] = await Promise.all([
+    getCachedActiveSprint(userId),
     prisma.milestone.count({ where: { userId, completed: false } }),
     prisma.sprint.count({ where: { userId } }),
   ]);
+
+  const objectives = activeSprint?.objectives.filter(o => o.status === "IN_PROGRESS").length ?? 0;
 
   return { activeSprint, objectives, milestones, sprintCount, today };
 }

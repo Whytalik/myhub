@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getCachedLibraryCounts, getCachedCurrentlyReading } from "@/lib/cache";
 import { SpaceLanding, SpaceError, ModuleQuickAccess, RecentItems } from "@/components/space-landing";
 import { BookText, Sparkles, Video, GraduationCap } from "lucide-react";
 import { Suspense } from "react";
@@ -12,18 +12,17 @@ export const metadata: Metadata = {
 };
 
 async function fetchLibraryData(userId: string) {
-  const [books, articles, videos, courses, reading] = await Promise.all([
-    prisma.libraryItem.count({ where: { userId, type: "BOOK" } }),
-    prisma.libraryItem.count({ where: { userId, type: "ARTICLE" } }),
-    prisma.libraryItem.count({ where: { userId, type: "VIDEO" } }),
-    prisma.libraryItem.count({ where: { userId, type: "COURSE" } }),
-    prisma.libraryItem.findMany({
-      where: { userId, status: "READING" },
-      take: 3,
-      orderBy: { updatedAt: "desc" },
-    }),
+  const [counts, reading] = await Promise.all([
+    getCachedLibraryCounts(userId),
+    getCachedCurrentlyReading(userId),
   ]);
-  return { books, articles, videos, courses, reading };
+  return {
+    books: counts.BOOK || 0,
+    articles: counts.ARTICLE || 0,
+    videos: counts.VIDEO || 0,
+    courses: counts.COURSE || 0,
+    reading,
+  };
 }
 
 function LibraryCurrentlyReadingSkeleton() {

@@ -1,16 +1,8 @@
+import { getCachedUserProfile } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 
 export async function getUserProfile(userId: string) {
-  return await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      createdAt: true,
-    }
-  });
+  return getCachedUserProfile(userId);
 }
 
 export async function updateUserProfile(userId: string, data: { name?: string }) {

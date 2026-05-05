@@ -5,6 +5,25 @@ import { auth } from "@/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function DashboardSkeleton() {
+  return (
+    <div className="h-screen w-full bg-bg flex">
+      <div className="w-20 h-full bg-surface/50 border-r border-border/40 flex flex-col gap-3 p-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="w-full h-12 rounded-xl" />
+        ))}
+      </div>
+      <div className="flex-1 p-8 space-y-4">
+        <Skeleton className="h-8 w-48 rounded-xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+      </div>
+    </div>
+  );
+}
 
 // Динамічний компонент, який зчитує дані сесії та куки
 async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
@@ -44,8 +63,7 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
           initialOpenSections={initialOpenSections}
           user={session.user ? { 
             name: session.user.name || "", 
-            email: session.user.email || "", 
-            role: session.user.role 
+            email: session.user.email || ""
           } : undefined}
         >
           {children}
@@ -62,7 +80,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<div className="h-screen w-full bg-bg flex items-center justify-center"><div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" /></div>}>
+    <Suspense fallback={<DashboardSkeleton />}>
       <DashboardDataLayer>
         {children}
       </DashboardDataLayer>

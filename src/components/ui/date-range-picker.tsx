@@ -21,7 +21,6 @@ import {
   isToday,
   parseISO,
   isWithinInterval,
-  isAfter,
   isBefore
 } from "date-fns";
 import { createPortal } from "react-dom";
@@ -133,11 +132,13 @@ export function DateRangePicker({
     return isWithinInterval(date, { start, end });
   };
 
+  /* eslint-disable react-hooks/preserve-manual-memoization */
   const displayValue = React.useMemo(() => {
     if (!start) return "";
     if (!end) return format(start, "MMM d, yyyy");
     return `${format(start, "MMM d")} - ${format(end, "MMM d, yyyy")}`;
   }, [start, end]);
+  /* eslint-enable react-hooks/preserve-manual-memoization */
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>

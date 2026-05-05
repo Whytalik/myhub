@@ -1,24 +1,15 @@
 "use server";
 
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import * as profileService from "../services/profile-service";
+import { ActionResult, withAction } from "@/lib/action-utils";
 
-export async function updateProfileAction(_state: unknown, formData: FormData) {
-  const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) return { success: false, error: "Unauthorized" };
-
+export async function updateProfileAction(_state: unknown, formData: FormData): Promise<ActionResult<void>> {
   const name = formData.get("name") as string;
   if (!name) return { success: false, error: "Name is required" };
-
-  try {
+  return withAction(async (userId) => {
     await profileService.updateUserProfile(userId, { name });
     revalidatePath("/profile");
     revalidatePath("/");
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    return { success: false, error: "Failed to update profile" };
-  }
+  });
 }

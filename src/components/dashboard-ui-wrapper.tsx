@@ -3,6 +3,7 @@
 import { Sidebar } from "@/components/sidebar";
 import { DomainHeader } from "@/components/domain-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { AIChatWidget } from "@/features/ai/components/ai-chat";
 
 export function DashboardUIWrapper({ 
   children,
@@ -37,6 +38,9 @@ export function DashboardUIWrapper({
         {/* Mobile Bottom Nav */}
         <MobileBottomNav />
       </div>
+
+      {/* AI Chat Widget */}
+      <AIChatWidget />
     </div>
   );
 }

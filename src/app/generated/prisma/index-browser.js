@@ -128,7 +128,6 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image',
   passwordHash: 'passwordHash',
   privateTaskPasswordHash: 'privateTaskPasswordHash',
-  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   systemStatus: 'systemStatus'
@@ -176,29 +175,42 @@ exports.Prisma.NutritionPersonScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
-  targetCalories: 'targetCalories',
-  targetProtein: 'targetProtein',
-  targetFat: 'targetFat',
-  targetCarbs: 'targetCarbs',
-  targetFiber: 'targetFiber',
+  goal: 'goal',
+  targetKcal: 'targetKcal',
+  proteinPct: 'proteinPct',
+  fatPct: 'fatPct',
+  carbsPct: 'carbsPct',
+  fiberGrams: 'fiberGrams',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ProductScalarFieldEnum = {
+exports.Prisma.FoodProductScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   name: 'name',
+  caloriesPer100: 'caloriesPer100',
+  proteinPer100: 'proteinPer100',
+  fatPer100: 'fatPer100',
+  carbsPer100: 'carbsPer100',
+  fiberPer100: 'fiberPer100',
+  unit: 'unit',
+  standardPackageAmount: 'standardPackageAmount',
+  price: 'price',
+  priceSource: 'priceSource',
+  priceUpdatedAt: 'priceUpdatedAt',
+  nutritionSource: 'nutritionSource',
   category: 'category',
   status: 'status',
-  source: 'source',
-  state: 'state',
-  unit: 'unit',
-  calories: 'calories',
-  protein: 'protein',
-  fat: 'fat',
-  carbs: 'carbs',
-  fiber: 'fiber',
-  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CookingMethodScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  coefficient: 'coefficient',
+  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -208,8 +220,7 @@ exports.Prisma.DishScalarFieldEnum = {
   userId: 'userId',
   name: 'name',
   description: 'description',
-  priority: 'priority',
-  yield: 'yield',
+  servings: 'servings',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -218,11 +229,8 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   id: 'id',
   dishId: 'dishId',
   productId: 'productId',
-  amount: 'amount',
-  unit: 'unit',
-  inputState: 'inputState',
-  preparationMethod: 'preparationMethod',
-  yieldFactor: 'yieldFactor'
+  cookingMethodId: 'cookingMethodId',
+  rawWeight: 'rawWeight'
 };
 
 exports.Prisma.DayTemplateScalarFieldEnum = {
@@ -287,6 +295,61 @@ exports.Prisma.ShoppingListItemScalarFieldEnum = {
   amount: 'amount',
   unit: 'unit',
   checked: 'checked'
+};
+
+exports.Prisma.MealTemplateSlotScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  goal: 'goal',
+  percentage: 'percentage',
+  order: 'order',
+  minProteinGrams: 'minProteinGrams',
+  maxPctOfDaily: 'maxPctOfDaily',
+  fiberPct: 'fiberPct'
+};
+
+exports.Prisma.MealSlotInstanceScalarFieldEnum = {
+  id: 'id',
+  dayPlanId: 'dayPlanId',
+  personId: 'personId',
+  templateSlotId: 'templateSlotId',
+  targetKcal: 'targetKcal',
+  targetFiberGrams: 'targetFiberGrams',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DishEntryScalarFieldEnum = {
+  id: 'id',
+  mealSlotId: 'mealSlotId',
+  dishId: 'dishId',
+  portionWeight: 'portionWeight',
+  isShared: 'isShared',
+  manualWeight: 'manualWeight',
+  fitScore: 'fitScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ShoppingCartScalarFieldEnum = {
+  id: 'id',
+  weekPlanId: 'weekPlanId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  requiredRawGrams: 'requiredRawGrams',
+  availableGrams: 'availableGrams',
+  packagesCount: 'packagesCount',
+  totalCost: 'totalCost',
+  status: 'status',
+  manualOverride: 'manualOverride',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.LifeSphereScalarFieldEnum = {
@@ -587,6 +650,38 @@ exports.Prisma.SprintReviewScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AIChatScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  messages: 'messages',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AISuggestionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  domain: 'domain',
+  action: 'action',
+  payload: 'payload',
+  status: 'status',
+  reason: 'reason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AIUsageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  totalTokens: 'totalTokens',
+  requestCount: 'requestCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -594,6 +689,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -612,11 +711,6 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.Role = exports.$Enums.Role = {
-  USER: 'USER',
-  ADMIN: 'ADMIN'
-};
-
 exports.SystemStatus = exports.$Enums.SystemStatus = {
   STABLE: 'STABLE',
   CRISIS_SURVIVAL: 'CRISIS_SURVIVAL',
@@ -624,22 +718,22 @@ exports.SystemStatus = exports.$Enums.SystemStatus = {
   CRISIS_RE_ENTRY: 'CRISIS_RE_ENTRY'
 };
 
-exports.ProductCategory = exports.$Enums.ProductCategory = {
-  FRUITS: 'FRUITS',
-  VEGETABLES: 'VEGETABLES',
-  DAIRY: 'DAIRY',
-  MEAT: 'MEAT',
-  POULTRY: 'POULTRY',
-  SEAFOOD: 'SEAFOOD',
-  GRAINS: 'GRAINS',
-  LEGUMES: 'LEGUMES',
-  NUTS_SEEDS: 'NUTS_SEEDS',
-  EGGS: 'EGGS',
-  OILS_FATS: 'OILS_FATS',
-  SWEETS: 'SWEETS',
-  BEVERAGES: 'BEVERAGES',
-  BAKERY: 'BAKERY',
-  OTHER: 'OTHER'
+exports.Goal = exports.$Enums.Goal = {
+  GAIN: 'GAIN',
+  MAINTAIN: 'MAINTAIN',
+  LOSE: 'LOSE'
+};
+
+exports.PriceSource = exports.$Enums.PriceSource = {
+  MANUAL: 'MANUAL',
+  FETCHED: 'FETCHED'
+};
+
+exports.NutritionSource = exports.$Enums.NutritionSource = {
+  MANUAL: 'MANUAL',
+  OPENFOODFACTS: 'OPENFOODFACTS',
+  USDA: 'USDA',
+  FATSECRET: 'FATSECRET'
 };
 
 exports.ProductStatus = exports.$Enums.ProductStatus = {
@@ -648,15 +742,23 @@ exports.ProductStatus = exports.$Enums.ProductStatus = {
   FAVORITE: 'FAVORITE'
 };
 
-exports.ProductSource = exports.$Enums.ProductSource = {
-  MANUAL: 'MANUAL',
-  IMPORTED: 'IMPORTED'
+exports.MealSlot = exports.$Enums.MealSlot = {
+  BREAKFAST: 'BREAKFAST',
+  LUNCH: 'LUNCH',
+  DINNER: 'DINNER',
+  SNACK: 'SNACK'
 };
 
-exports.ProductState = exports.$Enums.ProductState = {
-  RAW: 'RAW',
-  COOKED: 'COOKED',
-  PROCESSED: 'PROCESSED'
+exports.Priority = exports.$Enums.Priority = {
+  FIXED: 'FIXED',
+  FLEXIBLE: 'FLEXIBLE',
+  AUTO: 'AUTO'
+};
+
+exports.PlanAdherence = exports.$Enums.PlanAdherence = {
+  PLANNED: 'PLANNED',
+  FOLLOWED: 'FOLLOWED',
+  DEVIATED: 'DEVIATED'
 };
 
 exports.Unit = exports.$Enums.Unit = {
@@ -667,37 +769,12 @@ exports.Unit = exports.$Enums.Unit = {
   TSP: 'TSP'
 };
 
-exports.Priority = exports.$Enums.Priority = {
-  FIXED: 'FIXED',
-  FLEXIBLE: 'FLEXIBLE',
-  AUTO: 'AUTO'
-};
-
-exports.IngredientInputState = exports.$Enums.IngredientInputState = {
-  RAW: 'RAW',
-  COOKED: 'COOKED'
-};
-
-exports.PreparationMethod = exports.$Enums.PreparationMethod = {
-  RAW: 'RAW',
-  BOILED: 'BOILED',
-  FRIED: 'FRIED',
-  BAKED: 'BAKED',
-  STEAMED: 'STEAMED',
-  OTHER: 'OTHER'
-};
-
-exports.MealSlot = exports.$Enums.MealSlot = {
-  BREAKFAST: 'BREAKFAST',
-  LUNCH: 'LUNCH',
-  DINNER: 'DINNER',
-  SNACK: 'SNACK'
-};
-
-exports.PlanAdherence = exports.$Enums.PlanAdherence = {
-  PLANNED: 'PLANNED',
-  FOLLOWED: 'FOLLOWED',
-  DEVIATED: 'DEVIATED'
+exports.CartItemStatus = exports.$Enums.CartItemStatus = {
+  TO_BUY: 'TO_BUY',
+  IN_CART: 'IN_CART',
+  BOUGHT: 'BOUGHT',
+  HAVE: 'HAVE',
+  SKIPPED: 'SKIPPED'
 };
 
 exports.TaskStatus = exports.$Enums.TaskStatus = {
@@ -781,6 +858,17 @@ exports.TacticFrequency = exports.$Enums.TacticFrequency = {
   WEEKLY: 'WEEKLY'
 };
 
+exports.AIDomain = exports.$Enums.AIDomain = {
+  OPERATIONS: 'OPERATIONS',
+  HEALTH: 'HEALTH'
+};
+
+exports.SuggestionStatus = exports.$Enums.SuggestionStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   PushSubscription: 'PushSubscription',
@@ -788,7 +876,8 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   NutritionPerson: 'NutritionPerson',
-  Product: 'Product',
+  FoodProduct: 'FoodProduct',
+  CookingMethod: 'CookingMethod',
   Dish: 'Dish',
   DishIngredient: 'DishIngredient',
   DayTemplate: 'DayTemplate',
@@ -798,6 +887,11 @@ exports.Prisma.ModelName = {
   DayPlanEntry: 'DayPlanEntry',
   ShoppingList: 'ShoppingList',
   ShoppingListItem: 'ShoppingListItem',
+  MealTemplateSlot: 'MealTemplateSlot',
+  MealSlotInstance: 'MealSlotInstance',
+  DishEntry: 'DishEntry',
+  ShoppingCart: 'ShoppingCart',
+  CartItem: 'CartItem',
   LifeSphere: 'LifeSphere',
   Task: 'Task',
   DailyEntry: 'DailyEntry',
@@ -820,7 +914,10 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   Tactic: 'Tactic',
   TacticCompletion: 'TacticCompletion',
-  SprintReview: 'SprintReview'
+  SprintReview: 'SprintReview',
+  AIChat: 'AIChat',
+  AISuggestion: 'AISuggestion',
+  AIUsage: 'AIUsage'
 };
 
 /**

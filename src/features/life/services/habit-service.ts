@@ -1,21 +1,10 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedActiveHabits } from "@/lib/cache";
 import type { UpsertHabitInput } from "../types";
 import { getStartOfDay } from "../logic/habit-utils";
 
 export async function getActiveHabits(userId: string) {
-  return prisma.habit.findMany({
-    where: { userId },
-    orderBy: { order: "asc" },
-    include: {
-      completions: {
-        where: {
-          date: {
-            gte: new Date(new Date().setDate(new Date().getDate() - 30)),
-          },
-        },
-      },
-    },
-  });
+  return getCachedActiveHabits(userId);
 }
 
 export async function upsertHabit(userId: string, input: UpsertHabitInput) {

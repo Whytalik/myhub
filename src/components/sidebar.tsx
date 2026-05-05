@@ -55,12 +55,12 @@ interface SpaceNavItem {
 }
 
 // --- Navigation Data ---
-const foodNav = [
-  { href: "/food/profiles", label: "Profiles", icon: Users },
-  { href: "/food/products", label: "Products", icon: Package },
-  { href: "/food/dishes", label: "Dishes", icon: ChefHat },
-  { href: "/food/plans", label: "Plans", icon: CalendarDays },
-  { href: "/food/shopping", label: "Shopping", icon: ShoppingCart },
+const nutritionNav = [
+  { href: "/nutrition/profiles", label: "Profiles", icon: Users },
+  { href: "/nutrition/products", label: "Products", icon: Package },
+  { href: "/nutrition/dishes", label: "Dishes", icon: ChefHat },
+  { href: "/nutrition/plans", label: "Plans", icon: CalendarDays },
+  { href: "/nutrition/shopping", label: "Shopping", icon: ShoppingCart },
 ];
 
 const fitnessNav = [
@@ -108,7 +108,7 @@ const LABEL_TRANSITION = { duration: 0.14, ease: "easeOut" } as const;
 const SUBMENU_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
 
 interface SidebarProps {
-  user?: { name: string; email: string; role?: string };
+  user?: { name: string; email: string };
   initialOrder?: string[];
   initialOpenSections?: Record<string, boolean>;
 }
@@ -123,7 +123,6 @@ export function Sidebar({
   const { activeDomain } = useSpace();
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const isAdmin = user?.role === "ADMIN";
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(initialOpenSections);
 
@@ -468,17 +467,17 @@ export function Sidebar({
                   { id: "planning", label: "Planning Space", href: "/planning", icon: Compass, status: "soon", subItems: planningNav },
                   { id: "life", label: "Life Space", href: "/life", icon: Sparkles, status: "active", subItems: lifeSpaceNav },
                 ]);
-              if (section === "health" && isAdmin)
+              if (section === "health")
                 return renderNavGroup("Health", [
-                  { id: "food", label: "Food Space", href: "/food", icon: ChefHat, status: "dev", subItems: foodNav },
+                  { id: "nutrition", label: "Nutrition Space", href: "/nutrition", icon: ChefHat, status: "dev", subItems: nutritionNav },
                   { id: "fitness", label: "Fitness Space", href: "/fitness", icon: Dumbbell, status: "disabled", subItems: fitnessNav },
                 ]);
-              if (section === "mind" && isAdmin)
+              if (section === "mind")
                 return renderNavGroup("Mind", [
                   { id: "languages", label: "Language Space", href: "/languages", icon: Languages, status: "disabled", subItems: languagesNav },
                   { id: "library", label: "Library Space", href: "/library", icon: BookText, status: "disabled", subItems: libraryNav },
                 ], true);
-              if (section === "wealth" && isAdmin)
+              if (section === "wealth")
                 return renderNavGroup("Wealth", [
                   { id: "trading", label: "Trading Space", href: "/trading", icon: TrendingUp, status: "disabled", subItems: tradingNav },
                 ], true);
@@ -513,7 +512,7 @@ export function Sidebar({
                       className="flex flex-col overflow-hidden whitespace-nowrap"
                     >
                       <p className="text-[13px] font-bold text-text truncate leading-none mb-1">{user.name}</p>
-                      <p className="text-[10px] text-muted truncate font-mono uppercase tracking-widest">{user.role || 'User'}</p>
+                      <p className="text-[10px] text-muted truncate font-mono uppercase tracking-widest">User</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

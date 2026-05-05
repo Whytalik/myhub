@@ -1,16 +1,10 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedWishlistItems } from "@/lib/cache";
 import type { WishlistItemData, UpsertWishlistItemInput } from "../types";
 
 export const wishlistService = {
   async getAll(userId: string): Promise<WishlistItemData[]> {
-    return prisma.wishlistItem.findMany({
-      where: { userId },
-      orderBy: [
-        { status: "asc" },
-        { priority: "desc" },
-        { createdAt: "desc" },
-      ],
-    }) as unknown as WishlistItemData[];
+    return getCachedWishlistItems(userId);
   },
 
   async upsert(userId: string, input: UpsertWishlistItemInput): Promise<WishlistItemData> {

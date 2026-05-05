@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Zap, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SprintBoard } from "./SprintBoard";
 import { getActiveSprintAction, upsertSprintAction } from "../actions/sprint-actions";
 import type { SprintData } from "../types";
@@ -50,9 +51,11 @@ export function SprintManager({ initialSprint }: SprintManagerProps) {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-        <p className="text-xs text-muted font-mono uppercase tracking-widest">Initializing Engine...</p>
+      <div className="space-y-4 p-6">
+        <Skeleton className="h-8 w-48 rounded-xl" />
+        <Skeleton className="h-24 w-full rounded-2xl" />
+        <Skeleton className="h-24 w-full rounded-2xl" />
+        <Skeleton className="h-24 w-full rounded-2xl" />
       </div>
     );
   }

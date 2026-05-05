@@ -1,26 +1,19 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import * as journalService from "../services/journal-service";
+import { invalidateJournalCache } from "@/lib/revalidate";
+import { getRequiredUserId } from "@/lib/action-utils";
 import type { UpsertDailyEntryInput } from "../types";
 
-async function getUserId() {
-  const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) throw new Error("Unauthorized: No userId found in session");
-  return userId;
-}
-
 export async function upsertEntryAction(data: UpsertDailyEntryInput) {
-  const userId = await getUserId();
+  const userId = await getRequiredUserId();
   const entry = await journalService.upsertEntry(userId, data);
-  revalidatePath("/life/journal");
+  invalidateJournalCache(userId, new Date(data.date));
   return entry;
 }
 
 export async function deleteEntryAction(id: string) {
-  const userId = await getUserId();
+  const userId = await getRequiredUserId();
   await journalService.deleteEntry(userId, id);
-  revalidatePath("/life/journal");
+  invalidateJournalCache(userId);
 }

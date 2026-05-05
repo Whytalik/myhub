@@ -29,7 +29,8 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
   };
 
   const setMinutes = (m: number) => {
-    const newM = (m + 60) % 60;
+    const snappedM = Math.round(m / 5) * 5;
+    const newM = (snappedM + 60) % 60;
     onChange(`${hours.toString().padStart(2, "0")}:${newM.toString().padStart(2, "0")}`);
   };
 

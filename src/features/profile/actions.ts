@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { invalidateProfileCache } from "@/lib/revalidate";
 import { hash, compare } from "bcryptjs";
 
 export async function updateUserNameAction(newName: string) {
@@ -15,7 +15,7 @@ export async function updateUserNameAction(newName: string) {
       data: { name: newName },
     });
 
-    revalidatePath("/");
+    invalidateProfileCache(session.user.id);
     return { success: true };
   } catch (error) {
     console.error("Failed to update user name:", error);
@@ -34,7 +34,7 @@ export async function setPrivateTaskPasswordAction(password: string | null) {
       data: { privateTaskPasswordHash: passwordHash },
     });
 
-    revalidatePath("/");
+    invalidateProfileCache(session.user.id);
     return { success: true };
   } catch (error) {
     console.error("Failed to set private task password:", error);
@@ -47,10 +47,8 @@ export async function verifyPrivateTaskPasswordAction(password: string) {
   if (!session?.user?.id) throw new Error("Unauthorized");
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { privateTaskPasswordHash: true },
-    });
+    const { getCachedPrivateTaskPasswordHash } = await import("@/lib/cache");
+    const user = await getCachedPrivateTaskPasswordHash(session.user.id);
 
     if (!user?.privateTaskPasswordHash) {
       return { success: false, error: "Password not set" };

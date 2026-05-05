@@ -6,7 +6,6 @@ import { Languages, BookOpen, Brain } from "lucide-react";
 export default async function MindPage() {
   const session = await auth();
   if (!session) redirect("/login");
-  if (session.user.role !== "ADMIN") redirect("/home");
 
   return (
     <DomainTemplate

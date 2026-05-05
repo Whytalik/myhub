@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Layers, Plus, Loader2, Share2 } from "lucide-react";
+import { useState, lazy, Suspense } from "react";
+import { Layers, Plus, Loader2 } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,12 @@ import { instantDuplicateTaskAction, instantAddSubtaskAction } from "@/features/
 import { useTransition } from "react";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
-import { TaskCalendar } from "./TaskCalendar";
-import { TaskGraph } from "./TaskGraph";
 import { SphereGrid } from "./SphereGrid";
 import { TaskFormDialog } from "./TaskFormDialog";
 import type { TaskData, LifeSphereData } from "@/features/life/types";
+
+const TaskCalendar = lazy(() => import("./TaskCalendar").then(m => ({ default: m.TaskCalendar })));
+const TaskGraph = lazy(() => import("./TaskGraph").then(m => ({ default: m.TaskGraph })));
 
 interface TasksPageClientProps {
   initialTasks:  TaskData[];
@@ -64,7 +65,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         try {
           await instantDuplicateTaskAction(task);
           toast.success("Task duplicated instantly");
-        } catch (err) {
+        } catch {
           toast.error("Failed to duplicate task");
         }
       });
@@ -77,7 +78,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         try {
           await instantAddSubtaskAction(parent.id, parent.sphereId);
           toast.success("Subtask added instantly");
-        } catch (err) {
+        } catch {
           toast.error("Failed to add subtask");
         }
       });
@@ -188,22 +189,26 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
           />
         )}
         {view === "calendar" && (
-          <TaskCalendar 
-            tasks={calendarTasks} 
-            allTasks={initialTasks}
-            spheres={spheres} 
-            onDuplicate={handleDuplicate}
-            onDelete={handleTaskDeleted}
-          />
+          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+            <TaskCalendar
+              tasks={calendarTasks}
+              allTasks={initialTasks}
+              spheres={spheres}
+              onDuplicate={handleDuplicate}
+              onDelete={handleTaskDeleted}
+            />
+          </Suspense>
         )}
         {view === "graph" && (
-          <TaskGraph 
-            tasks={tasks}
-            spheres={spheres}
-            onEdit={handleEdit}
-            onDuplicate={handleDuplicate}
-            onAddChild={handleAddChild}
-          />
+          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+            <TaskGraph
+              tasks={tasks}
+              spheres={spheres}
+              onEdit={handleEdit}
+              onDuplicate={handleDuplicate}
+              onAddChild={handleAddChild}
+            />
+          </Suspense>
         )}
       </div>
       <Dialog
@@ -276,7 +281,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                       try {
                         await instantDuplicateTaskAction(task);
                         toast.success("Task duplicated instantly");
-                      } catch (err) {
+                      } catch {
                         toast.error("Failed to duplicate task");
                       }
                     });
@@ -285,7 +290,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                       try {
                         await instantAddSubtaskAction(task.id, task.sphereId);
                         toast.success("Subtask added instantly");
-                      } catch (err) {
+                      } catch {
                         toast.error("Failed to add subtask");
                       }
                     });

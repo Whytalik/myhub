@@ -8,7 +8,7 @@ import {
   Briefcase, Shield, Brain, Database, Package,
 } from "lucide-react";
 import { getTodayEntry } from "@/features/life/services/journal-service";
-import { prisma } from "@/lib/prisma";
+import { getCachedSystemStatus, getCachedEntriesForStats } from "@/lib/cache";
 import { format } from "date-fns";
 import { recoveryService } from "@/features/system/services/recovery-service";
 import { CrisisDashboard } from "@/features/system/components/crisis-dashboard";
@@ -19,38 +19,38 @@ const domainGroups = [
     name: "Operations",
     icon: Briefcase,
     spaces: [
-      { label: "Planning Space", description: "Align vision with cycles", icon: Compass, href: "/planning", adminOnly: false },
-      { label: "Life Space", description: "Journal, habits & tasks", icon: BookHeart, href: "/life", adminOnly: false },
+      { label: "Planning Space", description: "Align vision with cycles", icon: Compass, href: "/planning" },
+      { label: "Life Space", description: "Journal, habits & tasks", icon: BookHeart, href: "/life" },
     ]
   },
   {
     name: "Health",
     icon: Shield,
     spaces: [
-      { label: "Food Space", description: "Nutrition & meal planning", icon: Utensils, href: "/food", adminOnly: true },
-      { label: "Fitness Space", description: "Workouts & progress", icon: Dumbbell, href: "/fitness", adminOnly: true },
+      { label: "Nutrition Space", description: "Nutrition & meal planning", icon: Utensils, href: "/nutrition" },
+      { label: "Fitness Space", description: "Workouts & progress", icon: Dumbbell, href: "/fitness" },
     ]
   },
   {
     name: "Mind",
     icon: Brain,
     spaces: [
-      { label: "Language Space", description: "Vocabulary & immersion", icon: Languages, href: "/languages", adminOnly: true },
-      { label: "Library Space", description: "Books & reading lists", icon: BookOpen, href: "/library", adminOnly: true },
+      { label: "Language Space", description: "Vocabulary & immersion", icon: Languages, href: "/languages" },
+      { label: "Library Space", description: "Books & reading lists", icon: BookOpen, href: "/library" },
     ]
   },
   {
     name: "Wealth",
     icon: Database,
     spaces: [
-      { label: "Trading Space", description: "Markets & portfolio", icon: TrendingUp, href: "/trading", adminOnly: true },
+      { label: "Trading Space", description: "Markets & portfolio", icon: TrendingUp, href: "/trading" },
     ]
   },
   {
     name: "Vault",
     icon: Package,
     spaces: [
-      { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other", adminOnly: true },
+      { label: "Misc / Other", description: "Wishlist & tools", icon: ShoppingBag, href: "/other" },
     ]
   }
 ];
@@ -59,7 +59,6 @@ export default async function HomePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const isAdmin = session.user.role === "ADMIN";
   const userId = session.user.id;
   const name = session.user?.name?.split(" ")[0] ?? "there";
 
@@ -68,10 +67,7 @@ export default async function HomePage() {
     await recoveryService.runDailyCheck(userId).catch(() => null);
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { systemStatus: true }
-  });
+  const user = await getCachedSystemStatus(userId);
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
@@ -80,17 +76,16 @@ export default async function HomePage() {
   let streak = 0;
   let todayDone = false;
   let avgEnergy: number | null = null;
+  let todayEntry: Awaited<ReturnType<typeof getTodayEntry>> | null = null;
+  let entries: Awaited<ReturnType<typeof getCachedEntriesForStats>> = [];
 
   if (userId) {
-    const [todayEntry, entries] = await Promise.all([
+    const results = await Promise.all([
       getTodayEntry(userId).catch(() => null),
-      prisma.dailyEntry.findMany({
-        where: { userId },
-        orderBy: { date: "desc" },
-        take: 30,
-        select: { date: true, energy: true },
-      }).catch(() => []),
+      getCachedEntriesForStats(userId).catch(() => []),
     ]);
+    todayEntry = results[0];
+    entries = results[1];
     todayDone = !!todayEntry;
 
     const today = new Date();
@@ -114,17 +109,11 @@ export default async function HomePage() {
 
   const isCrisis = user?.systemStatus && user.systemStatus !== "STABLE";
 
-  // Fetch crisis specific data if needed
   let recoveryRoutine = {};
   let recoveryScore = 0;
-  if (isCrisis) {
-    const todayDate = new Date();
-    todayDate.setHours(0, 0, 0, 0);
-    const entry = await prisma.dailyEntry.findUnique({
-      where: { userId_date: { userId: userId!, date: todayDate } }
-    });
-    recoveryRoutine = (entry?.recoveryRoutine as Record<string, boolean>) || {};
-    recoveryScore = entry?.recoveryScore || 0;
+  if (isCrisis && todayEntry) {
+    recoveryRoutine = (todayEntry.recoveryRoutine as Record<string, boolean>) || {};
+    recoveryScore = todayEntry.recoveryScore || 0;
   }
 
   return (
@@ -198,9 +187,6 @@ export default async function HomePage() {
           {/* Domain Groups */}
           <div className="flex flex-col gap-12">
             {domainGroups.map((group) => {
-              const visibleSpaces = group.spaces.filter(s => !s.adminOnly || isAdmin);
-              if (visibleSpaces.length === 0) return null;
-
               return (
                 <div key={group.name}>
                   <div className="flex items-center gap-2 mb-4">
@@ -208,7 +194,7 @@ export default async function HomePage() {
                      <h2 className="text-[11px] font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                    {visibleSpaces.map(({ label, description, icon: Icon, href }) => (
+                    {group.spaces.map(({ label, description, icon: Icon, href }) => (
                       <Link
                         key={label}
                         href={href}

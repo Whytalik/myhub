@@ -1,10 +1,6 @@
 import { LanguageSphere } from "@/app/generated/prisma";
 
-export interface ActionResult<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
+export type { ActionResult } from "@/lib/action-utils";
 
 export interface LogImmersionInput {
   userLanguageId: string;

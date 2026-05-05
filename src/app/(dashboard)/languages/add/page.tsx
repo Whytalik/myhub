@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import { prisma } from "@/lib/prisma";
-import { LanguageService } from "@/features/languages/services/language-service";
+import { getAllAvailableLanguages, getUserLanguages } from "@/features/languages/services/language-service";
 import { AddLanguageForm } from "@/features/languages/components/AddLanguageForm";
 
 export const metadata: Metadata = {
@@ -16,12 +16,11 @@ export default async function AddLanguagePage() {
     return <div>No profile found</div>;
   }
 
-  const allLanguages = await LanguageService.getAllAvailableLanguages();
-  const userLanguages = await LanguageService.getUserLanguages(person.id);
-  const userLangIds = userLanguages.map(ul => ul.languageId);
+  const allLanguages = await getAllAvailableLanguages();
+  const userLanguages = await getUserLanguages(person.id);
+  const userLangIds = userLanguages.map((ul: { languageId: string }) => ul.languageId);
   
-  // Filter out already added languages
-  const available = allLanguages.filter(l => !userLangIds.includes(l.id));
+  const available = allLanguages.filter((l: { id: string }) => !userLangIds.includes(l.id));
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">

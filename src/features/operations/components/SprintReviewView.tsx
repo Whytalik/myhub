@@ -42,7 +42,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
   }, [sprint.id]);
 
   useEffect(() => {
-    // Only call loadReview when selectedWeek changes
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadReview(selectedWeek);
   }, [selectedWeek, loadReview]);
 

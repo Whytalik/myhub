@@ -6,7 +6,6 @@ import { TrendingUp, Database } from "lucide-react";
 export default async function WealthPage() {
   const session = await auth();
   if (!session) redirect("/login");
-  if (session.user.role !== "ADMIN") redirect("/home");
 
   return (
     <DomainTemplate

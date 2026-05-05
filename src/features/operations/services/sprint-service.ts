@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getCachedAllSprints, getCachedActiveSprint, getCachedAlignmentData, getCachedVision, getCachedAnnualCompass } from "@/lib/cache";
 import { TacticFrequency, TaskStatus, ObjectiveStatus, SprintStatus, TaskPriority } from "@/app/generated/prisma";
 import type { 
   SprintData, 
@@ -112,51 +113,12 @@ function mapSprint(s: Record<string, unknown>): SprintData {
 // ─── Sprints ──────────────────────────────────────────────────────────────────
 
 export async function getAllSprints(userId: string): Promise<SprintData[]> {
-  const sprints = await prisma.sprint.findMany({
-    where: { userId },
-    orderBy: [{ year: "desc" }, { number: "desc" }],
-    include: {
-      objectives: {
-        include: {
-          sphere: true,
-          keyResults: {
-            include: {
-              tactics: {
-                include: { completions: true }
-              }
-            }
-          },
-          projects: {
-            include: { tasks: true }
-          }
-        }
-      }
-    }
-  });
+  const sprints = await getCachedAllSprints(userId);
   return sprints.map(mapSprint);
 }
 
 export async function getActiveSprint(userId: string): Promise<SprintData | null> {
-  const sprint = await prisma.sprint.findFirst({
-    where: { userId, status: "ACTIVE" },
-    include: {
-      objectives: {
-        include: {
-          sphere: true,
-          keyResults: {
-            include: {
-              tactics: {
-                include: { completions: true }
-              }
-            }
-          },
-          projects: {
-            include: { tasks: true }
-          }
-        }
-      }
-    }
-  });
+  const sprint = await getCachedActiveSprint(userId);
   return sprint ? mapSprint(sprint) : null;
 }
 
@@ -308,26 +270,7 @@ export async function deleteProject(userId: string, id: string): Promise<void> {
 // ─── Alignment ────────────────────────────────────────────────────────────────
 
 export async function getAlignmentData(userId: string) {
-  const [vision, spheres, activeSprint] = await Promise.all([
-    prisma.vision.findFirst({ where: { userId } }),
-    prisma.lifeSphere.findMany({ 
-      where: { userId }, 
-      orderBy: { order: "asc" },
-      include: { _count: { select: { tasks: true } } } 
-    }),
-    prisma.sprint.findFirst({
-      where: { userId, status: "ACTIVE" },
-      include: {
-        objectives: {
-          include: {
-            sphere: true,
-            keyResults: true,
-            projects: { include: { tasks: true } }
-          }
-        }
-      }
-    })
-  ]);
+  const { vision, spheres, activeSprint } = await getCachedAlignmentData(userId);
 
   return {
     vision,
@@ -346,7 +289,7 @@ export async function getAlignmentData(userId: string) {
 }
 
 export async function upsertVision(userId: string, title: string, content: string) {
-  const existing = await prisma.vision.findFirst({ where: { userId } });
+  const existing = await getCachedVision(userId);
   
   return prisma.vision.upsert({
     where: { id: existing?.id || "" },
@@ -388,9 +331,7 @@ export async function getSprintReview(sprintId: string, weekNumber: number) {
 // ─── Annual Compass ───────────────────────────────────────────────────────────
 
 export async function getAnnualCompass(userId: string, year: number) {
-  return prisma.annualCompass.findUnique({
-    where: { userId_year: { userId, year } }
-  });
+  return getCachedAnnualCompass(userId, year);
 }
 
 export async function upsertAnnualCompass(userId: string, input: {

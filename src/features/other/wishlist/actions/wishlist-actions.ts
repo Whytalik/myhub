@@ -2,16 +2,11 @@
 
 import { auth } from "@/auth";
 import { wishlistService } from "../services/wishlist-service";
+import { invalidateWishlistCache } from "@/lib/revalidate";
+import { ActionResult } from "@/lib/action-utils";
 import type { UpsertWishlistItemInput, WishlistItemData } from "../types";
-import { revalidatePath } from "next/cache";
 
-export type ActionResult<T> = {
-  success: boolean;
-  data?: T;
-  error?: string;
-};
-
-async function getPersonId() {
+async function getRequiredPersonId(): Promise<string> {
   const session = await auth();
   const personId = (session?.user as { personId?: string })?.personId;
   if (!personId) throw new Error("Unauthorized: No personId found in session");
@@ -22,26 +17,22 @@ export async function upsertWishlistItemAction(
   input: UpsertWishlistItemInput
 ): Promise<ActionResult<WishlistItemData>> {
   try {
-    const personId = await getPersonId();
+    const personId = await getRequiredPersonId();
     const item = await wishlistService.upsert(personId, input);
-    revalidatePath("/other/wishlist");
+    invalidateWishlistCache(personId);
     return { success: true, data: item };
   } catch (err) {
-    console.error("Failed to upsert wishlist item:", err);
-    return { success: false, error: "Failed to save item" };
+    return { success: false, error: err instanceof Error ? err.message : "Failed to save item" };
   }
 }
 
-export async function deleteWishlistItemAction(
-  id: string
-): Promise<ActionResult<void>> {
+export async function deleteWishlistItemAction(id: string): Promise<ActionResult<void>> {
   try {
-    const personId = await getPersonId();
+    const personId = await getRequiredPersonId();
     await wishlistService.delete(personId, id);
-    revalidatePath("/other/wishlist");
-    return { success: true };
+    invalidateWishlistCache(personId);
+    return { success: true, data: undefined };
   } catch (err) {
-    console.error("Failed to delete wishlist item:", err);
-    return { success: false, error: "Failed to delete item" };
+    return { success: false, error: err instanceof Error ? err.message : "Failed to delete item" };
   }
 }
