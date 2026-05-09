@@ -27,7 +27,9 @@ import {
 import {
   Calendar as CalendarIcon,
   Plus,
-  Clock
+  Clock,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { 
   DndContext, 
@@ -41,11 +43,11 @@ import {
   useDroppable
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { motion } from "framer-motion";
 import type { TaskData, LifeSphereData } from "@/features/life/types";
 import { updateTaskRangeAction, updateTaskTimeRangeAction } from "@/features/life/actions/task-actions";
 import { toast } from "sonner";
 import { TaskFormDialog } from "./TaskFormDialog";
-import { Tabs } from "@/components/ui/tabs";
 import { TaskCardBase } from "./TaskCardBase";
 import { StatusToggle } from "./StatusToggle";
 import { PRIORITY_CONFIG } from "./PriorityBadge";
@@ -592,44 +594,36 @@ export function TaskCalendar({
 
       // 3. Find a consistent level for the entire task span across all rows
       let level = 0;
-      const rowsCovered = [];
-      for (let r = Math.floor(startIdxTotal / 7); r <= Math.floor(endIdxTotal / 7); r++) {
-        rowsCovered.push(r);
-      }
+      // Re-implementing stable level logic
+      const rows = [];
+      for (let r = Math.floor(startIdxTotal / 7); r <= Math.floor(endIdxTotal / 7); r++) rows.push(r);
 
       while (true) {
-        let hasCollision = false;
-        for (const r of rowsCovered) {
+        let collision = false;
+        for (const r of rows) {
           const rowStart = r * 7;
           const rowEnd = rowStart + 6;
-          const segStart = Math.max(startIdxTotal, rowStart);
-          const segEnd = Math.min(endIdxTotal, rowEnd);
-
-          if (levelsByRow[r]?.some(l => 
-            l.level === level && 
-            !(segEnd < l.startIdx || segStart > l.endIdx)
-          )) {
-            hasCollision = true;
+          const s = Math.max(startIdxTotal, rowStart);
+          const e = Math.min(endIdxTotal, rowEnd);
+          if (levelsByRow[r]?.some(l => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
+            collision = true;
             break;
           }
         }
-        if (!hasCollision) break;
+        if (!collision) break;
         level++;
       }
 
-      // 4. Create segments and record placement
-      const segments: { task: TaskData, startIdx: number, endIdx: number, level: number, rowIdx: number }[] = [];
-      for (const r of rowsCovered) {
+      const segments = [];
+      for (const r of rows) {
         const rowStart = r * 7;
         const rowEnd = rowStart + 6;
-        const segStart = Math.max(startIdxTotal, rowStart);
-        const segEnd = Math.min(endIdxTotal, rowEnd);
-        
+        const s = Math.max(startIdxTotal, rowStart);
+        const e = Math.min(endIdxTotal, rowEnd);
         if (!levelsByRow[r]) levelsByRow[r] = [];
-        levelsByRow[r].push({ taskId: task.id, startIdx: segStart, endIdx: segEnd, level });
-        segments.push({ task, startIdx: segStart, endIdx: segEnd, level, rowIdx: r });
+        levelsByRow[r].push({ taskId: task.id, startIdx: s, endIdx: e, level });
+        segments.push({ task, startIdx: s, endIdx: e, level, rowIdx: r });
       }
-
       return segments;
     });
   }, [localTasks, days]);
@@ -691,14 +685,13 @@ export function TaskCalendar({
     const newEnd = new Date(currentEnd);
     newEnd.setDate(newEnd.getDate() + daysDelta);
     
-    // Use startTs/newEndTs for basic date comparison
     const startTs = new Date(currentStart).setHours(0, 0, 0, 0);
     const newEndTs = new Date(newEnd).setHours(0, 0, 0, 0);
 
     if (newEndTs < startTs) return;
 
-    const isSameDay = startTs === newEndTs;
-    const finalEnd = isSameDay ? null : newEnd;
+    const isSameDayVal = startTs === newEndTs;
+    const finalEnd = isSameDayVal ? null : newEnd;
     
     const originalTasks = [...localTasks];
     setLocalTasks(prev => prev.map(t => 
@@ -716,6 +709,81 @@ export function TaskCalendar({
     }
   };
 
+  const navigate = (direction: number) => {
+    if (mode === "month") {
+      setCurrentDate(prev => direction > 0 ? addMonths(prev, 1) : subMonths(prev, 1));
+    } else if (mode === "week") {
+      setCurrentDate(prev => direction > 0 ? addWeeks(prev, 1) : subWeeks(prev, 1));
+    } else {
+      setCurrentDate(prev => direction > 0 ? addDays(prev, 1) : subDays(prev, 1));
+    }
+  };
+
+  const renderGridBody = () => (
+    <div className="overflow-x-auto scrollbar-hide">
+      <div className="min-w-[800px]">
+        <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
+            <div key={day} className={`py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
+              {day}
+            </div>
+          ))}
+        </div>
+
+        <div className="relative min-w-full">
+          <div className="grid grid-cols-7 border-l border-t border-white/[0.03]">
+            {days.map((day, i) => (
+              <CalendarDayCell 
+                key={i} 
+                day={day} 
+                currentMonth={currentDate} 
+                onAdd={(date) => {
+                  setEditingTask({ plannedDate: date } as TaskData);
+                  setParentTask(null);
+                  setIsDuplicate(false);
+                  setDialogVersion(v => v + 1);
+                  setDialogOpen(true);
+                }}
+                isDraggingAny={isDraggingAny}
+                mode={mode}
+              />
+            ))}
+          </div>
+
+          <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
+            {allTasksWithLevels.map((seg) => (
+              <TaskCalendarCard
+                key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
+                task={seg.task}
+                startIdx={seg.startIdx}
+                endIdx={seg.endIdx}
+                level={seg.level}
+                rowIdx={seg.rowIdx}
+                onEdit={handleEdit}
+                onDuplicate={handleDuplicate}
+                onAddChild={handleAddChild}
+                onDelete={handleTaskDeleted}
+                allTasks={parentResolutionTasks}
+                mode={mode}
+                days={days}
+                onResize={handleResize}
+                isResizing={resizingTaskId === seg.task.id}
+                onResizeStart={(id) => setResizingTaskId(id)}
+                onResizeEnd={() => setResizingTaskId(null)}
+                isOverlay
+                isDraggable
+                onHeightChange={handleHeightChange}
+                style={{
+                  top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <DndContext 
       sensors={sensors} 
@@ -723,409 +791,324 @@ export function TaskCalendar({
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col bg-[#0f0d0a] border border-[#2e2e2e] rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
-        <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 md:gap-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-accent/10 rounded-xl">
-              <CalendarIcon size={20} className="text-accent md:w-5 md:h-5 w-4 h-4" />
+        {/* Header Controls */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 md:p-6 lg:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 lg:gap-6">
+          <div className="flex items-center justify-between lg:justify-start gap-4 lg:gap-8">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-accent/10 rounded-xl shrink-0">
+                <CalendarIcon size={20} className="text-accent md:w-5 md:h-5 w-4 h-4" />
+              </div>
+              <div className="flex flex-col min-w-0">
+                <h2 className="text-xs md:text-sm font-black tracking-tighter text-text truncate">
+                  {mode === 'day' 
+                    ? format(currentDate, "MMMM d, yyyy") 
+                    : mode === 'month' 
+                      ? format(currentDate, "MMMM yyyy") 
+                      : format(currentDate, "'Week' w, MMMM yyyy")}
+                </h2>
+                <p className="text-[10px] md:text-caption font-mono text-muted uppercase tracking-[0.2em] mt-0.5 truncate">
+                  {mode === 'month' ? 'Monthly overview' : mode === 'week' ? 'Weekly focus' : 'Daily timeline'}
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col">
-               <h2 className="text-xs md:text-sm font-black tracking-tighter text-text">
-                {mode === 'day' 
-                  ? format(currentDate, "MMMM d, yyyy") 
-                  : mode === 'month' 
-                    ? format(currentDate, "MMMM yyyy") 
-                    : format(currentDate, "'Week' w, MMMM yyyy")}
-              </h2>
-              <p className="text-caption font-mono text-muted uppercase tracking-[0.2em] mt-0.5">
-                {mode === 'month' ? 'Monthly overview' : mode === 'week' ? 'Weekly focus' : 'Daily timeline'}
-              </p>
+
+            {/* Navigation arrows (desktop) */}
+            <div className="hidden md:flex items-center gap-1 bg-surface/50 border border-border/50 rounded-xl p-1 shadow-inner">
+              <button
+                onClick={() => navigate(-1)}
+                className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+                title="Previous"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={() => setCurrentDate(new Date())}
+                className="px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider hover:bg-raised rounded-lg text-muted hover:text-text transition-all border-x border-border/30 mx-0.5"
+              >
+                Today
+              </button>
+              <button
+                onClick={() => navigate(1)}
+                className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+                title="Next"
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 md:gap-6">
-            <div className="flex-1 sm:flex-initial min-w-0">
-              <Tabs 
-                tabs={[
-                  { 
-                    id: "month", 
-                    label: "Month",
-                    content: (
-                      <div className="overflow-x-auto scrollbar-hide">
-                        <div className="min-w-[800px]">
-                          <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
-                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-                              <div key={day} className={`py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
-                                {day}
-                              </div>
-                            ))}
-                          </div>
 
-                          <div className="relative min-w-full">
-                            <div className="grid grid-cols-7 border-l border-t border-white/[0.03]">
-                              {days.map((day, i) => (
-                                <CalendarDayCell 
-                                  key={i} 
-                                  day={day} 
-                                  currentMonth={currentDate} 
-                                  onAdd={(date) => {
-                                    setEditingTask({ plannedDate: date } as TaskData);
-                                    setParentTask(null);
-                                    setIsDuplicate(false);
-                                    setDialogVersion(v => v + 1);
-                                    setDialogOpen(true);
-                                  }}
-                                  isDraggingAny={isDraggingAny}
-                                  mode={mode}
-                                />
-                              ))}
-                            </div>
+          <div className="flex items-center justify-between lg:justify-end gap-3 md:gap-6">
+            {/* Navigation arrows (mobile) */}
+            <div className="flex md:hidden items-center gap-1 bg-surface/50 border border-border/50 rounded-xl p-1 shadow-inner">
+              <button onClick={() => navigate(-1)} className="p-1.5 hover:bg-raised rounded-lg text-muted"><ChevronLeft size={14} /></button>
+              <button onClick={() => setCurrentDate(new Date())} className="px-2 py-1 text-[9px] font-bold text-muted">Today</button>
+              <button onClick={() => navigate(1)} className="p-1.5 hover:bg-raised rounded-lg text-muted"><ChevronRight size={14} /></button>
+            </div>
 
-                            <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
-                              {allTasksWithLevels.map((seg) => (
-                                <TaskCalendarCard
-                                  key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
-                                  task={seg.task}
-                                  startIdx={seg.startIdx}
-                                  endIdx={seg.endIdx}
-                                  level={seg.level}
-                                  rowIdx={seg.rowIdx}
-                                  onEdit={handleEdit}
-                                  onDuplicate={handleDuplicate}
-                                  onAddChild={handleAddChild}
-                                  onDelete={handleTaskDeleted}
-                                  allTasks={parentResolutionTasks}
-                                  mode={mode}
-                                  days={days}
-                                  onResize={handleResize}
-                                  isResizing={resizingTaskId === seg.task.id}
-                                  onResizeStart={(id) => setResizingTaskId(id)}
-                                  onResizeEnd={() => setResizingTaskId(null)}
-                                  isOverlay
-                                  isDraggable
-                                  onHeightChange={handleHeightChange}
-                                  style={{
-                                    top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
+            {/* View switcher */}
+            <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm w-fit relative overflow-hidden shrink-0">
+              {["month", "week", "day"].map((id) => {
+                const isActive = mode === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => setMode(id as "month" | "week" | "day")}
+                    className={`
+                      relative flex items-center gap-2 whitespace-nowrap px-3 md:px-5 lg:px-6 py-1.5 md:py-2 rounded-xl text-[10px] md:text-caption font-mono font-bold uppercase tracking-widest transition-all duration-200 z-10
+                      ${isActive ? "text-bg" : "text-secondary hover:text-text"}
+                    `}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeViewTab"
+                        className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <span className="relative z-10">{id}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Content Body */}
+        <div className="flex-1">
+          {mode === 'day' ? (
+            <div className="flex flex-col h-[600px]">
+              <div 
+                ref={timelineContainerRef}
+                className="relative flex-1 overflow-auto border border-white/[0.03] rounded-none bg-bg/30 scrollbar-show"
+              >
+                <div 
+                  className="relative min-h-full" 
+                  style={{ width: TOTAL_WIDTH }}
+                >
+                  <div className="sticky top-0 z-20 flex h-8 border-b border-white/[0.03] bg-[#0f0d0a]/80 backdrop-blur-md">
+                    {hours.map((hour, i) => (
+                      <div 
+                        key={i} 
+                        className="flex-none border-r border-white/[0.03] last:border-0 flex flex-col justify-end px-2"
+                        style={{ width: HOUR_WIDTH }}
+                      >
+                        <span className="text-label font-mono font-bold text-muted/50 uppercase">
+                          {format(hour, "HH:mm")}
+                        </span>
                       </div>
-                    )
-                  },
-                  { 
-                    id: "week", 
-                    label: "Week",
-                    content: (
-                      <div className="overflow-x-auto scrollbar-hide">
-                        <div className="min-w-[800px]">
-                          <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
-                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-                              <div key={day} className={`py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
-                                {day}
-                              </div>
-                            ))}
-                          </div>
+                    ))}
+                  </div>
 
-                          <div className="relative min-w-full">
-                            <div className="grid grid-cols-7 border-l border-t border-white/[0.03]">
-                              {days.map((day, i) => (
-                                <CalendarDayCell 
-                                  key={i} 
-                                  day={day} 
-                                  currentMonth={currentDate} 
-                                  onAdd={(date) => {
-                                    setEditingTask({ plannedDate: date } as TaskData);
-                                    setParentTask(null);
-                                    setIsDuplicate(false);
-                                    setDialogVersion(v => v + 1);
-                                    setDialogOpen(true);
-                                  }}
-                                  isDraggingAny={isDraggingAny}
-                                  mode={mode}
-                                />
-                              ))}
-                            </div>
-
-                            <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
-                              {allTasksWithLevels.map((seg) => (
-                                <TaskCalendarCard
-                                  key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
-                                  task={seg.task}
-                                  startIdx={seg.startIdx}
-                                  endIdx={seg.endIdx}
-                                  level={seg.level}
-                                  rowIdx={seg.rowIdx}
-                                  onEdit={handleEdit}
-                                  onDuplicate={handleDuplicate}
-                                  onAddChild={handleAddChild}
-                                  onDelete={handleTaskDeleted}
-                                  allTasks={parentResolutionTasks}
-                                  mode={mode}
-                                  days={days}
-                                  onResize={handleResize}
-                                  isResizing={resizingTaskId === seg.task.id}
-                                  onResizeStart={(id) => setResizingTaskId(id)}
-                                  onResizeEnd={() => setResizingTaskId(null)}
-                                  isOverlay
-                                  isDraggable
-                                  onHeightChange={handleHeightChange}
-                                  style={{
-                                    top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
+                  <div className="absolute inset-0 pointer-events-none flex">
+                    {hours.map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="flex-none border-r border-white/[0.03] h-full relative"
+                        style={{ width: HOUR_WIDTH }}
+                      >
+                        <div className="absolute right-3/4 top-0 bottom-0 border-r border-white/[0.015]" />
+                        <div className="absolute right-2/4 top-0 bottom-0 border-r border-white/[0.015]" />
+                        <div className="absolute right-1/4 top-0 bottom-0 border-r border-white/[0.015]" />
                       </div>
-                    )
-                  },
-                  { 
-                    id: "day", 
-                    label: "Day",
-                    content: (
-                      <div className="flex flex-col h-[600px]">
+                    ))}
+                  </div>
+
+                  {isToday(currentDate) && (() => {
+                    const now = new Date();
+                    const nowMin = now.getHours() * 60 + now.getMinutes();
+                    const dayStartMin = DAY_START * 60;
+                    if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {
+                      return (
                         <div 
-                          ref={timelineContainerRef}
-                          className="relative flex-1 overflow-auto border border-white/[0.03] rounded-none bg-bg/30 scrollbar-show"
+                          className="absolute top-0 bottom-0 z-10 w-[2px] bg-accent pointer-events-none"
+                          style={{ left: `${((nowMin - dayStartMin) / 60) * HOUR_WIDTH}px` }}
                         >
-                          <div 
-                            className="relative min-h-full" 
-                            style={{ width: TOTAL_WIDTH }}
-                          >
-                            <div className="sticky top-0 z-20 flex h-8 border-b border-white/[0.03] bg-[#0f0d0a]/80 backdrop-blur-md">
-                              {hours.map((hour, i) => (
-                                <div 
-                                  key={i} 
-                                  className="flex-none border-r border-white/[0.03] last:border-0 flex flex-col justify-end px-2"
-                                  style={{ width: HOUR_WIDTH }}
-                                >
-                                  <span className="text-label font-mono font-bold text-muted/50 uppercase">
-                                    {format(hour, "HH:mm")}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
+                          <div className="absolute -left-[5px] top-8 w-3 h-3 bg-accent rounded-full border-2 border-[#0f0d0a]" />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
 
-                            <div className="absolute inset-0 pointer-events-none flex">
-                              {hours.map((_, i) => (
-                                <div 
-                                  key={i} 
-                                  className="flex-none border-r border-white/[0.03] h-full relative"
-                                  style={{ width: HOUR_WIDTH }}
-                                >
-                                  <div className="absolute right-3/4 top-0 bottom-0 border-r border-white/[0.015]" />
-                                  <div className="absolute right-2/4 top-0 bottom-0 border-r border-white/[0.015]" />
-                                  <div className="absolute right-1/4 top-0 bottom-0 border-r border-white/[0.015]" />
-                                </div>
-                              ))}
-                            </div>
-
-                            {isSameDay(currentDate, new Date()) && (() => {
-                              const now = new Date();
-                              const nowMin = now.getHours() * 60 + now.getMinutes();
-                              const dayStartMin = DAY_START * 60;
-                              if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {
-                                return (
-                                  <div 
-                                    className="absolute top-0 bottom-0 z-10 w-[2px] bg-accent pointer-events-none"
-                                    style={{ left: `${((nowMin - dayStartMin) / 60) * HOUR_WIDTH}px` }}
-                                  >
-                                    <div className="absolute -left-[5px] top-8 w-3 h-3 bg-accent rounded-full border-2 border-[#0f0d0a]" />
-                                  </div>
-                                );
+                  <DndContext 
+                    sensors={sensors} 
+                    onDragStart={handleTimelineDragStart}
+                    onDragMove={handleTimelineDragMove}
+                    onDragEnd={handleTimelineDragEnd}
+                  >
+                    <div className="relative py-2 flex flex-col gap-2 min-h-[300px]">
+                      {timelineRows.map((rowTasks, rowIdx) => (
+                        <div key={rowIdx} className="relative h-10 w-full">
+                          {rowTasks.map(task => {
+                            const isResizingThis = resizingTimeline?.id === task.id;
+                            const isDraggingThis = draggingTimeline?.id === task.id;
+                            
+                            const resDelta = isResizingThis ? Math.round(resizingTimeline!.delta / 5) * 5 : 0;
+                            const drgDelta = isDraggingThis ? Math.round((draggingTimeline!.deltaX / HOUR_WIDTH) * 60 / 5) * 5 : 0;
+                            
+                            let start = new Date(task.plannedDate!);
+                            let end = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(start, 60);
+                            
+                            if (isResizingThis) {
+                              if (resizingTimeline!.edge === 'start') {
+                                start = addMinutes(start, resDelta);
+                              } else {
+                                const potentialEnd = addMinutes(end, resDelta);
+                                if (differenceInMinutes(potentialEnd, start) >= 60) {
+                                  end = potentialEnd;
+                                } else {
+                                  end = addMinutes(start, 60);
+                                }
                               }
-                              return null;
-                            })()}
+                            } else if (isDraggingThis) {
+                              start = addMinutes(start, drgDelta);
+                              end = addMinutes(end, drgDelta);
+                            }
 
-                            <DndContext 
-                              sensors={sensors} 
-                              onDragStart={handleTimelineDragStart}
-                              onDragMove={handleTimelineDragMove}
-                              onDragEnd={handleTimelineDragEnd}
-                            >
-                              <div className="relative py-2 flex flex-col gap-2 min-h-[300px]">
-                                {timelineRows.map((rowTasks, rowIdx) => (
-                                  <div key={rowIdx} className="relative h-10 w-full">
-                                    {rowTasks.map(task => {
-                                      const isResizingThis = resizingTimeline?.id === task.id;
-                                      const isDraggingThis = draggingTimeline?.id === task.id;
-                                      
-                                      const resizeDelta = isResizingThis ? Math.round(resizingTimeline!.delta / 5) * 5 : 0;
-                                      const dragDelta = isDraggingThis ? Math.round((draggingTimeline!.deltaX / HOUR_WIDTH) * 60 / 5) * 5 : 0;
-                                      
-                                      let start = new Date(task.plannedDate!);
-                                      let end = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(start, 60);
-                                      
-                                      if (isResizingThis) {
-                                        if (resizingTimeline!.edge === 'start') {
-                                          start = addMinutes(start, resizeDelta);
-                                        } else {
-                                          const potentialEnd = addMinutes(end, resizeDelta);
-                                          if (differenceInMinutes(potentialEnd, start) >= 60) {
-                                            end = potentialEnd;
-                                          } else {
-                                            end = addMinutes(start, 60);
-                                          }
-                                        }
-                                      } else if (isDraggingThis) {
-                                        start = addMinutes(start, dragDelta);
-                                        end = addMinutes(end, dragDelta);
-                                      }
-
-                                      const startMin = start.getHours() * 60 + start.getMinutes();
-                                      const endMin = end.getHours() * 60 + end.getMinutes();
-                                      const dayStartMin = DAY_START * 60;
-                                      const left = ((startMin - dayStartMin) / 60) * HOUR_WIDTH;
-                                      const width = ((endMin - startMin) / 60) * HOUR_WIDTH;
-                                      
-                                      const priorityCfg = PRIORITY_CONFIG[task.priority];
-                                      
-                                      return (
-                                        <DayTimelineCardWrapper
-                                          key={task.id}
-                                          task={task}
-                                          isResizing={isResizingThis}
-                                          style={{
-                                            left: `${left}px`,
-                                            width: `${Math.max(width, HOUR_WIDTH)}px`,
-                                            zIndex: isResizingThis || isDraggingThis ? 50 : 10,
-                                          }}
-                                        >
-                                          {(isResizingThis || isDraggingThis) && (
-                                            <div className="absolute -top-6 left-0 right-0 flex justify-between px-1 pointer-events-none animate-in fade-in slide-in-from-bottom-1">
-                                              <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
-                                                {format(start, "HH:mm")}
-                                              </div>
-                                              <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
-                                                {format(end, "HH:mm")}
-                                              </div>
-                                            </div>
-                                          )}
-                                          <div
-                                            className={`flex flex-col gap-1.5 rounded-2xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing min-h-[100px] ${
-                                              isDraggingThis || isResizingThis
-                                                ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a]'
-                                                : 'shadow-md border-accent/20 bg-surface/95 backdrop-blur-sm hover:border-accent/40'
-                                            }`}
-                                            onClick={() => {
-                                              if (!isDraggingAny) handleEdit(task);
-                                            }}
-                                          >
-                                            <div className="flex items-center justify-between pointer-events-none">
-                                              <span className="text-caption font-mono font-black text-accent tracking-tighter">
-                                                {format(start, "HH:mm")} — {format(end, "HH:mm")}
-                                              </span>
-                                              {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-muted/40" })}
-                                            </div>
-
-                                            <h4 className="text-note font-black leading-tight text-text line-clamp-2 uppercase tracking-tight pointer-events-none">
-                                              {task.title}
-                                            </h4>
-
-                                            <div className="flex items-center gap-2 mt-auto pt-1.5 border-t border-white/[0.03]">
-                                              <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                                                <StatusToggle 
-                                                  taskId={task.id} 
-                                                  status={task.status} 
-                                                  variant="badge" 
-                                                  size="sm" 
-                                                />
-                                              </div>
-
-                                              <div className="w-px h-3 bg-white/5 shrink-0" />
-
-                                              <div className="flex items-center gap-2 min-w-0 pointer-events-none">
-                                                {task.sphere && (
-                                                  <div className="flex items-center gap-1 min-w-0">
-                                                    <div 
-                                                      className="w-1.5 h-1.5 rounded-full shrink-0" 
-                                                      style={{ backgroundColor: task.sphere.color }} 
-                                                    />
-                                                    <span className="text-[8px] font-mono font-bold uppercase tracking-wider text-muted truncate">
-                                                      {task.sphere.name}
-                                                    </span>
-                                                  </div>
-                                                )}
-                                                <div className="flex items-center gap-1 shrink-0">
-                                                  {React.createElement(priorityCfg.icon, { 
-                                                    size: 10, 
-                                                    style: { color: priorityCfg.color } 
-                                                  })}
-                                                  <span 
-                                                    className="text-[8px] font-mono font-black uppercase tracking-tighter"
-                                                    style={{ color: priorityCfg.color }}
-                                                  >
-                                                    {priorityCfg.label}
-                                                  </span>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div 
-                                            className="absolute right-0 top-0 bottom-0 w-3 cursor-e-resize z-30 opacity-0 group-hover/day:opacity-100 transition-opacity flex items-center justify-end pr-0.5"
-                                            onMouseDown={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              const startX = e.clientX;
-                                              
-                                              const handleMouseMove = (mv: MouseEvent) => {
-                                                const deltaX = mv.clientX - startX;
-                                                const minutesDelta = (deltaX / HOUR_WIDTH) * 60;
-                                                setResizingTimeline({ id: task.id, delta: minutesDelta, edge: 'end' });
-                                              };
-
-                                              const handleMouseUp = (ev: MouseEvent) => {
-                                                document.removeEventListener("mousemove", handleMouseMove);
-                                                document.removeEventListener("mouseup", handleMouseUp);
-                                                
-                                                const deltaX = ev.clientX - startX;
-                                                const minutesDelta = Math.round(((deltaX / HOUR_WIDTH) * 60) / 5) * 5;
-                                                
-                                                if (minutesDelta !== 0) {
-                                                  const currentDuration = differenceInMinutes(end, start);
-                                                  if (currentDuration + minutesDelta < 60) {
-                                                    handleTimelineResize(task.id, 60 - currentDuration, 'end');
-                                                  } else {
-                                                    handleTimelineResize(task.id, minutesDelta, 'end');
-                                                  }
-                                                }
-                                                setResizingTimeline(null);
-                                              };
-                                              
-                                              document.addEventListener("mousemove", handleMouseMove);
-                                              document.addEventListener("mouseup", handleMouseUp);
-                                            }}
-                                          >
-                                            <div className="w-1 h-6 bg-accent/40 rounded-full" />
-                                          </div>
-                                        </DayTimelineCardWrapper>
-                                      );
-                                    })}
-                                  </div>
-                                ))}
-                                
-                                {timelineRows.length === 0 && (
-                                  <div className="absolute inset-0 flex flex-col items-center justify-center text-muted/20">
-                                    <Clock size={48} strokeWidth={1} />
-                                    <p className="text-caption font-mono uppercase tracking-[0.2em] mt-4">No tasks scheduled for this day</p>
+                            const startMin = start.getHours() * 60 + start.getMinutes();
+                            const endMin = end.getHours() * 60 + end.getMinutes();
+                            const dStartMin = DAY_START * 60;
+                            const leftPos = ((startMin - dStartMin) / 60) * HOUR_WIDTH;
+                            const widthVal = ((endMin - startMin) / 60) * HOUR_WIDTH;
+                            
+                            const pCfg = PRIORITY_CONFIG[task.priority];
+                            
+                            return (
+                              <DayTimelineCardWrapper
+                                key={task.id}
+                                task={task}
+                                isResizing={isResizingThis}
+                                style={{
+                                  left: `${leftPos}px`,
+                                  width: `${Math.max(widthVal, HOUR_WIDTH)}px`,
+                                  zIndex: isResizingThis || isDraggingThis ? 50 : 10,
+                                }}
+                              >
+                                {(isResizingThis || isDraggingThis) && (
+                                  <div className="absolute -top-6 left-0 right-0 flex justify-between px-1 pointer-events-none animate-in fade-in slide-in-from-bottom-1">
+                                    <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
+                                      {format(start, "HH:mm")}
+                                    </div>
+                                    <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
+                                      {format(end, "HH:mm")}
+                                    </div>
                                   </div>
                                 )}
-                              </div>
-                            </DndContext>
-                          </div>
+                                <div
+                                  className={`flex flex-col gap-1.5 rounded-2xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing min-h-[100px] ${
+                                    isDraggingThis || isResizingThis
+                                      ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a]'
+                                      : 'shadow-md border-accent/20 bg-surface/95 backdrop-blur-sm hover:border-accent/40'
+                                  }`}
+                                  onClick={() => {
+                                    if (!isDraggingAny) handleEdit(task);
+                                  }}
+                                >
+                                  <div className="flex items-center justify-between pointer-events-none">
+                                    <span className="text-caption font-mono font-black text-accent tracking-tighter">
+                                      {format(start, "HH:mm")} — {format(end, "HH:mm")}
+                                    </span>
+                                    {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-muted/40" })}
+                                  </div>
+
+                                  <h4 className="text-note font-black leading-tight text-text line-clamp-2 uppercase tracking-tight pointer-events-none">
+                                    {task.title}
+                                  </h4>
+
+                                  <div className="flex items-center gap-2 mt-auto pt-1.5 border-t border-white/[0.03]">
+                                    <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+                                      <StatusToggle 
+                                        taskId={task.id} 
+                                        status={task.status} 
+                                        variant="badge" 
+                                        size="sm" 
+                                      />
+                                    </div>
+
+                                    <div className="w-px h-3 bg-white/5 shrink-0" />
+
+                                    <div className="flex items-center gap-2 min-w-0 pointer-events-none">
+                                      {task.sphere && (
+                                        <div className="flex items-center gap-1 min-w-0">
+                                          <div 
+                                            className="w-1.5 h-1.5 rounded-full shrink-0" 
+                                            style={{ backgroundColor: task.sphere.color }} 
+                                          />
+                                          <span className="text-[8px] font-mono font-bold uppercase tracking-wider text-muted truncate">
+                                            {task.sphere.name}
+                                          </span>
+                                        </div>
+                                      )}
+                                      <div className="flex items-center gap-1 shrink-0">
+                                        {React.createElement(pCfg.icon, { 
+                                          size: 10, 
+                                          style: { color: pCfg.color } 
+                                        })}
+                                        <span 
+                                          className="text-[8px] font-mono font-black uppercase tracking-tighter"
+                                          style={{ color: pCfg.color }}
+                                        >
+                                          {pCfg.label}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div 
+                                  className="absolute right-0 top-0 bottom-0 w-3 cursor-e-resize z-30 opacity-0 group-hover/day:opacity-100 transition-opacity flex items-center justify-end pr-0.5"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const sX = e.clientX;
+                                    
+                                    const hMouseMove = (mv: MouseEvent) => {
+                                      const dX = mv.clientX - sX;
+                                      const minDelta = (dX / HOUR_WIDTH) * 60;
+                                      setResizingTimeline({ id: task.id, delta: minDelta, edge: 'end' });
+                                    };
+
+                                    const hMouseUp = (ev: MouseEvent) => {
+                                      document.removeEventListener("mousemove", hMouseMove);
+                                      document.removeEventListener("mouseup", hMouseUp);
+                                      
+                                      const dX = ev.clientX - sX;
+                                      const minDelta = Math.round(((dX / HOUR_WIDTH) * 60) / 5) * 5;
+                                      
+                                      if (minDelta !== 0) {
+                                        const cDur = differenceInMinutes(end, start);
+                                        if (cDur + minDelta < 60) {
+                                          handleTimelineResize(task.id, 60 - cDur, 'end');
+                                        } else {
+                                          handleTimelineResize(task.id, minDelta, 'end');
+                                        }
+                                      }
+                                      setResizingTimeline(null);
+                                    };
+                                    
+                                    document.addEventListener("mousemove", hMouseMove);
+                                    document.addEventListener("mouseup", hMouseUp);
+                                  }}
+                                >
+                                  <div className="w-1 h-6 bg-accent/40 rounded-full" />
+                                </div>
+                              </DayTimelineCardWrapper>
+                            );
+                          })}
                         </div>
-                      </div>
-                    )
-                  }
-                ]} 
-                activeTab={mode} 
-                onTabChange={(id) => setMode(id as "month" | "week" | "day")} 
-              />
+                      ))}
+                      
+                      {timelineRows.length === 0 && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-muted/20">
+                          <Clock size={48} strokeWidth={1} />
+                          <p className="text-caption font-mono uppercase tracking-[0.2em] mt-4">No tasks scheduled for this day</p>
+                        </div>
+                      )}
+                    </div>
+                  </DndContext>
+                </div>
+              </div>
             </div>
-          </div>
+          ) : renderGridBody()}
         </div>
       </div>
 
