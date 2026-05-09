@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
@@ -25,8 +25,6 @@ import {
   differenceInMinutes
 } from "date-fns";
 import {
-  ChevronLeft,
-  ChevronRight,
   Calendar as CalendarIcon,
   Plus,
   Clock
@@ -94,7 +92,7 @@ function TaskCalendarCard({
   endIdx?: number,
   level?: number,
   rowIdx?: number,
-  mode?: "month" | "week",
+  mode?: "month" | "week" | "day",
   days?: Date[],
   onResize?: (taskId: string, daysDelta: number) => void,
   isResizing?: boolean,
@@ -718,16 +716,6 @@ export function TaskCalendar({
     }
   };
 
-  const navigate = (direction: number) => {
-    if (mode === "month") {
-      setCurrentDate(prev => direction > 0 ? addMonths(prev, 1) : subMonths(prev, 1));
-    } else if (mode === "week") {
-      setCurrentDate(prev => direction > 0 ? addWeeks(prev, 1) : subWeeks(prev, 1));
-    } else {
-      setCurrentDate(prev => direction > 0 ? addDays(prev, 1) : subDays(prev, 1));
-    }
-  };
-
   return (
     <DndContext 
       sensors={sensors} 
@@ -1137,6 +1125,8 @@ export function TaskCalendar({
                 onTabChange={(id) => setMode(id as "month" | "week" | "day")} 
               />
             </div>
+          </div>
+        </div>
       </div>
 
       <TaskFormDialog

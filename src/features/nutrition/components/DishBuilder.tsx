@@ -3,7 +3,7 @@
 import { useState, useMemo, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Trash2, Search, X, CheckCircle2 } from "lucide-react";
+import { Trash2, Search, X } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -223,6 +223,7 @@ export function DishBuilder({
       productPrice: product.price || 0,
       rawWeight: 100,
       cookingMethodId: defaultMethod?.id || "",
+      confirmed: true,
     };
     setIngredients((prev) => [...prev, newIng]);
   };

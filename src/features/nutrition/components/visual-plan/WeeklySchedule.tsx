@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { CheckCircle2, Circle } from "lucide-react";
 import { VISUAL_PLAN_SCHEDULE } from "../../constants/visual-plan-data";
 
 const MEAL_ORDER = ["Передтрен", "Сніданок", "Обід", "Перекус", "Вечеря"];
+
+type MealSlot = typeof VISUAL_PLAN_SCHEDULE[0]["meals"][0];
+type Ingredient = MealSlot["ingredients"][0];
 
 function getMealType(type: string): string {
   for (const key of MEAL_ORDER) {
@@ -35,14 +38,17 @@ function combineQty(you: string, her: string): string {
 }
 
 export const WeeklySchedule = () => {
-  const [approvedMeals, setApprovedMeals] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("approved-meals");
-      if (saved) setApprovedMeals(new Set(JSON.parse(saved)));
-    } catch {}
-  }, []);
+  const [approvedMeals, setApprovedMeals] = useState<Set<string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem("approved-meals");
+        return saved ? new Set(JSON.parse(saved)) : new Set();
+      } catch {
+        return new Set();
+      }
+    }
+    return new Set();
+  });
 
   const toggleApproved = (dayIdx: number, mealIdx: number) => {
     const key = `${dayIdx}-${mealIdx}`;
@@ -59,9 +65,13 @@ export const WeeklySchedule = () => {
   };
 
   const pivotData = useMemo(() => {
-    const result: { day: string; meals: Record<string, { meal: typeof VISUAL_PLAN_SCHEDULE[0]["meals"][0]; dayIdx: number; mealIdx: number }> } = [];
+    const result: { 
+      day: string; 
+      meals: Record<string, { meal: MealSlot; dayIdx: number; mealIdx: number }> 
+    }[] = [];
+    
     VISUAL_PLAN_SCHEDULE.forEach((day, dayIdx) => {
-      const mealsMap: Record<string, { meal: typeof VISUAL_PLAN_SCHEDULE[0]["meals"][0]; dayIdx: number; mealIdx: number }> = {};
+      const mealsMap: Record<string, { meal: MealSlot; dayIdx: number; mealIdx: number }> = {};
       day.meals.forEach((meal, mealIdx) => {
         const type = getMealType(meal.type);
         mealsMap[type] = { meal, dayIdx, mealIdx };
@@ -129,7 +139,7 @@ export const WeeklySchedule = () => {
                           <span className="text-[7px] font-mono uppercase text-right text-[#6c63ff]">Я</span>
                           <span className="text-[7px] font-mono uppercase text-right text-[#ff6584]">Вона</span>
                           <span className="text-[7px] font-mono uppercase text-right text-[#e8eaf0]">Σ</span>
-                          {meal.ingredients.map((ing, iIdx) => (
+                          {meal.ingredients.map((ing: Ingredient, iIdx: number) => (
                             <React.Fragment key={iIdx}>
                               <span className={`break-words leading-tight ${
                                 ing.dishId

@@ -4,6 +4,7 @@ export interface PositionCoords {
   top: number;
   left: number;
   align: 'top' | 'bottom';
+  width: number;
 }
 
 interface UseDynamicPositioningOptions {
@@ -51,7 +52,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
         left = Math.max(8, windowWidth - w - 16);
       }
 
-      setCoords({ top, left, align });
+      setCoords({ top, left, align, width: rect.width });
     }
   }, [contentHeight, contentWidth, offset]);
 

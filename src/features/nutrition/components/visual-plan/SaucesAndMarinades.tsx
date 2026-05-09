@@ -21,7 +21,7 @@ export const SaucesAndMarinades = () => {
       {/* Marinades */}
       <div>
         <h2 className="text-xs font-semibold uppercase tracking-wider text-[#7b80a0] mb-4 flex items-center gap-2">
-          <span className="text-base">🧂</span> Маринади для м'яса/риби
+          <span className="text-base">🧂</span> Маринади для м&apos;яса/риби
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {MARINADES.map((m, idx) => (

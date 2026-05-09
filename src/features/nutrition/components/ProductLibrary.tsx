@@ -238,7 +238,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   };
 
   const ProductCard = useMemo(() => {
-    return ({ product, onEdit, onDelete }: { product: FoodProduct, onEdit: (p: FoodProduct) => void, onDelete: (p: FoodProduct) => void }) => (
+    const Card = ({ product, onEdit, onDelete }: { product: FoodProduct, onEdit: (p: FoodProduct) => void, onDelete: (p: FoodProduct) => void }) => (
       <div
         key={product.id}
         className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative"
@@ -273,6 +273,8 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
         )}
       </div>
     );
+    Card.displayName = "ProductCard";
+    return Card;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

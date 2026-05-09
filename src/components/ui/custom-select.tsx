@@ -89,7 +89,7 @@ export function CustomSelect({
             top: coords.align === "top" ? "auto" : coords.top,
             bottom: coords.align === "top" ? window.innerHeight - coords.top + 16 : "auto",
             left: coords.left,
-            width: triggerRef.current?.getBoundingClientRect().width,
+            width: coords.width,
             maxHeight: "250px",
             overflowY: "auto",
           }}

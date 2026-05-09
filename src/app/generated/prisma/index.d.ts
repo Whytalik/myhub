@@ -288,7 +288,8 @@ export type PriceSource = (typeof PriceSource)[keyof typeof PriceSource]
 export const NutritionSource: {
   MANUAL: 'MANUAL',
   OPENFOODFACTS: 'OPENFOODFACTS',
-  USDA: 'USDA'
+  USDA: 'USDA',
+  FATSECRET: 'FATSECRET'
 };
 
 export type NutritionSource = (typeof NutritionSource)[keyof typeof NutritionSource]

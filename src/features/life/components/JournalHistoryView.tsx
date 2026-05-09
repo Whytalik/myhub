@@ -148,15 +148,15 @@ export function JournalHistoryView({ entries }: Props) {
                       <div className="flex items-center gap-5 text-sm font-mono text-muted">
                         <span className="flex items-center gap-1.5" title="Sleep">
                           <Moon size={13} className="text-accent/60" />
-                          {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
+                          {e.sleepHours !== null ? `${e.sleepHours}h` : "â€”"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Energy">
                           <Zap size={13} className="text-accent/60" />
-                          {e.energy !== null ? `${e.energy}/10` : "—"}
+                          {e.energy !== null ? `${e.energy}/10` : "â€”"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Mood">
                           <Smile size={13} className="text-accent/60" />
-                          {e.mood !== null ? `${e.mood}/10` : "—"}
+                          {e.mood !== null ? `${e.mood}/10` : "â€”"}
                         </span>
                         {e.weight !== null && (
                           <span className="flex items-center gap-1.5" title="Weight">
@@ -166,11 +166,11 @@ export function JournalHistoryView({ entries }: Props) {
                         )}
                         <span className="flex items-center gap-1.5" title="Nutrition Adherence">
                           <Utensils size={13} className="text-accent/60" />
-                          {e.nutrition !== null ? `${e.nutrition}/5` : "—"}
+                          {e.nutrition !== null ? `${e.nutrition}/5` : "â€”"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Routine Score">
                           <CheckCircle2 size={13} className="text-accent/60" />
-                          {score !== null ? `${score}%` : "—"}
+                          {score !== null ? `${score}%` : "â€”"}
                         </span>
                       </div>
 
@@ -181,7 +181,7 @@ export function JournalHistoryView({ entries }: Props) {
                       )}
 
                       <span className="text-note font-mono text-muted/50 group-hover:text-accent/60 transition-colors shrink-0 mr-8">
-                        ?
+                        â†’
                       </span>
                     </Link>
 

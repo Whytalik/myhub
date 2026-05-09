@@ -65,7 +65,7 @@ export default function RegisterPage() {
                 required
                 autoComplete="new-password"
                 className="bg-raised border border-border rounded-xl px-4 py-2.5 text-sm text-text placeholder:text-muted focus:outline-none focus:border-accent/50 transition-colors"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               />
             </div>
 
@@ -80,7 +80,7 @@ export default function RegisterPage() {
               disabled={isPending}
               className="mt-1 bg-accent text-bg font-bold py-2.5 rounded-xl text-sm hover:opacity-90 transition-all shadow-lg shadow-accent/20 active:scale-[0.98]"
             >
-              {isPending ? "Creating account…" : "Create account"}
+              {isPending ? "Creating account..." : "Create account"}
             </button>
           </form>
 

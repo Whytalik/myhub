@@ -732,7 +732,8 @@ exports.PriceSource = exports.$Enums.PriceSource = {
 exports.NutritionSource = exports.$Enums.NutritionSource = {
   MANUAL: 'MANUAL',
   OPENFOODFACTS: 'OPENFOODFACTS',
-  USDA: 'USDA'
+  USDA: 'USDA',
+  FATSECRET: 'FATSECRET'
 };
 
 exports.ProductStatus = exports.$Enums.ProductStatus = {
