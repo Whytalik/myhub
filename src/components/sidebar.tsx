@@ -28,6 +28,7 @@ import {
   TrendingUp,
   Users,
   Zap,
+  LayoutGrid,
   Pin,
   X,
   Lock
@@ -56,6 +57,7 @@ interface SpaceNavItem {
 
 // --- Navigation Data ---
 const nutritionNav = [
+  { href: "/nutrition/visual-plan", label: "Visual Plan", icon: LayoutGrid },
   { href: "/nutrition/profiles", label: "Profiles", icon: Users },
   { href: "/nutrition/products", label: "Products", icon: Package },
   { href: "/nutrition/dishes", label: "Dishes", icon: ChefHat },
