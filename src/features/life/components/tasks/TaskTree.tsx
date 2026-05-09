@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
 import { Tabs } from "@/components/ui/tabs";
@@ -194,7 +194,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       <div className="flex flex-col gap-2.5 bg-surface/50 border border-border p-3 md:p-4 rounded-[1.5rem] md:rounded-[2rem] shadow-sm">
         {/* Primary Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 px-2">
-          <span className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] shrink-0">Group By:</span>
+          <span className="text-caption font-mono text-muted uppercase tracking-[0.2em] shrink-0">Group By:</span>
           <div className="flex flex-wrap items-center gap-1.5">
             {PRIMARY_TABS.map(tab => {
               const Icon = tab.icon;
@@ -203,7 +203,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
                 <button
                   key={tab.id}
                   onClick={() => handlePrimaryChange(tab.id)}
-                  className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-xl text-[10px] md:text-[11px] font-bold transition-all ${
+                  className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-xl text-caption md:text-note font-bold transition-all ${
                     active 
                       ? "bg-accent text-bg shadow-lg shadow-accent/20" 
                       : "text-secondary hover:bg-raised hover:text-text"
@@ -243,7 +243,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
               {/* Group Separator */}
               <div className="flex items-center gap-3">
                 <div className="h-px flex-1 bg-border/40" />
-                <span className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] px-4 whitespace-nowrap">{key}</span>
+                <span className="text-caption font-mono text-muted uppercase tracking-[0.4em] px-4 whitespace-nowrap">{key}</span>
                 <div className="h-px flex-1 bg-border/40" />
               </div>
 
@@ -263,7 +263,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       {hasMore && (
         <button 
           onClick={() => setVisibleGroups(prev => prev + 5)}
-          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-[11px] font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
+          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-note font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
         >
           <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
           Show More Groups

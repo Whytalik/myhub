@@ -106,7 +106,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
       {/* Results count */}
       {searchQuery && (
-        <p className="text-[11px] text-muted font-mono">
+        <p className="text-note text-muted font-mono">
           {filteredDishes.length} result{filteredDishes.length !== 1 ? "s" : ""} for &quot;{searchQuery}&quot;
         </p>
       )}
@@ -146,13 +146,13 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                 </div>
 
                 {/* Name */}
-                <h3 className="text-[15px] font-semibold text-text mb-1 pr-8">
+                <h3 className="text-base font-semibold text-text mb-1 pr-8">
                   {dish.name}
                 </h3>
 
                 {/* Description */}
                 {dish.description && (
-                  <p className="text-[11px] text-muted line-clamp-2 mb-3">
+                  <p className="text-note text-muted line-clamp-2 mb-3">
                     {dish.description}
                   </p>
                 )}
@@ -160,17 +160,17 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                 {/* Nutrition per 100g */}
                 <div className="flex items-center gap-4 mb-3">
                   <div className="flex items-center gap-1">
-                    <span className="text-text font-mono text-[14px] font-bold">
+                    <span className="text-text font-mono text-sm font-bold">
                       {Math.round(kcalPer100g)}
                     </span>
-                    <span className="text-muted text-[10px] font-mono">
+                    <span className="text-muted text-caption font-mono">
                       kcal/100g
                     </span>
                   </div>
                 </div>
 
                 {/* Macros */}
-                <div className="flex gap-3 text-[11px] font-mono text-secondary mb-3">
+                <div className="flex gap-3 text-note font-mono text-secondary mb-3">
                   <span>
                     P: <b className="text-accent">{stats.protein.toFixed(1)}g</b>
                   </span>
@@ -184,12 +184,12 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
                 {/* Servings + Cost */}
                 <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                  <span className="text-[10px] font-mono text-muted">
+                  <span className="text-caption font-mono text-muted">
                     {dish.servings} serving{dish.servings !== 1 ? "s" : ""}
                   </span>
                   {costPerServing > 0 && (
-                    <span className="text-[11px] font-mono text-amber-500 font-bold">
-                      {costPerServing.toFixed(1)}₴/serving
+                    <span className="text-note font-mono text-amber-500 font-bold">
+                      {costPerServing.toFixed(1)}?/serving
                     </span>
                   )}
                 </div>
@@ -199,13 +199,13 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                   {dish.ingredients.slice(0, 4).map((ing) => (
                     <span
                       key={ing.id}
-                      className="text-[9px] font-mono bg-raised px-1.5 py-0.5 rounded text-secondary border border-border/50"
+                      className="text-label font-mono bg-raised px-1.5 py-0.5 rounded text-secondary border border-border/50"
                     >
                       {ing.product.name}
                     </span>
                   ))}
                   {dish.ingredients.length > 4 && (
-                    <span className="text-[9px] font-mono text-muted">
+                    <span className="text-label font-mono text-muted">
                       +{dish.ingredients.length - 4} more
                     </span>
                   )}
@@ -222,7 +222,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
           <p className="text-sm font-bold text-text mb-1">
             {searchQuery ? "No dishes found" : "No dishes yet"}
           </p>
-          <p className="text-[11px] text-muted mb-4">
+          <p className="text-note text-muted mb-4">
             {searchQuery
               ? "Try a different search term"
               : "Create your first recipe to get started."}

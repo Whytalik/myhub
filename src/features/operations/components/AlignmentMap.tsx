@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { Brain, Target, Shield, Edit2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { upsertVisionAction } from "../actions/sprint-actions";
 import { Dialog } from "@/components/ui/dialog";
@@ -26,15 +27,14 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
 
   const handleSaveVision = async () => {
     setLoading(true);
-    try {
-      const saved = await upsertVisionAction(newVisionTitle, newVisionContent);
-      setVision(saved);
+    const result = await upsertVisionAction(newVisionTitle, newVisionContent);
+    if (result.success) {
+      setVision(result.data);
       setIsVisionDialogOpen(false);
-    } catch (error) {
-      console.error("Failed to save vision:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error || "Failed to save vision");
     }
+    setLoading(false);
   };
 
   return (
@@ -45,14 +45,14 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
           <div className="w-16 h-16 rounded-3xl bg-rose-500/10 flex items-center justify-center text-rose-500 mb-2">
             <Brain size={32} />
           </div>
-          <h2 className="text-[10px] font-mono text-rose-500 uppercase tracking-[0.4em]">Level 01: Global Vision</h2>
+          <h2 className="text-caption font-mono text-rose-500 uppercase tracking-[0.4em]">Level 01: Global Vision</h2>
           
           {vision ? (
             <div className="space-y-4 group relative">
-              <h3 className="text-3xl md:text-4xl font-heading text-text uppercase tracking-tight">
+              <h3 className="text-sm md:text-base font-heading text-text uppercase tracking-tight">
                 {vision.title}
               </h3>
-              <p className="text-secondary leading-relaxed text-lg italic">
+              <p className="text-secondary leading-relaxed text-sm italic">
                 &quot;{vision.content}&quot;
               </p>
               <Button 
@@ -69,7 +69,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
               className="p-10 border-2 border-dashed border-border rounded-[2.5rem] cursor-pointer hover:border-rose-500/30 transition-colors w-full"
               onClick={() => setIsVisionDialogOpen(true)}
             >
-              <p className="text-muted font-mono uppercase text-[10px] tracking-widest">Define your North Star</p>
+              <p className="text-muted font-mono uppercase text-caption tracking-widest">Define your North Star</p>
             </div>
           )}
         </div>
@@ -78,7 +78,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
       {/* Level 02: Pillars (Life Spheres) & Level 04: Objectives */}
       <section className="space-y-10">
         <div className="flex flex-col items-center text-center mb-12">
-           <h2 className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] mb-4">Level 02: Strategic Pillars</h2>
+           <h2 className="text-caption font-mono text-muted uppercase tracking-[0.4em] mb-4">Level 02: Strategic Pillars</h2>
            <div className="h-px w-20 bg-border" />
         </div>
 
@@ -100,7 +100,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold uppercase tracking-widest text-text">{sphere.name}</h4>
-                      <span className="text-[10px] font-mono text-muted">Core Pillar</span>
+                      <span className="text-caption font-mono text-muted">Core Pillar</span>
                     </div>
                   </div>
                   <div className="w-full h-1 bg-border/40 rounded-full overflow-hidden">
@@ -118,10 +118,10 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
 
                 {/* Level 04: Objectives linked to this Pillar */}
                 <div className="space-y-3">
-                  <h5 className="text-[9px] font-mono text-muted uppercase tracking-widest text-center mb-4">Current Sprint OKRs</h5>
+                  <h5 className="text-label font-mono text-muted uppercase tracking-widest text-center mb-4">Current Sprint OKRs</h5>
                   {sphereObjectives.length === 0 ? (
                     <div className="p-4 border border-dashed border-border rounded-xl text-center">
-                       <p className="text-[9px] text-muted italic">No objectives this sprint</p>
+                       <p className="text-label text-muted italic">No objectives this sprint</p>
                     </div>
                   ) : (
                     sphereObjectives.map(obj => (
@@ -129,7 +129,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
                         <div className="flex items-start gap-3">
                            <Target size={12} className="text-emerald-500 mt-1" />
                            <div className="flex-1">
-                              <p className="text-[11px] font-bold text-text leading-tight group-hover:text-emerald-500 transition-colors">
+                              <p className="text-note font-bold text-text leading-tight group-hover:text-emerald-500 transition-colors">
                                 {obj.title}
                               </p>
                               <div className="flex items-center gap-2 mt-2">
@@ -167,7 +167,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
       >
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Vision Title</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest">Vision Title</label>
             <Input 
               value={newVisionTitle} 
               onChange={(e) => setNewVisionTitle(e.target.value)} 
@@ -176,7 +176,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Qualitative Description (The Why)</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest">Qualitative Description (The Why)</label>
             <textarea 
               className="w-full bg-surface border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-accent transition-colors"
               value={newVisionContent} 

@@ -1,6 +1,4 @@
-"use client"
-
-interface PersonSummary {
+﻿interface PersonSummary {
   personId: string
   personName: string | null
   avgKcalPerDay: number
@@ -26,7 +24,7 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
     <div className="space-y-6">
       <div className="border rounded-lg bg-card">
         <div className="p-6 border-b">
-          <h3 className="text-lg font-semibold">Weekly Averages</h3>
+          <h3 className="text-sm font-semibold">Weekly Averages</h3>
         </div>
         <div className="p-6 overflow-x-auto">
           <table className="w-full text-sm">
@@ -46,23 +44,23 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
                   <td className="py-2 px-3 font-medium">{p.personName}</td>
                   <td className="py-2 px-3">
                     <div className="font-semibold">{p.avgKcalPerDay.toFixed(0)}</div>
-                    <div className="text-[10px] text-muted-foreground">Target: {p.targetKcal}</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetKcal}</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgProtein.toFixed(1)}g</div>
-                    <div className="text-[10px] text-muted-foreground">Target: {p.targetProtein}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetProtein}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgFat.toFixed(1)}g</div>
-                    <div className="text-[10px] text-muted-foreground">Target: {p.targetFat}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetFat}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgCarbs.toFixed(1)}g</div>
-                    <div className="text-[10px] text-muted-foreground">Target: {p.targetCarbs}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetCarbs}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgFiber.toFixed(1)}g</div>
-                    <div className="text-[10px] text-muted-foreground">Target: {p.targetFiber}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetFiber}g</div>
                   </td>
                 </tr>
               ))}
@@ -73,7 +71,7 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
 
       <div className="border rounded-lg bg-card">
         <div className="p-6 border-b">
-          <h3 className="text-lg font-semibold">Variety Warnings</h3>
+          <h3 className="text-sm font-semibold">Variety Warnings</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">

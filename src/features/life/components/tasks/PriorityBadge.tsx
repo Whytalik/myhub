@@ -1,4 +1,4 @@
-import type { TaskPriority } from "@/features/life/types";
+﻿import type { TaskPriority } from "@/features/life/types";
 import { 
   ChevronDown, 
   Minus, 
@@ -45,7 +45,7 @@ export function PriorityBadge({ priority, className = "" }: PriorityBadgeProps) 
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xl border text-[9px] font-mono font-bold uppercase tracking-wider whitespace-nowrap ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xl border text-label font-mono font-bold uppercase tracking-wider whitespace-nowrap ${className}`}
       style={{ 
         color: config.color, 
         borderColor: `${config.color}30`, 

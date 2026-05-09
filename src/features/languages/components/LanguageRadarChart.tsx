@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { LanguageSphere } from "@/app/generated/prisma";
@@ -117,7 +117,7 @@ export function LanguageRadarChart({ stats, size = 300 }: LanguageRadarChartProp
               y={ly}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-[10px] font-bold fill-muted uppercase tracking-wider"
+              className="text-caption font-bold fill-muted uppercase tracking-wider"
             >
               {p.label}
             </text>

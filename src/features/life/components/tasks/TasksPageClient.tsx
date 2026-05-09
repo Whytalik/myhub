@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, lazy, Suspense } from "react";
 import { Layers, Plus, Loader2 } from "lucide-react";
@@ -62,11 +62,11 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const handleDuplicate = (task: TaskData) => {
     checkPrivate(task, () => {
       startActionTransition(async () => {
-        try {
-          await instantDuplicateTaskAction(task);
+        const result = await instantDuplicateTaskAction(task);
+        if (result.success) {
           toast.success("Task duplicated instantly");
-        } catch {
-          toast.error("Failed to duplicate task");
+        } else {
+          toast.error(result.error || "Failed to duplicate task");
         }
       });
     }, 'duplicate');
@@ -75,11 +75,11 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const handleAddChild = (parent: TaskData) => {
     checkPrivate(parent, () => {
       startActionTransition(async () => {
-        try {
-          await instantAddSubtaskAction(parent.id, parent.sphereId);
+        const result = await instantAddSubtaskAction(parent.id, parent.sphereId);
+        if (result.success) {
           toast.success("Subtask added instantly");
-        } catch {
-          toast.error("Failed to add subtask");
+        } else {
+          toast.error(result.error || "Failed to add subtask");
         }
       });
     }, 'addChild');
@@ -109,7 +109,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
           <div className="flex flex-col gap-1">
             <Heading title="Tasks" />
-            <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+            <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
               Organize your goals, projects, and daily work.
             </p>
           </div>
@@ -120,7 +120,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant={view === "gallery" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("gallery")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
               >
                 Gallery
               </Button>
@@ -128,7 +128,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant={view === "calendar" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("calendar")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
               >
                 Calendar
               </Button>
@@ -136,7 +136,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant={view === "graph" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("graph")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-[11px] whitespace-nowrap"
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
               >
                 Graph
               </Button>
@@ -147,7 +147,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant="outline" 
                 size="sm" 
                 onClick={() => setSpheresOpen(true)} 
-                className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-[11px] font-bold"
+                className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-note font-bold"
               >
                 <Layers size={14} className="mr-2" />
                 Life Spheres
@@ -157,7 +157,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 variant="primary" 
                 size="sm" 
                 onClick={handleAddNew} 
-                className="flex-1 sm:flex-none rounded-xl px-6 h-10 sm:h-9 text-[11px] font-bold"
+                className="flex-1 sm:flex-none rounded-xl px-6 h-10 sm:h-9 text-note font-bold"
               >
                 <Plus size={16} className="mr-2" />
                 New Task
@@ -171,7 +171,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         <div className="fixed inset-0 z-[9999] bg-bg/20 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
           <div className="bg-surface border border-border p-4 rounded-2xl shadow-2xl flex items-center gap-3">
             <Loader2 size={20} className="text-accent animate-spin" />
-            <span className="text-[11px] font-mono uppercase tracking-widest text-muted">Updating...</span>
+            <span className="text-note font-mono uppercase tracking-widest text-muted">Updating...</span>
           </div>
         </div>
       )}
@@ -249,7 +249,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             placeholder="••••••••"
             onKeyDown={(e) => { if (e.key === 'Enter') document.getElementById('unlock-btn')?.click(); }}
           />
-          {passwordError && <p className="text-[10px] font-bold text-rose-500">Invalid password</p>}
+          {passwordError && <p className="text-caption font-bold text-rose-500">Invalid password</p>}
           <div className="flex gap-2">
             <Button
               variant="ghost"
@@ -278,20 +278,20 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                     setTaskFormOpen(true);
                   } else if (type === 'duplicate') {
                     startActionTransition(async () => {
-                      try {
-                        await instantDuplicateTaskAction(task);
+                      const result = await instantDuplicateTaskAction(task);
+                      if (result.success) {
                         toast.success("Task duplicated instantly");
-                      } catch {
-                        toast.error("Failed to duplicate task");
+                      } else {
+                        toast.error(result.error || "Failed to duplicate task");
                       }
                     });
                   } else if (type === 'addChild') {
                     startActionTransition(async () => {
-                      try {
-                        await instantAddSubtaskAction(task.id, task.sphereId);
+                      const result = await instantAddSubtaskAction(task.id, task.sphereId);
+                      if (result.success) {
                         toast.success("Subtask added instantly");
-                      } catch {
-                        toast.error("Failed to add subtask");
+                      } else {
+                        toast.error(result.error || "Failed to add subtask");
                       }
                     });
                   }

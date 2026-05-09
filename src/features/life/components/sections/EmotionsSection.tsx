@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Brain } from "lucide-react";
 
@@ -57,7 +57,7 @@ interface EmotionColumnProps {
 
 const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnProps) => (
   <div className="flex flex-col gap-3 flex-1">
-    <span className="text-[9px] font-mono uppercase text-muted font-bold tracking-widest px-1">
+    <span className="text-label font-mono uppercase text-muted font-bold tracking-widest px-1">
       {title}
     </span>
     <div className="flex flex-wrap gap-1.5">
@@ -72,7 +72,7 @@ const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnP
             key={item.label}
             type="button"
             onClick={() => toggleEmotion(item.label)}
-            className={`px-2 py-1 rounded-lg border text-[10px] font-medium transition-all ${colorClass} ${
+            className={`px-2 py-1 rounded-lg border text-caption font-medium transition-all ${colorClass} ${
               !active ? "bg-raised border-border text-secondary hover:text-text" : ""
             }`}
           >
@@ -102,7 +102,7 @@ export function EmotionsSection({ emotions, onChange }: Props) {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2.5 px-1">
           <Brain size={14} className="text-accent" />
-          <h3 className={`text-[13px] font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>
+          <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>
             Емоції та стани
           </h3>
         </div>

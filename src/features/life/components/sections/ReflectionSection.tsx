@@ -49,7 +49,7 @@ export function ReflectionSection({ winToday, improveTomorrow, gratitude, brainD
     <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-5">
       <div className="flex items-center gap-2.5">
         <div className="h-px flex-1 bg-border/40" />
-        <span className="text-[11px] font-mono text-muted uppercase tracking-[0.3em]">Reflection</span>
+        <span className="text-note font-mono text-muted uppercase tracking-[0.3em]">Reflection</span>
         <div className="h-px flex-1 bg-border/40" />
       </div>
 
@@ -60,7 +60,7 @@ export function ReflectionSection({ winToday, improveTomorrow, gratitude, brainD
             <div key={key} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon size={13} className={hasValue ? "text-accent" : "text-muted"} />
-                <label className={`text-[12px] font-medium ${hasValue ? "text-accent" : "text-text"}`}>{label}</label>
+                <label className={`text-sm font-medium ${hasValue ? "text-accent" : "text-text"}`}>{label}</label>
               </div>
               <textarea
                 value={values[key] ?? ""}

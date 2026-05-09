@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Plus, ShoppingCart, ExternalLink, MoreVertical } from "lucide-react";
@@ -50,7 +50,7 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
              <ShoppingCart size={40} />
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-heading uppercase tracking-tight text-text">Your wishlist is empty</h3>
+            <h3 className="text-sm font-heading uppercase tracking-tight text-text">Your wishlist is empty</h3>
             <p className="text-secondary text-sm max-w-xs mx-auto">
               Start adding items you want to acquire or experiences you want to have.
             </p>
@@ -71,10 +71,10 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
                 
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-3">
-                    <h4 className="text-lg font-heading uppercase tracking-tight text-text">
+                    <h4 className="text-sm font-heading uppercase tracking-tight text-text">
                       {item.name}
                     </h4>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-accent/10 text-accent uppercase tracking-widest">
+                    <span className="text-caption font-mono px-2 py-0.5 rounded-full bg-accent/10 text-accent uppercase tracking-widest">
                       {item.status}
                     </span>
                   </div>
@@ -87,7 +87,7 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
               <div className="flex items-center gap-8">
                 {item.price && (
                   <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-mono text-muted uppercase tracking-widest">Price</span>
+                    <span className="text-caption font-mono text-muted uppercase tracking-widest">Price</span>
                     <span className="text-text font-bold">${item.price.toFixed(2)}</span>
                   </div>
                 )}

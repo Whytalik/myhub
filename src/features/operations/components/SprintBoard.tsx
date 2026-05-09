@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Target, Activity, MoreHorizontal, Plus, CheckCircle2 } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
+import { SectionHeader } from "@/components/ui/section-header";
 import { ObjectiveDialog } from "./ObjectiveDialog";
 import { KeyResultDialog } from "./KeyResultDialog";
 import type { SprintData, ObjectiveData } from "../types";
@@ -28,13 +29,13 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
     <div className="space-y-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <span className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] mb-1 block">
+          <span className="text-caption font-mono text-muted uppercase tracking-[0.2em] mb-1 block">
             Level 04 Execution Engine
           </span>
           <div className="flex items-center gap-4">
             <Heading title={`Sprint ${sprint.number.toString().padStart(2, '0')} / ${sprint.year}`} />
             <div className="px-3 py-1 bg-accent/10 border border-accent/20 rounded-full">
-               <span className="text-[10px] font-mono text-accent uppercase font-bold tracking-wider">
+               <span className="text-caption font-mono text-accent uppercase font-bold tracking-wider">
                  Week {currentWeek} of 12
                </span>
             </div>
@@ -46,7 +47,7 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
         
         <div className="flex items-center gap-3">
            <div className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-              <span className="text-[10px] font-mono text-emerald-500 uppercase font-bold tracking-wider">
+              <span className="text-caption font-mono text-emerald-500 uppercase font-bold tracking-wider">
                 Active Cycle
               </span>
            </div>
@@ -66,17 +67,13 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Objectives Column */}
                 <div className="lg:col-span-2 space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2">
-                      <Target size={14} className="text-emerald-500" />
-                      Strategic Objectives
-                    </h3>
+                  <SectionHeader icon={Target} label="Strategic Objectives">
                     <ObjectiveDialog sprintId={sprint.id} onSuccess={onRefresh}>
-                      <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase tracking-tighter">
+                      <Button variant="ghost" size="sm" className="h-7 px-2 text-caption uppercase tracking-tighter">
                         <Plus size={12} className="mr-1" /> Add Goal
                       </Button>
                     </ObjectiveDialog>
-                  </div>
+                  </SectionHeader>
 
                   <div className="space-y-4">
                     {sprint.objectives.length === 0 ? (
@@ -99,21 +96,18 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
                 {/* Pipeline / Stats Column */}
                 <div className="space-y-8">
                    <div>
-                     <h3 className="text-xs font-bold uppercase tracking-widest text-text flex items-center gap-2 mb-6">
-                       <Activity size={14} className="text-emerald-500" />
-                       Project Pipeline
-                     </h3>
+                     <SectionHeader icon={Activity} label="Project Pipeline" className="mb-6" />
                      <div className="space-y-3">
                        {sprint.objectives.flatMap(obj => obj.projects).length === 0 ? (
-                         <p className="text-[10px] text-muted italic">No active projects linked to objectives.</p>
+                         <p className="text-caption text-muted italic">No active projects linked to objectives.</p>
                        ) : (
                          sprint.objectives.flatMap(obj => obj.projects).map(project => (
                            <div key={project.id} className="p-4 bg-surface border border-border rounded-xl">
                              <div className="flex justify-between items-start mb-2">
-                                <span className="text-[10px] font-bold uppercase text-text truncate pr-2">
+                                <span className="text-caption font-bold uppercase text-text truncate pr-2">
                                   {project.title}
                                 </span>
-                                <span className="text-[10px] font-mono text-muted">
+                                <span className="text-caption font-mono text-muted">
                                   {Math.round(project.progress)}%
                                 </span>
                              </div>
@@ -130,16 +124,16 @@ export function SprintBoard({ sprint, onRefresh }: SprintBoardProps) {
                    </div>
 
                    <div className="p-6 bg-surface border border-border rounded-2xl">
-                      <h4 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-text">Weekly Execution Score</h4>
+                      <h4 className="text-caption font-bold uppercase tracking-widest mb-4 text-text">Weekly Execution Score</h4>
                       <div className="flex items-center gap-4">
-                         <div className="text-4xl font-heading text-emerald-500">
+                         <div className="text-xl font-heading text-emerald-500">
                            {Math.round(calculateExecutionScore(sprint, currentWeek))}%
                          </div>
                          <div className="flex-1">
                             <div className="h-2 w-full bg-border/30 rounded-full overflow-hidden">
                                <div className="h-full bg-emerald-500" style={{ width: `${calculateExecutionScore(sprint, currentWeek)}%` }} />
                             </div>
-                            <p className="text-[10px] text-muted mt-2">Tactical completion (Week {currentWeek})</p>
+                            <p className="text-caption text-muted mt-2">Tactical completion (Week {currentWeek})</p>
                          </div>
                       </div>
                    </div>
@@ -178,11 +172,11 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
                 className="w-2 h-2 rounded-full" 
                 style={{ backgroundColor: objective.sphereColor || 'var(--color-accent)' }}
               />
-              <span className="text-[10px] font-mono text-muted uppercase tracking-wider">
+              <span className="text-caption font-mono text-muted uppercase tracking-wider">
                 {objective.sphereName || 'Uncategorized'}
               </span>
             </div>
-            <h4 className="text-lg font-heading text-text group-hover:text-accent transition-colors">
+            <h4 className="text-sm font-heading text-text group-hover:text-accent transition-colors">
               {objective.title}
             </h4>
           </div>
@@ -200,7 +194,7 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
                   <div className="space-y-2 cursor-pointer group/kr">
                       <div className="flex justify-between items-end">
                         <span className="text-xs text-secondary group-hover/kr:text-text transition-colors">{kr.title}</span>
-                        <span className="text-[10px] font-mono text-text">
+                        <span className="text-caption font-mono text-text">
                           {kr.currentValue} / {kr.targetValue} {kr.unit}
                         </span>
                       </div>
@@ -220,7 +214,7 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
                     onRefresh={onRefresh} 
                   />
                   <TacticDialog keyResultId={kr.id} onSuccess={onRefresh}>
-                    <Button variant="ghost" size="sm" className="h-6 px-1.5 text-[9px] uppercase tracking-tighter text-muted hover:text-accent">
+                    <Button variant="ghost" size="sm" className="h-6 px-1.5 text-label uppercase tracking-tighter text-muted hover:text-accent">
                       <Plus size={10} className="mr-1" /> Add Tactic
                     </Button>
                   </TacticDialog>
@@ -230,7 +224,7 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
            
            {objective.keyResults.length < 3 && (
              <KeyResultDialog objectiveId={objective.id} onSuccess={onRefresh}>
-               <Button variant="ghost" size="sm" className="w-full border border-dashed border-border h-8 text-[10px] uppercase tracking-widest text-muted hover:text-accent hover:border-accent/40">
+               <Button variant="ghost" size="sm" className="w-full border border-dashed border-border h-8 text-caption uppercase tracking-widest text-muted hover:text-accent hover:border-accent/40">
                  <Plus size={12} className="mr-2" /> Add Key Result
                </Button>
              </KeyResultDialog>
@@ -242,17 +236,17 @@ function ObjectiveCard({ objective, onRefresh, currentWeek }: { objective: Objec
          <div className="flex gap-4">
             <div className="flex items-center gap-1.5">
                <Activity size={12} className="text-muted" />
-               <span className="text-[10px] font-mono text-muted">{objective.projects.length} Projects</span>
+               <span className="text-caption font-mono text-muted">{objective.projects.length} Projects</span>
             </div>
             <div className="flex items-center gap-1.5">
                <CheckCircle2 size={12} className="text-muted" />
-               <span className="text-[10px] font-mono text-muted">
+               <span className="text-caption font-mono text-muted">
                  {objective.keyResults.reduce((acc, kr) => acc + kr.tactics.length, 0)} Tactics
                </span>
             </div>
          </div>
          <ProjectDialog objectiveId={objective.id} onSuccess={onRefresh}>
-            <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px] uppercase font-bold text-accent">
+            <Button variant="ghost" size="sm" className="h-7 px-2 text-caption uppercase font-bold text-accent">
               <Plus size={10} className="mr-1" /> Add Project
             </Button>
          </ProjectDialog>

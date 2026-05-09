@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,23 +27,22 @@ export function ProjectDialog({ objectiveId, project, onSuccess, children }: Pro
     if (!title) return;
 
     setLoading(true);
-    try {
-      await upsertProjectAction({
-        id: project?.id,
-        objectiveId,
-        title,
-        description,
-        status: project?.status || "TODO",
-        startDate: project?.startDate,
-        endDate: project?.endDate
-      });
+    const result = await upsertProjectAction({
+      id: project?.id,
+      objectiveId,
+      title,
+      description,
+      status: project?.status || "TODO",
+      startDate: project?.startDate,
+      endDate: project?.endDate
+    });
+    if (result.success) {
       onSuccess();
       setIsOpen(false);
-    } catch (error) {
-      console.error("Failed to save project:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error || "Failed to save project");
     }
+    setLoading(false);
   };
 
   return (
@@ -66,7 +66,7 @@ export function ProjectDialog({ objectiveId, project, onSuccess, children }: Pro
       >
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Project Title</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest">Project Title</label>
             <Input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
@@ -75,7 +75,7 @@ export function ProjectDialog({ objectiveId, project, onSuccess, children }: Pro
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Description</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest">Description</label>
             <Input 
               value={description} 
               onChange={(e) => setDescription(e.target.value)} 

@@ -147,7 +147,7 @@ export function DateRangePicker({
         className={`flex items-center gap-3 px-4 py-2 bg-raised/50 border border-border rounded-xl cursor-pointer hover:border-accent/40 transition-all ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${isOpen ? "border-accent ring-2 ring-accent/10" : ""}`}
       >
         <CalendarIcon size={14} className={startDate ? "text-accent" : "text-muted"} />
-        <span className={`text-[12px] flex-1 truncate ${!startDate ? "text-muted/50" : "text-text font-medium"}`}>
+        <span className={`text-sm flex-1 truncate ${!startDate ? "text-muted/50" : "text-text font-medium"}`}>
           {displayValue || placeholder}
         </span>
         {startDate && !disabled && (
@@ -175,7 +175,7 @@ export function DateRangePicker({
             >
               <ChevronLeft size={16} />
             </button>
-            <span className="text-[12px] font-bold uppercase tracking-wider">
+            <span className="text-sm font-bold uppercase tracking-wider">
               {format(currentMonth, "MMMM yyyy")}
             </span>
             <button 
@@ -189,7 +189,7 @@ export function DateRangePicker({
           {/* Weekdays */}
           <div className="grid grid-cols-7 gap-1 mb-1">
             {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
-              <span key={i} className="text-[10px] font-bold text-muted/40 text-center h-6 flex items-center justify-center">
+              <span key={i} className="text-caption font-bold text-muted/40 text-center h-6 flex items-center justify-center">
                 {day}
               </span>
             ))}
@@ -209,7 +209,7 @@ export function DateRangePicker({
                   onClick={() => handleDateSelect(day)}
                   disabled={!isCurrentMonth}
                   className={`
-                    h-8 w-full rounded-lg text-[11px] font-mono transition-all flex items-center justify-center
+                    h-8 w-full rounded-lg text-note font-mono transition-all flex items-center justify-center
                     ${!isCurrentMonth ? "opacity-0 pointer-events-none" : "hover:bg-accent/10"}
                     ${isSelectedStart || isSelectedEnd ? "bg-accent text-bg font-bold shadow-lg shadow-accent/20 scale-105 z-10" : ""}
                     ${inRange && !isSelectedStart && !isSelectedEnd ? "bg-accent/10 text-accent font-bold" : ""}
@@ -230,13 +230,13 @@ export function DateRangePicker({
                 setCurrentMonth(now);
                 onChange(format(now, "yyyy-MM-dd"), null);
               }}
-              className="text-[10px] font-bold text-accent uppercase tracking-wider hover:underline"
+              className="text-caption font-bold text-accent uppercase tracking-wider hover:underline"
             >
               Today
             </button>
             <button 
               onClick={() => setIsOpen(false)}
-              className="text-[10px] font-bold text-muted uppercase tracking-wider hover:text-text"
+              className="text-caption font-bold text-muted uppercase tracking-wider hover:text-text"
             >
               Close
             </button>

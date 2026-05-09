@@ -29,7 +29,7 @@ model User {
   lifeSpheres             LifeSphere[]
   milestones              Milestone[]
   foodProducts          FoodProduct[]
-  nutritionPerson         NutritionPerson?
+  nutritionPersons        NutritionPerson[]
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
   shoppingLists           ShoppingList[]
@@ -93,7 +93,7 @@ model VerificationToken {
 
 model NutritionPerson {
   id             String   @id @default(cuid())
-  userId         String?  @unique
+  userId         String?
   name           String?
   goal           Goal     @default(MAINTAIN)
   targetKcal     Float?   @default(2000)
@@ -753,7 +753,6 @@ enum NutritionSource {
   MANUAL
   OPENFOODFACTS
   USDA
-  FATSECRET
 }
 
 enum ProductStatus {

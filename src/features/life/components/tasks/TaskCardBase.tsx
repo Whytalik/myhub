@@ -51,12 +51,12 @@ export function TaskCardBase({
 
   const handleDelete = () => {
     startTransition(async () => {
-      try {
-        onDelete?.();
-        await deleteTaskAction(task.id);
+      onDelete?.();
+      const result = await deleteTaskAction(task.id);
+      if (result.success) {
         toast.success("Task deleted");
-      } catch {
-        toast.error("Failed to delete task");
+      } else {
+        toast.error(result.error || "Failed to delete task");
       }
     });
   };
@@ -104,7 +104,7 @@ export function TaskCardBase({
 
     let formatted = escaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
-    formatted = formatted.replace(/`(.*?)`/g, "<code class='bg-white/10 px-1 rounded font-mono text-[11px]'>$1</code>");
+    formatted = formatted.replace(/`(.*?)`/g, "<code class='bg-white/10 px-1 rounded font-mono text-note'>$1</code>");
     formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>");
     formatted = formatted.replace(/(?<!href='|">)(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>");
 
@@ -177,7 +177,7 @@ className={`
       {task.parentId && (
         <div 
           onClick={handleParentClick}
-          className={`flex items-center gap-1.5 font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden hover:text-accent transition-colors cursor-pointer group/parent mb-0.5 ${isCompact ? 'text-[8px] md:text-[10px] pr-10' : 'text-[9px] pr-20'}`}
+          className={`flex items-center gap-1.5 font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden hover:text-accent transition-colors cursor-pointer group/parent mb-0.5 ${isCompact ? 'text-[8px] md:text-caption pr-10' : 'text-label pr-20'}`}
         >
           <ArrowUp size={isCompact ? 8 : 8} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform" />
           {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
@@ -185,7 +185,7 @@ className={`
              return <PIcon size={isCompact ? 8 : 10} className="shrink-0 opacity-40" />;
           })()}
           <span className="truncate underline decoration-dotted underline-offset-2">
-            {task.isPrivate ? "••••••••" : (task.parentTitle || 'Parent Task')}
+            {task.isPrivate ? "��������" : (task.parentTitle || 'Parent Task')}
           </span>
         </div>
       )}
@@ -200,8 +200,8 @@ className={`
             <FileText size={isCompact ? 10 : 16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />
           )}
           <h3 
-            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-[10px] md:text-xs' : 'text-[14px]'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
-            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "••••••••" : task.title) }}
+            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-caption md:text-xs' : 'text-sm'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
+            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "��������" : task.title) }}
             title={task.isPrivate ? "Private Task" : task.title}
           />
           {task.isPrivate && (
@@ -228,7 +228,7 @@ className={`
           
           {task.sphere && (
              <div 
-               className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-[9px]'}`}
+               className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-label'}`}
                style={{ backgroundColor: `${task.sphere.color}15`, borderColor: `${task.sphere.color}40`, color: task.sphere.color }}
              >
                {(() => {
@@ -242,7 +242,7 @@ className={`
 
         {!isCompact && task.description && (
           <div 
-            className={`text-[12px] leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
+            className={`text-sm leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "Content is hidden" : task.description) }}
           />
         )}
@@ -264,7 +264,7 @@ className={`
         
         <div className={`pt-1 md:pt-1.5 border-t border-white/[0.03] flex items-center gap-3 flex-wrap ${isCompact ? '' : 'pt-2.5 gap-5'}`}>
             {plannedLabel && (
-              <div className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[8px] md:text-[10px]' : 'text-[10px] gap-1.5'}`} title="Planned for">
+              <div className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[8px] md:text-caption' : 'text-caption gap-1.5'}`} title="Planned for">
                 <Calendar size={isCompact ? 8 : 11} className="text-accent/40" />
                 <span className="text-text font-black leading-none">{plannedLabel}</span>
               </div>
@@ -272,7 +272,7 @@ className={`
 
             {dueLabel && (
               <div 
-                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[8px] md:text-[10px]' : 'text-[10px] gap-1.5'}`} 
+                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[8px] md:text-caption' : 'text-caption gap-1.5'}`} 
                 title="Deadline"
               >
                 <Flag size={isCompact ? 8 : 11} className={`${isOverdue ? "text-rose-500 fill-rose-500/10 animate-pulse" : "text-rose-500/60"} shrink-0`} />

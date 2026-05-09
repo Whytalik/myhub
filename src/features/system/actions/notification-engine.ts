@@ -137,7 +137,7 @@ export async function processAutomatedNotificationsAction() {
           body: `📊 ${user.habits.length} habit${user.habits.length > 1 ? "s" : ""} to focus on. Keep going!`,
           url: `/life/habits`
         });
-        notificationsSent.push(`Habit (Auto) for ${user.email}`);
+        notificationsSent.push(`Habit (Auto) for ${user.id}`);
       }
     }
   }

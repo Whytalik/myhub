@@ -8,11 +8,11 @@ function todayDate(): Date {
 }
 
 export async function getTodayEntry(userId: string) {
-  return getCachedDailyEntry(userId, todayDate());
+  return getCachedDailyEntry(userId, todayDate().toISOString());
 }
 
 export async function getEntryByDate(userId: string, date: Date) {
-  return getCachedDailyEntry(userId, date);
+  return getCachedDailyEntry(userId, date.toISOString());
 }
 
 export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {

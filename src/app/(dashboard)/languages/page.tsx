@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getCachedUserLanguages, getCachedAllLanguageStats } from "@/lib/cache";
 import { LanguageRadarChart } from "@/features/languages/components/LanguageRadarChart";
-import { SpaceLanding, SpaceError, QuickActions } from "@/components/space-landing";
+import { SpaceLanding, SpaceError, QuickActions, StatsSummary } from "@/components/space-landing";
 import { Plus, Languages, Activity } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -73,10 +73,17 @@ export default async function LanguagesPage() {
         ],
       }}
     >
+      <StatsSummary
+        stats={[
+          { label: "Active Languages", value: d.userLanguages.length.toString(), icon: Languages },
+          { label: "Total XP", value: d.userLanguages.reduce((s, ul) => s + ul.totalXp, 0).toLocaleString(), icon: Activity },
+        ]}
+      />
+
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em]">Active Environments</h4>
-          <span className="text-[10px] font-mono text-muted uppercase bg-surface px-2 py-0.5 rounded border border-border/40">
+          <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">Active Environments</h4>
+          <span className="text-caption font-mono text-muted uppercase bg-surface px-2 py-0.5 rounded border border-border/40">
             {d.userLanguages.length} Active
           </span>
         </div>
@@ -85,10 +92,10 @@ export default async function LanguagesPage() {
       {d.userLanguages.length === 0 ? (
         <div className="bg-surface/30 border border-dashed border-border/40 p-24 rounded-2xl text-center mb-20">
           <Languages size={48} className="mx-auto text-muted/20 mb-6" />
-          <h3 className="text-2xl font-black uppercase tracking-tight text-muted mb-8">Zero Active Neural Nodes</h3>
+          <h3 className="text-sm font-black uppercase tracking-tight text-muted mb-8">Zero Active Neural Nodes</h3>
           <Link
             href="/languages/add"
-            className="bg-accent text-bg px-10 py-4 rounded-xl font-black uppercase text-[11px] tracking-[0.2em] hover:scale-105 transition-all inline-block"
+            className="bg-accent text-bg px-10 py-4 rounded-xl font-black uppercase text-note tracking-[0.2em] hover:scale-105 transition-all inline-block"
           >
             Initialize Space
           </Link>
@@ -111,12 +118,12 @@ export default async function LanguagesPage() {
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl">{ul.language.icon}</span>
-                      <h3 className="font-heading text-5xl text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
+                      <span className="text-xl">{ul.language.icon}</span>
+                      <h3 className="font-heading text-3xl text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
                         {ul.language.name}
                       </h3>
                     </div>
-                    <span className="text-[10px] font-mono text-accent uppercase tracking-[0.2em]">
+                    <span className="text-caption font-mono text-accent uppercase tracking-[0.2em]">
                       {ul.level} · {ul.totalXp.toLocaleString()} XP
                     </span>
                   </div>
@@ -125,7 +132,7 @@ export default async function LanguagesPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 text-[10px] font-mono text-muted hover:text-text transition-colors">
+                <div className="flex items-center gap-2 text-caption font-mono text-muted hover:text-text transition-colors">
                   <span>Enter Space</span>
                   <span>→</span>
                 </div>

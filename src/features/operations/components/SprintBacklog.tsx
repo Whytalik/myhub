@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { Plus, GripVertical, CheckCircle2, Circle, Clock } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateTaskStatusAction, upsertTaskAction } from "@/features/life/actions/task-actions";
@@ -18,11 +19,11 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
   const [newTaskTitle, setNewTaskTitle] = useState<{ [projectId: string]: string }>({});
 
   const handleUpdateStatus = async (taskId: string, status: TaskStatus) => {
-    try {
-      await updateTaskStatusAction(taskId, status);
+    const result = await updateTaskStatusAction(taskId, status);
+    if (result.success) {
       onRefresh();
-    } catch (error) {
-      console.error("Failed to update task status:", error);
+    } else {
+      toast.error(result.error || "Failed to update task status");
     }
   };
 
@@ -30,16 +31,12 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
     const title = newTaskTitle[projectId];
     if (!title) return;
 
-    try {
-      await upsertTaskAction({
-        title,
-        projectId,
-        status: "TODO"
-      });
+    const result = await upsertTaskAction({ title, projectId, status: "TODO" });
+    if (result.success) {
       setNewTaskTitle(prev => ({ ...prev, [projectId]: "" }));
       onRefresh();
-    } catch (error) {
-      console.error("Failed to add task:", error);
+    } else {
+      toast.error(result.error || "Failed to add task");
     }
   };
 
@@ -63,7 +60,7 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
               <h3 className="text-sm font-bold uppercase tracking-widest text-text">
                 {project.title}
               </h3>
-              <span className="text-[10px] font-mono text-muted">
+              <span className="text-caption font-mono text-muted">
                 {project.completedTaskCount} / {project.taskCount} Tasks
               </span>
             </div>
@@ -72,11 +69,11 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
               {columns.map((col) => (
                 <div key={col.status} className="flex flex-col gap-3 min-h-[150px]">
                   <div className="flex items-center justify-between px-2">
-                    <div className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest ${col.color}`}>
+                    <div className={`flex items-center gap-2 text-caption font-bold uppercase tracking-widest ${col.color}`}>
                       {col.icon}
                       {col.label}
                     </div>
-                    <span className="text-[10px] font-mono text-muted">
+                    <span className="text-caption font-mono text-muted">
                       {project.tasks.filter(t => t.status === col.status).length}
                     </span>
                   </div>
@@ -96,7 +93,7 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
                                   <button
                                     key={targetCol.status}
                                     onClick={() => handleUpdateStatus(task.id, targetCol.status)}
-                                    className="text-[9px] uppercase font-bold text-muted hover:text-accent transition-colors"
+                                    className="text-label uppercase font-bold text-muted hover:text-accent transition-colors"
                                   >
                                     Move to {targetCol.label}
                                   </button>
@@ -114,7 +111,7 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
                             value={newTaskTitle[project.id] || ""} 
                             onChange={(e) => setNewTaskTitle(prev => ({ ...prev, [project.id]: e.target.value }))}
                             placeholder="Add task..."
-                            className="h-8 text-[11px] bg-surface"
+                            className="h-8 text-note bg-surface"
                             onKeyDown={(e) => e.key === 'Enter' && handleAddTask(project.id)}
                           />
                           <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleAddTask(project.id)}>
@@ -126,7 +123,7 @@ export function SprintBacklog({ sprint, onRefresh }: SprintBacklogProps) {
                     
                     {project.tasks.filter(t => t.status === col.status).length === 0 && col.status !== "TODO" && (
                       <div className="flex items-center justify-center h-full py-8 text-center">
-                         <p className="text-[10px] text-muted italic">Empty</p>
+                         <p className="text-caption text-muted italic">Empty</p>
                       </div>
                     )}
                   </div>

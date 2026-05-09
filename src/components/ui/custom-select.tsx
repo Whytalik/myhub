@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { createPortal } from "react-dom";
+import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 
 export interface CustomSelectOption {
   id: string;
@@ -30,80 +31,40 @@ export function CustomSelect({
   style,
   disabled,
 }: CustomSelectProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = React.useState<{ top: number; left: number; width: number; align: 'top' | 'bottom' } | null>(null);
+  const { isOpen, coords, triggerRef, contentRef, open, close } =
+    useDynamicPositioning<HTMLDivElement, HTMLDivElement>({ contentHeight: 250 });
 
   const selectedOption = options.find((o) => o.id === value);
 
-  const updateCoords = React.useCallback(() => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const spaceBelow = windowHeight - rect.bottom;
-      
-      // Select height varies by options, let's assume max 250px
-      const menuHeight = Math.min(options.length * 45 + 10, 250);
-
-      if (spaceBelow < menuHeight && rect.top > menuHeight) {
-        setCoords({
-          top: rect.top - 8,
-          left: rect.left,
-          width: rect.width,
-          align: 'top'
-        });
-      } else {
-        setCoords({
-          top: rect.bottom + 8,
-          left: rect.left,
-          width: rect.width,
-          align: 'bottom'
-        });
-      }
-    }
-  }, [options.length]);
-
-  const handleOpen = () => {
-    updateCoords();
-    setIsOpen(true);
-  };
-
   React.useEffect(() => {
+    if (!isOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        const portal = document.getElementById("select-portal");
-        if (portal && portal.contains(event.target as Node)) return;
-        setIsOpen(false);
-      }
+      if (
+        triggerRef.current?.contains(event.target as Node) ||
+        contentRef.current?.contains(event.target as Node)
+      ) return;
+      close();
     };
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      window.addEventListener("scroll", updateCoords, true);
-      window.addEventListener("resize", updateCoords);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", updateCoords, true);
-      window.removeEventListener("resize", updateCoords);
-    };
-  }, [isOpen, updateCoords]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, close, triggerRef, contentRef]);
 
   return (
-    <div className={`relative ${className}`} ref={containerRef} style={style}>
+    <div className={`relative ${className}`} ref={triggerRef} style={style}>
       <button
         type="button"
-        onClick={handleOpen}
+        onClick={() => !disabled && open()}
         disabled={disabled}
-        className="flex h-11 w-full items-center justify-between rounded-xl border border-border bg-surface/50 px-4 py-2 text-[13px] transition-all hover:border-accent/40 focus:ring-1 focus:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border"
+        className="flex h-11 w-full items-center justify-between rounded-xl border border-border bg-surface/50 px-4 py-2 text-body transition-all hover:border-accent/40 focus:ring-1 focus:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border"
         style={style}
       >
         <div className="flex items-center gap-3 overflow-hidden">
           {selectedOption ? (
             <>
               {selectedOption.icon && (
-                <selectedOption.icon 
-                  size={16} 
-                  style={{ color: selectedOption.color || "var(--color-text)" }} 
+                <selectedOption.icon
+                  size={16}
+                  style={{ color: selectedOption.color || "var(--color-text)" }}
                   strokeWidth={2.5}
                 />
               )}
@@ -120,15 +81,15 @@ export function CustomSelect({
 
       {isOpen && coords && typeof document !== "undefined" && createPortal(
         <div
-          id="select-portal"
+          ref={contentRef}
           className={`fixed z-[9999] rounded-2xl border border-border bg-surface p-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] animate-in fade-in zoom-in-95 duration-150 ${
-            coords.align === 'top' ? 'origin-bottom' : 'origin-top'
+            coords.align === "top" ? "origin-bottom" : "origin-top"
           }`}
           style={{
-            top: coords.align === 'top' ? 'auto' : coords.top,
-            bottom: coords.align === 'top' ? (window.innerHeight - coords.top + 16) : 'auto',
+            top: coords.align === "top" ? "auto" : coords.top,
+            bottom: coords.align === "top" ? window.innerHeight - coords.top + 16 : "auto",
             left: coords.left,
-            width: coords.width,
+            width: triggerRef.current?.getBoundingClientRect().width,
             maxHeight: "250px",
             overflowY: "auto",
           }}
@@ -142,18 +103,18 @@ export function CustomSelect({
                 type="button"
                 onClick={() => {
                   onChange(option.id);
-                  setIsOpen(false);
+                  close();
                 }}
                 className={`
-                  flex w-full items-center justify-between px-3 py-2.5 rounded-xl text-[13px] transition-all group
+                  flex w-full items-center justify-between px-3 py-2.5 rounded-xl text-body transition-all group
                   ${isSelected ? "bg-accent/10 text-accent font-bold" : "text-secondary hover:bg-raised hover:text-text"}
                 `}
               >
                 <div className="flex items-center gap-3">
                   {option.icon && (
-                    <option.icon 
-                      size={16} 
-                      style={{ color: isSelected ? "var(--color-accent)" : option.color || "var(--color-muted)" }} 
+                    <option.icon
+                      size={16}
+                      style={{ color: isSelected ? "var(--color-accent)" : option.color || "var(--color-muted)" }}
                       strokeWidth={2.5}
                     />
                   )}

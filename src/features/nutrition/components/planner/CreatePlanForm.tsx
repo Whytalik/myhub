@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
@@ -63,11 +63,11 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
 
   return (
     <div className="bg-surface border border-border rounded-2xl p-6 space-y-6">
-      <h3 className="text-[11px] font-mono tracking-[0.2em] text-muted">Create New Week Plan</h3>
+      <h3 className="text-note font-mono tracking-[0.2em] text-muted">Create New Week Plan</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-[10px] font-mono text-muted tracking-widest pl-1">Start Date (Monday)</label>
+          <label className="text-caption font-mono text-muted tracking-widest pl-1">Start Date (Monday)</label>
           <div className="flex items-center gap-2">
             <Calendar size={14} className="text-muted" />
             <Input
@@ -80,7 +80,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-[10px] font-mono text-muted tracking-widest pl-1">Include Persons</label>
+          <label className="text-caption font-mono text-muted tracking-widest pl-1">Include Persons</label>
           <div className="flex flex-wrap gap-2">
             {persons.map((person) => {
               const isSelected = selectedPersons.includes(person.id)
@@ -96,7 +96,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
                 >
                   <Users size={12} />
                   {person.name}
-                  {isSelected && <span className="text-[10px]">✓</span>}
+                  {isSelected && <span className="text-caption">✓</span>}
                 </button>
               )
             })}

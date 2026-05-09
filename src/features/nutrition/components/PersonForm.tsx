@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition, useEffect } from "react";
 import { toast } from "sonner";
@@ -82,7 +82,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
   return (
     <div className="space-y-12">
       <div className="bg-surface border border-border p-6 rounded-2xl max-w-md">
-        <h3 className="text-[11px] font-mono tracking-[0.2em] text-muted mb-4">Add New Profile</h3>
+        <h3 className="text-note font-mono tracking-[0.2em] text-muted mb-4">Add New Profile</h3>
         <div className="flex gap-2">
           <Input
             placeholder="Person Name..."
@@ -108,8 +108,8 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
             <div key={person.id} className="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm">
               <div className="bg-raised/50 px-6 py-4 border-b border-border flex justify-between items-center">
                 <div>
-                  <h4 className="text-xl font-heading text-text tracking-tight">{person.name}</h4>
-                  <p className="text-[10px] font-mono text-muted tracking-wider mt-0.5">Custom Nutrition Split</p>
+                  <h4 className="text-sm font-heading text-text tracking-tight">{person.name}</h4>
+                  <p className="text-caption font-mono text-muted tracking-wider mt-0.5">Custom Nutrition Split</p>
                 </div>
                 <Button variant="danger" size="sm" className="rounded-xl" onClick={() => setPersonToDelete(person)}>
                   <Trash2 size={14} className="mr-1.5" /> Delete
@@ -118,13 +118,13 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
 
               <div className="p-8 space-y-8">
                 <div className="max-w-[200px] space-y-2">
-                  <label className="text-[10px] font-mono text-muted tracking-widest pl-1">Daily Calories</label>
+                  <label className="text-caption font-mono text-muted tracking-widest pl-1">Daily Calories</label>
                   <div className="flex items-center gap-3">
                     <Input
                       type="number"
                       defaultValue={totalCals}
                       onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, person.fiberGrams || 30, parseFloat(e.target.value) || 2000)}
-                      className="text-2xl font-black text-accent h-12"
+                      className="text-base font-black text-accent h-9"
                     />
                     <span className="text-xs font-mono text-muted">kcal</span>
                   </div>
@@ -133,65 +133,65 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-accent tracking-widest font-bold">Protein</label>
-                      <span className="text-[10px] font-mono text-muted">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
+                      <label className="text-caption font-mono text-accent tracking-widest font-bold">Protein</label>
+                      <span className="text-caption font-mono text-muted">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Input
                         type="number"
                         defaultValue={currentPPct}
                         onBlur={(e) => handleGoalUpdate(person.id, parseFloat(e.target.value) || 30, currentFPct, currentCPct, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-lg"
+                        className="font-mono text-sm"
                       />
-                      <span className="text-lg font-mono text-muted">%</span>
+                      <span className="text-xs font-mono text-muted">%</span>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-secondary tracking-widest font-bold">Fat</label>
-                      <span className="text-[10px] font-mono text-muted">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
+                      <label className="text-caption font-mono text-secondary tracking-widest font-bold">Fat</label>
+                      <span className="text-caption font-mono text-muted">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Input
                         type="number"
                         defaultValue={currentFPct}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, parseFloat(e.target.value) || 25, currentCPct, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-lg"
+                        className="font-mono text-sm"
                       />
-                      <span className="text-lg font-mono text-muted">%</span>
+                      <span className="text-xs font-mono text-muted">%</span>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-text tracking-widest font-bold">Carbs</label>
-                      <span className="text-[10px] font-mono text-muted">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
+                      <label className="text-caption font-mono text-text tracking-widest font-bold">Carbs</label>
+                      <span className="text-caption font-mono text-muted">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Input
                         type="number"
                         defaultValue={currentCPct}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, parseFloat(e.target.value) || 45, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-lg"
+                        className="font-mono text-sm"
                       />
-                      <span className="text-lg font-mono text-muted">%</span>
+                      <span className="text-xs font-mono text-muted">%</span>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                      <label className="text-[10px] font-mono text-muted tracking-widest font-bold">Fiber</label>
-                      <span className="text-[10px] font-mono text-muted">Goal</span>
+                      <label className="text-caption font-mono text-muted tracking-widest font-bold">Fiber</label>
+                      <span className="text-caption font-mono text-muted">Goal</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Input
                         type="number"
                         defaultValue={person.fiberGrams || 30}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, parseFloat(e.target.value) || 30, totalCals)}
-                        className="font-mono text-lg"
+                        className="font-mono text-sm"
                       />
-                      <span className="text-lg font-mono text-muted">g</span>
+                      <span className="text-xs font-mono text-muted">g</span>
                     </div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                   </div>
                   <div className="flex items-center gap-2 min-w-[100px] justify-end">
                     {sum !== 100 && <AlertCircle size={14} className="text-red-500 animate-pulse" />}
-                    <span className={`font-mono text-[11px] font-bold ${sum === 100 ? 'text-accent' : 'text-red-500'}`}>
+                    <span className={`font-mono text-note font-bold ${sum === 100 ? 'text-accent' : 'text-red-500'}`}>
                       {sum}%
                     </span>
                   </div>
@@ -212,19 +212,19 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
 
                 {templateSlots.length > 0 && (
                   <div className="pt-4 border-t border-border/30">
-                    <h5 className="text-[10px] font-mono text-muted tracking-widest mb-2">Meal Slots for {person.goal}</h5>
+                    <h5 className="text-caption font-mono text-muted tracking-widest mb-2">Meal Slots for {person.goal}</h5>
                     <div className="flex flex-wrap gap-2">
                       {templateSlots
                         .filter(ts => ts.goal === person.goal)
                         .sort((a, b) => a.order - b.order)
                         .map(ts => (
-                          <div key={ts.id} className="flex items-center gap-1 bg-raised/50 px-2 py-1 rounded text-[10px] font-mono">
+                          <div key={ts.id} className="flex items-center gap-1 bg-raised/50 px-2 py-1 rounded text-caption font-mono">
                             <span className="text-text">{ts.name}</span>
                             <span className="text-muted">{ts.percentage}%</span>
                           </div>
                         ))}
                       {templateSlots.filter(ts => ts.goal === person.goal).length === 0 && (
-                        <span className="text-[10px] text-muted">No slots configured for this goal</span>
+                        <span className="text-caption text-muted">No slots configured for this goal</span>
                       )}
                     </div>
                   </div>

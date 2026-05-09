@@ -90,10 +90,10 @@ export function AIChatWidget() {
         setSuggestionIds((prev) => [...prev, ...result.suggestionIds]);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Невідома помилка";
+      const msg = err instanceof Error ? err.message : "Unknown error";
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `Помилка: ${msg}` },
+        { role: "assistant", content: `Error: ${msg}` },
       ]);
     } finally {
       setIsLoading(false);
@@ -140,7 +140,7 @@ export function AIChatWidget() {
           <div className="relative w-80 border-r border-border/50 flex flex-col animate-in slide-in-from-left duration-500 overflow-hidden">
             <div className="absolute inset-0 bg-raised/30 backdrop-blur-xl -z-10" />
             <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-transparent">
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted">Draft Actions</span>
+              <span className="text-caption font-mono uppercase tracking-[0.2em] text-muted">Draft Actions</span>
               <Sparkles size={14} className="text-accent/40" />
             </div>
             <div className="flex-1 overflow-y-auto custom-scrollbar bg-transparent text-left">
@@ -195,23 +195,23 @@ export function AIChatWidget() {
               <div className="w-16 h-16 rounded-3xl bg-accent/5 flex items-center justify-center mb-6">
                 <Sparkles size={32} strokeWidth={1.5} className="text-accent/40" />
               </div>
-              <h3 className="text-lg font-bold text-text mb-2">Привіт! Я Karasik</h3>
-              <p className="text-[13px] text-muted leading-relaxed">
-                Твій персональний OS-асистент. Я допоможу тобі керувати завданнями, 
-                аналізувати звички та планувати спринти. Просто напиши, що тебе цікавить.
+              <h3 className="text-sm font-bold text-text mb-2">Hello! I&apos;m Karasik</h3>
+              <p className="text-body text-muted leading-relaxed">
+                Your intelligent OS assistant. I can help you manage tasks,
+                track habits, and navigate your life system. Ask anything.
               </p>
               <div className="mt-8 flex flex-col gap-2 w-full">
                 {[
-                  "Створи задачу 'Замовити піцу' на вечір",
-                  "Сплануй мій наступний спринт",
-                  "Як пройшов мій день сьогодні?",
+                  "Add task 'Morning workout' for tomorrow",
+                  "Show my pending tasks for today",
+                  "What habits am I tracking this week",
                 ].map((hint) => (
                   <button
                     key={hint}
                     onClick={() => setInput(hint)}
-                    className="text-[11px] font-mono text-muted/60 hover:text-accent hover:bg-accent/5 py-2 px-4 rounded-xl border border-border/30 transition-all text-left"
+                    className="text-note font-mono text-muted/60 hover:text-accent hover:bg-accent/5 py-2 px-4 rounded-xl border border-border/30 transition-all text-left"
                   >
-                    → {hint}
+                    &rarr; {hint}
                   </button>
                 ))}
               </div>
@@ -224,14 +224,14 @@ export function AIChatWidget() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] text-[14px] leading-relaxed ${
+                  className={`max-w-[80%] text-base leading-relaxed ${
                     msg.role === "user"
                       ? "bg-accent/5 text-accent px-5 py-3 rounded-2xl border border-accent/10"
                       : "text-text"
                   }`}
                 >
                   {msg.role === "assistant" && msg.metadata && (
-                    <div className="flex items-center gap-2 text-[9px] font-mono text-muted/50 mb-2 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-label font-mono text-muted/50 mb-2 uppercase tracking-widest">
                       <span>{(msg.metadata.responseTime / 1000).toFixed(1)}s</span>
                       {msg.metadata.usage && (
                         <>
@@ -257,11 +257,11 @@ export function AIChatWidget() {
                               <ExternalLink size={14} className="text-accent" />
                             </div>
                             <div className="overflow-hidden">
-                              <p className="text-[13px] font-bold text-text truncate">{task.title}</p>
-                              <p className="text-[10px] font-mono text-muted uppercase tracking-wider">Open in Tasks</p>
+                              <p className="text-body font-bold text-text truncate">{task.title}</p>
+                              <p className="text-caption font-mono text-muted uppercase tracking-wider">Open in Tasks</p>
                             </div>
                           </div>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-bg/50 border border-border/50 text-muted group-hover/link:text-accent group-hover/link:border-accent/20 transition-all">
+                          <span className="text-caption font-bold px-2 py-0.5 rounded-lg bg-bg/50 border border-border/50 text-muted group-hover/link:text-accent group-hover/link:border-accent/20 transition-all">
                             {task.priority}
                           </span>
                         </Link>
@@ -276,8 +276,8 @@ export function AIChatWidget() {
                         <Sparkles size={14} className="text-accent" />
                       </div>
                       <div className="flex-1 text-left">
-                        <p className="text-[12px] font-bold text-text">Created {msg.suggestionIds.length} draft actions</p>
-                        <p className="text-[10px] text-muted leading-tight">Review and confirm them in the sidebar</p>
+                        <p className="text-sm font-bold text-text">Created {msg.suggestionIds.length} draft actions</p>
+                        <p className="text-caption text-muted leading-tight">Review and confirm them in the sidebar</p>
                       </div>
                     </div>
                   )}
@@ -301,7 +301,7 @@ export function AIChatWidget() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Message Karasik..."
-                className="flex-1 !border-none !bg-transparent !h-10 !shadow-none !ring-0 !text-[15px]"
+                className="flex-1 !border-none !bg-transparent !h-10 !shadow-none !ring-0 !text-base"
                 disabled={isLoading}
                 autoFocus
               />

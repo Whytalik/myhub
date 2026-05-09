@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { triggerSOSAction } from "../actions/recovery-actions";
@@ -15,10 +16,10 @@ export function SOSButton() {
       if (result.success) {
         setIsOpen(false);
       } else {
-        console.error(result.error || "Failed to trigger SOS");
+        toast.error(result.error || "Failed to trigger SOS");
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
+      toast.error("Something went wrong");
     }
   };
 

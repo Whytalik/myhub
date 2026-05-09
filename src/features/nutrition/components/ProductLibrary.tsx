@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
+import { useState, useTransition, useMemo, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { Search, Trash2, Plus, Edit2, ExternalLink, Loader2, Download } from "lucide-react";
+import { Search, Trash2, Plus, Edit2, Loader2, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Select } from "@/components/ui/select";
+import { Tabs } from "@/components/ui/tabs";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
-import { deleteProduct, createProduct, updateProduct, searchOpenFoodFacts, importFromOpenFoodFacts } from "../actions/products";
-import { FatSecretImportModal } from "./FatSecretImportModal";
+import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts } from "../actions/products";
 
 interface ProductLibraryProps {
   initialProducts: FoodProduct[];
@@ -59,25 +59,68 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [editingProduct, setEditingProduct] = useState<FoodProduct | null>(null);
   const [formData, setFormData] = useState<ProductFormData>(EMPTY_FORM);
 
-  // OpenFoodFacts modal
-  const [showOFFModal, setShowOFFModal] = useState(false);
-  const [offQuery, setOffQuery] = useState("");
-  const [offResults, setOffResults] = useState<OFFProduct[]>([]);
-  const [offSearching, setOffSearching] = useState(false);
-  const [offImporting, setOffImporting] = useState<string | null>(null);
+  // Unified search state
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<{ local: FoodProduct[]; external: OFFProduct[] } | null>(null);
+  const [importingCode, setImportingCode] = useState<string | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // FatSecret modal
-  const [showFSModal, setShowFSModal] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("ALL");
 
-  const filteredProducts = useMemo(() => {
-    if (!searchQuery.trim()) return products;
-    const q = searchQuery.toLowerCase();
-    return products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
-    );
-  }, [products, searchQuery]);
+  // Debounced unified search
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    if (searchQuery.trim().length < 2) {
+      setSearchResults(null);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    debounceRef.current = setTimeout(async () => {
+      const result = await unifiedSearchProducts(searchQuery);
+      setIsSearching(false);
+      if (result.success) {
+        setSearchResults(result.data);
+      } else {
+        setSearchResults({ local: [], external: [] });
+        toast.error(result.error || "Search failed");
+      }
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchQuery]);
+
+  // Library grid (when not searching)
+  const groupedProducts = useMemo(() => {
+    const groups: Record<string, FoodProduct[]> = {};
+    products.forEach((p) => {
+      const cat = p.category || "OTHER";
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(p);
+    });
+    return groups;
+  }, [products]);
+
+  const activeCategories = useMemo(() => {
+    const predefined = CATEGORIES.filter(cat => groupedProducts[cat]);
+    const others = Object.keys(groupedProducts).filter(cat => !CATEGORIES.includes(cat));
+    return [...predefined, ...others];
+  }, [groupedProducts]);
+
+  const displayedCategories = useMemo(() => {
+    if (selectedTab === "ALL") return activeCategories;
+    return activeCategories.filter(cat => cat === selectedTab);
+  }, [activeCategories, selectedTab]);
+
+  const tabItems = useMemo(() => {
+    const items = [{ id: "ALL", label: "ALL" }];
+    activeCategories.forEach(cat => items.push({ id: cat, label: cat }));
+    return items;
+  }, [activeCategories]);
 
   const openCreateForm = () => {
     setEditingProduct(null);
@@ -146,12 +189,11 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const handleDelete = () => {
     if (!productToDelete) return;
     setIsDeleting(true);
-
     startTransition(async () => {
       try {
         const result = await deleteProduct(productToDelete.id);
         if (result.success) {
-          setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
+          setProducts(prev => prev.filter(p => p.id !== productToDelete.id));
           toast.success("Product deleted");
         } else {
           toast.error(result.error || "Delete failed");
@@ -165,27 +207,14 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     });
   };
 
-  const searchOFF = () => {
-    if (!offQuery.trim()) return;
-    setOffSearching(true);
-    searchOpenFoodFacts(offQuery).then(result => {
-      setOffSearching(false);
-      if (result.success) {
-        setOffResults(result.data);
-      } else {
-        toast.error(result.error || "Search failed");
-      }
-    });
-  };
-
-  const importOFF = (code: string) => {
-    setOffImporting(code);
+  const handleImportOFF = (code: string) => {
+    setImportingCode(code);
     importFromOpenFoodFacts(code).then(result => {
-      setOffImporting(null);
+      setImportingCode(null);
       if (result.success) {
         setProducts(prev => [...prev, result.data]);
         toast.success("Product imported");
-        setShowOFFModal(false);
+        setSearchQuery("");
       } else {
         toast.error(result.error || "Import failed");
       }
@@ -196,7 +225,6 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     switch (source) {
       case NutritionSource.OPENFOODFACTS: return "OFF";
       case NutritionSource.USDA: return "USDA";
-      case NutritionSource.FATSECRET: return "FS";
       default: return "Manual";
     }
   };
@@ -205,19 +233,61 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     switch (source) {
       case NutritionSource.OPENFOODFACTS: return "text-blue-500";
       case NutritionSource.USDA: return "text-purple-500";
-      case NutritionSource.FATSECRET: return "text-emerald-500";
       default: return "text-muted";
     }
   };
 
+  const ProductCard = useMemo(() => {
+    return ({ product, onEdit, onDelete }: { product: FoodProduct, onEdit: (p: FoodProduct) => void, onDelete: (p: FoodProduct) => void }) => (
+      <div
+        key={product.id}
+        className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative"
+        style={{ contain: "content" }}
+      >
+        <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button onClick={() => onEdit(product)} className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors">
+            <Edit2 size={13} />
+          </button>
+          <button onClick={() => onDelete(product)} className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors">
+            <Trash2 size={13} />
+          </button>
+        </div>
+        <h3 className="text-base font-semibold text-text mb-1 pr-16 truncate">{product.name}</h3>
+        <div className="flex items-center gap-2 mb-3">
+          <span className={`text-label font-mono font-bold ${sourceColor(product.nutritionSource)}`}>
+            [{sourceLabel(product.nutritionSource)}]
+          </span>
+        </div>
+        <div className="flex gap-3 text-note font-mono text-secondary mb-3">
+          <span><b className="text-accent">{product.caloriesPer100.toFixed(0)}</b> kcal</span>
+          <span>P: <b className="text-text">{product.proteinPer100.toFixed(1)}g</b></span>
+          <span>F: <b className="text-text">{product.fatPer100.toFixed(1)}g</b></span>
+          <span>C: <b className="text-text">{product.carbsPer100.toFixed(1)}g</b></span>
+        </div>
+        {product.price && product.price > 0 && (
+          <div className="pt-3 border-t border-border/50">
+            <span className="text-note font-mono text-amber-500 font-bold">
+              {product.price.toFixed(1)}₴ / {product.standardPackageAmount}{product.unit}
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isSearchMode = searchQuery.trim().length >= 2;
+
   return (
     <div className="space-y-4">
+      {/* Toolbar */}
       <div className="flex flex-col md:flex-row gap-3">
         <div className="relative flex-1">
-          <Search
-            size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted opacity-50"
-          />
+          {isSearching ? (
+            <Loader2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-accent animate-spin" />
+          ) : (
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted opacity-50" />
+          )}
           <Input
             placeholder="Search products..."
             className="pl-9 rounded-xl"
@@ -228,89 +298,117 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
         <Button variant="primary" size="sm" className="rounded-xl" onClick={openCreateForm}>
           <Plus size={14} className="mr-1.5" /> Add Product
         </Button>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="rounded-xl border-emerald-500/30 hover:border-emerald-500/50 hover:bg-emerald-500/5 text-emerald-500" 
-          onClick={() => setShowFSModal(true)}
-        >
-          <Download size={14} className="mr-1.5" /> Import from FatSecret
-        </Button>
-        <Button variant="outline" size="sm" className="rounded-xl" onClick={() => setShowOFFModal(true)}>
-          <ExternalLink size={14} className="mr-1.5" /> Import from OFF
-        </Button>
       </div>
 
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative"
-            >
-              <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => openEditForm(product)}
-                  className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors"
-                >
-                  <Edit2 size={13} />
-                </button>
-                <button
-                  onClick={() => setProductToDelete(product)}
-                  className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
-                >
-                  <Trash2 size={13} />
-                </button>
+      {/* Search results panel */}
+      {isSearchMode ? (
+        <div className="space-y-6">
+          {/* Local results */}
+          {(searchResults?.local.length ?? 0) > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="h-px flex-1 bg-border" />
+                <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">В бібліотеці</h2>
+                <div className="h-px flex-1 bg-border" />
               </div>
-
-              <h3 className="text-[15px] font-semibold text-text mb-1 pr-16">
-                {product.name}
-              </h3>
-              <div className="flex items-center gap-2 mb-3">
-                <p className="text-[10px] text-muted font-mono">
-                  {product.category}
-                </p>
-                <span className={`text-[9px] font-mono font-bold ${sourceColor(product.nutritionSource)}`}>
-                  [{sourceLabel(product.nutritionSource)}]
-                </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {searchResults!.local.map(product => (
+                  <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                ))}
               </div>
-
-              <div className="flex gap-3 text-[11px] font-mono text-secondary mb-3">
-                <span>
-                  <b className="text-accent">{product.caloriesPer100.toFixed(0)}</b> kcal
-                </span>
-                <span>
-                  P: <b className="text-text">{product.proteinPer100.toFixed(1)}g</b>
-                </span>
-                <span>
-                  F: <b className="text-text">{product.fatPer100.toFixed(1)}g</b>
-                </span>
-                <span>
-                  C: <b className="text-text">{product.carbsPer100.toFixed(1)}g</b>
-                </span>
-              </div>
-
-              {product.price && product.price > 0 && (
-                <div className="pt-3 border-t border-border/50">
-                  <span className="text-[11px] font-mono text-amber-500 font-bold">
-                    {product.price.toFixed(1)}₴ / {product.standardPackageAmount}{product.unit}
-                  </span>
-                </div>
-              )}
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
-          <p className="text-sm font-bold text-text mb-1">
-            {searchQuery ? "No products found" : "No products yet"}
-          </p>
-          {!searchQuery && (
-            <Button variant="primary" size="sm" className="mt-4" onClick={openCreateForm}>
-              <Plus size={14} className="mr-1.5" /> Add Product
-            </Button>
+          )}
+
+          {/* OFF results */}
+          {(searchResults?.external.length ?? 0) > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="h-px flex-1 bg-border" />
+                <h2 className="text-note font-bold font-mono text-blue-500/70 tracking-[0.2em] uppercase">Open Food Facts</h2>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {searchResults!.external.map(product => (
+                  <div key={product.code} className="bg-surface border border-border/60 rounded-2xl p-5 hover:border-blue-500/20 transition-colors">
+                    <div className="flex justify-between items-start gap-2 mb-1">
+                      <h3 className="text-base font-semibold text-text leading-tight">{product.name}</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="shrink-0 h-7 px-2 text-label rounded-lg"
+                        onClick={() => handleImportOFF(product.code)}
+                        disabled={importingCode === product.code}
+                      >
+                        {importingCode === product.code
+                          ? <Loader2 size={12} className="animate-spin" />
+                          : <><Download size={11} className="mr-1" />Import</>
+                        }
+                      </Button>
+                    </div>
+                    {product.brand && (
+                      <p className="text-caption font-mono text-blue-500/70 mb-2">{product.brand}</p>
+                    )}
+                    <div className="flex gap-3 text-note font-mono text-secondary">
+                      <span><b className="text-accent">{product.calories.toFixed(0)}</b> kcal</span>
+                      <span>P: <b className="text-text">{product.protein.toFixed(1)}g</b></span>
+                      <span>F: <b className="text-text">{product.fat.toFixed(1)}g</b></span>
+                      <span>C: <b className="text-text">{product.carbs.toFixed(1)}g</b></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Empty state */}
+          {!isSearching && searchResults && searchResults.local.length === 0 && searchResults.external.length === 0 && (
+            <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
+              <p className="text-sm font-bold text-text mb-1">Нічого не знайдено</p>
+              <p className="text-caption text-muted mt-1">Спробуйте інший запит або додайте продукт вручну</p>
+              <Button variant="primary" size="sm" className="mt-4" onClick={openCreateForm}>
+                <Plus size={14} className="mr-1.5" /> Add Product
+              </Button>
+            </div>
+          )}
+
+          {/* Still loading */}
+          {isSearching && !searchResults && (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 size={20} className="animate-spin text-muted" />
+            </div>
           )}
         </div>
+      ) : (
+        /* Full library grid */
+        <>
+          <Tabs tabs={tabItems} activeTab={selectedTab} onTabChange={setSelectedTab} className="mb-2" />
+
+          {displayedCategories.length > 0 ? (
+            <div className="space-y-8">
+              {displayedCategories.map((category) => (
+                <div key={category} className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <div className="h-px flex-1 bg-border" />
+                    <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">{category}</h2>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {groupedProducts[category].map((product) => (
+                      <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
+              <p className="text-sm font-bold text-text mb-1">No products yet</p>
+              <Button variant="primary" size="sm" className="mt-4" onClick={openCreateForm}>
+                <Plus size={14} className="mr-1.5" /> Add Product
+              </Button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Create/Edit Dialog */}
@@ -321,9 +419,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
         maxWidth="max-w-lg"
         footer={
           <>
-            <Button variant="secondary" onClick={() => { setShowFormModal(false); setEditingProduct(null); }}>
-              Cancel
-            </Button>
+            <Button variant="secondary" onClick={() => { setShowFormModal(false); setEditingProduct(null); }}>Cancel</Button>
             <Button variant="primary" onClick={handleSaveProduct} disabled={isPending}>
               {isPending ? "Saving..." : editingProduct ? "Update" : "Create"}
             </Button>
@@ -332,16 +428,16 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
       >
         <div className="space-y-4">
           <div>
-            <label className="text-[10px] font-mono text-muted tracking-wider">Name</label>
+            <label className="text-caption font-mono text-muted tracking-wider">Name</label>
             <Input value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))} placeholder="Product name" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Calories / 100g</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Calories / 100g</label>
               <Input type="number" value={formData.caloriesPer100} onChange={(e) => setFormData(prev => ({ ...prev, caloriesPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Category</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Category</label>
               <Select value={formData.category} onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}>
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </Select>
@@ -349,25 +445,25 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
           </div>
           <div className="grid grid-cols-4 gap-3">
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Protein</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Protein</label>
               <Input type="number" value={formData.proteinPer100} onChange={(e) => setFormData(prev => ({ ...prev, proteinPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Fat</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Fat</label>
               <Input type="number" value={formData.fatPer100} onChange={(e) => setFormData(prev => ({ ...prev, fatPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Carbs</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Carbs</label>
               <Input type="number" value={formData.carbsPer100} onChange={(e) => setFormData(prev => ({ ...prev, carbsPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Fiber</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Fiber</label>
               <Input type="number" value={formData.fiberPer100} onChange={(e) => setFormData(prev => ({ ...prev, fiberPer100: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Unit</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Unit</label>
               <Select value={formData.unit} onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}>
                 <option value="GRAM">g</option>
                 <option value="ML">ml</option>
@@ -375,69 +471,14 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
               </Select>
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Package Amount</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Package Amount</label>
               <Input type="number" value={formData.standardPackageAmount} onChange={(e) => setFormData(prev => ({ ...prev, standardPackageAmount: e.target.value }))} />
             </div>
             <div>
-              <label className="text-[10px] font-mono text-muted tracking-wider">Price (₴)</label>
+              <label className="text-caption font-mono text-muted tracking-wider">Price (₴)</label>
               <Input type="number" value={formData.price} onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))} placeholder="0" />
             </div>
           </div>
-        </div>
-      </Dialog>
-
-      <FatSecretImportModal 
-        isOpen={showFSModal} 
-        onClose={() => setShowFSModal(false)}
-        onImportSuccess={(newProduct) => {
-          setProducts(prev => [...prev, newProduct]);
-        }}
-      />
-
-      {/* OpenFoodFacts Dialog */}
-      <Dialog
-        isOpen={showOFFModal}
-        onClose={() => { setShowOFFModal(false); setOffResults([]); setOffQuery(""); }}
-        title="Import from OpenFoodFacts"
-        maxWidth="max-w-lg"
-        bare
-      >
-        <div className="p-6 space-y-4">
-          <div className="flex gap-2">
-            <Input
-              placeholder="Search by name or barcode..."
-              value={offQuery}
-              onChange={(e) => setOffQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && searchOFF()}
-            />
-            <Button variant="primary" size="sm" onClick={searchOFF} disabled={offSearching || !offQuery.trim()}>
-              {offSearching ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
-            </Button>
-          </div>
-
-          {offResults.length > 0 && (
-            <div className="max-h-80 overflow-y-auto space-y-2">
-              {offResults.map((p) => (
-                <div key={p.code} className="flex justify-between items-center p-3 border rounded-lg hover:bg-muted/50">
-                  <div>
-                    <div className="text-sm font-medium">{p.name}</div>
-                    {p.brand && <div className="text-[10px] text-muted">{p.brand}</div>}
-                    <div className="text-[10px] font-mono text-muted-foreground mt-1">
-                      {p.calories.toFixed(0)} kcal · P: {p.protein.toFixed(1)}g · F: {p.fat.toFixed(1)}g · C: {p.carbs.toFixed(1)}g
-                    </div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => importOFF(p.code)}
-                    disabled={offImporting === p.code}
-                  >
-                    {offImporting === p.code ? <Loader2 size={14} className="animate-spin" /> : "Import"}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </Dialog>
 
@@ -449,18 +490,14 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
         description="This action cannot be undone"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setProductToDelete(null)}>
-              Cancel
-            </Button>
+            <Button variant="secondary" onClick={() => setProductToDelete(null)}>Cancel</Button>
             <Button variant="danger" onClick={handleDelete} disabled={isDeleting}>
               {isDeleting ? "Deleting..." : "Delete"}
             </Button>
           </>
         }
       >
-        <p>
-          You are about to delete <strong>{productToDelete?.name}</strong>.
-        </p>
+        <p>You are about to delete <strong>{productToDelete?.name}</strong>.</p>
       </Dialog>
     </div>
   );

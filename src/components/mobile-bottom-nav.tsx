@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useSpace } from "./space-provider";
 import { 
@@ -76,7 +76,7 @@ export function MobileBottomNav() {
             }`}>
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
             </div>
-            <span className={`text-[9px] font-bold uppercase tracking-tighter transition-colors duration-300 ${
+            <span className={`text-label font-bold uppercase tracking-tighter transition-colors duration-300 ${
               isActive ? "text-text" : "text-muted"
             }`}>
               {domain.label}

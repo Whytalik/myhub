@@ -13,7 +13,7 @@ export const systemService = {
 
     if (!user) throw new Error("User not found");
 
-    const nutritionPerson = await prisma.nutritionPerson.findUnique({
+    const nutritionPerson = await prisma.nutritionPerson.findFirst({
       where: { userId },
     });
 

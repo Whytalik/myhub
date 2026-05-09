@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useTransition } from "react";
 import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/features/life/actions/habit-actions";
@@ -28,24 +28,19 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
 
   const handleToggle = () => {
     startTransition(async () => {
-      try {
-        await toggleHabitCompletionAction(habit.id, activeDate);
-        if (!isCompletedOnDate) {
-          toast.success("Great job! Keep the streak alive.");
-        }
-      } catch {
-        toast.error("Failed to update habit");
+      const result = await toggleHabitCompletionAction(habit.id, activeDate);
+      if (result.success) {
+        if (!isCompletedOnDate) toast.success("Great job! Keep the streak alive.");
+      } else {
+        toast.error(result.error || "Failed to update habit");
       }
     });
   };
 
-const handleArchive = () => {
+  const handleArchive = () => {
     startTransition(async () => {
-      try {
-        await toggleHabitArchivedAction(habit.id);
-      } catch {
-        toast.error("Failed to archive habit");
-      }
+      const result = await toggleHabitArchivedAction(habit.id);
+      if (!result.success) toast.error(result.error || "Failed to archive habit");
     });
   };
 
@@ -53,26 +48,26 @@ const handleArchive = () => {
     <div className={`group bg-surface border rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-accent/40"}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex flex-col gap-1">
-          <h3 className={`text-lg font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
+          <h3 className={`text-sm font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
             {habit.name}
           </h3>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <div className={`w-2 h-2 rounded-full ${habit.archived ? "bg-muted" : "bg-emerald-500 animate-pulse"}`} />
-              <span className={`text-[10px] font-mono tracking-widest font-bold ${habit.archived ? "text-muted" : "text-emerald-600"}`}>
+              <span className={`text-caption font-mono tracking-widest font-bold ${habit.archived ? "text-muted" : "text-emerald-600"}`}>
                 {habit.archived ? "Archived" : "Active habit"}
               </span>
             </div>
             {streak > 0 && (
               <div className="flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                 <Flame size={10} className="text-amber-500 fill-amber-500" />
-                <span className="text-[10px] font-bold text-amber-600 font-mono">{streak} day streak</span>
+                <span className="text-caption font-bold text-amber-600 font-mono">{streak} day streak</span>
               </div>
             )}
             {habit.reminderTime && (
               <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
                 <Bell size={10} className="text-blue-500" />
-                <span className="text-[10px] font-bold text-blue-600 font-mono">{habit.reminderTime}</span>
+                <span className="text-caption font-bold text-blue-600 font-mono">{habit.reminderTime}</span>
               </div>
             )}
           </div>
@@ -111,7 +106,7 @@ const handleArchive = () => {
             <Anchor size={14} className="text-accent" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono tracking-widest text-muted">Anchor</span>
+            <span className="text-label font-mono tracking-widest text-muted">Anchor</span>
             <p className="text-sm text-secondary italic">&quot;{habit.anchor}&quot;</p>
           </div>
         </div>
@@ -121,7 +116,7 @@ const handleArchive = () => {
             <Zap size={14} className="text-amber-500" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono tracking-widest text-muted">Action</span>
+            <span className="text-label font-mono tracking-widest text-muted">Action</span>
             <p className="text-sm font-medium text-text">&quot;{habit.action}&quot;</p>
           </div>
         </div>
@@ -132,7 +127,7 @@ const handleArchive = () => {
               <PartyPopper size={14} className="text-emerald-500" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[9px] font-mono tracking-widest text-muted">Celebration</span>
+              <span className="text-label font-mono tracking-widest text-muted">Celebration</span>
               <p className="text-sm text-secondary italic">&quot;{habit.celebration}&quot;</p>
             </div>
           </div>
@@ -142,7 +137,7 @@ const handleArchive = () => {
       <button
         onClick={handleToggle}
         disabled={isPending}
-        className={`w-full py-3.5 rounded-xl border flex items-center justify-center gap-3 transition-all font-mono text-[11px] font-bold tracking-[0.1em] ${
+        className={`w-full py-3.5 rounded-xl border flex items-center justify-center gap-3 transition-all font-mono text-note font-bold tracking-[0.1em] ${
           isCompletedOnDate 
             ? "bg-emerald-500 border-emerald-600 text-white shadow-lg shadow-emerald-500/20" 
             : "bg-surface border-border text-muted hover:border-accent hover:text-accent hover:bg-accent/5"

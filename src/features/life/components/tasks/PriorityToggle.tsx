@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { 
   ChevronDown 
 } from "lucide-react";
+import { toast } from "sonner";
 import { updateTaskPriorityAction } from "@/features/life/actions/task-actions";
 import type { TaskPriority } from "@/features/life/types";
 import { PRIORITY_CONFIG } from "./PriorityBadge";
@@ -35,11 +36,10 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
     close();
     
     startTransition(async () => {
-      try {
-        await updateTaskPriorityAction(taskId, newPriority);
-      } catch (error) {
+      const result = await updateTaskPriorityAction(taskId, newPriority);
+      if (!result.success) {
         setCurrentPriority(initialPriority);
-        console.error("Failed to update priority:", error);
+        toast.error(result.error || "Failed to update priority");
       }
     });
   };
@@ -55,7 +55,7 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
         onClick={toggle}
         disabled={isPending}
         className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all hover:brightness-125 active:scale-95 ${
-          isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-[9px]'
+          isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-label'
         }`}
         style={{ 
           backgroundColor: `${config.color}15`, 
@@ -90,7 +90,7 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
                 <button
                   key={p}
                   onClick={() => handlePrioritySelect(p)}
-                  className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-caption font-bold uppercase tracking-wider transition-colors ${
                     active ? "bg-accent/10 text-accent" : "text-secondary hover:bg-raised hover:text-text"
                   }`}
                 >

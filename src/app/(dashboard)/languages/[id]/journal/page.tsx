@@ -44,7 +44,7 @@ export default async function JournalPage({ params }: { params: Promise<{ id: st
       <div className="flex justify-between items-start mb-12">
         <div className="flex flex-col">
            <div className="flex items-center gap-4 mb-2">
-             <span className="text-4xl">{userLanguage.language.icon}</span>
+             <span className="text-2xl">{userLanguage.language.icon}</span>
              <Heading title="Immersion Log" />
            </div>
            <p className="text-secondary max-w-2xl leading-relaxed">
@@ -62,7 +62,7 @@ export default async function JournalPage({ params }: { params: Promise<{ id: st
                   <div className="p-2 rounded-xl bg-accent/10 text-accent">
                     <History size={18} />
                   </div>
-                  <h4 className="font-heading text-xl uppercase tracking-tight">Recent Sessions</h4>
+                  <h4 className="font-heading text-sm uppercase tracking-tight">Recent Sessions</h4>
                 </div>
              </div>
 

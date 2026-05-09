@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -30,7 +30,7 @@ export default async function JournalHistoryPage() {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <Heading title="History" />
-        <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
+        <span className="text-note font-mono text-muted uppercase tracking-wider">
           {entries.length} entries
         </span>
       </div>

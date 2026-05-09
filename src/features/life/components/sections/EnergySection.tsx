@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Zap, Smile, FileText, Info } from "lucide-react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
@@ -82,7 +82,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
               left: coords.left
             }}
           >
-            <div className="flex flex-col gap-3 text-[11px] leading-relaxed">
+            <div className="flex flex-col gap-3 text-note leading-relaxed">
               <p className="font-bold text-text border-b border-border pb-2">
                 {type === "energy" ? "Як оцінити енергію?" : "Як оцінити настрій?"}
               </p>
@@ -123,7 +123,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
       hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
     }`}>
       <div className="flex items-center gap-2 pb-1 border-b border-border/40">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-muted">Morning Energy & Mood</span>
+        <span className="text-caption font-mono uppercase tracking-widest text-muted">Morning Energy & Mood</span>
       </div>
       {/* Energy Row */}
       <div className="flex flex-col gap-3">
@@ -132,11 +132,11 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
             <div className={`p-1.5 rounded-lg transition-colors ${energy !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
               <Zap size={14} />
             </div>
-            <h3 className={`text-[13px] font-medium transition-colors ${energy !== null ? "text-accent" : "text-text"}`}>Energy</h3>
+            <h3 className={`text-body font-medium transition-colors ${energy !== null ? "text-accent" : "text-text"}`}>Energy</h3>
             <ScaleHint type="energy" />
           </div>
           {energy !== null && (
-            <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
+            <span className="text-note font-mono text-muted uppercase tracking-wider">
               {ENERGY_DESCS[energy]}
             </span>
           )}
@@ -148,7 +148,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
               key={value}
               type="button"
               onClick={() => onChange({ energy: energy === value ? null : value })}
-              className={`flex-1 w-full rounded-lg border text-[10px] font-mono transition-all ${
+              className={`flex-1 w-full rounded-lg border text-caption font-mono transition-all ${
                 energy === value
                   ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                   : energy !== null && value <= energy
@@ -169,11 +169,11 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
             <div className={`p-1.5 rounded-lg transition-colors ${mood !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
               <Smile size={14} />
             </div>
-            <h3 className={`text-[13px] font-medium transition-colors ${mood !== null ? "text-accent" : "text-text"}`}>Mood</h3>
+            <h3 className={`text-body font-medium transition-colors ${mood !== null ? "text-accent" : "text-text"}`}>Mood</h3>
             <ScaleHint type="mood" />
           </div>
           {mood !== null && (
-            <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
+            <span className="text-note font-mono text-muted uppercase tracking-wider">
               {MOOD_DESCS[mood]}
             </span>
           )}
@@ -185,7 +185,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
               key={value}
               type="button"
               onClick={() => onChange({ mood: mood === value ? null : value })}
-              className={`flex-1 w-full rounded-lg border text-[10px] font-mono transition-all ${
+              className={`flex-1 w-full rounded-lg border text-caption font-mono transition-all ${
                 mood === value
                   ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                   : mood !== null && value <= mood
@@ -202,7 +202,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 px-1 h-4">
           <FileText size={12} className="text-muted" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted">Notes</span>
+          <span className="text-caption font-mono uppercase tracking-wider text-muted">Notes</span>
         </div>
         <textarea
           ref={textareaRef}

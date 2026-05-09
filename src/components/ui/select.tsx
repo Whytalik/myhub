@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 
 export interface SelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
@@ -7,7 +7,7 @@ export interface SelectProps
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, children, variant = "default", ...props }, ref) => {
-    const baseStyles = "flex h-8 w-full rounded-md bg-transparent px-3 py-1 text-[11px] font-mono uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer text-inherit";
+    const baseStyles = "flex h-8 w-full rounded-md bg-transparent px-3 py-1 text-note font-mono uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer text-inherit";
 
     const variants = {
       default: "border border-border bg-surface/50",

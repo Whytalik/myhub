@@ -57,7 +57,7 @@ function Stepper({ currentStep }: { currentStep: number }) {
               `}>
                 {isCompleted ? <Check size={14} strokeWidth={3} /> : step.icon}
               </div>
-              <span className={`text-[9px] font-mono uppercase tracking-widest ${isActive ? "text-accent font-bold" : "text-muted/40"}`}>
+              <span className={`text-label font-mono uppercase tracking-widest ${isActive ? "text-accent font-bold" : "text-muted/40"}`}>
                 {step.label}
               </span>
             </div>
@@ -71,7 +71,7 @@ function Stepper({ currentStep }: { currentStep: number }) {
   );
 }
 
-// ─── Step-by-Step Creation Form ─────────────────────────────────────────────
+// --- Step-by-Step Creation Form ---------------------------------------------
 
 interface UnifiedTaskFormProps {
   spheres:      LifeSphereData[];
@@ -169,7 +169,7 @@ function UnifiedTaskForm({
         return (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Title & Symbol</label>
+              <label className="text-label font-mono uppercase tracking-widest text-muted">Title & Symbol</label>
               <div className="flex items-center gap-4">
                 <div 
                   onClick={() => setIconPickerOpen(true)}
@@ -179,13 +179,13 @@ function UnifiedTaskForm({
                 </div>
                 <Input 
                   value={title} onChange={(e) => setTitle(e.target.value)} 
-                  placeholder="What needs to be done?" className="text-lg font-bold h-12"
+                  placeholder="What needs to be done?" className="text-sm font-bold h-9"
                   autoFocus
                 />
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Description</label>
+              <label className="text-label font-mono uppercase tracking-widest text-muted">Description</label>
               <textarea 
                 value={description} onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add more details..."
@@ -199,7 +199,7 @@ function UnifiedTaskForm({
         return (
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-              <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Sphere</label>
+              <label className="text-label font-mono uppercase tracking-widest text-muted">Sphere</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {spheres.map(s => (
                   <button
@@ -207,7 +207,7 @@ function UnifiedTaskForm({
                     className={`flex items-center gap-2.5 p-3 rounded-xl border transition-all ${sphereId === s.id ? "bg-accent text-bg border-accent shadow-lg shadow-accent/20" : "bg-surface/50 border-border/40 hover:bg-raised"}`}
                   >
                     {s.icon && SPHERE_ICONS[s.icon] && (() => { const I = SPHERE_ICONS[s.icon]; return <I size={14} strokeWidth={3} />; })()}
-                    <span className="text-[11px] font-bold truncate uppercase">{s.name}</span>
+                    <span className="text-note font-bold truncate uppercase">{s.name}</span>
                   </button>
                 ))}
               </div>
@@ -215,7 +215,7 @@ function UnifiedTaskForm({
 
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Status</label>
+                <label className="text-label font-mono uppercase tracking-widest text-muted">Status</label>
                 <CustomSelect 
                   value={status}
                   onChange={(val) => setStatus(val as TaskStatus)}
@@ -225,7 +225,7 @@ function UnifiedTaskForm({
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Priority</label>
+                <label className="text-label font-mono uppercase tracking-widest text-muted">Priority</label>
                 <CustomSelect 
                   value={priority}
                   onChange={(val) => setPriority(val as TaskPriority)}
@@ -237,24 +237,24 @@ function UnifiedTaskForm({
             </div>
 
             <div className="p-5 rounded-2xl border border-border/30 bg-surface/30">
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted mb-3 block">Preview</label>
+              <label className="text-caption font-mono uppercase tracking-wider text-muted mb-3 block">Preview</label>
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: sphere ? `${sphere.color}25` : "transparent" }}>
                   {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={20} style={{ color: sphere?.color }} />; })() : <FileText size={16} className="text-muted/40" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] font-bold text-text truncate">{title || "Task title"}</p>
-                  <p className="text-[10px] font-mono text-muted truncate" style={{ color: sphere?.color }}>{sphere?.name || "No sphere"}</p>
+                  <p className="text-sm font-bold text-text truncate">{title || "Task title"}</p>
+                  <p className="text-caption font-mono text-muted truncate" style={{ color: sphere?.color }}>{sphere?.name || "No sphere"}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span 
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border"
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-md text-label font-bold uppercase tracking-wider border"
                       style={{ backgroundColor: `${STATUS_CONFIG[status].color}15`, borderColor: `${STATUS_CONFIG[status].color}40`, color: STATUS_CONFIG[status].color }}
                     >
                       {React.createElement(STATUS_CONFIG[status].icon, { size: 10 })}
                       {STATUS_CONFIG[status].label}
                     </span>
                     <span 
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border"
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-md text-label font-bold uppercase tracking-wider border"
                       style={{ backgroundColor: `${PRIORITY_CONFIG[priority].color}15`, borderColor: `${PRIORITY_CONFIG[priority].color}40`, color: PRIORITY_CONFIG[priority].color }}
                     >
                       {React.createElement(PRIORITY_CONFIG[priority].icon, { size: 10 })}
@@ -272,11 +272,11 @@ function UnifiedTaskForm({
           <div className="flex flex-col gap-6">
             {parentId ? (
               <div className="flex flex-col gap-2">
-                <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Subtask Planning</label>
+                <label className="text-label font-mono uppercase tracking-widest text-muted">Subtask Planning</label>
                 <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
                   <div className="flex items-center gap-2 text-accent">
                     <Calendar size={12} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">When will you do this?</span>
+                    <span className="text-caption font-bold uppercase tracking-wider">When will you do this?</span>
                   </div>
                   <DateRangePicker 
                     startDate={plannedDate} 
@@ -289,14 +289,14 @@ function UnifiedTaskForm({
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
-                      <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                      <label className="flex items-center gap-2 text-caption font-mono text-muted cursor-pointer hover:text-text transition-colors">
                         <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
                         <span>Start time</span>
                       </label>
                       {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
                     </div>
                     <div className="flex flex-col gap-2">
-                      <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                      <label className="flex items-center gap-2 text-caption font-mono text-muted cursor-pointer hover:text-text transition-colors">
                         <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
                         <span>End time</span>
                       </label>
@@ -308,11 +308,11 @@ function UnifiedTaskForm({
             ) : (
               <>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Planning (Optional)</label>
+                  <label className="text-label font-mono uppercase tracking-widest text-muted">Planning (Optional)</label>
                   <div className="flex flex-col gap-3 p-4 bg-surface/50 rounded-xl border border-border/40">
                     <div className="flex items-center gap-2 text-accent">
                       <Calendar size={12} />
-                      <span className="text-[10px] font-bold uppercase tracking-wider">Planned Range</span>
+                      <span className="text-caption font-bold uppercase tracking-wider">Planned Range</span>
                     </div>
                     <DateRangePicker 
                       startDate={plannedDate} 
@@ -325,14 +325,14 @@ function UnifiedTaskForm({
                     />
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
-                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                        <label className="flex items-center gap-2 text-caption font-mono text-muted cursor-pointer hover:text-text transition-colors">
                           <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
                           <span>Start time</span>
                         </label>
                         {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer hover:text-text transition-colors">
+                        <label className="flex items-center gap-2 text-caption font-mono text-muted cursor-pointer hover:text-text transition-colors">
                           <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3.5 h-3.5" />
                           <span>End time</span>
                         </label>
@@ -347,7 +347,7 @@ function UnifiedTaskForm({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-rose-400">
                         <Flag size={12} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Deadline</span>
+                        <span className="text-caption font-bold uppercase tracking-wider">Deadline</span>
                       </div>
                       <button type="button" onClick={() => setUseDeadline(!useDeadline)} className={`text-[8px] font-mono uppercase px-1.5 py-0.5 rounded border transition-all ${useDeadline ? "bg-rose-500 text-white border-rose-500" : "bg-surface text-muted border-border"}`}>
                         {useDeadline ? "Active" : "Add"}
@@ -356,7 +356,7 @@ function UnifiedTaskForm({
                     {useDeadline && (
                       <div className="flex flex-col gap-3">
                         <DatePicker value={dueDate} onChange={setDueDate} />
-                        <label className="flex items-center gap-2 text-[10px] font-mono text-muted cursor-pointer">
+                        <label className="flex items-center gap-2 text-caption font-mono text-muted cursor-pointer">
                           <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3.5 h-3.5" />
                           <span>Specific time</span>
                         </label>
@@ -374,7 +374,7 @@ function UnifiedTaskForm({
         return (
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label className="text-[9px] font-mono uppercase tracking-widest text-muted">Parent Task</label>
+              <label className="text-label font-mono uppercase tracking-widest text-muted">Parent Task</label>
               <CustomSelect
                 value={parentId || "none"}
                 onChange={(val) => setParentId(val === "none" ? null : val)}
@@ -382,7 +382,7 @@ function UnifiedTaskForm({
                 options={[
                   { id: "none", label: "Top Level", icon: Link2Off, color: "#666" },
                   ...allTasks.map((t: TaskData) => ({
-                    id: t.id, label: t.isPrivate ? "••••••••" : t.title, icon: t.icon ? (SPHERE_ICONS[t.icon] || FileText) : FileText, color: t.sphere?.color || "#888",
+                    id: t.id, label: t.isPrivate ? "Private" : t.title, icon: t.icon ? (SPHERE_ICONS[t.icon] || FileText) : FileText, color: t.sphere?.color || "#888",
                   }))
                 ]}
               />
@@ -394,8 +394,8 @@ function UnifiedTaskForm({
             >
               <EyeOff size={14} className={isPrivate ? "text-amber-500" : "text-muted/40"} />
               <div className="flex flex-col items-start">
-                <span className={`text-[12px] font-bold ${isPrivate ? "text-amber-500" : "text-text"}`}>{isPrivate ? "Private" : "Public"}</span>
-                <span className="text-[10px] text-muted font-mono">{isPrivate ? "Only you can see this" : "Visible to everyone"}</span>
+                <span className={`text-sm font-bold ${isPrivate ? "text-amber-500" : "text-text"}`}>{isPrivate ? "Private" : "Public"}</span>
+                <span className="text-caption text-muted font-mono">{isPrivate ? "Only you can see this" : "Visible to everyone"}</span>
               </div>
             </button>
           </div>
@@ -417,7 +417,7 @@ function UnifiedTaskForm({
       <div className="flex items-center justify-between p-6 bg-raised/10 border-t border-border/30">
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-          <span className="text-[10px] font-mono uppercase tracking-widest text-muted">Required Fields</span>
+          <span className="text-caption font-mono uppercase tracking-widest text-muted">Required Fields</span>
         </div>
         <div className="flex items-center gap-3">
           {currentStep > 1 && (
@@ -455,7 +455,7 @@ function UnifiedTaskForm({
   );
 }
 
-// ─── Task Detail (Edit / Wide Mode) ──────────────────────────────────────────
+// --- Task Detail (Edit / Wide Mode) ------------------------------------------
 
 interface TaskDetailProps {
   task: TaskData;
@@ -543,18 +543,22 @@ function TaskDetail({
     if (checked && !dueTime) setDueTime("12:00");
   };
   const handleUnlinkSubtask = async (subtask: TaskData) => {
-    try {
-      await upsertTaskAction({ id: subtask.id, parentId: null });
+    const result = await upsertTaskAction({ id: subtask.id, parentId: null });
+    if (result.success) {
       toast.success("Subtask unlinked");
-    } catch { toast.error("Failed to unlink subtask"); }
+    } else {
+      toast.error(result.error || "Failed to unlink subtask");
+    }
   };
   const handleDelete = () => {
     startTransition(async () => {
-      try {
-        await deleteTaskAction(task.id);
+      const result = await deleteTaskAction(task.id);
+      if (result.success) {
         toast.success("Task deleted");
         onClose();
-      } catch { toast.error("Failed to delete task"); }
+      } else {
+        toast.error(result.error || "Failed to delete task");
+      }
     });
   };
 
@@ -579,7 +583,7 @@ function TaskDetail({
           <div className="flex items-center gap-2 mt-1">
             <button
               onClick={() => {}}
-              className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider border transition-all"
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-label font-mono font-bold uppercase tracking-wider border transition-all"
               style={{ backgroundColor: sphere ? `${sphere.color}15` : "transparent", borderColor: sphere ? `${sphere.color}40` : "var(--border)", color: sphere?.color || "var(--muted)" }}
             >
               {sphere && ALL_ICONS[sphere.icon] && (() => { const I = ALL_ICONS[sphere.icon]; return <I size={9} strokeWidth={3} />; })()}
@@ -588,7 +592,7 @@ function TaskDetail({
             <div className="w-px h-3 bg-border/50 mx-0.5" />
             <button
               onClick={() => setStatus(status === "DONE" ? "TODO" : status === "TODO" ? "IN_PROGRESS" : "DONE")}
-              className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider border transition-all"
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-label font-mono font-bold uppercase tracking-wider border transition-all"
               style={{ backgroundColor: `${statusCfg.color}15`, borderColor: `${statusCfg.color}40`, color: statusCfg.color }}
             >
               <statusCfg.icon size={9} />
@@ -596,7 +600,7 @@ function TaskDetail({
             </button>
             <button
               onClick={() => setPriority(priority === "URGENT" ? "LOW" : "URGENT")}
-              className={`flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[9px] font-mono font-bold uppercase tracking-wider border transition-all`}
+              className={`flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-label font-mono font-bold uppercase tracking-wider border transition-all`}
               style={{ backgroundColor: `${priorityCfg.color}15`, borderColor: `${priorityCfg.color}40`, color: priorityCfg.color }}
             >
               <priorityCfg.icon size={9} />
@@ -624,7 +628,7 @@ function TaskDetail({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add notes, steps, or details..."
-                className="w-full min-h-[180px] lg:min-h-[220px] resize-none bg-surface/20 border border-border/30 rounded-xl px-4 py-3 text-[13px] text-text placeholder:text-muted/30 outline-none focus:ring-1 focus:ring-accent/10 transition-all leading-relaxed"
+                className="w-full min-h-[180px] lg:min-h-[220px] resize-none bg-surface/20 border border-border/30 rounded-xl px-4 py-3 text-body text-text placeholder:text-muted/30 outline-none focus:ring-1 focus:ring-accent/10 transition-all leading-relaxed"
               />
             </section>
 
@@ -639,7 +643,7 @@ function TaskDetail({
                     <div key={child.id} className="group/item flex items-center justify-between p-2 hover:bg-surface/60 rounded-lg transition-all border border-transparent hover:border-border/20">
                       <div className="flex items-center gap-2.5 min-w-0">
                         {child.icon && SPHERE_ICONS[child.icon] ? (() => { const I = SPHERE_ICONS[child.icon]; return <I size={11} className="text-accent/40" />; })() : <FileText size={11} className="text-muted/20" />}
-                        <span className={`text-[12px] font-medium truncate ${child.status === 'DONE' ? 'line-through text-muted/30' : 'text-text/90'}`}>{child.isPrivate ? "••••••••" : child.title}</span>
+                        <span className={`text-sm font-medium truncate ${child.status === 'DONE' ? 'line-through text-muted/30' : 'text-text/90'}`}>{child.isPrivate ? "Private" : child.title}</span>
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover/item:opacity-100 transition-opacity">
                         {onViewTask && <button onClick={() => onViewTask(child)} className="p-1 rounded-lg text-muted hover:text-accent transition-all"><Eye size={12} /></button>}
@@ -668,11 +672,11 @@ function TaskDetail({
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                       <Flag size={13} className="text-rose-400/30" />
-                      {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-[9px] text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                      {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
                     </div>
                     {useDeadline && (
                       <>
-                        <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                        <label className="flex items-center gap-2 ml-5 text-label font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
                           <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3 h-3 opacity-50" />
                           <span>Exact time</span>
                         </label>
@@ -695,13 +699,13 @@ function TaskDetail({
                         />
                       </div>
                       <div className="flex flex-col gap-2 ml-5">
-                        <label className="flex items-center gap-2 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                        <label className="flex items-center gap-2 text-label font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
                           <input type="checkbox" checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
                           <span>Start time</span>
                         </label>
                         {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
                         
-                        <label className="flex items-center gap-2 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                        <label className="flex items-center gap-2 text-label font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
                           <input type="checkbox" checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} className="accent-accent w-3 h-3 opacity-50" />
                           <span>End time</span>
                         </label>
@@ -711,11 +715,11 @@ function TaskDetail({
                     <div className="flex flex-col gap-2 mt-1 border-t border-border/10 pt-2.5">
                       <div className="flex items-center gap-2">
                         <Flag size={13} className="text-rose-400/30" />
-                        {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-[9px] text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                        {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
                       </div>
                       {useDeadline && (
                         <>
-                          <label className="flex items-center gap-2 ml-5 text-[9px] font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
+                          <label className="flex items-center gap-2 ml-5 text-label font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
                             <input type="checkbox" checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} className="accent-rose-500 w-3 h-3 opacity-50" />
                             <span>Exact time</span>
                           </label>
@@ -738,7 +742,7 @@ function TaskDetail({
                     <CustomSelect
                       value={parentId || "none"}
                       onChange={(val) => setParentId(val === "none" ? null : val)}
-                      options={[{ id: "none", label: "Top Level", icon: Link2Off }, ...allTasks.filter((t: TaskData) => t.id !== task.id).map((t: TaskData) => ({ id: t.id, label: t.isPrivate ? "••••••••" : t.title, icon: LayoutGrid }))]}
+                      options={[{ id: "none", label: "Top Level", icon: Link2Off }, ...allTasks.filter((t: TaskData) => t.id !== task.id).map((t: TaskData) => ({ id: t.id, label: t.isPrivate ? "Private" : t.title, icon: LayoutGrid }))]}
                     />
                   </div>
                   <button
@@ -746,7 +750,7 @@ function TaskDetail({
                     className={`flex items-center gap-3 p-2 rounded-xl border transition-all ${isPrivate ? "bg-amber-500/5 border-amber-500/20" : "bg-surface/20 border-border/30"}`}
                   >
                     <EyeOff size={12} className={isPrivate ? "text-amber-500/80" : "text-muted/20"} />
-                    <span className={`text-[10px] font-bold ${isPrivate ? "text-amber-500/80" : "text-text/70"}`}>{isPrivate ? "Private Task" : "Public Task"}</span>
+                    <span className={`text-caption font-bold ${isPrivate ? "text-amber-500/80" : "text-text/70"}`}>{isPrivate ? "Private Task" : "Public Task"}</span>
                   </button>
                 </div>
               </section>
@@ -767,7 +771,7 @@ function TaskDetail({
   );
 }
 
-// ─── Main Dialog Wrapper ───────────────────────────────────────────────────
+// --- Main Dialog Wrapper ---------------------------------------------------
 
 export function TaskFormDialog({
   isOpen, onClose, onSuccess, task, parentTask, spheres, allTasks = [], onViewTask, isDuplicate = false,
@@ -845,7 +849,7 @@ export function TaskFormDialog({
       icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
       plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
       dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
-    }).catch(() => toast.error("Error saving task"));
+    }).then(r => { if (!r.success) toast.error(r.error || "Error saving task"); });
   };
 
   const handleClose = () => {
@@ -874,18 +878,17 @@ export function TaskFormDialog({
     const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
 
     startTransition(async () => {
-      try {
-        const savedTask = await upsertTaskAction({
-          id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
-          icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
-          plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
-          dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
-        });
-        if (!isEditing) toast.success(isDuplicate ? "Duplicated" : "Created");
-        if (savedTask) onSuccess?.(savedTask);
-        onClose();
-        if (!isEditing) resetForm();
-      } catch { toast.error("Error saving task"); }
+      const result = await upsertTaskAction({
+        id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
+        icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
+        plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
+        dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
+      });
+      if (!result.success) { toast.error(result.error || "Error saving task"); return; }
+      if (!isEditing) toast.success(isDuplicate ? "Duplicated" : "Created");
+      if (result.data) onSuccess?.(result.data);
+      onClose();
+      if (!isEditing) resetForm();
     });
   };
 

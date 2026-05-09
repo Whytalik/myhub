@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { X } from "lucide-react";
@@ -64,12 +64,12 @@ export function Dialog({
             <div className="flex items-start justify-between mb-3">
               <div className="space-y-0.5">
                 {title && (
-                  <h3 className="text-lg font-black text-text tracking-tight leading-none">
+                  <h3 className="text-sm font-black text-text tracking-tight leading-none">
                     {title}
                   </h3>
                 )}
                 {description && (
-                  <p className="text-[10px] font-mono text-muted tracking-wider">
+                  <p className="text-caption font-mono text-muted tracking-wider">
                     {description}
                   </p>
                 )}
@@ -127,13 +127,13 @@ export function ConfirmationDialog({
       maxWidth="400px"
     >
       <div className="flex flex-col gap-6">
-        <p className="text-[13px] text-secondary leading-relaxed">
+        <p className="text-body text-secondary leading-relaxed">
           {description}
         </p>
         <div className="flex justify-end gap-3 pt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-[11px] font-mono tracking-wider text-muted hover:text-text transition-colors"
+            className="px-4 py-2 text-note font-mono tracking-wider text-muted hover:text-text transition-colors"
           >
             {cancelLabel}
           </button>
@@ -142,7 +142,7 @@ export function ConfirmationDialog({
               onConfirm();
               onClose();
             }}
-            className={`px-6 py-2 rounded-xl text-[11px] font-mono tracking-wider font-bold transition-all active:scale-95 ${
+            className={`px-6 py-2 rounded-xl text-note font-mono tracking-wider font-bold transition-all active:scale-95 ${
               variant === "danger"
                 ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20"
                 : "bg-accent text-bg hover:bg-accent/90"

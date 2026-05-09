@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect, useTransition, useCallback } from "react";
 import { Trophy, AlertCircle, RefreshCw, Star, Save, Zap, CheckCircle2 } from "lucide-react";
@@ -48,7 +48,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
 
   const handleSave = () => {
     startTransition(async () => {
-      await upsertSprintReviewAction({
+      const result = await upsertSprintReviewAction({
         id: reviewId,
         sprintId: sprint.id,
         weekNumber: selectedWeek,
@@ -57,8 +57,10 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
         challenges,
         adjustments
       });
-      setShowSaved(true);
-      setTimeout(() => setShowSaved(false), 3000);
+      if (result.success) {
+        setShowSaved(true);
+        setTimeout(() => setShowSaved(false), 3000);
+      }
     });
   };
 
@@ -77,7 +79,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
     <div className="space-y-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <span className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] mb-1 block">
+          <span className="text-caption font-mono text-muted uppercase tracking-[0.2em] mb-1 block">
             Level 05 Review Center
           </span>
           <Heading title="Sprint Weekly Scorecard" />
@@ -88,7 +90,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
             <button
               key={w}
               onClick={() => setSelectedWeek(w)}
-              className={`w-8 h-8 rounded-lg text-[10px] font-mono transition-all ${
+              className={`w-8 h-8 rounded-lg text-caption font-mono transition-all ${
                 selectedWeek === w 
                   ? "bg-accent text-bg font-bold" 
                   : w > currentWeek 
@@ -106,8 +108,8 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
         {/* Left: Weekly Stats & Score */}
         <div className="space-y-6">
            <div className="bg-surface border border-border rounded-3xl p-8 text-center space-y-4">
-              <h3 className="text-[10px] font-mono text-muted uppercase tracking-widest">Tactical Execution Score</h3>
-              <div className="text-6xl font-heading text-emerald-500">{weeklyScore}%</div>
+              <h3 className="text-caption font-mono text-muted uppercase tracking-widest">Tactical Execution Score</h3>
+              <div className="text-3xl font-heading text-emerald-500">{weeklyScore}%</div>
               <p className="text-xs text-secondary">
                 {weeklyScore >= 80 ? "Excellent execution!" : weeklyScore >= 50 ? "Steady progress." : "Need tactical adjustments."}
               </p>
@@ -117,7 +119,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
            </div>
 
            <div className="bg-surface border border-border rounded-3xl p-8 space-y-6">
-              <h3 className="text-[10px] font-mono text-muted uppercase tracking-widest">Subjective Rating</h3>
+              <h3 className="text-caption font-mono text-muted uppercase tracking-widest">Subjective Rating</h3>
               <div className="flex justify-between">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <button
@@ -130,7 +132,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
                     }`}>
                       <Star size={16} fill={score === s ? "currentColor" : "none"} />
                     </div>
-                    <span className="text-[10px] font-mono text-muted">{s}</span>
+                    <span className="text-caption font-mono text-muted">{s}</span>
                   </button>
                 ))}
               </div>
@@ -143,7 +145,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-emerald-500">
                   <Trophy size={16} />
-                  <h4 className="text-[11px] font-mono uppercase font-bold tracking-widest">Big Wins & Achievements</h4>
+                  <h4 className="text-note font-mono uppercase font-bold tracking-widest">Big Wins & Achievements</h4>
                 </div>
                 <textarea
                   className="w-full bg-raised/30 border border-border rounded-2xl p-4 text-sm min-h-[100px] focus:outline-none focus:border-emerald-500/40 transition-colors"
@@ -156,7 +158,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-rose-500">
                   <AlertCircle size={16} />
-                  <h4 className="text-[11px] font-mono uppercase font-bold tracking-widest">Challenges & Blockers</h4>
+                  <h4 className="text-note font-mono uppercase font-bold tracking-widest">Challenges & Blockers</h4>
                 </div>
                 <textarea
                   className="w-full bg-raised/30 border border-border rounded-2xl p-4 text-sm min-h-[100px] focus:outline-none focus:border-rose-500/40 transition-colors"
@@ -169,7 +171,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-accent">
                   <RefreshCw size={16} />
-                  <h4 className="text-[11px] font-mono uppercase font-bold tracking-widest">Adjustments for next week</h4>
+                  <h4 className="text-note font-mono uppercase font-bold tracking-widest">Adjustments for next week</h4>
                 </div>
                 <textarea
                   className="w-full bg-raised/30 border border-border rounded-2xl p-4 text-sm min-h-[100px] focus:outline-none focus:border-accent/40 transition-colors"
@@ -181,7 +183,7 @@ export function SprintReviewView({ sprint }: SprintReviewViewProps) {
 
               <div className="pt-4 flex items-center justify-end gap-4">
                 {showSaved && (
-                  <div className="flex items-center gap-2 text-emerald-500 font-mono text-[10px] uppercase tracking-widest animate-in fade-in slide-in-from-right-2">
+                  <div className="flex items-center gap-2 text-emerald-500 font-mono text-caption uppercase tracking-widest animate-in fade-in slide-in-from-right-2">
                     <CheckCircle2 size={14} />
                     Review Committed
                   </div>

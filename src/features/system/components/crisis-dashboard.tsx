@@ -146,8 +146,8 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
         <div className="inline-flex items-center justify-center p-3 rounded-full bg-raised mb-2 border border-border">
           <config.icon className={`h-8 w-8 ${config.color}`} />
         </div>
-        <h1 className="text-3xl font-black tracking-tight text-text">{config.title}</h1>
-        <p className="text-secondary font-mono text-[13px]">{config.description}</p>
+        <h1 className="text-sm font-black tracking-tight text-text">{config.title}</h1>
+        <p className="text-secondary font-mono text-body">{config.description}</p>
       </div>
 
       <div className="bg-surface border border-border rounded-2xl p-6 shadow-xl">
@@ -156,7 +156,7 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
             <Sun className="h-4 w-4 text-accent" />
             Daily Checklist
           </h2>
-          <div className="text-[11px] font-mono font-bold text-accent">
+          <div className="text-note font-mono font-bold text-accent">
             Progress: {Math.round(score)}%
           </div>
         </div>
@@ -183,7 +183,7 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
                 <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${checked ? 'bg-accent border-accent' : 'border-muted'}`}>
                   {checked && <CheckCircle2 className="h-3.5 w-3.5 text-bg" />}
                 </div>
-                <span className={`text-[13px] font-bold flex-1 ${checked ? 'text-secondary line-through opacity-50' : 'text-text'}`}>
+                <span className={`text-body font-bold flex-1 ${checked ? 'text-secondary line-through opacity-50' : 'text-text'}`}>
                   {task.label}
                 </span>
               </button>
@@ -193,8 +193,8 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-5 rounded-2xl bg-accent/5 border border-accent/20 text-secondary text-[12px] leading-relaxed">
-          <h4 className="font-black text-accent uppercase tracking-tighter mb-2 flex items-center gap-2 text-[10px]">
+        <div className="p-5 rounded-2xl bg-accent/5 border border-accent/20 text-secondary text-sm leading-relaxed">
+          <h4 className="font-black text-accent uppercase tracking-tighter mb-2 flex items-center gap-2 text-caption">
             <Zap className="h-3 w-3" />
             Protocol Logic
           </h4>
@@ -208,14 +208,14 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
             <Button 
               onClick={handlePrevPhase}
               disabled={currentIdx === 0}
-              className="flex-1 bg-surface border border-border text-secondary hover:text-text h-10 rounded-xl active:scale-95 transition-all text-[11px] font-mono tracking-wider font-bold"
+              className="flex-1 bg-surface border border-border text-secondary hover:text-text h-10 rounded-xl active:scale-95 transition-all text-note font-mono tracking-wider font-bold"
             >
               <ArrowLeft className="h-3.5 w-3.5 mr-1" />
               BACK
             </Button>
             <Button 
               onClick={handleNextPhase}
-              className="flex-1 bg-accent text-bg hover:bg-accent/90 h-10 rounded-xl active:scale-95 transition-all text-[11px] font-mono tracking-wider font-bold"
+              className="flex-1 bg-accent text-bg hover:bg-accent/90 h-10 rounded-xl active:scale-95 transition-all text-note font-mono tracking-wider font-bold"
             >
               {currentIdx === ORDERED_PHASES.length - 1 ? "FINISH" : "NEXT"}
               <ArrowRight className="h-3.5 w-3.5 ml-1" />
@@ -223,7 +223,7 @@ export function CrisisDashboard({ status, routine, score }: CrisisDashboardProps
           </div>
           <button 
             onClick={handleExit}
-            className="w-full text-[10px] font-mono tracking-widest text-muted hover:text-red-500 transition-colors uppercase pt-1"
+            className="w-full text-caption font-mono tracking-widest text-muted hover:text-red-500 transition-colors uppercase pt-1"
           >
             Manual Exit Mode
           </button>

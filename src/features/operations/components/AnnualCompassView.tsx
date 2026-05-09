@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { Compass, Sparkles, Shield, Edit2, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -29,21 +30,20 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
 
   const handleSave = async () => {
     setLoading(true);
-    try {
-      const saved = await upsertAnnualCompassAction({
-        id: compass.id,
-        year: compass.year,
-        theme,
-        wigs,
-        focusAreas
-      });
-      setCompass(saved);
+    const result = await upsertAnnualCompassAction({
+      id: compass.id,
+      year: compass.year,
+      theme,
+      wigs,
+      focusAreas
+    });
+    if (result.success) {
+      setCompass(result.data);
       setIsDialogOpen(false);
-    } catch (error) {
-      console.error("Failed to save compass:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error || "Failed to save compass");
     }
+    setLoading(false);
   };
 
   return (
@@ -55,15 +55,15 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
           <Compass size={40} />
         </div>
 
-        <h2 className="text-[10px] font-mono text-amber-500 uppercase tracking-[0.5em] mb-6">Level 03: Annual Theme</h2>
+        <h2 className="text-caption font-mono text-amber-500 uppercase tracking-[0.5em] mb-6">Level 03: Annual Theme</h2>
         
         <div className="py-12 border-y border-border/40 relative group/theme">
           {compass.theme ? (
-            <p className="text-5xl md:text-6xl font-heading text-text uppercase tracking-tight">
+            <p className="text-xl md:text-2xl font-heading text-text uppercase tracking-tight">
               {compass.theme}
             </p>
           ) : (
-            <p className="text-4xl font-heading text-muted uppercase italic opacity-20">No Theme Defined</p>
+            <p className="text-base font-heading text-muted uppercase italic opacity-20">No Theme Defined</p>
           )}
           <Button 
             variant="ghost" 
@@ -79,7 +79,7 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
            <div className="space-y-4">
               <div className="flex items-center gap-2 text-amber-500">
                  <Sparkles size={16} />
-                 <h3 className="text-[11px] font-mono uppercase font-bold tracking-widest">Wildly Important Goals</h3>
+                 <h3 className="text-note font-mono uppercase font-bold tracking-widest">Wildly Important Goals</h3>
               </div>
               <div className="p-6 bg-raised/30 border border-border rounded-2xl min-h-[120px]">
                  {compass.wigs ? (
@@ -93,7 +93,7 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
            <div className="space-y-4">
               <div className="flex items-center gap-2 text-amber-500">
                  <Shield size={16} />
-                 <h3 className="text-[11px] font-mono uppercase font-bold tracking-widest">Strategic Focus Areas</h3>
+                 <h3 className="text-note font-mono uppercase font-bold tracking-widest">Strategic Focus Areas</h3>
               </div>
               <div className="p-6 bg-raised/30 border border-border rounded-2xl min-h-[120px]">
                  {compass.focusAreas ? (
@@ -131,7 +131,7 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
       >
         <div className="space-y-6 py-2">
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest text-amber-500">Annual Theme</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest text-amber-500">Annual Theme</label>
             <Input 
               value={theme} 
               onChange={(e) => setTheme(e.target.value)} 
@@ -141,7 +141,7 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest text-amber-500">Wildly Important Goals (WIGs)</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest text-amber-500">Wildly Important Goals (WIGs)</label>
             <textarea 
               className="w-full bg-surface border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-amber-500/40 transition-colors"
               value={wigs} 
@@ -151,7 +151,7 @@ export function AnnualCompassView({ initialData }: AnnualCompassViewProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest text-amber-500">Focus Areas</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest text-amber-500">Focus Areas</label>
             <textarea 
               className="w-full bg-surface border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-amber-500/40 transition-colors"
               value={focusAreas} 

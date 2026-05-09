@@ -17,7 +17,7 @@ async function fetchLifeData(userId: string) {
   const [habits, tasks, journalEntry] = await Promise.all([
     getCachedActiveHabits(userId),
     prisma.task.count({ where: { userId, NOT: { status: { in: ["DONE", "CANCELLED"] } } } }),
-    getCachedDailyEntry(userId, today),
+    getCachedDailyEntry(userId, today.toISOString()),
   ]);
 
   const completions = habits.filter(h => 
@@ -34,7 +34,7 @@ async function fetchLifeData(userId: string) {
 async function fetchJournalStatus(userId: string) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return getCachedDailyEntry(userId, today);
+  return getCachedDailyEntry(userId, today.toISOString());
 }
 
 export default async function LifeSpacePage() {

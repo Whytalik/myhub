@@ -58,7 +58,7 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter matrix by name or source..." 
-            className="pl-10 h-9 bg-surface/40 border-border/50 rounded-lg text-[12px]"
+            className="pl-10 h-9 bg-surface/40 border-border/50 rounded-lg text-sm"
           />
         </div>
         
@@ -82,14 +82,14 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
             <div className="p-2 rounded-xl bg-accent text-bg shadow-sm">
               <Plus size={16} strokeWidth={3} />
             </div>
-            <span className="text-[10px] font-mono font-black uppercase tracking-[0.2em] text-accent">Map New Source</span>
+            <span className="text-caption font-mono font-black uppercase tracking-[0.2em] text-accent">Map New Source</span>
           </div>
           <Input 
             variant="inline"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Source title..."
-            className="font-black uppercase tracking-tight text-lg placeholder:text-accent/20"
+            className="font-black uppercase tracking-tight text-sm placeholder:text-accent/20"
           />
           <Input 
             variant="inline"
@@ -108,7 +108,7 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
         {filtered.length === 0 && !name && (
           <div className="col-span-full py-32 text-center border border-dashed border-border/40 rounded-[40px]">
              <Globe size={40} className="mx-auto text-muted/20 mb-4" />
-             <p className="text-muted font-mono text-[10px] uppercase tracking-widest">No active materials mapped to this environment</p>
+             <p className="text-muted font-mono text-caption uppercase tracking-widest">No active materials mapped to this environment</p>
           </div>
         )}
 
@@ -126,13 +126,13 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
                       <Icon size={20} />
                     </div>
                     <div className="flex flex-col items-end">
-                      <span className="text-[9px] font-mono text-accent uppercase tracking-widest bg-accent/10 px-2 py-0.5 rounded border border-accent/20">
+                      <span className="text-label font-mono text-accent uppercase tracking-widest bg-accent/10 px-2 py-0.5 rounded border border-accent/20">
                         {item.level || "A1"}
                       </span>
                     </div>
                   </div>
                   
-                  <h4 className="text-xl font-black uppercase tracking-tight text-text mb-2 group-hover:text-accent transition-colors line-clamp-1">
+                  <h4 className="text-sm font-black uppercase tracking-tight text-text mb-2 group-hover:text-accent transition-colors line-clamp-1">
                     {item.name}
                   </h4>
                   
@@ -144,7 +144,7 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
                     <a 
                       href={item.url || "#"} 
                       target="_blank" 
-                      className="flex items-center gap-2 text-[10px] font-mono text-muted group-hover:text-text transition-colors uppercase tracking-widest font-bold"
+                      className="flex items-center gap-2 text-caption font-mono text-muted group-hover:text-text transition-colors uppercase tracking-widest font-bold"
                     >
                       <span>Access Material</span>
                       <ExternalLink size={12} />

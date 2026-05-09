@@ -255,9 +255,9 @@ export const getCachedAlignmentData = unstable_cache(
 // ─── Journal / Daily Entries ──────────────────────────────────────────────────
 
 export const getCachedDailyEntry = unstable_cache(
-  async (userId: string, date: Date) => {
+  async (userId: string, dateISO: string) => {
     return prisma.dailyEntry.findUnique({
-      where: { userId_date: { userId, date } },
+      where: { userId_date: { userId, date: new Date(dateISO) } },
     });
   },
   [],

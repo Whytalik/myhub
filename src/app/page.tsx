@@ -32,31 +32,31 @@ export default async function LandingPage() {
           <div className="w-8 h-8 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
             <Sparkles size={16} className="text-bg" fill="currentColor" />
           </div>
-          <span className="font-heading text-xl text-text">
+          <span className="font-heading text-sm text-text">
             My<span className="text-accent">Hub</span>
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/login" className="text-[13px] font-mono text-secondary hover:text-text transition-colors uppercase tracking-wider">
+          <Link href="/login" className="text-body font-mono text-secondary hover:text-text transition-colors uppercase tracking-wider">
             Sign in
           </Link>
-          <Link href="/register" className="text-[13px] font-mono bg-accent text-bg px-4 py-2 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-accent/20 uppercase tracking-wider">
+          <Link href="/register" className="text-body font-mono bg-accent text-bg px-4 py-2 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-accent/20 uppercase tracking-wider">
             Sign up
           </Link>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-8 py-20 text-center">
-        <p className="text-[11px] font-mono text-muted uppercase tracking-[0.3em] mb-6">
+        <p className="text-note font-mono text-muted uppercase tracking-[0.3em] mb-6">
           Personal Operating System
         </p>
         <h1 className="font-heading text-[clamp(4rem,12vw,9rem)] text-accent leading-none tracking-tight mb-6">
           My Hub
         </h1>
-        <p className="text-secondary text-lg max-w-md leading-relaxed mb-10">
-          One place to track what matters — your life, habits, food, languages, fitness, and more.
+        <p className="text-secondary text-sm max-w-md leading-relaxed mb-10">
+          One place to track what matters - your life, habits, food, languages, fitness, and more.
         </p>
-        <Link href="/register" className="inline-flex items-center gap-2 bg-accent text-bg font-bold px-8 py-3.5 rounded-2xl text-[15px] hover:opacity-90 transition-all shadow-xl shadow-accent/25 active:scale-[0.98]">
+        <Link href="/register" className="inline-flex items-center gap-2 bg-accent text-bg font-bold px-8 py-3.5 rounded-2xl text-base hover:opacity-90 transition-all shadow-xl shadow-accent/25 active:scale-[0.98]">
           Get started
           <ArrowRight size={18} />
         </Link>
@@ -68,15 +68,15 @@ export default async function LandingPage() {
                 <Icon size={15} className="text-accent" />
               </div>
               <div>
-                <p className="text-[13px] font-semibold text-text leading-none mb-1">{label}</p>
-                <p className="text-[11px] text-muted leading-snug">{description}</p>
+                <p className="text-body font-semibold text-text leading-none mb-1">{label}</p>
+                <p className="text-note text-muted leading-snug">{description}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <p className="mt-10 text-[11px] font-mono text-muted/50 uppercase tracking-widest">
-          Life space available on signup · Other spaces for admin accounts
+        <p className="mt-10 text-note font-mono text-muted/50 uppercase tracking-widest">
+          Life space available on signup - Other spaces for admin accounts
         </p>
 
       </main>

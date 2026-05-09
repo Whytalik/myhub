@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Zap, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SprintBoard } from "./SprintBoard";
@@ -21,8 +22,8 @@ export function SprintManager({ initialSprint }: SprintManagerProps) {
     try {
       const active = await getActiveSprintAction();
       setSprint(active);
-    } catch (error) {
-      console.error("Failed to load active sprint:", error);
+    } catch {
+      toast.error("Failed to load sprint");
     }
   };
 
@@ -34,16 +35,20 @@ export function SprintManager({ initialSprint }: SprintManagerProps) {
       const endDate = new Date(now);
       endDate.setDate(endDate.getDate() + (12 * 7)); // 12 weeks
 
-      const newSprint = await upsertSprintAction({
-        number: 1, // Defaulting to 1 for now, logic could be more complex
+      const result = await upsertSprintAction({
+        number: 1,
         year: now.getFullYear(),
         startDate,
         endDate,
         status: "ACTIVE"
       });
-      setSprint(newSprint);
-    } catch (error) {
-      console.error("Failed to create sprint:", error);
+      if (result.success) {
+        setSprint(result.data);
+      } else {
+        toast.error(result.error || "Failed to create sprint");
+      }
+    } catch {
+      toast.error("Failed to create sprint");
     } finally {
       setLoading(false);
     }
@@ -66,7 +71,7 @@ export function SprintManager({ initialSprint }: SprintManagerProps) {
         <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6">
            <Zap className="text-emerald-500" size={32} />
         </div>
-        <h3 className="text-2xl font-heading mb-2 uppercase tracking-tight">No Active Sprint</h3>
+        <h3 className="text-base font-heading mb-2 uppercase tracking-tight">No Active Sprint</h3>
         <p className="text-secondary text-sm leading-relaxed mb-8">
           The 12-week sprint is your tactical engine. Start a new cycle to begin 
           tracking your Objectives and Key Results.

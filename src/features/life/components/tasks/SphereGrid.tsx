@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Plus, X } from "lucide-react";
@@ -30,7 +30,7 @@ export function SphereGrid({ spheres, onClose }: SphereGridProps) {
     <div className="p-5 sm:p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
-        <p className="text-[11px] font-mono text-muted uppercase tracking-wider">
+        <p className="text-note font-mono text-muted uppercase tracking-wider">
           {spheres.length} sphere{spheres.length !== 1 ? "s" : ""}
         </p>
         <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export function SphereGrid({ spheres, onClose }: SphereGridProps) {
       {spheres.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <p className="text-muted text-sm italic">No life spheres defined yet.</p>
-          <p className="text-muted/60 text-[11px] font-mono mt-1">
+          <p className="text-muted/60 text-note font-mono mt-1">
             Create spheres like Career, Health, Learning…
           </p>
         </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Target, ShieldAlert, Zap } from "lucide-react";
 
@@ -18,7 +18,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
             <Target size={14} />
           </div>
-          <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-text">Yesterday</h3>
+          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Yesterday</h3>
         </div>
         <textarea
           className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-emerald-500/40 transition-colors"
@@ -34,7 +34,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <div className="p-1.5 rounded-lg bg-accent/10 text-accent">
             <Zap size={14} />
           </div>
-          <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-text">Today</h3>
+          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Today</h3>
         </div>
         <textarea
           className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-accent/40 transition-colors"
@@ -50,7 +50,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-500">
             <ShieldAlert size={14} />
           </div>
-          <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-text">Blockers</h3>
+          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Blockers</h3>
         </div>
         <textarea
           className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-rose-500/40 transition-colors"

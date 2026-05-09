@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Moon, Bed, Sun, Star, FileText, Info } from "lucide-react";
 import { TimePicker } from "@/components/ui/time-picker";
@@ -121,7 +121,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
               left: coords.left
             }}
           >
-            <div className="flex flex-col gap-3 text-[11px] leading-relaxed">
+            <div className="flex flex-col gap-3 text-note leading-relaxed">
               <p className="font-bold text-text border-b border-border pb-2">
                 Як оцінити якість сну?
               </p>
@@ -152,16 +152,16 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           <div className={`p-1.5 rounded-lg transition-colors ${hasValue ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
             <Moon size={14} />
           </div>
-          <h3 className={`text-[13px] font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Sleep</h3>
+          <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Sleep</h3>
         </div>
         <div className="flex items-center gap-4">
           {hours !== null && (
-            <span className="text-[11px] font-mono text-accent font-bold bg-accent/10 px-2 py-0.5 rounded-lg">
+            <span className="text-note font-mono text-accent font-bold bg-accent/10 px-2 py-0.5 rounded-lg">
               {hours} hours
             </span>
           )}
           {quality !== null && (
-            <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
+            <span className="text-note font-mono text-muted uppercase tracking-wider">
               {SLEEP_DESCS[quality]}
             </span>
           )}
@@ -174,7 +174,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 px-1 h-4">
               <Bed size={12} className="text-muted" />
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Bedtime</label>
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Bedtime</label>
             </div>
             <TimePicker 
               value={getTimeValue(bedtime)} 
@@ -184,7 +184,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 px-1 h-4">
               <Sun size={12} className="text-muted" />
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Wakeup</label>
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Wakeup</label>
             </div>
             <TimePicker 
               value={getTimeValue(wakeup)} 
@@ -198,7 +198,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           <div className="flex items-center justify-between gap-2 px-1 h-4">
             <div className="flex items-center gap-2">
               <Star size={12} className="text-muted" />
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Quality</label>
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Quality</label>
             </div>
             <ScaleHint />
           </div>
@@ -208,7 +208,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
                 key={value}
                 type="button"
                 onClick={() => onChange({ sleepQuality: quality === value ? null : value })}
-                className={`flex-1 rounded-lg border text-[10px] font-mono transition-all ${
+                className={`flex-1 rounded-lg border text-caption font-mono transition-all ${
                   quality === value
                     ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
                     : quality !== null && value <= quality
@@ -226,7 +226,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 px-1 h-4">
             <FileText size={12} className="text-muted" />
-            <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Notes</label>
+            <label className="text-caption font-mono uppercase tracking-wider text-muted">Notes</label>
           </div>
           <textarea
             ref={textareaRef}

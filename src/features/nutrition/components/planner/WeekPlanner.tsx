@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useTransition, useMemo } from "react"
 import { format } from "date-fns"
@@ -215,19 +215,19 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                         <div>
                           <div className="text-xs font-semibold">{slot.personName}</div>
                           {slot.targetFiberGrams > 0 && (
-                            <div className="text-[9px] text-muted-foreground">Fiber: {slot.targetFiberGrams.toFixed(0)}g</div>
+                            <div className="text-label text-muted-foreground">Fiber: {slot.targetFiberGrams.toFixed(0)}g</div>
                           )}
                         </div>
                         <div className="flex gap-1 items-center">
                           {(slot.violations || []).length > 0 && (
                             <div className="relative group">
                               <AlertTriangle className="h-4 w-4 text-red-500" />
-                              <div className="absolute right-0 top-full mt-1 hidden group-hover:block bg-popover text-popover-foreground text-[10px] p-2 rounded shadow-lg z-10 min-w-[150px]">
+                              <div className="absolute right-0 top-full mt-1 hidden group-hover:block bg-popover text-popover-foreground text-caption p-2 rounded shadow-lg z-10 min-w-[150px]">
                                 {(slot.violations || []).map((v: string, i: number) => <div key={i}>{v}</div>)}
                               </div>
                             </div>
                           )}
-                          <div className="text-[10px] text-muted-foreground">
+                          <div className="text-caption text-muted-foreground">
                             {slot.actualKcal.toFixed(0)} / {slot.targetKcal.toFixed(0)} kcal
                           </div>
                         </div>
@@ -247,7 +247,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                                   <div className="flex items-center gap-1">
                                     <input
                                       type="number"
-                                      className="w-14 h-5 text-[10px] font-mono bg-background border rounded px-1"
+                                      className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
                                       value={editingEntry.weight}
                                       autoFocus
                                       onChange={(e) => setEditingEntry({ ...editingEntry, weight: e.target.value })}
@@ -259,17 +259,17 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                                         if (e.key === "Escape") setEditingEntry(null)
                                       }}
                                     />
-                                    <span className="text-[9px] text-muted-foreground">g</span>
+                                    <span className="text-label text-muted-foreground">g</span>
                                   </div>
                                 ) : (
                                   <button
-                                    className="text-[10px] text-muted-foreground hover:text-accent underline decoration-dotted"
+                                    className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
                                     onClick={() => setEditingEntry({ id: entry.id, weight: String(entry.portionWeight) })}
                                   >
                                     {entry.portionWeight.toFixed(0)}g
                                   </button>
                                 )}
-                                <span className="text-[9px] font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
+                                <span className="text-label font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
                                 {entry.fitScore !== null && entry.fitScore !== undefined && (
                                   <span className={`h-4 text-[8px] px-1 border rounded ${
                                     entry.fitScore > 0.8 ? "text-green-600 border-green-600" :
@@ -292,7 +292,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                                     }}
                                     disabled={isPending}
                                   >
-                                    <span className="text-[10px]">✓</span>
+                                    <span className="text-caption">✓</span>
                                   </Button>
                                 )}
                                 <Button
@@ -324,7 +324,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                           disabled={isPending}
                         >
                           <Plus className="h-4 w-4 mr-1" />
-                          <span className="text-[10px]">Add dish</span>
+                          <span className="text-caption">Add dish</span>
                         </Button>
                       </div>
                     </div>

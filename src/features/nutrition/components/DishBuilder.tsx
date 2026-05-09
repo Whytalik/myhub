@@ -3,7 +3,7 @@
 import { useState, useMemo, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Trash2, Search, X } from "lucide-react";
+import { Trash2, Search, X, CheckCircle2 } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -31,6 +31,7 @@ interface IngredientRow {
   productPrice: number;
   rawWeight: number;
   cookingMethodId: string;
+  confirmed: boolean;
 }
 
 interface NutritionSummary {
@@ -94,7 +95,7 @@ function ProductAutocomplete({
         />
         <Input
           placeholder="Search product..."
-          className="pl-8 pr-8 text-[13px]"
+          className="pl-8 pr-8 text-body"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -121,7 +122,7 @@ function ProductAutocomplete({
             {filtered.map((p) => (
               <button
                 key={p.id}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-raised text-[12px] transition-colors flex justify-between items-center"
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-raised text-sm transition-colors flex justify-between items-center"
                 onClick={() => {
                   onSelect(p);
                   setQuery("");
@@ -129,7 +130,7 @@ function ProductAutocomplete({
                 }}
               >
                 <span className="font-medium">{p.name}</span>
-                <span className="text-[10px] font-mono text-muted ml-2">
+                <span className="text-caption font-mono text-muted ml-2">
                   {Math.round(p.caloriesPer100)} kcal
                 </span>
               </button>
@@ -166,6 +167,7 @@ export function DishBuilder({
           productPrice: ing.product.price || 0,
           rawWeight: ing.rawWeight,
           cookingMethodId: ing.cookingMethodId || "",
+          confirmed: false,
         }))
       : []
   );
@@ -285,18 +287,18 @@ export function DishBuilder({
       {/* Header Fields */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-2 space-y-2">
-          <label className="text-[11px] font-mono text-muted tracking-wider pl-1">
+          <label className="text-note font-mono text-muted tracking-wider pl-1">
             Dish Name
           </label>
           <Input
             placeholder="e.g. Morning Oatmeal with Berries"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="text-[15px] font-semibold"
+            className="text-base font-semibold"
           />
         </div>
         <div className="space-y-2">
-          <label className="text-[11px] font-mono text-muted tracking-wider pl-1">
+          <label className="text-note font-mono text-muted tracking-wider pl-1">
             Servings
           </label>
           <Input
@@ -310,7 +312,7 @@ export function DishBuilder({
       </div>
 
       <div className="space-y-2">
-        <label className="text-[11px] font-mono text-muted tracking-wider pl-1">
+        <label className="text-note font-mono text-muted tracking-wider pl-1">
           Description (optional)
         </label>
         <Input
@@ -325,16 +327,16 @@ export function DishBuilder({
         <table className="w-full border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-border bg-raised/30">
-              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal">
+              <th className="px-4 py-3 font-mono text-caption text-muted tracking-[0.18em] font-normal">
                 Product
               </th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[120px]">
+              <th className="px-4 py-3 font-mono text-caption text-muted tracking-[0.18em] font-normal w-[120px]">
                 Method
               </th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[90px] text-center">
+              <th className="px-4 py-3 font-mono text-caption text-muted tracking-[0.18em] font-normal w-[90px] text-center">
                 Raw Weight
               </th>
-              <th className="px-4 py-3 font-mono text-[10px] text-muted tracking-[0.18em] font-normal w-[70px] text-center border-l border-border/50">
+              <th className="px-4 py-3 font-mono text-caption text-muted tracking-[0.18em] font-normal w-[70px] text-center border-l border-border/50">
                 kcal
               </th>
               <th className="px-4 py-3 w-[40px]"></th>
@@ -344,16 +346,16 @@ export function DishBuilder({
             {ingredients.map((ing) => {
               const n = calcIngredientNutrition(ing);
               return (
-                <tr key={ing.tempId} className="hover:bg-raised/30 transition-colors group">
-                  <td className="px-4 py-3">
-                    <span className="font-medium text-text text-[13px]">
+                <tr key={ing.tempId} className="hover:bg-raised/30 transition-colors group h-12">
+                  <td className="px-4 align-middle">
+                    <span className="font-medium text-text text-body">
                       {ing.productName}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 align-middle">
                     <Select
                       variant="inline"
-                      className="text-[11px] h-7"
+                      className="text-note h-7"
                       value={ing.cookingMethodId}
                       onChange={(e) =>
                         updateIngredient(ing.tempId, "cookingMethodId", e.target.value)
@@ -366,12 +368,12 @@ export function DishBuilder({
                       ))}
                     </Select>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-center">
+                  <td className="px-4 align-middle text-center">
+                    <div className="flex items-center justify-center gap-1">
                       <Input
                         type="number"
                         variant="inline"
-                        className="w-[65px] text-center font-mono text-accent text-[12px]"
+                        className="w-[65px] text-center font-mono text-accent text-sm h-7"
                         value={ing.rawWeight}
                         onChange={(e) =>
                           updateIngredient(
@@ -381,15 +383,15 @@ export function DishBuilder({
                           )
                         }
                       />
-                      <span className="text-[10px] text-muted ml-1 self-center">g</span>
+                      <span className="text-caption text-muted">g</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 border-l border-border/50 text-center">
-                    <span className="font-mono text-secondary text-[12px]">
+                  <td className="px-4 align-middle border-l border-border/50 text-center">
+                    <span className="font-mono text-secondary text-sm">
                       {Math.round(n.calories)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 align-middle text-right">
                     <button
                       onClick={() => removeIngredient(ing.tempId)}
                       className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
@@ -414,17 +416,17 @@ export function DishBuilder({
 
           {/* Live Preview Footer */}
           <tfoot>
-            <tr className="border-t border-border bg-raised/50 font-mono text-[11px]">
+            <tr className="border-t border-border bg-raised/50 font-mono text-note">
               <td colSpan={3} className="px-4 py-3 font-bold text-text text-right">
                 Total
               </td>
               <td className="px-4 py-3 text-center font-bold text-accent">
                 {Math.round(totalNutrition.calories)}{" "}
-                <span className="opacity-50 text-[9px]">kcal</span>
+                <span className="opacity-50 text-label">kcal</span>
               </td>
               <td></td>
             </tr>
-            <tr className="border-t border-border/50 font-mono text-[10px] text-muted">
+            <tr className="border-t border-border/50 font-mono text-caption text-muted">
               <td colSpan={3} className="px-4 py-2 text-right">
                 <div className="flex justify-end gap-4">
                   <span>
@@ -444,18 +446,18 @@ export function DishBuilder({
                   </span>
                   {totalNutrition.totalCost > 0 && (
                     <span>
-                      Cost: <b className="text-amber-500">{totalNutrition.totalCost.toFixed(1)}₴</b>
+                      Cost: <b className="text-amber-500">{totalNutrition.totalCost.toFixed(1)}?</b>
                     </span>
                   )}
                 </div>
               </td>
               <td colSpan={2} className="px-4 py-2 text-center bg-accent/10">
                 <div className="flex flex-col items-center">
-                  <span className="text-accent font-bold text-[12px]">
+                  <span className="text-accent font-bold text-sm">
                     {Math.round(perServing.calories)} kcal/serving
                   </span>
                   <span className="text-[8px] opacity-70">
-                    {Math.round(perServing.totalWeight)}g · {perServing.totalCost.toFixed(1)}₴
+                    {Math.round(perServing.totalWeight)}g / {perServing.totalCost.toFixed(1)}?
                   </span>
                 </div>
               </td>

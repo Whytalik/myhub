@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { SpaceLanding, ModuleQuickAccess } from "@/components/space-landing";
+import { SpaceLanding, ModuleQuickAccess, QuickActions } from "@/components/space-landing";
 import { Target, Package } from "lucide-react";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,8 +31,8 @@ async function WishlistCount({ userId }: { userId: string }) {
   return (
     <div className="bg-surface border border-border rounded-xl p-6 mb-20">
       <div className="flex items-center justify-between">
-        <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em]">Wishlist</h4>
-        <span className="text-2xl font-heading text-text">{count} items</span>
+        <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">Wishlist</h4>
+        <span className="text-sm font-heading text-text">{count} items</span>
       </div>
     </div>
   );
@@ -59,10 +59,22 @@ export default async function OtherSpacePage() {
         title: "Misc / Other",
         description: "A collection of independent tools and trackers that don't fit into the main spaces.",
       }}
+      intelligence={{
+        items: [
+          { label: "Active Modules", value: "Wishlist" },
+          { label: "Status", value: "Active" },
+          { label: "More Tools", value: "Incoming" },
+        ],
+      }}
     >
       <Suspense fallback={<WishlistCountSkeleton />}>
         <WishlistCount userId={session.user.id} />
       </Suspense>
+      <QuickActions
+        actions={[
+          { label: "View Wishlist", href: "/other/wishlist", icon: Target, variant: "primary" },
+        ]}
+      />
       <ModuleQuickAccess modules={modules} />
       <div className="bg-surface/50 border border-border-dim border-dashed rounded-2xl p-10 flex flex-col items-center text-center gap-4 opacity-60">
         <Package size={24} className="text-muted" />

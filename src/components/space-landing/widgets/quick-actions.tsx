@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { LucideIcon } from "lucide-react";
 
 interface QuickAction {
@@ -21,7 +21,7 @@ export function QuickActions({ actions }: QuickActionsProps) {
           <Link
             key={action.href}
             href={action.href}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-[10px] font-mono uppercase tracking-[0.15em] transition-all hover:scale-105 ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-caption font-mono uppercase tracking-[0.15em] transition-all hover:scale-105 ${
               isPrimary
                 ? "bg-accent text-bg hover:bg-accent/90"
                 : "bg-surface border border-border text-text hover:bg-raised"

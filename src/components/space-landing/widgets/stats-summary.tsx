@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { LucideIcon } from "lucide-react";
 
 interface StatCard {
@@ -21,10 +21,10 @@ export function StatsSummary({ stats, className }: StatsSummaryProps) {
         const content = (
           <>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[9px] font-mono text-muted uppercase tracking-[0.2em]">{stat.label}</p>
+              <p className="text-label font-mono text-muted uppercase tracking-[0.2em]">{stat.label}</p>
               {stat.icon && <stat.icon size={11} className="text-accent/60" />}
             </div>
-            <p className="text-lg font-heading text-text uppercase tracking-tight">{stat.value}</p>
+            <p className="text-sm font-heading text-text uppercase tracking-tight">{stat.value}</p>
           </>
         );
 

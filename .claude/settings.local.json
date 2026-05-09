@@ -19,7 +19,18 @@
       "Bash(git push *)",
       "Bash(vercel *)",
       "Bash(npx tsc *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "PowerShell(Get-Command *)",
+      "Bash(node -e ' *)",
+      "Bash(Get-ChildItem -Path . -Directory)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Vitalii\\\\Desktop\\\\Projects\\\\hub\" -Force | Select-Object Name, @{Name=\"Type\"; Expression={if \\($_.PSIsContainer\\) {\"DIR\"} else {\"FILE\"}}} | Format-Table -AutoSize)",
+      "Bash(xargs grep -l \"zustand\\\\|createContext\\\\|useContext\")",
+      "WebFetch(domain:world.openfoodfacts.org)",
+      "WebFetch(domain:klopotenko.com)",
+      "WebFetch(domain:espreso.tv)"
     ]
   }
 }

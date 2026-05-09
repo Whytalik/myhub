@@ -235,12 +235,12 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
 }
 
 export async function deleteTask(userId: string, id: string): Promise<void> {
-  await prisma.task.delete({ where: { id } });
+  await prisma.task.delete({ where: { id, userId } });
 }
 
 export async function updateTaskStatus(userId: string, id: string, status: TaskStatus): Promise<void> {
   const completedAt = status === 'DONE' ? new Date() : null;
-  await prisma.task.update({ where: { id }, data: { status, completedAt } });
+  await prisma.task.update({ where: { id, userId }, data: { status, completedAt } });
 
   if (status === 'DONE') {
     await autoCompleteParentIfAllChildrenDone(userId, id);
@@ -271,7 +271,7 @@ async function autoCompleteParentIfAllChildrenDone(userId: string, childId: stri
 }
 
 export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {
-  await prisma.task.update({ where: { id }, data: { priority } });
+  await prisma.task.update({ where: { id, userId }, data: { priority } });
 }
 
 // ─── Spheres ──────────────────────────────────────────────────────────────────
@@ -311,5 +311,5 @@ export async function upsertSphere(userId: string, input: UpsertSphereInput): Pr
 }
 
 export async function deleteSphere(userId: string, id: string): Promise<void> {
-  await prisma.lifeSphere.delete({ where: { id } });
+  await prisma.lifeSphere.delete({ where: { id, userId } });
 }

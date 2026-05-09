@@ -34,6 +34,32 @@ interface OpenFoodFactsResult {
   category?: string
 }
 
+interface UnifiedSearchResult {
+  local: FoodProduct[]
+  external: OpenFoodFactsResult[]
+}
+
+function mapOFFResults(products: Record<string, unknown>[]): OpenFoodFactsResult[] {
+  return products
+    .filter(p => p.product_name && p.nutriments)
+    .map(p => {
+      const n = p.nutriments as Record<string, number> | undefined
+      return {
+        code: String(p.code || ""),
+        name: String(p.product_name || "").trim(),
+        brand: p.brands ? String(p.brands).split(",")[0].trim() : undefined,
+        calories: n?.["energy-kcal_100g"] || 0,
+        protein: n?.proteins_100g || 0,
+        fat: n?.fat_100g || 0,
+        carbs: n?.carbohydrates_100g || 0,
+        fiber: n?.fiber_100g || 0,
+        imageUrl: p.image_url ? String(p.image_url) : undefined,
+        category: p.categories ? String(p.categories).split(",")[0].trim() : undefined,
+      }
+    })
+    .filter(p => p.name.length > 0)
+}
+
 export async function createProduct(data: CreateProductData): Promise<ActionResult<FoodProduct>> {
   try {
     const userId = await getRequiredUserId()
@@ -122,58 +148,38 @@ export async function getProducts(): Promise<ActionResult<FoodProduct[]>> {
   }
 }
 
-export async function searchProducts(query: string): Promise<ActionResult<FoodProduct[]>> {
+export async function unifiedSearchProducts(query: string): Promise<ActionResult<UnifiedSearchResult>> {
   try {
     const userId = await getRequiredUserId()
-    if (!query.trim()) return { success: true, data: [] }
-    const products = await prisma.foodProduct.findMany({
-      where: {
-        OR: [
-          { userId },
-          { userId: null }
-        ],
-        name: { contains: query.trim(), mode: "insensitive" },
-        status: ProductStatus.ACTIVE,
+    const q = query.trim()
+    if (q.length < 2) return { success: true, data: { local: [], external: [] } }
+
+    const offUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=10&fields=code,product_name,brands,nutriments,image_url,categories`
+
+    const [localResult, offResult] = await Promise.allSettled([
+      prisma.foodProduct.findMany({
+        where: {
+          OR: [{ userId }, { userId: null }],
+          name: { contains: q, mode: "insensitive" },
+          status: ProductStatus.ACTIVE,
+        },
+        orderBy: { name: "asc" },
+        take: 20,
+      }),
+      fetch(offUrl, { next: { revalidate: 3600 } })
+        .then(r => r.json())
+        .then(json => mapOFFResults(json.products ?? [])),
+    ])
+
+    return {
+      success: true,
+      data: {
+        local: localResult.status === "fulfilled" ? localResult.value : [],
+        external: offResult.status === "fulfilled" ? offResult.value : [],
       },
-      orderBy: { name: "asc" },
-      take: 50,
-    })
-    return { success: true, data: products }
+    }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to search products" }
-  }
-}
-
-export async function searchOpenFoodFacts(query: string): Promise<ActionResult<OpenFoodFactsResult[]>> {
-  try {
-    await getRequiredUserId()
-    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=20&fields=code,product_name,brands,nutriments,image_url,categories`
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    if (!res.ok) return { success: false, error: `OpenFoodFacts API error: ${res.status}` }
-
-    const json = await res.json()
-    const products: OpenFoodFactsResult[] = (json.products ?? [])
-      .filter((p: Record<string, unknown>) => p.product_name && p.nutriments)
-      .map((p: Record<string, unknown>) => {
-        const n = p.nutriments as Record<string, number> | undefined
-        return {
-          code: String(p.code || ""),
-          name: String(p.product_name || "").trim(),
-          brand: p.brands ? String(p.brands).split(",")[0].trim() : undefined,
-          calories: n?.["energy-kcal_100g"] || 0,
-          protein: n?.proteins_100g || 0,
-          fat: n?.fat_100g || 0,
-          carbs: n?.carbohydrates_100g || 0,
-          fiber: n?.fiber_100g || 0,
-          imageUrl: p.image_url ? String(p.image_url) : undefined,
-          category: p.categories ? String(p.categories).split(",")[0].trim() : undefined,
-        }
-      })
-      .filter((p: OpenFoodFactsResult) => p.name.length > 0)
-
-    return { success: true, data: products }
-  } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to search OpenFoodFacts" }
+    return { success: false, error: error instanceof Error ? error.message : "Failed to search" }
   }
 }
 

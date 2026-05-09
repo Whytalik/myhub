@@ -288,8 +288,7 @@ export type PriceSource = (typeof PriceSource)[keyof typeof PriceSource]
 export const NutritionSource: {
   MANUAL: 'MANUAL',
   OPENFOODFACTS: 'OPENFOODFACTS',
-  USDA: 'USDA',
-  FATSECRET: 'FATSECRET'
+  USDA: 'USDA'
 };
 
 export type NutritionSource = (typeof NutritionSource)[keyof typeof NutritionSource]
@@ -5525,6 +5524,7 @@ export namespace Prisma {
     lifeSpheres: number
     milestones: number
     foodProducts: number
+    nutritionPersons: number
     pushSubscriptions: number
     sessions: number
     shoppingLists: number
@@ -5551,6 +5551,7 @@ export namespace Prisma {
     lifeSpheres?: boolean | UserCountOutputTypeCountLifeSpheresArgs
     milestones?: boolean | UserCountOutputTypeCountMilestonesArgs
     foodProducts?: boolean | UserCountOutputTypeCountFoodProductsArgs
+    nutritionPersons?: boolean | UserCountOutputTypeCountNutritionPersonsArgs
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     shoppingLists?: boolean | UserCountOutputTypeCountShoppingListsArgs
@@ -5651,6 +5652,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFoodProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FoodProductWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNutritionPersonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NutritionPersonWhereInput
   }
 
   /**
@@ -6752,7 +6760,7 @@ export namespace Prisma {
     lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     foodProducts?: boolean | User$foodProductsArgs<ExtArgs>
-    nutritionPerson?: boolean | User$nutritionPersonArgs<ExtArgs>
+    nutritionPersons?: boolean | User$nutritionPersonsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     shoppingLists?: boolean | User$shoppingListsArgs<ExtArgs>
@@ -6820,7 +6828,7 @@ export namespace Prisma {
     lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     foodProducts?: boolean | User$foodProductsArgs<ExtArgs>
-    nutritionPerson?: boolean | User$nutritionPersonArgs<ExtArgs>
+    nutritionPersons?: boolean | User$nutritionPersonsArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     shoppingLists?: boolean | User$shoppingListsArgs<ExtArgs>
@@ -6852,7 +6860,7 @@ export namespace Prisma {
       lifeSpheres: Prisma.$LifeSpherePayload<ExtArgs>[]
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       foodProducts: Prisma.$FoodProductPayload<ExtArgs>[]
-      nutritionPerson: Prisma.$NutritionPersonPayload<ExtArgs> | null
+      nutritionPersons: Prisma.$NutritionPersonPayload<ExtArgs>[]
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       shoppingLists: Prisma.$ShoppingListPayload<ExtArgs>[]
@@ -7282,7 +7290,7 @@ export namespace Prisma {
     lifeSpheres<T extends User$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, User$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     milestones<T extends User$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, User$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     foodProducts<T extends User$foodProductsArgs<ExtArgs> = {}>(args?: Subset<T, User$foodProductsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FoodProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    nutritionPerson<T extends User$nutritionPersonArgs<ExtArgs> = {}>(args?: Subset<T, User$nutritionPersonArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    nutritionPersons<T extends User$nutritionPersonsArgs<ExtArgs> = {}>(args?: Subset<T, User$nutritionPersonsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shoppingLists<T extends User$shoppingListsArgs<ExtArgs> = {}>(args?: Subset<T, User$shoppingListsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7991,9 +7999,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.nutritionPerson
+   * User.nutritionPersons
    */
-  export type User$nutritionPersonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$nutritionPersonsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the NutritionPerson
      */
@@ -8007,6 +8015,11 @@ export namespace Prisma {
      */
     include?: NutritionPersonInclude<ExtArgs> | null
     where?: NutritionPersonWhereInput
+    orderBy?: NutritionPersonOrderByWithRelationInput | NutritionPersonOrderByWithRelationInput[]
+    cursor?: NutritionPersonWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NutritionPersonScalarFieldEnum | NutritionPersonScalarFieldEnum[]
   }
 
   /**
@@ -64159,7 +64172,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereListRelationFilter
     milestones?: MilestoneListRelationFilter
     foodProducts?: FoodProductListRelationFilter
-    nutritionPerson?: XOR<NutritionPersonNullableScalarRelationFilter, NutritionPersonWhereInput> | null
+    nutritionPersons?: NutritionPersonListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
     sessions?: SessionListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
@@ -64196,7 +64209,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereOrderByRelationAggregateInput
     milestones?: MilestoneOrderByRelationAggregateInput
     foodProducts?: FoodProductOrderByRelationAggregateInput
-    nutritionPerson?: NutritionPersonOrderByWithRelationInput
+    nutritionPersons?: NutritionPersonOrderByRelationAggregateInput
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     shoppingLists?: ShoppingListOrderByRelationAggregateInput
@@ -64236,7 +64249,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereListRelationFilter
     milestones?: MilestoneListRelationFilter
     foodProducts?: FoodProductListRelationFilter
-    nutritionPerson?: XOR<NutritionPersonNullableScalarRelationFilter, NutritionPersonWhereInput> | null
+    nutritionPersons?: NutritionPersonListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
     sessions?: SessionListRelationFilter
     shoppingLists?: ShoppingListListRelationFilter
@@ -64571,10 +64584,10 @@ export namespace Prisma {
 
   export type NutritionPersonWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId?: string
     AND?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
     OR?: NutritionPersonWhereInput[]
     NOT?: NutritionPersonWhereInput | NutritionPersonWhereInput[]
+    userId?: StringNullableFilter<"NutritionPerson"> | string | null
     name?: StringNullableFilter<"NutritionPerson"> | string | null
     goal?: EnumGoalFilter<"NutritionPerson"> | $Enums.Goal
     targetKcal?: FloatNullableFilter<"NutritionPerson"> | number | null
@@ -64586,7 +64599,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     mealSlots?: MealSlotInstanceListRelationFilter
-  }, "id" | "userId">
+  }, "id">
 
   export type NutritionPersonOrderByWithAggregationInput = {
     id?: SortOrder
@@ -67985,7 +67998,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -68022,7 +68035,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -68059,7 +68072,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -68096,7 +68109,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -68424,7 +68437,7 @@ export namespace Prisma {
     fiberGrams?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutNutritionPersonInput
+    user?: UserCreateNestedOneWithoutNutritionPersonsInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutPersonInput
   }
 
@@ -68454,7 +68467,7 @@ export namespace Prisma {
     fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutNutritionPersonNestedInput
+    user?: UserUpdateOneWithoutNutritionPersonsNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutPersonNestedInput
   }
 
@@ -72208,9 +72221,10 @@ export namespace Prisma {
     none?: FoodProductWhereInput
   }
 
-  export type NutritionPersonNullableScalarRelationFilter = {
-    is?: NutritionPersonWhereInput | null
-    isNot?: NutritionPersonWhereInput | null
+  export type NutritionPersonListRelationFilter = {
+    every?: NutritionPersonWhereInput
+    some?: NutritionPersonWhereInput
+    none?: NutritionPersonWhereInput
   }
 
   export type PushSubscriptionListRelationFilter = {
@@ -72331,6 +72345,10 @@ export namespace Prisma {
   }
 
   export type FoodProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NutritionPersonOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -75536,10 +75554,11 @@ export namespace Prisma {
     connect?: FoodProductWhereUniqueInput | FoodProductWhereUniqueInput[]
   }
 
-  export type NutritionPersonCreateNestedOneWithoutUserInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type NutritionPersonCreateNestedManyWithoutUserInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput> | NutritionPersonCreateWithoutUserInput[] | NutritionPersonUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput | NutritionPersonCreateOrConnectWithoutUserInput[]
+    createMany?: NutritionPersonCreateManyUserInputEnvelope
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
   }
 
   export type PushSubscriptionCreateNestedManyWithoutUserInput = {
@@ -75703,10 +75722,11 @@ export namespace Prisma {
     connect?: FoodProductWhereUniqueInput | FoodProductWhereUniqueInput[]
   }
 
-  export type NutritionPersonUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
-    connect?: NutritionPersonWhereUniqueInput
+  export type NutritionPersonUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput> | NutritionPersonCreateWithoutUserInput[] | NutritionPersonUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput | NutritionPersonCreateOrConnectWithoutUserInput[]
+    createMany?: NutritionPersonCreateManyUserInputEnvelope
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
   }
 
   export type PushSubscriptionUncheckedCreateNestedManyWithoutUserInput = {
@@ -75967,14 +75987,18 @@ export namespace Prisma {
     deleteMany?: FoodProductScalarWhereInput | FoodProductScalarWhereInput[]
   }
 
-  export type NutritionPersonUpdateOneWithoutUserNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
-    upsert?: NutritionPersonUpsertWithoutUserInput
-    disconnect?: NutritionPersonWhereInput | boolean
-    delete?: NutritionPersonWhereInput | boolean
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserInput, NutritionPersonUpdateWithoutUserInput>, NutritionPersonUncheckedUpdateWithoutUserInput>
+  export type NutritionPersonUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput> | NutritionPersonCreateWithoutUserInput[] | NutritionPersonUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput | NutritionPersonCreateOrConnectWithoutUserInput[]
+    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutUserInput | NutritionPersonUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NutritionPersonCreateManyUserInputEnvelope
+    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    update?: NutritionPersonUpdateWithWhereUniqueWithoutUserInput | NutritionPersonUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NutritionPersonUpdateManyWithWhereWithoutUserInput | NutritionPersonUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
   }
 
   export type PushSubscriptionUpdateManyWithoutUserNestedInput = {
@@ -76299,14 +76323,18 @@ export namespace Prisma {
     deleteMany?: FoodProductScalarWhereInput | FoodProductScalarWhereInput[]
   }
 
-  export type NutritionPersonUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
-    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput
-    upsert?: NutritionPersonUpsertWithoutUserInput
-    disconnect?: NutritionPersonWhereInput | boolean
-    delete?: NutritionPersonWhereInput | boolean
-    connect?: NutritionPersonWhereUniqueInput
-    update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutUserInput, NutritionPersonUpdateWithoutUserInput>, NutritionPersonUncheckedUpdateWithoutUserInput>
+  export type NutritionPersonUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput> | NutritionPersonCreateWithoutUserInput[] | NutritionPersonUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NutritionPersonCreateOrConnectWithoutUserInput | NutritionPersonCreateOrConnectWithoutUserInput[]
+    upsert?: NutritionPersonUpsertWithWhereUniqueWithoutUserInput | NutritionPersonUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NutritionPersonCreateManyUserInputEnvelope
+    set?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    disconnect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    delete?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    connect?: NutritionPersonWhereUniqueInput | NutritionPersonWhereUniqueInput[]
+    update?: NutritionPersonUpdateWithWhereUniqueWithoutUserInput | NutritionPersonUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NutritionPersonUpdateManyWithWhereWithoutUserInput | NutritionPersonUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
   }
 
   export type PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -76527,9 +76555,9 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
-  export type UserCreateNestedOneWithoutNutritionPersonInput = {
-    create?: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonInput
+  export type UserCreateNestedOneWithoutNutritionPersonsInput = {
+    create?: XOR<UserCreateWithoutNutritionPersonsInput, UserUncheckedCreateWithoutNutritionPersonsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonsInput
     connect?: UserWhereUniqueInput
   }
 
@@ -76559,14 +76587,14 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneWithoutNutritionPersonNestedInput = {
-    create?: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonInput
-    upsert?: UserUpsertWithoutNutritionPersonInput
+  export type UserUpdateOneWithoutNutritionPersonsNestedInput = {
+    create?: XOR<UserCreateWithoutNutritionPersonsInput, UserUncheckedCreateWithoutNutritionPersonsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNutritionPersonsInput
+    upsert?: UserUpsertWithoutNutritionPersonsInput
     disconnect?: UserWhereInput | boolean
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNutritionPersonInput, UserUpdateWithoutNutritionPersonInput>, UserUncheckedUpdateWithoutNutritionPersonInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNutritionPersonsInput, UserUpdateWithoutNutritionPersonsInput>, UserUncheckedUpdateWithoutNutritionPersonsInput>
   }
 
   export type MealSlotInstanceUpdateManyWithoutPersonNestedInput = {
@@ -80277,6 +80305,11 @@ export namespace Prisma {
     create: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
   }
 
+  export type NutritionPersonCreateManyUserInputEnvelope = {
+    data: NutritionPersonCreateManyUserInput | NutritionPersonCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PushSubscriptionCreateWithoutUserInput = {
     id?: string
     endpoint: string
@@ -81051,43 +81084,37 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"FoodProduct"> | Date | string
   }
 
-  export type NutritionPersonUpsertWithoutUserInput = {
+  export type NutritionPersonUpsertWithWhereUniqueWithoutUserInput = {
+    where: NutritionPersonWhereUniqueInput
     update: XOR<NutritionPersonUpdateWithoutUserInput, NutritionPersonUncheckedUpdateWithoutUserInput>
     create: XOR<NutritionPersonCreateWithoutUserInput, NutritionPersonUncheckedCreateWithoutUserInput>
-    where?: NutritionPersonWhereInput
   }
 
-  export type NutritionPersonUpdateToOneWithWhereWithoutUserInput = {
-    where?: NutritionPersonWhereInput
+  export type NutritionPersonUpdateWithWhereUniqueWithoutUserInput = {
+    where: NutritionPersonWhereUniqueInput
     data: XOR<NutritionPersonUpdateWithoutUserInput, NutritionPersonUncheckedUpdateWithoutUserInput>
   }
 
-  export type NutritionPersonUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    targetKcal?: NullableFloatFieldUpdateOperationsInput | number | null
-    proteinPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    fatPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    carbsPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mealSlots?: MealSlotInstanceUpdateManyWithoutPersonNestedInput
+  export type NutritionPersonUpdateManyWithWhereWithoutUserInput = {
+    where: NutritionPersonScalarWhereInput
+    data: XOR<NutritionPersonUpdateManyMutationInput, NutritionPersonUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type NutritionPersonUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    targetKcal?: NullableFloatFieldUpdateOperationsInput | number | null
-    proteinPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    fatPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    carbsPct?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutPersonNestedInput
+  export type NutritionPersonScalarWhereInput = {
+    AND?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
+    OR?: NutritionPersonScalarWhereInput[]
+    NOT?: NutritionPersonScalarWhereInput | NutritionPersonScalarWhereInput[]
+    id?: StringFilter<"NutritionPerson"> | string
+    userId?: StringNullableFilter<"NutritionPerson"> | string | null
+    name?: StringNullableFilter<"NutritionPerson"> | string | null
+    goal?: EnumGoalFilter<"NutritionPerson"> | $Enums.Goal
+    targetKcal?: FloatNullableFilter<"NutritionPerson"> | number | null
+    proteinPct?: FloatNullableFilter<"NutritionPerson"> | number | null
+    fatPct?: FloatNullableFilter<"NutritionPerson"> | number | null
+    carbsPct?: FloatNullableFilter<"NutritionPerson"> | number | null
+    fiberGrams?: FloatNullableFilter<"NutritionPerson"> | number | null
+    createdAt?: DateTimeFilter<"NutritionPerson"> | Date | string
+    updatedAt?: DateTimeFilter<"NutritionPerson"> | Date | string
   }
 
   export type PushSubscriptionUpsertWithWhereUniqueWithoutUserInput = {
@@ -81483,7 +81510,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
@@ -81519,7 +81546,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
@@ -81571,7 +81598,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
@@ -81607,7 +81634,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
@@ -81642,7 +81669,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -81678,7 +81705,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -81730,7 +81757,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -81766,7 +81793,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -81803,7 +81830,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
@@ -81839,7 +81866,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
@@ -81891,7 +81918,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
@@ -81927,7 +81954,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
@@ -81941,7 +81968,7 @@ export namespace Prisma {
     aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type UserCreateWithoutNutritionPersonInput = {
+  export type UserCreateWithoutNutritionPersonsInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -81977,7 +82004,7 @@ export namespace Prisma {
     aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutNutritionPersonInput = {
+  export type UserUncheckedCreateWithoutNutritionPersonsInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -82013,9 +82040,9 @@ export namespace Prisma {
     aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutNutritionPersonInput = {
+  export type UserCreateOrConnectWithoutNutritionPersonsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
+    create: XOR<UserCreateWithoutNutritionPersonsInput, UserUncheckedCreateWithoutNutritionPersonsInput>
   }
 
   export type MealSlotInstanceCreateWithoutPersonInput = {
@@ -82050,18 +82077,18 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutNutritionPersonInput = {
-    update: XOR<UserUpdateWithoutNutritionPersonInput, UserUncheckedUpdateWithoutNutritionPersonInput>
-    create: XOR<UserCreateWithoutNutritionPersonInput, UserUncheckedCreateWithoutNutritionPersonInput>
+  export type UserUpsertWithoutNutritionPersonsInput = {
+    update: XOR<UserUpdateWithoutNutritionPersonsInput, UserUncheckedUpdateWithoutNutritionPersonsInput>
+    create: XOR<UserCreateWithoutNutritionPersonsInput, UserUncheckedCreateWithoutNutritionPersonsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutNutritionPersonInput = {
+  export type UserUpdateToOneWithWhereWithoutNutritionPersonsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutNutritionPersonInput, UserUncheckedUpdateWithoutNutritionPersonInput>
+    data: XOR<UserUpdateWithoutNutritionPersonsInput, UserUncheckedUpdateWithoutNutritionPersonsInput>
   }
 
-  export type UserUpdateWithoutNutritionPersonInput = {
+  export type UserUpdateWithoutNutritionPersonsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82097,7 +82124,7 @@ export namespace Prisma {
     aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutNutritionPersonInput = {
+  export type UserUncheckedUpdateWithoutNutritionPersonsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82184,7 +82211,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -82220,7 +82247,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -82358,7 +82385,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -82394,7 +82421,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -82558,7 +82585,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -82594,7 +82621,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -82754,7 +82781,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -82790,7 +82817,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -83157,7 +83184,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -83193,7 +83220,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -83305,7 +83332,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -83341,7 +83368,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -83530,7 +83557,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -83566,7 +83593,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -83699,7 +83726,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -83735,7 +83762,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -83827,7 +83854,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -83863,7 +83890,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -84023,7 +84050,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -84059,7 +84086,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -84322,7 +84349,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
@@ -84358,7 +84385,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
@@ -84463,7 +84490,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
@@ -84499,7 +84526,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
@@ -84810,7 +84837,7 @@ export namespace Prisma {
     fiberGrams?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user?: UserCreateNestedOneWithoutNutritionPersonInput
+    user?: UserCreateNestedOneWithoutNutritionPersonsInput
   }
 
   export type NutritionPersonUncheckedCreateWithoutMealSlotsInput = {
@@ -84948,7 +84975,7 @@ export namespace Prisma {
     fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneWithoutNutritionPersonNestedInput
+    user?: UserUpdateOneWithoutNutritionPersonsNestedInput
   }
 
   export type NutritionPersonUncheckedUpdateWithoutMealSlotsInput = {
@@ -85467,7 +85494,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -85503,7 +85530,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -85699,7 +85726,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -85735,7 +85762,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -86015,7 +86042,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -86051,7 +86078,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -86256,7 +86283,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -86292,7 +86319,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -86327,7 +86354,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -86363,7 +86390,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -86415,7 +86442,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -86451,7 +86478,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -86520,7 +86547,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -86556,7 +86583,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -86669,7 +86696,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -86705,7 +86732,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -86843,7 +86870,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -86879,7 +86906,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -86931,7 +86958,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -86967,7 +86994,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -87004,7 +87031,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -87040,7 +87067,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -87092,7 +87119,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -87128,7 +87155,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -87323,7 +87350,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -87359,7 +87386,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -87565,7 +87592,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -87601,7 +87628,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -87943,7 +87970,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -87979,7 +88006,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -88031,7 +88058,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -88067,7 +88094,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -88102,7 +88129,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -88138,7 +88165,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -88190,7 +88217,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -88226,7 +88253,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -88295,7 +88322,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -88331,7 +88358,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -88422,7 +88449,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -88458,7 +88485,7 @@ export namespace Prisma {
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -88529,7 +88556,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -88565,7 +88592,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -88667,7 +88694,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -88703,7 +88730,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -89538,7 +89565,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -89574,7 +89601,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -89626,7 +89653,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -89662,7 +89689,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -89698,7 +89725,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -89734,7 +89761,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -89786,7 +89813,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -89822,7 +89849,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -89858,7 +89885,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
@@ -89894,7 +89921,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPerson?: NutritionPersonUncheckedCreateNestedOneWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
@@ -89946,7 +89973,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
@@ -89982,7 +90009,7 @@ export namespace Prisma {
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPerson?: NutritionPersonUncheckedUpdateOneWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
@@ -90142,6 +90169,19 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NutritionPersonCreateManyUserInput = {
+    id?: string
+    name?: string | null
+    goal?: $Enums.Goal
+    targetKcal?: number | null
+    proteinPct?: number | null
+    fatPct?: number | null
+    carbsPct?: number | null
+    fiberGrams?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -90755,6 +90795,47 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NutritionPersonUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
+    targetKcal?: NullableFloatFieldUpdateOperationsInput | number | null
+    proteinPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fatPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    carbsPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mealSlots?: MealSlotInstanceUpdateManyWithoutPersonNestedInput
+  }
+
+  export type NutritionPersonUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
+    targetKcal?: NullableFloatFieldUpdateOperationsInput | number | null
+    proteinPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fatPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    carbsPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutPersonNestedInput
+  }
+
+  export type NutritionPersonUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
+    targetKcal?: NullableFloatFieldUpdateOperationsInput | number | null
+    proteinPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fatPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    carbsPct?: NullableFloatFieldUpdateOperationsInput | number | null
+    fiberGrams?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

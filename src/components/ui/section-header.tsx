@@ -14,7 +14,7 @@ export function SectionHeader({ icon: Icon, label, children, className }: Sectio
         <div className="p-1.5 rounded-xl bg-accent/10 text-accent">
           <Icon size={16} strokeWidth={2} />
         </div>
-        <h2 className="text-[10px] font-mono font-bold tracking-widest uppercase text-secondary">
+        <h2 className="text-caption font-mono font-bold tracking-widest uppercase text-secondary">
           {label}
         </h2>
       </div>

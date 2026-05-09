@@ -1,54 +1,30 @@
 "use server";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { invalidateProfileCache } from "@/lib/revalidate";
+import { withAction, getRequiredUserId, ActionResult } from "@/lib/action-utils";
 import { hash, compare } from "bcryptjs";
 
-export async function updateUserNameAction(newName: string) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  try {
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { name: newName },
-    });
-
-    invalidateProfileCache(session.user.id);
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to update user name:", error);
-    return { success: false, error: "Failed to update name" };
-  }
+export async function updateUserNameAction(newName: string): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await prisma.user.update({ where: { id: userId }, data: { name: newName } });
+    invalidateProfileCache(userId);
+  });
 }
 
-export async function setPrivateTaskPasswordAction(password: string | null) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  try {
+export async function setPrivateTaskPasswordAction(password: string | null): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
     const passwordHash = password ? await hash(password, 10) : null;
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: { privateTaskPasswordHash: passwordHash },
-    });
-
-    invalidateProfileCache(session.user.id);
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to set private task password:", error);
-    return { success: false, error: "Failed to set password" };
-  }
+    await prisma.user.update({ where: { id: userId }, data: { privateTaskPasswordHash: passwordHash } });
+    invalidateProfileCache(userId);
+  });
 }
 
-export async function verifyPrivateTaskPasswordAction(password: string) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
+export async function verifyPrivateTaskPasswordAction(password: string): Promise<{ success: boolean; error?: string }> {
   try {
+    const userId = await getRequiredUserId();
     const { getCachedPrivateTaskPasswordHash } = await import("@/lib/cache");
-    const user = await getCachedPrivateTaskPasswordHash(session.user.id);
+    const user = await getCachedPrivateTaskPasswordHash(userId);
 
     if (!user?.privateTaskPasswordHash) {
       return { success: false, error: "Password not set" };
@@ -56,8 +32,7 @@ export async function verifyPrivateTaskPasswordAction(password: string) {
 
     const isValid = await compare(password, user.privateTaskPasswordHash);
     return { success: isValid, error: isValid ? undefined : "Invalid password" };
-  } catch (error) {
-    console.error("Failed to verify private task password:", error);
+  } catch {
     return { success: false, error: "Failed to verify password" };
   }
 }

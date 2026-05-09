@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormField } from "@/components/ui/form-field";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
+import { habitSchema, type HabitFormData } from "@/features/life/schemas";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
 import { Anchor, Zap, PartyPopper, Bell, X } from "lucide-react";
@@ -19,38 +23,37 @@ interface HabitFormDialogProps {
 export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps) {
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
-  
-  const [name, setName] = useState(() => habit?.name ?? "");
-  const [anchor, setAnchor] = useState(() => habit?.anchor ?? "");
-  const [action, setAction] = useState(() => habit?.action ?? "");
-  const [celebration, setCelebration] = useState(() => habit?.celebration ?? "");
-  const [reminderTime, setReminderTime] = useState(() => habit?.reminderTime ?? "");
-  const [archived, setArchived] = useState(() => habit?.archived ?? false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<HabitFormData>({
+    resolver: zodResolver(habitSchema),
+    defaultValues: {
+      name: habit?.name ?? "",
+      anchor: habit?.anchor ?? "",
+      action: habit?.action ?? "",
+      celebration: habit?.celebration ?? "",
+      reminderTime: habit?.reminderTime ?? "",
+      archived: habit?.archived ?? false,
+    },
+  });
 
-    if (!name.trim() || !anchor.trim() || !action.trim()) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
+  const reminderTime = watch("reminderTime");
 
+  const onSubmit = (data: HabitFormData) => {
     startTransition(async () => {
-      try {
-        await upsertHabitAction({
-          id: habit?.id,
-          name: name.trim(),
-          anchor: anchor.trim(),
-          action: action.trim(),
-          celebration: celebration.trim() || null,
-          reminderTime: reminderTime || null,
-          archived,
-        });
+      const result = await upsertHabitAction({
+        id: habit?.id,
+        name: data.name.trim(),
+        anchor: data.anchor.trim(),
+        action: data.action.trim(),
+        celebration: data.celebration?.trim() || null,
+        reminderTime: data.reminderTime || null,
+        archived: data.archived ?? false,
+      });
+      if (result.success) {
         toast.success(isEditing ? "Habit updated" : "Habit created");
         onClose();
-      } catch (err) {
-        toast.error("Failed to save habit");
-        console.error(err);
+      } else {
+        toast.error(result.error || "Failed to save habit");
       }
     });
   };
@@ -66,104 +69,106 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSubmit} disabled={isPending}>
+          <Button variant="primary" onClick={handleSubmit(onSubmit)} disabled={isPending}>
             {isPending ? "Saving..." : isEditing ? "Update" : "Create"}
           </Button>
         </div>
       }
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-mono tracking-widest text-muted">Habit name</label>
-          <Input 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <FormField label="Habit name" error={errors.name?.message} required>
+          <Input
+            {...register("name")}
             placeholder="e.g. Morning pushups"
             autoFocus
           />
-        </div>
+        </FormField>
 
         {isEditing && (
           <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">
-            <input 
-              type="checkbox" 
-              checked={archived} 
-              onChange={(e) => setArchived(e.target.checked)}
+            <input
+              type="checkbox"
+              {...register("archived")}
               className="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-bg"
             />
             <div className="flex flex-col">
-              <span className="text-[11px] font-bold text-text">Archive Habit</span>
-              <span className="text-[9px] text-muted font-mono uppercase tracking-tight">Hide from active list without deleting</span>
+              <span className="text-note font-bold text-text">Archive Habit</span>
+              <span className="text-label text-muted font-mono uppercase tracking-tight">Hide from active list without deleting</span>
             </div>
           </label>
         )}
 
         <div className="grid grid-cols-1 gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <FormField
+            label="The Anchor (Trigger)"
+            error={errors.anchor?.message}
+            required
+          >
+            <div className="flex items-center gap-2 mb-1">
               <Anchor size={14} className="text-accent" />
-              <label className="text-[10px] font-mono tracking-widest text-muted">The Anchor (Trigger)</label>
             </div>
-            <Input 
-              value={anchor} 
-              onChange={(e) => setAnchor(e.target.value)} 
+            <Input
+              {...register("anchor")}
               placeholder="After I [wash my face]..."
             />
-          </div>
+          </FormField>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <FormField
+            label="The Action (New habit)"
+            error={errors.action?.message}
+            required
+          >
+            <div className="flex items-center gap-2 mb-1">
               <Zap size={14} className="text-amber-500" />
-              <label className="text-[10px] font-mono tracking-widest text-muted">The Action (New habit)</label>
             </div>
-            <Input 
-              value={action} 
-              onChange={(e) => setAction(e.target.value)} 
+            <Input
+              {...register("action")}
               placeholder="I will [do 5 pushups]..."
             />
-          </div>
+          </FormField>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+          <FormField label="Celebration" hint="Optional — what reward follows?">
+            <div className="flex items-center gap-2 mb-1">
               <PartyPopper size={14} className="text-emerald-500" />
-              <label className="text-[10px] font-mono tracking-widest text-muted">Celebration (Optional)</label>
             </div>
-            <Input 
-              value={celebration} 
-              onChange={(e) => setCelebration(e.target.value)} 
+            <Input
+              {...register("celebration")}
               placeholder="And then I will [say 'Good job!']"
             />
-          </div>
+          </FormField>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Bell size={14} className="text-blue-500" />
-                <label className="text-[10px] font-mono tracking-widest text-muted">Daily Reminder (Optional)</label>
-              </div>
+          <FormField label="Daily Reminder" hint="Optional">
+            <div className="flex items-center justify-between mb-1">
+              <Bell size={14} className="text-blue-500" />
               {reminderTime && (
-                <button 
+                <button
                   type="button"
-                  onClick={() => setReminderTime("")}
-                  className="text-[9px] font-mono text-muted hover:text-red-500 transition-colors flex items-center gap-1"
+                  onClick={() => setValue("reminderTime", "")}
+                  className="text-label font-mono text-muted hover:text-red-500 transition-colors flex items-center gap-1"
                 >
                   <X size={10} /> Clear
                 </button>
               )}
             </div>
             <div className="relative">
-              <TimePicker 
-                value={reminderTime || ""} 
-                onChange={(val) => setReminderTime(val)} 
-                className="w-full"
+              <Controller
+                name="reminderTime"
+                control={control}
+                render={({ field }) => (
+                  <TimePicker
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    className="w-full"
+                  />
+                )}
               />
               {!reminderTime && (
                 <div className="absolute right-12 top-1/2 -translate-y-1/2 pointer-events-none z-10">
-                  <span className="text-[9px] text-muted font-mono uppercase">Auto (3x day)</span>
+                  <span className="text-label text-muted font-mono uppercase">Auto (3x day)</span>
                 </div>
               )}
             </div>
-          </div>
+          </FormField>
         </div>
       </form>
     </Dialog>

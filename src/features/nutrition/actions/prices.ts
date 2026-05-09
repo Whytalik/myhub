@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { PriceSource } from "@/app/generated/prisma"
-import { revalidatePath } from "next/cache"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
 export async function updatePriceManually(productId: string, price: number): Promise<ActionResult<void>> {
@@ -22,8 +21,6 @@ export async function updatePriceManually(productId: string, price: number): Pro
       },
     })
     invalidateFoodCache(userId)
-    revalidatePath("/nutrition/products")
-    revalidatePath("/nutrition/shopping")
     return { success: true, data: undefined }
   } catch (error) {
     console.error("[Price Update Error]:", error)
@@ -66,8 +63,6 @@ export async function importFetchedPrice(productId: string, price: number): Prom
       },
     })
     invalidateFoodCache(userId)
-    revalidatePath("/nutrition/products")
-    revalidatePath("/nutrition/shopping")
     return { success: true, data: undefined }
   } catch (error) {
     console.error("[Price Import Error]:", error)

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { Pencil, Trash2 } from "lucide-react";
@@ -20,11 +20,11 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
 
   const handleDelete = () => {
     startTransition(async () => {
-      try {
-        await deleteSphereAction(sphere.id);
+      const result = await deleteSphereAction(sphere.id);
+      if (result.success) {
         toast.success("Sphere deleted");
-      } catch {
-        toast.error("Failed to delete sphere");
+      } else {
+        toast.error(result.error || "Failed to delete sphere");
       }
     });
   };
@@ -46,8 +46,8 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
             </div>
           )}
           <div>
-            <p className="text-[13px] font-semibold text-text leading-none">{sphere.name}</p>
-            <p className="text-[10px] font-mono text-muted mt-1">
+            <p className="text-body font-semibold text-text leading-none">{sphere.name}</p>
+            <p className="text-caption font-mono text-muted mt-1">
               {sphere.taskCount} task{sphere.taskCount !== 1 ? "s" : ""}
             </p>
           </div>

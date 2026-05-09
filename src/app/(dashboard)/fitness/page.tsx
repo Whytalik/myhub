@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { SpaceLanding, ModuleQuickAccess } from "@/components/space-landing";
+﻿import type { Metadata } from "next";
+import { SpaceLanding, ModuleQuickAccess, QuickActions } from "@/components/space-landing";
 import { Dumbbell, Activity, TrendingUp, Flame, Target, RefreshCw } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -49,7 +49,7 @@ export default function FitnessPage() {
     >
       <div className="mb-20">
         <div className="flex items-center gap-3 mb-8">
-          <h4 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em]">Training Principles</h4>
+          <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">Training Principles</h4>
           <div className="h-px flex-1 bg-border/30" />
         </div>
 
@@ -61,12 +61,12 @@ export default function FitnessPage() {
           ].map((p, i) => (
             <div key={p.step} className="relative group">
               <div className="flex flex-col gap-3">
-                <span className="text-4xl font-heading text-border group-hover:text-accent/20 transition-colors duration-500">
+                <span className="text-xl font-heading text-border group-hover:text-accent/20 transition-colors duration-500">
                   {p.step}
                 </span>
                 <div className="flex items-center gap-2">
                   <p.icon size={14} className="text-accent/60" />
-                  <h5 className="font-mono text-[11px] text-text uppercase tracking-widest">{p.name}</h5>
+                  <h5 className="font-mono text-note text-text uppercase tracking-widest">{p.name}</h5>
                 </div>
                 <p className="text-secondary text-xs leading-relaxed pr-4">{p.desc}</p>
               </div>
@@ -78,6 +78,12 @@ export default function FitnessPage() {
         </div>
       </div>
 
+      <QuickActions
+        actions={[
+          { label: "View Workouts", href: "/fitness/workouts", icon: Dumbbell, variant: "primary" },
+          { label: "Track Progress", href: "/fitness/progress", icon: TrendingUp, variant: "secondary" },
+        ]}
+      />
       <ModuleQuickAccess modules={modules} />
     </SpaceLanding>
   );

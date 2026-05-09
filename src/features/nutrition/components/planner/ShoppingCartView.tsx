@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useTransition } from "react"
 import { Check, Edit2, RefreshCw, AlertCircle, ShoppingBag, Home } from "lucide-react"
@@ -22,6 +22,7 @@ interface CartItem {
     price: number | null
     packageWeight: number | null
     pantryStock: number | null
+    category: string | null
   }
   dishes: { dishName: string; dishId: string }[]
 }
@@ -101,7 +102,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
   }
 
   const groupedItems = items.reduce((acc, item) => {
-    const cat = "All Items"
+    const cat = item.product.category || "Other"
     if (!acc[cat]) acc[cat] = []
     acc[cat].push(item)
     return acc
@@ -112,7 +113,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <ShoppingBag className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">Shopping Cart</h2>
+          <h2 className="text-sm font-semibold">Shopping Cart</h2>
           <span className="text-sm text-muted-foreground">{items.length} items</span>
         </div>
         <div className="flex gap-2">
@@ -131,7 +132,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
               <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Variety Warnings</h3>
               <div className="flex flex-wrap gap-2 mt-2">
                 {varietyWarnings.map((w, i) => (
-                  <span key={i} className="text-[10px] bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded">
+                  <span key={i} className="text-caption bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded">
                     ⚠️ {w.dishName}: {w.count} times
                   </span>
                 ))}
@@ -172,7 +173,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{item.product.name}</span>
                       {deficit > 0 && !isComplete && (
-                        <span className="text-[10px] bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-1.5 py-0.5 rounded">
+                        <span className="text-caption bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-1.5 py-0.5 rounded">
                           -{deficit.toFixed(0)}g
                         </span>
                       )}
@@ -184,7 +185,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                     </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {item.dishes.map((d, i) => (
-                        <span key={i} className="text-[10px] bg-muted px-1.5 py-0.5 rounded">
+                        <span key={i} className="text-caption bg-muted px-1.5 py-0.5 rounded">
                           {d.dishName}
                         </span>
                       ))}
@@ -209,7 +210,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-8 px-2 text-[10px]"
+                        className="h-8 px-2 text-caption"
                         onClick={() => {
                           setAvailableEditId(item.id)
                           setAvailableValue(String(available))
@@ -265,11 +266,11 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
       <div className="p-4 border rounded-lg bg-card space-y-3">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">Total Estimated Cost</span>
-          <span className="text-lg font-bold">{totalCost.toFixed(1)}₴</span>
+          <span className="text-sm font-bold">{totalCost.toFixed(1)}₴</span>
         </div>
         {Object.keys(personCosts).length > 0 && (
           <div className="pt-3 border-t border-border/50">
-            <div className="text-[10px] font-mono text-muted tracking-wider mb-2">Cost by Person</div>
+            <div className="text-caption font-mono text-muted tracking-wider mb-2">Cost by Person</div>
             <div className="flex flex-wrap gap-3">
               {Object.entries(personCosts).map(([id, pc]) => (
                 <div key={id} className="flex items-center gap-1 text-xs">

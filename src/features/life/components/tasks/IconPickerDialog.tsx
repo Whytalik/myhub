@@ -44,7 +44,7 @@ export function IconPickerDialog({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search all icons..."
-            className="flex-1 bg-transparent outline-none text-[14px] text-text placeholder:text-muted font-medium h-full"
+            className="flex-1 bg-transparent outline-none text-sm text-text placeholder:text-muted font-medium h-full"
             autoFocus
           />
           {search && (

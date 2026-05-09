@@ -60,8 +60,8 @@ export function JournalHistoryView({ entries }: Props) {
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteEntryAction(id);
-      setDeleteId(null);
+      const result = await deleteEntryAction(id);
+      if (result.success) setDeleteId(null);
     });
   };
 
@@ -121,7 +121,7 @@ export function JournalHistoryView({ entries }: Props) {
           <div key={key} className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-border/40" />
-              <span className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] px-4">{key}</span>
+              <span className="text-caption font-mono text-muted uppercase tracking-[0.4em] px-4">{key}</span>
               <div className="h-px flex-1 bg-border/40" />
             </div>
 
@@ -141,22 +141,22 @@ export function JournalHistoryView({ entries }: Props) {
                       href={`/life/journal?date=${dateStr}`}
                       className="flex items-center gap-6 bg-surface border border-border rounded-xl px-6 py-4 hover:border-accent/40 hover:bg-raised/50 transition-all group shadow-sm"
                     >
-                      <span className="text-[13px] font-medium text-text group-hover:text-accent transition-colors capitalize w-48 shrink-0">
+                      <span className="text-body font-medium text-text group-hover:text-accent transition-colors capitalize w-48 shrink-0">
                         {label}
                       </span>
 
-                      <div className="flex items-center gap-5 text-[12px] font-mono text-muted">
+                      <div className="flex items-center gap-5 text-sm font-mono text-muted">
                         <span className="flex items-center gap-1.5" title="Sleep">
                           <Moon size={13} className="text-accent/60" />
-                          {e.sleepHours !== null ? `${e.sleepHours}h` : "â€”"}
+                          {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Energy">
                           <Zap size={13} className="text-accent/60" />
-                          {e.energy !== null ? `${e.energy}/10` : "â€”"}
+                          {e.energy !== null ? `${e.energy}/10` : "—"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Mood">
                           <Smile size={13} className="text-accent/60" />
-                          {e.mood !== null ? `${e.mood}/10` : "â€”"}
+                          {e.mood !== null ? `${e.mood}/10` : "—"}
                         </span>
                         {e.weight !== null && (
                           <span className="flex items-center gap-1.5" title="Weight">
@@ -166,22 +166,22 @@ export function JournalHistoryView({ entries }: Props) {
                         )}
                         <span className="flex items-center gap-1.5" title="Nutrition Adherence">
                           <Utensils size={13} className="text-accent/60" />
-                          {e.nutrition !== null ? `${e.nutrition}/5` : "â€”"}
+                          {e.nutrition !== null ? `${e.nutrition}/5` : "—"}
                         </span>
                         <span className="flex items-center gap-1.5" title="Routine Score">
                           <CheckCircle2 size={13} className="text-accent/60" />
-                          {score !== null ? `${score}%` : "â€”"}
+                          {score !== null ? `${score}%` : "—"}
                         </span>
                       </div>
 
                       {e.winToday && (
-                        <span className="text-[12px] text-secondary truncate flex-1 italic">
+                        <span className="text-sm text-secondary truncate flex-1 italic">
                           &ldquo;{e.winToday}&rdquo;
                         </span>
                       )}
 
-                      <span className="text-[11px] font-mono text-muted/50 group-hover:text-accent/60 transition-colors shrink-0 mr-8">
-                        â†’
+                      <span className="text-note font-mono text-muted/50 group-hover:text-accent/60 transition-colors shrink-0 mr-8">
+                        ?
                       </span>
                     </Link>
 
@@ -213,7 +213,7 @@ export function JournalHistoryView({ entries }: Props) {
       {hasMore && (
         <button 
           onClick={() => setVisibleGroups(prev => prev + 5)}
-          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-[11px] font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
+          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-note font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
         >
           <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
           Show More Groups

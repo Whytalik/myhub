@@ -1,3 +1,38 @@
+## [2026-05-05] Product Grouping & Library Tabs
+
+Додано групування продуктів по категоріях та фільтрацію через таби.
+
+- **Product Library**: 
+    - Продукти тепер групуються по категоріях у вертикальному списку з роздільниками.
+    - Додано панель табів зверху для швидкої фільтрації ("ALL" + активні категорії).
+    - Оптимізовано рендеринг через `useMemo` для розрахунку груп та активних категорій.
+- **Shopping Cart**:
+    - Виправлено логіку групування: тепер продукти дійсно розбиваються по категоріях (раніше всі потрапляли в "All Items").
+    - Оновлено інтерфейси для підтримки полів категорій у всьому ланцюжку даних кошика.
+
+- **Database**: Проведено початкове засідування бази (`db:seed:fs-bootstrap`) продуктами з FatSecret (Bananas, Chicken, Rice тощо).
+**Verification:**
+- [x] Logic implemented
+- [x] UI updated (Tabs in Library + Real groups in Cart)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Database seeded with FS bootstrap
+
+---
+
+## [2026-05-05] Allow Multiple Nutrition Persons per User
+
+Дозволено створювати кілька профілів харчування для одного користувача.
+
+- **Schema**: Видалено `@unique` з `userId` в `NutritionPerson`, змінено реляцію `User.nutritionPerson` → `User.nutritionPersons` (one-to-many)
+- **System Service**: Замінено `findUnique` на `findFirst` для отримання профілю
+
+**Verification:**
+- [x] Logic implemented
+- [x] UI unchanged
+- [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-03] FatSecret API Integration & Smart Seeding
 
 Інтеграція FatSecret API для динамічного пошуку та автоматичного наповнення бази.

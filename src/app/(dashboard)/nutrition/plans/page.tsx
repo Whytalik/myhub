@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -28,7 +28,7 @@ export default async function PlansPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div className="flex flex-col gap-1">
           <Heading title="Plans" />
-          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
             Weekly meal planning overview.
           </p>
         </div>

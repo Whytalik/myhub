@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,10 +10,9 @@ import { Check } from "lucide-react";
 
 interface AddLanguageFormProps {
   availableLanguages: Language[];
-  personId: string;
 }
 
-export function AddLanguageForm({ availableLanguages, personId }: AddLanguageFormProps) {
+export function AddLanguageForm({ availableLanguages }: AddLanguageFormProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
@@ -23,7 +22,7 @@ export function AddLanguageForm({ availableLanguages, personId }: AddLanguageFor
 
     setIsPending(true);
     try {
-      const result = await addLanguageAction(personId, selectedId);
+      const result = await addLanguageAction(selectedId);
       if (result.success) {
         toast.success("Language added successfully!");
         router.push("/languages");
@@ -58,9 +57,9 @@ export function AddLanguageForm({ availableLanguages, personId }: AddLanguageFor
                 : "bg-surface border-border hover:border-accent/30 hover:bg-raised"
             }`}
           >
-            <span className="text-6xl">{lang.icon}</span>
-            <span className="font-heading text-xl uppercase tracking-tight">{lang.name}</span>
-            <span className="text-[10px] font-mono text-muted uppercase tracking-widest">{lang.code}</span>
+            <span className="text-3xl">{lang.icon}</span>
+            <span className="font-heading text-sm uppercase tracking-tight">{lang.name}</span>
+            <span className="text-caption font-mono text-muted uppercase tracking-widest">{lang.code}</span>
 
             {selectedId === lang.id && (
               <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-accent flex items-center justify-center text-bg shadow-sm">

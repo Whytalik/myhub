@@ -88,11 +88,11 @@ export function RoutineSection({ type, routine, onChange }: Props) {
           }`}>
             {type === "morning" ? <Sun size={14} /> : <Moon size={14} />}
           </div>
-          <h3 className={`text-[13px] font-medium transition-colors uppercase tracking-wider ${hasValue ? "text-accent" : "text-text"}`}>
+          <h3 className={`text-body font-medium transition-colors uppercase tracking-wider ${hasValue ? "text-accent" : "text-text"}`}>
             {type} Routine
           </h3>
         </div>
-        <span className={`text-[11px] font-mono transition-colors ${isComplete ? "text-accent font-bold" : hasValue ? "text-accent/60" : "text-muted"}`}>
+        <span className={`text-note font-mono transition-colors ${isComplete ? "text-accent font-bold" : hasValue ? "text-accent/60" : "text-muted"}`}>
           {done}/{total} · {pct}%
         </span>
       </div>
@@ -108,7 +108,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
         >
           <div className="flex items-center gap-3">
             <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
-            <span className="text-[12px] font-bold">Training Today</span>
+            <span className="text-sm font-bold">Training Today</span>
           </div>
           <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
             <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />
@@ -119,9 +119,9 @@ export function RoutineSection({ type, routine, onChange }: Props) {
       {type === "evening" && (
         <div className="grid grid-cols-3 gap-2">
           {[
-            { id: "normal", icon: User, label: "Normal", labelUk: "Звичайний" },
-            { id: "gym",    icon: Dumbbell, label: "Gym", labelUk: "Зал" },
-            { id: "fun",    icon: Gamepad2, label: "Fun", labelUk: "Розваги" }
+            { id: "normal", icon: User, label: "Normal", labelUk: "Normal" },
+            { id: "gym",    icon: Dumbbell, label: "Gym", labelUk: "Gym" },
+            { id: "fun",    icon: Gamepad2, label: "Fun", labelUk: "Fun" }
           ].map((mode) => {
             const active = eveningMode === mode.id;
             const Icon = mode.icon;
@@ -136,7 +136,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
                 }`}
               >
                 <Icon size={14} className={active ? "mb-0.5" : "mb-1"} />
-                <span className="text-[10px] font-bold leading-none">{mode.label}</span>
+                <span className="text-caption font-bold leading-none">{mode.label}</span>
               </button>
             );
           })}
@@ -165,10 +165,10 @@ export function RoutineSection({ type, routine, onChange }: Props) {
                 </div>
                 <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="text-[9px] font-mono font-bold text-accent shrink-0">{item.time}</span>
-                    <span className="text-[11px] font-bold leading-none truncate">{item.label}</span>
+                    <span className="text-label font-mono font-bold text-accent shrink-0">{item.time}</span>
+                    <span className="text-note font-bold leading-none truncate">{item.label}</span>
                   </div>
-                  <span className={`text-[9px] font-medium leading-none truncate ${checked ? "text-accent/80" : "text-secondary/70"}`}>
+                  <span className={`text-label font-medium leading-none truncate ${checked ? "text-accent/80" : "text-secondary/70"}`}>
                     {item.labelUk}
                   </span>
                 </div>

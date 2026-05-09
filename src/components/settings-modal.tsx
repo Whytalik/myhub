@@ -186,7 +186,7 @@ function SortableItem({
         <div className={`p-1.5 rounded-lg border transition-colors ${isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"}`}>
           <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} style={{ color: isDragging ? undefined : color }} strokeWidth={2.5} />
         </div>
-        <span className={`flex-1 text-[12px] font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
+        <span className={`flex-1 text-sm font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
         <ChevronDown size={14} className={`text-muted transition-transform duration-300 ${isSelected ? "rotate-180 text-accent" : ""}`} />
       </div>
 
@@ -194,11 +194,11 @@ function SortableItem({
         <div className="px-3 pb-3 pt-1 border-t border-border/20 animate-in slide-in-from-top-2 duration-300">
            <div className="space-y-3">
               <div>
-                <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Icon Library</span>
+                <span className="text-label font-mono uppercase tracking-widest text-muted">Icon Library</span>
                 <IconPicker currentIcon={currentIconName} onSelect={(icon) => onUpdate('icon', icon)} color={color} />
               </div>
               <div>
-                <span className="text-[9px] font-mono uppercase tracking-widest text-muted">Accent Color</span>
+                <span className="text-label font-mono uppercase tracking-widest text-muted">Accent Color</span>
                 <ColorPicker currentColor={color} onSelect={(c) => onUpdate('color', c)} />
               </div>
            </div>
@@ -291,7 +291,7 @@ export function SettingsModal({
 
       const registration = await navigator.serviceWorker.ready;
       
-      // 1. Примусово видаляємо стару підписку, щоб згенерувати новий endpoint
+      // 1. ????????? ????????? ????? ????????, ??? ??????????? ????? endpoint
       const existingSub = await registration.pushManager.getSubscription();
       if (existingSub) {
         await existingSub.unsubscribe();
@@ -304,7 +304,7 @@ export function SettingsModal({
         return;
       }
 
-      // 2. Створюємо нову підписку
+      // 2. ????????? ???? ????????
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicKey)
@@ -482,7 +482,7 @@ export function SettingsModal({
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex flex-col items-center justify-center gap-1.5 px-6 py-4 text-[10px] font-bold whitespace-nowrap transition-all shrink-0 border-b-2 min-w-[80px] active:bg-accent/5 ${
+                className={`flex flex-col items-center justify-center gap-1.5 px-6 py-4 text-caption font-bold whitespace-nowrap transition-all shrink-0 border-b-2 min-w-[80px] active:bg-accent/5 ${
                   activeTab === tab.id
                     ? "border-accent text-accent bg-accent/5"
                     : "border-transparent text-muted"
@@ -500,7 +500,7 @@ export function SettingsModal({
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12px] font-bold transition-all ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold transition-all ${
                   activeTab === tab.id ? "bg-accent text-bg shadow-sm" : "text-muted hover:text-text hover:bg-raised/80"
                 }`}
               >
@@ -526,10 +526,10 @@ export function SettingsModal({
                   <section>
                     <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold uppercase text-muted">Display Name</label>
+                      <label className="text-caption font-bold uppercase text-muted">Display Name</label>
                       <div className="flex gap-2">
                         <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-caption font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                         </button>
                       </div>
@@ -541,7 +541,7 @@ export function SettingsModal({
                       <Lock size={12} /> Private Tasks
                     </h4>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-bold uppercase text-muted">Password</label>
+                      <label className="text-caption font-bold uppercase text-muted">Password</label>
                       <div className="flex gap-2">
                         <input 
                           type="password"
@@ -550,7 +550,7 @@ export function SettingsModal({
                           onChange={(e) => setPrivatePassword(e.target.value)} 
                           placeholder="Set password to hide tasks"
                         />
-                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-[10px] font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-caption font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : isPasswordSaved ? <Check size={12} /> : "Save"}
                         </button>
                       </div>
@@ -565,11 +565,11 @@ export function SettingsModal({
                     <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
                     <div className="grid grid-cols-2 gap-2">
                        <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                          <div className="flex items-center gap-2"><Moon size={14} /><span className="text-[10px] font-bold uppercase">Dark</span></div>
+                          <div className="flex items-center gap-2"><Moon size={14} /><span className="text-caption font-bold uppercase">Dark</span></div>
                           {theme === "dark" && <div className="w-1 h-1 rounded-full bg-accent" />}
                        </button>
                        <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "light" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                          <div className="flex items-center gap-2"><Sun size={14} /><span className="text-[10px] font-bold uppercase">Light</span></div>
+                          <div className="flex items-center gap-2"><Sun size={14} /><span className="text-caption font-bold uppercase">Light</span></div>
                           {theme === "light" && <div className="w-1 h-1 rounded-full bg-accent" />}
                        </button>
                     </div>
@@ -581,14 +581,14 @@ export function SettingsModal({
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
                     <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
-                    {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                    {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
                         {domains.map((domain) => {
                           const custom = customizations[domain.id];
-                          // Беремо дефолтний колір з SPACE_THEMES за ID домену
+                          // ?????? ????????? ????? ? SPACE_THEMES ?? ID ??????
                           const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[domain.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || domain.icon) : domain.icon;
 
@@ -609,7 +609,7 @@ export function SettingsModal({
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-[9px] text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
+                  <p className="text-label text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
@@ -617,14 +617,14 @@ export function SettingsModal({
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
                     <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
-                    {isSaved && <span className="text-[9px] font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                    {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
                         {spaces.map((space) => {
                           const custom = customizations[space.id];
-                          // Беремо дефолтний колір з SPACE_THEMES за ID спейсу
+                          // ?????? ????????? ????? ? SPACE_THEMES ?? ID ??????
                           const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[space.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || space.icon) : space.icon;
 
@@ -645,7 +645,7 @@ export function SettingsModal({
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-[9px] text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
+                  <p className="text-label text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
@@ -654,18 +654,18 @@ export function SettingsModal({
                   <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
                   <div className="grid grid-cols-1 gap-2">
                      <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-[11px] font-bold">Export JSON</h5><p className="text-[9px] text-muted">Complete backup.</p></div>
+                        <div><h5 className="text-note font-bold">Export JSON</h5><p className="text-label text-muted">Complete backup.</p></div>
                         <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 active:scale-95 transition-all shadow-md shadow-accent/20"><Download size={14} strokeWidth={2.5} /></button>
                      </div>
                      <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-[11px] font-bold">Import Backup</h5><p className="text-[9px] text-muted">Restore state.</p></div>
+                        <div><h5 className="text-note font-bold">Import Backup</h5><p className="text-label text-muted">Restore state.</p></div>
                         <div className="flex items-center gap-2">
                           <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
                           <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
                         </div>
                      </div>
                      <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
-                          <div><h5 className="text-[11px] font-bold text-red-500">Reset System</h5><p className="text-[9px] text-red-500/60">Wipe all records.</p></div>
+                          <div><h5 className="text-note font-bold text-red-500">Reset System</h5><p className="text-label text-red-500/60">Wipe all records.</p></div>
                           <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
                      </div>
                   </div>
@@ -678,14 +678,14 @@ export function SettingsModal({
                     <div className="flex justify-between items-center mb-3">
                        <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Push Notifications</h4>
                        {deviceCount > 0 && (
-                         <span className="text-[9px] font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
+                         <span className="text-label font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
                            {deviceCount} Linked Device{deviceCount > 1 ? 's' : ''}
                          </span>
                        )}
                     </div>
 
                     {!isNotificationSupported ? (
-                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-[10px] leading-relaxed">
+                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-caption leading-relaxed">
                           Your browser does not support push notifications. If you are on iPhone, make sure to &quot;Add to Home Screen&quot; first.
                        </div>
                     ) : (
@@ -696,13 +696,13 @@ export function SettingsModal({
                                   <Smartphone size={16} />
                                </div>
                                <div>
-                                  <h5 className="text-[11px] font-bold">Current Device</h5>
-                                  <p className="text-[9px] text-muted">{isSubscribed ? "Connection established" : "Ready to link"}</p>
+                                  <h5 className="text-note font-bold">Current Device</h5>
+                                  <p className="text-label text-muted">{isSubscribed ? "Connection established" : "Ready to link"}</p>
                                </div>
                             </div>
                             <button 
                               onClick={subscribeToPush}
-                              className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all bg-accent text-bg hover:scale-105 active:scale-95`}
+                              className={`px-3 py-1.5 rounded-lg text-label font-bold uppercase transition-all bg-accent text-bg hover:scale-105 active:scale-95`}
                             >
                                {isSubscribed ? "Re-link" : "Link"}
                             </button>
@@ -716,8 +716,8 @@ export function SettingsModal({
                                         <Bell size={16} />
                                      </div>
                                      <div>
-                                        <h5 className="text-[11px] font-bold">Broadcast Test</h5>
-                                        <p className="text-[9px] text-muted">Ping all {deviceCount} linked devices.</p>
+                                        <h5 className="text-note font-bold">Broadcast Test</h5>
+                                        <p className="text-label text-muted">Ping all {deviceCount} linked devices.</p>
                                      </div>
                                   </div>
                                   <button 
@@ -733,7 +733,7 @@ export function SettingsModal({
                       </div>
                     )}
                   </section>
-                  <p className="text-[9px] text-muted leading-relaxed italic opacity-70">
+                  <p className="text-label text-muted leading-relaxed italic opacity-70">
                     To link your iPhone, open the app from your Home Screen and click &quot;Link&quot; here.
                   </p>
                 </div>

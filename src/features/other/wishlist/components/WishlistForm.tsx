@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -83,25 +83,25 @@ export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: Wis
       <div className="space-y-4">
         {/* Name */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono text-muted tracking-widest px-1">Item Name</label>
+          <label className="text-caption font-mono text-muted tracking-widest px-1">Item Name</label>
           <Input {...register("name", { required: "Name is required" })} placeholder="What do you wish for?" autoFocus />
-          {errors.name && <span className="text-red-500 text-[10px] font-mono">{errors.name.message}</span>}
+          {errors.name && <span className="text-red-500 text-caption font-mono">{errors.name.message}</span>}
         </div>
 
         {/* Description */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono text-muted tracking-widest px-1">Description / Notes</label>
+          <label className="text-caption font-mono text-muted tracking-widest px-1">Description / Notes</label>
           <Input {...register("description")} placeholder="Add some details, specs, or reasons..." />
         </div>
 
         {/* URL & Image URL */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Product URL</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Product URL</label>
             <Input {...register("url")} placeholder="https://..." type="url" />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Image URL</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Image URL</label>
             <Input {...register("imageUrl")} placeholder="https://image.jpg" type="url" />
           </div>
         </div>
@@ -109,15 +109,15 @@ export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: Wis
         {/* Price, Currency, Store */}
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Price</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Price</label>
             <Input {...register("price", { valueAsNumber: true })} placeholder="0.00" type="number" step="0.01" />
           </div>
            <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Currency</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Currency</label>
             <CustomSelect options={CURRENCY_OPTIONS} value={selectedCurrency ?? ""} onChange={(val) => setValue("currency", val as string)} />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Store</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Store</label>
             <Input {...register("store")} placeholder="Amazon, Rozetka, etc." />
           </div>
         </div>
@@ -125,11 +125,11 @@ export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: Wis
         {/* Category & Tags */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Category</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Category</label>
             <Input {...register("category")} placeholder="Gear, Home, Health..." />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Tags (comma-separated)</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Tags (comma-separated)</label>
             <Input {...register("tags")} placeholder="fishing, tech, book" />
           </div>
         </div>
@@ -137,15 +137,15 @@ export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: Wis
         {/* Status, Priority, Necessity */}
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Status</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Status</label>
             <CustomSelect options={STATUS_OPTIONS} value={selectedStatus ?? ""} onChange={(val) => setValue("status", val as WishlistStatus)} />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Priority</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Priority</label>
             <CustomSelect options={PRIORITY_OPTIONS} value={selectedPriority ?? ""} onChange={(val) => setValue("priority", val as TaskPriority)} />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-mono text-muted tracking-widest px-1">Necessity (1-10)</label>
+            <label className="text-caption font-mono text-muted tracking-widest px-1">Necessity (1-10)</label>
             <Controller
                 name="necessity"
                 control={control}

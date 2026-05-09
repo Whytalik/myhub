@@ -1,14 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { FormField } from "@/components/ui/form-field";
+import { toast } from "sonner";
 import { getAllSpheresAction } from "@/features/life/actions/task-actions";
 import { upsertObjectiveAction } from "../actions/sprint-actions";
+import { objectiveSchema, type ObjectiveFormData } from "../schemas";
 import type { ObjectiveData } from "../types";
-
 import type { LifeSphereData } from "@/features/life/types";
 
 interface ObjectiveDialogProps {
@@ -22,37 +26,38 @@ export function ObjectiveDialog({ sprintId, objective, onSuccess, children }: Ob
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spheres, setSpheres] = useState<LifeSphereData[]>([]);
-  
-  const [title, setTitle] = useState(objective?.title || "");
-  const [description, setDescription] = useState(objective?.description || "");
-  const [sphereId, setSphereId] = useState(objective?.sphereId || "");
+
+  const { register, handleSubmit, formState: { errors } } = useForm<ObjectiveFormData>({
+    resolver: zodResolver(objectiveSchema),
+    defaultValues: {
+      title: objective?.title ?? "",
+      description: objective?.description ?? "",
+      sphereId: objective?.sphereId ?? "",
+    },
+  });
 
   useEffect(() => {
     if (isOpen) {
-      getAllSpheresAction().then(setSpheres);
+      getAllSpheresAction().then(r => { if (r.success) setSpheres(r.data); });
     }
   }, [isOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title || !sphereId) return;
-
+  const onSubmit = async (data: ObjectiveFormData) => {
     setLoading(true);
-    try {
-      await upsertObjectiveAction({
-        id: objective?.id,
-        sprintId,
-        sphereId,
-        title,
-        description
-      });
+    const result = await upsertObjectiveAction({
+      id: objective?.id,
+      sprintId,
+      sphereId: data.sphereId,
+      title: data.title,
+      description: data.description,
+    });
+    if (result.success) {
       onSuccess();
       setIsOpen(false);
-    } catch (error) {
-      console.error("Failed to save objective:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error || "Failed to save objective");
     }
+    setLoading(false);
   };
 
   return (
@@ -60,51 +65,44 @@ export function ObjectiveDialog({ sprintId, objective, onSuccess, children }: Ob
       <div onClick={() => setIsOpen(true)} className="contents">
         {children}
       </div>
-      <Dialog 
-        isOpen={isOpen} 
+      <Dialog
+        isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title={objective ? "Edit Objective" : "New Objective"}
         description="Lineage to your North Star"
         footer={
           <div className="flex justify-end gap-3 w-full">
             <Button variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
-            <Button onClick={handleSubmit} disabled={loading || !title || !sphereId}>
+            <Button onClick={handleSubmit(onSubmit)} disabled={loading}>
               {loading ? "Saving..." : (objective ? "Update Objective" : "Create Objective")}
             </Button>
           </div>
         }
       >
-        <div className="space-y-4 py-2">
-          <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Pillar / Life Sphere</label>
-            <Select value={sphereId} onChange={(e) => setSphereId(e.target.value)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-2">
+          <FormField label="Pillar / Life Sphere" error={errors.sphereId?.message} required>
+            <Select {...register("sphereId")}>
               <option value="" disabled>Select a sphere</option>
               {spheres.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
+                <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </Select>
-          </div>
+          </FormField>
 
-          <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Title</label>
-            <Input 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)} 
+          <FormField label="Title" error={errors.title?.message} required>
+            <Input
+              {...register("title")}
               placeholder="e.g. Master Next.js 15"
             />
-          </div>
+          </FormField>
 
-          <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Description</label>
-            <Input 
-              value={description} 
-              onChange={(e) => setDescription(e.target.value)} 
+          <FormField label="Description">
+            <Input
+              {...register("description")}
               placeholder="Why this matters..."
             />
-          </div>
-        </div>
+          </FormField>
+        </form>
       </Dialog>
     </>
   );

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Utensils, CheckCircle2, AlertTriangle, XCircle, FileText } from "lucide-react";
 
@@ -28,8 +28,8 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
             <Utensils size={14} />
           </div>
           <div className="flex flex-col">
-            <h3 className={`text-[13px] font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Nutrition Plan</h3>
-            <span className="text-[10px] text-muted">Did you stick to the plan today?</span>
+            <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Nutrition Plan</h3>
+            <span className="text-caption text-muted">Did you stick to the plan today?</span>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
             >
               <Icon size={16} />
               <div className="flex flex-col items-center">
-                <span className="text-[11px] leading-none">{opt.label}</span>
+                <span className="text-note leading-none">{opt.label}</span>
               </div>
             </button>
           );
@@ -62,7 +62,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
         <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="flex items-center gap-2 px-1 h-4">
             <FileText size={12} className="text-muted" />
-            <label className="text-[10px] font-mono uppercase tracking-wider text-muted">
+            <label className="text-caption font-mono uppercase tracking-wider text-muted">
               What went wrong? (Pattern detection)
             </label>
           </div>

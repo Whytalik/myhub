@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo } from 'react';
 import {
@@ -203,7 +203,7 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
       </ReactFlow>
       
       <div className="absolute top-6 left-6 z-10 pointer-events-none">
-        <p className="text-[10px] font-mono text-muted uppercase tracking-[0.4em] bg-[#1a1a1a]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50">
+        <p className="text-caption font-mono text-muted uppercase tracking-[0.4em] bg-[#1a1a1a]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50">
           Mind Map — Horizontal
         </p>
       </div>

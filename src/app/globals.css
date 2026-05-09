@@ -18,6 +18,13 @@
   --color-gold:        #fbbf24;
   --color-life:        #6fbfbf;
   --color-life-muted:  #0d2424;
+
+  --text-label:   0.5rem;
+  --text-caption: 0.6875rem;
+  --text-note:    0.75rem;
+  --text-xs:      0.8125rem;
+  --text-body:    0.875rem;
+  --text-base:    0.8125rem;
 }
 
 /* Light Theme Variables */
@@ -30,12 +37,16 @@
   --color-text:        #1a1712;
   --color-secondary:   #4a453e;
   --color-muted:       #8a8276;
-  --color-accent:      #d97706; 
+  --color-accent:      #d97706;
   --color-accent-muted:#fef3c7;
 }
 
 *, *::before, *::after {
   border-color: var(--color-border);
+}
+
+html {
+  font-size: 14px;
 }
 
 body {

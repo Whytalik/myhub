@@ -33,7 +33,7 @@ export default async function VocabularyPage({ params }: { params: Promise<{ id:
       
       <div className="mb-12">
         <div className="flex items-center gap-4 mb-2">
-           <span className="text-4xl">{userLanguage.language.icon}</span>
+           <span className="text-2xl">{userLanguage.language.icon}</span>
            <Heading title="Vocabulary Manager" />
         </div>
         <p className="text-secondary max-w-2xl leading-relaxed">

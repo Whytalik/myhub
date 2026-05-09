@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { Loader2, Check, X } from "lucide-react";
@@ -113,14 +113,14 @@ export function AISuggestions({ suggestionIds, onDismiss }: AISuggestionsProps) 
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
-                <span className="text-[9px] font-mono uppercase tracking-widest text-accent/60 block mb-1">
+                <span className="text-label font-mono uppercase tracking-widest text-accent/60 block mb-1">
                   {s.action.replace(/([A-Z])/g, " $1").trim()}
                 </span>
-                <p className="text-[13px] font-bold text-text leading-snug">
+                <p className="text-body font-bold text-text leading-snug">
                   {getActionTitle(s.action, s.payload)}
                 </p>
                 {s.reason && (
-                  <p className="text-[11px] text-muted mt-2 leading-relaxed italic border-l border-border/50 pl-2">
+                  <p className="text-note text-muted mt-2 leading-relaxed italic border-l border-border/50 pl-2">
                     {s.reason}
                   </p>
                 )}

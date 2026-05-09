@@ -1,6 +1,4 @@
-"use client"
-
-interface NutritionData {
+﻿interface NutritionData {
   actual: number
   target: number
   unit: string
@@ -58,7 +56,7 @@ export function DayNutritionSummary({ personName, data, warnings }: DayNutrition
       </div>
 
       {warnings && warnings.length > 0 && (
-        <ul className="text-[10px] text-muted-foreground list-disc pl-4">
+        <ul className="text-caption text-muted-foreground list-disc pl-4">
           {warnings.map((w, i) => (
             <li key={i}>{w}</li>
           ))}

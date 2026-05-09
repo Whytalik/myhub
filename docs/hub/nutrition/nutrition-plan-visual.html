@@ -1,0 +1,2474 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nutrition Hub — План харчування</title>
+    <style>
+      :root {
+        --bg: #0f1117;
+        --surface: #1a1d27;
+        --surface2: #222535;
+        --border: #2e3147;
+        --accent: #6c63ff;
+        --accent2: #ff6584;
+        --green: #43d98c;
+        --orange: #f7a948;
+        --blue: #4fa3e0;
+        --red: #ff5e7d;
+        --text: #e8eaf0;
+        --muted: #7b80a0;
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .page {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 32px 20px 60px;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      h1 span {
+        color: var(--accent);
+      }
+      .subtitle {
+        color: var(--muted);
+        margin-bottom: 40px;
+        font-size: 13px;
+      }
+
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      h2 .icon {
+        font-size: 20px;
+      }
+
+      section {
+        margin-bottom: 48px;
+      }
+
+      /* --- GOALS COMPARISON --- */
+      .goals-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .goal-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+      }
+      .goal-card.user {
+        border-top: 3px solid var(--accent);
+      }
+      .goal-card.gf {
+        border-top: 3px solid var(--accent2);
+      }
+
+      .goal-card .who {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+      }
+      .goal-card.user .who {
+        color: var(--accent);
+      }
+      .goal-card.gf .who {
+        color: var(--accent2);
+      }
+
+      .goal-card .goal-label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+
+      .kcal {
+        font-size: 40px;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 20px;
+      }
+      .kcal span {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--muted);
+      }
+
+      .macros {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .macro {
+        flex: 1;
+        background: var(--surface2);
+        border-radius: 8px;
+        padding: 10px 12px;
+        text-align: center;
+      }
+      .macro .val {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .macro .lbl {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .macro.p .val {
+        color: var(--green);
+      }
+      .macro.f .val {
+        color: var(--orange);
+      }
+      .macro.c .val {
+        color: var(--blue);
+      }
+
+      .macro-bar {
+        height: 6px;
+        border-radius: 3px;
+        overflow: hidden;
+        display: flex;
+        gap: 2px;
+        margin-bottom: 20px;
+      }
+      .macro-bar .seg {
+        height: 100%;
+        border-radius: 3px;
+      }
+      .macro-bar .seg.p {
+        background: var(--green);
+      }
+      .macro-bar .seg.f {
+        background: var(--orange);
+      }
+      .macro-bar .seg.c {
+        background: var(--blue);
+      }
+
+      .goal-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tag {
+        background: var(--surface2);
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* --- WEEK SCHEDULE --- */
+      .week-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: auto auto auto auto auto;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .day-col {
+        display: grid;
+        grid-template-rows: subgrid;
+        grid-row: span 5;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .day-head {
+        padding: 10px 8px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 13px;
+        border-bottom: 1px solid var(--border);
+      }
+      .day-head.weekend {
+        background: rgba(108, 99, 255, 0.12);
+        color: var(--accent);
+      }
+      .day-head.weekday {
+        background: var(--surface2);
+      }
+
+      .meal-slot {
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+      }
+      .meal-slot:last-child {
+        border-bottom: none;
+      }
+      .meal-slot.locked {
+        background: rgba(67, 217, 140, 0.06);
+        border-left: 2px solid var(--green);
+      }
+      .meal-type {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin-bottom: 3px;
+      }
+      .meal-name {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .meal-source {
+        font-size: 11px;
+        margin-top: 2px;
+      }
+      .src-prep {
+        color: var(--orange);
+      }
+      .src-cook {
+        color: var(--accent2);
+      }
+
+      .kcal-badge {
+        display: inline-block;
+        background: var(--surface2);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      .ing-list {
+        list-style: none;
+        margin: 4px 0 3px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .ing-header {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 4px;
+        font-size: 10px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 3px;
+        margin-bottom: 1px;
+      }
+      .ing-header .col-you {
+        color: var(--accent);
+        text-align: right;
+        min-width: 34px;
+      }
+      .ing-header .col-her {
+        color: var(--accent2);
+        text-align: right;
+        min-width: 34px;
+      }
+      .ing-list li {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: baseline;
+        gap: 4px;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+      .ing-list li .ing-name {
+        color: var(--text);
+        min-width: 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .ing-you {
+        color: var(--accent);
+        white-space: nowrap;
+        min-width: 34px;
+        text-align: right;
+        font-size: 11px;
+      }
+      .ing-her {
+        color: var(--accent2);
+        white-space: nowrap;
+        min-width: 34px;
+        text-align: right;
+        font-size: 11px;
+      }
+      .kcal-row {
+        display: flex;
+        gap: 6px;
+        margin-top: 4px;
+        align-items: center;
+      }
+      .kcal-you {
+        background: rgba(108, 99, 255, 0.15);
+        color: var(--accent);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .kcal-her {
+        background: rgba(255, 101, 132, 0.15);
+        color: var(--accent2);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      /* --- PREP TABLE --- */
+      .prep-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .prep-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+      .prep-icon {
+        font-size: 28px;
+        flex-shrink: 0;
+      }
+      .prep-name {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .prep-detail {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .prep-use {
+        font-size: 12px;
+        color: var(--green);
+        margin-top: 4px;
+      }
+
+      /* --- MEALS DETAIL --- */
+      .meals-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .tab-btn {
+        padding: 7px 16px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+      .tab-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .tab-btn:hover:not(.active) {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+
+      .meal-panel {
+        display: none;
+      }
+      .meal-panel.active {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .variant-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .variant-head {
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+      }
+      .variant-day {
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .variant-title {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .variant-kcals {
+        font-size: 12px;
+      }
+      .kcal-you {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .kcal-gf {
+        color: var(--accent2);
+        font-weight: 600;
+      }
+
+      .ing-kbzv {
+        display: none;
+      }
+
+      .ingredient-list {
+        padding: 12px 16px;
+      }
+      .ingredient {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .ingredient:last-child {
+        border-bottom: none;
+      }
+      .ing-qty {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: right;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 16px;
+        background: var(--surface2);
+        font-size: 12px;
+        font-weight: 600;
+        border-top: 1px solid var(--border);
+      }
+
+      /* --- SAUCES --- */
+      .sauces-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 10px;
+      }
+      .sauce-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 13px 15px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .sauce-icons {
+        font-size: 16px;
+        line-height: 1.6;
+        white-space: nowrap;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+      .sauce-body {
+        flex: 1;
+      }
+      .sauce-name {
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 3px;
+      }
+      .sauce-comp {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .sauce-tip {
+        font-size: 11px;
+        color: var(--green);
+        margin-top: 4px;
+      }
+
+      /* --- SHOPPING --- */
+      .shopping-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .shop-category {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .shop-head {
+        padding: 10px 16px;
+        background: var(--surface2);
+        font-weight: 700;
+        font-size: 13px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .shop-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .shop-item:last-child {
+        border-bottom: none;
+      }
+      .shop-qty {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .shop-price {
+        color: var(--green);
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .shop-kbzv {
+        font-size: 10px;
+        color: var(--muted);
+        display: block;
+        margin-top: 1px;
+      }
+
+      .total-budget {
+        background: linear-gradient(135deg, #1a1d27, #222535);
+        border: 1px solid var(--accent);
+        border-radius: var(--radius);
+        padding: 24px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+      }
+      .total-budget .label {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .total-budget .amount {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--green);
+      }
+
+      /* --- RULES --- */
+      .rules-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 10px;
+      }
+      .rule-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: 13px;
+      }
+      .rule-item strong {
+        color: var(--accent);
+      }
+
+      /* --- MORNING BLOCK --- */
+      .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+      }
+      .step-num {
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .step-text {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .step-time {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      @media (max-width: 768px) {
+        .goals-grid {
+          grid-template-columns: 1fr;
+        }
+        .week-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .marinades-grid {
+          grid-template-columns: 1fr;
+        }
+        .shopping-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1><span>Nutrition Hub</span> — Зведений план</h1>
+      <div class="subtitle">
+        Ваш тиждень · Обидва плани · Meal Prep + Daily Cook
+      </div>
+
+      <!-- ===================== GOALS ===================== -->
+      <section>
+        <h2><span class="icon">📊</span> Денні цілі</h2>
+        <div class="goals-grid">
+          <div class="goal-card user">
+            <div class="who">Ви</div>
+            <div class="goal-label">Схуднення 90 → 75 кг</div>
+            <div class="kcal">1700 <span>ккал</span></div>
+            <div class="macros">
+              <div class="macro p">
+                <div class="val">185г</div>
+                <div class="lbl">Білки</div>
+              </div>
+              <div class="macro f">
+                <div class="val">65г</div>
+                <div class="lbl">Жири</div>
+              </div>
+              <div class="macro c">
+                <div class="val">110г</div>
+                <div class="lbl">Вуглев.</div>
+              </div>
+            </div>
+            <div class="macro-bar">
+              <div class="seg p" style="flex: 185"></div>
+              <div class="seg f" style="flex: 65"></div>
+              <div class="seg c" style="flex: 110"></div>
+            </div>
+            <div class="goal-meta">
+              <span class="tag">3× зал</span>
+              <span class="tag">3× біг</span>
+              <span class="tag">Суворий дефіцит</span>
+              <span class="tag">Білки — пріоритет</span>
+            </div>
+          </div>
+
+          <div class="goal-card gf">
+            <div class="who">Дівчина</div>
+            <div class="goal-label">Набір 52 → 60 кг</div>
+            <div class="kcal">2300 <span>ккал</span></div>
+            <div class="macros">
+              <div class="macro p">
+                <div class="val">80г</div>
+                <div class="lbl">Білки</div>
+              </div>
+              <div class="macro f">
+                <div class="val">60г</div>
+                <div class="lbl">Жири</div>
+              </div>
+              <div class="macro c">
+                <div class="val">345г</div>
+                <div class="lbl">Вуглев.</div>
+              </div>
+            </div>
+            <div class="macro-bar">
+              <div class="seg p" style="flex: 80"></div>
+              <div class="seg f" style="flex: 60"></div>
+              <div class="seg c" style="flex: 345"></div>
+            </div>
+            <div class="goal-meta">
+              <span class="tag">3.5 км пішки</span>
+              <span class="tag">Біг</span>
+              <span class="tag">Профіцит</span>
+              <span class="tag">Жири критично</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== WEEK SCHEDULE ===================== -->
+      <section>
+        <h2><span class="icon">🗓️</span> Тижневий розклад</h2>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 12px">
+          <span style="color: var(--orange)">📦</span> = з недільного prep
+          &nbsp;·&nbsp; <span style="color: var(--accent2)">🍳</span> =
+          готується вранці &nbsp;·&nbsp; Продукти тільки для неї (—) не
+          відображаються
+        </div>
+        <div class="week-grid">
+          <!-- ПН -->
+          <div class="day-col">
+            <div class="day-head weekday">Пн</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Рисові хлібці<span class="ing-kbzv"
+                      >380–400 · 7–8 · 2–3 · 80–82</span
+                    ></span
+                  ><span class="ing-you">2 шт</span
+                  ><span class="ing-her">3 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Мед<span class="ing-kbzv"
+                      >304–328 · 0.3–0.8 · 0 · 75–82</span
+                    ></span
+                  ><span class="ing-you">1 ч.л.</span
+                  ><span class="ing-her">2 ч.л.</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Теплий чай<span class="ing-kbzv"
+                      >0–2 · 0 · 0 · 0–0.5</span
+                    ></span
+                  ><span class="ing-you">1 чашка</span
+                  ><span class="ing-her">1 чашка</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">125 ккал</span
+                ><span class="kcal-her">220 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                🍳 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Помідори<span class="ing-kbzv"
+                      >18–20 · 0.6–0.9 · 0.2 · 3.5–4.2</span
+                    >
+                    <span class="src-prep">📦</span></span
+                  ><span class="ing-you">200г</span
+                  ><span class="ing-her">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Яйця (С1)<span class="ing-kbzv"
+                      >155–160 · 12–13 · 10–11 · 0.7–1.1</span
+                    ></span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">3 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Білки яєчні<span class="ing-kbzv"
+                      >44–52 · 10–11 · 0 · 0.7–1</span
+                    ></span
+                  ><span class="ing-you">120г</span
+                  ><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Куряче філе<span class="ing-kbzv"
+                      >110–165 · 23–31 · 1–3 · 0</span
+                    >
+                    <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">370 ккал</span
+                ><span class="kcal-her">620 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Куряче філе<span class="ing-kbzv"
+                      >110–165 · 23–31 · 1–3 · 0</span
+                    >
+                    <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Гречка<span class="ing-kbzv"
+                      >90–110 · 3–4 · 1–2 · 18–20</span
+                    >
+                    <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">250г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Соус лимонно-оливковий<span class="ing-kbzv"
+                      >~100 · 0 · 10 · 1</span
+                    ></span
+                  ><span class="ing-you">1 пор.</span
+                  ><span class="ing-her">1 пор.</span>
+                </li>
+                <li
+                  style="
+                    border-top: 1px dashed var(--border);
+                    margin-top: 4px;
+                    padding-top: 4px;
+                  "
+                >
+                  <span class="ing-name">Чорний шоколад</span><span class="ing-you">20г</span><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name">Арахісова паста</span><span class="ing-you">—</span><span class="ing-her">20г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">435 ккал</span
+                ><span class="kcal-her">785 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка<span class="ing-kbzv"
+                      >110–165 · 23–31 · 1–3 · 0</span
+                    >
+                    <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Рукола<span class="ing-kbzv"
+                      >20–25 · 2–3 · 0.5–0.7 · 2–4</span
+                    >
+                    <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Помідори чері<span class="ing-kbzv"
+                      >18–20 · 0.9 · 0.2 · 3.5–4</span
+                    >
+                    <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Огірок<span class="ing-kbzv"
+                      >14–15 · 0.6–0.8 · 0.1 · 2.5–3.6</span
+                    >
+                    <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Соус лимонно-оливковий<span class="ing-kbzv"
+                      >~100 · 0 · 10 · 1</span
+                    ></span
+                  ><span class="ing-you">1 пор.</span
+                  ><span class="ing-her">1 пор.</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">257 ккал</span
+                ><span class="kcal-her">272 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ВТ -->
+          <div class="day-col">
+            <div class="day-head weekday">Вт</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Банан стиглий<span class="ing-kbzv"
+                      >89–95 · 1.1–1.5 · 0.3 · 20–23</span
+                    ></span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">1 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Теплий чай<span class="ing-kbzv"
+                      >0–2 · 0 · 0 · 0–0.5</span
+                    ></span
+                  ><span class="ing-you">1 скл.</span
+                  ><span class="ing-her">1 скл.</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">110 ккал</span
+                ><span class="kcal-her">200 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                📦 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Йогурт грецький</span
+                  ><span class="ing-you">250г</span
+                  ><span class="ing-her">250г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Ягоди сезонні</span
+                  ><span class="ing-you">80г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">215 ккал</span
+                ><span class="kcal-her">435 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Макарони тв.сорт <span class="src-prep">📦</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">300г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Яловичина <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">540 ккал</span
+                ><span class="kcal-her">755 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Яловичина <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Броколі</span
+                  ><span class="ing-you">250г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">200 ккал</span
+                ><span class="kcal-her">210 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- СР -->
+          <div class="day-col">
+            <div class="day-head weekday">Ср</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Солона соломка</span
+                  ><span class="ing-you">30г</span
+                  ><span class="ing-her">60г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Теплий чай</span
+                  ><span class="ing-you">1 чашка</span
+                  ><span class="ing-her">1 чашка</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">110 ккал</span
+                ><span class="kcal-her">220 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                📦 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Тунець (банка)</span
+                  ><span class="ing-you">½ б.</span
+                  ><span class="ing-her">½ б.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Хліб цільнозерн.</span
+                  ><span class="ing-you">1 скиб.</span
+                  ><span class="ing-her">2 скиб.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Яйце (варене)</span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">2 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Цибуля зелена</span
+                  ><span class="ing-you">10г</span
+                  ><span class="ing-her">15г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">260 ккал</span
+                ><span class="kcal-her">490 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід — Суп</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Сочевиця <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Картопля <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Морква <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">50г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">50г</span>
+                </li>
+                <li
+                  style="
+                    border-top: 1px dashed var(--border);
+                    margin-top: 4px;
+                    padding-top: 4px;
+                  "
+                >
+                  <span class="ing-name">Чорний шоколад</span><span class="ing-you">20г</span><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name">Арахісова паста</span><span class="ing-you">—</span><span class="ing-her">20г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">560 ккал</span
+                ><span class="kcal-her">935 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря — Рагу</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Овочі тушк. <span class="src-prep">📦</span></span
+                  ><span class="ing-you">300г</span
+                  ><span class="ing-her">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Квасоля <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">260 ккал</span
+                ><span class="kcal-her">310 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ЧТ -->
+          <div class="day-col">
+            <div class="day-head weekday">Чт</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Батон</span
+                  ><span class="ing-you">1 скиб.</span
+                  ><span class="ing-her">2 скиб.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Мед</span
+                  ><span class="ing-you">1 ч.л.</span
+                  ><span class="ing-her">2 ч.л.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Теплий чай</span
+                  ><span class="ing-you">1 чашка</span
+                  ><span class="ing-her">1 чашка</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">135 ккал</span
+                ><span class="kcal-her">270 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🍳 Сніданок — Панкейки</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Сир кисломолочний</span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Яйце ціле</span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">1 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Борошно пшеничне</span
+                  ><span class="ing-you">2 ст.л.</span
+                  ><span class="ing-her">4 ст.л.</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">250 ккал</span
+                ><span class="kcal-her">520 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Картопля печена <span class="src-prep">📦</span></span
+                  ><span class="ing-you">200г</span
+                  ><span class="ing-her">400г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Риба біла <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">340 ккал</span
+                ><span class="kcal-her">585 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Сир кисломолочний</span
+                  ><span class="ing-you">200г</span
+                  ><span class="ing-her">200г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Ягоди сезонні</span
+                  ><span class="ing-you">80г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">190 ккал</span
+                ><span class="kcal-her">485 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ПТ -->
+          <div class="day-col">
+            <div class="day-head weekday">Пт</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Рисові хлібці</span
+                  ><span class="ing-you">2 шт</span
+                  ><span class="ing-her">3 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Мед</span
+                  ><span class="ing-you">1 ч.л.</span
+                  ><span class="ing-her">2 ч.л.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Теплий чай</span
+                  ><span class="ing-you">1 чашка</span
+                  ><span class="ing-her">1 чашка</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">125 ккал</span
+                ><span class="kcal-her">220 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                🍳 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Помідори <span class="src-prep">📦</span></span
+                  ><span class="ing-you">200г</span
+                  ><span class="ing-her">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Яйця (С1)</span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">3 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Білки яєчні</span
+                  ><span class="ing-you">120г</span
+                  ><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Куряче філе<span class="ing-kbzv"
+                      >110–165 · 23–31 · 1–3 · 0</span
+                    >
+                    <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">370 ккал</span
+                ><span class="kcal-her">620 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Куряче філе <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Рис <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">250г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Соус лимонно-оливковий</span
+                  ><span class="ing-you">1 пор.</span
+                  ><span class="ing-her">1 пор.</span>
+                </li>
+                <li
+                  style="
+                    border-top: 1px dashed var(--border);
+                    margin-top: 4px;
+                    padding-top: 4px;
+                  "
+                >
+                  <span class="ing-name">Чорний шоколад</span><span class="ing-you">20г</span><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name">Арахісова паста</span><span class="ing-you">—</span><span class="ing-her">20г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">435 ккал</span
+                ><span class="kcal-her">785 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Рукола <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Помідори чері <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Огірок <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Соус лимонно-оливковий</span
+                  ><span class="ing-you">1 пор.</span
+                  ><span class="ing-her">1 пор.</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">257 ккал</span
+                ><span class="kcal-her">272 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- СБ -->
+          <div class="day-col">
+            <div class="day-head weekend">Сб</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Банан стиглий</span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">1 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Теплий чай</span
+                  ><span class="ing-you">1 скл.</span
+                  ><span class="ing-her">1 скл.</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">110 ккал</span
+                ><span class="kcal-her">200 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                📦 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Йогурт грецький</span
+                  ><span class="ing-you">250г</span
+                  ><span class="ing-her">250г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Ягоди сезонні</span
+                  ><span class="ing-you">80г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Шоколад чорний (через день)</span
+                  ><span class="ing-you">15г</span
+                  ><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name">Арахісова паста</span
+                  ><span class="ing-you">—</span
+                  ><span class="ing-her">15г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">300 ккал</span
+                ><span class="kcal-her">525 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Макарони тв.сорт <span class="src-prep">📦</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">300г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Яловичина <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">540 ккал</span
+                ><span class="kcal-her">755 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Яловичина <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Броколі</span
+                  ><span class="ing-you">250г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">200 ккал</span
+                ><span class="kcal-her">210 ккал</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- НД -->
+          <div class="day-col">
+            <div class="day-head weekend">Нд</div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                ⚡ Передтрен. 6:00
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Солона соломка</span
+                  ><span class="ing-you">30г</span
+                  ><span class="ing-her">60г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Теплий чай</span
+                  ><span class="ing-you">1 чашка</span
+                  ><span class="ing-her">1 чашка</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">110 ккал</span
+                ><span class="kcal-her">220 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot locked">
+              <div class="meal-type">
+                📦 Сніданок 8:30
+                <span style="color: var(--green); font-size: 10px">✓</span>
+              </div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name">Тунець (банка)</span
+                  ><span class="ing-you">½ б.</span
+                  ><span class="ing-her">½ б.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Хліб цільнозерн.</span
+                  ><span class="ing-you">1 скиб.</span
+                  ><span class="ing-her">2 скиб.</span>
+                </li>
+                <li>
+                  <span class="ing-name">Яйце (варене)</span
+                  ><span class="ing-you">1 шт</span
+                  ><span class="ing-her">2 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Цибуля зелена</span
+                  ><span class="ing-you">10г</span
+                  ><span class="ing-her">15г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">260 ккал</span
+                ><span class="kcal-her">490 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🥗 Обід — Суп</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Сочевиця <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">80г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Картопля <span class="src-prep">📦</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Морква <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">50г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">100г</span
+                  ><span class="ing-her">50г</span>
+                </li>
+                <li
+                  style="
+                    border-top: 1px dashed var(--border);
+                    margin-top: 4px;
+                    padding-top: 4px;
+                  "
+                >
+                  <span class="ing-name">Чорний шоколад</span><span class="ing-you">20г</span><span class="ing-her">—</span>
+                </li>
+                <li>
+                  <span class="ing-name">Арахісова паста</span><span class="ing-you">—</span><span class="ing-her">20г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">560 ккал</span
+                ><span class="kcal-her">935 ккал</span>
+              </div>
+            </div>
+            <div class="meal-slot">
+              <div class="meal-type">🌙 Вечеря — Рагу</div>
+              <ul class="ing-list">
+                <li class="ing-header">
+                  <span></span><span class="col-you">Я</span
+                  ><span class="col-her">Вона</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Курка <span class="src-cook">🍳</span></span
+                  ><span class="ing-you">150г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Овочі тушк. <span class="src-prep">📦</span></span
+                  ><span class="ing-you">300г</span
+                  ><span class="ing-her">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name"
+                    >Квасоля <span class="src-prep">📦</span></span
+                  ><span class="ing-you">50г</span
+                  ><span class="ing-her">100г</span>
+                </li>
+              </ul>
+              <div class="kcal-row">
+                <span class="kcal-you">260 ккал</span
+                ><span class="kcal-her">310 ккал</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== YOGURT VARIANTS ===================== -->
+      <section>
+        <h2><span class="icon">🥣</span> Варіанти Йогуртового Сніданку</h2>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 12px">
+          База: 250г Грецький йогурт + 80г Ягоди. Обери свій смак ↓
+        </div>
+        <div class="prep-grid">
+          <div class="prep-item">
+            <div class="prep-icon">🫐</div>
+            <div>
+              <div class="prep-name">Чорниця + Мед</div>
+              <div class="prep-detail">
+                80г чорниці (заморозка/свіжа) + 1 ч.л. меду. Антиоксиданти,
+                солодко.
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🍒</div>
+            <div>
+              <div class="prep-name">Вишня + Мед</div>
+              <div class="prep-detail">
+                80г вишні (кісточку прибрати) + 1 ч.л. меду. Кисло-солодкий,
+                насичений.
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🍓</div>
+            <div>
+              <div class="prep-name">Малина/Полуниця + Мед</div>
+              <div class="prep-detail">
+                80г малини/полуниці + 1 ч.л. меду. Класика, дуже ароматно.
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🍇</div>
+            <div>
+              <div class="prep-name">Смородина/Ожина + Мед</div>
+              <div class="prep-detail">
+                80г смородини/ожини + 1 ч.л. меду. Терпкий смак, вітамін С.
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🍌</div>
+            <div>
+              <div class="prep-name">Мікс ягід + Банан</div>
+              <div class="prep-detail">
+                50г будь-яких ягід + ½ банана. Найситніший варіант.
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🥜</div>
+            <div>
+              <div class="prep-name">Ягоди + Горіхи</div>
+              <div class="prep-detail">
+                80г ягід + 10г горіхів (волоські/мигдаль). Хрустко + корисні
+                жири.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== MEAL PREP ===================== -->
+      <section>
+        <h2><span class="icon">🥘</span> Недільний Prep (~45 хв)</h2>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 14px">
+          🧊 = заморозка з маринадом &nbsp;·&nbsp; 📦 = холодильник
+        </div>
+        <div class="prep-grid">
+          <div class="prep-item">
+            <div class="prep-icon">🍗</div>
+            <div>
+              <div class="prep-name">Куряче філе (нарізане + мариноване)</div>
+              <div class="prep-detail">
+                2.5 кг → нарізати, розкласти по порціях, залити маринадом дня →
+                🧊 морозилка
+              </div>
+              <div class="prep-use">
+                ↳ Ввечі перекласти наступний день в холодильник
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🥩</div>
+            <div>
+              <div class="prep-name">
+                Яловичина/Риба (нарізана + маринована)
+              </div>
+              <div class="prep-detail">
+                1.5 кг → порції на Вт/Сб/Чт → 🧊 морозилка
+              </div>
+              <div class="prep-use">
+                ↳ Розморожується в холодильнику одночасно з маринуванням
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🧂</div>
+            <div>
+              <div class="prep-name">Маринади (змішані)</div>
+              <div class="prep-detail">
+                На весь об'єм м'яса (4 кг) → розлити по пакетах → 🧊 разом з
+                м'ясом
+              </div>
+              <div class="prep-use">
+                ↳ Йогуртові: додати свіжий йогурт вранці
+              </div>
+            </div>
+          </div>
+          <div class="prep-item">
+            <div class="prep-icon">🥗</div>
+            <div>
+              <div class="prep-name">Овочі порізані/помиті</div>
+              <div class="prep-detail">
+                2кг мікс: помідори, огірок, зелень · 3 дні в контейнері
+              </div>
+              <div class="prep-use">↳ Пн–Ср — сніданки/вечері</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== MARINADES ===================== -->
+      <section>
+        <h2>
+          <span class="icon">🥩</span> Маринади
+          <span
+            style="
+              font-size: 13px;
+              color: var(--muted);
+              font-weight: 400;
+              text-transform: none;
+              letter-spacing: 0;
+            "
+            >— наносять перед готовкою, маринують від 15 хв до ночі</span
+          >
+        </h2>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 14px">
+          🐟 риба &nbsp;·&nbsp; 🥩 м'ясо
+        </div>
+        <div class="sauces-grid">
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥩</span><span>🐟</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Соєво-часниковий</div>
+              <div class="sauce-comp">
+                2 ст.л. соєвого соусу + 2 зубці часнику + 1 ч.л. паприки
+              </div>
+              <div class="sauce-tip">
+                Курка на сковорідці — утворює скоринку
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥩</span><span>🐟</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Лимонно-трав'яний</div>
+              <div class="sauce-comp">
+                сік 1/2 лимона + орегано + чорний перець + 1 ч.л. олії
+              </div>
+              <div class="sauce-tip">
+                Курка або риба в духовці. Легкий, без зайвих калорій
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥩</span><span>🐟</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Йогуртово-каррі</div>
+              <div class="sauce-comp">
+                2 ст.л. йогурту + 1 ч.л. каррі + щіпка куркуми
+              </div>
+              <div class="sauce-tip">
+                Overnight маринад — м'ясо виходить дуже м'яким
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥩</span><span>🐟</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Гірчично-медовий</div>
+              <div class="sauce-comp">
+                1 ч.л. діжонської гірчиці + 1 ч.л. меду + 1 ч.л. олії
+              </div>
+              <div class="sauce-tip">
+                Маринувати від 15 хв. Добре тримає вологу при запіканні
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥩</span><span>🐟</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Пряний томатний</div>
+              <div class="sauce-comp">
+                1 ст.л. томатної пасти + часник + орегано + щіпка чилі
+              </div>
+              <div class="sauce-tip">
+                Яловичина і курка — дає насичений колір і смак
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SAUCES ===================== -->
+      <section>
+        <h2>
+          <span class="icon">🧂</span> Соуси
+          <span
+            style="
+              font-size: 13px;
+              color: var(--muted);
+              font-weight: 400;
+              text-transform: none;
+              letter-spacing: 0;
+            "
+            >— подають готовими, поливають або мішають</span
+          >
+        </h2>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 14px">
+          🐟 риба &nbsp;·&nbsp; 🥩 м'ясо &nbsp;·&nbsp; 🥗 салат/боул
+          &nbsp;·&nbsp; 🍝 паста/крупи
+        </div>
+        <div class="sauces-grid">
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🐟</span><span>🥩</span><span>🥗</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Лимонно-часниковий</div>
+              <div class="sauce-comp">
+                сік 1/2 лимона + 2 зубці часнику (тертих) + 1 ч.л. олії + сіль +
+                перець
+              </div>
+              <div class="sauce-tip">
+                Класика. Підсилює будь-який білок, не перебиває смак
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🐟</span><span>🥩</span><span>🥗</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Тахіні-лимонний</div>
+              <div class="sauce-comp">
+                1 ч.л. тахіні + сік 1/4 лимона + 1 ст.л. води + щіпка часнику
+              </div>
+              <div class="sauce-tip">
+                Ближньосхідний. Кремовий, ситний (+45 ккал)
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🥩</span><span>🐟</span><span>🥗</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Чімічурі</div>
+              <div class="sauce-comp">
+                пучок петрушки + 2 зубці часнику + 2 ст.л. олії + 1 ст.л. оцту +
+                чилі + сіль
+              </div>
+              <div class="sauce-tip">
+                Аргентинський. Яскравий трав'яний — топ до м'яса на грилі та
+                риби
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🥩</span><span>🐟</span><span>🥗</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Цацікі</div>
+              <div class="sauce-comp">
+                3 ст.л. йогурту + 1/2 огірка (тертий, віджатий) + 1 зубець
+                часнику + кріп + сік лимона
+              </div>
+              <div class="sauce-tip">
+                Грецький. Освіжає, добре до запеченого м'яса, риби і як дип
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🐟</span><span>🥗</span><span>🍝</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Понзу (соєво-цитрусовий)</div>
+              <div class="sauce-comp">
+                2 ст.л. соєвого соусу + сік 1/2 лимона або лайма + 1 ч.л. меду
+              </div>
+              <div class="sauce-tip">
+                Японський. Легкий, кислувато-солоний — ідеал для риби та нудної
+                гречки
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🐟</span><span>🥩</span><span>🥗</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Тайський дресінг</div>
+              <div class="sauce-comp">
+                сік 1 лайма + 1 ст.л. соєвого соусу + 1 ч.л. меду + часник +
+                щіпка чилі
+              </div>
+              <div class="sauce-tip">
+                Кисло-гострий, дуже ароматний — до риби, курки, будь-якого
+                салату
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons"><span>🥗</span><span>🍝</span></div>
+            <div class="sauce-body">
+              <div class="sauce-name">Лимонно-оливковий</div>
+              <div class="sauce-comp">
+                1 ч.л. олії + сік 1/4 лимона + сіль + перець
+              </div>
+              <div class="sauce-tip">
+                Базовий дресінг для салату. Мінімум калорій (+40 ккал)
+              </div>
+            </div>
+          </div>
+
+          <div class="sauce-card">
+            <div class="sauce-icons">
+              <span>🥗</span><span>🐟</span><span>🍝</span>
+            </div>
+            <div class="sauce-body">
+              <div class="sauce-name">Йогурт з кропом</div>
+              <div class="sauce-comp">
+                2 ст.л. йогурту + кріп + 1 зубець часнику
+              </div>
+              <div class="sauce-tip">
+                Легкий кремовий. До риби та свіжих салатів (+25 ккал)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== FAVORITES ===================== -->
+      <section>
+        <h2><span class="icon">🍔</span> Фаворити (Burgers & Kebab)</h2>
+        <div class="prep-grid">
+          <!-- BURGERS -->
+          <div
+            class="goal-card user"
+            style="border-top: 3px solid var(--accent)"
+          >
+            <div class="who">Бургер (Ви) — Субота</div>
+            <div class="goal-label">Яловичина + ЦЗ Булка</div>
+            <ul class="ing-list" style="margin-top: 12px; margin-bottom: 12px">
+              <li>
+                <span class="ing-name">Яловичина (ранок)</span
+                ><span class="ing-you">180г</span>
+              </li>
+              <li>
+                <span class="ing-name">Домашня ЦЗ булка</span
+                ><span class="ing-you">1 шт</span>
+              </li>
+              <li>
+                <span class="ing-name">Гірчиця / Йогурт</span
+                ><span class="ing-you">20г</span>
+              </li>
+              <li>
+                <span class="ing-name">Овочевий мікс</span
+                ><span class="ing-you">50г</span>
+              </li>
+            </ul>
+            <div class="kcal-row">
+              <span class="kcal-you">~480 ккал</span>
+            </div>
+          </div>
+
+          <div
+            class="goal-card gf"
+            style="border-top: 3px solid var(--accent2)"
+          >
+            <div class="who">Бургер (Вона) — Субота</div>
+            <div class="goal-label">Яловичина + Сир Чеддер</div>
+            <ul class="ing-list" style="margin-top: 12px; margin-bottom: 12px">
+              <li>
+                <span class="ing-name">Яловичина (ранок)</span
+                ><span class="ing-you">150г</span>
+              </li>
+              <li>
+                <span class="ing-name">Домашня булка</span
+                ><span class="ing-you">1 шт</span>
+              </li>
+              <li>
+                <span class="ing-name">Сир Чеддер</span
+                ><span class="ing-you">1 скибка</span>
+              </li>
+              <li>
+                <span class="ing-name">Майонез / Авокадо</span
+                ><span class="ing-you">30г</span>
+              </li>
+            </ul>
+            <div class="kcal-row">
+              <span class="kcal-her">~650 ккал</span>
+            </div>
+          </div>
+
+          <!-- KEBAB -->
+          <div
+            class="goal-card"
+            style="grid-column: span 2; border-top: 3px solid var(--green)"
+          >
+            <div class="who" style="color: var(--green)">
+              I Love Kebab Style Shawarma — П''ятниця (Вечеря)
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-top: 12px;
+              "
+            >
+              <ul class="ing-list">
+                <div class="meal-type">Основа (на 1 шт)</div>
+                <li>
+                  <span class="ing-name">Лаваш тонкий</span
+                  ><span class="ing-you">1 шт</span>
+                </li>
+                <li>
+                  <span class="ing-name">Курка (ранкова готовка)</span
+                  ><span class="ing-you">150г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Капуста, огірок, томат</span
+                  ><span class="ing-you">100г</span>
+                </li>
+                <li>
+                  <span class="ing-name">Цибуля з Сумахом</span
+                  ><span class="ing-you">20г</span>
+                </li>
+              </ul>
+              <ul class="ing-list">
+                <div class="meal-type">Фірмові соуси</div>
+                <li>
+                  <span class="ing-name">White: Йогурт + Тахіні + Часник</span>
+                </li>
+                <li>
+                  <span class="ing-name">Red: Томатна паста + Чилі + Оцет</span>
+                </li>
+                <div class="kcal-row" style="margin-top: 16px">
+                  <span class="kcal-you">Ви: ~520 ккал</span>
+                  <span class="kcal-her">Вона: ~680 ккал</span>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SHOPPING ===================== -->
+      <section>
+        <h2>
+          <span class="icon">🛒</span> Список покупок на тиждень (на двох)
+        </h2>
+        <div style="font-size: 11px; color: var(--muted); margin-bottom: 12px">
+          КБЖВ на 100г: <strong>К</strong>кал · <strong>Б</strong>ілки ·
+          <strong>Ж</strong>ири · <strong>В</strong>углеводи
+        </div>
+        <div class="shopping-grid">
+          <div class="shop-category">
+            <div class="shop-head">🥩 М''ясо / Риба</div>
+            <div class="shop-item">
+              <span
+                >Куряче філе<span class="shop-kbzv"
+                  >110–165 · 23–31 · 1–3 · 0</span
+                ></span
+              ><span class="shop-qty">2.5 кг</span
+              ><span class="shop-price">~450 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Яловичина<span class="shop-kbzv"
+                  >187–250 · 19–26 · 12–20 · 0</span
+                ></span
+              ><span class="shop-qty">1.5 кг</span
+              ><span class="shop-price">~420 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Тунець (185г)<span class="shop-kbzv"
+                  >96–116 · 23–26 · 0.5–1 · 0</span
+                ></span
+              ><span class="shop-qty">3 банки</span
+              ><span class="shop-price">~150 грн</span>
+            </div>
+          </div>
+
+          <div class="shop-category">
+            <div class="shop-head">🥦 Овочі / Фрукти</div>
+            <div class="shop-item">
+              <span
+                >Помідори<span class="shop-kbzv"
+                  >18–20 · 0.6–0.9 · 0.2 · 3.5–4.2</span
+                ></span
+              ><span class="shop-qty">2.5 кг</span
+              ><span class="shop-price">~450 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Банани<span class="shop-kbzv"
+                  >89–95 · 1.1–1.5 · 0.3 · 20–23</span
+                ></span
+              ><span class="shop-qty">3 кг (12–15 шт)</span
+              ><span class="shop-price">~220 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Картопля<span class="shop-kbzv"
+                  >77–80 · 2 · 0.1 · 17–19</span
+                ></span
+              ><span class="shop-qty">4 кг</span
+              ><span class="shop-price">~80 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Морква<span class="shop-kbzv"
+                  >35–41 · 0.9–1.3 · 0.2 · 7–10</span
+                ></span
+              ><span class="shop-qty">500г</span
+              ><span class="shop-price">~20 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Овочі (мікс, салат, броколі)<span class="shop-kbzv"
+                  >20–35 · 2–3 · 0.3–0.7 · 3–7</span
+                ></span
+              ><span class="shop-qty">3 кг</span
+              ><span class="shop-price">~300 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Ягоди сезонні<span class="shop-kbzv"
+                  >30–50 · 0.5–1.5 · 0.3–0.6 · 6–12</span
+                ></span
+              ><span class="shop-qty">600г</span
+              ><span class="shop-price">~120 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Авокадо<span class="shop-kbzv"
+                  >160–200 · 2 · 15–20 · 1.8–9</span
+                ></span
+              ><span class="shop-qty">4 шт</span
+              ><span class="shop-price">~160 грн</span>
+            </div>
+          </div>
+
+          <div class="shop-category">
+            <div class="shop-head">🥛 Молочне / Яйця</div>
+            <div class="shop-item">
+              <span
+                >Яйця (С1)<span class="shop-kbzv"
+                  >155–160 · 12–13 · 10–11 · 0.7–1.1</span
+                ></span
+              ><span class="shop-qty">4 десятки (40 шт)</span
+              ><span class="shop-price">~280 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Йогурт грецький<span class="shop-kbzv"
+                  >59–97 · 5–10 · 0–4 · 3–6</span
+                ></span
+              ><span class="shop-qty">2 кг</span
+              ><span class="shop-price">~320 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Сир кисломолочний<span class="shop-kbzv"
+                  >80–120 · 14–18 · 0.5–5 · 1.5–3</span
+                ></span
+              ><span class="shop-qty">2 кг</span
+              ><span class="shop-price">~300 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Сир Твердий/Чеддер<span class="shop-kbzv"
+                  >260–350 · 22–28 · 18–28 · 0–4</span
+                ></span
+              ><span class="shop-qty">500г</span
+              ><span class="shop-price">~180 грн</span>
+            </div>
+          </div>
+
+          <div class="shop-category">
+            <div class="shop-head">🫙 Бакалія / Солодке</div>
+            <div class="shop-item">
+              <span>Чорний шоколад 80-85%</span
+              ><span class="shop-qty">2 шт</span
+              ><span class="shop-price">~100 грн</span>
+            </div>
+            <div class="shop-item">
+              <span>Арахісова паста (нат.)</span
+              ><span class="shop-qty">1 банка</span
+              ><span class="shop-price">~140 грн</span>
+            </div>
+            <div class="shop-item">
+              <span>Борошно (ЦЗ + Вищий гат.)</span
+              ><span class="shop-qty">2 кг</span
+              ><span class="shop-price">~60 грн</span>
+            </div>
+            <div class="shop-item">
+              <span>Лаваш тонкий</span><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~35 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Батон нарізний<span class="shop-kbzv"
+                  >260–280 · 7–9 · 1–3 · 50–54</span
+                ></span
+              ><span class="shop-qty">2 шт</span
+              ><span class="shop-price">~40 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Рисові хлібці<span class="shop-kbzv"
+                  >380–400 · 7–8 · 2–3 · 80–82</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~55 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Гречка<span class="shop-kbzv"
+                  >310–340 · 12–13 · 3 · 62–72</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~45 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Рис<span class="shop-kbzv"
+                  >340–360 · 6–7 · 0.5–1 · 77–80</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~40 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Макарони тв. сорт<span class="shop-kbzv"
+                  >340–370 · 12–14 · 1.5–2 · 70–75</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~45 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Сочевиця<span class="shop-kbzv"
+                  >290–350 · 24–26 · 1–2 · 45–60</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~50 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Квасоля суха<span class="shop-kbzv"
+                  >290–340 · 21–24 · 1–2 · 50–60</span
+                ></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~40 грн</span>
+            </div>
+            <div class="shop-item">
+              <span>Чай<span class="shop-kbzv">0–2 · 0 · 0 · 0–0.5</span></span
+              ><span class="shop-qty">1 уп.</span
+              ><span class="shop-price">~35 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Мед<span class="shop-kbzv"
+                  >304–328 · 0.3–0.8 · 0 · 75–82</span
+                ></span
+              ><span class="shop-qty">1 банка</span
+              ><span class="shop-price">0 грн</span>
+            </div>
+            <div class="shop-item">
+              <span
+                >Олія соняшникова<span class="shop-kbzv"
+                  >884–900 · 0 · 99.9 · 0</span
+                ></span
+              ><span class="shop-qty">1 л</span
+              ><span class="shop-price">~55 грн</span>
+            </div>
+            <div class="shop-item">
+              <span>Спеції / Соєвий соус<span class="shop-kbzv">—</span></span
+              ><span class="shop-qty">Набір</span
+              ><span class="shop-price">~45 грн</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-budget">
+          <div class="label">Загальний тижневий бюджет</div>
+          <div class="amount">~3 910 грн</div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { LanguageSphere } from "@/app/generated/prisma";
@@ -52,7 +52,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
         <div className="p-2.5 rounded-2xl bg-violet text-bg shadow-lg shadow-violet/20">
           <Clock size={20} strokeWidth={3} />
         </div>
-        <h4 className="font-black text-2xl uppercase tracking-tight">Quick Log</h4>
+        <h4 className="font-black text-sm uppercase tracking-tight">Quick Log</h4>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
@@ -62,7 +62,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
               key={s}
               type="button"
               onClick={() => setSphere(s)}
-              className={`px-3 py-2 rounded-xl text-[9px] font-mono font-bold uppercase tracking-widest border transition-all ${
+              className={`px-3 py-2 rounded-xl text-label font-mono font-bold uppercase tracking-widest border transition-all ${
                 sphere === s
                   ? "bg-violet/20 border-violet text-violet shadow-sm"
                   : "bg-bg/40 border-border/40 text-muted hover:border-violet/30"
@@ -74,7 +74,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] font-bold ml-1">
+          <label className="text-caption font-mono text-muted uppercase tracking-[0.2em] font-bold ml-1">
             Duration <span className="text-violet/60">(Minutes)</span>
           </label>
           <div className="flex gap-4">
@@ -82,7 +82,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
               type="number"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="flex-1 bg-bg/60 border-border/40 rounded-2xl h-12 text-xl font-black font-heading focus-visible:ring-violet"
+              className="flex-1 bg-bg/60 border-border/40 rounded-2xl h-9 text-sm font-black font-heading focus-visible:ring-violet"
               min="1"
             />
             <Button

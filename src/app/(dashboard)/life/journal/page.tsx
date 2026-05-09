@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -52,13 +52,13 @@ export default async function JournalPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <Heading title="Daily Journal" />
-          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
             Daily reflection, tracking, and intention.
           </p>
         </div>
         <Link
           href="/life/history"
-          className="inline-flex items-center gap-2 h-8 px-5 rounded-xl text-[10px] font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
+          className="inline-flex items-center gap-2 h-8 px-5 rounded-xl text-caption font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
         >
           <History size={14} />
           History

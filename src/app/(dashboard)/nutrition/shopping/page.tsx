@@ -43,7 +43,7 @@ export default async function ShoppingPage() {
   interface CartViewItem {
     id: string; productId: string; requiredRawGrams: number; availableGrams: number | null;
     packagesCount: number | null; totalCost: number | null; status: string;
-    product: { name: string; price: number | null; packageWeight: number | null; pantryStock: null };
+    product: { name: string; price: number | null; packageWeight: number | null; pantryStock: null; category: string | null };
     dishes: { dishName: string; dishId: string }[];
   }
 
@@ -52,7 +52,7 @@ export default async function ShoppingPage() {
     groupedByCategory[category] = (catItems as Array<{
       id: string; productId: string; requiredRawGrams: number; availableGrams: number | null;
       packagesCount: number | null; totalCost: number | null; status: string;
-      product: { name: string; price: number | null; standardPackageAmount: number | null };
+      product: { name: string; price: number | null; standardPackageAmount: number | null; category: string | null };
     }>).map((item) => ({
       id: item.id,
       productId: item.productId,
@@ -66,6 +66,7 @@ export default async function ShoppingPage() {
         price: item.product.price,
         packageWeight: item.product.standardPackageAmount,
         pantryStock: null,
+        category: item.product.category,
       },
       dishes: [] as { dishName: string; dishId: string }[],
     }));

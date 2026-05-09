@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/dialog";
@@ -37,11 +37,11 @@ export function HabitsPageClient({
 
   const confirmDelete = async () => {
     if (!habitToDelete) return;
-    try {
-      await deleteHabitAction(habitToDelete);
+    const result = await deleteHabitAction(habitToDelete);
+    if (result.success) {
       toast.success("Habit deleted");
-    } catch {
-      toast.error("Failed to delete habit");
+    } else {
+      toast.error(result.error || "Failed to delete habit");
     }
     setHabitToDelete(null);
   };
@@ -56,7 +56,7 @@ export function HabitsPageClient({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <Heading title="Habit tracker" />
-          <p className="text-[10px] font-mono text-muted tracking-widest pl-1 italic">
+          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
             Small disciplines compound into extraordinary results.
           </p>
         </div>
@@ -80,14 +80,14 @@ export function HabitsPageClient({
             <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
               <ListChecks size={18} />
             </div>
-            <h2 className="text-[11px] font-mono font-bold tracking-[0.1em] text-secondary">
+            <h2 className="text-note font-mono font-bold tracking-[0.1em] text-secondary">
               Daily disciplines
             </h2>
           </div>
           {archivedHabits.length > 0 && (
             <button
               onClick={() => setShowArchived(!showArchived)}
-              className="text-[9px] font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
+              className="text-label font-mono uppercase tracking-widest text-muted hover:text-text transition-colors"
             >
               {showArchived
                 ? "Hide archived"
@@ -105,7 +105,7 @@ export function HabitsPageClient({
               <p className="text-sm font-bold text-text">
                 No habits defined yet
               </p>
-              <p className="text-[11px] text-muted max-w-[280px]">
+              <p className="text-note text-muted max-w-[280px]">
                 Start with something small. Follow the BJ Fogg
                 methodology to build habits that last.
               </p>

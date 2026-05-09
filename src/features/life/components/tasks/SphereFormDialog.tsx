@@ -1,15 +1,20 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormField } from "@/components/ui/form-field";
 import { SPHERE_ICON_NAMES, ALL_ICONS } from "./lucide-icons-map";
 import { upsertSphereAction } from "@/features/life/actions/task-actions";
 import { IconPickerDialog } from "./IconPickerDialog";
+import { sphereSchema, type SphereFormData } from "@/features/life/schemas";
 import type { LifeSphereData } from "@/features/life/types";
 import { toast } from "sonner";
 import { Pencil, Palette } from "lucide-react";
+import { useState } from "react";
 
 interface SphereFormDialogProps {
   isOpen: boolean;
@@ -17,40 +22,37 @@ interface SphereFormDialogProps {
   sphere?: LifeSphereData | null;
 }
 
-export function SphereFormDialog({
-  isOpen,
-  onClose,
-  sphere,
-}: SphereFormDialogProps) {
+export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogProps) {
   const isEditing = !!sphere;
   const [isPending, startTransition] = useTransition();
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
-  const [name, setName]   = useState(sphere?.name ?? "");
-  const [color, setColor] = useState(sphere?.color ?? "#6fbfbf");
-  const [icon, setIcon]   = useState(sphere?.icon ?? SPHERE_ICON_NAMES[0]);
+  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<SphereFormData>({
+    resolver: zodResolver(sphereSchema),
+    defaultValues: {
+      name: sphere?.name ?? "",
+      color: sphere?.color ?? "#6fbfbf",
+      icon: sphere?.icon ?? SPHERE_ICON_NAMES[0],
+    },
+  });
 
-  // Reset form when dialog closes
-  const handleClose = () => {
-    onClose();
-  };
+  const color = watch("color");
+  const icon = watch("icon");
+  const name = watch("name");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-
+  const onSubmit = (data: SphereFormData) => {
     startTransition(async () => {
-      try {
-        await upsertSphereAction({
-          id: sphere?.id,
-          name: name.trim(),
-          color,
-          icon,
-        });
+      const result = await upsertSphereAction({
+        id: sphere?.id,
+        name: data.name.trim(),
+        color: data.color,
+        icon: data.icon,
+      });
+      if (result.success) {
         toast.success(isEditing ? "Sphere updated" : "Sphere created");
-        handleClose();
-      } catch {
-        toast.error("Failed to save sphere");
+        onClose();
+      } else {
+        toast.error(result.error || "Failed to save sphere");
       }
     });
   };
@@ -59,13 +61,13 @@ export function SphereFormDialog({
     <Dialog
       key={sphere?.id ?? "new"}
       isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       title={isEditing ? "Edit Sphere" : "New Life Sphere"}
       description="Define an area of your life"
       maxWidth="450px"
       footer={
         <>
-          <Button type="button" variant="ghost" size="sm" onClick={handleClose} disabled={isPending}>
+          <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
           <Button
@@ -73,68 +75,81 @@ export function SphereFormDialog({
             form="sphere-form"
             variant="primary"
             size="sm"
-            disabled={isPending || !name.trim()}
+            disabled={isPending}
           >
             {isPending ? "Saving..." : isEditing ? "Save Changes" : "Create Sphere"}
           </Button>
         </>
       }
     >
-      <form id="sphere-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* Name */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1">Name</label>
+      <form id="sphere-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        <FormField label="Name" error={errors.name?.message} required>
           <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            {...register("name")}
             placeholder="e.g. Work, Health, Personal..."
             autoFocus
-            required
-            className="text-lg font-bold h-12 px-4 rounded-xl"
+            className="text-sm font-bold h-9 px-4 rounded-xl"
           />
-        </div>
+        </FormField>
 
         <div className="grid grid-cols-2 gap-4">
-           {/* Color */}
-           <div className="flex flex-col gap-1.5">
-             <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1">Color</label>
-             <div className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl">
-                <input
-                  type="color"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
-                  className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
-                />
-                <span className="text-[11px] font-mono text-secondary uppercase">{color}</span>
-             </div>
-           </div>
-
-           {/* Icon Trigger */}
-           <div className="flex flex-col gap-1.5">
-             <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1">Icon</label>
-             <button
-               type="button"
-               onClick={() => setIconPickerOpen(true)}
-               className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl hover:border-accent transition-all group"
-             >
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}20` }}>
-                   {ALL_ICONS[icon] ? (() => {
-                     const Icon = ALL_ICONS[icon];
-                     return <Icon size={18} style={{ color }} />;
-                   })() : <Palette size={18} className="text-muted" />}
+          <FormField label="Color" error={errors.color?.message}>
+            <Controller
+              name="color"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl">
+                  <input
+                    type="color"
+                    value={field.value}
+                    onChange={field.onChange}
+                    className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
+                  />
+                  <span className="text-note font-mono text-secondary uppercase">{field.value}</span>
                 </div>
-                <Pencil size={12} className="text-muted group-hover:text-accent transition-colors" />
-             </button>
-           </div>
+              )}
+            />
+          </FormField>
+
+          <FormField label="Icon" error={errors.icon?.message}>
+            <Controller
+              name="icon"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setIconPickerOpen(true)}
+                    className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl hover:border-accent transition-all group"
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}20` }}>
+                      {ALL_ICONS[field.value] ? (() => {
+                        const Icon = ALL_ICONS[field.value];
+                        return <Icon size={18} style={{ color }} />;
+                      })() : <Palette size={18} className="text-muted" />}
+                    </div>
+                    <Pencil size={12} className="text-muted group-hover:text-accent transition-colors" />
+                  </button>
+                  <IconPickerDialog
+                    isOpen={iconPickerOpen}
+                    onClose={() => setIconPickerOpen(false)}
+                    value={field.value}
+                    onChange={(val) => { if (val) field.onChange(val); }}
+                    color={color}
+                    title="Sphere Icon"
+                  />
+                </>
+              )}
+            />
+          </FormField>
         </div>
 
-        {/* Preview */}
         <div className="flex flex-col gap-2">
-           <label className="text-[10px] font-mono uppercase tracking-wider text-muted px-1 text-center">Preview</label>
-           <div
+          <label className="text-caption font-mono uppercase tracking-wider text-muted px-1 text-center">Preview</label>
+          <div
             className="flex items-center gap-4 p-5 rounded-2xl border transition-all"
             style={{ borderColor: `${color}40`, backgroundColor: `${color}08` }}
-           >
+          >
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-black/20"
               style={{ backgroundColor: `${color}25` }}
@@ -148,19 +163,10 @@ export function SphereFormDialog({
               <p className="text-[17px] font-black text-text leading-tight tracking-tight">
                 {name || "Sphere name"}
               </p>
-              <p className="text-[10px] font-mono text-muted uppercase tracking-[0.2em] mt-1">Life Area</p>
+              <p className="text-caption font-mono text-muted uppercase tracking-[0.2em] mt-1">Life Area</p>
             </div>
           </div>
         </div>
-
-        <IconPickerDialog 
-          isOpen={iconPickerOpen}
-          onClose={() => setIconPickerOpen(false)}
-          value={icon}
-          onChange={(val) => { if (val) setIcon(val); }}
-          color={color}
-          title="Sphere Icon"
-        />
       </form>
     </Dialog>
   );

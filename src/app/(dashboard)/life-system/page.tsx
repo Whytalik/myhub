@@ -18,7 +18,7 @@ export default function LifeSystemPage() {
         <div className="w-16 h-16 rounded-2xl bg-raised flex items-center justify-center mb-6">
           <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin" />
         </div>
-        <h3 className="text-xl font-heading text-text uppercase mb-2">Under Construction</h3>
+        <h3 className="text-sm font-heading text-text uppercase mb-2">Under Construction</h3>
         <p className="text-sm text-secondary max-w-sm">
           We are currently building this system to provide a more unified experience for your personal growth.
         </p>

@@ -29,7 +29,7 @@ export const recoveryService = {
    * Score is based on the percentage of checked items in recoveryRoutine.
    */
   async evaluateDailyRecovery(userId: string, date: Date) {
-    const entry = await getCachedDailyEntry(userId, date);
+    const entry = await getCachedDailyEntry(userId, date.toISOString());
 
     if (!entry || !entry.recoveryRoutine) return 0;
 

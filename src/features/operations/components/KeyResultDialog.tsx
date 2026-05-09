@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,22 +29,21 @@ export function KeyResultDialog({ objectiveId, keyResult, onSuccess, children }:
     if (!title || !targetValue) return;
 
     setLoading(true);
-    try {
-      await upsertKeyResultAction({
-        id: keyResult?.id,
-        objectiveId,
-        title,
-        targetValue: parseFloat(targetValue),
-        currentValue: parseFloat(currentValue),
-        unit
-      });
+    const result = await upsertKeyResultAction({
+      id: keyResult?.id,
+      objectiveId,
+      title,
+      targetValue: parseFloat(targetValue),
+      currentValue: parseFloat(currentValue),
+      unit
+    });
+    if (result.success) {
       onSuccess();
       setIsOpen(false);
-    } catch (error) {
-      console.error("Failed to save key result:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error(result.error || "Failed to save key result");
     }
+    setLoading(false);
   };
 
   return (
@@ -67,7 +67,7 @@ export function KeyResultDialog({ objectiveId, keyResult, onSuccess, children }:
       >
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Measurement Title</label>
+            <label className="text-caption font-mono uppercase text-muted tracking-widest">Measurement Title</label>
             <Input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
@@ -77,7 +77,7 @@ export function KeyResultDialog({ objectiveId, keyResult, onSuccess, children }:
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Target</label>
+              <label className="text-caption font-mono uppercase text-muted tracking-widest">Target</label>
               <Input 
                 type="number"
                 value={targetValue} 
@@ -85,7 +85,7 @@ export function KeyResultDialog({ objectiveId, keyResult, onSuccess, children }:
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Current</label>
+              <label className="text-caption font-mono uppercase text-muted tracking-widest">Current</label>
               <Input 
                 type="number"
                 value={currentValue} 
@@ -93,7 +93,7 @@ export function KeyResultDialog({ objectiveId, keyResult, onSuccess, children }:
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-mono uppercase text-muted tracking-widest">Unit</label>
+              <label className="text-caption font-mono uppercase text-muted tracking-widest">Unit</label>
               <Input 
                 value={unit} 
                 onChange={(e) => setUnit(e.target.value)} 

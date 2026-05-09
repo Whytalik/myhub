@@ -63,7 +63,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search lexeme..." 
-            className="pl-10 h-10 bg-surface/40 border-border/50 rounded-xl text-[12px] focus-visible:ring-violet"
+            className="pl-10 h-10 bg-surface/40 border-border/50 rounded-xl text-sm focus-visible:ring-violet"
           />
         </div>
         
@@ -71,16 +71,16 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
            <div className="flex items-center gap-4">
               <Hash size={16} className="text-violet/60" />
               <div className="flex flex-col">
-                <span className="text-[9px] font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">Lexemes</span>
-                <span className="text-lg font-black uppercase leading-none">{items.length}</span>
+                <span className="text-label font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">Lexemes</span>
+                <span className="text-sm font-black uppercase leading-none">{items.length}</span>
               </div>
            </div>
            <div className="h-8 w-px bg-border/40" />
            <div className="flex items-center gap-4">
               <Calendar size={16} className="text-violet/60" />
               <div className="flex flex-col">
-                <span className="text-[9px] font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">SRS Queue</span>
-                <span className="text-lg font-black uppercase leading-none text-violet">
+                <span className="text-label font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">SRS Queue</span>
+                <span className="text-sm font-black uppercase leading-none text-violet">
                   {items.filter(i => new Date(i.nextReview) <= new Date()).length}
                 </span>
               </div>
@@ -90,7 +90,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
 
       {/* Notion-style Data Table */}
       <div className="bg-surface/30 border border-border/40 rounded-[32px] overflow-hidden shadow-sm backdrop-blur-md">
-        <div className="grid grid-cols-12 gap-4 p-5 bg-raised/30 border-b border-border/40 text-[10px] font-mono text-muted uppercase tracking-[0.25em] px-10 font-black">
+        <div className="grid grid-cols-12 gap-4 p-5 bg-raised/30 border-b border-border/40 text-caption font-mono text-muted uppercase tracking-[0.25em] px-10 font-black">
           <div className="col-span-4">Term / Phrase</div>
           <div className="col-span-4">Semantic Mapping</div>
           <div className="col-span-3">Next Optimization</div>
@@ -117,7 +117,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
               className="text-secondary font-medium placeholder:text-muted/30 text-sm focus-visible:ring-0"
             />
           </div>
-          <div className="col-span-3 text-[10px] font-mono text-violet/40 uppercase tracking-widest font-bold">
+          <div className="col-span-3 text-caption font-mono text-violet/40 uppercase tracking-widest font-bold">
             Pending Neural Link
           </div>
           <div className="col-span-1 text-right">
@@ -136,7 +136,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
           {filtered.length === 0 ? (
             <div className="p-32 text-center">
                <BookOpen size={48} className="mx-auto text-muted/10 mb-6" />
-               <p className="text-muted font-mono text-[11px] uppercase tracking-[0.3em] font-black">No neural data mapped</p>
+               <p className="text-muted font-mono text-note uppercase tracking-[0.3em] font-black">No neural data mapped</p>
             </div>
           ) : (
             filtered.map((item) => (
@@ -145,7 +145,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
                   <span className="font-black uppercase tracking-tight text-sm text-text group-hover:text-violet transition-colors">{item.word}</span>
                 </div>
                 <div className="col-span-4 text-secondary text-sm font-medium opacity-80">{item.translation}</div>
-                <div className="col-span-3 flex items-center gap-2 text-muted text-[10px] font-mono uppercase tracking-wider font-bold">
+                <div className="col-span-3 flex items-center gap-2 text-muted text-caption font-mono uppercase tracking-wider font-bold">
                   <Calendar size={12} className="text-violet/40" />
                   {new Date(item.nextReview).toLocaleDateString()}
                 </div>

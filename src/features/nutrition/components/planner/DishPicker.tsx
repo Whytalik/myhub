@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useMemo } from "react"
 import { Search, Info } from "lucide-react"
@@ -94,7 +94,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="font-medium text-sm">{dish.name}</div>
-                    <div className="text-[10px] text-muted-foreground">
+                    <div className="text-caption text-muted-foreground">
                       {dish.per100g.kcal.toFixed(0)} kcal | P: {dish.per100g.protein.toFixed(1)}g | F: {dish.per100g.fat.toFixed(1)}g
                     </div>
                   </div>
@@ -115,7 +115,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
           <div className="p-4 border-t bg-muted/30 space-y-3 rounded-b-lg">
             <div className="flex gap-4">
               <div className="flex-1 space-y-1">
-                <label className="text-[10px] uppercase font-bold text-muted-foreground">Вага (г)</label>
+                <label className="text-caption uppercase font-bold text-muted-foreground">Вага (г)</label>
                 <Input
                   type="number"
                   value={manualWeight || calculatedWeight.toFixed(0)}
@@ -138,7 +138,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
             </div>
 
             {fit && fit.warnings.length > 0 && (
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded text-[10px] text-yellow-700 dark:text-yellow-400 flex gap-2">
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded text-caption text-yellow-700 dark:text-yellow-400 flex gap-2">
                 <Info className="h-3 w-3 shrink-0" />
                 <div>
                   {fit.warnings.map((w, i) => <div key={i}>{w}</div>)}
