@@ -2,7 +2,21 @@ import { Dish, DishIngredient, FoodProduct, CookingMethod, NutritionPerson } fro
 
 export interface DishNutritionResult {
   totalCookedWeight: number
+  total: {
+    kcal: number
+    protein: number
+    fat: number
+    carbs: number
+    fiber: number
+  }
   per100g: {
+    kcal: number
+    protein: number
+    fat: number
+    carbs: number
+    fiber: number
+  }
+  perServing: {
     kcal: number
     protein: number
     fat: number
@@ -56,15 +70,30 @@ export function calculateDishNutrition(
   }
 
   const divisor = totalCookedWeight > 0 ? totalCookedWeight / 100 : 1
+  const servs = dish.servings > 0 ? dish.servings : 1
 
   return {
     totalCookedWeight,
+    total: {
+      kcal: totalKcal,
+      protein: totalProtein,
+      fat: totalFat,
+      carbs: totalCarbs,
+      fiber: totalFiber,
+    },
     per100g: {
       kcal: totalKcal / divisor,
       protein: totalProtein / divisor,
       fat: totalFat / divisor,
       carbs: totalCarbs / divisor,
       fiber: totalFiber / divisor,
+    },
+    perServing: {
+      kcal: totalKcal / servs,
+      protein: totalProtein / servs,
+      fat: totalFat / servs,
+      carbs: totalCarbs / servs,
+      fiber: totalFiber / servs,
     },
     totalCost,
   }
