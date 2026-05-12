@@ -5,6 +5,7 @@ import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { useSpace } from "./space-provider";
 import { updateUserNameAction, setPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { exportSystemAction, resetSystemAction, importSystemAction } from "@/features/system/actions/system-actions";
+import { seedVisualPlanAction } from "@/features/system/actions/seed-action";
 import { savePushSubscriptionAction, sendTestNotificationAction, getPushSubscriptionCountAction } from "@/features/system/actions/push-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -667,6 +668,22 @@ export function SettingsModal({
                      <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
                           <div><h5 className="text-note font-bold text-red-500">Reset System</h5><p className="text-label text-red-500/60">Wipe all records.</p></div>
                           <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                     </div>
+                     <div className="p-3 border border-accent/10 bg-accent/5 rounded-xl flex items-center justify-between mt-2">
+                          <div><h5 className="text-note font-bold text-accent">Seed Visual Plan</h5><p className="text-label text-accent/60">Populate with default data.</p></div>
+                          <button 
+                            onClick={async () => {
+                              startTransition(async () => {
+                                const res = await seedVisualPlanAction();
+                                if (res.success) toast.success("Visual Plan Seeded!");
+                                else toast.error(res.error || "Seed failed");
+                              });
+                            }} 
+                            disabled={isPending}
+                            className="p-2 bg-accent/10 text-accent border border-accent/20 rounded-lg hover:bg-accent/20 transition-all disabled:opacity-50"
+                          >
+                            <Database size={14} />
+                          </button>
                      </div>
                   </div>
                 </div>
