@@ -10,6 +10,26 @@ Updated all product prices in `product-info.ts` based on real Silpo.ua data for 
 
 ---
 
+## [2026-05-12] Week Plan Management & Bulk Deletion
+
+Реалізовано повний цикл керування планами та можливість масового очищення бібліотеки.
+
+- **Plan Management**:
+    - Додано можливість редагування назви плану прямо у ворвклері.
+    - Додано видалення всього тижневого плану з автоматичним редиректом.
+    - Оновлено сторінку списку планів — тепер кожен план має власне посилання (`/nutrition/week?id=...`).
+    - **Server Actions**: Додано `updateWeekPlanName`, оновлено `getWeekPlan` для підтримки ID з параметрів.
+- **Bulk Deletion**:
+    - Додано кнопки "Delete All" у бібліотеку страв та продуктів.
+    *   **Dishes**: Видаляє всі страви користувача та пов'язані з ними записи в планах (`DishEntry`).
+    *   **Products**: Видаляє всі продукти користувача, очищуючи кошик та записи в планах (`ProductEntry`). Глобальні продукти залишаються.
+- **Verification**:
+    - [x] Logic implemented (CRUD + Bulk delete)
+    - [x] UI updated (Edit name, delete buttons)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+---
+
 ## [2026-05-12] Dynamic Portion Calculation & Visual Plan Automation
 
 Реалізовано систему динамічного розрахунку порцій та автоматизацію генерації тижневого плану на основі Visual Plan.
