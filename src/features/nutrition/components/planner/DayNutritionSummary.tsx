@@ -22,9 +22,9 @@ export function DayNutritionSummary({ personName, data, warnings }: DayNutrition
   return (
     <div className="space-y-4 p-4 border rounded-lg bg-card">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-sm">{personName}</h3>
+        <h3 className="font-semibold text-base">{personName}</h3>
         {warnings && warnings.length > 0 && (
-          <div className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded">
+          <div className="text-sm text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded">
             ⚠️ {warnings.length} warnings
           </div>
         )}
@@ -38,7 +38,7 @@ export function DayNutritionSummary({ personName, data, warnings }: DayNutrition
 
           return (
             <div key={key} className="space-y-1">
-              <div className="flex justify-between text-xs">
+              <div className="flex justify-between text-sm">
                 <span>{item.label}</span>
                 <span className={isOver ? "text-red-500" : isUnder ? "text-yellow-500" : "text-green-500"}>
                   {item.actual.toFixed(0)} / {item.target.toFixed(0)} {item.unit}

@@ -113,8 +113,8 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <ShoppingBag className="h-5 w-5 text-primary" />
-          <h2 className="text-sm font-semibold">Shopping Cart</h2>
-          <span className="text-sm text-muted-foreground">{items.length} items</span>
+          <h2 className="text-base font-semibold">Shopping Cart</h2>
+          <span className="text-base text-muted-foreground">{items.length} items</span>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => setShowRegenConfirm(true)} disabled={isPending}>
@@ -129,7 +129,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
           <div className="flex items-start gap-2">
             <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
             <div>
-              <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Variety Warnings</h3>
+              <h3 className="text-base font-medium text-yellow-800 dark:text-yellow-200">Variety Warnings</h3>
               <div className="flex flex-wrap gap-2 mt-2">
                 {varietyWarnings.map((w, i) => (
                   <span key={i} className="text-caption bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded">
@@ -147,8 +147,8 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
           <div className="flex items-start gap-2">
             <AlertCircle className="h-5 w-5 text-orange-600 mt-0.5" />
             <div>
-              <h3 className="text-sm font-medium text-orange-800 dark:text-orange-200">Missing Items</h3>
-              <p className="text-xs text-orange-700 dark:text-orange-300 mt-1">
+              <h3 className="text-base font-medium text-orange-800 dark:text-orange-200">Missing Items</h3>
+              <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
                 {missingItems.length} item(s) need to be purchased or restocked.
               </p>
             </div>
@@ -158,7 +158,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
 
       {Object.entries(groupedItems).map(([category, catItems]) => (
         <div key={category} className="space-y-3">
-          <h3 className="text-sm font-bold font-mono text-muted tracking-wider">{category}</h3>
+          <h3 className="text-base font-bold font-mono text-muted tracking-wider">{category}</h3>
           {catItems.map((item) => {
             const available = item.availableGrams ?? item.product.pantryStock ?? 0
             const deficit = Math.max(0, item.requiredRawGrams - available)
@@ -178,7 +178,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       Need: {item.requiredRawGrams.toFixed(0)}g | Available: {available.toFixed(0)}g
                       <span className="ml-2">~{packagesCount} pkg{packagesCount !== 1 ? "s" : ""} ({packageWeight}g)</span>
                       {item.totalCost != null && item.totalCost > 0 && ` | ${item.totalCost.toFixed(1)}₴`}
@@ -199,7 +199,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                           type="number"
                           value={availableValue}
                           onChange={(e) => setAvailableValue(e.target.value)}
-                          className="w-20 h-8 text-xs"
+                          className="w-20 h-8 text-sm"
                           placeholder="grams"
                         />
                         <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleAvailableUpdate(item.id)}>
@@ -226,7 +226,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
                           type="number"
                           value={editValue}
                           onChange={(e) => setEditValue(e.target.value)}
-                          className="w-20 h-8 text-xs"
+                          className="w-20 h-8 text-sm"
                           placeholder="pkgs"
                         />
                         <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleQuantityUpdate(item.id)}>
@@ -265,15 +265,15 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
 
       <div className="p-4 border rounded-lg bg-card space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium">Total Estimated Cost</span>
-          <span className="text-sm font-bold">{totalCost.toFixed(1)}₴</span>
+          <span className="text-base font-medium">Total Estimated Cost</span>
+          <span className="text-base font-bold">{totalCost.toFixed(1)}₴</span>
         </div>
         {Object.keys(personCosts).length > 0 && (
           <div className="pt-3 border-t border-border/50">
             <div className="text-caption font-mono text-muted tracking-wider mb-2">Cost by Person</div>
             <div className="flex flex-wrap gap-3">
               {Object.entries(personCosts).map(([id, pc]) => (
-                <div key={id} className="flex items-center gap-1 text-xs">
+                <div key={id} className="flex items-center gap-1 text-sm">
                   <span className="text-muted-foreground">{pc.name}:</span>
                   <span className="font-mono font-bold">{pc.cost.toFixed(1)}₴</span>
                 </div>

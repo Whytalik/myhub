@@ -7,6 +7,7 @@ import { Dish, DishIngredient, FoodProduct, CookingMethod } from "@/app/generate
 import { invalidateFoodCache } from "@/lib/revalidate"
 
 import type { DishType } from "../constants/dish-types"
+import { z } from "zod"
 
 interface CreateDishData {
   name: string
@@ -243,5 +244,176 @@ export async function getCookingMethods(): Promise<ActionResult<CookingMethod[]>
     return { success: true, data: methods }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to get cooking methods" }
+  }
+}
+
+const dishIngredientSchema = z.object({
+  productName: z.string().min(1),
+  alternatives: z.array(z.string()).optional().default([]),
+  rawWeight: z.number().positive(),
+  cookingMethod: z.string().optional().default("RAW"),
+})
+
+const dishSchema = z.object({
+  name: z.string().min(1),
+  type: z.enum(["MAIN", "SALAD", "SOUP", "SIDE", "SNACK", "SAUCE", "MARINADE", "BASE"]).default("MAIN"),
+  servings: z.number().int().min(1).default(1),
+  description: z.string().optional(),
+  ingredients: z.array(dishIngredientSchema).min(1),
+})
+
+interface ImportDishesResult {
+  imported: number
+  updated: number
+  errors: string[]
+}
+
+export async function importDishesFromJson(json: string): Promise<ActionResult<ImportDishesResult>> {
+  try {
+    const userId = await getRequiredUserId()
+    let parsed: unknown[]
+    try {
+      parsed = JSON.parse(json)
+    } catch {
+      return { success: false, error: "Invalid JSON format" }
+    }
+    if (!Array.isArray(parsed)) {
+      return { success: false, error: "JSON must be an array of dishes" }
+    }
+
+    const result: ImportDishesResult = { imported: 0, updated: 0, errors: [] }
+
+    for (let i = 0; i < parsed.length; i++) {
+      const item = parsed[i]
+      const validation = dishSchema.safeParse(item)
+      if (!validation.success) {
+        const name = (item as Record<string, unknown>)?.name ?? `dish ${i + 1}`
+        result.errors.push(`${name}: ${validation.error.issues.map((e) => e.message).join(", ")}`)
+        continue
+      }
+
+      const data = validation.data
+
+      const existing = await prisma.dish.findFirst({
+        where: {
+          userId,
+          name: { equals: data.name, mode: "insensitive" },
+        },
+        include: {
+          ingredients: true,
+        },
+      })
+
+      const ingredientsData = []
+      for (const ing of data.ingredients) {
+        const product = await prisma.foodProduct.findFirst({
+          where: {
+            userId,
+            name: { equals: ing.productName, mode: "insensitive" },
+          },
+        })
+        if (!product) {
+          result.errors.push(`${data.name}: Product "${ing.productName}" not found`)
+          continue
+        }
+
+        let cookingMethodId: string | undefined
+        if (ing.cookingMethod && ing.cookingMethod !== "RAW") {
+          let method = await prisma.cookingMethod.findFirst({
+            where: { name: { equals: ing.cookingMethod, mode: "insensitive" } },
+          })
+          if (!method) {
+            method = await prisma.cookingMethod.create({
+              data: { name: ing.cookingMethod, coefficient: 1.0 },
+            })
+          }
+          cookingMethodId = method.id
+        }
+
+        ingredientsData.push({
+          productId: product.id,
+          cookingMethodId,
+          rawWeight: ing.rawWeight,
+          alternatives: ing.alternatives,
+        })
+      }
+
+      if (ingredientsData.length === 0) {
+        result.errors.push(`${data.name}: No valid ingredients`)
+        continue
+      }
+
+      if (existing) {
+        await prisma.dish.update({
+          where: { id: existing.id },
+          data: {
+            ...(data.description !== existing.description ? { description: data.description } : {}),
+            ...(data.servings !== existing.servings ? { servings: data.servings } : {}),
+            ...(data.type !== existing.type ? { type: data.type } : {}),
+            ingredients: {
+              deleteMany: {},
+              create: ingredientsData,
+            },
+          },
+        })
+        result.updated++
+      } else {
+        await prisma.dish.create({
+          data: {
+            userId,
+            name: data.name,
+            description: data.description,
+            servings: data.servings,
+            type: data.type,
+            ingredients: {
+              create: ingredientsData,
+            },
+          },
+        })
+        result.imported++
+      }
+    }
+
+    if (result.imported > 0 || result.updated > 0) {
+      invalidateFoodCache(userId)
+    }
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to import dishes" }
+  }
+}
+
+export async function exportDishes(): Promise<ActionResult<string>> {
+  try {
+    const userId = await getRequiredUserId()
+    const dishes = await prisma.dish.findMany({
+      where: { userId },
+      include: {
+        ingredients: {
+          include: {
+            product: true,
+            cookingMethod: true,
+          },
+        },
+      },
+      orderBy: { name: "asc" },
+    })
+
+    const json = dishes.map(d => ({
+      name: d.name,
+      type: d.type,
+      servings: d.servings,
+      description: d.description || undefined,
+      ingredients: d.ingredients.map(ing => ({
+        productName: ing.product.name,
+        alternatives: ing.alternatives.length > 0 ? ing.alternatives : undefined,
+        rawWeight: ing.rawWeight,
+        cookingMethod: ing.cookingMethod?.name ?? "RAW",
+      })),
+    }))
+
+    return { success: true, data: JSON.stringify(json, null, 2) }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to export dishes" }
   }
 }

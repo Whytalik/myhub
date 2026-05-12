@@ -388,7 +388,7 @@ export function Sidebar({
         onMouseLeave={() => setIsHovered(false)}
         style={{ viewTransitionName: 'sidebar' }}
         animate={{
-          width: isMobileOpen ? 288 : (isExpanded ? 256 : 80),
+          width: isMobileOpen ? 288 : (isExpanded ? 280 : 80),
         }}
         initial={false}
         transition={SIDEBAR_SPRING}

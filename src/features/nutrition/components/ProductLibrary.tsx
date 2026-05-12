@@ -280,7 +280,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
             <Trash2 size={13} />
           </button>
         </div>
-        <h3 className="text-base font-semibold text-text mb-1 pr-16 truncate">{product.name}</h3>
+        <h3 className="text-lg font-semibold text-text mb-1 pr-16 truncate">{product.name}</h3>
         <div className="flex items-center gap-2 mb-3">
           <span className={`text-label font-mono font-bold ${sourceColor(product.nutritionSource)}`}>
             [{sourceLabel(product.nutritionSource)}]
@@ -385,7 +385,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
                 {searchResults!.external.map(product => (
                   <div key={product.code} className="bg-surface border border-border/60 rounded-2xl p-5 hover:border-blue-500/20 transition-colors">
                     <div className="flex justify-between items-start gap-2 mb-1">
-                      <h3 className="text-base font-semibold text-text leading-tight">{product.name}</h3>
+                      <h3 className="text-lg font-semibold text-text leading-tight">{product.name}</h3>
                       <Button
                         variant="outline"
                         size="sm"
@@ -417,7 +417,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
           {/* Empty state */}
           {!isSearching && searchResults && searchResults.local.length === 0 && searchResults.external.length === 0 && (
             <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
-              <p className="text-sm font-bold text-text mb-1">Нічого не знайдено</p>
+              <p className="text-base font-bold text-text mb-1">Нічого не знайдено</p>
               <p className="text-caption text-muted mt-1">Спробуйте інший запит або додайте продукт вручну</p>
               <Button variant="primary" size="sm" className="mt-4" onClick={openCreateForm}>
                 <Plus size={14} className="mr-1.5" /> Add Product
@@ -456,7 +456,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
             </div>
           ) : (
             <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
-              <p className="text-sm font-bold text-text mb-1">No products yet</p>
+              <p className="text-base font-bold text-text mb-1">No products yet</p>
               <Button variant="primary" size="sm" className="mt-4" onClick={openCreateForm}>
                 <Plus size={14} className="mr-1.5" /> Add Product
               </Button>

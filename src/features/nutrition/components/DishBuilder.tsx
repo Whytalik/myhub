@@ -123,7 +123,7 @@ function ProductAutocomplete({
             {filtered.map((p) => (
               <button
                 key={p.id}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-raised text-sm transition-colors flex justify-between items-center"
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-raised text-lg transition-colors flex justify-between items-center"
                 onClick={() => {
                   onSelect(p);
                   setQuery("");
@@ -328,7 +328,7 @@ export function DishBuilder({
             placeholder="e.g. Morning Oatmeal with Berries"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="text-base font-semibold"
+            className="text-lg font-semibold"
           />
         </div>
         <div className="space-y-2">
@@ -358,7 +358,7 @@ export function DishBuilder({
 
       {/* Ingredients */}
       <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-        <table className="w-full border-collapse text-left text-sm">
+        <table className="w-full border-collapse text-left text-lg">
           <thead>
             <tr className="border-b border-border bg-raised/30">
               <th className="px-4 py-3 font-mono text-caption text-muted tracking-[0.18em] font-normal">
@@ -407,7 +407,7 @@ export function DishBuilder({
                       <Input
                         type="number"
                         variant="inline"
-                        className="w-[65px] text-center font-mono text-accent text-sm h-7"
+                        className="w-[65px] text-center font-mono text-accent text-lg h-7"
                         value={ing.rawWeight}
                         onChange={(e) =>
                           updateIngredient(
@@ -421,7 +421,7 @@ export function DishBuilder({
                     </div>
                   </td>
                   <td className="px-4 align-middle border-l border-border/50 text-center">
-                    <span className="font-mono text-secondary text-sm">
+                    <span className="font-mono text-secondary text-lg">
                       {Math.round(n.calories)}
                     </span>
                   </td>
@@ -487,10 +487,10 @@ export function DishBuilder({
               </td>
               <td colSpan={2} className="px-4 py-2 text-center bg-accent/10">
                 <div className="flex flex-col items-center">
-                  <span className="text-accent font-bold text-sm">
+                  <span className="text-accent font-bold text-lg">
                     {Math.round(perServing.calories)} kcal/serving
                   </span>
-                  <span className="text-[8px] opacity-70">
+                  <span className="text-[10px] opacity-70">
                     {Math.round(perServing.totalWeight)}g / {perServing.totalCost.toFixed(1)}?
                   </span>
                 </div>

@@ -24,10 +24,10 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
     <div className="space-y-6">
       <div className="border rounded-lg bg-card">
         <div className="p-6 border-b">
-          <h3 className="text-sm font-semibold">Weekly Averages</h3>
+          <h3 className="text-base font-semibold">Weekly Averages</h3>
         </div>
         <div className="p-6 overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
               <tr className="border-b">
                 <th className="text-left py-2 px-3 font-medium">Person</th>
@@ -71,23 +71,23 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
 
       <div className="border rounded-lg bg-card">
         <div className="p-6 border-b">
-          <h3 className="text-sm font-semibold">Variety Warnings</h3>
+          <h3 className="text-base font-semibold">Variety Warnings</h3>
         </div>
         <div className="p-6">
           <div className="space-y-4">
             {persons.map((p) => (
               <div key={p.personId} className="space-y-2">
-                <h4 className="text-sm font-medium">{p.personName}</h4>
+                <h4 className="text-base font-medium">{p.personName}</h4>
                 {p.repeatedDishes.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
                     {p.repeatedDishes.map((d, i) => (
-                      <span key={i} className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded border border-yellow-200 dark:border-yellow-800">
+                      <span key={i} className="text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded border border-yellow-200 dark:border-yellow-800">
                         ⚠️ {d.dishName}: {d.count} times
                       </span>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-xs text-muted-foreground">Excellent variety! No repeats 3+ times.</div>
+                  <div className="text-sm text-muted-foreground">Excellent variety! No repeats 3+ times.</div>
                 )}
               </div>
             ))}

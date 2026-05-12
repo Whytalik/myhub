@@ -133,13 +133,13 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
                       <span className={`text-label font-mono ${DISH_TYPE_META[dish.type ?? "MAIN"].color}`}>
                         {DISH_TYPE_META[dish.type ?? "MAIN"].emoji}
                       </span>
-                      <span className="font-medium text-sm">{dish.name}</span>
+                      <span className="font-medium text-base">{dish.name}</span>
                     </div>
                     <div className="text-caption text-muted-foreground">
                       {dish.per100g.kcal.toFixed(0)} kcal | P: {dish.per100g.protein.toFixed(1)}g | F: {dish.per100g.fat.toFixed(1)}g
                     </div>
                   </div>
-                  <span className={`text-xs font-bold ${
+                  <span className={`text-sm font-bold ${
                     score > 0.8 ? "text-green-600" :
                     score > 0.5 ? "text-yellow-600" :
                     "text-red-600"
@@ -172,7 +172,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
                   onChange={(e) => setIsShared(e.target.checked)}
                   className="h-4 w-4"
                 />
-                <label htmlFor="shared" className="text-xs font-medium leading-none cursor-pointer">
+                <label htmlFor="shared" className="text-sm font-medium leading-none cursor-pointer">
                   Спільна
                 </label>
               </div>

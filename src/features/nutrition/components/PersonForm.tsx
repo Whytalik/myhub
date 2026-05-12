@@ -108,7 +108,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
             <div key={person.id} className="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm">
               <div className="bg-raised/50 px-6 py-4 border-b border-border flex justify-between items-center">
                 <div>
-                  <h4 className="text-sm font-heading text-text tracking-tight">{person.name}</h4>
+                  <h4 className="text-lg font-heading text-text tracking-tight">{person.name}</h4>
                   <p className="text-caption font-mono text-muted tracking-wider mt-0.5">Custom Nutrition Split</p>
                 </div>
                 <Button variant="danger" size="sm" className="rounded-xl" onClick={() => setPersonToDelete(person)}>
@@ -124,9 +124,9 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                       type="number"
                       defaultValue={totalCals}
                       onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, person.fiberGrams || 30, parseFloat(e.target.value) || 2000)}
-                      className="text-base font-black text-accent h-9"
+                      className="text-lg font-black text-accent h-9"
                     />
-                    <span className="text-xs font-mono text-muted">kcal</span>
+                    <span className="text-sm font-mono text-muted">kcal</span>
                   </div>
                 </div>
 
@@ -141,9 +141,9 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                         type="number"
                         defaultValue={currentPPct}
                         onBlur={(e) => handleGoalUpdate(person.id, parseFloat(e.target.value) || 30, currentFPct, currentCPct, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-sm"
+                        className="font-mono text-lg"
                       />
-                      <span className="text-xs font-mono text-muted">%</span>
+                      <span className="text-sm font-mono text-muted">%</span>
                     </div>
                   </div>
 
@@ -157,9 +157,9 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                         type="number"
                         defaultValue={currentFPct}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, parseFloat(e.target.value) || 25, currentCPct, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-sm"
+                        className="font-mono text-lg"
                       />
-                      <span className="text-xs font-mono text-muted">%</span>
+                      <span className="text-sm font-mono text-muted">%</span>
                     </div>
                   </div>
 
@@ -173,9 +173,9 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                         type="number"
                         defaultValue={currentCPct}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, parseFloat(e.target.value) || 45, person.fiberGrams || 30, totalCals)}
-                        className="font-mono text-sm"
+                        className="font-mono text-lg"
                       />
-                      <span className="text-xs font-mono text-muted">%</span>
+                      <span className="text-sm font-mono text-muted">%</span>
                     </div>
                   </div>
 
@@ -189,9 +189,9 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                         type="number"
                         defaultValue={person.fiberGrams || 30}
                         onBlur={(e) => handleGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, parseFloat(e.target.value) || 30, totalCals)}
-                        className="font-mono text-sm"
+                        className="font-mono text-lg"
                       />
-                      <span className="text-xs font-mono text-muted">g</span>
+                      <span className="text-sm font-mono text-muted">g</span>
                     </div>
                   </div>
                 </div>

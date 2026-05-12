@@ -236,7 +236,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 <button
                   key={p.id}
                   onClick={() => setSelectedProductId(p.id)}
-                  className={`w-full text-left p-2.5 rounded-lg border text-sm transition-colors ${
+                  className={`w-full text-left p-2.5 rounded-lg border text-base transition-colors ${
                     selectedProductId === p.id ? "border-accent bg-accent/5" : "border-border hover:bg-raised"
                   }`}
                 >
@@ -256,7 +256,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 onChange={(e) => setProductWeight(e.target.value)}
                 className="w-24 font-mono text-center"
               />
-              <span className="text-sm text-muted-foreground">грам</span>
+              <span className="text-base text-muted-foreground">грам</span>
             </div>
           )}
         </div>
@@ -317,7 +317,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAdd
           
           return (
             <div key={slotName} className="space-y-2">
-              <h4 className="text-sm font-bold border-b pb-1">{slotName}</h4>
+              <h4 className="text-base font-bold border-b pb-1">{slotName}</h4>
               <div className="grid md:grid-cols-2 gap-4">
                 {slots.map((slot) => {
                   const diff = Math.abs(slot.actualKcal - slot.targetKcal) / (slot.targetKcal || 1)
@@ -329,7 +329,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAdd
                     <div key={slot.id} className={`p-3 rounded-lg border ${colorClass}`}>
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <div className="text-xs font-semibold">{slot.personName}</div>
+                          <div className="text-sm font-semibold">{slot.personName}</div>
                           {slot.targetFiberGrams > 0 && (
                             <div className="text-label text-muted-foreground">Fiber: {slot.targetFiberGrams.toFixed(0)}g</div>
                           )}
@@ -356,7 +356,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAdd
                           const isEditing = editingEntry?.id === entry.id
 
                           return (
-                            <div key={entry.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-xs">
+                            <div key={entry.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-sm">
                               <div className="flex items-center gap-2">
                                 <span className="font-medium">{entry.dishName}</span>
                                 {isEditing ? (
@@ -387,7 +387,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAdd
                                 )}
                                 <span className="text-label font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
                                 {entry.fitScore !== null && entry.fitScore !== undefined && (
-                                  <span className={`h-4 text-[8px] px-1 border rounded ${
+                                  <span className={`h-4 text-[10px] px-1 border rounded ${
                                     entry.fitScore > 0.8 ? "text-green-600 border-green-600" :
                                     entry.fitScore > 0.5 ? "text-yellow-600 border-yellow-600" :
                                     "text-red-600 border-red-600"
@@ -426,7 +426,7 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAdd
                         })}
                         {/* Product entries */}
                         {(slot.productEntries || []).map((pe) => (
-                          <div key={pe.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-xs border-l-2 border-green-500/40">
+                          <div key={pe.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-sm border-l-2 border-green-500/40">
                             <div className="flex items-center gap-2">
                               <span className="text-green-600 dark:text-green-400 text-label">🥩</span>
                               <span className="font-medium">{pe.productName}</span>

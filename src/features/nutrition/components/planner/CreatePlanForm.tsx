@@ -53,7 +53,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
   if (persons.length === 0) {
     return (
       <div className="bg-surface border border-border rounded-2xl p-6 text-center">
-        <p className="text-sm text-muted">Create a person profile first to start planning.</p>
+        <p className="text-base text-muted">Create a person profile first to start planning.</p>
         <Button variant="primary" size="sm" className="mt-4" onClick={() => router.push("/nutrition/profiles")}>
           Go to Profiles
         </Button>
@@ -88,7 +88,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
                 <button
                   key={person.id}
                   onClick={() => togglePerson(person.id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono border transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-mono border transition-colors ${
                     isSelected
                       ? "bg-accent/10 border-accent text-accent"
                       : "bg-transparent border-border text-muted hover:text-text"

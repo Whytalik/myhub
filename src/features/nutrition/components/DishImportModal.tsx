@@ -5,13 +5,12 @@ import { toast } from "sonner";
 import { Upload, FileJson, AlertCircle, CheckCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { importProductsFromJson } from "../actions/products";
-import { FoodProduct } from "@/app/generated/prisma";
+import { importDishesFromJson } from "../actions/dishes";
 
-interface JsonImportModalProps {
+interface DishImportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onImported: (products: FoodProduct[]) => void;
+  onImported: () => void;
 }
 
 interface ImportResult {
@@ -20,7 +19,7 @@ interface ImportResult {
   errors: string[];
 }
 
-export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModalProps) {
+export function DishImportModal({ isOpen, onClose, onImported }: DishImportModalProps) {
   const [jsonInput, setJsonInput] = useState("");
   const [isImporting, setIsImporting] = useState(false);
   const [result, setResult] = useState<ImportResult | null>(null);
@@ -64,14 +63,14 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
     setIsImporting(true);
     setResult(null);
     try {
-      const res = await importProductsFromJson(jsonInput);
+      const res = await importDishesFromJson(jsonInput);
       if (res.success) {
         setResult(res.data);
         if (res.data.imported > 0 || res.data.updated > 0) {
           toast.success(`Imported: ${res.data.imported}, Updated: ${res.data.updated}`);
-          onImported(res.data.products);
+          onImported();
         } else if (res.data.errors.length > 0) {
-          toast.error("No products imported. Check errors below.");
+          toast.error("No dishes imported. Check errors below.");
         }
       } else {
         toast.error(res.error || "Import failed");
@@ -93,7 +92,7 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
     <Dialog
       isOpen={isOpen}
       onClose={handleClose}
-      title="Import Products from JSON"
+      title="Import Dishes from JSON"
       maxWidth="max-w-2xl"
       footer={
         <>
@@ -122,14 +121,14 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
             onChange={handleFileSelect}
           />
           <FileJson size={32} className="mx-auto mb-2 text-muted" />
-          <p className="text-base text-text font-medium">Drop .json file here or click to browse</p>
-          <p className="text-caption text-muted mt-1">Supports products.json format</p>
+          <p className="text-sm text-text font-medium">Drop .json file here or click to browse</p>
+          <p className="text-caption text-muted mt-1">Supports dishes.json format</p>
         </div>
 
         <div className="relative">
           <textarea
-            className="w-full h-64 bg-surface border border-border rounded-xl p-3 font-mono text-sm text-text resize-none focus:outline-none focus:border-accent"
-            placeholder='[{"name": "Product", "caloriesPer100": 100, ...}]'
+            className="w-full h-64 bg-surface border border-border rounded-xl p-3 font-mono text-xs text-text resize-none focus:outline-none focus:border-accent"
+            placeholder='[{"name": "Dish", "type": "MAIN", "ingredients": [...]}]'
             value={jsonInput}
             onChange={(e) => setJsonInput(e.target.value)}
           />
@@ -145,7 +144,7 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
 
         <div className="flex items-center gap-2 text-caption text-muted">
           <Upload size={12} />
-          <span>Paste JSON array or upload a file. Existing products will be updated by name.</span>
+          <span>Paste JSON array or upload a file. Products are matched by name. Existing dishes are updated.</span>
         </div>
 
         {result && (

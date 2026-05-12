@@ -194,7 +194,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                 })()}
 
                 {/* Name */}
-                <h3 className="text-base font-semibold text-text mb-1 pr-8">
+                <h3 className="text-lg font-semibold text-text mb-1 pr-8">
                   {dish.name}
                 </h3>
 
@@ -208,7 +208,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                 {/* Nutrition per 100g */}
                 <div className="flex items-center gap-4 mb-3">
                   <div className="flex items-center gap-1">
-                    <span className="text-text font-mono text-sm font-bold">
+                    <span className="text-text font-mono text-base font-bold">
                       {Math.round(kcalPer100g)}
                     </span>
                     <span className="text-muted text-caption font-mono">
@@ -267,7 +267,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
           <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border mb-4">
             <Plus size={32} className="text-muted/40" />
           </div>
-          <p className="text-sm font-bold text-text mb-1">
+          <p className="text-base font-bold text-text mb-1">
             {searchQuery ? "No dishes found" : "No dishes yet"}
           </p>
           <p className="text-note text-muted mb-4">

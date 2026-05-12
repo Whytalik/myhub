@@ -27,6 +27,7 @@ export interface DishIngredientInput {
   productId: string;
   cookingMethodId?: string;
   rawWeight: number;
+  alternatives?: string[];
 }
 
 export interface CreateDishInput {

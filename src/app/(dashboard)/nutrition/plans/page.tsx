@@ -48,7 +48,7 @@ export default async function PlansPage() {
                 className="block bg-surface border border-border rounded-xl p-4 hover:border-accent/30 transition-colors"
               >
                 <h3 className="font-semibold">{plan.name || "Week Plan"}</h3>
-                <p className="text-xs text-muted">{plan.startDate.toLocaleDateString()}</p>
+                <p className="text-sm text-muted">{plan.startDate.toLocaleDateString()}</p>
               </a>
             ))}
           </div>

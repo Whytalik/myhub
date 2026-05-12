@@ -30,7 +30,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
   ],
   "Сніданок": [
     { name: "Сирні панкейки", icon: "🥞", products: [
-      { name: "Сир кисломолочний", youGrams: 150, herGrams: 250 },
+      { name: "Сир кисломолочний", youGrams: 150, herGrams: 200 },
       { name: "Яйце", youGrams: 50, herGrams: 100 },
       { name: "ЦЗ Борошно", youGrams: 20, herGrams: 40 },
       { name: "Яблуко", alts: ["Груша", "Вишня замор.", "Чорниця замор."], youGrams: 80, herGrams: 120 },
@@ -39,7 +39,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
       { name: "Ванілін", youGrams: 0, herGrams: 0 },
     ]},
     { name: "Білковий омлет", icon: "🍳", products: [
-      { name: "Яйця", youGrams: 50, herGrams: 200 },
+      { name: "Яйця", youGrams: 50, herGrams: 150 },
       { name: "Яєчні білки", youGrams: 120, herGrams: 0 },
       { name: "Куряче філе", youGrams: 100, herGrams: 120 },
       { name: "Помідор", alts: ["Мікс овочей"], youGrams: 200, herGrams: 200 },
@@ -68,7 +68,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
   ],
   "Обід": [
     { name: "Зібраний Боул", icon: "🥣", products: [
-      { name: "Гречка", alts: ["Рис", "Булгур"], youGrams: 100, herGrams: 150 },
+      { name: "Гречка", alts: ["Рис", "Булгур"], youGrams: 100, herGrams: 120 },
       { name: "Куряче філе", alts: ["Смажений курячий фарш", "Курячі серця"], youGrams: 100, herGrams: 150 },
       { name: "Морква", youGrams: 80, herGrams: 100 },
       { name: "Огірок", youGrams: 80, herGrams: 100 },
@@ -78,7 +78,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
       { name: "Соєво-медовий", youGrams: 0, herGrams: 0 },
     ]},
     { name: "Паста-конструктор", icon: "🍝", products: [
-      { name: "Макарони ТЗ", youGrams: 120, herGrams: 180 },
+      { name: "Макарони ТЗ", youGrams: 120, herGrams: 150 },
       { name: "Куряче філе", alts: ["Яловичий фарш"], youGrams: 100, herGrams: 150 },
       { name: "Томатна пасата", youGrams: 100, herGrams: 150 },
       { name: "Цибуля", youGrams: 30, herGrams: 50 },
@@ -87,7 +87,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
       { name: "Орегано + Базилік", youGrams: 0, herGrams: 0 },
     ]},
     { name: "Зігріваючий Суп", icon: "🍲", products: [
-      { name: "Червона сочевиця", youGrams: 100, herGrams: 150 },
+      { name: "Червона сочевиця", youGrams: 100, herGrams: 120 },
       { name: "Куряче філе", youGrams: 100, herGrams: 120 },
       { name: "Картопля", youGrams: 100, herGrams: 200 },
       { name: "Морква", youGrams: 50, herGrams: 80 },
@@ -97,7 +97,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
       { name: "Лавровий лист", youGrams: 0, herGrams: 0 },
     ]},
     { name: "Печена тарілка", icon: "🐟", products: [
-      { name: "Картопля", youGrams: 200, herGrams: 400 },
+      { name: "Картопля", youGrams: 200, herGrams: 350 },
       { name: "Хек", alts: ["Тилапія", "Куряче стегно"], youGrams: 150, herGrams: 150 },
       { name: "Морква по-корейськи", alts: ["Капуста"], youGrams: 80, herGrams: 150 },
       { name: "Лимонно-трав'яний", youGrams: 0, herGrams: 0 },
@@ -107,11 +107,11 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
   "Вечеря": [
     { name: "Овочеве Рагу", icon: "🍛", products: [
       { name: "Куряче філе", alts: ["Яловичий фарш"], youGrams: 150, herGrams: 150 },
-      { name: "Картопля", youGrams: 100, herGrams: 200 },
+      { name: "Картопля", youGrams: 100, herGrams: 150 },
       { name: "Морква", youGrams: 60, herGrams: 100 },
       { name: "Кабачок", youGrams: 100, herGrams: 150 },
       { name: "Перець", youGrams: 50, herGrams: 100 },
-      { name: "Квасоля", youGrams: 50, herGrams: 100 },
+      { name: "Квасоля", youGrams: 50, herGrams: 50 },
       { name: "Томатна паста", youGrams: 10, herGrams: 20 },
       { name: "Паприка + Лавровий лист", youGrams: 0, herGrams: 0 },
     ]},
@@ -133,7 +133,7 @@ export const MEAL_VARIANTS: Record<string, MealVariant[]> = {
       { name: "Тунець у вл. соку", alts: ["Куряче філе", "Яйця"], youGrams: 150, herGrams: 150 },
       { name: "Айсберг", alts: ["Пекінська капуста"], youGrams: 200, herGrams: 300 },
       { name: "Огірок", alts: ["Помідор"], youGrams: 100, herGrams: 200 },
-      { name: "Рис", alts: ["Гречка"], youGrams: 100, herGrams: 150 },
+      { name: "Рис", alts: ["Гречка"], youGrams: 100, herGrams: 120 },
       { name: "Йогурт з кропом", youGrams: 0, herGrams: 0 },
     ]},
   ],
