@@ -17,7 +17,38 @@ export const SAUCES: Record<string, SauceDef> = {
     ingredients: [
       { name: "Соєвий соус", grams: 30 },
       { name: "Часник", grams: 10 },
+      { name: "Олія", grams: 10 },
+    ],
+  },
+  "Паприково-олійний": {
+    type: "marinade",
+    ingredients: [
+      { name: "Олія", grams: 20 },
       { name: "Паприка", grams: 5 },
+      { name: "Часник", grams: 5 },
+    ],
+  },
+  "Олійно-паприковий": {
+    type: "marinade",
+    ingredients: [
+      { name: "Олія", grams: 20 },
+      { name: "Паприка", grams: 5 },
+    ],
+  },
+  "Олія + Кріп + Часник": {
+    type: "marinade",
+    ingredients: [
+      { name: "Олія оливкова", grams: 20 },
+      { name: "Кріп", grams: 10 },
+      { name: "Часник", grams: 10 },
+    ],
+  },
+  "Паприка + Лавровий лист": {
+    type: "marinade",
+    ingredients: [
+      { name: "Олія", grams: 20 },
+      { name: "Паприка", grams: 5 },
+      { name: "Лавровий лист", grams: 2 },
     ],
   },
   "Лимонно-трав'яний": {
@@ -29,39 +60,53 @@ export const SAUCES: Record<string, SauceDef> = {
       { name: "Олія", grams: 10 },
     ],
   },
-  "Йогуртово-каррі": {
-    type: "marinade",
-    ingredients: [
-      { name: "Грецький йогурт", grams: 50 },
-      { name: "Каррі", grams: 5 },
-      { name: "Куркума", grams: 2 },
-    ],
-  },
-  "Гірчично-медовий": {
-    type: "marinade",
-    ingredients: [
-      { name: "Гірчиця діжонська", grams: 15 },
-      { name: "Мед", grams: 10 },
-      { name: "Олія", grams: 10 },
-    ],
-  },
-  "Пряний томатний": {
-    type: "marinade",
-    ingredients: [
-      { name: "Томатна паста", grams: 30 },
-      { name: "Часник", grams: 10 },
-      { name: "Орегано", grams: 5 },
-      { name: "Чилі", grams: 5 },
-    ],
-  },
 
   // СОУСИ (Salad Sauces)
-  "Лимонно-оливковий": {
+  "Гірчиця": {
     type: "sauce",
     ingredients: [
-      { name: "Олія оливкова", grams: 15 },
-      { name: "Лимонний сік", grams: 10 },
-      { name: "Чорний перець", grams: 2 },
+      { name: "Гірчиця", grams: 10 },
+    ],
+  },
+  "Орегано + Базилік": {
+    type: "sauce",
+    ingredients: [
+      { name: "Орегано", grams: 2 },
+      { name: "Базилік", grams: 2 },
+      { name: "Олія", grams: 5 },
+    ],
+  },
+  "Цацікі": {
+    type: "sauce",
+    ingredients: [
+      { name: "Грецький йогурт", grams: 50 },
+      { name: "Огірок", grams: 30 },
+      { name: "Часник", grams: 5 },
+      { name: "Кріп", grams: 5 },
+    ],
+  },
+  "Сальса": {
+    type: "sauce",
+    ingredients: [
+      { name: "Помідор", grams: 60 },
+      { name: "Цибуля червона", grams: 10 },
+      { name: "Часник", grams: 5 },
+      { name: "Петрушка", grams: 5 },
+      { name: "Лимонний сік", grams: 5 },
+    ],
+  },
+  "Соєво-медовий": {
+    type: "sauce",
+    ingredients: [
+      { name: "Соєвий соус", grams: 30 },
+      { name: "Мед", grams: 10 },
+      { name: "Часник", grams: 5 },
+    ],
+  },
+  "Ткемалі": {
+    type: "sauce",
+    ingredients: [
+      { name: "Ткемалі готовий", grams: 20 },
     ],
   },
   "Йогурт з кропом": {
@@ -71,18 +116,5 @@ export const SAUCES: Record<string, SauceDef> = {
       { name: "Кріп", grams: 10 },
       { name: "Часник", grams: 5 },
     ],
-  },
-  "Тахіні-лимонний": {
-    type: "sauce",
-    ingredients: [
-      { name: "Тахіні", grams: 20 },
-      { name: "Лимонний сік", grams: 10 },
-    ],
-  },
-
-  // Legacy / Specific mappings for transition
-  "Маринад для курки": {
-    type: "marinade",
-    ingredients: [{ name: "Соєвий соус", grams: 20 }, { name: "Часник", grams: 5 }, { name: "Олія", grams: 5 }],
   },
 };

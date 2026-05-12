@@ -31,14 +31,11 @@ export const PRODUCT_INFO: Record<string, ProductInfo> = {
   // ── М'ясо / Риба ─────────────────────────────────────────
   "Куряче філе":         { category: "meat",    kcal: 165, protein: 31,  fat: 3.6,  carbs: 0,    fiber: 0,   price: "320–390 грн/кг"        },
   "Куряче стегно":       { category: "meat",    kcal: 209, protein: 26,  fat: 11,   carbs: 0,    fiber: 0,   price: "240–310 грн/кг"        },
-  "Курка":               { category: "meat",    kcal: 185, protein: 28,  fat: 7,    carbs: 0,    fiber: 0,   price: "280–350 грн/кг"        },
   "Курячі серця":        { category: "meat",    kcal: 153, protein: 16,  fat: 10,   carbs: 0,    fiber: 0,   price: "220–280 грн/кг"        },
   "Смажений курячий фарш": { category: "meat",  kcal: 210, protein: 22,  fat: 15,   carbs: 0,    fiber: 0,   price: "240–320 грн/кг"        },
   "Яловичий фарш":       { category: "meat",    kcal: 254, protein: 17,  fat: 20,   carbs: 0,    fiber: 0,   price: "450–550 грн/кг"        },
-  "Яловичий фарш ×2":   { category: "meat",    kcal: 254, protein: 17,  fat: 20,   carbs: 0,    fiber: 0,   price: "450–550 грн/кг"        },
   "Яловичина":           { category: "meat",    kcal: 250, protein: 26,  fat: 15,   carbs: 0,    fiber: 0,   price: "480–580 грн/кг"        },
   "Тунець у вл. соку":   { category: "meat",    kcal: 116, protein: 26,  fat: 1,    carbs: 0,    fiber: 0,   price: "110–160 грн/185г"      },
-  "Тунець":              { category: "meat",    kcal: 132, protein: 28,  fat: 1.5,  carbs: 0,    fiber: 0,   price: "110–160 грн/185г"      },
   "Хек":                 { category: "meat",    kcal: 86,  protein: 16,  fat: 2,    carbs: 0,    fiber: 0,   price: "220–290 грн/кг"        },
   "Тилапія":             { category: "meat",    kcal: 96,  protein: 20,  fat: 2,    carbs: 0,    fiber: 0,   price: "250–320 грн/кг"        },
   "Мінтай":              { category: "meat",    kcal: 72,  protein: 16,  fat: 0.9,  carbs: 0,    fiber: 0,   price: "180–250 грн/кг"        },
@@ -47,7 +44,6 @@ export const PRODUCT_INFO: Record<string, ProductInfo> = {
 
   // ── Молочне / Яйця ───────────────────────────────────────
   "Сир кисломолочний":   { category: "dairy",   kcal: 98,  protein: 11,  fat: 4,    carbs: 3,    fiber: 0,   price: "120–180 грн/200г"      },
-  "Яйце":                { category: "dairy",   kcal: 143, protein: 13,  fat: 10,   carbs: 1,    fiber: 0,   price: "12–18 грн/шт"          },
   "Яйця":                { category: "dairy",   kcal: 143, protein: 13,  fat: 10,   carbs: 1,    fiber: 0,   price: "12–18 грн/шт"          },
   "Яйце варене":         { category: "dairy",   kcal: 155, protein: 13,  fat: 11,   carbs: 1,    fiber: 0,   price: "12–18 грн/шт"          },
   "Яйце-скрембл":        { category: "dairy",   kcal: 148, protein: 10,  fat: 11,   carbs: 1,    fiber: 0,   price: "12–18 грн/шт"          },
@@ -63,7 +59,6 @@ export const PRODUCT_INFO: Record<string, ProductInfo> = {
 
   // ── Овочі ────────────────────────────────────────────────
   "Помідор":             { category: "veggies", kcal: 18,  protein: 0.9, fat: 0.2,  carbs: 3.9,  fiber: 1.2, price: "150–250 грн/кг"        },
-  "Томат":               { category: "veggies", kcal: 18,  protein: 0.9, fat: 0.2,  carbs: 3.9,  fiber: 1.2, price: "150–250 грн/кг"        },
   "Мікс овочей":         { category: "veggies", kcal: 40,  protein: 1.5, fat: 0.2,  carbs: 7,    fiber: 2.5, price: "180–280 грн/кг"        },
   "Огірок":              { category: "veggies", kcal: 15,  protein: 0.7, fat: 0.1,  carbs: 3,    fiber: 0.5, price: "120–220 грн/кг"        },
   "Маринований огірок":  { category: "veggies", kcal: 11,  protein: 0.7, fat: 0.1,  carbs: 2.2,  fiber: 1.0, price: "150–250 грн/700г"      },
@@ -105,7 +100,6 @@ export const PRODUCT_INFO: Record<string, ProductInfo> = {
   "Олія":                { category: "spices",  kcal: 884, protein: 0,   fat: 100,  carbs: 0,    fiber: 0,   price: "150–240 грн/л"         },
   "Олія оливкова":       { category: "spices",  kcal: 884, protein: 0,   fat: 100,  carbs: 0,    fiber: 0,   price: "450–750 грн/500мл"     },
   "Арахіс смажений":     { category: "spices",  kcal: 585, protein: 26,  fat: 49,   carbs: 16,   fiber: 8.5, price: "220–350 грн/500г"      },
-  "Арахіс":              { category: "spices",  kcal: 567, protein: 26,  fat: 49,   carbs: 16,   fiber: 8.5, price: "190–320 грн/500г"      },
   "Гірчиця":             { category: "spices",  kcal: 66,  protein: 3.7, fat: 3,    carbs: 6,    fiber: 3.3, price: "65–110 грн/200г"       },
   "Паприка":             { category: "spices",  kcal: 282, protein: 14,  fat: 13,   carbs: 54,   fiber: 34.9, price: "85–145 грн/100г"       },
   "Орегано":             { category: "spices",  kcal: 265, protein: 9,   fat: 4,    carbs: 69,   fiber: 42.5, price: "65–120 грн/20г"        },

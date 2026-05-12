@@ -5,6 +5,7 @@ import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { FoodProduct, PriceSource, NutritionSource, ProductStatus } from "@/app/generated/prisma"
 import type { Store } from "../constants/stores"
 import { invalidateFoodCache } from "@/lib/revalidate"
+import { createProductSchema } from "../schemas"
 
 interface CreateProductData {
   name: string
@@ -183,6 +184,133 @@ export async function unifiedSearchProducts(query: string): Promise<ActionResult
     }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to search" }
+  }
+}
+
+interface ImportResult {
+  imported: number
+  updated: number
+  errors: string[]
+}
+
+export async function importProductsFromJson(json: string): Promise<ActionResult<ImportResult>> {
+  try {
+    const userId = await getRequiredUserId()
+    let parsed: unknown[]
+    try {
+      parsed = JSON.parse(json)
+    } catch {
+      return { success: false, error: "Invalid JSON format" }
+    }
+    if (!Array.isArray(parsed)) {
+      return { success: false, error: "JSON must be an array of products" }
+    }
+
+    const result: ImportResult = { imported: 0, updated: 0, errors: [] }
+
+    for (let i = 0; i < parsed.length; i++) {
+      const item = parsed[i]
+      const validation = createProductSchema.safeParse(item)
+      if (!validation.success) {
+        const name = (item as Record<string, unknown>)?.name ?? `item ${i + 1}`
+        result.errors.push(`${name}: ${validation.error.issues.map((e) => e.message).join(", ")}`)
+        continue
+      }
+
+      const data = validation.data
+      const existing = await prisma.foodProduct.findFirst({
+        where: {
+          userId,
+          name: { equals: data.name, mode: "insensitive" },
+        },
+      })
+
+      if (existing) {
+        const updateData: Record<string, unknown> = {}
+        if (data.caloriesPer100 !== existing.caloriesPer100) updateData.caloriesPer100 = data.caloriesPer100
+        if (data.proteinPer100 !== existing.proteinPer100) updateData.proteinPer100 = data.proteinPer100
+        if (data.fatPer100 !== existing.fatPer100) updateData.fatPer100 = data.fatPer100
+        if (data.carbsPer100 !== existing.carbsPer100) updateData.carbsPer100 = data.carbsPer100
+        if (data.fiberPer100 !== existing.fiberPer100) updateData.fiberPer100 = data.fiberPer100
+        if (data.unit !== existing.unit) updateData.unit = data.unit
+        if (data.standardPackageAmount !== existing.standardPackageAmount) updateData.standardPackageAmount = data.standardPackageAmount
+        if (data.category !== existing.category) updateData.category = data.category
+        if (data.price !== undefined && data.price !== existing.price) {
+          updateData.price = data.price
+          updateData.priceUpdatedAt = new Date()
+        }
+        if (data.stores && JSON.stringify(data.stores) !== JSON.stringify(existing.stores ?? [])) {
+          updateData.stores = data.stores
+        }
+
+        if (Object.keys(updateData).length > 0) {
+          await prisma.foodProduct.update({
+            where: { id: existing.id },
+            data: updateData,
+          })
+          result.updated++
+        }
+      } else {
+        await prisma.foodProduct.create({
+          data: {
+            userId,
+            name: data.name,
+            caloriesPer100: data.caloriesPer100,
+            proteinPer100: data.proteinPer100,
+            fatPer100: data.fatPer100,
+            carbsPer100: data.carbsPer100,
+            fiberPer100: data.fiberPer100,
+            unit: data.unit,
+            standardPackageAmount: data.standardPackageAmount,
+            price: data.price ?? 0,
+            category: data.category,
+            stores: data.stores ?? [],
+            nutritionSource: NutritionSource.MANUAL,
+            priceSource: PriceSource.MANUAL,
+            priceUpdatedAt: data.price ? new Date() : null,
+          },
+        })
+        result.imported++
+      }
+    }
+
+    if (result.imported > 0 || result.updated > 0) {
+      invalidateFoodCache(userId)
+    }
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to import products" }
+  }
+}
+
+export async function exportProducts(): Promise<ActionResult<string>> {
+  try {
+    const userId = await getRequiredUserId()
+    const products = await prisma.foodProduct.findMany({
+      where: {
+        OR: [{ userId }, { userId: null }],
+        status: ProductStatus.ACTIVE,
+      },
+      orderBy: { name: "asc" },
+    })
+
+    const json = products.map(p => ({
+      name: p.name,
+      caloriesPer100: p.caloriesPer100,
+      proteinPer100: p.proteinPer100,
+      fatPer100: p.fatPer100,
+      carbsPer100: p.carbsPer100,
+      fiberPer100: p.fiberPer100,
+      unit: p.unit,
+      standardPackageAmount: p.standardPackageAmount,
+      category: p.category,
+      price: p.price ?? undefined,
+      stores: (p as FoodProduct & { stores?: Store[] }).stores ?? [],
+    }))
+
+    return { success: true, data: JSON.stringify(json, null, 2) }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to export products" }
   }
 }
 

@@ -3,11 +3,13 @@
 import { prisma } from "@/lib/prisma";
 import webpush from "web-push";
 
-webpush.setVapidDetails(
-  "mailto:hanmaster05@gmail.com",
-  (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "").trim(),
-  (process.env.VAPID_PRIVATE_KEY || "").trim()
-);
+if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  webpush.setVapidDetails(
+    "mailto:hanmaster05@gmail.com",
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY.trim(),
+    process.env.VAPID_PRIVATE_KEY.trim()
+  );
+}
 
 type PushSub = { endpoint: string; p256dh: string; auth: string };
 

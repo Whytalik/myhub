@@ -25,6 +25,27 @@
   --text-xs:      0.8125rem;
   --text-body:    0.875rem;
   --text-base:    0.8125rem;
+
+  /* Sidebar font sizes */
+  --text-sidebar-label: 0.875rem;
+  --text-sidebar-sub: 0.8125rem;
+  --text-sidebar-badge: 0.5625rem;
+  --text-sidebar-title: 1.125rem;
+  --text-sidebar-subtitle: 0.625rem;
+  --text-sidebar-user: 0.875rem;
+  --text-sidebar-user-label: 0.6875rem;
+  --text-sidebar-avatar: 0.8125rem;
+
+  /* Settings modal font sizes */
+  --text-settings-item: 0.875rem;
+  --text-settings-tab: 0.875rem;
+  --text-settings-version: 0.5625rem;
+  --text-settings-heading: 0.5625rem;
+  --text-settings-input: 0.875rem;
+
+  /* Domain header font sizes */
+  --text-header-logo: 0.875rem;
+  --text-header-domain: 0.75rem;
 }
 
 /* Light Theme Variables */

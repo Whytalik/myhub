@@ -1,3 +1,36 @@
+## [2026-05-12] JSON Import/Export for Products + Data Deduplication
+
+Додано можливість імпорту/експорту продуктів у JSON форматі та очищено дані від дублікатів.
+
+- **Server Actions**: Додано `importProductsFromJson` (upsert by name, partial update) та `exportProducts` у `products.ts`.
+- **UI**: Додано кнопки `Import JSON` / `Export JSON` в toolbar ProductLibrary + модальне вікно з drag-and-drop підтримкою.
+- **Data**: Створено `src/features/nutrition/data/products.json` — ~94 продукти з правильними категоріями, одиницями виміру та цінами.
+- **Deduplication**: Видалено 6 дублікатів з `product-info.ts` (Яйце/Яйця, Тунець/Тунець у вл. соку, Яловичий фарш ×2, Томат/Помідор, Арахіс/Арахіс смажений, Курка/Куряче філе).
+- **Verification**:
+    - [ ] Logic implemented
+    - [ ] UI updated
+    - [ ] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
+## [2026-05-12] Ingredient Updates & Tabular Visual Plan
+
+Оновлено інгредієнти та впроваджено табличне відображення для візуального плану.
+
+- **Ingredients**:
+    - **Bowl (Зібраний Боул)**: Замінено тунець на смажений курячий фарш та курячі серця.
+    - **No Chickpeas**: Нут видалено з усіх варіантів страв (Суп, Рагу).
+    - **Toasts**: Повернуто тости з тунцем (реверт попередньої зміни).
+- **Visual Plan UI**:
+    - **Tabular Breakdown**: Всі списки продуктів у тижневому розкладі замінено на таблиці з колонками "Продукт", "Віталій" (В) та "Олеся" (О).
+    - **Fast Food**: Розділ Fast Food тепер також використовує табличний вигляд для порцій "В" та "О".
+- **Verification**: 
+    - [x] Logic implemented (Constants updated)
+    - [x] UI updated (Tabular layouts in WeeklySchedule and VisualPlanPage)
+    - [x] Verified with `pnpm tsc --noEmit` (Success)
+
+---
+
 ## [2026-05-12] Fiber Data for Visual Plan
 
 Додано дані про клітковину для всіх продуктів у `PRODUCT_INFO` для візуального плану.

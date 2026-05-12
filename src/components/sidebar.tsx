@@ -250,7 +250,7 @@ export function Sidebar({
                 style={{ pointerEvents: isExpanded ? "auto" : "none" }}
               >
                 <span
-                  className="text-[13px] font-bold whitespace-nowrap"
+                  className="text-[var(--text-sidebar-label)] font-bold whitespace-nowrap"
                   style={{ color: color.text }}
                 >
                   {item.label}
@@ -259,7 +259,7 @@ export function Sidebar({
                   <Lock size={10} className="text-muted/30 shrink-0" />
                 )}
                 {isExpanded && item.status !== "disabled" && (
-                  <span className={`text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
+                    <span className={`text-[var(--text-sidebar-badge)] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
                     {statusBadge.label}
                   </span>
                 )}
@@ -337,7 +337,7 @@ export function Sidebar({
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-lg text-[12px] transition-colors duration-200 ${
+                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-lg text-[var(--text-sidebar-sub)] transition-colors duration-200 ${
                               isSubActive
                                 ? "font-bold"
                                 : "text-muted hover:text-[var(--hover-text)] hover:bg-[var(--hover-bg)]"
@@ -414,8 +414,8 @@ export function Sidebar({
                   transition={LABEL_TRANSITION}
                   className="flex flex-col overflow-hidden whitespace-nowrap"
                 >
-                  <h1 className="text-base font-black text-text tracking-tighter leading-none">MYHUB</h1>
-                  <p className="text-[9px] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
+                  <h1 className="text-[var(--text-sidebar-title)] font-black text-text tracking-tighter leading-none">MYHUB</h1>
+                  <p className="text-[var(--text-sidebar-subtitle)] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -501,7 +501,7 @@ export function Sidebar({
             <>
               <Link href="/profile" className="flex items-center gap-4 group/profile-link">
                 <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0 group-hover/profile-link:scale-105 transition-transform duration-200 shadow-lg shadow-accent/5">
-                  <span className="text-accent text-[12px] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
+                  <span className="text-accent text-[var(--text-sidebar-avatar)] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
 
                 <AnimatePresence initial={false}>
@@ -513,8 +513,8 @@ export function Sidebar({
                       transition={LABEL_TRANSITION}
                       className="flex flex-col overflow-hidden whitespace-nowrap"
                     >
-                      <p className="text-[13px] font-bold text-text truncate leading-none mb-1">{user.name}</p>
-                      <p className="text-[10px] text-muted truncate font-mono uppercase tracking-widest">User</p>
+                      <p className="text-[var(--text-sidebar-user)] font-bold text-text truncate leading-none mb-1">{user.name}</p>
+                      <p className="text-[var(--text-sidebar-user-label)] text-muted truncate font-mono uppercase tracking-widest">User</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

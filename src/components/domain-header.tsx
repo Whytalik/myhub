@@ -46,7 +46,7 @@ export function DomainHeader() {
             <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
               <Sparkles size={16} className="text-bg" fill="currentColor" />
             </div>
-            <span className="text-sm font-black tracking-tighter uppercase leading-none">MYHUB</span>
+            <span className="text-[var(--text-header-logo)] font-black tracking-tighter uppercase leading-none">MYHUB</span>
           </Link>
 
           <button 
@@ -83,7 +83,7 @@ export function DomainHeader() {
                     isLocked ? "text-muted" : isActive ? "text-accent" : "text-muted group-hover:text-text"
                   }`} 
                 />
-                <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 ${
+                <span className={`text-[var(--text-header-domain)] font-bold uppercase tracking-widest transition-colors duration-300 ${
                   isLocked ? "text-muted" : isActive ? "text-text" : "text-muted"
                 }`}>
                   {domain.label}

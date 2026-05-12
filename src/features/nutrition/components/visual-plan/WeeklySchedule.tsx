@@ -9,8 +9,6 @@ import { SAUCES } from "../../constants/sauces";
 
 const YOU_KCAL_TARGET = 1700;
 const HER_KCAL_TARGET = 2300;
-const YOU_FIBER_TARGET = 38;
-const HER_FIBER_TARGET = 25;
 
 function isSauceOrSpice(product: string): boolean {
   // Тільки ті, що є у списку готових соусів/маринадів
@@ -44,36 +42,20 @@ function calcMealKcal(
   return Math.round(total);
 }
 
-function calcMealFiber(
-  variant: (typeof MEAL_VARIANTS)[string][number],
-  who: "you" | "her",
-  day: string,
-  mealType: string,
-  productChoices: Record<string, string>
-): number {
-  let total = 0;
-  variant.products.forEach((p, pIdx) => {
-    const grams = who === "you" ? p.youGrams : p.herGrams;
-    if (grams <= 0) return;
-    const resolvedName = productChoices[`${day}-${mealType}-${pIdx}`] ?? p.name;
-    const info = PRODUCT_INFO[resolvedName];
-    if (info) total += (info.fiber * grams) / 100;
-  });
-  return total;
-}
-
 export const WeeklySchedule = () => {
   const [selectedFfId, setSelectedFfId] = useState<string | null>(null);
   const [productChoices, setProductChoices] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const savedFf = localStorage.getItem(FF_STORAGE_KEY);
-    if (savedFf) setSelectedFfId(savedFf);
-
     const savedChoices = localStorage.getItem(CHOICES_STORAGE_KEY);
-    if (savedChoices) {
-      try { setProductChoices(JSON.parse(savedChoices)); } catch {}
-    }
+
+    Promise.resolve().then(() => {
+      if (savedFf) setSelectedFfId(savedFf);
+      if (savedChoices) {
+        try { setProductChoices(JSON.parse(savedChoices)); } catch {}
+      }
+    });
 
     const ffHandler = (e: Event) => setSelectedFfId((e as CustomEvent<string | null>).detail);
     const choicesHandler = (e: Event) => setProductChoices((e as CustomEvent<Record<string, string>>).detail);
@@ -163,16 +145,34 @@ export const WeeklySchedule = () => {
                                 <span className="text-lg leading-none">{selectedFf.icon}</span>
                                 <span className="text-xs font-bold text-[#f7a948]">{selectedFf.name}</span>
                               </div>
-                              <ul className="flex flex-col gap-1 mb-2">
-                                {selectedFf.items.filter((i) => !i.isBase).map((i) => (
-                                  <li key={i.name} className="text-xs text-gray-300 leading-tight flex items-start gap-1.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#f7a948]/50 mt-1 shrink-0" />{i.name}
-                                  </li>
-                                ))}
-                                {selectedFf.baseName && (
-                                  <li className="text-[10px] text-[#f7a948]/60 italic mt-1">+ {selectedFf.baseName}</li>
-                                )}
-                              </ul>
+                              <table className="w-full text-left border-separate border-spacing-y-1 mb-2">
+                                <thead>
+                                  <tr className="text-[7px] uppercase text-[#f7a948]/40 tracking-widest">
+                                    <th className="font-normal pb-0.5">Продукт</th>
+                                    <th className="font-normal pb-0.5 text-right w-8">В</th>
+                                    <th className="font-normal pb-0.5 text-right w-8">О</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {selectedFf.items.filter((i) => !i.isBase).map((i) => (
+                                    <tr key={i.name}>
+                                      <td className="align-top py-0.5 text-[10px] text-gray-300 leading-tight">
+                                        <div className="flex items-start gap-1">
+                                          <span className="w-1 h-1 rounded-full bg-[#f7a948]/30 mt-1 shrink-0" />
+                                          {i.name}
+                                        </div>
+                                      </td>
+                                      <td className="text-[9px] text-gray-500 text-right align-top py-0.5 tabular-nums">1п</td>
+                                      <td className="text-[9px] text-gray-500 text-right align-top py-0.5 tabular-nums">1п</td>
+                                    </tr>
+                                  ))}
+                                  {selectedFf.baseName && (
+                                    <tr>
+                                      <td colSpan={3} className="text-[9px] text-[#f7a948]/60 italic pt-1">+ {selectedFf.baseName}</td>
+                                    </tr>
+                                  )}
+                                </tbody>
+                              </table>
                             </>
                           ) : (
                             <div className="text-xs font-mono text-[#f7a948]/60 mb-2">🍔 Обрати варіант</div>
@@ -215,91 +215,84 @@ export const WeeklySchedule = () => {
                       <td key={cell.type} className="p-3 px-4 border border-[#4a4d65] bg-[#1e2130] rounded-lg align-top">
                         <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#3e4158]">
                           <span className="text-lg leading-none">{activeVariant.icon}</span>
-                          <span className="text-xs font-bold text-white">{activeVariant.name}</span>
+                          <span className="text-xs font-bold text-white uppercase tracking-tight">{activeVariant.name}</span>
                         </div>
 
-                        <div className="mb-2 flex flex-col gap-1.5">
-                          {main.map(({ p, idx }) => {
-                            const allOpts = [p.name, ...(p.alts ?? [])];
-                            const selectedProd = productChoices[`${row.day}-${mealType}-${idx}`] ?? p.name;
+                        <div className="mb-2">
+                          <table className="w-full text-left border-separate border-spacing-y-1">
+                            <thead>
+                              <tr className="text-[7px] uppercase text-muted/60 tracking-widest">
+                                <th className="font-normal pb-0.5">Продукт</th>
+                                <th className="font-normal pb-0.5 text-right w-8">В</th>
+                                <th className="font-normal pb-0.5 text-right w-8">О</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {main.map(({ p, idx }) => {
+                                const allOpts = [p.name, ...(p.alts ?? [])];
+                                const selectedProd = productChoices[`${row.day}-${mealType}-${idx}`] ?? p.name;
 
-                            if (allOpts.length === 1) {
-                              return (
-                                <div key={idx} className="text-xs text-gray-200 leading-tight flex items-start gap-1.5">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-white/30 mt-1 shrink-0" />
-                                  <span className="flex-1">{selectedProd}</span>
-                                  <span className="text-[10px] text-gray-400 ml-auto whitespace-nowrap">
-                                    {p.youGrams}г / {p.herGrams}г
-                                  </span>
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <div key={idx} className="flex items-start gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white/30 mt-1 shrink-0" />
-                                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                                  <div className="flex flex-wrap gap-1">
-                                    {allOpts.map((opt) => (
-                                      <button
-                                        key={opt}
-                                        onClick={() => selectProductAlt(row.day, mealType, idx, opt)}
-                                        className={`text-[10px] px-1.5 py-0.5 rounded transition-colors leading-none ${
-                                          selectedProd === opt ? style.active : style.inactive
-                                        }`}
-                                      >
-                                        {opt}
-                                      </button>
-                                    ))}
-                                  </div>
-                                  <span className="text-[10px] text-gray-500 pl-0.5">
-                                    {p.youGrams}г / {p.herGrams}г
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })}
+                                return (
+                                  <tr key={idx} className="group">
+                                    <td className="align-top py-0.5">
+                                      {allOpts.length === 1 ? (
+                                        <div className="text-[10px] text-gray-200 leading-tight flex items-start gap-1">
+                                          <span className="w-1 h-1 rounded-full bg-white/20 mt-1 shrink-0" />
+                                          <span className="flex-1">{selectedProd}</span>
+                                        </div>
+                                      ) : (
+                                        <div className="flex flex-col gap-1">
+                                          <div className="flex flex-wrap gap-1">
+                                            {allOpts.map((opt) => (
+                                              <button
+                                                key={opt}
+                                                onClick={() => selectProductAlt(row.day, mealType, idx, opt)}
+                                                className={`text-[9px] px-1.5 py-0.5 rounded transition-colors leading-none border ${
+                                                  selectedProd === opt 
+                                                    ? `${style.active} border-transparent` 
+                                                    : "bg-white/5 text-gray-400 border-white/10 hover:bg-white/10"
+                                                }`}
+                                              >
+                                                {opt}
+                                              </button>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      )}
+                                    </td>
+                                    <td className="text-[9px] text-gray-400 text-right align-top py-1 tabular-nums">
+                                      {p.youGrams > 0 ? `${p.youGrams}г` : "—"}
+                                    </td>
+                                    <td className="text-[9px] text-gray-400 text-right align-top py-1 tabular-nums">
+                                      {p.herGrams > 0 ? `${p.herGrams}г` : "—"}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
                         </div>
 
                         {sauces.length > 0 && (
-                          <>
-                            <div className="flex items-center gap-1 mt-1 mb-1">
-                              <span className="text-xs leading-none">🫙</span>
-                              <div className="flex-1 h-px bg-[#3e4158]" />
-                            </div>
+                          <div className="mt-2 pt-1 border-t border-[#3e4158]/50">
                             <div className="flex flex-col gap-1">
                               {sauces.map(({ p, idx }) => {
                                 const allOpts = [p.name, ...(p.alts ?? [])];
                                 const selectedProd = productChoices[`${row.day}-${mealType}-${idx}`] ?? p.name;
                                 const icon = spiceIcon(p.name);
 
-                                if (allOpts.length === 1) {
-                                  return (
-                                    <div key={idx} className="text-xs text-gray-400 leading-tight flex items-start gap-1.5">
-                                      {icon ? (
-                                        <span className="leading-none mt-px shrink-0">{icon}</span>
-                                      ) : (
-                                        <span className="w-1 h-1 rounded-full bg-white/10 mt-1.5 shrink-0" />
-                                      )}
-                                      <span className="flex-1">{selectedProd}</span>
-                                    </div>
-                                  );
-                                }
-
                                 return (
                                   <div key={idx} className="flex items-start gap-1.5">
-                                    {icon ? (
-                                      <span className="leading-none mt-px shrink-0">{icon}</span>
-                                    ) : (
-                                      <span className="w-1 h-1 rounded-full bg-white/10 mt-1.5 shrink-0" />
-                                    )}
+                                    <span className="text-[10px] leading-none mt-0.5 shrink-0 opacity-60">
+                                      {icon || "•"}
+                                    </span>
                                     <div className="flex flex-wrap gap-1 flex-1 min-w-0">
                                       {allOpts.map((opt) => (
                                         <button
                                           key={opt}
                                           onClick={() => selectProductAlt(row.day, mealType, idx, opt)}
-                                          className={`text-[10px] px-1.5 py-0.5 rounded transition-colors leading-none ${
-                                            selectedProd === opt ? style.active : style.inactive
+                                          className={`text-[9px] px-1.5 py-0.5 rounded transition-colors leading-none ${
+                                            selectedProd === opt ? style.active : "text-gray-500 hover:text-gray-300"
                                           }`}
                                         >
                                           {opt}
@@ -310,7 +303,7 @@ export const WeeklySchedule = () => {
                                 );
                               })}
                             </div>
-                          </>
+                          </div>
                         )}
                       </td>
                     );

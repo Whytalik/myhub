@@ -59,7 +59,6 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
   // Re-calculate when content height changes (e.g. after portal render)
   useEffect(() => {
     if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       updateCoords();
     }
   }, [isOpen, updateCoords]);

@@ -186,7 +186,7 @@ function SortableItem({
         <div className={`p-1.5 rounded-lg border transition-colors ${isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"}`}>
           <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} style={{ color: isDragging ? undefined : color }} strokeWidth={2.5} />
         </div>
-        <span className={`flex-1 text-sm font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
+        <span className={`flex-1 text-[var(--text-settings-item)] font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
         <ChevronDown size={14} className={`text-muted transition-transform duration-300 ${isSelected ? "rotate-180 text-accent" : ""}`} />
       </div>
 
@@ -500,7 +500,7 @@ export function SettingsModal({
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold transition-all ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[var(--text-settings-tab)] font-bold transition-all ${
                   activeTab === tab.id ? "bg-accent text-bg shadow-sm" : "text-muted hover:text-text hover:bg-raised/80"
                 }`}
               >
@@ -509,7 +509,7 @@ export function SettingsModal({
               </button>
             ))}
             <div className="mt-auto p-2 text-center">
-              <span className="text-[8px] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
+              <span className="text-[var(--text-settings-version)] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
             </div>
           </div>
 
@@ -524,11 +524,11 @@ export function SettingsModal({
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
+                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-caption font-bold uppercase text-muted">Display Name</label>
                       <div className="flex gap-2">
-                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-[var(--text-settings-input)] outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
                         <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-caption font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                         </button>
@@ -537,7 +537,7 @@ export function SettingsModal({
                   </section>
 
                   <section>
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3 flex items-center gap-2">
+                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3 flex items-center gap-2">
                       <Lock size={12} /> Private Tasks
                     </h4>
                     <div className="flex flex-col gap-1.5">
@@ -545,7 +545,7 @@ export function SettingsModal({
                       <div className="flex gap-2">
                         <input 
                           type="password"
-                          className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-sm outline-none transition-all text-text focus:border-accent/40" 
+                          className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-[var(--text-settings-input)] outline-none transition-all text-text focus:border-accent/40" 
                           value={privatePassword} 
                           onChange={(e) => setPrivatePassword(e.target.value)} 
                           placeholder="Set password to hide tasks"
@@ -562,7 +562,7 @@ export function SettingsModal({
               {activeTab === "appearance" && (
                 <div className="space-y-5 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
+                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
                     <div className="grid grid-cols-2 gap-2">
                        <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
                           <div className="flex items-center gap-2"><Moon size={14} /><span className="text-caption font-bold uppercase">Dark</span></div>
@@ -580,7 +580,7 @@ export function SettingsModal({
               {activeTab === "domains" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
+                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
                     {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
@@ -616,7 +616,7 @@ export function SettingsModal({
               {activeTab === "spaces" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
+                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
                     {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
@@ -651,7 +651,7 @@ export function SettingsModal({
 
               {activeTab === "data" && (
                 <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
-                  <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
+                  <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
                   <div className="grid grid-cols-1 gap-2">
                      <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
                         <div><h5 className="text-note font-bold">Export JSON</h5><p className="text-label text-muted">Complete backup.</p></div>
@@ -676,7 +676,7 @@ export function SettingsModal({
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
                     <div className="flex justify-between items-center mb-3">
-                       <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-accent font-bold">Push Notifications</h4>
+                       <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Push Notifications</h4>
                        {deviceCount > 0 && (
                          <span className="text-label font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
                            {deviceCount} Linked Device{deviceCount > 1 ? 's' : ''}

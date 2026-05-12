@@ -2,14 +2,15 @@
 
 import { useState, useTransition, useMemo, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { Search, Trash2, Plus, Edit2, Loader2, Download } from "lucide-react";
+import { Search, Trash2, Plus, Edit2, Loader2, Download, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Select } from "@/components/ui/select";
 import { Tabs } from "@/components/ui/tabs";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
-import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts } from "../actions/products";
+import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts, exportProducts } from "../actions/products";
+import { JsonImportModal } from "./JsonImportModal";
 import type { Store } from "../constants/stores";
 import { STORE_META, ALL_STORES } from "../constants/stores";
 
@@ -69,6 +70,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [selectedTab, setSelectedTab] = useState("ALL");
+  const [showImportModal, setShowImportModal] = useState(false);
 
   // Debounced unified search
   useEffect(() => {
@@ -226,6 +228,26 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     });
   };
 
+  const handleExport = async () => {
+    const result = await exportProducts();
+    if (result.success) {
+      const blob = new Blob([result.data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nutrition-products.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Products exported");
+    } else {
+      toast.error(result.error || "Export failed");
+    }
+  };
+
+  const handleImported = () => {
+    setShowImportModal(false);
+  };
+
   const sourceLabel = (source: NutritionSource) => {
     switch (source) {
       case NutritionSource.OPENFOODFACTS: return "OFF";
@@ -297,7 +319,6 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     );
     Card.displayName = "ProductCard";
     return Card;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isSearchMode = searchQuery.trim().length >= 2;
@@ -319,9 +340,17 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="primary" size="sm" className="rounded-xl" onClick={openCreateForm}>
-          <Plus size={14} className="mr-1.5" /> Add Product
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" className="rounded-xl" onClick={() => setShowImportModal(true)}>
+            <Upload size={14} className="mr-1.5" /> Import JSON
+          </Button>
+          <Button variant="outline" size="sm" className="rounded-xl" onClick={handleExport}>
+            <Download size={14} className="mr-1.5" /> Export JSON
+          </Button>
+          <Button variant="primary" size="sm" className="rounded-xl" onClick={openCreateForm}>
+            <Plus size={14} className="mr-1.5" /> Add Product
+          </Button>
+        </div>
       </div>
 
       {/* Search results panel */}
@@ -550,6 +579,12 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
       >
         <p>You are about to delete <strong>{productToDelete?.name}</strong>.</p>
       </Dialog>
+
+      <JsonImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImported={handleImported}
+      />
     </div>
   );
 }

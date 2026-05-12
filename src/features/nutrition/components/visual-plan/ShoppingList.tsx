@@ -76,7 +76,6 @@ function buildProductTotals(
         if (grams <= 0) return;
 
         const info = PRODUCT_INFO[resolvedName];
-        const category = info?.category ?? "spices";
 
         const existing = map.get(resolvedName) ?? { totalGrams: 0, totalPrice: 0, info };
         existing.totalGrams += grams;
@@ -189,12 +188,14 @@ export function ShoppingList() {
 
   useEffect(() => {
     const savedFf = localStorage.getItem(FF_STORAGE_KEY);
-    if (savedFf) setSelectedFfId(savedFf);
-
     const savedChoices = localStorage.getItem(CHOICES_STORAGE_KEY);
-    if (savedChoices) {
-      try { setProductChoices(JSON.parse(savedChoices)); } catch {}
-    }
+    
+    Promise.resolve().then(() => {
+      if (savedFf) setSelectedFfId(savedFf);
+      if (savedChoices) {
+        try { setProductChoices(JSON.parse(savedChoices)); } catch {}
+      }
+    });
 
     const ffHandler = (e: Event) => setSelectedFfId((e as CustomEvent<string | null>).detail);
     const choicesHandler = (e: Event) => setProductChoices((e as CustomEvent<Record<string, string>>).detail);
