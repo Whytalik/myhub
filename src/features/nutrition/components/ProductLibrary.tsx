@@ -244,7 +244,8 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     }
   };
 
-  const handleImported = () => {
+  const handleImported = (newProducts: FoodProduct[]) => {
+    setProducts(newProducts);
     setShowImportModal(false);
   };
 

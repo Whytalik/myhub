@@ -1,3 +1,17 @@
+## [2026-05-12] Protein Optimization & Calorie Strictness
+
+Оптимізовано споживання білка для Олесі та підтверджено суворий ліміт калорій для Віталія.
+
+- **Constants**: Оновлено `MEAL_VARIANTS` у `src/features/nutrition/constants/meal-variants.ts`:
+    - **Олеся**: Збільшено порції білкових продуктів (куряче філе, яйця, сир, тунець) у всіх прийомах їжі для досягнення цілі ~95г білка на день.
+    - **Віталій**: Порції залишено без змін для суворого дотримання ліміту 1700 ккал у дні залу.
+- **Visual Plan**: Підтверджено стратегію домашнього фаст-фуду (High Protein quality) та самостійного контролю гідратації.
+- **Verification**: 
+    - [x] Logic implemented (Portions updated)
+    - [x] Verified with `pnpm tsc --noEmit` (Success)
+
+---
+
 ## [2026-05-12] JSON Import/Export for Products + Data Deduplication
 
 Додано можливість імпорту/експорту продуктів у JSON форматі та очищено дані від дублікатів.

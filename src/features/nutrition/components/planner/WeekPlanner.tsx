@@ -103,19 +103,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [productWeight, setProductWeight] = useState("100")
 
-  const tabs = useMemo(() => weekPlan.days.map((day) => {
-    const dateStr = format(new Date(day.date), "yyyy-MM-dd")
-    const dayName = format(new Date(day.date), "EEE")
-    const dayNum = format(new Date(day.date), "d")
-
-    return {
-      id: dateStr,
-      label: `${dayName} ${dayNum}`,
-      content: <DayContent day={day} weekPlan={weekPlan} dishes={dishes} onRemoveDish={handleRemoveDish} onAddDishClick={setPickerConfig} onAddProductClick={setProductPickerSlotId} onRemoveProduct={handleRemoveProduct} onEditWeight={handleUpdateWeight} editingEntry={editingEntry} setEditingEntry={setEditingEntry} isPending={isPending} />,
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [weekPlan.days.length, isPending])
-
   const handleAddDish = (dishId: string, isShared: boolean, weight: number) => {
     if (!pickerConfig) return
 
@@ -190,6 +177,19 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
       }
     })
   }
+
+  const tabs = useMemo(() => weekPlan.days.map((day) => {
+    const dateStr = format(new Date(day.date), "yyyy-MM-dd")
+    const dayName = format(new Date(day.date), "EEE")
+    const dayNum = format(new Date(day.date), "d")
+
+    return {
+      id: dateStr,
+      label: `${dayName} ${dayNum}`,
+      content: <DayContent day={day} weekPlan={weekPlan} dishes={dishes} onRemoveDish={handleRemoveDish} onAddDishClick={setPickerConfig} onAddProductClick={setProductPickerSlotId} onRemoveProduct={handleRemoveProduct} onEditWeight={handleUpdateWeight} editingEntry={editingEntry} setEditingEntry={setEditingEntry} isPending={isPending} />,
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [weekPlan.days.length, isPending])
 
   return (
     <div className="space-y-6">

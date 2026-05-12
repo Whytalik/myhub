@@ -42,6 +42,17 @@ function calcMealKcal(
   return Math.round(total);
 }
 
+function calcFfKcal(ff: (typeof FAST_FOOD_PICKS)[number], who: "you" | "her"): number {
+  let total = 0;
+  ff.items.forEach((p) => {
+    const grams = who === "you" ? p.youGrams : p.herGrams;
+    if (grams <= 0) return;
+    const info = PRODUCT_INFO[p.name];
+    if (info) total += (info.kcal * grams) / 100;
+  });
+  return Math.round(total);
+}
+
 export const WeeklySchedule = () => {
   const [selectedFfId, setSelectedFfId] = useState<string | null>(null);
   const [productChoices, setProductChoices] = useState<Record<string, string>>({});
@@ -111,6 +122,10 @@ export const WeeklySchedule = () => {
 
               const mealCells = MEAL_ORDER.map((type) => {
                 if (row.day === "Пт" && type === "Вечеря") {
+                  if (selectedFf) {
+                    dayYouKcal += calcFfKcal(selectedFf, "you");
+                    dayHerKcal += calcFfKcal(selectedFf, "her");
+                  }
                   return { type, isFastFood: true as const };
                 }
 

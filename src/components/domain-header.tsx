@@ -38,7 +38,7 @@ export function DomainHeader() {
   const visibleDomains = DOMAINS_CONFIG;
 
   return (
-    <header className="h-16 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
+    <header className="h-20 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
       <div className="flex items-center gap-3 w-full lg:w-auto">
         {/* Mobile: Burger + Logo */}
         <div className="flex lg:hidden items-center justify-between w-full">

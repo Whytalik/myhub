@@ -191,6 +191,7 @@ interface ImportResult {
   imported: number
   updated: number
   errors: string[]
+  products: FoodProduct[]
 }
 
 export async function importProductsFromJson(json: string): Promise<ActionResult<ImportResult>> {
@@ -206,7 +207,7 @@ export async function importProductsFromJson(json: string): Promise<ActionResult
       return { success: false, error: "JSON must be an array of products" }
     }
 
-    const result: ImportResult = { imported: 0, updated: 0, errors: [] }
+    const result: ImportResult = { imported: 0, updated: 0, errors: [], products: [] }
 
     for (let i = 0; i < parsed.length; i++) {
       const item = parsed[i]
@@ -277,6 +278,11 @@ export async function importProductsFromJson(json: string): Promise<ActionResult
     if (result.imported > 0 || result.updated > 0) {
       invalidateFoodCache(userId)
     }
+    const allProducts = await prisma.foodProduct.findMany({
+      where: { OR: [{ userId }, { userId: null }] },
+      orderBy: { name: "asc" },
+    })
+    result.products = allProducts
     return { success: true, data: result }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to import products" }

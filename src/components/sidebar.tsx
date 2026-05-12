@@ -259,7 +259,7 @@ export function Sidebar({
                   <Lock size={10} className="text-muted/30 shrink-0" />
                 )}
                 {isExpanded && item.status !== "disabled" && (
-                    <span className={`text-[var(--text-sidebar-badge)] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
+                    <span className={`text-[10px] text-[var(--text-sidebar-badge)] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
                     {statusBadge.label}
                   </span>
                 )}
@@ -399,10 +399,10 @@ export function Sidebar({
         `}
       >
         {/* Sidebar Header */}
-        <div className="shrink-0 h-16 flex items-center justify-between relative pl-5 pr-4 border-b border-border">
-          <Link href="/home" className="flex items-center gap-4 group">
-            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
-              <Sparkles size={20} className="text-bg" fill="currentColor" />
+        <div className="shrink-0 h-20 flex items-center justify-between relative pl-6 pr-5 py-4 border-b border-border">
+          <Link href="/home" className="flex items-center gap-5 group">
+            <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
+              <Sparkles size={22} className="text-bg" fill="currentColor" />
             </div>
 
             <AnimatePresence initial={false}>

@@ -6,11 +6,12 @@ import { Upload, FileJson, AlertCircle, CheckCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { importProductsFromJson } from "../actions/products";
+import { FoodProduct } from "@/app/generated/prisma";
 
 interface JsonImportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onImported: () => void;
+  onImported: (products: FoodProduct[]) => void;
 }
 
 interface ImportResult {
@@ -68,7 +69,7 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
         setResult(res.data);
         if (res.data.imported > 0 || res.data.updated > 0) {
           toast.success(`Imported: ${res.data.imported}, Updated: ${res.data.updated}`);
-          onImported();
+          onImported(res.data.products);
         } else if (res.data.errors.length > 0) {
           toast.error("No products imported. Check errors below.");
         }
