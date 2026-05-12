@@ -97,6 +97,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [activeDay, setActiveDay] = useState(0)
   const [isEditingName, setIsEditingName] = useState(false)
   const [newName, setNewName] = useState(weekPlan.name || "")
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [pickerConfig, setPickerConfig] = useState<{
     slotId: string
     person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
@@ -207,8 +208,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   }
 
   const handleDeletePlan = () => {
-    if (!confirm("Are you sure you want to delete this entire week plan? This cannot be undone.")) return
-
     startTransition(async () => {
       const result = await deleteWeekPlan(weekPlan.id)
       if (result.success) {
@@ -273,7 +272,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
           variant="ghost"
           size="sm"
           className="text-red-500 hover:text-red-600 hover:bg-red-50"
-          onClick={handleDeletePlan}
+          onClick={() => setShowDeleteDialog(true)}
           disabled={isPending}
         >
           <Trash2 className="h-4 w-4 mr-2" />
@@ -609,6 +608,24 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
             </div>
           )}
         </div>
+      </Dialog>
+
+      {/* Delete Plan Confirmation */}
+      <Dialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        title="Delete Week Plan?"
+        description="This action cannot be undone"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
+            <Button variant="danger" onClick={handleDeletePlan} disabled={isPending}>
+              {isPending ? "Deleting..." : "Delete Plan"}
+            </Button>
+          </>
+        }
+      >
+        <p>Are you sure you want to delete <strong>{weekPlan.name || "this week plan"}</strong>?</p>
       </Dialog>
     </div>
   )

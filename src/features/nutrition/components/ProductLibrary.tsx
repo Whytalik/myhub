@@ -55,6 +55,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [productToDelete, setProductToDelete] = useState<FoodProduct | null>(null);
+  const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -216,7 +217,6 @@ const handleDelete = () => {
 };
 
 const handleDeleteAll = () => {
-  if (!confirm("Are you sure you want to delete ALL your products? This action cannot be undone and will fail if products are used in dishes.")) return;
   setIsDeletingAll(true);
 
   startTransition(async () => {
@@ -225,6 +225,7 @@ const handleDeleteAll = () => {
       if (result.success) {
         setProducts((prev) => prev.filter(p => !p.userId)); // Keep global products
         toast.success("All personal products deleted");
+        setShowDeleteAllDialog(false);
       } else {
         toast.error(result.error || "Delete failed");
       }
@@ -368,7 +369,7 @@ const handleDeleteAll = () => {
             variant="ghost"
             size="sm"
             className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
-            onClick={handleDeleteAll}
+            onClick={() => setShowDeleteAllDialog(true)}
             disabled={isDeletingAll || products.filter(p => !!p.userId).length === 0}
           >
             <Trash2 size={14} className="mr-1.5" /> Delete All
@@ -610,6 +611,26 @@ const handleDeleteAll = () => {
         }
       >
         <p>You are about to delete <strong>{productToDelete?.name}</strong>.</p>
+      </Dialog>
+
+      {/* Delete All Confirmation */}
+      <Dialog
+        isOpen={showDeleteAllDialog}
+        onClose={() => setShowDeleteAllDialog(false)}
+        title="Delete ALL Products?"
+        description="This action is permanent and cannot be undone."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setShowDeleteAllDialog(false)}>Cancel</Button>
+            <Button variant="danger" onClick={handleDeleteAll} disabled={isDeletingAll}>
+              {isDeletingAll ? "Deleting..." : "Delete All Products"}
+            </Button>
+          </>
+        }
+      >
+        <p>
+          You are about to delete <strong>ALL</strong> your custom products. This action will fail if any products are currently used in dishes.
+        </p>
       </Dialog>
 
       <JsonImportModal

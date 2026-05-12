@@ -24,6 +24,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
+  const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -96,7 +97,6 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   };
 
   const handleDeleteAll = () => {
-    if (!confirm("Are you sure you want to delete ALL your dishes? This action cannot be undone.")) return;
     setIsDeletingAll(true);
 
     startTransition(async () => {
@@ -105,6 +105,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         if (result.success) {
           setDishes([]);
           toast.success("All dishes deleted");
+          setShowDeleteAllDialog(false);
         } else {
           toast.error(result.error || "Delete failed");
         }
@@ -150,7 +151,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
             variant="ghost"
             size="sm"
             className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
-            onClick={handleDeleteAll}
+            onClick={() => setShowDeleteAllDialog(true)}
             disabled={isDeletingAll || dishes.length === 0}
           >
             <Trash2 size={14} className="mr-1.5" /> Delete All
@@ -373,6 +374,35 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         <p>
           You are about to delete <strong>{dishToDelete?.name}</strong>. This
           will remove it from all meal plans.
+        </p>
+      </Dialog>
+
+      {/* Delete All Confirmation */}
+      <Dialog
+        isOpen={showDeleteAllDialog}
+        onClose={() => setShowDeleteAllDialog(false)}
+        title="Delete ALL Dishes?"
+        description="This action is permanent and cannot be undone."
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteAllDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={handleDeleteAll}
+              disabled={isDeletingAll}
+            >
+              {isDeletingAll ? "Deleting..." : "Delete All Dishes"}
+            </Button>
+          </>
+        }
+      >
+        <p>
+          You are about to delete <strong>ALL</strong> your custom recipes. This will also remove them from all existing meal plans.
         </p>
       </Dialog>
 
