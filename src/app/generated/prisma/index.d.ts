@@ -64962,7 +64962,7 @@ export namespace Prisma {
 
   export type DayPlanCreateInput = {
     id?: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -64975,7 +64975,7 @@ export namespace Prisma {
     id?: string
     userId: string
     weekPlanId?: string | null
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65008,7 +65008,7 @@ export namespace Prisma {
     id?: string
     userId: string
     weekPlanId?: string | null
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -75269,7 +75269,7 @@ export namespace Prisma {
 
   export type DayPlanCreateWithoutUserInput = {
     id?: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -75280,7 +75280,7 @@ export namespace Prisma {
   export type DayPlanUncheckedCreateWithoutUserInput = {
     id?: string
     weekPlanId?: string | null
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -78420,7 +78420,7 @@ export namespace Prisma {
 
   export type DayPlanCreateWithoutWeekPlanInput = {
     id?: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -78431,7 +78431,7 @@ export namespace Prisma {
   export type DayPlanUncheckedCreateWithoutWeekPlanInput = {
     id?: string
     userId: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -79323,7 +79323,7 @@ export namespace Prisma {
 
   export type DayPlanCreateWithoutMealSlotsInput = {
     id?: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -79335,7 +79335,7 @@ export namespace Prisma {
     id?: string
     userId: string
     weekPlanId?: string | null
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -84726,7 +84726,7 @@ export namespace Prisma {
   export type DayPlanCreateManyUserInput = {
     id?: string
     weekPlanId?: string | null
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -86178,7 +86178,7 @@ export namespace Prisma {
   export type DayPlanCreateManyWeekPlanInput = {
     id?: string
     userId: string
-    dayOfWeek: number
+    dayOfWeek?: number
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string

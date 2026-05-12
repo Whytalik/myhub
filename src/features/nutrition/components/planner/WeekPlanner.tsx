@@ -7,9 +7,10 @@ import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
+import { useRouter } from "next/navigation"
 
 const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
@@ -91,8 +92,11 @@ interface WeekPlannerProps {
 }
 
 export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [activeDay, setActiveDay] = useState(0)
+  const [isEditingName, setIsEditingName] = useState(false)
+  const [newName, setNewName] = useState(weekPlan.name || "")
   const [pickerConfig, setPickerConfig] = useState<{
     slotId: string
     person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
@@ -202,10 +206,81 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
+  const handleDeletePlan = () => {
+    if (!confirm("Are you sure you want to delete this entire week plan? This cannot be undone.")) return
+
+    startTransition(async () => {
+      const result = await deleteWeekPlan(weekPlan.id)
+      if (result.success) {
+        toast.success("Plan deleted")
+        router.push("/nutrition/plans")
+      } else {
+        toast.error(result.error || "Failed to delete plan")
+      }
+    })
+  }
+
+  const handleUpdateName = () => {
+    if (!newName.trim()) return
+    startTransition(async () => {
+      const result = await updateWeekPlanName(weekPlan.id, newName)
+      if (result.success) {
+        toast.success("Name updated")
+        setIsEditingName(false)
+      } else {
+        toast.error(result.error || "Failed to update name")
+      }
+    })
+  }
+
   const currentDay = weekPlan.days.find(d => d.dayOfWeek === activeDay)
 
   return (
     <div className="space-y-6">
+      {/* Plan Header / Controls */}
+      <div className="flex items-center justify-between gap-4 bg-raised p-4 rounded-xl border">
+        <div className="flex-1">
+          {isEditingName ? (
+            <div className="flex items-center gap-2">
+              <Input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                className="max-w-xs h-9"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleUpdateName()
+                  if (e.key === "Escape") setIsEditingName(false)
+                }}
+              />
+              <Button size="sm" onClick={handleUpdateName} disabled={isPending}>✓</Button>
+              <Button size="sm" variant="ghost" onClick={() => setIsEditingName(false)}>✕</Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 group">
+              <h3 className="font-bold text-lg">{weekPlan.name || "Week Plan"}</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={() => setIsEditingName(true)}
+              >
+                <span className="text-[10px]">EDIT</span>
+              </Button>
+            </div>
+          )}
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-red-500 hover:text-red-600 hover:bg-red-50"
+          onClick={handleDeletePlan}
+          disabled={isPending}
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete Plan
+        </Button>
+      </div>
+
       {/* Day selector */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {weekPlan.days.map((day) => (

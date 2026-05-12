@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { calculateDishStats, DishWithIngredients } from "../logic/recalculator";
-import { deleteDish, exportDishes } from "../actions/dishes";
+import { deleteDish, exportDishes, deleteAllUserDishes } from "../actions/dishes";
 import { DishImportModal } from "./DishImportModal";
 import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
@@ -24,6 +24,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
   const [, startTransition] = useTransition();
@@ -94,6 +95,27 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
     });
   };
 
+  const handleDeleteAll = () => {
+    if (!confirm("Are you sure you want to delete ALL your dishes? This action cannot be undone.")) return;
+    setIsDeletingAll(true);
+
+    startTransition(async () => {
+      try {
+        const result = await deleteAllUserDishes();
+        if (result.success) {
+          setDishes([]);
+          toast.success("All dishes deleted");
+        } else {
+          toast.error(result.error || "Delete failed");
+        }
+      } catch {
+        toast.error("Delete failed");
+      } finally {
+        setIsDeletingAll(false);
+      }
+    });
+  };
+
   const getDishCost = (dish: DishWithIngredients): number => {
     return dish.ingredients.reduce((sum, ing) => {
       const pricePer100g = ing.product.price ? ing.product.price / 100 : 0;
@@ -124,6 +146,15 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
           />
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
+            onClick={handleDeleteAll}
+            disabled={isDeletingAll || dishes.length === 0}
+          >
+            <Trash2 size={14} className="mr-1.5" /> Delete All
+          </Button>
           <Button variant="outline" size="sm" className="rounded-xl" onClick={() => setShowImportModal(true)}>
             <Upload size={14} className="mr-1.5" /> Import JSON
           </Button>

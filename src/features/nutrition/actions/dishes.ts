@@ -417,3 +417,21 @@ export async function exportDishes(): Promise<ActionResult<string>> {
     return { success: false, error: error instanceof Error ? error.message : "Failed to export dishes" }
   }
 }
+
+export async function deleteAllUserDishes(): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+    
+    // Delete all dish entries first to avoid constraint violations
+    // They are linked to meal slots which are linked to day plans
+    await prisma.dishEntry.deleteMany({
+      where: { dish: { userId } }
+    })
+
+    await prisma.dish.deleteMany({ where: { userId } })
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to delete all dishes" }
+  }
+}

@@ -44,7 +44,7 @@ export default async function PlansPage() {
             {weekPlans.map((plan) => (
               <a
                 key={plan.id}
-                href={`/nutrition/week`}
+                href={`/nutrition/week?id=${plan.id}`}
                 className="block bg-surface border border-border rounded-xl p-4 hover:border-accent/30 transition-colors"
               >
                 <h3 className="font-semibold">{plan.name || "Week Plan"}</h3>

@@ -355,3 +355,32 @@ export async function importFromOpenFoodFacts(code: string): Promise<ActionResul
     return { success: false, error: error instanceof Error ? error.message : "Failed to import product" }
   }
 }
+
+export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    // Delete dependent records first
+    await prisma.cartItem.deleteMany({
+      where: { product: { userId } }
+    })
+    await prisma.shoppingListItem.deleteMany({
+      where: { product: { userId } }
+    })
+    await prisma.productEntry.deleteMany({
+      where: { product: { userId } }
+    })
+    
+    // Note: DishIngredient will still block if Dishes exist.
+    // The user should delete dishes first.
+    
+    const { count } = await prisma.foodProduct.deleteMany({
+      where: { userId }
+    })
+    
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to delete all products. Ensure they are not used in any dishes first." }
+  }
+}

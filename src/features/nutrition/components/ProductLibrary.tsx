@@ -9,7 +9,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Select } from "@/components/ui/select";
 import { Tabs } from "@/components/ui/tabs";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
-import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts, exportProducts } from "../actions/products";
+import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts, exportProducts, deleteAllUserProducts } from "../actions/products";
 import { JsonImportModal } from "./JsonImportModal";
 import type { Store } from "../constants/stores";
 import { STORE_META, ALL_STORES } from "../constants/stores";
@@ -55,6 +55,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [productToDelete, setProductToDelete] = useState<FoodProduct | null>(null);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -192,27 +193,48 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
       }
     });
   };
+const handleDelete = () => {
+  if (!productToDelete) return;
+  setIsDeleting(true);
 
-  const handleDelete = () => {
-    if (!productToDelete) return;
-    setIsDeleting(true);
-    startTransition(async () => {
-      try {
-        const result = await deleteProduct(productToDelete.id);
-        if (result.success) {
-          setProducts(prev => prev.filter(p => p.id !== productToDelete.id));
-          toast.success("Product deleted");
-        } else {
-          toast.error(result.error || "Delete failed");
-        }
-      } catch {
-        toast.error("Delete failed");
-      } finally {
-        setIsDeleting(false);
-        setProductToDelete(null);
+  startTransition(async () => {
+    try {
+      const result = await deleteProduct(productToDelete.id);
+      if (result.success) {
+        setProducts((prev) => prev.filter((p) => p.id !== productToDelete.id));
+        toast.success("Product deleted");
+      } else {
+        toast.error(result.error || "Delete failed");
       }
-    });
-  };
+    } catch {
+      toast.error("Delete failed");
+    } finally {
+      setIsDeleting(false);
+      setProductToDelete(null);
+    }
+  });
+};
+
+const handleDeleteAll = () => {
+  if (!confirm("Are you sure you want to delete ALL your products? This action cannot be undone and will fail if products are used in dishes.")) return;
+  setIsDeletingAll(true);
+
+  startTransition(async () => {
+    try {
+      const result = await deleteAllUserProducts();
+      if (result.success) {
+        setProducts((prev) => prev.filter(p => !p.userId)); // Keep global products
+        toast.success("All personal products deleted");
+      } else {
+        toast.error(result.error || "Delete failed");
+      }
+    } catch {
+      toast.error("Delete failed");
+    } finally {
+      setIsDeletingAll(false);
+    }
+  });
+};
 
   const handleImportOFF = (code: string) => {
     setImportingCode(code);
@@ -342,6 +364,15 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
           />
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
+            onClick={handleDeleteAll}
+            disabled={isDeletingAll || products.filter(p => !!p.userId).length === 0}
+          >
+            <Trash2 size={14} className="mr-1.5" /> Delete All
+          </Button>
           <Button variant="outline" size="sm" className="rounded-xl" onClick={() => setShowImportModal(true)}>
             <Upload size={14} className="mr-1.5" /> Import JSON
           </Button>

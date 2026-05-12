@@ -802,6 +802,28 @@ export async function deleteWeekPlan(weekPlanId: string): Promise<ActionResult<v
   }
 }
 
+export async function updateWeekPlanName(
+  weekPlanId: string,
+  name: string
+): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+    const plan = await prisma.weekPlan.findUnique({ where: { id: weekPlanId } })
+    if (!plan) return { success: false, error: "Week plan not found" }
+    if (plan.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    await prisma.weekPlan.update({
+      where: { id: weekPlanId },
+      data: { name },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update week plan name" }
+  }
+}
+
 interface ImportWeekPlanResult {
   imported: boolean
   weekPlanId: string

@@ -13,12 +13,26 @@ export const metadata: Metadata = {
   title: "Week Plan",
 };
 
-export default async function WeekPage() {
+interface WeekPageProps {
+  searchParams: Promise<{ id?: string }>;
+}
+
+export default async function WeekPage({ searchParams }: WeekPageProps) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const latestPlanResult = await getLatestWeekPlan();
-  if (!latestPlanResult.success || !latestPlanResult.data) {
+  const { id: planId } = await searchParams;
+
+  let activePlanId = planId;
+
+  if (!activePlanId) {
+    const latestPlanResult = await getLatestWeekPlan();
+    if (latestPlanResult.success && latestPlanResult.data) {
+      activePlanId = latestPlanResult.data.id;
+    }
+  }
+
+  if (!activePlanId) {
     return (
       <div className="px-6 md:px-14 py-8 md:py-10">
         <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
@@ -29,10 +43,10 @@ export default async function WeekPage() {
   }
 
   const [weekPlanResult, dishesResult, productsResult, summaryResult] = await Promise.all([
-    getWeekPlan(latestPlanResult.data.id),
+    getWeekPlan(activePlanId),
     getDishesForPicker(),
     getProducts(),
-    getWeekSummary(latestPlanResult.data.id),
+    getWeekSummary(activePlanId),
   ]);
 
   const weekPlan = weekPlanResult.success ? weekPlanResult.data : null;
