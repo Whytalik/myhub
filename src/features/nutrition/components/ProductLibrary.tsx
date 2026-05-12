@@ -10,6 +10,8 @@ import { Select } from "@/components/ui/select";
 import { Tabs } from "@/components/ui/tabs";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
 import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts } from "../actions/products";
+import type { Store } from "../constants/stores";
+import { STORE_META, ALL_STORES } from "../constants/stores";
 
 interface ProductLibraryProps {
   initialProducts: FoodProduct[];
@@ -28,12 +30,13 @@ interface ProductFormData {
   standardPackageAmount: string;
   price: string;
   category: string;
+  stores: Store[];
 }
 
 const EMPTY_FORM: ProductFormData = {
   name: "", caloriesPer100: "", proteinPer100: "", fatPer100: "",
   carbsPer100: "", fiberPer100: "", unit: "GRAM", standardPackageAmount: "100",
-  price: "", category: "OTHER",
+  price: "", category: "OTHER", stores: [],
 };
 
 interface OFFProduct {
@@ -141,6 +144,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
       standardPackageAmount: String(product.standardPackageAmount),
       price: product.price ? String(product.price) : "",
       category: product.category,
+      stores: ((product as FoodProduct & { stores?: Store[] }).stores ?? []) as Store[],
     });
     setShowFormModal(true);
   };
@@ -160,6 +164,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
       standardPackageAmount: parseFloat(formData.standardPackageAmount) || 100,
       price: formData.price ? parseFloat(formData.price) : undefined,
       category: formData.category,
+      stores: formData.stores,
     };
 
     startTransition(async () => {
@@ -271,6 +276,23 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
             </span>
           </div>
         )}
+        {(() => {
+          const stores = ((product as FoodProduct & { stores?: Store[] }).stores ?? []) as Store[];
+          if (stores.length === 0) return null;
+          return (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {stores.map((s) => (
+                <span
+                  key={s}
+                  className="text-label font-mono px-1.5 py-0.5 rounded"
+                  style={{ backgroundColor: STORE_META[s].color + "1a", color: STORE_META[s].color }}
+                >
+                  {STORE_META[s].label}
+                </span>
+              ))}
+            </div>
+          );
+        })()}
       </div>
     );
     Card.displayName = "ProductCard";
@@ -479,6 +501,33 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
             <div>
               <label className="text-caption font-mono text-muted tracking-wider">Price (₴)</label>
               <Input type="number" value={formData.price} onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))} placeholder="0" />
+            </div>
+          </div>
+          <div>
+            <label className="text-caption font-mono text-muted tracking-wider block mb-2">Де купувати</label>
+            <div className="flex flex-wrap gap-2">
+              {ALL_STORES.map((s) => {
+                const active = formData.stores.includes(s);
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setFormData(prev => ({
+                      ...prev,
+                      stores: active
+                        ? prev.stores.filter(x => x !== s)
+                        : [...prev.stores, s],
+                    }))}
+                    className="text-label font-mono px-2.5 py-1 rounded-lg border transition-all"
+                    style={active
+                      ? { backgroundColor: STORE_META[s].color + "1a", color: STORE_META[s].color, borderColor: STORE_META[s].color + "55" }
+                      : { borderColor: "var(--border)", color: "var(--muted)" }
+                    }
+                  >
+                    {STORE_META[s].label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

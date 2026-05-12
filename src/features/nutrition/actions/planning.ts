@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { calculateDishNutrition, calculateFitScore } from "@/lib/nutrition/calculations"
-import { DishEntry, Goal } from "@/app/generated/prisma"
+import { DishEntry, Goal, ProductEntry } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
 export async function createWeekPlan(
@@ -97,6 +97,17 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         isShared: boolean
         fitScore: number | null
       }[]
+      productEntries: {
+        id: string
+        productId: string
+        productName: string
+        portionWeight: number
+        kcal: number
+        protein: number
+        fat: number
+        carbs: number
+        fiber: number
+      }[]
     }[]
   }[]
 } | null>> {
@@ -125,6 +136,10 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
                       },
                     },
                   },
+                  orderBy: { createdAt: "asc" },
+                },
+                productEntries: {
+                  include: { product: true },
                   orderBy: { createdAt: "asc" },
                 },
               },
@@ -202,6 +217,33 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           }
         })
 
+        const productEntries = slot.productEntries.map((pe) => {
+          const factor = pe.portionWeight / 100
+          const kcal = pe.product.caloriesPer100 * factor
+          const protein = pe.product.proteinPer100 * factor
+          const fat = pe.product.fatPer100 * factor
+          const carbs = pe.product.carbsPer100 * factor
+          const fiber = pe.product.fiberPer100 * factor
+
+          actualKcal += kcal
+          actualProtein += protein
+          actualFat += fat
+          actualCarbs += carbs
+          actualFiber += fiber
+
+          return {
+            id: pe.id,
+            productId: pe.productId,
+            productName: pe.product.name,
+            portionWeight: pe.portionWeight,
+            kcal,
+            protein,
+            fat,
+            carbs,
+            fiber,
+          }
+        })
+
         return {
           id: slot.id,
           personId: slot.personId,
@@ -217,6 +259,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           actualFiber,
           violations,
           entries,
+          productEntries,
         }
       })
 
@@ -634,5 +677,91 @@ export async function getWeekPlans(): Promise<ActionResult<{ id: string; startDa
     return { success: true, data: plans }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to get week plans" }
+  }
+}
+
+export async function addProductToSlot(
+  slotId: string,
+  productId: string,
+  portionWeight: number
+): Promise<ActionResult<ProductEntry>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const slot = await prisma.mealSlotInstance.findUnique({
+      where: { id: slotId },
+      include: { dayPlan: true },
+    })
+    if (!slot) return { success: false, error: "Meal slot not found" }
+
+    if (slot.dayPlan.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: slot.dayPlan.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    const product = await prisma.foodProduct.findUnique({ where: { id: productId } })
+    if (!product) return { success: false, error: "Product not found" }
+
+    const entry = await prisma.productEntry.create({
+      data: { mealSlotId: slotId, productId, portionWeight },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: entry }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to add product to slot" }
+  }
+}
+
+export async function removeProductFromSlot(productEntryId: string): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const entry = await prisma.productEntry.findUnique({
+      where: { id: productEntryId },
+      include: { mealSlot: { include: { dayPlan: true } } },
+    })
+    if (!entry) return { success: false, error: "Product entry not found" }
+
+    if (entry.mealSlot.dayPlan.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: entry.mealSlot.dayPlan.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    await prisma.productEntry.delete({ where: { id: productEntryId } })
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to remove product entry" }
+  }
+}
+
+export async function updateProductEntryWeight(
+  productEntryId: string,
+  portionWeight: number
+): Promise<ActionResult<ProductEntry>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const entry = await prisma.productEntry.findUnique({
+      where: { id: productEntryId },
+      include: { mealSlot: { include: { dayPlan: true } } },
+    })
+    if (!entry) return { success: false, error: "Product entry not found" }
+
+    if (entry.mealSlot.dayPlan.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: entry.mealSlot.dayPlan.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    const updated = await prisma.productEntry.update({
+      where: { id: productEntryId },
+      data: { portionWeight },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: updated }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update product entry weight" }
   }
 }

@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { calculateDishStats, DishWithIngredients } from "../logic/recalculator";
 import { deleteDish } from "../actions/dishes";
+import type { DishType } from "../constants/dish-types";
+import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
 
 interface DishLibraryProps {
   initialDishes: DishWithIngredients[];
@@ -19,20 +21,25 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const router = useRouter();
   const [dishes, setDishes] = useState(initialDishes);
   const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [, startTransition] = useTransition();
 
   const filteredDishes = useMemo(() => {
-    if (!searchQuery.trim()) return dishes;
+    let result = dishes;
+    if (typeFilter) {
+      result = result.filter((d) => ((d as DishWithIngredients & { type?: string }).type ?? "MAIN") === typeFilter);
+    }
+    if (!searchQuery.trim()) return result;
     const q = searchQuery.toLowerCase();
-    return dishes.filter(
+    return result.filter(
       (d) =>
         d.name.toLowerCase().includes(q) ||
         (d.description && d.description.toLowerCase().includes(q)) ||
         d.ingredients.some((ing) => ing.product.name.toLowerCase().includes(q))
     );
-  }, [dishes, searchQuery]);
+  }, [dishes, searchQuery, typeFilter]);
 
   const handleCreate = () => {
     router.push("/nutrition/dishes?create=true");
@@ -104,6 +111,36 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         </Button>
       </div>
 
+      {/* Type Filter Pills */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setTypeFilter(null)}
+          className={`px-3 py-1.5 rounded-xl text-note font-mono border transition-all ${
+            !typeFilter ? "bg-accent/10 text-accent border-accent/30 font-semibold" : "border-border text-muted hover:text-text"
+          }`}
+        >
+          Всі
+        </button>
+        {DISH_TYPE_ORDER.map((t) => {
+          const meta = DISH_TYPE_META[t];
+          const active = typeFilter === t;
+          return (
+            <button
+              key={t}
+              onClick={() => setTypeFilter(active ? null : t)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-note font-mono border transition-all ${
+                active
+                  ? `${meta.bg} ${meta.color} ${meta.border} font-semibold`
+                  : "border-border text-muted hover:text-text"
+              }`}
+            >
+              <span>{meta.emoji}</span>
+              <span>{meta.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Results count */}
       {searchQuery && (
         <p className="text-note text-muted font-mono">
@@ -144,6 +181,17 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                     <Trash2 size={13} />
                   </button>
                 </div>
+
+                {/* Type Badge */}
+                {(() => {
+                  const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
+                  const meta = DISH_TYPE_META[t];
+                  return (
+                    <span className={`inline-flex items-center gap-1 text-label font-mono px-2 py-0.5 rounded-lg ${meta.bg} ${meta.color} mb-2`}>
+                      {meta.emoji} {meta.label}
+                    </span>
+                  );
+                })()}
 
                 {/* Name */}
                 <h3 className="text-base font-semibold text-text mb-1 pr-8">

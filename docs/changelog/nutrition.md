@@ -1,3 +1,15 @@
+## [2026-05-12] Fiber Data for Visual Plan
+
+Додано дані про клітковину для всіх продуктів у `PRODUCT_INFO` для візуального плану.
+
+- **Constants**: Оновлено тип `ProductInfo` та константу `PRODUCT_INFO` — додано поле `fiber` (клітковина на 100г) для всіх 100+ продуктів.
+- **Verification**: 
+    - [x] Logic implemented (Fiber values researched and added)
+    - [x] Verified with `pnpm tsc --noEmit` (0 errors)
+    - [x] Verified with `pnpm build` (Success)
+
+---
+
 ## [2026-05-05] Product Grouping & Library Tabs
 
 Додано групування продуктів по категоріях та фільтрацію через таби.

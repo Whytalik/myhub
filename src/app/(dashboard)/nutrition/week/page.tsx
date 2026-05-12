@@ -5,6 +5,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import { getWeekPlan, getLatestWeekPlan, getWeekSummary } from "@/features/nutrition/actions/planning"
 import { getDishesForPicker } from "@/features/nutrition/actions/dishes"
+import { getProducts } from "@/features/nutrition/actions/products"
 import { WeekPlanner } from "@/features/nutrition/components/planner/WeekPlanner"
 import { WeekSummary } from "@/features/nutrition/components/planner/WeekSummary"
 
@@ -27,12 +28,16 @@ export default async function WeekPage() {
     );
   }
 
-  const weekPlanResult = await getWeekPlan(latestPlanResult.data.id);
-  const dishesResult = await getDishesForPicker();
-  const summaryResult = await getWeekSummary(latestPlanResult.data.id);
+  const [weekPlanResult, dishesResult, productsResult, summaryResult] = await Promise.all([
+    getWeekPlan(latestPlanResult.data.id),
+    getDishesForPicker(),
+    getProducts(),
+    getWeekSummary(latestPlanResult.data.id),
+  ]);
 
   const weekPlan = weekPlanResult.success ? weekPlanResult.data : null;
   const dishes = dishesResult.success ? dishesResult.data : [];
+  const products = productsResult.success ? productsResult.data : [];
   const summary = summaryResult.success ? summaryResult.data : null;
 
   if (!weekPlan) {
@@ -50,7 +55,7 @@ export default async function WeekPage() {
       <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
       <Heading title="Week Plan" />
       <div className="mt-6">
-        <WeekPlanner weekPlan={weekPlan} dishes={dishes} />
+        <WeekPlanner weekPlan={weekPlan} dishes={dishes} products={products} />
       </div>
       {summary && (
         <div className="mt-8">

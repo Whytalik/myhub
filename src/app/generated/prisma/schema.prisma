@@ -124,12 +124,14 @@ model FoodProduct {
   nutritionSource       NutritionSource    @default(MANUAL)
   category              String
   status                ProductStatus      @default(ACTIVE)
+  stores                Store[]
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
   user                  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
   dishIngredients       DishIngredient[]
   cartItems             CartItem[]
   shoppingListItems     ShoppingListItem[]
+  productEntries        ProductEntry[]
 
   @@index([userId])
 }
@@ -150,6 +152,7 @@ model Dish {
   name            String
   description     String?
   servings        Int                @default(1)
+  type            DishType           @default(MAIN)
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
   user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -284,8 +287,20 @@ model MealSlotInstance {
   person           NutritionPerson  @relation(fields: [personId], references: [id], onDelete: Cascade)
   templateSlot     MealTemplateSlot @relation(fields: [templateSlotId], references: [id])
   dishEntries      DishEntry[]
+  productEntries   ProductEntry[]
 
   @@unique([dayPlanId, personId, templateSlotId])
+}
+
+model ProductEntry {
+  id            String           @id @default(uuid())
+  mealSlotId    String
+  productId     String
+  portionWeight Float
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  mealSlot      MealSlotInstance @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  product       FoodProduct      @relation(fields: [productId], references: [id])
 }
 
 model DishEntry {
@@ -913,4 +928,25 @@ enum SuggestionStatus {
 enum AIDomain {
   OPERATIONS
   HEALTH
+}
+
+enum DishType {
+  MAIN
+  SALAD
+  SOUP
+  SIDE
+  SNACK
+  SAUCE
+  MARINADE
+  BASE
+}
+
+enum Store {
+  NASHA_RYABA
+  BAZAR
+  ATB
+  SILPO
+  POLISSYA
+  METRO
+  FORA
 }

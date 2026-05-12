@@ -10,8 +10,9 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { FoodProduct, CookingMethod } from "@/app/generated/prisma";
 import { createDish, updateDish } from "../actions/dishes";
-import type { CreateDishInput, DishIngredientInput } from "../types";
+import type { CreateDishInput, DishIngredientInput, DishType } from "../types";
 import { DishWithIngredients } from "../logic/recalculator";
+import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
 
 interface DishBuilderProps {
   products: FoodProduct[];
@@ -153,6 +154,9 @@ export function DishBuilder({
   const [name, setName] = useState(initialDish?.name || "");
   const [description, setDescription] = useState(initialDish?.description || "");
   const [servings, setServings] = useState(initialDish?.servings || 1);
+  const [dishType, setDishType] = useState<DishType>(
+    ((initialDish as DishWithIngredients & { type?: string })?.type as DishType) || "MAIN"
+  );
   const [ingredients, setIngredients] = useState<IngredientRow[]>(
     initialDish
       ? initialDish.ingredients.map((ing) => ({
@@ -258,6 +262,7 @@ export function DishBuilder({
           name: name.trim(),
           description: description.trim() || undefined,
           servings,
+          type: dishType,
           ingredients: ingredients.map(
             (ing): DishIngredientInput => ({
               productId: ing.productId,
@@ -285,6 +290,34 @@ export function DishBuilder({
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
+      {/* Dish Type Selector */}
+      <div className="space-y-2">
+        <label className="text-note font-mono text-muted tracking-wider pl-1">
+          Тип страви
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {DISH_TYPE_ORDER.map((t) => {
+            const meta = DISH_TYPE_META[t];
+            const active = dishType === t;
+            return (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setDishType(t)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-note font-mono border transition-all ${
+                  active
+                    ? `${meta.bg} ${meta.color} ${meta.border} font-semibold`
+                    : "border-border text-muted hover:border-border/80 hover:text-text"
+                }`}
+              >
+                <span>{meta.emoji}</span>
+                <span>{meta.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Header Fields */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:col-span-2 space-y-2">

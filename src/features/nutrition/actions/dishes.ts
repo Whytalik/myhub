@@ -6,10 +6,13 @@ import { calculateDishNutrition } from "@/lib/nutrition/calculations"
 import { Dish, DishIngredient, FoodProduct, CookingMethod } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
+import type { DishType } from "../constants/dish-types"
+
 interface CreateDishData {
   name: string
   description?: string
   servings?: number
+  type?: DishType
   ingredients: {
     productId: string
     cookingMethodId?: string
@@ -24,6 +27,7 @@ interface DishNutritionSummary {
   name: string
   description: string | null
   servings: number
+  type: DishType
   totalCookedWeight: number
   per100g: {
     kcal: number
@@ -45,6 +49,7 @@ export async function createDish(data: CreateDishData): Promise<ActionResult<Dis
         name: data.name,
         description: data.description,
         servings: data.servings ?? 1,
+        type: data.type ?? "MAIN",
         ingredients: {
           create: data.ingredients.map((ing) => ({
             productId: ing.productId,
@@ -149,6 +154,7 @@ export async function getDishes(): Promise<ActionResult<DishNutritionSummary[]>>
         name: dish.name,
         description: dish.description,
         servings: dish.servings,
+        type: dish.type as DishType,
         totalCookedWeight: nutrition.totalCookedWeight,
         per100g: nutrition.per100g,
         totalCost: nutrition.totalCost,
@@ -185,6 +191,7 @@ export async function getDishById(id: string): Promise<ActionResult<(Dish & { in
 export async function getDishesForPicker(): Promise<ActionResult<{
   id: string
   name: string
+  type: DishType
   per100g: {
     kcal: number
     protein: number
@@ -218,6 +225,7 @@ export async function getDishesForPicker(): Promise<ActionResult<{
       return {
         id: dish.id,
         name: dish.name,
+        type: dish.type as DishType,
         per100g: nutrition.per100g,
       }
     })

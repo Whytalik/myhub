@@ -2,13 +2,16 @@
 
 import { useState, useTransition, useMemo } from "react"
 import { format } from "date-fns"
-import { Plus, Trash2, AlertTriangle } from "lucide-react"
+import { Plus, Trash2, AlertTriangle, Search } from "lucide-react"
 import { Tabs } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { Dialog } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updatePortionWeight } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updatePortionWeight, addProductToSlot, removeProductFromSlot } from "../../actions/planning"
 import { toast } from "sonner"
+import type { DishType } from "../../constants/dish-types"
 
 interface WeekPlannerProps {
   weekPlan: {
@@ -38,6 +41,17 @@ interface WeekPlannerProps {
           isShared: boolean
           fitScore: number | null
         }[]
+        productEntries: {
+          id: string
+          productId: string
+          productName: string
+          portionWeight: number
+          kcal: number
+          protein: number
+          fat: number
+          carbs: number
+          fiber: number
+        }[]
       }[]
     }[]
     persons: {
@@ -54,6 +68,7 @@ interface WeekPlannerProps {
   dishes: {
     id: string
     name: string
+    type?: DishType
     per100g: {
       kcal: number
       protein: number
@@ -62,9 +77,18 @@ interface WeekPlannerProps {
       fiber: number
     }
   }[]
+  products: {
+    id: string
+    name: string
+    caloriesPer100: number
+    proteinPer100: number
+    fatPer100: number
+    carbsPer100: number
+    fiberPer100: number
+  }[]
 }
 
-export function WeekPlanner({ weekPlan, dishes }: WeekPlannerProps) {
+export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [isPending, startTransition] = useTransition()
   const [activeDay, setActiveDay] = useState(format(new Date(weekPlan.startDate), "yyyy-MM-dd"))
   const [pickerConfig, setPickerConfig] = useState<{
@@ -74,16 +98,20 @@ export function WeekPlanner({ weekPlan, dishes }: WeekPlannerProps) {
     slotName: string
   } | null>(null)
   const [editingEntry, setEditingEntry] = useState<{ id: string; weight: string } | null>(null)
+  const [productPickerSlotId, setProductPickerSlotId] = useState<string | null>(null)
+  const [productSearch, setProductSearch] = useState("")
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
+  const [productWeight, setProductWeight] = useState("100")
 
   const tabs = useMemo(() => weekPlan.days.map((day) => {
     const dateStr = format(new Date(day.date), "yyyy-MM-dd")
     const dayName = format(new Date(day.date), "EEE")
     const dayNum = format(new Date(day.date), "d")
-    
+
     return {
       id: dateStr,
       label: `${dayName} ${dayNum}`,
-      content: <DayContent day={day} weekPlan={weekPlan} dishes={dishes} onRemoveDish={handleRemoveDish} onAddDishClick={setPickerConfig} onEditWeight={handleUpdateWeight} editingEntry={editingEntry} setEditingEntry={setEditingEntry} isPending={isPending} />,
+      content: <DayContent day={day} weekPlan={weekPlan} dishes={dishes} onRemoveDish={handleRemoveDish} onAddDishClick={setPickerConfig} onAddProductClick={setProductPickerSlotId} onRemoveProduct={handleRemoveProduct} onEditWeight={handleUpdateWeight} editingEntry={editingEntry} setEditingEntry={setEditingEntry} isPending={isPending} />,
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [weekPlan.days.length, isPending])
@@ -133,6 +161,36 @@ export function WeekPlanner({ weekPlan, dishes }: WeekPlannerProps) {
     })
   }
 
+  const handleAddProduct = () => {
+    if (!productPickerSlotId || !selectedProductId) return
+    const weight = parseFloat(productWeight)
+    if (!weight || weight <= 0) { toast.error("Enter valid weight"); return }
+
+    startTransition(async () => {
+      const result = await addProductToSlot(productPickerSlotId, selectedProductId, weight)
+      if (result.success) {
+        toast.success("Product added")
+        setProductPickerSlotId(null)
+        setSelectedProductId(null)
+        setProductSearch("")
+        setProductWeight("100")
+      } else {
+        toast.error(result.error || "Failed to add product")
+      }
+    })
+  }
+
+  const handleRemoveProduct = (entryId: string) => {
+    startTransition(async () => {
+      const result = await removeProductFromSlot(entryId)
+      if (result.success) {
+        toast.success("Product removed")
+      } else {
+        toast.error(result.error || "Failed to remove product")
+      }
+    })
+  }
+
   return (
     <div className="space-y-6">
       <Tabs tabs={tabs} activeTab={activeDay} onTabChange={setActiveDay} className="w-full" />
@@ -147,16 +205,74 @@ export function WeekPlanner({ weekPlan, dishes }: WeekPlannerProps) {
           slot={pickerConfig.slot}
         />
       )}
+
+      <Dialog
+        isOpen={!!productPickerSlotId}
+        onClose={() => { setProductPickerSlotId(null); setSelectedProductId(null); setProductSearch(""); setProductWeight("100") }}
+        title="Додати продукт"
+        maxWidth="max-w-sm"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => { setProductPickerSlotId(null); setSelectedProductId(null) }}>Скасувати</Button>
+            <Button variant="primary" onClick={handleAddProduct} disabled={!selectedProductId || isPending}>Додати</Button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Пошук продукту..."
+              value={productSearch}
+              onChange={(e) => { setProductSearch(e.target.value); setSelectedProductId(null) }}
+              className="pl-8"
+            />
+          </div>
+          <div className="max-h-48 overflow-y-auto space-y-1">
+            {products
+              .filter(p => p.name.toLowerCase().includes(productSearch.toLowerCase()))
+              .slice(0, 12)
+              .map(p => (
+                <button
+                  key={p.id}
+                  onClick={() => setSelectedProductId(p.id)}
+                  className={`w-full text-left p-2.5 rounded-lg border text-sm transition-colors ${
+                    selectedProductId === p.id ? "border-accent bg-accent/5" : "border-border hover:bg-raised"
+                  }`}
+                >
+                  <div className="font-medium">{p.name}</div>
+                  <div className="text-caption text-muted-foreground font-mono">
+                    {p.caloriesPer100.toFixed(0)} kcal · P:{p.proteinPer100.toFixed(1)} F:{p.fatPer100.toFixed(1)} C:{p.carbsPer100.toFixed(1)}
+                  </div>
+                </button>
+              ))
+            }
+          </div>
+          {selectedProductId && (
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                value={productWeight}
+                onChange={(e) => setProductWeight(e.target.value)}
+                className="w-24 font-mono text-center"
+              />
+              <span className="text-sm text-muted-foreground">грам</span>
+            </div>
+          )}
+        </div>
+      </Dialog>
     </div>
   )
 }
 
-function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEditWeight, editingEntry, setEditingEntry, isPending }: {
+function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onAddProductClick, onRemoveProduct, onEditWeight, editingEntry, setEditingEntry, isPending }: {
   day: WeekPlannerProps["weekPlan"]["days"][number]
   weekPlan: WeekPlannerProps["weekPlan"]
   dishes: WeekPlannerProps["dishes"]
   onRemoveDish: (entryId: string) => void
   onAddDishClick: (config: { slotId: string; person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }; slot: { percentage: number; minProteinGrams?: number | null; maxPctOfDaily?: number | null }; slotName: string }) => void
+  onAddProductClick: (slotId: string) => void
+  onRemoveProduct: (entryId: string) => void
   onEditWeight: (entryId: string, weight: number) => void
   editingEntry: { id: string; weight: string } | null
   setEditingEntry: (entry: { id: string; weight: string } | null) => void
@@ -308,24 +424,57 @@ function DayContent({ day, weekPlan, dishes, onRemoveDish, onAddDishClick, onEdi
                             </div>
                           )
                         })}
-                        <Button
-                          variant="ghost"
-                          className="w-full h-8 border-dashed border-2 text-muted-foreground hover:text-primary"
-                          onClick={() => {
-                            const person = weekPlan.persons.find((p) => p.id === slot.personId)
-                            if (!person) return
-                            onAddDishClick({ 
-                              slotId: slot.id, 
-                              person,
-                              slot: { percentage: (slot.targetKcal / (person.targetKcal || 1)) * 100 },
-                              slotName: slot.templateSlotName
-                            })
-                          }}
-                          disabled={isPending}
-                        >
-                          <Plus className="h-4 w-4 mr-1" />
-                          <span className="text-caption">Add dish</span>
-                        </Button>
+                        {/* Product entries */}
+                        {(slot.productEntries || []).map((pe) => (
+                          <div key={pe.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-xs border-l-2 border-green-500/40">
+                            <div className="flex items-center gap-2">
+                              <span className="text-green-600 dark:text-green-400 text-label">🥩</span>
+                              <span className="font-medium">{pe.productName}</span>
+                              <span className="text-caption text-muted-foreground font-mono">{pe.portionWeight.toFixed(0)}g</span>
+                              <span className="text-label font-mono text-muted-foreground">{pe.kcal.toFixed(0)} kcal</span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-5 w-5 text-red-500 hover:text-red-600"
+                              onClick={() => onRemoveProduct(pe.id)}
+                              disabled={isPending}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ))}
+
+                        {/* Add buttons */}
+                        <div className="flex gap-1.5">
+                          <Button
+                            variant="ghost"
+                            className="flex-1 h-8 border-dashed border-2 text-muted-foreground hover:text-primary"
+                            onClick={() => {
+                              const person = weekPlan.persons.find((p) => p.id === slot.personId)
+                              if (!person) return
+                              onAddDishClick({
+                                slotId: slot.id,
+                                person,
+                                slot: { percentage: (slot.targetKcal / (person.targetKcal || 1)) * 100 },
+                                slotName: slot.templateSlotName
+                              })
+                            }}
+                            disabled={isPending}
+                          >
+                            <Plus className="h-4 w-4 mr-1" />
+                            <span className="text-caption">Страву</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            className="h-8 px-3 border-dashed border-2 text-muted-foreground hover:text-green-500 hover:border-green-500/40"
+                            onClick={() => onAddProductClick(slot.id)}
+                            disabled={isPending}
+                          >
+                            <Plus className="h-3 w-3 mr-1" />
+                            <span className="text-caption">Продукт</span>
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   )

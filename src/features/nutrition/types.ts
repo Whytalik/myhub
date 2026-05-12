@@ -1,4 +1,9 @@
 import { Goal } from "@/app/generated/prisma";
+import type { DishType } from "./constants/dish-types";
+import type { Store } from "./constants/stores";
+
+export type { DishType } from "./constants/dish-types";
+export type { Store } from "./constants/stores";
 
 export interface CreateProductInput {
   name: string;
@@ -11,6 +16,7 @@ export interface CreateProductInput {
   standardPackageAmount: number;
   price?: number;
   category: string;
+  stores?: Store[];
 }
 
 export interface UpdateProductInput extends Partial<CreateProductInput> {
@@ -27,11 +33,18 @@ export interface CreateDishInput {
   name: string;
   description?: string;
   servings: number;
+  type?: DishType;
   ingredients: DishIngredientInput[];
 }
 
 export interface UpdateDishInput extends Partial<CreateDishInput> {
   id: string;
+}
+
+export interface CreateProductEntryInput {
+  mealSlotId: string;
+  productId: string;
+  portionWeight: number;
 }
 
 export interface CreatePersonInput {

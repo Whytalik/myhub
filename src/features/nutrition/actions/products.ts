@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { FoodProduct, PriceSource, NutritionSource, ProductStatus } from "@/app/generated/prisma"
+import type { Store } from "../constants/stores"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
 interface CreateProductData {
@@ -16,6 +17,7 @@ interface CreateProductData {
   standardPackageAmount: number
   price?: number
   category: string
+  stores?: Store[]
   nutritionSource?: NutritionSource
 }
 
@@ -76,6 +78,7 @@ export async function createProduct(data: CreateProductData): Promise<ActionResu
         standardPackageAmount: data.standardPackageAmount,
         price: data.price ?? 0,
         category: data.category,
+        stores: data.stores ?? [],
         nutritionSource: data.nutritionSource ?? NutritionSource.MANUAL,
         priceSource: PriceSource.MANUAL,
         priceUpdatedAt: data.price ? new Date() : null,

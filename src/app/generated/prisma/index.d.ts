@@ -109,6 +109,11 @@ export type MealTemplateSlot = $Result.DefaultSelection<Prisma.$MealTemplateSlot
  */
 export type MealSlotInstance = $Result.DefaultSelection<Prisma.$MealSlotInstancePayload>
 /**
+ * Model ProductEntry
+ * 
+ */
+export type ProductEntry = $Result.DefaultSelection<Prisma.$ProductEntryPayload>
+/**
  * Model DishEntry
  * 
  */
@@ -519,6 +524,33 @@ export const AIDomain: {
 
 export type AIDomain = (typeof AIDomain)[keyof typeof AIDomain]
 
+
+export const DishType: {
+  MAIN: 'MAIN',
+  SALAD: 'SALAD',
+  SOUP: 'SOUP',
+  SIDE: 'SIDE',
+  SNACK: 'SNACK',
+  SAUCE: 'SAUCE',
+  MARINADE: 'MARINADE',
+  BASE: 'BASE'
+};
+
+export type DishType = (typeof DishType)[keyof typeof DishType]
+
+
+export const Store: {
+  NASHA_RYABA: 'NASHA_RYABA',
+  BAZAR: 'BAZAR',
+  ATB: 'ATB',
+  SILPO: 'SILPO',
+  POLISSYA: 'POLISSYA',
+  METRO: 'METRO',
+  FORA: 'FORA'
+};
+
+export type Store = (typeof Store)[keyof typeof Store]
+
 }
 
 export type SystemStatus = $Enums.SystemStatus
@@ -624,6 +656,14 @@ export const SuggestionStatus: typeof $Enums.SuggestionStatus
 export type AIDomain = $Enums.AIDomain
 
 export const AIDomain: typeof $Enums.AIDomain
+
+export type DishType = $Enums.DishType
+
+export const DishType: typeof $Enums.DishType
+
+export type Store = $Enums.Store
+
+export const Store: typeof $Enums.Store
 
 /**
  * ##  Prisma Client ʲˢ
@@ -935,6 +975,16 @@ export class PrismaClient<
     * ```
     */
   get mealSlotInstance(): Prisma.MealSlotInstanceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.productEntry`: Exposes CRUD operations for the **ProductEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductEntries
+    * const productEntries = await prisma.productEntry.findMany()
+    * ```
+    */
+  get productEntry(): Prisma.ProductEntryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.dishEntry`: Exposes CRUD operations for the **DishEntry** model.
@@ -1678,6 +1728,7 @@ export namespace Prisma {
     ShoppingListItem: 'ShoppingListItem',
     MealTemplateSlot: 'MealTemplateSlot',
     MealSlotInstance: 'MealSlotInstance',
+    ProductEntry: 'ProductEntry',
     DishEntry: 'DishEntry',
     ShoppingCart: 'ShoppingCart',
     CartItem: 'CartItem',
@@ -1722,7 +1773,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "mealTemplateSlot" | "mealSlotInstance" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "mealTemplateSlot" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3129,6 +3180,80 @@ export namespace Prisma {
           count: {
             args: Prisma.MealSlotInstanceCountArgs<ExtArgs>
             result: $Utils.Optional<MealSlotInstanceCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductEntry: {
+        payload: Prisma.$ProductEntryPayload<ExtArgs>
+        fields: Prisma.ProductEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          findMany: {
+            args: Prisma.ProductEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>[]
+          }
+          create: {
+            args: Prisma.ProductEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          createMany: {
+            args: Prisma.ProductEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          update: {
+            args: Prisma.ProductEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductEntry>
+          }
+          groupBy: {
+            args: Prisma.ProductEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductEntryCountAggregateOutputType> | number
           }
         }
       }
@@ -5405,6 +5530,7 @@ export namespace Prisma {
     shoppingListItem?: ShoppingListItemOmit
     mealTemplateSlot?: MealTemplateSlotOmit
     mealSlotInstance?: MealSlotInstanceOmit
+    productEntry?: ProductEntryOmit
     dishEntry?: DishEntryOmit
     shoppingCart?: ShoppingCartOmit
     cartItem?: CartItemOmit
@@ -5786,12 +5912,14 @@ export namespace Prisma {
     dishIngredients: number
     cartItems: number
     shoppingListItems: number
+    productEntries: number
   }
 
   export type FoodProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dishIngredients?: boolean | FoodProductCountOutputTypeCountDishIngredientsArgs
     cartItems?: boolean | FoodProductCountOutputTypeCountCartItemsArgs
     shoppingListItems?: boolean | FoodProductCountOutputTypeCountShoppingListItemsArgs
+    productEntries?: boolean | FoodProductCountOutputTypeCountProductEntriesArgs
   }
 
   // Custom InputTypes
@@ -5824,6 +5952,13 @@ export namespace Prisma {
    */
   export type FoodProductCountOutputTypeCountShoppingListItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ShoppingListItemWhereInput
+  }
+
+  /**
+   * FoodProductCountOutputType without action
+   */
+  export type FoodProductCountOutputTypeCountProductEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductEntryWhereInput
   }
 
 
@@ -6104,10 +6239,12 @@ export namespace Prisma {
 
   export type MealSlotInstanceCountOutputType = {
     dishEntries: number
+    productEntries: number
   }
 
   export type MealSlotInstanceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dishEntries?: boolean | MealSlotInstanceCountOutputTypeCountDishEntriesArgs
+    productEntries?: boolean | MealSlotInstanceCountOutputTypeCountProductEntriesArgs
   }
 
   // Custom InputTypes
@@ -6126,6 +6263,13 @@ export namespace Prisma {
    */
   export type MealSlotInstanceCountOutputTypeCountDishEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DishEntryWhereInput
+  }
+
+  /**
+   * MealSlotInstanceCountOutputType without action
+   */
+  export type MealSlotInstanceCountOutputTypeCountProductEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductEntryWhereInput
   }
 
 
@@ -13962,6 +14106,7 @@ export namespace Prisma {
     nutritionSource: number
     category: number
     status: number
+    stores: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -14047,6 +14192,7 @@ export namespace Prisma {
     nutritionSource?: true
     category?: true
     status?: true
+    stores?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14155,6 +14301,7 @@ export namespace Prisma {
     nutritionSource: $Enums.NutritionSource
     category: string
     status: $Enums.ProductStatus
+    stores: $Enums.Store[]
     createdAt: Date
     updatedAt: Date
     _count: FoodProductCountAggregateOutputType | null
@@ -14195,12 +14342,14 @@ export namespace Prisma {
     nutritionSource?: boolean
     category?: boolean
     status?: boolean
+    stores?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | FoodProduct$userArgs<ExtArgs>
     dishIngredients?: boolean | FoodProduct$dishIngredientsArgs<ExtArgs>
     cartItems?: boolean | FoodProduct$cartItemsArgs<ExtArgs>
     shoppingListItems?: boolean | FoodProduct$shoppingListItemsArgs<ExtArgs>
+    productEntries?: boolean | FoodProduct$productEntriesArgs<ExtArgs>
     _count?: boolean | FoodProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["foodProduct"]>
 
@@ -14221,6 +14370,7 @@ export namespace Prisma {
     nutritionSource?: boolean
     category?: boolean
     status?: boolean
+    stores?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | FoodProduct$userArgs<ExtArgs>
@@ -14243,6 +14393,7 @@ export namespace Prisma {
     nutritionSource?: boolean
     category?: boolean
     status?: boolean
+    stores?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | FoodProduct$userArgs<ExtArgs>
@@ -14265,16 +14416,18 @@ export namespace Prisma {
     nutritionSource?: boolean
     category?: boolean
     status?: boolean
+    stores?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FoodProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "caloriesPer100" | "proteinPer100" | "fatPer100" | "carbsPer100" | "fiberPer100" | "unit" | "standardPackageAmount" | "price" | "priceSource" | "priceUpdatedAt" | "nutritionSource" | "category" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["foodProduct"]>
+  export type FoodProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "caloriesPer100" | "proteinPer100" | "fatPer100" | "carbsPer100" | "fiberPer100" | "unit" | "standardPackageAmount" | "price" | "priceSource" | "priceUpdatedAt" | "nutritionSource" | "category" | "status" | "stores" | "createdAt" | "updatedAt", ExtArgs["result"]["foodProduct"]>
   export type FoodProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | FoodProduct$userArgs<ExtArgs>
     dishIngredients?: boolean | FoodProduct$dishIngredientsArgs<ExtArgs>
     cartItems?: boolean | FoodProduct$cartItemsArgs<ExtArgs>
     shoppingListItems?: boolean | FoodProduct$shoppingListItemsArgs<ExtArgs>
+    productEntries?: boolean | FoodProduct$productEntriesArgs<ExtArgs>
     _count?: boolean | FoodProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type FoodProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14291,6 +14444,7 @@ export namespace Prisma {
       dishIngredients: Prisma.$DishIngredientPayload<ExtArgs>[]
       cartItems: Prisma.$CartItemPayload<ExtArgs>[]
       shoppingListItems: Prisma.$ShoppingListItemPayload<ExtArgs>[]
+      productEntries: Prisma.$ProductEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14309,6 +14463,7 @@ export namespace Prisma {
       nutritionSource: $Enums.NutritionSource
       category: string
       status: $Enums.ProductStatus
+      stores: $Enums.Store[]
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["foodProduct"]>
@@ -14709,6 +14864,7 @@ export namespace Prisma {
     dishIngredients<T extends FoodProduct$dishIngredientsArgs<ExtArgs> = {}>(args?: Subset<T, FoodProduct$dishIngredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cartItems<T extends FoodProduct$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, FoodProduct$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     shoppingListItems<T extends FoodProduct$shoppingListItemsArgs<ExtArgs> = {}>(args?: Subset<T, FoodProduct$shoppingListItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShoppingListItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    productEntries<T extends FoodProduct$productEntriesArgs<ExtArgs> = {}>(args?: Subset<T, FoodProduct$productEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14754,6 +14910,7 @@ export namespace Prisma {
     readonly nutritionSource: FieldRef<"FoodProduct", 'NutritionSource'>
     readonly category: FieldRef<"FoodProduct", 'String'>
     readonly status: FieldRef<"FoodProduct", 'ProductStatus'>
+    readonly stores: FieldRef<"FoodProduct", 'Store[]'>
     readonly createdAt: FieldRef<"FoodProduct", 'DateTime'>
     readonly updatedAt: FieldRef<"FoodProduct", 'DateTime'>
   }
@@ -15245,6 +15402,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ShoppingListItemScalarFieldEnum | ShoppingListItemScalarFieldEnum[]
+  }
+
+  /**
+   * FoodProduct.productEntries
+   */
+  export type FoodProduct$productEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    where?: ProductEntryWhereInput
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    cursor?: ProductEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductEntryScalarFieldEnum | ProductEntryScalarFieldEnum[]
   }
 
   /**
@@ -16414,6 +16595,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     servings: number | null
+    type: $Enums.DishType | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -16424,6 +16606,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     servings: number | null
+    type: $Enums.DishType | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -16434,6 +16617,7 @@ export namespace Prisma {
     name: number
     description: number
     servings: number
+    type: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -16454,6 +16638,7 @@ export namespace Prisma {
     name?: true
     description?: true
     servings?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16464,6 +16649,7 @@ export namespace Prisma {
     name?: true
     description?: true
     servings?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16474,6 +16660,7 @@ export namespace Prisma {
     name?: true
     description?: true
     servings?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -16571,6 +16758,7 @@ export namespace Prisma {
     name: string
     description: string | null
     servings: number
+    type: $Enums.DishType
     createdAt: Date
     updatedAt: Date
     _count: DishCountAggregateOutputType | null
@@ -16600,6 +16788,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     servings?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -16616,6 +16805,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     servings?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -16627,6 +16817,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     servings?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -16638,11 +16829,12 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     servings?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DishOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "servings" | "createdAt" | "updatedAt", ExtArgs["result"]["dish"]>
+  export type DishOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "servings" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["dish"]>
   export type DishInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
@@ -16673,6 +16865,7 @@ export namespace Prisma {
       name: string
       description: string | null
       servings: number
+      type: $Enums.DishType
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dish"]>
@@ -17108,6 +17301,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Dish", 'String'>
     readonly description: FieldRef<"Dish", 'String'>
     readonly servings: FieldRef<"Dish", 'Int'>
+    readonly type: FieldRef<"Dish", 'DishType'>
     readonly createdAt: FieldRef<"Dish", 'DateTime'>
     readonly updatedAt: FieldRef<"Dish", 'DateTime'>
   }
@@ -28130,6 +28324,7 @@ export namespace Prisma {
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
     dishEntries?: boolean | MealSlotInstance$dishEntriesArgs<ExtArgs>
+    productEntries?: boolean | MealSlotInstance$productEntriesArgs<ExtArgs>
     _count?: boolean | MealSlotInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mealSlotInstance"]>
 
@@ -28178,6 +28373,7 @@ export namespace Prisma {
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
     templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
     dishEntries?: boolean | MealSlotInstance$dishEntriesArgs<ExtArgs>
+    productEntries?: boolean | MealSlotInstance$productEntriesArgs<ExtArgs>
     _count?: boolean | MealSlotInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MealSlotInstanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -28198,6 +28394,7 @@ export namespace Prisma {
       person: Prisma.$NutritionPersonPayload<ExtArgs>
       templateSlot: Prisma.$MealTemplateSlotPayload<ExtArgs>
       dishEntries: Prisma.$DishEntryPayload<ExtArgs>[]
+      productEntries: Prisma.$ProductEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -28606,6 +28803,7 @@ export namespace Prisma {
     person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     templateSlot<T extends MealTemplateSlotDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MealTemplateSlotDefaultArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dishEntries<T extends MealSlotInstance$dishEntriesArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstance$dishEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    productEntries<T extends MealSlotInstance$productEntriesArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstance$productEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29068,6 +29266,30 @@ export namespace Prisma {
   }
 
   /**
+   * MealSlotInstance.productEntries
+   */
+  export type MealSlotInstance$productEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    where?: ProductEntryWhereInput
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    cursor?: ProductEntryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductEntryScalarFieldEnum | ProductEntryScalarFieldEnum[]
+  }
+
+  /**
    * MealSlotInstance without action
    */
   export type MealSlotInstanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -29083,6 +29305,1124 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MealSlotInstanceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductEntry
+   */
+
+  export type AggregateProductEntry = {
+    _count: ProductEntryCountAggregateOutputType | null
+    _avg: ProductEntryAvgAggregateOutputType | null
+    _sum: ProductEntrySumAggregateOutputType | null
+    _min: ProductEntryMinAggregateOutputType | null
+    _max: ProductEntryMaxAggregateOutputType | null
+  }
+
+  export type ProductEntryAvgAggregateOutputType = {
+    portionWeight: number | null
+  }
+
+  export type ProductEntrySumAggregateOutputType = {
+    portionWeight: number | null
+  }
+
+  export type ProductEntryMinAggregateOutputType = {
+    id: string | null
+    mealSlotId: string | null
+    productId: string | null
+    portionWeight: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductEntryMaxAggregateOutputType = {
+    id: string | null
+    mealSlotId: string | null
+    productId: string | null
+    portionWeight: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductEntryCountAggregateOutputType = {
+    id: number
+    mealSlotId: number
+    productId: number
+    portionWeight: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProductEntryAvgAggregateInputType = {
+    portionWeight?: true
+  }
+
+  export type ProductEntrySumAggregateInputType = {
+    portionWeight?: true
+  }
+
+  export type ProductEntryMinAggregateInputType = {
+    id?: true
+    mealSlotId?: true
+    productId?: true
+    portionWeight?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductEntryMaxAggregateInputType = {
+    id?: true
+    mealSlotId?: true
+    productId?: true
+    portionWeight?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductEntryCountAggregateInputType = {
+    id?: true
+    mealSlotId?: true
+    productId?: true
+    portionWeight?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProductEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductEntry to aggregate.
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductEntries to fetch.
+     */
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductEntries
+    **/
+    _count?: true | ProductEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProductEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductEntryMaxAggregateInputType
+  }
+
+  export type GetProductEntryAggregateType<T extends ProductEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductEntry[P]>
+      : GetScalarType<T[P], AggregateProductEntry[P]>
+  }
+
+
+
+
+  export type ProductEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductEntryWhereInput
+    orderBy?: ProductEntryOrderByWithAggregationInput | ProductEntryOrderByWithAggregationInput[]
+    by: ProductEntryScalarFieldEnum[] | ProductEntryScalarFieldEnum
+    having?: ProductEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductEntryCountAggregateInputType | true
+    _avg?: ProductEntryAvgAggregateInputType
+    _sum?: ProductEntrySumAggregateInputType
+    _min?: ProductEntryMinAggregateInputType
+    _max?: ProductEntryMaxAggregateInputType
+  }
+
+  export type ProductEntryGroupByOutputType = {
+    id: string
+    mealSlotId: string
+    productId: string
+    portionWeight: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ProductEntryCountAggregateOutputType | null
+    _avg: ProductEntryAvgAggregateOutputType | null
+    _sum: ProductEntrySumAggregateOutputType | null
+    _min: ProductEntryMinAggregateOutputType | null
+    _max: ProductEntryMaxAggregateOutputType | null
+  }
+
+  type GetProductEntryGroupByPayload<T extends ProductEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mealSlotId?: boolean
+    productId?: boolean
+    portionWeight?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productEntry"]>
+
+  export type ProductEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mealSlotId?: boolean
+    productId?: boolean
+    portionWeight?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productEntry"]>
+
+  export type ProductEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mealSlotId?: boolean
+    productId?: boolean
+    portionWeight?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productEntry"]>
+
+  export type ProductEntrySelectScalar = {
+    id?: boolean
+    mealSlotId?: boolean
+    productId?: boolean
+    portionWeight?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProductEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "productId" | "portionWeight" | "createdAt" | "updatedAt", ExtArgs["result"]["productEntry"]>
+  export type ProductEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }
+  export type ProductEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }
+  export type ProductEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    product?: boolean | FoodProductDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductEntry"
+    objects: {
+      mealSlot: Prisma.$MealSlotInstancePayload<ExtArgs>
+      product: Prisma.$FoodProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      mealSlotId: string
+      productId: string
+      portionWeight: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["productEntry"]>
+    composites: {}
+  }
+
+  type ProductEntryGetPayload<S extends boolean | null | undefined | ProductEntryDefaultArgs> = $Result.GetResult<Prisma.$ProductEntryPayload, S>
+
+  type ProductEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductEntryCountAggregateInputType | true
+    }
+
+  export interface ProductEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductEntry'], meta: { name: 'ProductEntry' } }
+    /**
+     * Find zero or one ProductEntry that matches the filter.
+     * @param {ProductEntryFindUniqueArgs} args - Arguments to find a ProductEntry
+     * @example
+     * // Get one ProductEntry
+     * const productEntry = await prisma.productEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductEntryFindUniqueArgs>(args: SelectSubset<T, ProductEntryFindUniqueArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductEntryFindUniqueOrThrowArgs} args - Arguments to find a ProductEntry
+     * @example
+     * // Get one ProductEntry
+     * const productEntry = await prisma.productEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryFindFirstArgs} args - Arguments to find a ProductEntry
+     * @example
+     * // Get one ProductEntry
+     * const productEntry = await prisma.productEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductEntryFindFirstArgs>(args?: SelectSubset<T, ProductEntryFindFirstArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryFindFirstOrThrowArgs} args - Arguments to find a ProductEntry
+     * @example
+     * // Get one ProductEntry
+     * const productEntry = await prisma.productEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductEntries
+     * const productEntries = await prisma.productEntry.findMany()
+     * 
+     * // Get first 10 ProductEntries
+     * const productEntries = await prisma.productEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const productEntryWithIdOnly = await prisma.productEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProductEntryFindManyArgs>(args?: SelectSubset<T, ProductEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductEntry.
+     * @param {ProductEntryCreateArgs} args - Arguments to create a ProductEntry.
+     * @example
+     * // Create one ProductEntry
+     * const ProductEntry = await prisma.productEntry.create({
+     *   data: {
+     *     // ... data to create a ProductEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductEntryCreateArgs>(args: SelectSubset<T, ProductEntryCreateArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductEntries.
+     * @param {ProductEntryCreateManyArgs} args - Arguments to create many ProductEntries.
+     * @example
+     * // Create many ProductEntries
+     * const productEntry = await prisma.productEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductEntryCreateManyArgs>(args?: SelectSubset<T, ProductEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductEntries and returns the data saved in the database.
+     * @param {ProductEntryCreateManyAndReturnArgs} args - Arguments to create many ProductEntries.
+     * @example
+     * // Create many ProductEntries
+     * const productEntry = await prisma.productEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductEntries and only return the `id`
+     * const productEntryWithIdOnly = await prisma.productEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductEntry.
+     * @param {ProductEntryDeleteArgs} args - Arguments to delete one ProductEntry.
+     * @example
+     * // Delete one ProductEntry
+     * const ProductEntry = await prisma.productEntry.delete({
+     *   where: {
+     *     // ... filter to delete one ProductEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductEntryDeleteArgs>(args: SelectSubset<T, ProductEntryDeleteArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductEntry.
+     * @param {ProductEntryUpdateArgs} args - Arguments to update one ProductEntry.
+     * @example
+     * // Update one ProductEntry
+     * const productEntry = await prisma.productEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductEntryUpdateArgs>(args: SelectSubset<T, ProductEntryUpdateArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductEntries.
+     * @param {ProductEntryDeleteManyArgs} args - Arguments to filter ProductEntries to delete.
+     * @example
+     * // Delete a few ProductEntries
+     * const { count } = await prisma.productEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductEntryDeleteManyArgs>(args?: SelectSubset<T, ProductEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductEntries
+     * const productEntry = await prisma.productEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductEntryUpdateManyArgs>(args: SelectSubset<T, ProductEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductEntries and returns the data updated in the database.
+     * @param {ProductEntryUpdateManyAndReturnArgs} args - Arguments to update many ProductEntries.
+     * @example
+     * // Update many ProductEntries
+     * const productEntry = await prisma.productEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductEntries and only return the `id`
+     * const productEntryWithIdOnly = await prisma.productEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductEntry.
+     * @param {ProductEntryUpsertArgs} args - Arguments to update or create a ProductEntry.
+     * @example
+     * // Update or create a ProductEntry
+     * const productEntry = await prisma.productEntry.upsert({
+     *   create: {
+     *     // ... data to create a ProductEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductEntryUpsertArgs>(args: SelectSubset<T, ProductEntryUpsertArgs<ExtArgs>>): Prisma__ProductEntryClient<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryCountArgs} args - Arguments to filter ProductEntries to count.
+     * @example
+     * // Count the number of ProductEntries
+     * const count = await prisma.productEntry.count({
+     *   where: {
+     *     // ... the filter for the ProductEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductEntryCountArgs>(
+      args?: Subset<T, ProductEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductEntryAggregateArgs>(args: Subset<T, ProductEntryAggregateArgs>): Prisma.PrismaPromise<GetProductEntryAggregateType<T>>
+
+    /**
+     * Group by ProductEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductEntryGroupByArgs['orderBy'] }
+        : { orderBy?: ProductEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductEntry model
+   */
+  readonly fields: ProductEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    mealSlot<T extends MealSlotInstanceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstanceDefaultArgs<ExtArgs>>): Prisma__MealSlotInstanceClient<$Result.GetResult<Prisma.$MealSlotInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends FoodProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, FoodProductDefaultArgs<ExtArgs>>): Prisma__FoodProductClient<$Result.GetResult<Prisma.$FoodProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductEntry model
+   */
+  interface ProductEntryFieldRefs {
+    readonly id: FieldRef<"ProductEntry", 'String'>
+    readonly mealSlotId: FieldRef<"ProductEntry", 'String'>
+    readonly productId: FieldRef<"ProductEntry", 'String'>
+    readonly portionWeight: FieldRef<"ProductEntry", 'Float'>
+    readonly createdAt: FieldRef<"ProductEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProductEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductEntry findUnique
+   */
+  export type ProductEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductEntry to fetch.
+     */
+    where: ProductEntryWhereUniqueInput
+  }
+
+  /**
+   * ProductEntry findUniqueOrThrow
+   */
+  export type ProductEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductEntry to fetch.
+     */
+    where: ProductEntryWhereUniqueInput
+  }
+
+  /**
+   * ProductEntry findFirst
+   */
+  export type ProductEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductEntry to fetch.
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductEntries to fetch.
+     */
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductEntries.
+     */
+    cursor?: ProductEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductEntries.
+     */
+    distinct?: ProductEntryScalarFieldEnum | ProductEntryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductEntry findFirstOrThrow
+   */
+  export type ProductEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductEntry to fetch.
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductEntries to fetch.
+     */
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductEntries.
+     */
+    cursor?: ProductEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductEntries.
+     */
+    distinct?: ProductEntryScalarFieldEnum | ProductEntryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductEntry findMany
+   */
+  export type ProductEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductEntries to fetch.
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductEntries to fetch.
+     */
+    orderBy?: ProductEntryOrderByWithRelationInput | ProductEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductEntries.
+     */
+    cursor?: ProductEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductEntries.
+     */
+    distinct?: ProductEntryScalarFieldEnum | ProductEntryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductEntry create
+   */
+  export type ProductEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductEntry.
+     */
+    data: XOR<ProductEntryCreateInput, ProductEntryUncheckedCreateInput>
+  }
+
+  /**
+   * ProductEntry createMany
+   */
+  export type ProductEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductEntries.
+     */
+    data: ProductEntryCreateManyInput | ProductEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductEntry createManyAndReturn
+   */
+  export type ProductEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductEntries.
+     */
+    data: ProductEntryCreateManyInput | ProductEntryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductEntry update
+   */
+  export type ProductEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductEntry.
+     */
+    data: XOR<ProductEntryUpdateInput, ProductEntryUncheckedUpdateInput>
+    /**
+     * Choose, which ProductEntry to update.
+     */
+    where: ProductEntryWhereUniqueInput
+  }
+
+  /**
+   * ProductEntry updateMany
+   */
+  export type ProductEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductEntries.
+     */
+    data: XOR<ProductEntryUpdateManyMutationInput, ProductEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductEntries to update
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * Limit how many ProductEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductEntry updateManyAndReturn
+   */
+  export type ProductEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductEntries.
+     */
+    data: XOR<ProductEntryUpdateManyMutationInput, ProductEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductEntries to update
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * Limit how many ProductEntries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductEntry upsert
+   */
+  export type ProductEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductEntry to update in case it exists.
+     */
+    where: ProductEntryWhereUniqueInput
+    /**
+     * In case the ProductEntry found by the `where` argument doesn't exist, create a new ProductEntry with this data.
+     */
+    create: XOR<ProductEntryCreateInput, ProductEntryUncheckedCreateInput>
+    /**
+     * In case the ProductEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductEntryUpdateInput, ProductEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductEntry delete
+   */
+  export type ProductEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
+    /**
+     * Filter which ProductEntry to delete.
+     */
+    where: ProductEntryWhereUniqueInput
+  }
+
+  /**
+   * ProductEntry deleteMany
+   */
+  export type ProductEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductEntries to delete
+     */
+    where?: ProductEntryWhereInput
+    /**
+     * Limit how many ProductEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductEntry without action
+   */
+  export type ProductEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductEntry
+     */
+    select?: ProductEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductEntry
+     */
+    omit?: ProductEntryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductEntryInclude<ExtArgs> | null
   }
 
 
@@ -63101,6 +64441,7 @@ export namespace Prisma {
     nutritionSource: 'nutritionSource',
     category: 'category',
     status: 'status',
+    stores: 'stores',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -63126,6 +64467,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     servings: 'servings',
+    type: 'type',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -63255,6 +64597,18 @@ export namespace Prisma {
   };
 
   export type MealSlotInstanceScalarFieldEnum = (typeof MealSlotInstanceScalarFieldEnum)[keyof typeof MealSlotInstanceScalarFieldEnum]
+
+
+  export const ProductEntryScalarFieldEnum: {
+    id: 'id',
+    mealSlotId: 'mealSlotId',
+    productId: 'productId',
+    portionWeight: 'portionWeight',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProductEntryScalarFieldEnum = (typeof ProductEntryScalarFieldEnum)[keyof typeof ProductEntryScalarFieldEnum]
 
 
   export const DishEntryScalarFieldEnum: {
@@ -63883,6 +65237,34 @@ export namespace Prisma {
    * Reference to a field of type 'ProductStatus[]'
    */
   export type ListEnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Store[]'
+   */
+  export type ListEnumStoreFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Store[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Store'
+   */
+  export type EnumStoreFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Store'>
+    
+
+
+  /**
+   * Reference to a field of type 'DishType'
+   */
+  export type EnumDishTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DishType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DishType[]'
+   */
+  export type ListEnumDishTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DishType[]'>
     
 
 
@@ -64658,12 +66040,14 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFilter<"FoodProduct"> | $Enums.NutritionSource
     category?: StringFilter<"FoodProduct"> | string
     status?: EnumProductStatusFilter<"FoodProduct"> | $Enums.ProductStatus
+    stores?: EnumStoreNullableListFilter<"FoodProduct">
     createdAt?: DateTimeFilter<"FoodProduct"> | Date | string
     updatedAt?: DateTimeFilter<"FoodProduct"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     dishIngredients?: DishIngredientListRelationFilter
     cartItems?: CartItemListRelationFilter
     shoppingListItems?: ShoppingListItemListRelationFilter
+    productEntries?: ProductEntryListRelationFilter
   }
 
   export type FoodProductOrderByWithRelationInput = {
@@ -64683,12 +66067,14 @@ export namespace Prisma {
     nutritionSource?: SortOrder
     category?: SortOrder
     status?: SortOrder
+    stores?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     dishIngredients?: DishIngredientOrderByRelationAggregateInput
     cartItems?: CartItemOrderByRelationAggregateInput
     shoppingListItems?: ShoppingListItemOrderByRelationAggregateInput
+    productEntries?: ProductEntryOrderByRelationAggregateInput
   }
 
   export type FoodProductWhereUniqueInput = Prisma.AtLeast<{
@@ -64711,12 +66097,14 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFilter<"FoodProduct"> | $Enums.NutritionSource
     category?: StringFilter<"FoodProduct"> | string
     status?: EnumProductStatusFilter<"FoodProduct"> | $Enums.ProductStatus
+    stores?: EnumStoreNullableListFilter<"FoodProduct">
     createdAt?: DateTimeFilter<"FoodProduct"> | Date | string
     updatedAt?: DateTimeFilter<"FoodProduct"> | Date | string
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     dishIngredients?: DishIngredientListRelationFilter
     cartItems?: CartItemListRelationFilter
     shoppingListItems?: ShoppingListItemListRelationFilter
+    productEntries?: ProductEntryListRelationFilter
   }, "id">
 
   export type FoodProductOrderByWithAggregationInput = {
@@ -64736,6 +66124,7 @@ export namespace Prisma {
     nutritionSource?: SortOrder
     category?: SortOrder
     status?: SortOrder
+    stores?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FoodProductCountOrderByAggregateInput
@@ -64765,6 +66154,7 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceWithAggregatesFilter<"FoodProduct"> | $Enums.NutritionSource
     category?: StringWithAggregatesFilter<"FoodProduct"> | string
     status?: EnumProductStatusWithAggregatesFilter<"FoodProduct"> | $Enums.ProductStatus
+    stores?: EnumStoreNullableListFilter<"FoodProduct">
     createdAt?: DateTimeWithAggregatesFilter<"FoodProduct"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"FoodProduct"> | Date | string
   }
@@ -64840,6 +66230,7 @@ export namespace Prisma {
     name?: StringFilter<"Dish"> | string
     description?: StringNullableFilter<"Dish"> | string | null
     servings?: IntFilter<"Dish"> | number
+    type?: EnumDishTypeFilter<"Dish"> | $Enums.DishType
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -64855,6 +66246,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     servings?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -64873,6 +66265,7 @@ export namespace Prisma {
     name?: StringFilter<"Dish"> | string
     description?: StringNullableFilter<"Dish"> | string | null
     servings?: IntFilter<"Dish"> | number
+    type?: EnumDishTypeFilter<"Dish"> | $Enums.DishType
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -64888,6 +66281,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     servings?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DishCountOrderByAggregateInput
@@ -64906,6 +66300,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Dish"> | string
     description?: StringNullableWithAggregatesFilter<"Dish"> | string | null
     servings?: IntWithAggregatesFilter<"Dish"> | number
+    type?: EnumDishTypeWithAggregatesFilter<"Dish"> | $Enums.DishType
     createdAt?: DateTimeWithAggregatesFilter<"Dish"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Dish"> | Date | string
   }
@@ -65536,6 +66931,7 @@ export namespace Prisma {
     person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     templateSlot?: XOR<MealTemplateSlotScalarRelationFilter, MealTemplateSlotWhereInput>
     dishEntries?: DishEntryListRelationFilter
+    productEntries?: ProductEntryListRelationFilter
   }
 
   export type MealSlotInstanceOrderByWithRelationInput = {
@@ -65551,6 +66947,7 @@ export namespace Prisma {
     person?: NutritionPersonOrderByWithRelationInput
     templateSlot?: MealTemplateSlotOrderByWithRelationInput
     dishEntries?: DishEntryOrderByRelationAggregateInput
+    productEntries?: ProductEntryOrderByRelationAggregateInput
   }
 
   export type MealSlotInstanceWhereUniqueInput = Prisma.AtLeast<{
@@ -65570,6 +66967,7 @@ export namespace Prisma {
     person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
     templateSlot?: XOR<MealTemplateSlotScalarRelationFilter, MealTemplateSlotWhereInput>
     dishEntries?: DishEntryListRelationFilter
+    productEntries?: ProductEntryListRelationFilter
   }, "id" | "dayPlanId_personId_templateSlotId">
 
   export type MealSlotInstanceOrderByWithAggregationInput = {
@@ -65600,6 +66998,71 @@ export namespace Prisma {
     targetFiberGrams?: FloatWithAggregatesFilter<"MealSlotInstance"> | number
     createdAt?: DateTimeWithAggregatesFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MealSlotInstance"> | Date | string
+  }
+
+  export type ProductEntryWhereInput = {
+    AND?: ProductEntryWhereInput | ProductEntryWhereInput[]
+    OR?: ProductEntryWhereInput[]
+    NOT?: ProductEntryWhereInput | ProductEntryWhereInput[]
+    id?: StringFilter<"ProductEntry"> | string
+    mealSlotId?: StringFilter<"ProductEntry"> | string
+    productId?: StringFilter<"ProductEntry"> | string
+    portionWeight?: FloatFilter<"ProductEntry"> | number
+    createdAt?: DateTimeFilter<"ProductEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductEntry"> | Date | string
+    mealSlot?: XOR<MealSlotInstanceScalarRelationFilter, MealSlotInstanceWhereInput>
+    product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
+  }
+
+  export type ProductEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    mealSlotId?: SortOrder
+    productId?: SortOrder
+    portionWeight?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    mealSlot?: MealSlotInstanceOrderByWithRelationInput
+    product?: FoodProductOrderByWithRelationInput
+  }
+
+  export type ProductEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProductEntryWhereInput | ProductEntryWhereInput[]
+    OR?: ProductEntryWhereInput[]
+    NOT?: ProductEntryWhereInput | ProductEntryWhereInput[]
+    mealSlotId?: StringFilter<"ProductEntry"> | string
+    productId?: StringFilter<"ProductEntry"> | string
+    portionWeight?: FloatFilter<"ProductEntry"> | number
+    createdAt?: DateTimeFilter<"ProductEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductEntry"> | Date | string
+    mealSlot?: XOR<MealSlotInstanceScalarRelationFilter, MealSlotInstanceWhereInput>
+    product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
+  }, "id">
+
+  export type ProductEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    mealSlotId?: SortOrder
+    productId?: SortOrder
+    portionWeight?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProductEntryCountOrderByAggregateInput
+    _avg?: ProductEntryAvgOrderByAggregateInput
+    _max?: ProductEntryMaxOrderByAggregateInput
+    _min?: ProductEntryMinOrderByAggregateInput
+    _sum?: ProductEntrySumOrderByAggregateInput
+  }
+
+  export type ProductEntryScalarWhereWithAggregatesInput = {
+    AND?: ProductEntryScalarWhereWithAggregatesInput | ProductEntryScalarWhereWithAggregatesInput[]
+    OR?: ProductEntryScalarWhereWithAggregatesInput[]
+    NOT?: ProductEntryScalarWhereWithAggregatesInput | ProductEntryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProductEntry"> | string
+    mealSlotId?: StringWithAggregatesFilter<"ProductEntry"> | string
+    productId?: StringWithAggregatesFilter<"ProductEntry"> | string
+    portionWeight?: FloatWithAggregatesFilter<"ProductEntry"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ProductEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProductEntry"> | Date | string
   }
 
   export type DishEntryWhereInput = {
@@ -68544,12 +70007,14 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutFoodProductsInput
     dishIngredients?: DishIngredientCreateNestedManyWithoutProductInput
     cartItems?: CartItemCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUncheckedCreateInput = {
@@ -68569,11 +70034,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     dishIngredients?: DishIngredientUncheckedCreateNestedManyWithoutProductInput
     cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemUncheckedCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUpdateInput = {
@@ -68592,12 +70059,14 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutFoodProductsNestedInput
     dishIngredients?: DishIngredientUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateInput = {
@@ -68617,11 +70086,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductCreateManyInput = {
@@ -68641,6 +70112,7 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68661,6 +70133,7 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68682,6 +70155,7 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68758,6 +70232,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
@@ -68773,6 +70248,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
@@ -68786,6 +70262,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
@@ -68801,6 +70278,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
@@ -68815,6 +70293,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68824,6 +70303,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68834,6 +70314,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69449,6 +70930,7 @@ export namespace Prisma {
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
     templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUncheckedCreateInput = {
@@ -69461,6 +70943,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUpdateInput = {
@@ -69473,6 +70956,7 @@ export namespace Prisma {
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
     templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateInput = {
@@ -69485,6 +70969,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceCreateManyInput = {
@@ -69513,6 +70998,67 @@ export namespace Prisma {
     templateSlotId?: StringFieldUpdateOperationsInput | string
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryCreateInput = {
+    id?: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mealSlot: MealSlotInstanceCreateNestedOneWithoutProductEntriesInput
+    product: FoodProductCreateNestedOneWithoutProductEntriesInput
+  }
+
+  export type ProductEntryUncheckedCreateInput = {
+    id?: string
+    mealSlotId: string
+    productId: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutProductEntriesNestedInput
+    product?: FoodProductUpdateOneRequiredWithoutProductEntriesNestedInput
+  }
+
+  export type ProductEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mealSlotId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryCreateManyInput = {
+    id?: string
+    mealSlotId: string
+    productId: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mealSlotId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -72827,6 +74373,14 @@ export namespace Prisma {
     not?: NestedEnumProductStatusFilter<$PrismaModel> | $Enums.ProductStatus
   }
 
+  export type EnumStoreNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.Store[] | ListEnumStoreFieldRefInput<$PrismaModel> | null
+    has?: $Enums.Store | EnumStoreFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.Store[] | ListEnumStoreFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.Store[] | ListEnumStoreFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type DishIngredientListRelationFilter = {
     every?: DishIngredientWhereInput
     some?: DishIngredientWhereInput
@@ -72845,6 +74399,12 @@ export namespace Prisma {
     none?: ShoppingListItemWhereInput
   }
 
+  export type ProductEntryListRelationFilter = {
+    every?: ProductEntryWhereInput
+    some?: ProductEntryWhereInput
+    none?: ProductEntryWhereInput
+  }
+
   export type DishIngredientOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -72854,6 +74414,10 @@ export namespace Prisma {
   }
 
   export type ShoppingListItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductEntryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -72874,6 +74438,7 @@ export namespace Prisma {
     nutritionSource?: SortOrder
     category?: SortOrder
     status?: SortOrder
+    stores?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73032,6 +74597,13 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type EnumDishTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DishType | EnumDishTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDishTypeFilter<$PrismaModel> | $Enums.DishType
+  }
+
   export type DayPlanEntryListRelationFilter = {
     every?: DayPlanEntryWhereInput
     some?: DayPlanEntryWhereInput
@@ -73068,6 +74640,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     servings?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73082,6 +74655,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     servings?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73092,6 +74666,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     servings?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73114,6 +74689,16 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumDishTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DishType | EnumDishTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDishTypeWithAggregatesFilter<$PrismaModel> | $Enums.DishType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDishTypeFilter<$PrismaModel>
+    _max?: NestedEnumDishTypeFilter<$PrismaModel>
   }
 
   export type DishScalarRelationFilter = {
@@ -73639,6 +75224,41 @@ export namespace Prisma {
   export type MealSlotInstanceScalarRelationFilter = {
     is?: MealSlotInstanceWhereInput
     isNot?: MealSlotInstanceWhereInput
+  }
+
+  export type ProductEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    mealSlotId?: SortOrder
+    productId?: SortOrder
+    portionWeight?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductEntryAvgOrderByAggregateInput = {
+    portionWeight?: SortOrder
+  }
+
+  export type ProductEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    mealSlotId?: SortOrder
+    productId?: SortOrder
+    portionWeight?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    mealSlotId?: SortOrder
+    productId?: SortOrder
+    portionWeight?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductEntrySumOrderByAggregateInput = {
+    portionWeight?: SortOrder
   }
 
   export type DishEntryCountOrderByAggregateInput = {
@@ -76626,6 +78246,10 @@ export namespace Prisma {
     deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
   }
 
+  export type FoodProductCreatestoresInput = {
+    set: $Enums.Store[]
+  }
+
   export type UserCreateNestedOneWithoutFoodProductsInput = {
     create?: XOR<UserCreateWithoutFoodProductsInput, UserUncheckedCreateWithoutFoodProductsInput>
     connectOrCreate?: UserCreateOrConnectWithoutFoodProductsInput
@@ -76653,6 +78277,13 @@ export namespace Prisma {
     connect?: ShoppingListItemWhereUniqueInput | ShoppingListItemWhereUniqueInput[]
   }
 
+  export type ProductEntryCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput> | ProductEntryCreateWithoutProductInput[] | ProductEntryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutProductInput | ProductEntryCreateOrConnectWithoutProductInput[]
+    createMany?: ProductEntryCreateManyProductInputEnvelope
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+  }
+
   export type DishIngredientUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<DishIngredientCreateWithoutProductInput, DishIngredientUncheckedCreateWithoutProductInput> | DishIngredientCreateWithoutProductInput[] | DishIngredientUncheckedCreateWithoutProductInput[]
     connectOrCreate?: DishIngredientCreateOrConnectWithoutProductInput | DishIngredientCreateOrConnectWithoutProductInput[]
@@ -76674,6 +78305,13 @@ export namespace Prisma {
     connect?: ShoppingListItemWhereUniqueInput | ShoppingListItemWhereUniqueInput[]
   }
 
+  export type ProductEntryUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput> | ProductEntryCreateWithoutProductInput[] | ProductEntryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutProductInput | ProductEntryCreateOrConnectWithoutProductInput[]
+    createMany?: ProductEntryCreateManyProductInputEnvelope
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -76692,6 +78330,11 @@ export namespace Prisma {
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
     set?: $Enums.ProductStatus
+  }
+
+  export type FoodProductUpdatestoresInput = {
+    set?: $Enums.Store[]
+    push?: $Enums.Store | $Enums.Store[]
   }
 
   export type UserUpdateOneWithoutFoodProductsNestedInput = {
@@ -76746,6 +78389,20 @@ export namespace Prisma {
     deleteMany?: ShoppingListItemScalarWhereInput | ShoppingListItemScalarWhereInput[]
   }
 
+  export type ProductEntryUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput> | ProductEntryCreateWithoutProductInput[] | ProductEntryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutProductInput | ProductEntryCreateOrConnectWithoutProductInput[]
+    upsert?: ProductEntryUpsertWithWhereUniqueWithoutProductInput | ProductEntryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductEntryCreateManyProductInputEnvelope
+    set?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    disconnect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    delete?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    update?: ProductEntryUpdateWithWhereUniqueWithoutProductInput | ProductEntryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductEntryUpdateManyWithWhereWithoutProductInput | ProductEntryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
+  }
+
   export type DishIngredientUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<DishIngredientCreateWithoutProductInput, DishIngredientUncheckedCreateWithoutProductInput> | DishIngredientCreateWithoutProductInput[] | DishIngredientUncheckedCreateWithoutProductInput[]
     connectOrCreate?: DishIngredientCreateOrConnectWithoutProductInput | DishIngredientCreateOrConnectWithoutProductInput[]
@@ -76786,6 +78443,20 @@ export namespace Prisma {
     update?: ShoppingListItemUpdateWithWhereUniqueWithoutProductInput | ShoppingListItemUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: ShoppingListItemUpdateManyWithWhereWithoutProductInput | ShoppingListItemUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: ShoppingListItemScalarWhereInput | ShoppingListItemScalarWhereInput[]
+  }
+
+  export type ProductEntryUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput> | ProductEntryCreateWithoutProductInput[] | ProductEntryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutProductInput | ProductEntryCreateOrConnectWithoutProductInput[]
+    upsert?: ProductEntryUpsertWithWhereUniqueWithoutProductInput | ProductEntryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductEntryCreateManyProductInputEnvelope
+    set?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    disconnect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    delete?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    update?: ProductEntryUpdateWithWhereUniqueWithoutProductInput | ProductEntryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductEntryUpdateManyWithWhereWithoutProductInput | ProductEntryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
   }
 
   export type DishIngredientCreateNestedManyWithoutCookingMethodInput = {
@@ -76898,6 +78569,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumDishTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DishType
   }
 
   export type UserUpdateOneRequiredWithoutDishesNestedInput = {
@@ -77665,11 +79340,25 @@ export namespace Prisma {
     connect?: DishEntryWhereUniqueInput | DishEntryWhereUniqueInput[]
   }
 
+  export type ProductEntryCreateNestedManyWithoutMealSlotInput = {
+    create?: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput> | ProductEntryCreateWithoutMealSlotInput[] | ProductEntryUncheckedCreateWithoutMealSlotInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutMealSlotInput | ProductEntryCreateOrConnectWithoutMealSlotInput[]
+    createMany?: ProductEntryCreateManyMealSlotInputEnvelope
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+  }
+
   export type DishEntryUncheckedCreateNestedManyWithoutMealSlotInput = {
     create?: XOR<DishEntryCreateWithoutMealSlotInput, DishEntryUncheckedCreateWithoutMealSlotInput> | DishEntryCreateWithoutMealSlotInput[] | DishEntryUncheckedCreateWithoutMealSlotInput[]
     connectOrCreate?: DishEntryCreateOrConnectWithoutMealSlotInput | DishEntryCreateOrConnectWithoutMealSlotInput[]
     createMany?: DishEntryCreateManyMealSlotInputEnvelope
     connect?: DishEntryWhereUniqueInput | DishEntryWhereUniqueInput[]
+  }
+
+  export type ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput = {
+    create?: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput> | ProductEntryCreateWithoutMealSlotInput[] | ProductEntryUncheckedCreateWithoutMealSlotInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutMealSlotInput | ProductEntryCreateOrConnectWithoutMealSlotInput[]
+    createMany?: ProductEntryCreateManyMealSlotInputEnvelope
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
   }
 
   export type DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput = {
@@ -77710,6 +79399,20 @@ export namespace Prisma {
     deleteMany?: DishEntryScalarWhereInput | DishEntryScalarWhereInput[]
   }
 
+  export type ProductEntryUpdateManyWithoutMealSlotNestedInput = {
+    create?: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput> | ProductEntryCreateWithoutMealSlotInput[] | ProductEntryUncheckedCreateWithoutMealSlotInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutMealSlotInput | ProductEntryCreateOrConnectWithoutMealSlotInput[]
+    upsert?: ProductEntryUpsertWithWhereUniqueWithoutMealSlotInput | ProductEntryUpsertWithWhereUniqueWithoutMealSlotInput[]
+    createMany?: ProductEntryCreateManyMealSlotInputEnvelope
+    set?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    disconnect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    delete?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    update?: ProductEntryUpdateWithWhereUniqueWithoutMealSlotInput | ProductEntryUpdateWithWhereUniqueWithoutMealSlotInput[]
+    updateMany?: ProductEntryUpdateManyWithWhereWithoutMealSlotInput | ProductEntryUpdateManyWithWhereWithoutMealSlotInput[]
+    deleteMany?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
+  }
+
   export type DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput = {
     create?: XOR<DishEntryCreateWithoutMealSlotInput, DishEntryUncheckedCreateWithoutMealSlotInput> | DishEntryCreateWithoutMealSlotInput[] | DishEntryUncheckedCreateWithoutMealSlotInput[]
     connectOrCreate?: DishEntryCreateOrConnectWithoutMealSlotInput | DishEntryCreateOrConnectWithoutMealSlotInput[]
@@ -77722,6 +79425,48 @@ export namespace Prisma {
     update?: DishEntryUpdateWithWhereUniqueWithoutMealSlotInput | DishEntryUpdateWithWhereUniqueWithoutMealSlotInput[]
     updateMany?: DishEntryUpdateManyWithWhereWithoutMealSlotInput | DishEntryUpdateManyWithWhereWithoutMealSlotInput[]
     deleteMany?: DishEntryScalarWhereInput | DishEntryScalarWhereInput[]
+  }
+
+  export type ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput = {
+    create?: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput> | ProductEntryCreateWithoutMealSlotInput[] | ProductEntryUncheckedCreateWithoutMealSlotInput[]
+    connectOrCreate?: ProductEntryCreateOrConnectWithoutMealSlotInput | ProductEntryCreateOrConnectWithoutMealSlotInput[]
+    upsert?: ProductEntryUpsertWithWhereUniqueWithoutMealSlotInput | ProductEntryUpsertWithWhereUniqueWithoutMealSlotInput[]
+    createMany?: ProductEntryCreateManyMealSlotInputEnvelope
+    set?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    disconnect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    delete?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    connect?: ProductEntryWhereUniqueInput | ProductEntryWhereUniqueInput[]
+    update?: ProductEntryUpdateWithWhereUniqueWithoutMealSlotInput | ProductEntryUpdateWithWhereUniqueWithoutMealSlotInput[]
+    updateMany?: ProductEntryUpdateManyWithWhereWithoutMealSlotInput | ProductEntryUpdateManyWithWhereWithoutMealSlotInput[]
+    deleteMany?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
+  }
+
+  export type MealSlotInstanceCreateNestedOneWithoutProductEntriesInput = {
+    create?: XOR<MealSlotInstanceCreateWithoutProductEntriesInput, MealSlotInstanceUncheckedCreateWithoutProductEntriesInput>
+    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutProductEntriesInput
+    connect?: MealSlotInstanceWhereUniqueInput
+  }
+
+  export type FoodProductCreateNestedOneWithoutProductEntriesInput = {
+    create?: XOR<FoodProductCreateWithoutProductEntriesInput, FoodProductUncheckedCreateWithoutProductEntriesInput>
+    connectOrCreate?: FoodProductCreateOrConnectWithoutProductEntriesInput
+    connect?: FoodProductWhereUniqueInput
+  }
+
+  export type MealSlotInstanceUpdateOneRequiredWithoutProductEntriesNestedInput = {
+    create?: XOR<MealSlotInstanceCreateWithoutProductEntriesInput, MealSlotInstanceUncheckedCreateWithoutProductEntriesInput>
+    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutProductEntriesInput
+    upsert?: MealSlotInstanceUpsertWithoutProductEntriesInput
+    connect?: MealSlotInstanceWhereUniqueInput
+    update?: XOR<XOR<MealSlotInstanceUpdateToOneWithWhereWithoutProductEntriesInput, MealSlotInstanceUpdateWithoutProductEntriesInput>, MealSlotInstanceUncheckedUpdateWithoutProductEntriesInput>
+  }
+
+  export type FoodProductUpdateOneRequiredWithoutProductEntriesNestedInput = {
+    create?: XOR<FoodProductCreateWithoutProductEntriesInput, FoodProductUncheckedCreateWithoutProductEntriesInput>
+    connectOrCreate?: FoodProductCreateOrConnectWithoutProductEntriesInput
+    upsert?: FoodProductUpsertWithoutProductEntriesInput
+    connect?: FoodProductWhereUniqueInput
+    update?: XOR<XOR<FoodProductUpdateToOneWithWhereWithoutProductEntriesInput, FoodProductUpdateWithoutProductEntriesInput>, FoodProductUncheckedUpdateWithoutProductEntriesInput>
   }
 
   export type DishCreateNestedOneWithoutDishEntriesInput = {
@@ -79408,6 +81153,13 @@ export namespace Prisma {
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDishTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DishType | EnumDishTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDishTypeFilter<$PrismaModel> | $Enums.DishType
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -79422,6 +81174,16 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDishTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DishType | EnumDishTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDishTypeWithAggregatesFilter<$PrismaModel> | $Enums.DishType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDishTypeFilter<$PrismaModel>
+    _max?: NestedEnumDishTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumMealSlotFilter<$PrismaModel = never> = {
@@ -80040,6 +81802,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
@@ -80053,6 +81816,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
@@ -80233,11 +81997,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     dishIngredients?: DishIngredientCreateNestedManyWithoutProductInput
     cartItems?: CartItemCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUncheckedCreateWithoutUserInput = {
@@ -80256,11 +82022,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     dishIngredients?: DishIngredientUncheckedCreateNestedManyWithoutProductInput
     cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemUncheckedCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductCreateOrConnectWithoutUserInput = {
@@ -80913,6 +82681,7 @@ export namespace Prisma {
     name?: StringFilter<"Dish"> | string
     description?: StringNullableFilter<"Dish"> | string | null
     servings?: IntFilter<"Dish"> | number
+    type?: EnumDishTypeFilter<"Dish"> | $Enums.DishType
     createdAt?: DateTimeFilter<"Dish"> | Date | string
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
   }
@@ -81081,6 +82850,7 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFilter<"FoodProduct"> | $Enums.NutritionSource
     category?: StringFilter<"FoodProduct"> | string
     status?: EnumProductStatusFilter<"FoodProduct"> | $Enums.ProductStatus
+    stores?: EnumStoreNullableListFilter<"FoodProduct">
     createdAt?: DateTimeFilter<"FoodProduct"> | Date | string
     updatedAt?: DateTimeFilter<"FoodProduct"> | Date | string
   }
@@ -82055,6 +83825,7 @@ export namespace Prisma {
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUncheckedCreateWithoutPersonInput = {
@@ -82066,6 +83837,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceCreateOrConnectWithoutPersonInput = {
@@ -82354,6 +84126,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProductEntryCreateWithoutProductInput = {
+    id?: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mealSlot: MealSlotInstanceCreateNestedOneWithoutProductEntriesInput
+  }
+
+  export type ProductEntryUncheckedCreateWithoutProductInput = {
+    id?: string
+    mealSlotId: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductEntryCreateOrConnectWithoutProductInput = {
+    where: ProductEntryWhereUniqueInput
+    create: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductEntryCreateManyProductInputEnvelope = {
+    data: ProductEntryCreateManyProductInput | ProductEntryCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutFoodProductsInput = {
     update: XOR<UserUpdateWithoutFoodProductsInput, UserUncheckedUpdateWithoutFoodProductsInput>
     create: XOR<UserCreateWithoutFoodProductsInput, UserUncheckedCreateWithoutFoodProductsInput>
@@ -82523,6 +84321,34 @@ export namespace Prisma {
     amount?: FloatFilter<"ShoppingListItem"> | number
     unit?: EnumUnitFilter<"ShoppingListItem"> | $Enums.Unit
     checked?: BoolFilter<"ShoppingListItem"> | boolean
+  }
+
+  export type ProductEntryUpsertWithWhereUniqueWithoutProductInput = {
+    where: ProductEntryWhereUniqueInput
+    update: XOR<ProductEntryUpdateWithoutProductInput, ProductEntryUncheckedUpdateWithoutProductInput>
+    create: XOR<ProductEntryCreateWithoutProductInput, ProductEntryUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductEntryUpdateWithWhereUniqueWithoutProductInput = {
+    where: ProductEntryWhereUniqueInput
+    data: XOR<ProductEntryUpdateWithoutProductInput, ProductEntryUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductEntryUpdateManyWithWhereWithoutProductInput = {
+    where: ProductEntryScalarWhereInput
+    data: XOR<ProductEntryUpdateManyMutationInput, ProductEntryUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type ProductEntryScalarWhereInput = {
+    AND?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
+    OR?: ProductEntryScalarWhereInput[]
+    NOT?: ProductEntryScalarWhereInput | ProductEntryScalarWhereInput[]
+    id?: StringFilter<"ProductEntry"> | string
+    mealSlotId?: StringFilter<"ProductEntry"> | string
+    productId?: StringFilter<"ProductEntry"> | string
+    portionWeight?: FloatFilter<"ProductEntry"> | number
+    createdAt?: DateTimeFilter<"ProductEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductEntry"> | Date | string
   }
 
   export type DishIngredientCreateWithoutCookingMethodInput = {
@@ -82941,6 +84767,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
@@ -82955,6 +84782,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
@@ -82983,11 +84811,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutFoodProductsInput
     cartItems?: CartItemCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUncheckedCreateWithoutDishIngredientsInput = {
@@ -83007,10 +84837,12 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemUncheckedCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductCreateOrConnectWithoutDishIngredientsInput = {
@@ -83057,6 +84889,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
@@ -83071,6 +84904,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
@@ -83105,11 +84939,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutFoodProductsNestedInput
     cartItems?: CartItemUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateWithoutDishIngredientsInput = {
@@ -83129,10 +84965,12 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CookingMethodUpsertWithoutDishIngredientsInput = {
@@ -83421,6 +85259,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
@@ -83435,6 +85274,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
@@ -83486,6 +85326,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
@@ -83500,6 +85341,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
@@ -83996,6 +85838,7 @@ export namespace Prisma {
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
     templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUncheckedCreateWithoutDayPlanInput = {
@@ -84007,6 +85850,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceCreateOrConnectWithoutDayPlanInput = {
@@ -84230,6 +86074,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
@@ -84244,6 +86089,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
@@ -84307,6 +86153,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
@@ -84321,6 +86168,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
@@ -84606,11 +86454,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutFoodProductsInput
     dishIngredients?: DishIngredientCreateNestedManyWithoutProductInput
     cartItems?: CartItemCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUncheckedCreateWithoutShoppingListItemsInput = {
@@ -84630,10 +86480,12 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     dishIngredients?: DishIngredientUncheckedCreateNestedManyWithoutProductInput
     cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductCreateOrConnectWithoutShoppingListItemsInput = {
@@ -84691,11 +86543,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutFoodProductsNestedInput
     dishIngredients?: DishIngredientUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateWithoutShoppingListItemsInput = {
@@ -84715,10 +86569,12 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ShoppingListUpsertWithoutItemsInput = {
@@ -84759,6 +86615,7 @@ export namespace Prisma {
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput = {
@@ -84770,6 +86627,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput = {
@@ -84919,6 +86777,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProductEntryCreateWithoutMealSlotInput = {
+    id?: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: FoodProductCreateNestedOneWithoutProductEntriesInput
+  }
+
+  export type ProductEntryUncheckedCreateWithoutMealSlotInput = {
+    id?: string
+    productId: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductEntryCreateOrConnectWithoutMealSlotInput = {
+    where: ProductEntryWhereUniqueInput
+    create: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput>
+  }
+
+  export type ProductEntryCreateManyMealSlotInputEnvelope = {
+    data: ProductEntryCreateManyMealSlotInput | ProductEntryCreateManyMealSlotInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DayPlanUpsertWithoutMealSlotsInput = {
     update: XOR<DayPlanUpdateWithoutMealSlotsInput, DayPlanUncheckedUpdateWithoutMealSlotsInput>
     create: XOR<DayPlanCreateWithoutMealSlotsInput, DayPlanUncheckedCreateWithoutMealSlotsInput>
@@ -85042,11 +86926,208 @@ export namespace Prisma {
     data: XOR<DishEntryUpdateManyMutationInput, DishEntryUncheckedUpdateManyWithoutMealSlotInput>
   }
 
+  export type ProductEntryUpsertWithWhereUniqueWithoutMealSlotInput = {
+    where: ProductEntryWhereUniqueInput
+    update: XOR<ProductEntryUpdateWithoutMealSlotInput, ProductEntryUncheckedUpdateWithoutMealSlotInput>
+    create: XOR<ProductEntryCreateWithoutMealSlotInput, ProductEntryUncheckedCreateWithoutMealSlotInput>
+  }
+
+  export type ProductEntryUpdateWithWhereUniqueWithoutMealSlotInput = {
+    where: ProductEntryWhereUniqueInput
+    data: XOR<ProductEntryUpdateWithoutMealSlotInput, ProductEntryUncheckedUpdateWithoutMealSlotInput>
+  }
+
+  export type ProductEntryUpdateManyWithWhereWithoutMealSlotInput = {
+    where: ProductEntryScalarWhereInput
+    data: XOR<ProductEntryUpdateManyMutationInput, ProductEntryUncheckedUpdateManyWithoutMealSlotInput>
+  }
+
+  export type MealSlotInstanceCreateWithoutProductEntriesInput = {
+    id?: string
+    targetKcal: number
+    targetFiberGrams: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
+    person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
+    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
+    dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
+  }
+
+  export type MealSlotInstanceUncheckedCreateWithoutProductEntriesInput = {
+    id?: string
+    dayPlanId: string
+    personId: string
+    templateSlotId: string
+    targetKcal: number
+    targetFiberGrams: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
+  }
+
+  export type MealSlotInstanceCreateOrConnectWithoutProductEntriesInput = {
+    where: MealSlotInstanceWhereUniqueInput
+    create: XOR<MealSlotInstanceCreateWithoutProductEntriesInput, MealSlotInstanceUncheckedCreateWithoutProductEntriesInput>
+  }
+
+  export type FoodProductCreateWithoutProductEntriesInput = {
+    id?: string
+    name: string
+    caloriesPer100: number
+    proteinPer100: number
+    fatPer100: number
+    carbsPer100: number
+    fiberPer100: number
+    unit: string
+    standardPackageAmount: number
+    price?: number | null
+    priceSource?: $Enums.PriceSource
+    priceUpdatedAt?: Date | string | null
+    nutritionSource?: $Enums.NutritionSource
+    category: string
+    status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutFoodProductsInput
+    dishIngredients?: DishIngredientCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    shoppingListItems?: ShoppingListItemCreateNestedManyWithoutProductInput
+  }
+
+  export type FoodProductUncheckedCreateWithoutProductEntriesInput = {
+    id?: string
+    userId?: string | null
+    name: string
+    caloriesPer100: number
+    proteinPer100: number
+    fatPer100: number
+    carbsPer100: number
+    fiberPer100: number
+    unit: string
+    standardPackageAmount: number
+    price?: number | null
+    priceSource?: $Enums.PriceSource
+    priceUpdatedAt?: Date | string | null
+    nutritionSource?: $Enums.NutritionSource
+    category: string
+    status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dishIngredients?: DishIngredientUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    shoppingListItems?: ShoppingListItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type FoodProductCreateOrConnectWithoutProductEntriesInput = {
+    where: FoodProductWhereUniqueInput
+    create: XOR<FoodProductCreateWithoutProductEntriesInput, FoodProductUncheckedCreateWithoutProductEntriesInput>
+  }
+
+  export type MealSlotInstanceUpsertWithoutProductEntriesInput = {
+    update: XOR<MealSlotInstanceUpdateWithoutProductEntriesInput, MealSlotInstanceUncheckedUpdateWithoutProductEntriesInput>
+    create: XOR<MealSlotInstanceCreateWithoutProductEntriesInput, MealSlotInstanceUncheckedCreateWithoutProductEntriesInput>
+    where?: MealSlotInstanceWhereInput
+  }
+
+  export type MealSlotInstanceUpdateToOneWithWhereWithoutProductEntriesInput = {
+    where?: MealSlotInstanceWhereInput
+    data: XOR<MealSlotInstanceUpdateWithoutProductEntriesInput, MealSlotInstanceUncheckedUpdateWithoutProductEntriesInput>
+  }
+
+  export type MealSlotInstanceUpdateWithoutProductEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetKcal?: FloatFieldUpdateOperationsInput | number
+    targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
+    person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
+    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
+    dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
+  }
+
+  export type MealSlotInstanceUncheckedUpdateWithoutProductEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayPlanId?: StringFieldUpdateOperationsInput | string
+    personId?: StringFieldUpdateOperationsInput | string
+    templateSlotId?: StringFieldUpdateOperationsInput | string
+    targetKcal?: FloatFieldUpdateOperationsInput | number
+    targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+  }
+
+  export type FoodProductUpsertWithoutProductEntriesInput = {
+    update: XOR<FoodProductUpdateWithoutProductEntriesInput, FoodProductUncheckedUpdateWithoutProductEntriesInput>
+    create: XOR<FoodProductCreateWithoutProductEntriesInput, FoodProductUncheckedCreateWithoutProductEntriesInput>
+    where?: FoodProductWhereInput
+  }
+
+  export type FoodProductUpdateToOneWithWhereWithoutProductEntriesInput = {
+    where?: FoodProductWhereInput
+    data: XOR<FoodProductUpdateWithoutProductEntriesInput, FoodProductUncheckedUpdateWithoutProductEntriesInput>
+  }
+
+  export type FoodProductUpdateWithoutProductEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    caloriesPer100?: FloatFieldUpdateOperationsInput | number
+    proteinPer100?: FloatFieldUpdateOperationsInput | number
+    fatPer100?: FloatFieldUpdateOperationsInput | number
+    carbsPer100?: FloatFieldUpdateOperationsInput | number
+    fiberPer100?: FloatFieldUpdateOperationsInput | number
+    unit?: StringFieldUpdateOperationsInput | string
+    standardPackageAmount?: FloatFieldUpdateOperationsInput | number
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceSource?: EnumPriceSourceFieldUpdateOperationsInput | $Enums.PriceSource
+    priceUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
+    category?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutFoodProductsNestedInput
+    dishIngredients?: DishIngredientUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    shoppingListItems?: ShoppingListItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type FoodProductUncheckedUpdateWithoutProductEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    caloriesPer100?: FloatFieldUpdateOperationsInput | number
+    proteinPer100?: FloatFieldUpdateOperationsInput | number
+    fatPer100?: FloatFieldUpdateOperationsInput | number
+    carbsPer100?: FloatFieldUpdateOperationsInput | number
+    fiberPer100?: FloatFieldUpdateOperationsInput | number
+    unit?: StringFieldUpdateOperationsInput | string
+    standardPackageAmount?: FloatFieldUpdateOperationsInput | number
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceSource?: EnumPriceSourceFieldUpdateOperationsInput | $Enums.PriceSource
+    priceUpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
+    category?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
   export type DishCreateWithoutDishEntriesInput = {
     id?: string
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
@@ -85061,6 +87142,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
@@ -85082,6 +87164,7 @@ export namespace Prisma {
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
     templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
+    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceUncheckedCreateWithoutDishEntriesInput = {
@@ -85093,6 +87176,7 @@ export namespace Prisma {
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
   }
 
   export type MealSlotInstanceCreateOrConnectWithoutDishEntriesInput = {
@@ -85116,6 +87200,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
@@ -85130,6 +87215,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
@@ -85157,6 +87243,7 @@ export namespace Prisma {
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
     templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateWithoutDishEntriesInput = {
@@ -85168,6 +87255,7 @@ export namespace Prisma {
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
   }
 
   export type WeekPlanCreateWithoutCartInput = {
@@ -85317,11 +87405,13 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutFoodProductsInput
     dishIngredients?: DishIngredientCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductUncheckedCreateWithoutCartItemsInput = {
@@ -85341,10 +87431,12 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
     dishIngredients?: DishIngredientUncheckedCreateNestedManyWithoutProductInput
     shoppingListItems?: ShoppingListItemUncheckedCreateNestedManyWithoutProductInput
+    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type FoodProductCreateOrConnectWithoutCartItemsInput = {
@@ -85404,11 +87496,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutFoodProductsNestedInput
     dishIngredients?: DishIngredientUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateWithoutCartItemsInput = {
@@ -85428,10 +87522,12 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type HabitCreateWithoutSphereInput = {
@@ -90102,6 +92198,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     servings?: number
+    type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -90170,6 +92267,7 @@ export namespace Prisma {
     nutritionSource?: $Enums.NutritionSource
     category: string
     status?: $Enums.ProductStatus
+    stores?: FoodProductCreatestoresInput | $Enums.Store[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -90550,6 +92648,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
@@ -90563,6 +92662,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
@@ -90576,6 +92676,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: IntFieldUpdateOperationsInput | number
+    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -90750,11 +92851,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishIngredients?: DishIngredientUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateWithoutUserInput = {
@@ -90773,11 +92876,13 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishIngredients?: DishIngredientUncheckedUpdateManyWithoutProductNestedInput
     cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
     shoppingListItems?: ShoppingListItemUncheckedUpdateManyWithoutProductNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type FoodProductUncheckedUpdateManyWithoutUserInput = {
@@ -90796,6 +92901,7 @@ export namespace Prisma {
     nutritionSource?: EnumNutritionSourceFieldUpdateOperationsInput | $Enums.NutritionSource
     category?: StringFieldUpdateOperationsInput | string
     status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    stores?: FoodProductUpdatestoresInput | $Enums.Store[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -91275,6 +93381,7 @@ export namespace Prisma {
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateWithoutPersonInput = {
@@ -91286,6 +93393,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateManyWithoutPersonInput = {
@@ -91324,6 +93432,14 @@ export namespace Prisma {
     amount: number
     unit?: $Enums.Unit
     checked?: boolean
+  }
+
+  export type ProductEntryCreateManyProductInput = {
+    id?: string
+    mealSlotId: string
+    portionWeight: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DishIngredientUpdateWithoutProductInput = {
@@ -91408,6 +93524,30 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     unit?: EnumUnitFieldUpdateOperationsInput | $Enums.Unit
     checked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ProductEntryUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutProductEntriesNestedInput
+  }
+
+  export type ProductEntryUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mealSlotId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mealSlotId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DishIngredientCreateManyCookingMethodInput = {
@@ -91779,6 +93919,7 @@ export namespace Prisma {
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
     templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateWithoutDayPlanInput = {
@@ -91790,6 +93931,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateManyWithoutDayPlanInput = {
@@ -91853,6 +93995,7 @@ export namespace Prisma {
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateWithoutTemplateSlotInput = {
@@ -91864,6 +94007,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
   }
 
   export type MealSlotInstanceUncheckedUpdateManyWithoutTemplateSlotInput = {
@@ -91883,6 +94027,14 @@ export namespace Prisma {
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductEntryCreateManyMealSlotInput = {
+    id?: string
+    productId: string
+    portionWeight: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -91916,6 +94068,30 @@ export namespace Prisma {
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryUpdateWithoutMealSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: FoodProductUpdateOneRequiredWithoutProductEntriesNestedInput
+  }
+
+  export type ProductEntryUncheckedUpdateWithoutMealSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductEntryUncheckedUpdateManyWithoutMealSlotInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    portionWeight?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

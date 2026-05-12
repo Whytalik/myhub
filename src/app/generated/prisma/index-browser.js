@@ -202,6 +202,7 @@ exports.Prisma.FoodProductScalarFieldEnum = {
   nutritionSource: 'nutritionSource',
   category: 'category',
   status: 'status',
+  stores: 'stores',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -221,6 +222,7 @@ exports.Prisma.DishScalarFieldEnum = {
   name: 'name',
   description: 'description',
   servings: 'servings',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -315,6 +317,15 @@ exports.Prisma.MealSlotInstanceScalarFieldEnum = {
   templateSlotId: 'templateSlotId',
   targetKcal: 'targetKcal',
   targetFiberGrams: 'targetFiberGrams',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProductEntryScalarFieldEnum = {
+  id: 'id',
+  mealSlotId: 'mealSlotId',
+  productId: 'productId',
+  portionWeight: 'portionWeight',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -742,6 +753,27 @@ exports.ProductStatus = exports.$Enums.ProductStatus = {
   FAVORITE: 'FAVORITE'
 };
 
+exports.Store = exports.$Enums.Store = {
+  NASHA_RYABA: 'NASHA_RYABA',
+  BAZAR: 'BAZAR',
+  ATB: 'ATB',
+  SILPO: 'SILPO',
+  POLISSYA: 'POLISSYA',
+  METRO: 'METRO',
+  FORA: 'FORA'
+};
+
+exports.DishType = exports.$Enums.DishType = {
+  MAIN: 'MAIN',
+  SALAD: 'SALAD',
+  SOUP: 'SOUP',
+  SIDE: 'SIDE',
+  SNACK: 'SNACK',
+  SAUCE: 'SAUCE',
+  MARINADE: 'MARINADE',
+  BASE: 'BASE'
+};
+
 exports.MealSlot = exports.$Enums.MealSlot = {
   BREAKFAST: 'BREAKFAST',
   LUNCH: 'LUNCH',
@@ -889,6 +921,7 @@ exports.Prisma.ModelName = {
   ShoppingListItem: 'ShoppingListItem',
   MealTemplateSlot: 'MealTemplateSlot',
   MealSlotInstance: 'MealSlotInstance',
+  ProductEntry: 'ProductEntry',
   DishEntry: 'DishEntry',
   ShoppingCart: 'ShoppingCart',
   CartItem: 'CartItem',

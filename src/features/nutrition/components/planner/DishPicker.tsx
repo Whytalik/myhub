@@ -6,10 +6,13 @@ import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { calculateFitScore } from "@/lib/nutrition/calculations"
+import type { DishType } from "../../constants/dish-types"
+import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../../constants/dish-types"
 
 interface Dish {
   id: string
   name: string
+  type?: DishType
   per100g: {
     kcal: number
     protein: number
@@ -32,13 +35,17 @@ interface DishPickerProps {
 
 export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSharedInitial = false, slotName = "slot" }: DishPickerProps) {
   const [search, setSearch] = useState("")
+  const [typeFilter, setTypeFilter] = useState<DishType | null>(null)
   const [isShared, setIsShared] = useState(isSharedInitial)
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null)
   const [manualWeight, setManualWeight] = useState<string>("")
 
   const filteredDishes = useMemo(() => {
-    return dishes.filter(d => d.name.toLowerCase().includes(search.toLowerCase()))
-  }, [dishes, search])
+    return dishes.filter(d => {
+      if (typeFilter && (d.type ?? "MAIN") !== typeFilter) return false
+      return d.name.toLowerCase().includes(search.toLowerCase())
+    })
+  }, [dishes, search, typeFilter])
 
   const selectedDish = useMemo(() => {
     return dishes.find(d => d.id === selectedDishId)
@@ -73,6 +80,35 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
           />
         </div>
 
+        {/* Type filter pills */}
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setTypeFilter(null)}
+            className={`px-2.5 py-1 rounded-lg text-label font-mono border transition-all ${
+              !typeFilter ? "bg-accent/10 text-accent border-accent/30" : "border-border text-muted"
+            }`}
+          >
+            Всі
+          </button>
+          {DISH_TYPE_ORDER.map((t) => {
+            const meta = DISH_TYPE_META[t]
+            const active = typeFilter === t
+            const count = dishes.filter(d => (d.type ?? "MAIN") === t).length
+            if (count === 0) return null
+            return (
+              <button
+                key={t}
+                onClick={() => setTypeFilter(active ? null : t)}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-label font-mono border transition-all ${
+                  active ? `${meta.bg} ${meta.color} ${meta.border}` : "border-border text-muted"
+                }`}
+              >
+                {meta.emoji} {meta.label}
+              </button>
+            )
+          })}
+        </div>
+
         <div className="max-h-60 overflow-y-auto space-y-2 pr-2">
           {filteredDishes.map((dish) => {
             const previewWeight = (person.targetKcal * (slot.percentage / 100) * 100) / (dish.per100g.kcal || 1)
@@ -93,7 +129,12 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <div className="font-medium text-sm">{dish.name}</div>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className={`text-label font-mono ${DISH_TYPE_META[dish.type ?? "MAIN"].color}`}>
+                        {DISH_TYPE_META[dish.type ?? "MAIN"].emoji}
+                      </span>
+                      <span className="font-medium text-sm">{dish.name}</span>
+                    </div>
                     <div className="text-caption text-muted-foreground">
                       {dish.per100g.kcal.toFixed(0)} kcal | P: {dish.per100g.protein.toFixed(1)}g | F: {dish.per100g.fat.toFixed(1)}g
                     </div>
