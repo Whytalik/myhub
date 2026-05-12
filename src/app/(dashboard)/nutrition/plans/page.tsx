@@ -6,6 +6,7 @@ import { Heading } from "@/components/ui/heading";
 import { getWeekPlans } from "@/features/nutrition/actions/planning";
 import { getPersons } from "@/features/nutrition/actions/persons";
 import { CreatePlanForm } from "@/features/nutrition/components/planner/CreatePlanForm";
+import { PlanList } from "@/features/nutrition/components/planner/PlanList";
 
 export const metadata: Metadata = {
   title: "Plans",
@@ -37,22 +38,7 @@ export default async function PlansPage() {
       <div className="space-y-8 animate-in fade-in duration-500">
         <CreatePlanForm persons={persons} />
 
-        {weekPlans.length === 0 ? (
-          <p className="text-muted">No week plans yet. Create one above.</p>
-        ) : (
-          <div className="grid gap-4">
-            {weekPlans.map((plan) => (
-              <a
-                key={plan.id}
-                href={`/nutrition/week?id=${plan.id}`}
-                className="block bg-surface border border-border rounded-xl p-4 hover:border-accent/30 transition-colors"
-              >
-                <h3 className="font-semibold">{plan.name || "Week Plan"}</h3>
-                <p className="text-sm text-muted">{plan.createdAt.toLocaleDateString()}</p>
-              </a>
-            ))}
-          </div>
-        )}
+        <PlanList initialPlans={weekPlans} />
       </div>
     </div>
   );
