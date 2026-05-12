@@ -234,7 +234,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       {/* Task list with grouping */}
       {groupKeys.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center bg-surface/30 border border-dashed border-border rounded-[2.5rem]">
-          <p className="text-muted text-sm italic">No tasks found for this view.</p>
+          <p className="text-muted text-base italic">No tasks found for this view.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-12">

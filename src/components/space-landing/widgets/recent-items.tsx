@@ -27,7 +27,7 @@ export function RecentItems({ title, items, emptyMessage = "No items yet", actio
         )}
       </div>
       {items.length === 0 ? (
-        <p className="text-sm text-secondary text-center py-6">{emptyMessage}</p>
+        <p className="text-base text-secondary text-center py-6">{emptyMessage}</p>
       ) : (
         <div className="space-y-2">
           {items.map((item, i) => (
@@ -37,7 +37,7 @@ export function RecentItems({ title, items, emptyMessage = "No items yet", actio
               className="flex items-center justify-between p-3 rounded-lg bg-bg/40 hover:bg-raised transition-colors group"
             >
               <div>
-                <p className="text-sm font-medium text-text group-hover:text-accent transition-colors">{item.title}</p>
+                <p className="text-base font-medium text-text group-hover:text-accent transition-colors">{item.title}</p>
                 {item.subtitle && <p className="text-caption text-secondary mt-0.5">{item.subtitle}</p>}
               </div>
               {item.date && <span className="text-caption font-mono text-muted">{item.date}</span>}

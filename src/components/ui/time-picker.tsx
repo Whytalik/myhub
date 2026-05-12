@@ -82,7 +82,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
               >
                 <ChevronUp size={16} />
               </button>
-              <div className="w-10 h-10 flex items-center justify-center bg-raised/50 border border-border/50 rounded-xl text-sm font-mono font-bold text-text">
+              <div className="w-10 h-10 flex items-center justify-center bg-raised/50 border border-border/50 rounded-xl text-base font-mono font-bold text-text">
                 {hours.toString().padStart(2, "0")}
               </div>
               <button
@@ -95,7 +95,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
               <span className="text-label font-mono uppercase tracking-widest text-muted mt-1">Hrs</span>
             </div>
 
-            <div className="text-sm font-bold text-muted pb-6">:</div>
+            <div className="text-base font-bold text-muted pb-6">:</div>
 
             <div className="flex flex-col items-center gap-1">
               <button
@@ -105,7 +105,7 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
               >
                 <ChevronUp size={16} />
               </button>
-              <div className="w-10 h-10 flex items-center justify-center bg-raised/50 border border-border/50 rounded-xl text-sm font-mono font-bold text-text">
+              <div className="w-10 h-10 flex items-center justify-center bg-raised/50 border border-border/50 rounded-xl text-base font-mono font-bold text-text">
                 {minutes.toString().padStart(2, "0")}
               </div>
               <button

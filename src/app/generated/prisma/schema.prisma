@@ -168,6 +168,7 @@ model DishIngredient {
   productId       String
   cookingMethodId String?
   rawWeight       Float
+  alternatives    String[]       @default([])
   dish            Dish           @relation(fields: [dishId], references: [id], onDelete: Cascade)
   product         FoodProduct    @relation(fields: [productId], references: [id])
   cookingMethod   CookingMethod? @relation(fields: [cookingMethodId], references: [id])

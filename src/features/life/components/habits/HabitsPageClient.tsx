@@ -102,7 +102,7 @@ export function HabitsPageClient({
               <Sparkles size={32} className="text-muted/40" />
             </div>
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-bold text-text">
+              <p className="text-base font-bold text-text">
                 No habits defined yet
               </p>
               <p className="text-note text-muted max-w-[280px]">

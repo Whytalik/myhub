@@ -53,7 +53,7 @@ export function SphereGrid({ spheres, onClose }: SphereGridProps) {
 
       {spheres.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <p className="text-muted text-sm italic">No life spheres defined yet.</p>
+          <p className="text-muted text-base italic">No life spheres defined yet.</p>
           <p className="text-muted/60 text-note font-mono mt-1">
             Create spheres like Career, Health, Learning…
           </p>

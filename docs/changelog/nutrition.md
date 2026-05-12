@@ -1,14 +1,38 @@
-## [2026-05-12] Protein Optimization & Calorie Strictness
+## [2026-05-12] JSON Import/Export for Dishes with Alternatives Support
 
-Оптимізовано споживання білка для Олесі та підтверджено суворий ліміт калорій для Віталія.
+Додано імпорт/експорт страв у JSON форматі з підтримкою альтернативних інгредієнтів.
 
-- **Constants**: Оновлено `MEAL_VARIANTS` у `src/features/nutrition/constants/meal-variants.ts`:
-    - **Олеся**: Збільшено порції білкових продуктів (куряче філе, яйця, сир, тунець) у всіх прийомах їжі для досягнення цілі ~95г білка на день.
-    - **Віталій**: Порції залишено без змін для суворого дотримання ліміту 1700 ккал у дні залу.
-- **Visual Plan**: Підтверджено стратегію домашнього фаст-фуду (High Protein quality) та самостійного контролю гідратації.
+- **Schema**: Додано `alternatives String[] @default([])` в `DishIngredient` — зберігає назви альтернативних продуктів.
+- **Server Actions**: Додано `importDishesFromJson` (upsert by name, product lookup, auto-create cooking methods) та `exportDishes` у `dishes.ts`.
+- **UI**: Додано кнопки `Import JSON` / `Export JSON` в DishLibrary + модальне вікно з drag-and-drop.
+- **Data**: Оновлено `dishes.json` — 37 страв з полями `alternatives` для всіх інгредієнтів що мають заміни.
+- **Types**: Додано `alternatives?: string[]` в `DishIngredientInput`.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
+## [2026-05-12] Detailed Calorie Audit & Fast Food Integration
+
+Проведено повний аудит калорійності кожного дня та інтегровано розрахунок фаст-фуду в загальну статистику.
+
+- **Fast Food Engine**:
+    - Додано вагу інгредієнтів (`youGrams`, `herGrams`) до всіх варіантів `FAST_FOOD_PICKS`.
+    - Впроваджено функцію `calcFfKcal` у `WeeklySchedule.tsx`, що дозволяє динамічно враховувати обраний фаст-фуд у денний ліміт.
+- **Calorie Balancing**:
+    - **Віталій (Target 1700)**: Скориговано порції круп (враховуючи суху вагу) та білка. Усунено перебор у дні залу (~1900 -> 1700) та недобор у дні кардіо (~1100 -> 1650).
+    - **Олеся (Target 2300)**: Оптимізовано порції для стабільного профіциту 2200-2400 ккал, уникаючи надмірного перебору в окремі дні.
+- **Portion Accuracy**: Всі крупи (гречка, рис, макарони) тепер розраховуються за суху вагу, що забезпечує точність плану.
 - **Verification**: 
-    - [x] Logic implemented (Portions updated)
+    - [x] Logic implemented (Calorie formulas updated)
+    - [x] Portions tuned in `meal-variants.ts`
     - [x] Verified with `pnpm tsc --noEmit` (Success)
+
+---
+
+## [2026-05-12] Protein Optimization & Calorie Strictness
 
 ---
 

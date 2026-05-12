@@ -22,7 +22,7 @@ export function ProfileDisplay({ user }: ProfileDisplayProps) {
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
                 <User size={16} />
               </div>
-              <div className="w-full bg-raised border border-border rounded-xl pl-11 pr-4 py-3 text-sm text-text">
+              <div className="w-full bg-raised border border-border rounded-xl pl-11 pr-4 py-3 text-base text-text">
                 {user.name || "Not set"}
               </div>
             </div>
@@ -36,7 +36,7 @@ export function ProfileDisplay({ user }: ProfileDisplayProps) {
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
                 <Mail size={16} />
               </div>
-              <div className="w-full bg-raised border border-border rounded-xl pl-11 pr-4 py-3 text-sm text-text">
+              <div className="w-full bg-raised border border-border rounded-xl pl-11 pr-4 py-3 text-base text-text">
                 {user.email || "Not set"}
               </div>
             </div>
@@ -49,7 +49,7 @@ export function ProfileDisplay({ user }: ProfileDisplayProps) {
           </div>
           <div>
              <p className="text-caption font-mono text-muted uppercase tracking-widest">Member since</p>
-             <p className="text-sm font-bold mt-1">
+             <p className="text-base font-bold mt-1">
                {user.createdAt.toLocaleDateString("en-US", { month: "long", year: "numeric", day: "numeric" })}
              </p>
           </div>

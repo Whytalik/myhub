@@ -39,7 +39,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ id: 
            </div>
            <Heading title="Resource Matrix" className="text-2xl font-black uppercase tracking-tighter" />
         </div>
-        <p className="text-secondary max-w-2xl text-sm leading-relaxed font-medium">
+        <p className="text-secondary max-w-2xl text-base leading-relaxed font-medium">
           Centralized repository for comprehensible input sources. Manage your books, 
           podcasts, and digital materials aligned with your current proficiency level.
         </p>

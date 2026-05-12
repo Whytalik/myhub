@@ -234,7 +234,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
             onChange={(e) => onChange({ sleepNote: e.target.value || null })}
             placeholder="Sleep details..."
             rows={1}
-            className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
+            className={`bg-raised/50 border rounded-xl px-4 py-2 text-sm transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
               note 
                 ? "border-accent/50 text-text bg-accent/[0.02]" 
                 : "border-border text-secondary placeholder:text-muted/50 focus:border-accent/40"

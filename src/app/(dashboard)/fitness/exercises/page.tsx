@@ -9,7 +9,7 @@ export default function ExercisesPage() {
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "fitness", href: "/fitness" }, { label: "exercises" }]} />
       <Heading title="Exercises" />
-      <p className="text-secondary text-sm italic">Exercise library with sets, reps, and notes — coming soon.</p>
+      <p className="text-secondary text-base italic">Exercise library with sets, reps, and notes — coming soon.</p>
     </div>
   );
 }

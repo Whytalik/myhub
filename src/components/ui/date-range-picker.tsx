@@ -147,7 +147,7 @@ export function DateRangePicker({
         className={`flex items-center gap-3 px-4 py-2 bg-raised/50 border border-border rounded-xl cursor-pointer hover:border-accent/40 transition-all ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${isOpen ? "border-accent ring-2 ring-accent/10" : ""}`}
       >
         <CalendarIcon size={14} className={startDate ? "text-accent" : "text-muted"} />
-        <span className={`text-sm flex-1 truncate ${!startDate ? "text-muted/50" : "text-text font-medium"}`}>
+        <span className={`text-base flex-1 truncate ${!startDate ? "text-muted/50" : "text-text font-medium"}`}>
           {displayValue || placeholder}
         </span>
         {startDate && !disabled && (
@@ -175,7 +175,7 @@ export function DateRangePicker({
             >
               <ChevronLeft size={16} />
             </button>
-            <span className="text-sm font-bold uppercase tracking-wider">
+            <span className="text-base font-bold uppercase tracking-wider">
               {format(currentMonth, "MMMM yyyy")}
             </span>
             <button 

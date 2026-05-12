@@ -62,7 +62,7 @@ export default async function JournalPage({ params }: { params: Promise<{ id: st
                   <div className="p-2 rounded-xl bg-accent/10 text-accent">
                     <History size={18} />
                   </div>
-                  <h4 className="font-heading text-sm uppercase tracking-tight">Recent Sessions</h4>
+                  <h4 className="font-heading text-base uppercase tracking-tight">Recent Sessions</h4>
                 </div>
              </div>
 
@@ -84,7 +84,7 @@ export default async function JournalPage({ params }: { params: Promise<{ id: st
                             <p className="text-lg font-bold uppercase tracking-tight leading-none mb-2">
                               {log.sphere} session
                             </p>
-                            <p className="text-xs text-muted font-mono leading-none">
+                            <p className="text-sm text-muted font-mono leading-none">
                               {new Date(log.date).toLocaleString()} • {log.note || "Productive session"}
                             </p>
                           </div>

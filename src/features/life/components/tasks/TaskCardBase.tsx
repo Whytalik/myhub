@@ -177,7 +177,7 @@ className={`
       {task.parentId && (
         <div 
           onClick={handleParentClick}
-          className={`flex items-center gap-1.5 font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden hover:text-accent transition-colors cursor-pointer group/parent mb-0.5 ${isCompact ? 'text-[8px] md:text-caption pr-10' : 'text-label pr-20'}`}
+          className={`flex items-center gap-1.5 font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden hover:text-accent transition-colors cursor-pointer group/parent mb-0.5 ${isCompact ? 'text-[10px] md:text-caption pr-10' : 'text-label pr-20'}`}
         >
           <ArrowUp size={isCompact ? 8 : 8} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform" />
           {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
@@ -200,12 +200,12 @@ className={`
             <FileText size={isCompact ? 10 : 16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />
           )}
           <h3 
-            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-caption md:text-xs' : 'text-sm'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
+            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-caption md:text-base' : 'text-base'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "��������" : task.title) }}
             title={task.isPrivate ? "Private Task" : task.title}
           />
           {task.isPrivate && (
-             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 text-[8px] font-black uppercase tracking-tighter border border-amber-500/20 whitespace-nowrap h-fit mt-0.5">
+             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-tighter border border-amber-500/20 whitespace-nowrap h-fit mt-0.5">
                Private
              </span>
           )}
@@ -228,7 +228,7 @@ className={`
           
           {task.sphere && (
              <div 
-               className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-label'}`}
+               className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[9px] md:text-[10px]' : 'px-2 rounded-xl text-label'}`}
                style={{ backgroundColor: `${task.sphere.color}15`, borderColor: `${task.sphere.color}40`, color: task.sphere.color }}
              >
                {(() => {
@@ -242,7 +242,7 @@ className={`
 
         {!isCompact && task.description && (
           <div 
-            className={`text-sm leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
+            className={`text-base leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "Content is hidden" : task.description) }}
           />
         )}
@@ -257,14 +257,14 @@ className={`
               <div className="flex-1 h-1 bg-white/[0.05] rounded-full overflow-hidden">
                 <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: `${pct}%` }} />
               </div>
-              <span className="text-[8px] font-mono text-muted/50 shrink-0 tabular-nums">{pct}%</span>
+              <span className="text-[10px] font-mono text-muted/50 shrink-0 tabular-nums">{pct}%</span>
             </div>
           );
         })()}
         
         <div className={`pt-1 md:pt-1.5 border-t border-white/[0.03] flex items-center gap-3 flex-wrap ${isCompact ? '' : 'pt-2.5 gap-5'}`}>
             {plannedLabel && (
-              <div className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[8px] md:text-caption' : 'text-caption gap-1.5'}`} title="Planned for">
+              <div className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`} title="Planned for">
                 <Calendar size={isCompact ? 8 : 11} className="text-accent/40" />
                 <span className="text-text font-black leading-none">{plannedLabel}</span>
               </div>
@@ -272,7 +272,7 @@ className={`
 
             {dueLabel && (
               <div 
-                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[8px] md:text-caption' : 'text-caption gap-1.5'}`} 
+                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`} 
                 title="Deadline"
               >
                 <Flag size={isCompact ? 8 : 11} className={`${isOverdue ? "text-rose-500 fill-rose-500/10 animate-pulse" : "text-rose-500/60"} shrink-0`} />

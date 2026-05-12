@@ -23,8 +23,8 @@ export function SpaceError({
       </div>
 
       <div>
-        <h3 className="text-sm font-heading text-text uppercase tracking-tight mb-2">{title}</h3>
-        <p className="text-sm text-secondary leading-relaxed">{message}</p>
+        <h3 className="text-base font-heading text-text uppercase tracking-tight mb-2">{title}</h3>
+        <p className="text-base text-secondary leading-relaxed">{message}</p>
       </div>
 
       <button

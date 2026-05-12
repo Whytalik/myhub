@@ -71,7 +71,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
             onChange={(e) => onChange({ nutritionNote: e.target.value || null })}
             placeholder="One sentence: what was the trigger or reason?"
             rows={1}
-            className={`bg-raised/50 border rounded-xl px-4 py-2 text-xs transition-all resize-none outline-none leading-relaxed h-10 flex items-center border-border text-secondary focus:border-accent/40`}
+            className={`bg-raised/50 border rounded-xl px-4 py-2 text-sm transition-all resize-none outline-none leading-relaxed h-10 flex items-center border-border text-secondary focus:border-accent/40`}
           />
         </div>
       )}

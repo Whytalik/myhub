@@ -2,14 +2,15 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Trash2, Edit2 } from "lucide-react";
+import { Search, Plus, Trash2, Edit2, Upload, Download } from "lucide-react";
 import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { calculateDishStats, DishWithIngredients } from "../logic/recalculator";
-import { deleteDish } from "../actions/dishes";
+import { deleteDish, exportDishes } from "../actions/dishes";
+import { DishImportModal } from "./DishImportModal";
 import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
 
@@ -24,6 +25,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const [, startTransition] = useTransition();
 
   const filteredDishes = useMemo(() => {
@@ -47,6 +49,27 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
   const handleEdit = (dishId: string) => {
     router.push(`/nutrition/dishes?edit=${dishId}`);
+  };
+
+  const handleExport = async () => {
+    const result = await exportDishes();
+    if (result.success) {
+      const blob = new Blob([result.data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nutrition-dishes.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Dishes exported");
+    } else {
+      toast.error(result.error || "Export failed");
+    }
+  };
+
+  const handleImported = () => {
+    setShowImportModal(false);
+    window.location.reload();
   };
 
   const handleDelete = () => {
@@ -100,15 +123,23 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button
-          variant="primary"
-          size="sm"
-          className="rounded-xl"
-          onClick={handleCreate}
-        >
-          <Plus size={14} className="mr-1.5" />
-          Create Dish
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" className="rounded-xl" onClick={() => setShowImportModal(true)}>
+            <Upload size={14} className="mr-1.5" /> Import JSON
+          </Button>
+          <Button variant="outline" size="sm" className="rounded-xl" onClick={handleExport}>
+            <Download size={14} className="mr-1.5" /> Export JSON
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            className="rounded-xl"
+            onClick={handleCreate}
+          >
+            <Plus size={14} className="mr-1.5" />
+            Create Dish
+          </Button>
+        </div>
       </div>
 
       {/* Type Filter Pills */}
@@ -313,6 +344,12 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
           will remove it from all meal plans.
         </p>
       </Dialog>
+
+      <DishImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImported={handleImported}
+      />
     </div>
   );
 }

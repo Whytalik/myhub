@@ -60,14 +60,14 @@ export function ReflectionSection({ winToday, improveTomorrow, gratitude, brainD
             <div key={key} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon size={13} className={hasValue ? "text-accent" : "text-muted"} />
-                <label className={`text-sm font-medium ${hasValue ? "text-accent" : "text-text"}`}>{label}</label>
+                <label className={`text-base font-medium ${hasValue ? "text-accent" : "text-text"}`}>{label}</label>
               </div>
               <textarea
                 value={values[key] ?? ""}
                 onChange={(e) => onChange({ [key]: e.target.value || null })}
                 placeholder={placeholder}
                 rows={2}
-                className={`bg-raised/50 border rounded-xl px-3 py-2.5 text-sm transition-all resize-none leading-relaxed outline-none ${
+                className={`bg-raised/50 border rounded-xl px-3 py-2.5 text-base transition-all resize-none leading-relaxed outline-none ${
                   hasValue 
                     ? "border-accent/40 text-text shadow-[0_0_15px_rgba(192,132,252,0.05)]" 
                     : "border-border text-secondary placeholder:text-muted/40 focus:border-accent/40"

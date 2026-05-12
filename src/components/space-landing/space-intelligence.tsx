@@ -22,7 +22,7 @@ export function SpaceIntelligence({ title = "Space Intelligence", items }: Space
           {items.map((item) => (
             <div key={item.label} className="bg-raised/30 rounded-lg px-2.5 py-2 border border-border-dim/50">
               <p className="text-[9px] font-mono text-muted uppercase tracking-wider mb-1">{item.label}</p>
-              <p className="text-xs font-medium">{item.value}</p>
+              <p className="text-sm font-medium">{item.value}</p>
             </div>
           ))}
         </div>

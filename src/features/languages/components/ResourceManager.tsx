@@ -58,7 +58,7 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter matrix by name or source..." 
-            className="pl-10 h-9 bg-surface/40 border-border/50 rounded-lg text-sm"
+            className="pl-10 h-9 bg-surface/40 border-border/50 rounded-lg text-base"
           />
         </div>
         
@@ -89,14 +89,14 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Source title..."
-            className="font-black uppercase tracking-tight text-sm placeholder:text-accent/20"
+            className="font-black uppercase tracking-tight text-base placeholder:text-accent/20"
           />
           <Input 
             variant="inline"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="URL or Location..."
-            className="text-xs font-mono text-secondary placeholder:text-muted/30"
+            className="text-sm font-mono text-secondary placeholder:text-muted/30"
           />
           <div className="mt-auto flex justify-end">
             <Button size="sm" type="submit" disabled={!name || isAdding} className="rounded-xl px-6">
@@ -132,11 +132,11 @@ export function ResourceManager({ initialItems }: ResourceManagerProps) {
                     </div>
                   </div>
                   
-                  <h4 className="text-sm font-black uppercase tracking-tight text-text mb-2 group-hover:text-accent transition-colors line-clamp-1">
+                  <h4 className="text-base font-black uppercase tracking-tight text-text mb-2 group-hover:text-accent transition-colors line-clamp-1">
                     {item.name}
                   </h4>
                   
-                  <p className="text-secondary text-xs font-medium mb-8 line-clamp-2 opacity-70">
+                  <p className="text-secondary text-sm font-medium mb-8 line-clamp-2 opacity-70">
                     {item.notes || "No additional metadata mapped for this resource environment."}
                   </p>
                   

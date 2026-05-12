@@ -52,7 +52,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
         <div className="p-2.5 rounded-2xl bg-violet text-bg shadow-lg shadow-violet/20">
           <Clock size={20} strokeWidth={3} />
         </div>
-        <h4 className="font-black text-sm uppercase tracking-tight">Quick Log</h4>
+        <h4 className="font-black text-base uppercase tracking-tight">Quick Log</h4>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
@@ -82,7 +82,7 @@ export function ImmersionTimer({ userLanguageId }: ImmersionTimerProps) {
               type="number"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="flex-1 bg-bg/60 border-border/40 rounded-2xl h-9 text-sm font-black font-heading focus-visible:ring-violet"
+              className="flex-1 bg-bg/60 border-border/40 rounded-2xl h-9 text-base font-black font-heading focus-visible:ring-violet"
               min="1"
             />
             <Button

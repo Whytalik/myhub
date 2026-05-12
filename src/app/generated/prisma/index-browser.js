@@ -232,7 +232,8 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   dishId: 'dishId',
   productId: 'productId',
   cookingMethodId: 'cookingMethodId',
-  rawWeight: 'rawWeight'
+  rawWeight: 'rawWeight',
+  alternatives: 'alternatives'
 };
 
 exports.Prisma.DayTemplateScalarFieldEnum = {

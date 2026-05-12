@@ -48,7 +48,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
     <div className={`group bg-surface border rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-accent/40"}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex flex-col gap-1">
-          <h3 className={`text-sm font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
+          <h3 className={`text-base font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
             {habit.name}
           </h3>
           <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
           </div>
           <div className="flex flex-col">
             <span className="text-label font-mono tracking-widest text-muted">Anchor</span>
-            <p className="text-sm text-secondary italic">&quot;{habit.anchor}&quot;</p>
+            <p className="text-base text-secondary italic">&quot;{habit.anchor}&quot;</p>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
           </div>
           <div className="flex flex-col">
             <span className="text-label font-mono tracking-widest text-muted">Action</span>
-            <p className="text-sm font-medium text-text">&quot;{habit.action}&quot;</p>
+            <p className="text-base font-medium text-text">&quot;{habit.action}&quot;</p>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             </div>
             <div className="flex flex-col">
               <span className="text-label font-mono tracking-widest text-muted">Celebration</span>
-              <p className="text-sm text-secondary italic">&quot;{habit.celebration}&quot;</p>
+              <p className="text-base text-secondary italic">&quot;{habit.celebration}&quot;</p>
             </div>
           </div>
         )}

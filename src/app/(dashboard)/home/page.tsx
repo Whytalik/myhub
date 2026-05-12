@@ -153,7 +153,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-2.5">
                 <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
                 <div>
-                  <p className="text-sm font-heading text-text leading-none">{streak}</p>
+                  <p className="text-base font-heading text-text leading-none">{streak}</p>
                   <p className="text-caption font-mono text-muted uppercase tracking-wider">Streak</p>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default async function HomePage() {
                           <Icon size={22} className="text-accent" />
                         </div>
                         <div className="text-center px-2">
-                          <p className="text-sm font-semibold text-text leading-none mb-1">{label}</p>
+                          <p className="text-base font-semibold text-text leading-none mb-1">{label}</p>
                           <p className="text-caption text-muted leading-snug">{description}</p>
                         </div>
                       </Link>

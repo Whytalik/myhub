@@ -195,7 +195,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
   return (
     <div className={`flex flex-col gap-6 ${!isToday ? "pointer-events-none opacity-80" : ""}`}>
       {!isToday && (
-        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-4 py-2 rounded-xl text-xs font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
+        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-500 px-4 py-2 rounded-xl text-base font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
           <AlertCircle size={14} />
           Past entries are read-only.
         </div>
@@ -265,7 +265,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                             value={data.weight ?? ""}
                             onChange={(e) => patch({ weight: e.target.value ? parseFloat(e.target.value) : null })}
                             placeholder="0.0 kg"
-                            className="h-7 text-xs rounded-lg px-3 w-24"
+                            className="h-7 text-base rounded-lg px-3 w-24"
                           />
                         </div>
                       </div>
@@ -293,7 +293,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                           <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
                             <SparklesIcon size={32} className="text-muted/40" />
                           </div>
-                          <p className="text-sm font-bold text-text">No habits defined</p>
+                          <p className="text-base font-bold text-text">No habits defined</p>
                           <p className="text-note text-muted max-w-[280px]">
                             Configure your habits in the Habit Tracker to see them here.
                           </p>
@@ -429,7 +429,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                         >
                           <div className="flex items-center gap-3">
                             <CalendarDays size={16} className="text-accent" />
-                            <span className="text-sm font-medium text-text">Plan your tasks</span>
+                            <span className="text-base font-medium text-text">Plan your tasks</span>
                             <span className="text-note font-mono text-muted">Open calendar view</span>
                           </div>
                           <span className="text-muted group-hover:text-accent transition-colors">→</span>

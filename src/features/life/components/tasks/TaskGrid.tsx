@@ -16,7 +16,7 @@ export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, onDelete, all
   if (tasks.length === 0) {
     return (
       <div className="bg-surface border border-border border-dashed rounded-3xl p-12 text-center">
-        <p className="text-muted text-sm italic">No tasks found.</p>
+        <p className="text-muted text-base italic">No tasks found.</p>
       </div>
     );
   }

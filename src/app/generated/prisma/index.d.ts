@@ -17861,6 +17861,7 @@ export namespace Prisma {
     productId: number
     cookingMethodId: number
     rawWeight: number
+    alternatives: number
     _all: number
   }
 
@@ -17895,6 +17896,7 @@ export namespace Prisma {
     productId?: true
     cookingMethodId?: true
     rawWeight?: true
+    alternatives?: true
     _all?: true
   }
 
@@ -17990,6 +17992,7 @@ export namespace Prisma {
     productId: string
     cookingMethodId: string | null
     rawWeight: number
+    alternatives: string[]
     _count: DishIngredientCountAggregateOutputType | null
     _avg: DishIngredientAvgAggregateOutputType | null
     _sum: DishIngredientSumAggregateOutputType | null
@@ -18017,6 +18020,7 @@ export namespace Prisma {
     productId?: boolean
     cookingMethodId?: boolean
     rawWeight?: boolean
+    alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
     cookingMethod?: boolean | DishIngredient$cookingMethodArgs<ExtArgs>
@@ -18028,6 +18032,7 @@ export namespace Prisma {
     productId?: boolean
     cookingMethodId?: boolean
     rawWeight?: boolean
+    alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
     cookingMethod?: boolean | DishIngredient$cookingMethodArgs<ExtArgs>
@@ -18039,6 +18044,7 @@ export namespace Prisma {
     productId?: boolean
     cookingMethodId?: boolean
     rawWeight?: boolean
+    alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
     cookingMethod?: boolean | DishIngredient$cookingMethodArgs<ExtArgs>
@@ -18050,9 +18056,10 @@ export namespace Prisma {
     productId?: boolean
     cookingMethodId?: boolean
     rawWeight?: boolean
+    alternatives?: boolean
   }
 
-  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "cookingMethodId" | "rawWeight", ExtArgs["result"]["dishIngredient"]>
+  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "cookingMethodId" | "rawWeight" | "alternatives", ExtArgs["result"]["dishIngredient"]>
   export type DishIngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
@@ -18082,6 +18089,7 @@ export namespace Prisma {
       productId: string
       cookingMethodId: string | null
       rawWeight: number
+      alternatives: string[]
     }, ExtArgs["result"]["dishIngredient"]>
     composites: {}
   }
@@ -18513,6 +18521,7 @@ export namespace Prisma {
     readonly productId: FieldRef<"DishIngredient", 'String'>
     readonly cookingMethodId: FieldRef<"DishIngredient", 'String'>
     readonly rawWeight: FieldRef<"DishIngredient", 'Float'>
+    readonly alternatives: FieldRef<"DishIngredient", 'String[]'>
   }
     
 
@@ -64480,7 +64489,8 @@ export namespace Prisma {
     dishId: 'dishId',
     productId: 'productId',
     cookingMethodId: 'cookingMethodId',
-    rawWeight: 'rawWeight'
+    rawWeight: 'rawWeight',
+    alternatives: 'alternatives'
   };
 
   export type DishIngredientScalarFieldEnum = (typeof DishIngredientScalarFieldEnum)[keyof typeof DishIngredientScalarFieldEnum]
@@ -66314,6 +66324,7 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
     rawWeight?: FloatFilter<"DishIngredient"> | number
+    alternatives?: StringNullableListFilter<"DishIngredient">
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
     cookingMethod?: XOR<CookingMethodNullableScalarRelationFilter, CookingMethodWhereInput> | null
@@ -66325,6 +66336,7 @@ export namespace Prisma {
     productId?: SortOrder
     cookingMethodId?: SortOrderInput | SortOrder
     rawWeight?: SortOrder
+    alternatives?: SortOrder
     dish?: DishOrderByWithRelationInput
     product?: FoodProductOrderByWithRelationInput
     cookingMethod?: CookingMethodOrderByWithRelationInput
@@ -66340,6 +66352,7 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
     rawWeight?: FloatFilter<"DishIngredient"> | number
+    alternatives?: StringNullableListFilter<"DishIngredient">
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
     cookingMethod?: XOR<CookingMethodNullableScalarRelationFilter, CookingMethodWhereInput> | null
@@ -66351,6 +66364,7 @@ export namespace Prisma {
     productId?: SortOrder
     cookingMethodId?: SortOrderInput | SortOrder
     rawWeight?: SortOrder
+    alternatives?: SortOrder
     _count?: DishIngredientCountOrderByAggregateInput
     _avg?: DishIngredientAvgOrderByAggregateInput
     _max?: DishIngredientMaxOrderByAggregateInput
@@ -66367,6 +66381,7 @@ export namespace Prisma {
     productId?: StringWithAggregatesFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableWithAggregatesFilter<"DishIngredient"> | string | null
     rawWeight?: FloatWithAggregatesFilter<"DishIngredient"> | number
+    alternatives?: StringNullableListFilter<"DishIngredient">
   }
 
   export type DayTemplateWhereInput = {
@@ -70322,6 +70337,7 @@ export namespace Prisma {
   export type DishIngredientCreateInput = {
     id?: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
     cookingMethod?: CookingMethodCreateNestedOneWithoutDishIngredientsInput
@@ -70333,11 +70349,13 @@ export namespace Prisma {
     productId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
     cookingMethod?: CookingMethodUpdateOneWithoutDishIngredientsNestedInput
@@ -70349,6 +70367,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientCreateManyInput = {
@@ -70357,11 +70376,13 @@ export namespace Prisma {
     productId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientUncheckedUpdateManyInput = {
@@ -70370,6 +70391,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DayTemplateCreateInput = {
@@ -74701,6 +74723,14 @@ export namespace Prisma {
     _max?: NestedEnumDishTypeFilter<$PrismaModel>
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type DishScalarRelationFilter = {
     is?: DishWhereInput
     isNot?: DishWhereInput
@@ -74728,6 +74758,7 @@ export namespace Prisma {
     productId?: SortOrder
     cookingMethodId?: SortOrder
     rawWeight?: SortOrder
+    alternatives?: SortOrder
   }
 
   export type DishIngredientAvgOrderByAggregateInput = {
@@ -75954,14 +75985,6 @@ export namespace Prisma {
     in?: $Enums.WishlistStatus[] | ListEnumWishlistStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.WishlistStatus[] | ListEnumWishlistStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumWishlistStatusFilter<$PrismaModel> | $Enums.WishlistStatus
-  }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
   }
 
   export type WishlistItemCountOrderByAggregateInput = {
@@ -78695,6 +78718,10 @@ export namespace Prisma {
     deleteMany?: DishEntryScalarWhereInput | DishEntryScalarWhereInput[]
   }
 
+  export type DishIngredientCreatealternativesInput = {
+    set: string[]
+  }
+
   export type DishCreateNestedOneWithoutIngredientsInput = {
     create?: XOR<DishCreateWithoutIngredientsInput, DishUncheckedCreateWithoutIngredientsInput>
     connectOrCreate?: DishCreateOrConnectWithoutIngredientsInput
@@ -78711,6 +78738,11 @@ export namespace Prisma {
     create?: XOR<CookingMethodCreateWithoutDishIngredientsInput, CookingMethodUncheckedCreateWithoutDishIngredientsInput>
     connectOrCreate?: CookingMethodCreateOrConnectWithoutDishIngredientsInput
     connect?: CookingMethodWhereUniqueInput
+  }
+
+  export type DishIngredientUpdatealternativesInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DishUpdateOneRequiredWithoutIngredientsNestedInput = {
@@ -84043,6 +84075,7 @@ export namespace Prisma {
   export type DishIngredientCreateWithoutProductInput = {
     id?: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     cookingMethod?: CookingMethodCreateNestedOneWithoutDishIngredientsInput
   }
@@ -84052,6 +84085,7 @@ export namespace Prisma {
     dishId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientCreateOrConnectWithoutProductInput = {
@@ -84260,6 +84294,7 @@ export namespace Prisma {
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
     rawWeight?: FloatFilter<"DishIngredient"> | number
+    alternatives?: StringNullableListFilter<"DishIngredient">
   }
 
   export type CartItemUpsertWithWhereUniqueWithoutProductInput = {
@@ -84354,6 +84389,7 @@ export namespace Prisma {
   export type DishIngredientCreateWithoutCookingMethodInput = {
     id?: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
   }
@@ -84363,6 +84399,7 @@ export namespace Prisma {
     dishId: string
     productId: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientCreateOrConnectWithoutCookingMethodInput = {
@@ -84471,6 +84508,7 @@ export namespace Prisma {
   export type DishIngredientCreateWithoutDishInput = {
     id?: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
     cookingMethod?: CookingMethodCreateNestedOneWithoutDishIngredientsInput
   }
@@ -84480,6 +84518,7 @@ export namespace Prisma {
     productId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientCreateOrConnectWithoutDishInput = {
@@ -93411,6 +93450,7 @@ export namespace Prisma {
     dishId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type CartItemCreateManyProductInput = {
@@ -93445,6 +93485,7 @@ export namespace Prisma {
   export type DishIngredientUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     cookingMethod?: CookingMethodUpdateOneWithoutDishIngredientsNestedInput
   }
@@ -93454,6 +93495,7 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientUncheckedUpdateManyWithoutProductInput = {
@@ -93461,6 +93503,7 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type CartItemUpdateWithoutProductInput = {
@@ -93555,11 +93598,13 @@ export namespace Prisma {
     dishId: string
     productId: string
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateWithoutCookingMethodInput = {
     id?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
   }
@@ -93569,6 +93614,7 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientUncheckedUpdateManyWithoutCookingMethodInput = {
@@ -93576,6 +93622,7 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientCreateManyDishInput = {
@@ -93583,6 +93630,7 @@ export namespace Prisma {
     productId: string
     cookingMethodId?: string | null
     rawWeight: number
+    alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DayPlanEntryCreateManyDishInput = {
@@ -93615,6 +93663,7 @@ export namespace Prisma {
   export type DishIngredientUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
     cookingMethod?: CookingMethodUpdateOneWithoutDishIngredientsNestedInput
   }
@@ -93624,6 +93673,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishIngredientUncheckedUpdateManyWithoutDishInput = {
@@ -93631,6 +93681,7 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     rawWeight?: FloatFieldUpdateOperationsInput | number
+    alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DayPlanEntryUpdateWithoutDishInput = {

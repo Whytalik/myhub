@@ -58,7 +58,7 @@ export function ModuleQuickAccess({ modules }: ModuleQuickAccessProps) {
                 <module.icon size={20} />
               </div>
             </div>
-            <p className="text-secondary text-xs leading-relaxed mb-5 max-w-[80%]">
+            <p className="text-secondary text-sm leading-relaxed mb-5 max-w-[80%]">
               {module.description}
             </p>
             <div className="flex items-center gap-2 text-caption font-mono text-muted hover:text-text transition-colors">

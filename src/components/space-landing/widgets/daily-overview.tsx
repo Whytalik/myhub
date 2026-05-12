@@ -26,7 +26,7 @@ export function DailyOverview({ title = "Today", items }: DailyOverviewProps) {
               {item.icon && <item.icon size={10} className="text-accent/60" />}
               <p className="text-label font-mono text-muted uppercase tracking-[0.2em]">{item.label}</p>
             </div>
-            <p className="text-sm font-heading text-text uppercase tracking-tight">{item.value}</p>
+            <p className="text-base font-heading text-text uppercase tracking-tight">{item.value}</p>
           </div>
         ))}
       </div>

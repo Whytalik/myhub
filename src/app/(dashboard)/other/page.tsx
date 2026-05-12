@@ -32,7 +32,7 @@ async function WishlistCount({ userId }: { userId: string }) {
     <div className="bg-surface border border-border rounded-xl p-6 mb-20">
       <div className="flex items-center justify-between">
         <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">Wishlist</h4>
-        <span className="text-sm font-heading text-text">{count} items</span>
+        <span className="text-base font-heading text-text">{count} items</span>
       </div>
     </div>
   );
@@ -78,7 +78,7 @@ export default async function OtherSpacePage() {
       <ModuleQuickAccess modules={modules} />
       <div className="bg-surface/50 border border-border-dim border-dashed rounded-2xl p-10 flex flex-col items-center text-center gap-4 opacity-60">
         <Package size={24} className="text-muted" />
-        <p className="text-sm text-secondary">More standalone tools will appear here in the future.</p>
+        <p className="text-base text-secondary">More standalone tools will appear here in the future.</p>
       </div>
     </SpaceLanding>
   );

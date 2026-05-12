@@ -108,7 +108,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
         >
           <div className="flex items-center gap-3">
             <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
-            <span className="text-sm font-bold">Training Today</span>
+            <span className="text-base font-bold">Training Today</span>
           </div>
           <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
             <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />

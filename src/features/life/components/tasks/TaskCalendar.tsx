@@ -274,7 +274,7 @@ function CalendarDayCell({
       <div className="flex justify-between items-start mb-1 md:mb-2">
         <div className="flex flex-col">
            {mode === 'week' && (
-              <span className="text-[8px] md:text-xs font-black uppercase tracking-widest text-muted/40 mb-1">
+              <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted/40 mb-1">
                 {format(day, "EEEE")}
               </span>
            )}
@@ -724,7 +724,7 @@ export function TaskCalendar({
       <div className="min-w-[800px]">
         <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-            <div key={day} className={`py-3 md:py-5 text-center text-[8px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
+            <div key={day} className={`py-3 md:py-5 text-center text-[10px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
               {day}
             </div>
           ))}
@@ -799,7 +799,7 @@ export function TaskCalendar({
                 <CalendarIcon size={20} className="text-accent md:w-5 md:h-5 w-4 h-4" />
               </div>
               <div className="flex flex-col min-w-0">
-                <h2 className="text-xs md:text-sm font-black tracking-tighter text-text truncate">
+                <h2 className="text-sm md:text-base font-black tracking-tighter text-text truncate">
                   {mode === 'day' 
                     ? format(currentDate, "MMMM d, yyyy") 
                     : mode === 'month' 
@@ -1034,7 +1034,7 @@ export function TaskCalendar({
                                             className="w-1.5 h-1.5 rounded-full shrink-0" 
                                             style={{ backgroundColor: task.sphere.color }} 
                                           />
-                                          <span className="text-[8px] font-mono font-bold uppercase tracking-wider text-muted truncate">
+                                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted truncate">
                                             {task.sphere.name}
                                           </span>
                                         </div>
@@ -1045,7 +1045,7 @@ export function TaskCalendar({
                                           style: { color: pCfg.color } 
                                         })}
                                         <span 
-                                          className="text-[8px] font-mono font-black uppercase tracking-tighter"
+                                          className="text-[10px] font-mono font-black uppercase tracking-tighter"
                                           style={{ color: pCfg.color }}
                                         >
                                           {pCfg.label}

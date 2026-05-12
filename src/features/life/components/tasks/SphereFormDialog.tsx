@@ -88,7 +88,7 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
             {...register("name")}
             placeholder="e.g. Work, Health, Personal..."
             autoFocus
-            className="text-sm font-bold h-9 px-4 rounded-xl"
+            className="text-base font-bold h-9 px-4 rounded-xl"
           />
         </FormField>
 

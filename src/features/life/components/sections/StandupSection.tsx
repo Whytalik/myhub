@@ -21,7 +21,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Yesterday</h3>
         </div>
         <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-emerald-500/40 transition-colors"
+          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-emerald-500/40 transition-colors"
           placeholder="What did I accomplish?"
           value={done ?? ""}
           onChange={(e) => onChange({ standupDone: e.target.value || null })}
@@ -37,7 +37,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Today</h3>
         </div>
         <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-accent/40 transition-colors"
+          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-accent/40 transition-colors"
           placeholder="What is my main focus?"
           value={plan ?? ""}
           onChange={(e) => onChange({ standupPlan: e.target.value || null })}
@@ -53,7 +53,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
           <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">Blockers</h3>
         </div>
         <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-xs min-h-[100px] focus:outline-none focus:border-rose-500/40 transition-colors"
+          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-rose-500/40 transition-colors"
           placeholder="Any impediments?"
           value={blockers ?? ""}
           onChange={(e) => onChange({ standupBlockers: e.target.value || null })}

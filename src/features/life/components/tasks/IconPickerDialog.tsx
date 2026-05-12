@@ -44,7 +44,7 @@ export function IconPickerDialog({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search all icons..."
-            className="flex-1 bg-transparent outline-none text-sm text-text placeholder:text-muted font-medium h-full"
+            className="flex-1 bg-transparent outline-none text-base text-text placeholder:text-muted font-medium h-full"
             autoFocus
           />
           {search && (
@@ -71,7 +71,7 @@ export function IconPickerDialog({
           >
             <div className="flex flex-col items-center gap-1">
               <X size={16} className={value === null ? "text-accent" : "text-muted/40"} />
-              <span className="text-[8px] font-mono uppercase tracking-tighter text-muted/40">None</span>
+              <span className="text-[10px] font-mono uppercase tracking-tighter text-muted/40">None</span>
             </div>
           </button>
 
@@ -106,7 +106,7 @@ export function IconPickerDialog({
 
         {filteredIcons.length === 0 && (
           <div className="py-12 text-center border border-dashed border-border rounded-2xl bg-raised/10">
-             <p className="text-sm text-muted font-medium italic">No matching icons found.</p>
+             <p className="text-base text-muted font-medium italic">No matching icons found.</p>
           </div>
         )}
       </div>

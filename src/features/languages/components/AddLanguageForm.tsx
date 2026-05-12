@@ -58,7 +58,7 @@ export function AddLanguageForm({ availableLanguages }: AddLanguageFormProps) {
             }`}
           >
             <span className="text-3xl">{lang.icon}</span>
-            <span className="font-heading text-sm uppercase tracking-tight">{lang.name}</span>
+            <span className="font-heading text-base uppercase tracking-tight">{lang.name}</span>
             <span className="text-caption font-mono text-muted uppercase tracking-widest">{lang.code}</span>
 
             {selectedId === lang.id && (

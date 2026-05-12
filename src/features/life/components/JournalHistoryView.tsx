@@ -145,7 +145,7 @@ export function JournalHistoryView({ entries }: Props) {
                         {label}
                       </span>
 
-                      <div className="flex items-center gap-5 text-sm font-mono text-muted">
+                      <div className="flex items-center gap-5 text-base font-mono text-muted">
                         <span className="flex items-center gap-1.5" title="Sleep">
                           <Moon size={13} className="text-accent/60" />
                           {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
@@ -175,7 +175,7 @@ export function JournalHistoryView({ entries }: Props) {
                       </div>
 
                       {e.winToday && (
-                        <span className="text-sm text-secondary truncate flex-1 italic">
+                        <span className="text-base text-secondary truncate flex-1 italic">
                           &ldquo;{e.winToday}&rdquo;
                         </span>
                       )}

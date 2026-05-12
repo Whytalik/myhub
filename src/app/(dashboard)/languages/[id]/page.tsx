@@ -113,7 +113,7 @@ export default function LanguageDetailPage() {
                   <div className="p-2.5 rounded-2xl bg-accent text-bg shadow-lg shadow-accent/20">
                     <Target size={20} strokeWidth={3} />
                   </div>
-                  <h4 className="font-black text-sm uppercase tracking-tight">Mastery Radar</h4>
+                  <h4 className="font-black text-base uppercase tracking-tight">Mastery Radar</h4>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -164,16 +164,16 @@ Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo
                 <div className="p-2.5 rounded-2xl bg-accent/10 text-accent">
                   <LayoutDashboard size={20} />
                 </div>
-                <h4 className="font-black text-sm uppercase tracking-tight">Status</h4>
+                <h4 className="font-black text-base uppercase tracking-tight">Status</h4>
               </div>
               <div className="space-y-8">
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
                   <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">Neural Streak</span>
-                  <span className="text-sm font-black uppercase">0 Days</span>
+                  <span className="text-base font-black uppercase">0 Days</span>
                 </div>
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
                   <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">Total Depth</span>
-                  <span className="text-sm font-black uppercase">0 Logs</span>
+                  <span className="text-base font-black uppercase">0 Logs</span>
                 </div>
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
                   <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">CEFR Target</span>

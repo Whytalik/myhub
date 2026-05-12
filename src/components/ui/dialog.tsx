@@ -64,7 +64,7 @@ export function Dialog({
             <div className="flex items-start justify-between mb-3">
               <div className="space-y-0.5">
                 {title && (
-                  <h3 className="text-sm font-black text-text tracking-tight leading-none">
+                  <h3 className="text-base font-black text-text tracking-tight leading-none">
                     {title}
                   </h3>
                 )}

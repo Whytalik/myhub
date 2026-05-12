@@ -68,7 +68,7 @@ export default function FitnessPage() {
                   <p.icon size={14} className="text-accent/60" />
                   <h5 className="font-mono text-note text-text uppercase tracking-widest">{p.name}</h5>
                 </div>
-                <p className="text-secondary text-xs leading-relaxed pr-4">{p.desc}</p>
+                <p className="text-secondary text-sm leading-relaxed pr-4">{p.desc}</p>
               </div>
               {i < 2 && (
                 <div className="hidden md:block absolute top-1/2 -right-4 -translate-y-1/2 text-border">→</div>

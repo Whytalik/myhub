@@ -179,7 +179,7 @@ function UnifiedTaskForm({
                 </div>
                 <Input 
                   value={title} onChange={(e) => setTitle(e.target.value)} 
-                  placeholder="What needs to be done?" className="text-sm font-bold h-9"
+                  placeholder="What needs to be done?" className="text-base font-bold h-9"
                   autoFocus
                 />
               </div>
@@ -189,7 +189,7 @@ function UnifiedTaskForm({
               <textarea 
                 value={description} onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add more details..."
-                className="w-full min-h-[120px] bg-surface border border-border/50 rounded-xl p-4 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-accent/20"
+                className="w-full min-h-[120px] bg-surface border border-border/50 rounded-xl p-4 text-base resize-none focus:outline-none focus:ring-2 focus:ring-accent/20"
               />
             </div>
           </div>
@@ -243,7 +243,7 @@ function UnifiedTaskForm({
                   {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={20} style={{ color: sphere?.color }} />; })() : <FileText size={16} className="text-muted/40" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-text truncate">{title || "Task title"}</p>
+                  <p className="text-base font-bold text-text truncate">{title || "Task title"}</p>
                   <p className="text-caption font-mono text-muted truncate" style={{ color: sphere?.color }}>{sphere?.name || "No sphere"}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span 
@@ -349,7 +349,7 @@ function UnifiedTaskForm({
                         <Flag size={12} />
                         <span className="text-caption font-bold uppercase tracking-wider">Deadline</span>
                       </div>
-                      <button type="button" onClick={() => setUseDeadline(!useDeadline)} className={`text-[8px] font-mono uppercase px-1.5 py-0.5 rounded border transition-all ${useDeadline ? "bg-rose-500 text-white border-rose-500" : "bg-surface text-muted border-border"}`}>
+                      <button type="button" onClick={() => setUseDeadline(!useDeadline)} className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border transition-all ${useDeadline ? "bg-rose-500 text-white border-rose-500" : "bg-surface text-muted border-border"}`}>
                         {useDeadline ? "Active" : "Add"}
                       </button>
                     </div>
@@ -394,7 +394,7 @@ function UnifiedTaskForm({
             >
               <EyeOff size={14} className={isPrivate ? "text-amber-500" : "text-muted/40"} />
               <div className="flex flex-col items-start">
-                <span className={`text-sm font-bold ${isPrivate ? "text-amber-500" : "text-text"}`}>{isPrivate ? "Private" : "Public"}</span>
+                <span className={`text-base font-bold ${isPrivate ? "text-amber-500" : "text-text"}`}>{isPrivate ? "Private" : "Public"}</span>
                 <span className="text-caption text-muted font-mono">{isPrivate ? "Only you can see this" : "Visible to everyone"}</span>
               </div>
             </button>
@@ -623,7 +623,7 @@ function TaskDetail({
           {/* Main Column */}
           <div className="flex flex-col gap-5">
             <section className="flex flex-col gap-1.5">
-              <label className="text-[8px] font-mono uppercase tracking-[0.2em] text-muted/40 px-1">Description</label>
+              <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/40 px-1">Description</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -633,9 +633,9 @@ function TaskDetail({
             </section>
 
             <section className="flex flex-col gap-2">
-              <label className="text-[8px] font-mono uppercase tracking-[0.2em] text-muted/40 px-1 flex items-center justify-between">
+              <label className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/40 px-1 flex items-center justify-between">
                 <span>Subtasks</span>
-                {task.children?.length > 0 && <span className="px-1.5 py-0.5 rounded bg-accent/5 text-accent/60 text-[8px] font-bold">{task.children.length}</span>}
+                {task.children?.length > 0 && <span className="px-1.5 py-0.5 rounded bg-accent/5 text-accent/60 text-[10px] font-bold">{task.children.length}</span>}
               </label>
               {task.children?.length > 0 ? (
                 <div className="grid grid-cols-1 gap-1 bg-raised/5 border border-border/10 rounded-xl p-1">
@@ -643,7 +643,7 @@ function TaskDetail({
                     <div key={child.id} className="group/item flex items-center justify-between p-2 hover:bg-surface/60 rounded-lg transition-all border border-transparent hover:border-border/20">
                       <div className="flex items-center gap-2.5 min-w-0">
                         {child.icon && SPHERE_ICONS[child.icon] ? (() => { const I = SPHERE_ICONS[child.icon]; return <I size={11} className="text-accent/40" />; })() : <FileText size={11} className="text-muted/20" />}
-                        <span className={`text-sm font-medium truncate ${child.status === 'DONE' ? 'line-through text-muted/30' : 'text-text/90'}`}>{child.isPrivate ? "Private" : child.title}</span>
+                        <span className={`text-base font-medium truncate ${child.status === 'DONE' ? 'line-through text-muted/30' : 'text-text/90'}`}>{child.isPrivate ? "Private" : child.title}</span>
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover/item:opacity-100 transition-opacity">
                         {onViewTask && <button onClick={() => onViewTask(child)} className="p-1 rounded-lg text-muted hover:text-accent transition-all"><Eye size={12} /></button>}
@@ -654,7 +654,7 @@ function TaskDetail({
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-4 border border-dashed border-border/10 rounded-xl bg-surface/5">
-                  <span className="text-[8px] font-mono text-muted/20 uppercase tracking-widest">No subtasks</span>
+                  <span className="text-[10px] font-mono text-muted/20 uppercase tracking-widest">No subtasks</span>
                 </div>
               )}
             </section>
@@ -665,7 +665,7 @@ function TaskDetail({
             {/* Planning Block */}
             <div className="p-3.5 rounded-xl bg-raised/15 border border-border/30 flex flex-col gap-3 h-fit shadow-sm">
               <section className="flex flex-col gap-2.5">
-                <label className="text-[8px] font-mono uppercase tracking-widest text-accent/60 font-bold ml-0.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-accent/60 font-bold ml-0.5">
                   {task.children.length > 0 ? "Deadline" : parentId ? "When to do" : "Planning"}
                 </label>
                 {task.children.length > 0 ? (
@@ -735,7 +735,7 @@ function TaskDetail({
             {/* Organization Block */}
             <div className="p-3.5 rounded-xl bg-raised/15 border border-border/30 flex flex-col gap-3 h-fit shadow-sm">
               <section className="flex flex-col gap-2.5">
-                <label className="text-[8px] font-mono uppercase tracking-widest text-life/60 font-bold ml-0.5">Organization</label>
+                <label className="text-[10px] font-mono uppercase tracking-widest text-life/60 font-bold ml-0.5">Organization</label>
                 <div className="flex flex-col gap-2.5">
                   <div className="flex flex-col gap-1">
                     <label className="text-[7px] font-mono uppercase text-muted/30 ml-1">Parent Task</label>
@@ -759,7 +759,7 @@ function TaskDetail({
             {hasChanges && (
               <div className="px-2 mt-1 flex items-center gap-2 opacity-50">
                 <div className="w-1 h-1 rounded-full bg-accent animate-pulse" />
-                <span className="text-[8px] font-mono text-muted uppercase tracking-wider">Saving on close...</span>
+                <span className="text-[10px] font-mono text-muted uppercase tracking-wider">Saving on close...</span>
               </div>
             )}
           </div>

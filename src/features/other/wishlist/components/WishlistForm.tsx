@@ -166,7 +166,7 @@ export function WishlistForm({ initialData, onSuccess, onCancel, onSubmit }: Wis
       </div>
 
       {error && (
-        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-xs font-mono">
+        <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm font-mono">
           {error}
         </div>
       )}

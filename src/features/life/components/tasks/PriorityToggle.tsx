@@ -55,7 +55,7 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
         onClick={toggle}
         disabled={isPending}
         className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all hover:brightness-125 active:scale-95 ${
-          isCompact ? 'text-[7px] md:text-[8px]' : 'px-2 rounded-xl text-label'
+          isCompact ? 'text-[9px] md:text-[10px]' : 'px-2 rounded-xl text-label'
         }`}
         style={{ 
           backgroundColor: `${config.color}15`, 

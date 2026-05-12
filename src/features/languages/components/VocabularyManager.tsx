@@ -63,7 +63,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search lexeme..." 
-            className="pl-10 h-10 bg-surface/40 border-border/50 rounded-xl text-sm focus-visible:ring-violet"
+            className="pl-10 h-10 bg-surface/40 border-border/50 rounded-xl text-base focus-visible:ring-violet"
           />
         </div>
         
@@ -72,7 +72,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
               <Hash size={16} className="text-violet/60" />
               <div className="flex flex-col">
                 <span className="text-label font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">Lexemes</span>
-                <span className="text-sm font-black uppercase leading-none">{items.length}</span>
+                <span className="text-base font-black uppercase leading-none">{items.length}</span>
               </div>
            </div>
            <div className="h-8 w-px bg-border/40" />
@@ -80,7 +80,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
               <Calendar size={16} className="text-violet/60" />
               <div className="flex flex-col">
                 <span className="text-label font-mono text-muted uppercase tracking-[0.2em] leading-none mb-1.5 font-bold">SRS Queue</span>
-                <span className="text-sm font-black uppercase leading-none text-violet">
+                <span className="text-base font-black uppercase leading-none text-violet">
                   {items.filter(i => new Date(i.nextReview) <= new Date()).length}
                 </span>
               </div>
@@ -105,7 +105,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
               value={word} 
               onChange={(e) => setWord(e.target.value)} 
               placeholder="Enter new term..."
-              className="font-black uppercase tracking-tight placeholder:text-violet/20 placeholder:font-bold text-sm focus-visible:ring-0"
+              className="font-black uppercase tracking-tight placeholder:text-violet/20 placeholder:font-bold text-base focus-visible:ring-0"
             />
           </div>
           <div className="col-span-4">
@@ -114,7 +114,7 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
               value={translation} 
               onChange={(e) => setTranslation(e.target.value)} 
               placeholder="Define translation..."
-              className="text-secondary font-medium placeholder:text-muted/30 text-sm focus-visible:ring-0"
+              className="text-secondary font-medium placeholder:text-muted/30 text-base focus-visible:ring-0"
             />
           </div>
           <div className="col-span-3 text-caption font-mono text-violet/40 uppercase tracking-widest font-bold">
@@ -142,9 +142,9 @@ export function VocabularyManager({ userLanguageId, initialItems }: VocabularyMa
             filtered.map((item) => (
               <div key={item.id} className="grid grid-cols-12 gap-4 p-5 px-10 items-center hover:bg-raised/40 transition-all group">
                 <div className="col-span-4 flex items-center gap-3">
-                  <span className="font-black uppercase tracking-tight text-sm text-text group-hover:text-violet transition-colors">{item.word}</span>
+                  <span className="font-black uppercase tracking-tight text-base text-text group-hover:text-violet transition-colors">{item.word}</span>
                 </div>
-                <div className="col-span-4 text-secondary text-sm font-medium opacity-80">{item.translation}</div>
+                <div className="col-span-4 text-secondary text-base font-medium opacity-80">{item.translation}</div>
                 <div className="col-span-3 flex items-center gap-2 text-muted text-caption font-mono uppercase tracking-wider font-bold">
                   <Calendar size={12} className="text-violet/40" />
                   {new Date(item.nextReview).toLocaleDateString()}

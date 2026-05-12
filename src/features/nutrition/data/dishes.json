@@ -33,7 +33,7 @@
     "servings": 1,
     "description": "Батон з медом — ситний передтрен",
     "ingredients": [
-      { "productName": "Батон", "rawWeight": 45, "cookingMethod": "RAW" },
+      { "productName": "Батон", "alternatives": ["ЦЗ Хліб"], "rawWeight": 45, "cookingMethod": "RAW" },
       { "productName": "Мед", "rawWeight": 10, "cookingMethod": "RAW" }
     ]
   },
@@ -46,7 +46,7 @@
       { "productName": "Сир кисломолочний", "rawWeight": 200, "cookingMethod": "RAW" },
       { "productName": "Яйця", "rawWeight": 75, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 30, "cookingMethod": "RAW" },
-      { "productName": "Яблуко", "rawWeight": 100, "cookingMethod": "RAW" },
+      { "productName": "Яблуко", "alternatives": ["Груша", "Вишня замор.", "Чорниця замор."], "rawWeight": 100, "cookingMethod": "RAW" },
       { "productName": "Мед", "rawWeight": 7, "cookingMethod": "RAW" },
       { "productName": "Кориця", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Ванілін", "rawWeight": 1, "cookingMethod": "RAW" }
@@ -61,7 +61,7 @@
       { "productName": "Яйця", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яєчні білки", "rawWeight": 60, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },
-      { "productName": "Помідор", "rawWeight": 200, "cookingMethod": "RAW" },
+      { "productName": "Помідор", "alternatives": ["Мікс овочей"], "rawWeight": 200, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Соєво-часниковий", "rawWeight": 5, "cookingMethod": "RAW" }
@@ -76,7 +76,7 @@
       { "productName": "Тунець у вл. соку", "rawWeight": 137, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
       { "productName": "Яйце варене", "rawWeight": 75, "cookingMethod": "RAW" },
-      { "productName": "Огірок", "rawWeight": 100, "cookingMethod": "RAW" },
+      { "productName": "Огірок", "alternatives": ["Зелена цибуля"], "rawWeight": 100, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" }
     ]
@@ -90,7 +90,7 @@
       { "productName": "Лаваш тонкий", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },
       { "productName": "Яйце-скрембл", "rawWeight": 75, "cookingMethod": "RAW" },
-      { "productName": "Айсберг", "rawWeight": 125, "cookingMethod": "RAW" },
+      { "productName": "Айсберг", "alternatives": ["Огірок"], "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 75, "cookingMethod": "RAW" },
       { "productName": "Цибуля червона", "rawWeight": 22, "cookingMethod": "RAW" },
@@ -103,13 +103,13 @@
     "servings": 1,
     "description": "Комплексний боул з гречкою, куркою та свіжими овочами",
     "ingredients": [
-      { "productName": "Гречка", "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Куряче філе", "rawWeight": 125, "cookingMethod": "FRIED" },
+      { "productName": "Гречка", "alternatives": ["Рис", "Булгур"], "rawWeight": 125, "cookingMethod": "BOILED" },
+      { "productName": "Куряче філе", "alternatives": ["Смажений курячий фарш", "Курячі серця"], "rawWeight": 125, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Огірок", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 125, "cookingMethod": "RAW" },
-      { "productName": "Яблуко", "rawWeight": 90, "cookingMethod": "RAW" },
-      { "productName": "Олія оливкова", "rawWeight": 7, "cookingMethod": "RAW" },
+      { "productName": "Яблуко", "alternatives": ["Груша"], "rawWeight": 90, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 7, "cookingMethod": "RAW" },
       { "productName": "Соєво-медовий", "rawWeight": 5, "cookingMethod": "RAW" }
     ]
   },
@@ -120,7 +120,7 @@
     "description": "Паста з куркою в томатному соусі з сиром",
     "ingredients": [
       { "productName": "Макарони ТЗ", "rawWeight": 150, "cookingMethod": "BOILED" },
-      { "productName": "Куряче філе", "rawWeight": 125, "cookingMethod": "FRIED" },
+      { "productName": "Куряче філе", "alternatives": ["Яловичий фарш"], "rawWeight": 125, "cookingMethod": "FRIED" },
       { "productName": "Томатна пасата", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 65, "cookingMethod": "FRIED" },
@@ -139,7 +139,7 @@
       { "productName": "Картопля", "rawWeight": 150, "cookingMethod": "BOILED" },
       { "productName": "Морква", "rawWeight": 65, "cookingMethod": "BOILED" },
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "BOILED" },
-      { "productName": "Петрушка", "rawWeight": 7, "cookingMethod": "RAW" },
+      { "productName": "Петрушка", "alternatives": ["Кріп"], "rawWeight": 7, "cookingMethod": "RAW" },
       { "productName": "Куркума", "rawWeight": 2, "cookingMethod": "RAW" },
       { "productName": "Лавровий лист", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
@@ -151,8 +151,8 @@
     "description": "Запечена картопля з рибою та овочами",
     "ingredients": [
       { "productName": "Картопля", "rawWeight": 300, "cookingMethod": "BAKED" },
-      { "productName": "Хек", "rawWeight": 150, "cookingMethod": "BAKED" },
-      { "productName": "Морква по-корейськи", "rawWeight": 115, "cookingMethod": "RAW" },
+      { "productName": "Хек", "alternatives": ["Тилапія", "Куряче стегно"], "rawWeight": 150, "cookingMethod": "BAKED" },
+      { "productName": "Морква по-корейськи", "alternatives": ["Капуста"], "rawWeight": 115, "cookingMethod": "RAW" },
       { "productName": "Лимонно-трав'яний", "rawWeight": 5, "cookingMethod": "RAW" },
       { "productName": "Ткемалі", "rawWeight": 5, "cookingMethod": "RAW" }
     ]
@@ -163,7 +163,7 @@
     "servings": 1,
     "description": "Рагу з куркою, овочами та квасолею",
     "ingredients": [
-      { "productName": "Куряче філе", "rawWeight": 150, "cookingMethod": "FRIED" },
+      { "productName": "Куряче філе", "alternatives": ["Яловичий фарш"], "rawWeight": 150, "cookingMethod": "FRIED" },
       { "productName": "Картопля", "rawWeight": 150, "cookingMethod": "BOILED" },
       { "productName": "Морква", "rawWeight": 80, "cookingMethod": "BOILED" },
       { "productName": "Кабачок", "rawWeight": 125, "cookingMethod": "BOILED" },
@@ -180,8 +180,8 @@
     "description": "Сир з фруктами, горіхами та медом",
     "ingredients": [
       { "productName": "Сир кисломолочний", "rawWeight": 250, "cookingMethod": "RAW" },
-      { "productName": "Яблуко", "rawWeight": 125, "cookingMethod": "RAW" },
-      { "productName": "Арахіс смажений", "rawWeight": 17, "cookingMethod": "RAW" },
+      { "productName": "Яблуко", "alternatives": ["Груша", "Вишня замор.", "Чорниця замор."], "rawWeight": 125, "cookingMethod": "RAW" },
+      { "productName": "Арахіс смажений", "alternatives": ["Насіння льону"], "rawWeight": 17, "cookingMethod": "RAW" },
       { "productName": "Мед", "rawWeight": 7, "cookingMethod": "RAW" },
       { "productName": "Кориця", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
@@ -192,9 +192,9 @@
     "servings": 1,
     "description": "Запечена риба з гречкою та броколі",
     "ingredients": [
-      { "productName": "Хек", "rawWeight": 150, "cookingMethod": "BAKED" },
-      { "productName": "Гречка", "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Броколі зам.", "rawWeight": 125, "cookingMethod": "BOILED" },
+      { "productName": "Хек", "alternatives": ["Тилапія", "Мінтай"], "rawWeight": 150, "cookingMethod": "BAKED" },
+      { "productName": "Гречка", "alternatives": ["Рис"], "rawWeight": 125, "cookingMethod": "BOILED" },
+      { "productName": "Броколі зам.", "alternatives": ["Цвітна капуста зам."], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Олія + Кріп + Часник", "rawWeight": 5, "cookingMethod": "RAW" },
       { "productName": "Грецький йогурт", "rawWeight": 22, "cookingMethod": "RAW" }
     ]
@@ -205,10 +205,10 @@
     "servings": 1,
     "description": "Салат з тунцем, овочами та рисом",
     "ingredients": [
-      { "productName": "Тунець у вл. соку", "rawWeight": 150, "cookingMethod": "RAW" },
-      { "productName": "Айсберг", "rawWeight": 250, "cookingMethod": "RAW" },
-      { "productName": "Огірок", "rawWeight": 150, "cookingMethod": "RAW" },
-      { "productName": "Рис", "rawWeight": 125, "cookingMethod": "BOILED" },
+      { "productName": "Тунець у вл. соку", "alternatives": ["Куряче філе", "Яйця"], "rawWeight": 150, "cookingMethod": "RAW" },
+      { "productName": "Айсберг", "alternatives": ["Пекінська капуста"], "rawWeight": 250, "cookingMethod": "RAW" },
+      { "productName": "Огірок", "alternatives": ["Помідор"], "rawWeight": 150, "cookingMethod": "RAW" },
+      { "productName": "Рис", "alternatives": ["Гречка"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Йогурт з кропом", "rawWeight": 5, "cookingMethod": "RAW" }
     ]
   },
