@@ -336,7 +336,7 @@ export async function addDishToSlot(
     
     // Auto-calculate servings if not provided
     const dishServings = servings ?? (slot.targetKcal / (nutrition.perServing.kcal || 1))
-    const portionWeight = manualWeight ?? (dishServings * (nutrition.total.weight / (dish.servings || 1)))
+    const portionWeight = manualWeight ?? (dishServings * (nutrition.totalCookedWeight / (dish.servings || 1)))
 
     const dishEntry = await prisma.dishEntry.create({
       data: {

@@ -24,7 +24,7 @@ export interface AggregatedItem {
 }
 
 export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] {
-  const aggregation: Record<string, { rawGrams: number; price?: number | null; standardPackageAmount: number }> = {};
+  const aggregation: Record<string, { rawGrams: number; price?: number | null; standardPackageAmount: number; name: string }> = {};
 
   for (const dayPlan of weekPlan.dayPlans) {
     for (const mealSlot of dayPlan.mealSlots) {
