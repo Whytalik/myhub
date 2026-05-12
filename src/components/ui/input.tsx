@@ -7,7 +7,7 @@ export interface InputProps
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, variant = "default", ...props }, ref) => {
-    const baseStyles = "flex rounded-md bg-transparent text-body transition-shadow file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50";
+    const baseStyles = "flex rounded-md bg-transparent text-base transition-shadow file:border-0 file:bg-transparent file:text-base placeholder:text-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50";
     
     const variants = {
       default: "h-8 w-full border border-border bg-surface/50 px-3 py-1",
