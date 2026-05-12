@@ -513,8 +513,7 @@ export function Sidebar({
                       transition={LABEL_TRANSITION}
                       className="flex flex-col overflow-hidden whitespace-nowrap"
                     >
-                      <p className="text-[var(--text-sidebar-user)] font-bold text-text truncate leading-none mb-1">{user.name}</p>
-                      <p className="text-[var(--text-sidebar-user-label)] text-muted truncate font-mono uppercase tracking-widest">User</p>
+                      <p className="text-[var(--text-sidebar-user)] font-bold text-text truncate leading-none">{user.name}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

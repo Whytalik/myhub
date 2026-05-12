@@ -1,4 +1,4 @@
-import { Dish, DishIngredient, FoodProduct, CookingMethod, MealTemplateSlot, NutritionPerson } from "@/app/generated/prisma"
+import { Dish, DishIngredient, FoodProduct, CookingMethod, NutritionPerson } from "@/app/generated/prisma"
 
 export interface DishNutritionResult {
   totalCookedWeight: number
@@ -74,13 +74,12 @@ export function calculateFitScore(
   dishPer100g: { kcal: number; protein: number; fat: number; carbs: number; fiber: number },
   portionWeight: number,
   person: Pick<NutritionPerson, "targetKcal" | "proteinPct" | "fatPct" | "carbsPct" | "fiberGrams">,
-  slot: Pick<MealTemplateSlot, "percentage" | "minProteinGrams" | "maxPctOfDaily">
 ): FitScoreResult {
-  const targetKcal = (person.targetKcal ?? 2000) * (slot.percentage / 100)
+  const targetKcal = person.targetKcal ?? 2000
 
-  const slotProteinTarget = (targetKcal * (person.proteinPct ?? 30) / 100) / 4
-  const slotFatTarget = (targetKcal * (person.fatPct ?? 25) / 100) / 9
-  const slotCarbsTarget = (targetKcal * (person.carbsPct ?? 45) / 100) / 4
+  const dailyProteinTarget = (targetKcal * (person.proteinPct ?? 30) / 100) / 4
+  const dailyFatTarget = (targetKcal * (person.fatPct ?? 25) / 100) / 9
+  const dailyCarbsTarget = (targetKcal * (person.carbsPct ?? 45) / 100) / 4
 
   const actualProtein = (dishPer100g.protein * portionWeight) / 100
   const actualFat = (dishPer100g.fat * portionWeight) / 100
@@ -88,33 +87,19 @@ export function calculateFitScore(
 
   const deviations: number[] = []
 
-  if (slotProteinTarget > 0) {
-    deviations.push(Math.min(Math.abs(actualProtein - slotProteinTarget) / slotProteinTarget, 1))
+  if (dailyProteinTarget > 0) {
+    deviations.push(Math.min(Math.abs(actualProtein - dailyProteinTarget) / dailyProteinTarget, 1))
   }
-  if (slotFatTarget > 0) {
-    deviations.push(Math.min(Math.abs(actualFat - slotFatTarget) / slotFatTarget, 1))
+  if (dailyFatTarget > 0) {
+    deviations.push(Math.min(Math.abs(actualFat - dailyFatTarget) / dailyFatTarget, 1))
   }
-  if (slotCarbsTarget > 0) {
-    deviations.push(Math.min(Math.abs(actualCarbs - slotCarbsTarget) / slotCarbsTarget, 1))
+  if (dailyCarbsTarget > 0) {
+    deviations.push(Math.min(Math.abs(actualCarbs - dailyCarbsTarget) / dailyCarbsTarget, 1))
   }
 
   const avgDeviation = deviations.length > 0 ? deviations.reduce((a, b) => a + b, 0) / deviations.length : 0
   const fitScore = Math.max(0, Math.min(1, 1 - avgDeviation))
 
-  const warnings: string[] = []
-
-  if (slot.minProteinGrams != null && actualProtein < slot.minProteinGrams) {
-    warnings.push(`Недостатньо білка: ${actualProtein.toFixed(1)}г з ${slot.minProteinGrams}г`)
-  }
-
-  if (slot.maxPctOfDaily != null) {
-    const maxKcal = (person.targetKcal ?? 2000) * slot.maxPctOfDaily
-    const actualKcal = (dishPer100g.kcal * portionWeight) / 100
-    if (actualKcal > maxKcal) {
-      warnings.push(`Перевищення вечірнього ліміту: ${actualKcal.toFixed(0)} ккал з ${maxKcal.toFixed(0)} ккал`)
-    }
-  }
-
-  return { fitScore, warnings }
+  return { fitScore, warnings: [] }
 }
 

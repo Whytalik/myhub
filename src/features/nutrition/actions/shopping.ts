@@ -223,7 +223,7 @@ export async function getShoppingCart(
   itemsByCategory: Record<string, (CartItem & { product: FoodProduct })[]>
   totalCost: number
   personCosts: Record<string, { name: string; cost: number }>
-  varietyWarnings: { dishName: string; count: number; days: string[] }[]
+  varietyWarnings: { dishName: string; count: number; days: number[] }[]
 }>> {
   try {
     const userId = await getRequiredUserId()
@@ -269,7 +269,7 @@ export async function getShoppingCart(
       }
     }
 
-    const varietyWarnings: { dishName: string; count: number; days: string[] }[] = []
+    const varietyWarnings: { dishName: string; count: number; days: number[] }[] = []
     const personCosts: Record<string, { name: string; cost: number }> = {}
 
     if (cart.weekPlan) {
@@ -296,18 +296,17 @@ export async function getShoppingCart(
         personCosts[pid].cost = personTotals[pid] || 0
       }
 
-      const dishCounts = new Map<string, { name: string; count: number; days: Set<string> }>()
+      const dishCounts = new Map<string, { name: string; count: number; days: Set<number> }>()
       for (const day of cart.weekPlan.dayPlans) {
-        const dateStr = day.date.toISOString().split("T")[0]
         for (const slot of day.mealSlots) {
           for (const entry of slot.dishEntries) {
             const dc = dishCounts.get(entry.dishId) ?? {
               name: entry.dish.name,
               count: 0,
-              days: new Set<string>(),
+              days: new Set<number>(),
             }
             dc.count++
-            dc.days.add(dateStr)
+            dc.days.add(day.dayOfWeek)
             dishCounts.set(entry.dishId, dc)
           }
         }

@@ -28,11 +28,11 @@ export const systemService = {
   async resetSystem(userId: string) {
     await prisma.$transaction([
       prisma.dishIngredient.deleteMany({ where: { dish: { userId } } }),
-      prisma.dayPlanEntry.deleteMany({ where: { dayPlan: { userId } } }),
-      prisma.dayTemplateEntry.deleteMany({ where: { template: { userId } } }),
+      prisma.productEntry.deleteMany({ where: { mealSlot: { dayPlan: { userId } } } }),
+      prisma.dishEntry.deleteMany({ where: { mealSlot: { dayPlan: { userId } } } }),
+      prisma.mealSlotInstance.deleteMany({ where: { dayPlan: { userId } } }),
       prisma.shoppingListItem.deleteMany({ where: { shoppingList: { userId } } }),
       prisma.dayPlan.deleteMany({ where: { userId } }),
-      prisma.dayTemplate.deleteMany({ where: { userId } }),
       prisma.weekPlan.deleteMany({ where: { userId } }),
       prisma.shoppingList.deleteMany({ where: { userId } }),
       prisma.dish.deleteMany({ where: { userId } }),

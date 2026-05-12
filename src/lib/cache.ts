@@ -393,7 +393,6 @@ export const getCachedWeekPlans = unstable_cache(
             mealSlots: {
               include: {
                 person: true,
-                templateSlot: true,
                 dishEntries: {
                   include: {
                     dish: { select: { id: true, name: true } },
@@ -404,7 +403,7 @@ export const getCachedWeekPlans = unstable_cache(
           },
         },
       },
-      orderBy: { startDate: "desc" },
+      orderBy: { createdAt: "desc" },
       take: 5,
     });
   },
@@ -413,17 +412,13 @@ export const getCachedWeekPlans = unstable_cache(
 );
 
 export const getCachedDayPlans = unstable_cache(
-  async (userId: string, startDate?: Date, endDate?: Date) => {
-    const start = startDate || (() => { const d = new Date(); d.setDate(d.getDate() - 14); d.setHours(0, 0, 0, 0); return d; })();
-    const end = endDate || (() => { const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(23, 59, 59, 999); return d; })();
-
+  async (userId: string) => {
     return prisma.dayPlan.findMany({
-      where: { userId, date: { gte: start, lte: end } },
+      where: { userId },
       include: {
         mealSlots: {
           include: {
             person: true,
-            templateSlot: true,
             dishEntries: {
               include: {
                 dish: { select: { id: true, name: true } },
@@ -432,7 +427,7 @@ export const getCachedDayPlans = unstable_cache(
           },
         },
       },
-      orderBy: { date: "asc" },
+      orderBy: { dayOfWeek: "asc" },
     });
   },
   [],

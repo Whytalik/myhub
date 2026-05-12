@@ -11,10 +11,9 @@ import { createPerson, updatePerson, deletePerson } from "../actions/persons";
 
 interface PersonFormProps {
   persons: NutritionPerson[];
-  templateSlots: { id: string; name: string; goal: string; percentage: number; order: number }[];
 }
 
-export function PersonForm({ persons: initialPersons, templateSlots }: PersonFormProps) {
+export function PersonForm({ persons: initialPersons }: PersonFormProps) {
   const [persons, setPersons] = useState<NutritionPerson[]>(initialPersons);
   const [isPending, startTransition] = useTransition();
   const [newName, setNewName] = useState("");
@@ -96,7 +95,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {persons.map((person) => {
           const totalCals = person.targetKcal || 2000;
           const currentPPct = person.proteinPct || 30;
@@ -116,7 +115,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                 </Button>
               </div>
 
-              <div className="p-8 space-y-8">
+              <div className="p-6 space-y-6">
                 <div className="max-w-[200px] space-y-2">
                   <label className="text-caption font-mono text-muted tracking-widest pl-1">Daily Calories</label>
                   <div className="flex items-center gap-3">
@@ -130,7 +129,7 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-3">
                     <div className="flex justify-between items-end">
                       <label className="text-caption font-mono text-accent tracking-widest font-bold">Protein</label>
@@ -209,26 +208,6 @@ export function PersonForm({ persons: initialPersons, templateSlots }: PersonFor
                     </span>
                   </div>
                 </div>
-
-                {templateSlots.length > 0 && (
-                  <div className="pt-4 border-t border-border/30">
-                    <h5 className="text-caption font-mono text-muted tracking-widest mb-2">Meal Slots for {person.goal}</h5>
-                    <div className="flex flex-wrap gap-2">
-                      {templateSlots
-                        .filter(ts => ts.goal === person.goal)
-                        .sort((a, b) => a.order - b.order)
-                        .map(ts => (
-                          <div key={ts.id} className="flex items-center gap-1 bg-raised/50 px-2 py-1 rounded text-caption font-mono">
-                            <span className="text-text">{ts.name}</span>
-                            <span className="text-muted">{ts.percentage}%</span>
-                          </div>
-                        ))}
-                      {templateSlots.filter(ts => ts.goal === person.goal).length === 0 && (
-                        <span className="text-caption text-muted">No slots configured for this goal</span>
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           );

@@ -1,3 +1,47 @@
+## [2026-05-12] Grocery Price Update — May 2026 Ukraine Prices
+
+Updated all product prices in `product-info.ts` based on real Silpo.ua data for May 2026.
+
+- **All categories**: fruits, bread, meat/fish, dairy/eggs, vegetables, grains/flour, spices, drinks — prices reduced ~25-40% to reflect actual 2026 Ukrainian market rates
+- **Key changes**: куряче філе 170-230 грн/кг (was 320-390), сир кисломолочний 50-85 грн/250г (was 120-180/200г), яйця 8-12 грн/шт (was 12-18), твердий сир 350-500 грн/кг (was 450-650)
+- **Verification**:
+    - [x] Logic implemented
+    - [x] Verified with `pnpm tsc --noEmit` (no new errors)
+
+---
+
+## [2026-05-12] Dynamic Portion Calculation & Visual Plan Automation
+
+Реалізовано систему динамічного розрахунку порцій та автоматизацію генерації тижневого плану на основі Visual Plan.
+
+- **Portion Calculator**: Створено `portion-calculator.ts` — логіка розрахунку `servings` на основі `targetKcal` слота та калорійності страви.
+- **Server Actions**: Оновлено `addDishToSlot` у `planning.ts` — тепер система автоматично вираховує `servings` та `portionWeight` при додаванні страви, щоб вона ідеально вписувалася в калорійний ліміт користувача.
+- **Shopping List**: Оновлено `shopping-list.ts` — агрегація продуктів тепер базується на полі `servings`, що забезпечує точність закупівлі до грама.
+- **Data Seeding**: Створено `seed-visual-plan.ts` та `generate-visual-week.ts` — скрипти для миттєвого розгортання еталонного Visual Plan (Vitalii 1700 / GF 2300) з бейглами та кебабами.
+- **Verification**:
+    - [x] Logic implemented (Portion calculator, aggregation)
+    - [x] Portions auto-calculated in actions
+    - [x] Verified with scripts (Shopping list matches expectations)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+---
+
+## [2026-05-12] Week Planner Rewrite — Date Removal, Servings, Table Layout
+
+Rewrote week planner to remove date binding, add servings support, and switch to table layout.
+
+- **Schema**: Removed `startDate` from `WeekPlan`, `date` from `DayPlan`. Days now use `dayOfWeek` (0-6). `MealSlotInstance` uses `name`, `timeWindow`, `order` fields directly. `DishEntry` has `servings` field.
+- **Server Actions**: Updated `planning.ts` — `getWeekPlan` returns `dayOfWeek` instead of `date`, slots use `name` instead of `templateSlotName`. Added `updateDishServings` action. Simplified `calculateFitScore` (no slot param).
+- **WeekPlanner**: Complete rewrite — day selector uses `DAY_NAMES` array, table layout with meal slots as columns, inline editing for both weight and servings.
+- **DishPicker**: Removed `slot` prop, simplified `calculateFitScore` calls to use person targets directly.
+- **Cleanup**: Removed `getMealTemplateSlots` from persons actions, removed template slot display from `PersonForm`. Fixed `shopping.ts`, `shopping-list.ts`, `system-service.ts`, `WeekSummary`, `ShoppingCartView` to use new data shapes (`dayOfWeek`, `MealSlotInstance`, `dishEntries`).
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
 ## [2026-05-12] JSON Import/Export for Dishes with Alternatives Support
 
 Додано імпорт/експорт страв у JSON форматі з підтримкою альтернативних інгредієнтів.

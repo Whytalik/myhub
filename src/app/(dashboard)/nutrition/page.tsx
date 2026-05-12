@@ -11,22 +11,35 @@ export const metadata: Metadata = {
 
 async function fetchNutritionData(userId: string) {
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const dayOfWeek = (today.getDay() + 6) % 7;
 
-  const [dayPlan, dishCount, shoppingItems, weekPlan] = await Promise.all([
-    prisma.dayPlan.findFirst({
-      where: { userId, date: today },
-      include: { entries: { include: { dish: true } } },
-    }),
+  const [dishCount, shoppingItems, weekPlan] = await Promise.all([
     prisma.dish.count({ where: { userId } }),
     prisma.shoppingListItem.count({ where: { shoppingList: { userId }, checked: false } }),
     prisma.weekPlan.findFirst({
-      where: { userId, startDate: { lte: today } },
-      orderBy: { startDate: "desc" },
+      where: { userId },
+      orderBy: { createdAt: "desc" },
     }),
-  ]);
+  ])
 
-  return { dayPlan, dishCount, shoppingItems, weekPlan };
+  let mealsToday = 0
+  if (weekPlan) {
+    const dayPlan = await prisma.dayPlan.findFirst({
+      where: { weekPlanId: weekPlan.id, dayOfWeek },
+      include: {
+        mealSlots: {
+          include: {
+            dishEntries: true,
+          },
+        },
+      },
+    })
+    if (dayPlan) {
+      mealsToday = dayPlan.mealSlots.reduce((sum, slot) => sum + slot.dishEntries.length, 0)
+    }
+  }
+
+  return { mealsToday, dishCount, shoppingItems, weekPlan };
 }
 
 export default async function NutritionSpacePage() {
@@ -93,7 +106,6 @@ export default async function NutritionSpacePage() {
   }
 
   const d = nutritionData!;
-  const mealsToday = d.dayPlan?.entries.length ?? 0;
   const weekName = d.weekPlan?.name || "No active plan";
 
   return (
@@ -115,7 +127,7 @@ export default async function NutritionSpacePage() {
       <DailyOverview
         title="Today"
         items={[
-          { label: "Meals Planned", value: mealsToday.toString(), icon: UtensilsCrossed },
+          { label: "Meals Planned", value: d.mealsToday.toString(), icon: UtensilsCrossed },
           { label: "Active Plan", value: weekName, icon: CalendarDays },
           { label: "Shopping Items", value: d.shoppingItems.toString(), icon: ShoppingCart },
           { label: "Recipes", value: d.dishCount.toString(), icon: Package },

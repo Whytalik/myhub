@@ -22,7 +22,6 @@ model User {
   annualCompasses         AnnualCompass[]
   dailyEntries            DailyEntry[]
   dayPlans                DayPlan[]
-  dayTemplates            DayTemplate[]
   dishes                  Dish[]
   habits                  Habit[]
   libraryItems            LibraryItem[]
@@ -157,8 +156,6 @@ model Dish {
   updatedAt       DateTime         @updatedAt
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   ingredients     DishIngredient[]
-  dayPlanEntries  DayPlanEntry[]
-  templateEntries DayTemplateEntry[]
   dishEntries     DishEntry[]
 }
 
@@ -176,33 +173,10 @@ model DishIngredient {
   @@unique([dishId, productId, cookingMethodId])
 }
 
-model DayTemplate {
-  id        String             @id @default(cuid())
-  userId    String
-  name      String
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
-  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  entries   DayTemplateEntry[]
-  dayPlans  DayPlan[]
-}
-
-model DayTemplateEntry {
-  id         String      @id @default(cuid())
-  templateId String
-  dishId     String
-  mealSlot   MealSlot
-  servings   Float       @default(1)
-  priority   Priority    @default(FLEXIBLE)
-  dish       Dish        @relation(fields: [dishId], references: [id])
-  template   DayTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-}
-
 model WeekPlan {
   id            String         @id @default(cuid())
   userId        String
   name          String?
-  startDate     DateTime
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -215,27 +189,13 @@ model DayPlan {
   id         String             @id @default(cuid())
   userId     String
   weekPlanId String?
-  templateId String?
-  date       DateTime           @db.Date
-  adherence  PlanAdherence      @default(PLANNED)
+  dayOfWeek  Int
+  activity   String?
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id])
-  template   DayTemplate?       @relation(fields: [templateId], references: [id])
-  entries    DayPlanEntry[]
+  weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id], onDelete: Cascade)
   mealSlots  MealSlotInstance[]
-}
-
-model DayPlanEntry {
-  id        String   @id @default(cuid())
-  dayPlanId String
-  dishId    String
-  mealSlot  MealSlot
-  servings  Float    @default(1)
-  priority  Priority @default(FLEXIBLE)
-  dayPlan   DayPlan  @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
-  dish      Dish     @relation(fields: [dishId], references: [id])
 }
 
 model ShoppingList {
@@ -261,36 +221,23 @@ model ShoppingListItem {
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
 }
 
-model MealTemplateSlot {
-  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String
-  goal            Goal
-  percentage      Float
-  order           Int
-  minProteinGrams Float?
-  maxPctOfDaily   Float?
-  fiberPct        Float
-  mealSlots       MealSlotInstance[]
-
-  @@unique([name, goal])
-}
-
 model MealSlotInstance {
-  id               String           @id @default(uuid())
+  id               String          @id @default(uuid())
   dayPlanId        String
   personId         String
-  templateSlotId   String           @db.Uuid
+  name             String
+  timeWindow       String?
+  order            Int             @default(0)
   targetKcal       Float
   targetFiberGrams Float
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  dayPlan          DayPlan          @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
-  person           NutritionPerson  @relation(fields: [personId], references: [id], onDelete: Cascade)
-  templateSlot     MealTemplateSlot @relation(fields: [templateSlotId], references: [id])
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  dayPlan          DayPlan         @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
+  person           NutritionPerson @relation(fields: [personId], references: [id], onDelete: Cascade)
   dishEntries      DishEntry[]
   productEntries   ProductEntry[]
 
-  @@unique([dayPlanId, personId, templateSlotId])
+  @@unique([dayPlanId, personId, name])
 }
 
 model ProductEntry {
@@ -309,6 +256,7 @@ model DishEntry {
   mealSlotId    String
   dishId        String
   portionWeight Float
+  servings      Float            @default(1)
   isShared      Boolean          @default(false)
   manualWeight  Boolean          @default(false)
   fitScore      Float?
@@ -788,25 +736,6 @@ enum ProductState {
   RAW
   COOKED
   PROCESSED
-}
-
-enum MealSlot {
-  BREAKFAST
-  LUNCH
-  DINNER
-  SNACK
-}
-
-enum PlanAdherence {
-  PLANNED
-  FOLLOWED
-  DEVIATED
-}
-
-enum Priority {
-  FIXED
-  FLEXIBLE
-  AUTO
 }
 
 enum TaskStatus {

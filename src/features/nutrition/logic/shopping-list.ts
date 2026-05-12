@@ -1,9 +1,9 @@
-import { FoodProduct, CookingMethod, Dish, DishIngredient, DishEntry, MealSlot, DayPlan, WeekPlan } from "@/app/generated/prisma";
+import { FoodProduct, CookingMethod, Dish, DishIngredient, DishEntry, MealSlotInstance, DayPlan, WeekPlan } from "@/app/generated/prisma";
 
 export type FullWeekPlan = WeekPlan & {
   dayPlans: (DayPlan & {
-    mealSlots: (MealSlot & {
-      entries: (DishEntry & {
+    mealSlots: (MealSlotInstance & {
+      dishEntries: (DishEntry & {
         dish: Dish & {
           ingredients: (DishIngredient & {
             product: FoodProduct;
@@ -28,11 +28,9 @@ export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] 
 
   for (const dayPlan of weekPlan.dayPlans) {
     for (const mealSlot of dayPlan.mealSlots) {
-      for (const entry of mealSlot.entries) {
+      for (const entry of mealSlot.dishEntries) {
         for (const ingredient of entry.dish.ingredients) {
-          const cookedWeight = ingredient.rawWeight * (ingredient.cookingMethod?.coefficient ?? 1);
-          const portionRatio = entry.portionWeight / (cookedWeight || 1);
-          const rawGramsNeeded = ingredient.rawWeight * portionRatio;
+          const rawGramsNeeded = ingredient.rawWeight * entry.servings;
 
           const key = ingredient.productId;
 
@@ -42,7 +40,8 @@ export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] 
             aggregation[key] = {
               rawGrams: rawGramsNeeded,
               price: ingredient.product.price,
-              standardPackageAmount: ingredient.product.standardPackageAmount,
+              standardPackageAmount: ingredient.product.standardPackageAmount || 1000,
+              name: ingredient.product.name,
             };
           }
         }
@@ -56,7 +55,7 @@ export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] 
       const totalCost = data.price ? data.price * packagesCount : 0;
       return {
         productId,
-        name: "", 
+        name: data.name, 
         requiredRawGrams: data.rawGrams,
         packagesCount,
         totalCost,

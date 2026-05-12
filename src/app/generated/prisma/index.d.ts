@@ -64,16 +64,6 @@ export type Dish = $Result.DefaultSelection<Prisma.$DishPayload>
  */
 export type DishIngredient = $Result.DefaultSelection<Prisma.$DishIngredientPayload>
 /**
- * Model DayTemplate
- * 
- */
-export type DayTemplate = $Result.DefaultSelection<Prisma.$DayTemplatePayload>
-/**
- * Model DayTemplateEntry
- * 
- */
-export type DayTemplateEntry = $Result.DefaultSelection<Prisma.$DayTemplateEntryPayload>
-/**
  * Model WeekPlan
  * 
  */
@@ -84,11 +74,6 @@ export type WeekPlan = $Result.DefaultSelection<Prisma.$WeekPlanPayload>
  */
 export type DayPlan = $Result.DefaultSelection<Prisma.$DayPlanPayload>
 /**
- * Model DayPlanEntry
- * 
- */
-export type DayPlanEntry = $Result.DefaultSelection<Prisma.$DayPlanEntryPayload>
-/**
  * Model ShoppingList
  * 
  */
@@ -98,11 +83,6 @@ export type ShoppingList = $Result.DefaultSelection<Prisma.$ShoppingListPayload>
  * 
  */
 export type ShoppingListItem = $Result.DefaultSelection<Prisma.$ShoppingListItemPayload>
-/**
- * Model MealTemplateSlot
- * 
- */
-export type MealTemplateSlot = $Result.DefaultSelection<Prisma.$MealTemplateSlotPayload>
 /**
  * Model MealSlotInstance
  * 
@@ -325,34 +305,6 @@ export const ProductState: {
 };
 
 export type ProductState = (typeof ProductState)[keyof typeof ProductState]
-
-
-export const MealSlot: {
-  BREAKFAST: 'BREAKFAST',
-  LUNCH: 'LUNCH',
-  DINNER: 'DINNER',
-  SNACK: 'SNACK'
-};
-
-export type MealSlot = (typeof MealSlot)[keyof typeof MealSlot]
-
-
-export const PlanAdherence: {
-  PLANNED: 'PLANNED',
-  FOLLOWED: 'FOLLOWED',
-  DEVIATED: 'DEVIATED'
-};
-
-export type PlanAdherence = (typeof PlanAdherence)[keyof typeof PlanAdherence]
-
-
-export const Priority: {
-  FIXED: 'FIXED',
-  FLEXIBLE: 'FLEXIBLE',
-  AUTO: 'AUTO'
-};
-
-export type Priority = (typeof Priority)[keyof typeof Priority]
 
 
 export const TaskStatus: {
@@ -580,18 +532,6 @@ export const ProductSource: typeof $Enums.ProductSource
 export type ProductState = $Enums.ProductState
 
 export const ProductState: typeof $Enums.ProductState
-
-export type MealSlot = $Enums.MealSlot
-
-export const MealSlot: typeof $Enums.MealSlot
-
-export type PlanAdherence = $Enums.PlanAdherence
-
-export const PlanAdherence: typeof $Enums.PlanAdherence
-
-export type Priority = $Enums.Priority
-
-export const Priority: typeof $Enums.Priority
 
 export type TaskStatus = $Enums.TaskStatus
 
@@ -887,26 +827,6 @@ export class PrismaClient<
   get dishIngredient(): Prisma.DishIngredientDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.dayTemplate`: Exposes CRUD operations for the **DayTemplate** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DayTemplates
-    * const dayTemplates = await prisma.dayTemplate.findMany()
-    * ```
-    */
-  get dayTemplate(): Prisma.DayTemplateDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.dayTemplateEntry`: Exposes CRUD operations for the **DayTemplateEntry** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DayTemplateEntries
-    * const dayTemplateEntries = await prisma.dayTemplateEntry.findMany()
-    * ```
-    */
-  get dayTemplateEntry(): Prisma.DayTemplateEntryDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.weekPlan`: Exposes CRUD operations for the **WeekPlan** model.
     * Example usage:
     * ```ts
@@ -927,16 +847,6 @@ export class PrismaClient<
   get dayPlan(): Prisma.DayPlanDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.dayPlanEntry`: Exposes CRUD operations for the **DayPlanEntry** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DayPlanEntries
-    * const dayPlanEntries = await prisma.dayPlanEntry.findMany()
-    * ```
-    */
-  get dayPlanEntry(): Prisma.DayPlanEntryDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.shoppingList`: Exposes CRUD operations for the **ShoppingList** model.
     * Example usage:
     * ```ts
@@ -955,16 +865,6 @@ export class PrismaClient<
     * ```
     */
   get shoppingListItem(): Prisma.ShoppingListItemDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.mealTemplateSlot`: Exposes CRUD operations for the **MealTemplateSlot** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more MealTemplateSlots
-    * const mealTemplateSlots = await prisma.mealTemplateSlot.findMany()
-    * ```
-    */
-  get mealTemplateSlot(): Prisma.MealTemplateSlotDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.mealSlotInstance`: Exposes CRUD operations for the **MealSlotInstance** model.
@@ -1719,14 +1619,10 @@ export namespace Prisma {
     CookingMethod: 'CookingMethod',
     Dish: 'Dish',
     DishIngredient: 'DishIngredient',
-    DayTemplate: 'DayTemplate',
-    DayTemplateEntry: 'DayTemplateEntry',
     WeekPlan: 'WeekPlan',
     DayPlan: 'DayPlan',
-    DayPlanEntry: 'DayPlanEntry',
     ShoppingList: 'ShoppingList',
     ShoppingListItem: 'ShoppingListItem',
-    MealTemplateSlot: 'MealTemplateSlot',
     MealSlotInstance: 'MealSlotInstance',
     ProductEntry: 'ProductEntry',
     DishEntry: 'DishEntry',
@@ -1773,7 +1669,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dayTemplate" | "dayTemplateEntry" | "weekPlan" | "dayPlan" | "dayPlanEntry" | "shoppingList" | "shoppingListItem" | "mealTemplateSlot" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "weekPlan" | "dayPlan" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2517,154 +2413,6 @@ export namespace Prisma {
           }
         }
       }
-      DayTemplate: {
-        payload: Prisma.$DayTemplatePayload<ExtArgs>
-        fields: Prisma.DayTemplateFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DayTemplateFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DayTemplateFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          findFirst: {
-            args: Prisma.DayTemplateFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DayTemplateFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          findMany: {
-            args: Prisma.DayTemplateFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>[]
-          }
-          create: {
-            args: Prisma.DayTemplateCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          createMany: {
-            args: Prisma.DayTemplateCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.DayTemplateCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>[]
-          }
-          delete: {
-            args: Prisma.DayTemplateDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          update: {
-            args: Prisma.DayTemplateUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          deleteMany: {
-            args: Prisma.DayTemplateDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DayTemplateUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.DayTemplateUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>[]
-          }
-          upsert: {
-            args: Prisma.DayTemplateUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplatePayload>
-          }
-          aggregate: {
-            args: Prisma.DayTemplateAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDayTemplate>
-          }
-          groupBy: {
-            args: Prisma.DayTemplateGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DayTemplateGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DayTemplateCountArgs<ExtArgs>
-            result: $Utils.Optional<DayTemplateCountAggregateOutputType> | number
-          }
-        }
-      }
-      DayTemplateEntry: {
-        payload: Prisma.$DayTemplateEntryPayload<ExtArgs>
-        fields: Prisma.DayTemplateEntryFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DayTemplateEntryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DayTemplateEntryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          findFirst: {
-            args: Prisma.DayTemplateEntryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DayTemplateEntryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          findMany: {
-            args: Prisma.DayTemplateEntryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>[]
-          }
-          create: {
-            args: Prisma.DayTemplateEntryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          createMany: {
-            args: Prisma.DayTemplateEntryCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.DayTemplateEntryCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>[]
-          }
-          delete: {
-            args: Prisma.DayTemplateEntryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          update: {
-            args: Prisma.DayTemplateEntryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          deleteMany: {
-            args: Prisma.DayTemplateEntryDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DayTemplateEntryUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.DayTemplateEntryUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>[]
-          }
-          upsert: {
-            args: Prisma.DayTemplateEntryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayTemplateEntryPayload>
-          }
-          aggregate: {
-            args: Prisma.DayTemplateEntryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDayTemplateEntry>
-          }
-          groupBy: {
-            args: Prisma.DayTemplateEntryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DayTemplateEntryGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DayTemplateEntryCountArgs<ExtArgs>
-            result: $Utils.Optional<DayTemplateEntryCountAggregateOutputType> | number
-          }
-        }
-      }
       WeekPlan: {
         payload: Prisma.$WeekPlanPayload<ExtArgs>
         fields: Prisma.WeekPlanFieldRefs
@@ -2813,80 +2561,6 @@ export namespace Prisma {
           }
         }
       }
-      DayPlanEntry: {
-        payload: Prisma.$DayPlanEntryPayload<ExtArgs>
-        fields: Prisma.DayPlanEntryFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DayPlanEntryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DayPlanEntryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          findFirst: {
-            args: Prisma.DayPlanEntryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DayPlanEntryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          findMany: {
-            args: Prisma.DayPlanEntryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>[]
-          }
-          create: {
-            args: Prisma.DayPlanEntryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          createMany: {
-            args: Prisma.DayPlanEntryCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.DayPlanEntryCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>[]
-          }
-          delete: {
-            args: Prisma.DayPlanEntryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          update: {
-            args: Prisma.DayPlanEntryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          deleteMany: {
-            args: Prisma.DayPlanEntryDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DayPlanEntryUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.DayPlanEntryUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>[]
-          }
-          upsert: {
-            args: Prisma.DayPlanEntryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DayPlanEntryPayload>
-          }
-          aggregate: {
-            args: Prisma.DayPlanEntryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDayPlanEntry>
-          }
-          groupBy: {
-            args: Prisma.DayPlanEntryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DayPlanEntryGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DayPlanEntryCountArgs<ExtArgs>
-            result: $Utils.Optional<DayPlanEntryCountAggregateOutputType> | number
-          }
-        }
-      }
       ShoppingList: {
         payload: Prisma.$ShoppingListPayload<ExtArgs>
         fields: Prisma.ShoppingListFieldRefs
@@ -3032,80 +2706,6 @@ export namespace Prisma {
           count: {
             args: Prisma.ShoppingListItemCountArgs<ExtArgs>
             result: $Utils.Optional<ShoppingListItemCountAggregateOutputType> | number
-          }
-        }
-      }
-      MealTemplateSlot: {
-        payload: Prisma.$MealTemplateSlotPayload<ExtArgs>
-        fields: Prisma.MealTemplateSlotFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.MealTemplateSlotFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.MealTemplateSlotFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          findFirst: {
-            args: Prisma.MealTemplateSlotFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.MealTemplateSlotFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          findMany: {
-            args: Prisma.MealTemplateSlotFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>[]
-          }
-          create: {
-            args: Prisma.MealTemplateSlotCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          createMany: {
-            args: Prisma.MealTemplateSlotCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.MealTemplateSlotCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>[]
-          }
-          delete: {
-            args: Prisma.MealTemplateSlotDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          update: {
-            args: Prisma.MealTemplateSlotUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          deleteMany: {
-            args: Prisma.MealTemplateSlotDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.MealTemplateSlotUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.MealTemplateSlotUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>[]
-          }
-          upsert: {
-            args: Prisma.MealTemplateSlotUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MealTemplateSlotPayload>
-          }
-          aggregate: {
-            args: Prisma.MealTemplateSlotAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMealTemplateSlot>
-          }
-          groupBy: {
-            args: Prisma.MealTemplateSlotGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MealTemplateSlotGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.MealTemplateSlotCountArgs<ExtArgs>
-            result: $Utils.Optional<MealTemplateSlotCountAggregateOutputType> | number
           }
         }
       }
@@ -5521,14 +5121,10 @@ export namespace Prisma {
     cookingMethod?: CookingMethodOmit
     dish?: DishOmit
     dishIngredient?: DishIngredientOmit
-    dayTemplate?: DayTemplateOmit
-    dayTemplateEntry?: DayTemplateEntryOmit
     weekPlan?: WeekPlanOmit
     dayPlan?: DayPlanOmit
-    dayPlanEntry?: DayPlanEntryOmit
     shoppingList?: ShoppingListOmit
     shoppingListItem?: ShoppingListItemOmit
-    mealTemplateSlot?: MealTemplateSlotOmit
     mealSlotInstance?: MealSlotInstanceOmit
     productEntry?: ProductEntryOmit
     dishEntry?: DishEntryOmit
@@ -5644,7 +5240,6 @@ export namespace Prisma {
     annualCompasses: number
     dailyEntries: number
     dayPlans: number
-    dayTemplates: number
     dishes: number
     habits: number
     libraryItems: number
@@ -5671,7 +5266,6 @@ export namespace Prisma {
     annualCompasses?: boolean | UserCountOutputTypeCountAnnualCompassesArgs
     dailyEntries?: boolean | UserCountOutputTypeCountDailyEntriesArgs
     dayPlans?: boolean | UserCountOutputTypeCountDayPlansArgs
-    dayTemplates?: boolean | UserCountOutputTypeCountDayTemplatesArgs
     dishes?: boolean | UserCountOutputTypeCountDishesArgs
     habits?: boolean | UserCountOutputTypeCountHabitsArgs
     libraryItems?: boolean | UserCountOutputTypeCountLibraryItemsArgs
@@ -5730,13 +5324,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DayPlanWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayTemplateWhereInput
   }
 
   /**
@@ -5999,15 +5586,11 @@ export namespace Prisma {
 
   export type DishCountOutputType = {
     ingredients: number
-    dayPlanEntries: number
-    templateEntries: number
     dishEntries: number
   }
 
   export type DishCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ingredients?: boolean | DishCountOutputTypeCountIngredientsArgs
-    dayPlanEntries?: boolean | DishCountOutputTypeCountDayPlanEntriesArgs
-    templateEntries?: boolean | DishCountOutputTypeCountTemplateEntriesArgs
     dishEntries?: boolean | DishCountOutputTypeCountDishEntriesArgs
   }
 
@@ -6032,62 +5615,8 @@ export namespace Prisma {
   /**
    * DishCountOutputType without action
    */
-  export type DishCountOutputTypeCountDayPlanEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayPlanEntryWhereInput
-  }
-
-  /**
-   * DishCountOutputType without action
-   */
-  export type DishCountOutputTypeCountTemplateEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayTemplateEntryWhereInput
-  }
-
-  /**
-   * DishCountOutputType without action
-   */
   export type DishCountOutputTypeCountDishEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DishEntryWhereInput
-  }
-
-
-  /**
-   * Count Type DayTemplateCountOutputType
-   */
-
-  export type DayTemplateCountOutputType = {
-    entries: number
-    dayPlans: number
-  }
-
-  export type DayTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    entries?: boolean | DayTemplateCountOutputTypeCountEntriesArgs
-    dayPlans?: boolean | DayTemplateCountOutputTypeCountDayPlansArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * DayTemplateCountOutputType without action
-   */
-  export type DayTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateCountOutputType
-     */
-    select?: DayTemplateCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * DayTemplateCountOutputType without action
-   */
-  export type DayTemplateCountOutputTypeCountEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayTemplateEntryWhereInput
-  }
-
-  /**
-   * DayTemplateCountOutputType without action
-   */
-  export type DayTemplateCountOutputTypeCountDayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayPlanWhereInput
   }
 
 
@@ -6136,12 +5665,10 @@ export namespace Prisma {
    */
 
   export type DayPlanCountOutputType = {
-    entries: number
     mealSlots: number
   }
 
   export type DayPlanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    entries?: boolean | DayPlanCountOutputTypeCountEntriesArgs
     mealSlots?: boolean | DayPlanCountOutputTypeCountMealSlotsArgs
   }
 
@@ -6154,13 +5681,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the DayPlanCountOutputType
      */
     select?: DayPlanCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * DayPlanCountOutputType without action
-   */
-  export type DayPlanCountOutputTypeCountEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayPlanEntryWhereInput
   }
 
   /**
@@ -6199,37 +5719,6 @@ export namespace Prisma {
    */
   export type ShoppingListCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ShoppingListItemWhereInput
-  }
-
-
-  /**
-   * Count Type MealTemplateSlotCountOutputType
-   */
-
-  export type MealTemplateSlotCountOutputType = {
-    mealSlots: number
-  }
-
-  export type MealTemplateSlotCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mealSlots?: boolean | MealTemplateSlotCountOutputTypeCountMealSlotsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * MealTemplateSlotCountOutputType without action
-   */
-  export type MealTemplateSlotCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlotCountOutputType
-     */
-    select?: MealTemplateSlotCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * MealTemplateSlotCountOutputType without action
-   */
-  export type MealTemplateSlotCountOutputTypeCountMealSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MealSlotInstanceWhereInput
   }
 
 
@@ -6898,7 +6387,6 @@ export namespace Prisma {
     annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
     dayPlans?: boolean | User$dayPlansArgs<ExtArgs>
-    dayTemplates?: boolean | User$dayTemplatesArgs<ExtArgs>
     dishes?: boolean | User$dishesArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
     libraryItems?: boolean | User$libraryItemsArgs<ExtArgs>
@@ -6966,7 +6454,6 @@ export namespace Prisma {
     annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
     dayPlans?: boolean | User$dayPlansArgs<ExtArgs>
-    dayTemplates?: boolean | User$dayTemplatesArgs<ExtArgs>
     dishes?: boolean | User$dishesArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
     libraryItems?: boolean | User$libraryItemsArgs<ExtArgs>
@@ -6998,7 +6485,6 @@ export namespace Prisma {
       annualCompasses: Prisma.$AnnualCompassPayload<ExtArgs>[]
       dailyEntries: Prisma.$DailyEntryPayload<ExtArgs>[]
       dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
-      dayTemplates: Prisma.$DayTemplatePayload<ExtArgs>[]
       dishes: Prisma.$DishPayload<ExtArgs>[]
       habits: Prisma.$HabitPayload<ExtArgs>[]
       libraryItems: Prisma.$LibraryItemPayload<ExtArgs>[]
@@ -7428,7 +6914,6 @@ export namespace Prisma {
     annualCompasses<T extends User$annualCompassesArgs<ExtArgs> = {}>(args?: Subset<T, User$annualCompassesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dailyEntries<T extends User$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dayPlans<T extends User$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayTemplates<T extends User$dayTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$dayTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dishes<T extends User$dishesArgs<ExtArgs> = {}>(args?: Subset<T, User$dishesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     libraryItems<T extends User$libraryItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$libraryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LibraryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7973,30 +7458,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DayPlanScalarFieldEnum | DayPlanScalarFieldEnum[]
-  }
-
-  /**
-   * User.dayTemplates
-   */
-  export type User$dayTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    where?: DayTemplateWhereInput
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    cursor?: DayTemplateWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
   }
 
   /**
@@ -16793,8 +16254,6 @@ export namespace Prisma {
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
-    dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
-    templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
     dishEntries?: boolean | Dish$dishEntriesArgs<ExtArgs>
     _count?: boolean | DishCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dish"]>
@@ -16838,8 +16297,6 @@ export namespace Prisma {
   export type DishInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     ingredients?: boolean | Dish$ingredientsArgs<ExtArgs>
-    dayPlanEntries?: boolean | Dish$dayPlanEntriesArgs<ExtArgs>
-    templateEntries?: boolean | Dish$templateEntriesArgs<ExtArgs>
     dishEntries?: boolean | Dish$dishEntriesArgs<ExtArgs>
     _count?: boolean | DishCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -16855,8 +16312,6 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       ingredients: Prisma.$DishIngredientPayload<ExtArgs>[]
-      dayPlanEntries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
-      templateEntries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
       dishEntries: Prisma.$DishEntryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -17264,8 +16719,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ingredients<T extends Dish$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, Dish$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayPlanEntries<T extends Dish$dayPlanEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$dayPlanEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    templateEntries<T extends Dish$templateEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$templateEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dishEntries<T extends Dish$dishEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Dish$dishEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -17726,54 +17179,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DishIngredientScalarFieldEnum | DishIngredientScalarFieldEnum[]
-  }
-
-  /**
-   * Dish.dayPlanEntries
-   */
-  export type Dish$dayPlanEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    where?: DayPlanEntryWhereInput
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    cursor?: DayPlanEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayPlanEntryScalarFieldEnum | DayPlanEntryScalarFieldEnum[]
-  }
-
-  /**
-   * Dish.templateEntries
-   */
-  export type Dish$templateEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    where?: DayTemplateEntryWhereInput
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    cursor?: DayTemplateEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayTemplateEntryScalarFieldEnum | DayTemplateEntryScalarFieldEnum[]
   }
 
   /**
@@ -18961,2245 +18366,6 @@ export namespace Prisma {
 
 
   /**
-   * Model DayTemplate
-   */
-
-  export type AggregateDayTemplate = {
-    _count: DayTemplateCountAggregateOutputType | null
-    _min: DayTemplateMinAggregateOutputType | null
-    _max: DayTemplateMaxAggregateOutputType | null
-  }
-
-  export type DayTemplateMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type DayTemplateMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    name: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type DayTemplateCountAggregateOutputType = {
-    id: number
-    userId: number
-    name: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type DayTemplateMinAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type DayTemplateMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type DayTemplateCountAggregateInputType = {
-    id?: true
-    userId?: true
-    name?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type DayTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayTemplate to aggregate.
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplates to fetch.
-     */
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DayTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DayTemplates
-    **/
-    _count?: true | DayTemplateCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DayTemplateMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DayTemplateMaxAggregateInputType
-  }
-
-  export type GetDayTemplateAggregateType<T extends DayTemplateAggregateArgs> = {
-        [P in keyof T & keyof AggregateDayTemplate]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDayTemplate[P]>
-      : GetScalarType<T[P], AggregateDayTemplate[P]>
-  }
-
-
-
-
-  export type DayTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayTemplateWhereInput
-    orderBy?: DayTemplateOrderByWithAggregationInput | DayTemplateOrderByWithAggregationInput[]
-    by: DayTemplateScalarFieldEnum[] | DayTemplateScalarFieldEnum
-    having?: DayTemplateScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DayTemplateCountAggregateInputType | true
-    _min?: DayTemplateMinAggregateInputType
-    _max?: DayTemplateMaxAggregateInputType
-  }
-
-  export type DayTemplateGroupByOutputType = {
-    id: string
-    userId: string
-    name: string
-    createdAt: Date
-    updatedAt: Date
-    _count: DayTemplateCountAggregateOutputType | null
-    _min: DayTemplateMinAggregateOutputType | null
-    _max: DayTemplateMaxAggregateOutputType | null
-  }
-
-  type GetDayTemplateGroupByPayload<T extends DayTemplateGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DayTemplateGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DayTemplateGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DayTemplateGroupByOutputType[P]>
-            : GetScalarType<T[P], DayTemplateGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DayTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
-    dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
-    _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplate"]>
-
-  export type DayTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplate"]>
-
-  export type DayTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplate"]>
-
-  export type DayTemplateSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    name?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type DayTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["dayTemplate"]>
-  export type DayTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    entries?: boolean | DayTemplate$entriesArgs<ExtArgs>
-    dayPlans?: boolean | DayTemplate$dayPlansArgs<ExtArgs>
-    _count?: boolean | DayTemplateCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type DayTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type DayTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $DayTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DayTemplate"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      entries: Prisma.$DayTemplateEntryPayload<ExtArgs>[]
-      dayPlans: Prisma.$DayPlanPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      name: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["dayTemplate"]>
-    composites: {}
-  }
-
-  type DayTemplateGetPayload<S extends boolean | null | undefined | DayTemplateDefaultArgs> = $Result.GetResult<Prisma.$DayTemplatePayload, S>
-
-  type DayTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DayTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DayTemplateCountAggregateInputType | true
-    }
-
-  export interface DayTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DayTemplate'], meta: { name: 'DayTemplate' } }
-    /**
-     * Find zero or one DayTemplate that matches the filter.
-     * @param {DayTemplateFindUniqueArgs} args - Arguments to find a DayTemplate
-     * @example
-     * // Get one DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DayTemplateFindUniqueArgs>(args: SelectSubset<T, DayTemplateFindUniqueArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DayTemplate that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DayTemplateFindUniqueOrThrowArgs} args - Arguments to find a DayTemplate
-     * @example
-     * // Get one DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DayTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, DayTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayTemplate that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateFindFirstArgs} args - Arguments to find a DayTemplate
-     * @example
-     * // Get one DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DayTemplateFindFirstArgs>(args?: SelectSubset<T, DayTemplateFindFirstArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayTemplate that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateFindFirstOrThrowArgs} args - Arguments to find a DayTemplate
-     * @example
-     * // Get one DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DayTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, DayTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DayTemplates that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DayTemplates
-     * const dayTemplates = await prisma.dayTemplate.findMany()
-     * 
-     * // Get first 10 DayTemplates
-     * const dayTemplates = await prisma.dayTemplate.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const dayTemplateWithIdOnly = await prisma.dayTemplate.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DayTemplateFindManyArgs>(args?: SelectSubset<T, DayTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DayTemplate.
-     * @param {DayTemplateCreateArgs} args - Arguments to create a DayTemplate.
-     * @example
-     * // Create one DayTemplate
-     * const DayTemplate = await prisma.dayTemplate.create({
-     *   data: {
-     *     // ... data to create a DayTemplate
-     *   }
-     * })
-     * 
-     */
-    create<T extends DayTemplateCreateArgs>(args: SelectSubset<T, DayTemplateCreateArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DayTemplates.
-     * @param {DayTemplateCreateManyArgs} args - Arguments to create many DayTemplates.
-     * @example
-     * // Create many DayTemplates
-     * const dayTemplate = await prisma.dayTemplate.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DayTemplateCreateManyArgs>(args?: SelectSubset<T, DayTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many DayTemplates and returns the data saved in the database.
-     * @param {DayTemplateCreateManyAndReturnArgs} args - Arguments to create many DayTemplates.
-     * @example
-     * // Create many DayTemplates
-     * const dayTemplate = await prisma.dayTemplate.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many DayTemplates and only return the `id`
-     * const dayTemplateWithIdOnly = await prisma.dayTemplate.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends DayTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, DayTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a DayTemplate.
-     * @param {DayTemplateDeleteArgs} args - Arguments to delete one DayTemplate.
-     * @example
-     * // Delete one DayTemplate
-     * const DayTemplate = await prisma.dayTemplate.delete({
-     *   where: {
-     *     // ... filter to delete one DayTemplate
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DayTemplateDeleteArgs>(args: SelectSubset<T, DayTemplateDeleteArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DayTemplate.
-     * @param {DayTemplateUpdateArgs} args - Arguments to update one DayTemplate.
-     * @example
-     * // Update one DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DayTemplateUpdateArgs>(args: SelectSubset<T, DayTemplateUpdateArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DayTemplates.
-     * @param {DayTemplateDeleteManyArgs} args - Arguments to filter DayTemplates to delete.
-     * @example
-     * // Delete a few DayTemplates
-     * const { count } = await prisma.dayTemplate.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DayTemplateDeleteManyArgs>(args?: SelectSubset<T, DayTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayTemplates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DayTemplates
-     * const dayTemplate = await prisma.dayTemplate.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DayTemplateUpdateManyArgs>(args: SelectSubset<T, DayTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayTemplates and returns the data updated in the database.
-     * @param {DayTemplateUpdateManyAndReturnArgs} args - Arguments to update many DayTemplates.
-     * @example
-     * // Update many DayTemplates
-     * const dayTemplate = await prisma.dayTemplate.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more DayTemplates and only return the `id`
-     * const dayTemplateWithIdOnly = await prisma.dayTemplate.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends DayTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, DayTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one DayTemplate.
-     * @param {DayTemplateUpsertArgs} args - Arguments to update or create a DayTemplate.
-     * @example
-     * // Update or create a DayTemplate
-     * const dayTemplate = await prisma.dayTemplate.upsert({
-     *   create: {
-     *     // ... data to create a DayTemplate
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DayTemplate we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DayTemplateUpsertArgs>(args: SelectSubset<T, DayTemplateUpsertArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DayTemplates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateCountArgs} args - Arguments to filter DayTemplates to count.
-     * @example
-     * // Count the number of DayTemplates
-     * const count = await prisma.dayTemplate.count({
-     *   where: {
-     *     // ... the filter for the DayTemplates we want to count
-     *   }
-     * })
-    **/
-    count<T extends DayTemplateCountArgs>(
-      args?: Subset<T, DayTemplateCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DayTemplateCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DayTemplate.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DayTemplateAggregateArgs>(args: Subset<T, DayTemplateAggregateArgs>): Prisma.PrismaPromise<GetDayTemplateAggregateType<T>>
-
-    /**
-     * Group by DayTemplate.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DayTemplateGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DayTemplateGroupByArgs['orderBy'] }
-        : { orderBy?: DayTemplateGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DayTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DayTemplate model
-   */
-  readonly fields: DayTemplateFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DayTemplate.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DayTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    entries<T extends DayTemplate$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dayPlans<T extends DayTemplate$dayPlansArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplate$dayPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DayTemplate model
-   */
-  interface DayTemplateFieldRefs {
-    readonly id: FieldRef<"DayTemplate", 'String'>
-    readonly userId: FieldRef<"DayTemplate", 'String'>
-    readonly name: FieldRef<"DayTemplate", 'String'>
-    readonly createdAt: FieldRef<"DayTemplate", 'DateTime'>
-    readonly updatedAt: FieldRef<"DayTemplate", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DayTemplate findUnique
-   */
-  export type DayTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplate to fetch.
-     */
-    where: DayTemplateWhereUniqueInput
-  }
-
-  /**
-   * DayTemplate findUniqueOrThrow
-   */
-  export type DayTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplate to fetch.
-     */
-    where: DayTemplateWhereUniqueInput
-  }
-
-  /**
-   * DayTemplate findFirst
-   */
-  export type DayTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplate to fetch.
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplates to fetch.
-     */
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayTemplates.
-     */
-    cursor?: DayTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplates.
-     */
-    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplate findFirstOrThrow
-   */
-  export type DayTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplate to fetch.
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplates to fetch.
-     */
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayTemplates.
-     */
-    cursor?: DayTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplates.
-     */
-    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplate findMany
-   */
-  export type DayTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplates to fetch.
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplates to fetch.
-     */
-    orderBy?: DayTemplateOrderByWithRelationInput | DayTemplateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DayTemplates.
-     */
-    cursor?: DayTemplateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplates.
-     */
-    distinct?: DayTemplateScalarFieldEnum | DayTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplate create
-   */
-  export type DayTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DayTemplate.
-     */
-    data: XOR<DayTemplateCreateInput, DayTemplateUncheckedCreateInput>
-  }
-
-  /**
-   * DayTemplate createMany
-   */
-  export type DayTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DayTemplates.
-     */
-    data: DayTemplateCreateManyInput | DayTemplateCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DayTemplate createManyAndReturn
-   */
-  export type DayTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * The data used to create many DayTemplates.
-     */
-    data: DayTemplateCreateManyInput | DayTemplateCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayTemplate update
-   */
-  export type DayTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DayTemplate.
-     */
-    data: XOR<DayTemplateUpdateInput, DayTemplateUncheckedUpdateInput>
-    /**
-     * Choose, which DayTemplate to update.
-     */
-    where: DayTemplateWhereUniqueInput
-  }
-
-  /**
-   * DayTemplate updateMany
-   */
-  export type DayTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DayTemplates.
-     */
-    data: XOR<DayTemplateUpdateManyMutationInput, DayTemplateUncheckedUpdateManyInput>
-    /**
-     * Filter which DayTemplates to update
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * Limit how many DayTemplates to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayTemplate updateManyAndReturn
-   */
-  export type DayTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * The data used to update DayTemplates.
-     */
-    data: XOR<DayTemplateUpdateManyMutationInput, DayTemplateUncheckedUpdateManyInput>
-    /**
-     * Filter which DayTemplates to update
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * Limit how many DayTemplates to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayTemplate upsert
-   */
-  export type DayTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DayTemplate to update in case it exists.
-     */
-    where: DayTemplateWhereUniqueInput
-    /**
-     * In case the DayTemplate found by the `where` argument doesn't exist, create a new DayTemplate with this data.
-     */
-    create: XOR<DayTemplateCreateInput, DayTemplateUncheckedCreateInput>
-    /**
-     * In case the DayTemplate was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DayTemplateUpdateInput, DayTemplateUncheckedUpdateInput>
-  }
-
-  /**
-   * DayTemplate delete
-   */
-  export type DayTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    /**
-     * Filter which DayTemplate to delete.
-     */
-    where: DayTemplateWhereUniqueInput
-  }
-
-  /**
-   * DayTemplate deleteMany
-   */
-  export type DayTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayTemplates to delete
-     */
-    where?: DayTemplateWhereInput
-    /**
-     * Limit how many DayTemplates to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayTemplate.entries
-   */
-  export type DayTemplate$entriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    where?: DayTemplateEntryWhereInput
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    cursor?: DayTemplateEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayTemplateEntryScalarFieldEnum | DayTemplateEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplate.dayPlans
-   */
-  export type DayTemplate$dayPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlan
-     */
-    select?: DayPlanSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlan
-     */
-    omit?: DayPlanOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanInclude<ExtArgs> | null
-    where?: DayPlanWhereInput
-    orderBy?: DayPlanOrderByWithRelationInput | DayPlanOrderByWithRelationInput[]
-    cursor?: DayPlanWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayPlanScalarFieldEnum | DayPlanScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplate without action
-   */
-  export type DayTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model DayTemplateEntry
-   */
-
-  export type AggregateDayTemplateEntry = {
-    _count: DayTemplateEntryCountAggregateOutputType | null
-    _avg: DayTemplateEntryAvgAggregateOutputType | null
-    _sum: DayTemplateEntrySumAggregateOutputType | null
-    _min: DayTemplateEntryMinAggregateOutputType | null
-    _max: DayTemplateEntryMaxAggregateOutputType | null
-  }
-
-  export type DayTemplateEntryAvgAggregateOutputType = {
-    servings: number | null
-  }
-
-  export type DayTemplateEntrySumAggregateOutputType = {
-    servings: number | null
-  }
-
-  export type DayTemplateEntryMinAggregateOutputType = {
-    id: string | null
-    templateId: string | null
-    dishId: string | null
-    mealSlot: $Enums.MealSlot | null
-    servings: number | null
-    priority: $Enums.Priority | null
-  }
-
-  export type DayTemplateEntryMaxAggregateOutputType = {
-    id: string | null
-    templateId: string | null
-    dishId: string | null
-    mealSlot: $Enums.MealSlot | null
-    servings: number | null
-    priority: $Enums.Priority | null
-  }
-
-  export type DayTemplateEntryCountAggregateOutputType = {
-    id: number
-    templateId: number
-    dishId: number
-    mealSlot: number
-    servings: number
-    priority: number
-    _all: number
-  }
-
-
-  export type DayTemplateEntryAvgAggregateInputType = {
-    servings?: true
-  }
-
-  export type DayTemplateEntrySumAggregateInputType = {
-    servings?: true
-  }
-
-  export type DayTemplateEntryMinAggregateInputType = {
-    id?: true
-    templateId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-  }
-
-  export type DayTemplateEntryMaxAggregateInputType = {
-    id?: true
-    templateId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-  }
-
-  export type DayTemplateEntryCountAggregateInputType = {
-    id?: true
-    templateId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-    _all?: true
-  }
-
-  export type DayTemplateEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayTemplateEntry to aggregate.
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplateEntries to fetch.
-     */
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DayTemplateEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplateEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplateEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DayTemplateEntries
-    **/
-    _count?: true | DayTemplateEntryCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: DayTemplateEntryAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DayTemplateEntrySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DayTemplateEntryMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DayTemplateEntryMaxAggregateInputType
-  }
-
-  export type GetDayTemplateEntryAggregateType<T extends DayTemplateEntryAggregateArgs> = {
-        [P in keyof T & keyof AggregateDayTemplateEntry]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDayTemplateEntry[P]>
-      : GetScalarType<T[P], AggregateDayTemplateEntry[P]>
-  }
-
-
-
-
-  export type DayTemplateEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayTemplateEntryWhereInput
-    orderBy?: DayTemplateEntryOrderByWithAggregationInput | DayTemplateEntryOrderByWithAggregationInput[]
-    by: DayTemplateEntryScalarFieldEnum[] | DayTemplateEntryScalarFieldEnum
-    having?: DayTemplateEntryScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DayTemplateEntryCountAggregateInputType | true
-    _avg?: DayTemplateEntryAvgAggregateInputType
-    _sum?: DayTemplateEntrySumAggregateInputType
-    _min?: DayTemplateEntryMinAggregateInputType
-    _max?: DayTemplateEntryMaxAggregateInputType
-  }
-
-  export type DayTemplateEntryGroupByOutputType = {
-    id: string
-    templateId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings: number
-    priority: $Enums.Priority
-    _count: DayTemplateEntryCountAggregateOutputType | null
-    _avg: DayTemplateEntryAvgAggregateOutputType | null
-    _sum: DayTemplateEntrySumAggregateOutputType | null
-    _min: DayTemplateEntryMinAggregateOutputType | null
-    _max: DayTemplateEntryMaxAggregateOutputType | null
-  }
-
-  type GetDayTemplateEntryGroupByPayload<T extends DayTemplateEntryGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DayTemplateEntryGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DayTemplateEntryGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DayTemplateEntryGroupByOutputType[P]>
-            : GetScalarType<T[P], DayTemplateEntryGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DayTemplateEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    templateId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplateEntry"]>
-
-  export type DayTemplateEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    templateId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplateEntry"]>
-
-  export type DayTemplateEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    templateId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayTemplateEntry"]>
-
-  export type DayTemplateEntrySelectScalar = {
-    id?: boolean
-    templateId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-  }
-
-  export type DayTemplateEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "templateId" | "dishId" | "mealSlot" | "servings" | "priority", ExtArgs["result"]["dayTemplateEntry"]>
-  export type DayTemplateEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }
-  export type DayTemplateEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }
-  export type DayTemplateEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-    template?: boolean | DayTemplateDefaultArgs<ExtArgs>
-  }
-
-  export type $DayTemplateEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DayTemplateEntry"
-    objects: {
-      dish: Prisma.$DishPayload<ExtArgs>
-      template: Prisma.$DayTemplatePayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      templateId: string
-      dishId: string
-      mealSlot: $Enums.MealSlot
-      servings: number
-      priority: $Enums.Priority
-    }, ExtArgs["result"]["dayTemplateEntry"]>
-    composites: {}
-  }
-
-  type DayTemplateEntryGetPayload<S extends boolean | null | undefined | DayTemplateEntryDefaultArgs> = $Result.GetResult<Prisma.$DayTemplateEntryPayload, S>
-
-  type DayTemplateEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DayTemplateEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DayTemplateEntryCountAggregateInputType | true
-    }
-
-  export interface DayTemplateEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DayTemplateEntry'], meta: { name: 'DayTemplateEntry' } }
-    /**
-     * Find zero or one DayTemplateEntry that matches the filter.
-     * @param {DayTemplateEntryFindUniqueArgs} args - Arguments to find a DayTemplateEntry
-     * @example
-     * // Get one DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DayTemplateEntryFindUniqueArgs>(args: SelectSubset<T, DayTemplateEntryFindUniqueArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DayTemplateEntry that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DayTemplateEntryFindUniqueOrThrowArgs} args - Arguments to find a DayTemplateEntry
-     * @example
-     * // Get one DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DayTemplateEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, DayTemplateEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayTemplateEntry that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryFindFirstArgs} args - Arguments to find a DayTemplateEntry
-     * @example
-     * // Get one DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DayTemplateEntryFindFirstArgs>(args?: SelectSubset<T, DayTemplateEntryFindFirstArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayTemplateEntry that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryFindFirstOrThrowArgs} args - Arguments to find a DayTemplateEntry
-     * @example
-     * // Get one DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DayTemplateEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, DayTemplateEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DayTemplateEntries that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DayTemplateEntries
-     * const dayTemplateEntries = await prisma.dayTemplateEntry.findMany()
-     * 
-     * // Get first 10 DayTemplateEntries
-     * const dayTemplateEntries = await prisma.dayTemplateEntry.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const dayTemplateEntryWithIdOnly = await prisma.dayTemplateEntry.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DayTemplateEntryFindManyArgs>(args?: SelectSubset<T, DayTemplateEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DayTemplateEntry.
-     * @param {DayTemplateEntryCreateArgs} args - Arguments to create a DayTemplateEntry.
-     * @example
-     * // Create one DayTemplateEntry
-     * const DayTemplateEntry = await prisma.dayTemplateEntry.create({
-     *   data: {
-     *     // ... data to create a DayTemplateEntry
-     *   }
-     * })
-     * 
-     */
-    create<T extends DayTemplateEntryCreateArgs>(args: SelectSubset<T, DayTemplateEntryCreateArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DayTemplateEntries.
-     * @param {DayTemplateEntryCreateManyArgs} args - Arguments to create many DayTemplateEntries.
-     * @example
-     * // Create many DayTemplateEntries
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DayTemplateEntryCreateManyArgs>(args?: SelectSubset<T, DayTemplateEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many DayTemplateEntries and returns the data saved in the database.
-     * @param {DayTemplateEntryCreateManyAndReturnArgs} args - Arguments to create many DayTemplateEntries.
-     * @example
-     * // Create many DayTemplateEntries
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many DayTemplateEntries and only return the `id`
-     * const dayTemplateEntryWithIdOnly = await prisma.dayTemplateEntry.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends DayTemplateEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, DayTemplateEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a DayTemplateEntry.
-     * @param {DayTemplateEntryDeleteArgs} args - Arguments to delete one DayTemplateEntry.
-     * @example
-     * // Delete one DayTemplateEntry
-     * const DayTemplateEntry = await prisma.dayTemplateEntry.delete({
-     *   where: {
-     *     // ... filter to delete one DayTemplateEntry
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DayTemplateEntryDeleteArgs>(args: SelectSubset<T, DayTemplateEntryDeleteArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DayTemplateEntry.
-     * @param {DayTemplateEntryUpdateArgs} args - Arguments to update one DayTemplateEntry.
-     * @example
-     * // Update one DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DayTemplateEntryUpdateArgs>(args: SelectSubset<T, DayTemplateEntryUpdateArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DayTemplateEntries.
-     * @param {DayTemplateEntryDeleteManyArgs} args - Arguments to filter DayTemplateEntries to delete.
-     * @example
-     * // Delete a few DayTemplateEntries
-     * const { count } = await prisma.dayTemplateEntry.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DayTemplateEntryDeleteManyArgs>(args?: SelectSubset<T, DayTemplateEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayTemplateEntries.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DayTemplateEntries
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DayTemplateEntryUpdateManyArgs>(args: SelectSubset<T, DayTemplateEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayTemplateEntries and returns the data updated in the database.
-     * @param {DayTemplateEntryUpdateManyAndReturnArgs} args - Arguments to update many DayTemplateEntries.
-     * @example
-     * // Update many DayTemplateEntries
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more DayTemplateEntries and only return the `id`
-     * const dayTemplateEntryWithIdOnly = await prisma.dayTemplateEntry.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends DayTemplateEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, DayTemplateEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one DayTemplateEntry.
-     * @param {DayTemplateEntryUpsertArgs} args - Arguments to update or create a DayTemplateEntry.
-     * @example
-     * // Update or create a DayTemplateEntry
-     * const dayTemplateEntry = await prisma.dayTemplateEntry.upsert({
-     *   create: {
-     *     // ... data to create a DayTemplateEntry
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DayTemplateEntry we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DayTemplateEntryUpsertArgs>(args: SelectSubset<T, DayTemplateEntryUpsertArgs<ExtArgs>>): Prisma__DayTemplateEntryClient<$Result.GetResult<Prisma.$DayTemplateEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DayTemplateEntries.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryCountArgs} args - Arguments to filter DayTemplateEntries to count.
-     * @example
-     * // Count the number of DayTemplateEntries
-     * const count = await prisma.dayTemplateEntry.count({
-     *   where: {
-     *     // ... the filter for the DayTemplateEntries we want to count
-     *   }
-     * })
-    **/
-    count<T extends DayTemplateEntryCountArgs>(
-      args?: Subset<T, DayTemplateEntryCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DayTemplateEntryCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DayTemplateEntry.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DayTemplateEntryAggregateArgs>(args: Subset<T, DayTemplateEntryAggregateArgs>): Prisma.PrismaPromise<GetDayTemplateEntryAggregateType<T>>
-
-    /**
-     * Group by DayTemplateEntry.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayTemplateEntryGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DayTemplateEntryGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DayTemplateEntryGroupByArgs['orderBy'] }
-        : { orderBy?: DayTemplateEntryGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DayTemplateEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayTemplateEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DayTemplateEntry model
-   */
-  readonly fields: DayTemplateEntryFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DayTemplateEntry.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DayTemplateEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    dish<T extends DishDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DishDefaultArgs<ExtArgs>>): Prisma__DishClient<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    template<T extends DayTemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DayTemplateDefaultArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DayTemplateEntry model
-   */
-  interface DayTemplateEntryFieldRefs {
-    readonly id: FieldRef<"DayTemplateEntry", 'String'>
-    readonly templateId: FieldRef<"DayTemplateEntry", 'String'>
-    readonly dishId: FieldRef<"DayTemplateEntry", 'String'>
-    readonly mealSlot: FieldRef<"DayTemplateEntry", 'MealSlot'>
-    readonly servings: FieldRef<"DayTemplateEntry", 'Float'>
-    readonly priority: FieldRef<"DayTemplateEntry", 'Priority'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DayTemplateEntry findUnique
-   */
-  export type DayTemplateEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplateEntry to fetch.
-     */
-    where: DayTemplateEntryWhereUniqueInput
-  }
-
-  /**
-   * DayTemplateEntry findUniqueOrThrow
-   */
-  export type DayTemplateEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplateEntry to fetch.
-     */
-    where: DayTemplateEntryWhereUniqueInput
-  }
-
-  /**
-   * DayTemplateEntry findFirst
-   */
-  export type DayTemplateEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplateEntry to fetch.
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplateEntries to fetch.
-     */
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayTemplateEntries.
-     */
-    cursor?: DayTemplateEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplateEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplateEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplateEntries.
-     */
-    distinct?: DayTemplateEntryScalarFieldEnum | DayTemplateEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplateEntry findFirstOrThrow
-   */
-  export type DayTemplateEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplateEntry to fetch.
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplateEntries to fetch.
-     */
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayTemplateEntries.
-     */
-    cursor?: DayTemplateEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplateEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplateEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplateEntries.
-     */
-    distinct?: DayTemplateEntryScalarFieldEnum | DayTemplateEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplateEntry findMany
-   */
-  export type DayTemplateEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayTemplateEntries to fetch.
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayTemplateEntries to fetch.
-     */
-    orderBy?: DayTemplateEntryOrderByWithRelationInput | DayTemplateEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DayTemplateEntries.
-     */
-    cursor?: DayTemplateEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayTemplateEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayTemplateEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayTemplateEntries.
-     */
-    distinct?: DayTemplateEntryScalarFieldEnum | DayTemplateEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayTemplateEntry create
-   */
-  export type DayTemplateEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DayTemplateEntry.
-     */
-    data: XOR<DayTemplateEntryCreateInput, DayTemplateEntryUncheckedCreateInput>
-  }
-
-  /**
-   * DayTemplateEntry createMany
-   */
-  export type DayTemplateEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DayTemplateEntries.
-     */
-    data: DayTemplateEntryCreateManyInput | DayTemplateEntryCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DayTemplateEntry createManyAndReturn
-   */
-  export type DayTemplateEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * The data used to create many DayTemplateEntries.
-     */
-    data: DayTemplateEntryCreateManyInput | DayTemplateEntryCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayTemplateEntry update
-   */
-  export type DayTemplateEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DayTemplateEntry.
-     */
-    data: XOR<DayTemplateEntryUpdateInput, DayTemplateEntryUncheckedUpdateInput>
-    /**
-     * Choose, which DayTemplateEntry to update.
-     */
-    where: DayTemplateEntryWhereUniqueInput
-  }
-
-  /**
-   * DayTemplateEntry updateMany
-   */
-  export type DayTemplateEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DayTemplateEntries.
-     */
-    data: XOR<DayTemplateEntryUpdateManyMutationInput, DayTemplateEntryUncheckedUpdateManyInput>
-    /**
-     * Filter which DayTemplateEntries to update
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * Limit how many DayTemplateEntries to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayTemplateEntry updateManyAndReturn
-   */
-  export type DayTemplateEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * The data used to update DayTemplateEntries.
-     */
-    data: XOR<DayTemplateEntryUpdateManyMutationInput, DayTemplateEntryUncheckedUpdateManyInput>
-    /**
-     * Filter which DayTemplateEntries to update
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * Limit how many DayTemplateEntries to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayTemplateEntry upsert
-   */
-  export type DayTemplateEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DayTemplateEntry to update in case it exists.
-     */
-    where: DayTemplateEntryWhereUniqueInput
-    /**
-     * In case the DayTemplateEntry found by the `where` argument doesn't exist, create a new DayTemplateEntry with this data.
-     */
-    create: XOR<DayTemplateEntryCreateInput, DayTemplateEntryUncheckedCreateInput>
-    /**
-     * In case the DayTemplateEntry was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DayTemplateEntryUpdateInput, DayTemplateEntryUncheckedUpdateInput>
-  }
-
-  /**
-   * DayTemplateEntry delete
-   */
-  export type DayTemplateEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-    /**
-     * Filter which DayTemplateEntry to delete.
-     */
-    where: DayTemplateEntryWhereUniqueInput
-  }
-
-  /**
-   * DayTemplateEntry deleteMany
-   */
-  export type DayTemplateEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayTemplateEntries to delete
-     */
-    where?: DayTemplateEntryWhereInput
-    /**
-     * Limit how many DayTemplateEntries to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayTemplateEntry without action
-   */
-  export type DayTemplateEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplateEntry
-     */
-    select?: DayTemplateEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplateEntry
-     */
-    omit?: DayTemplateEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateEntryInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model WeekPlan
    */
 
@@ -21213,7 +18379,6 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
-    startDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21222,7 +18387,6 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
-    startDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -21231,7 +18395,6 @@ export namespace Prisma {
     id: number
     userId: number
     name: number
-    startDate: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -21242,7 +18405,6 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
-    startDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21251,7 +18413,6 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
-    startDate?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -21260,7 +18421,6 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
-    startDate?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -21342,7 +18502,6 @@ export namespace Prisma {
     id: string
     userId: string
     name: string | null
-    startDate: Date
     createdAt: Date
     updatedAt: Date
     _count: WeekPlanCountAggregateOutputType | null
@@ -21368,7 +18527,6 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
-    startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -21382,7 +18540,6 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
-    startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -21392,7 +18549,6 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
-    startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -21402,12 +18558,11 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
-    startDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "startDate" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
+  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
   export type WeekPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
@@ -21434,7 +18589,6 @@ export namespace Prisma {
       id: string
       userId: string
       name: string | null
-      startDate: Date
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["weekPlan"]>
@@ -21867,7 +19021,6 @@ export namespace Prisma {
     readonly id: FieldRef<"WeekPlan", 'String'>
     readonly userId: FieldRef<"WeekPlan", 'String'>
     readonly name: FieldRef<"WeekPlan", 'String'>
-    readonly startDate: FieldRef<"WeekPlan", 'DateTime'>
     readonly createdAt: FieldRef<"WeekPlan", 'DateTime'>
     readonly updatedAt: FieldRef<"WeekPlan", 'DateTime'>
   }
@@ -22362,17 +19515,26 @@ export namespace Prisma {
 
   export type AggregateDayPlan = {
     _count: DayPlanCountAggregateOutputType | null
+    _avg: DayPlanAvgAggregateOutputType | null
+    _sum: DayPlanSumAggregateOutputType | null
     _min: DayPlanMinAggregateOutputType | null
     _max: DayPlanMaxAggregateOutputType | null
+  }
+
+  export type DayPlanAvgAggregateOutputType = {
+    dayOfWeek: number | null
+  }
+
+  export type DayPlanSumAggregateOutputType = {
+    dayOfWeek: number | null
   }
 
   export type DayPlanMinAggregateOutputType = {
     id: string | null
     userId: string | null
     weekPlanId: string | null
-    templateId: string | null
-    date: Date | null
-    adherence: $Enums.PlanAdherence | null
+    dayOfWeek: number | null
+    activity: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22381,9 +19543,8 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     weekPlanId: string | null
-    templateId: string | null
-    date: Date | null
-    adherence: $Enums.PlanAdherence | null
+    dayOfWeek: number | null
+    activity: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22392,22 +19553,28 @@ export namespace Prisma {
     id: number
     userId: number
     weekPlanId: number
-    templateId: number
-    date: number
-    adherence: number
+    dayOfWeek: number
+    activity: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type DayPlanAvgAggregateInputType = {
+    dayOfWeek?: true
+  }
+
+  export type DayPlanSumAggregateInputType = {
+    dayOfWeek?: true
+  }
+
   export type DayPlanMinAggregateInputType = {
     id?: true
     userId?: true
     weekPlanId?: true
-    templateId?: true
-    date?: true
-    adherence?: true
+    dayOfWeek?: true
+    activity?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -22416,9 +19583,8 @@ export namespace Prisma {
     id?: true
     userId?: true
     weekPlanId?: true
-    templateId?: true
-    date?: true
-    adherence?: true
+    dayOfWeek?: true
+    activity?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -22427,9 +19593,8 @@ export namespace Prisma {
     id?: true
     userId?: true
     weekPlanId?: true
-    templateId?: true
-    date?: true
-    adherence?: true
+    dayOfWeek?: true
+    activity?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -22473,6 +19638,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: DayPlanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DayPlanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: DayPlanMinAggregateInputType
@@ -22503,6 +19680,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DayPlanCountAggregateInputType | true
+    _avg?: DayPlanAvgAggregateInputType
+    _sum?: DayPlanSumAggregateInputType
     _min?: DayPlanMinAggregateInputType
     _max?: DayPlanMaxAggregateInputType
   }
@@ -22511,12 +19690,13 @@ export namespace Prisma {
     id: string
     userId: string
     weekPlanId: string | null
-    templateId: string | null
-    date: Date
-    adherence: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity: string | null
     createdAt: Date
     updatedAt: Date
     _count: DayPlanCountAggregateOutputType | null
+    _avg: DayPlanAvgAggregateOutputType | null
+    _sum: DayPlanSumAggregateOutputType | null
     _min: DayPlanMinAggregateOutputType | null
     _max: DayPlanMaxAggregateOutputType | null
   }
@@ -22539,15 +19719,12 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     weekPlanId?: boolean
-    templateId?: boolean
-    date?: boolean
-    adherence?: boolean
+    dayOfWeek?: boolean
+    activity?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
-    entries?: boolean | DayPlan$entriesArgs<ExtArgs>
     mealSlots?: boolean | DayPlan$mealSlotsArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
@@ -22556,59 +19733,50 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     weekPlanId?: boolean
-    templateId?: boolean
-    date?: boolean
-    adherence?: boolean
+    dayOfWeek?: boolean
+    activity?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
 
   export type DayPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     weekPlanId?: boolean
-    templateId?: boolean
-    date?: boolean
-    adherence?: boolean
+    dayOfWeek?: boolean
+    activity?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
 
   export type DayPlanSelectScalar = {
     id?: boolean
     userId?: boolean
     weekPlanId?: boolean
-    templateId?: boolean
-    date?: boolean
-    adherence?: boolean
+    dayOfWeek?: boolean
+    activity?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DayPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "weekPlanId" | "templateId" | "date" | "adherence" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPlan"]>
+  export type DayPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "weekPlanId" | "dayOfWeek" | "activity" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPlan"]>
   export type DayPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
-    entries?: boolean | DayPlan$entriesArgs<ExtArgs>
     mealSlots?: boolean | DayPlan$mealSlotsArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
   export type DayPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
-    template?: boolean | DayPlan$templateArgs<ExtArgs>
   }
 
   export type $DayPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22616,17 +19784,14 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
-      template: Prisma.$DayTemplatePayload<ExtArgs> | null
-      entries: Prisma.$DayPlanEntryPayload<ExtArgs>[]
       mealSlots: Prisma.$MealSlotInstancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       weekPlanId: string | null
-      templateId: string | null
-      date: Date
-      adherence: $Enums.PlanAdherence
+      dayOfWeek: number
+      activity: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dayPlan"]>
@@ -23025,8 +20190,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends DayPlan$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    template<T extends DayPlan$templateArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$templateArgs<ExtArgs>>): Prisma__DayTemplateClient<$Result.GetResult<Prisma.$DayTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    entries<T extends DayPlan$entriesArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mealSlots<T extends DayPlan$mealSlotsArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$mealSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealSlotInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -23060,9 +20223,8 @@ export namespace Prisma {
     readonly id: FieldRef<"DayPlan", 'String'>
     readonly userId: FieldRef<"DayPlan", 'String'>
     readonly weekPlanId: FieldRef<"DayPlan", 'String'>
-    readonly templateId: FieldRef<"DayPlan", 'String'>
-    readonly date: FieldRef<"DayPlan", 'DateTime'>
-    readonly adherence: FieldRef<"DayPlan", 'PlanAdherence'>
+    readonly dayOfWeek: FieldRef<"DayPlan", 'Int'>
+    readonly activity: FieldRef<"DayPlan", 'String'>
     readonly createdAt: FieldRef<"DayPlan", 'DateTime'>
     readonly updatedAt: FieldRef<"DayPlan", 'DateTime'>
   }
@@ -23485,49 +20647,6 @@ export namespace Prisma {
   }
 
   /**
-   * DayPlan.template
-   */
-  export type DayPlan$templateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayTemplate
-     */
-    select?: DayTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayTemplate
-     */
-    omit?: DayTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayTemplateInclude<ExtArgs> | null
-    where?: DayTemplateWhereInput
-  }
-
-  /**
-   * DayPlan.entries
-   */
-  export type DayPlan$entriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    where?: DayPlanEntryWhereInput
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    cursor?: DayPlanEntryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DayPlanEntryScalarFieldEnum | DayPlanEntryScalarFieldEnum[]
-  }
-
-  /**
    * DayPlan.mealSlots
    */
   export type DayPlan$mealSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -23567,1124 +20686,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DayPlanInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model DayPlanEntry
-   */
-
-  export type AggregateDayPlanEntry = {
-    _count: DayPlanEntryCountAggregateOutputType | null
-    _avg: DayPlanEntryAvgAggregateOutputType | null
-    _sum: DayPlanEntrySumAggregateOutputType | null
-    _min: DayPlanEntryMinAggregateOutputType | null
-    _max: DayPlanEntryMaxAggregateOutputType | null
-  }
-
-  export type DayPlanEntryAvgAggregateOutputType = {
-    servings: number | null
-  }
-
-  export type DayPlanEntrySumAggregateOutputType = {
-    servings: number | null
-  }
-
-  export type DayPlanEntryMinAggregateOutputType = {
-    id: string | null
-    dayPlanId: string | null
-    dishId: string | null
-    mealSlot: $Enums.MealSlot | null
-    servings: number | null
-    priority: $Enums.Priority | null
-  }
-
-  export type DayPlanEntryMaxAggregateOutputType = {
-    id: string | null
-    dayPlanId: string | null
-    dishId: string | null
-    mealSlot: $Enums.MealSlot | null
-    servings: number | null
-    priority: $Enums.Priority | null
-  }
-
-  export type DayPlanEntryCountAggregateOutputType = {
-    id: number
-    dayPlanId: number
-    dishId: number
-    mealSlot: number
-    servings: number
-    priority: number
-    _all: number
-  }
-
-
-  export type DayPlanEntryAvgAggregateInputType = {
-    servings?: true
-  }
-
-  export type DayPlanEntrySumAggregateInputType = {
-    servings?: true
-  }
-
-  export type DayPlanEntryMinAggregateInputType = {
-    id?: true
-    dayPlanId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-  }
-
-  export type DayPlanEntryMaxAggregateInputType = {
-    id?: true
-    dayPlanId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-  }
-
-  export type DayPlanEntryCountAggregateInputType = {
-    id?: true
-    dayPlanId?: true
-    dishId?: true
-    mealSlot?: true
-    servings?: true
-    priority?: true
-    _all?: true
-  }
-
-  export type DayPlanEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayPlanEntry to aggregate.
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayPlanEntries to fetch.
-     */
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DayPlanEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayPlanEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayPlanEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DayPlanEntries
-    **/
-    _count?: true | DayPlanEntryCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: DayPlanEntryAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DayPlanEntrySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DayPlanEntryMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DayPlanEntryMaxAggregateInputType
-  }
-
-  export type GetDayPlanEntryAggregateType<T extends DayPlanEntryAggregateArgs> = {
-        [P in keyof T & keyof AggregateDayPlanEntry]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDayPlanEntry[P]>
-      : GetScalarType<T[P], AggregateDayPlanEntry[P]>
-  }
-
-
-
-
-  export type DayPlanEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayPlanEntryWhereInput
-    orderBy?: DayPlanEntryOrderByWithAggregationInput | DayPlanEntryOrderByWithAggregationInput[]
-    by: DayPlanEntryScalarFieldEnum[] | DayPlanEntryScalarFieldEnum
-    having?: DayPlanEntryScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DayPlanEntryCountAggregateInputType | true
-    _avg?: DayPlanEntryAvgAggregateInputType
-    _sum?: DayPlanEntrySumAggregateInputType
-    _min?: DayPlanEntryMinAggregateInputType
-    _max?: DayPlanEntryMaxAggregateInputType
-  }
-
-  export type DayPlanEntryGroupByOutputType = {
-    id: string
-    dayPlanId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings: number
-    priority: $Enums.Priority
-    _count: DayPlanEntryCountAggregateOutputType | null
-    _avg: DayPlanEntryAvgAggregateOutputType | null
-    _sum: DayPlanEntrySumAggregateOutputType | null
-    _min: DayPlanEntryMinAggregateOutputType | null
-    _max: DayPlanEntryMaxAggregateOutputType | null
-  }
-
-  type GetDayPlanEntryGroupByPayload<T extends DayPlanEntryGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DayPlanEntryGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DayPlanEntryGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DayPlanEntryGroupByOutputType[P]>
-            : GetScalarType<T[P], DayPlanEntryGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DayPlanEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    dayPlanId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayPlanEntry"]>
-
-  export type DayPlanEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    dayPlanId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayPlanEntry"]>
-
-  export type DayPlanEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    dayPlanId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dayPlanEntry"]>
-
-  export type DayPlanEntrySelectScalar = {
-    id?: boolean
-    dayPlanId?: boolean
-    dishId?: boolean
-    mealSlot?: boolean
-    servings?: boolean
-    priority?: boolean
-  }
-
-  export type DayPlanEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "dishId" | "mealSlot" | "servings" | "priority", ExtArgs["result"]["dayPlanEntry"]>
-  export type DayPlanEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }
-  export type DayPlanEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }
-  export type DayPlanEntryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
-    dish?: boolean | DishDefaultArgs<ExtArgs>
-  }
-
-  export type $DayPlanEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DayPlanEntry"
-    objects: {
-      dayPlan: Prisma.$DayPlanPayload<ExtArgs>
-      dish: Prisma.$DishPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      dayPlanId: string
-      dishId: string
-      mealSlot: $Enums.MealSlot
-      servings: number
-      priority: $Enums.Priority
-    }, ExtArgs["result"]["dayPlanEntry"]>
-    composites: {}
-  }
-
-  type DayPlanEntryGetPayload<S extends boolean | null | undefined | DayPlanEntryDefaultArgs> = $Result.GetResult<Prisma.$DayPlanEntryPayload, S>
-
-  type DayPlanEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DayPlanEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DayPlanEntryCountAggregateInputType | true
-    }
-
-  export interface DayPlanEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DayPlanEntry'], meta: { name: 'DayPlanEntry' } }
-    /**
-     * Find zero or one DayPlanEntry that matches the filter.
-     * @param {DayPlanEntryFindUniqueArgs} args - Arguments to find a DayPlanEntry
-     * @example
-     * // Get one DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DayPlanEntryFindUniqueArgs>(args: SelectSubset<T, DayPlanEntryFindUniqueArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DayPlanEntry that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DayPlanEntryFindUniqueOrThrowArgs} args - Arguments to find a DayPlanEntry
-     * @example
-     * // Get one DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DayPlanEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, DayPlanEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayPlanEntry that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryFindFirstArgs} args - Arguments to find a DayPlanEntry
-     * @example
-     * // Get one DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DayPlanEntryFindFirstArgs>(args?: SelectSubset<T, DayPlanEntryFindFirstArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DayPlanEntry that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryFindFirstOrThrowArgs} args - Arguments to find a DayPlanEntry
-     * @example
-     * // Get one DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DayPlanEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, DayPlanEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DayPlanEntries that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DayPlanEntries
-     * const dayPlanEntries = await prisma.dayPlanEntry.findMany()
-     * 
-     * // Get first 10 DayPlanEntries
-     * const dayPlanEntries = await prisma.dayPlanEntry.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const dayPlanEntryWithIdOnly = await prisma.dayPlanEntry.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DayPlanEntryFindManyArgs>(args?: SelectSubset<T, DayPlanEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DayPlanEntry.
-     * @param {DayPlanEntryCreateArgs} args - Arguments to create a DayPlanEntry.
-     * @example
-     * // Create one DayPlanEntry
-     * const DayPlanEntry = await prisma.dayPlanEntry.create({
-     *   data: {
-     *     // ... data to create a DayPlanEntry
-     *   }
-     * })
-     * 
-     */
-    create<T extends DayPlanEntryCreateArgs>(args: SelectSubset<T, DayPlanEntryCreateArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DayPlanEntries.
-     * @param {DayPlanEntryCreateManyArgs} args - Arguments to create many DayPlanEntries.
-     * @example
-     * // Create many DayPlanEntries
-     * const dayPlanEntry = await prisma.dayPlanEntry.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DayPlanEntryCreateManyArgs>(args?: SelectSubset<T, DayPlanEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many DayPlanEntries and returns the data saved in the database.
-     * @param {DayPlanEntryCreateManyAndReturnArgs} args - Arguments to create many DayPlanEntries.
-     * @example
-     * // Create many DayPlanEntries
-     * const dayPlanEntry = await prisma.dayPlanEntry.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many DayPlanEntries and only return the `id`
-     * const dayPlanEntryWithIdOnly = await prisma.dayPlanEntry.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends DayPlanEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, DayPlanEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a DayPlanEntry.
-     * @param {DayPlanEntryDeleteArgs} args - Arguments to delete one DayPlanEntry.
-     * @example
-     * // Delete one DayPlanEntry
-     * const DayPlanEntry = await prisma.dayPlanEntry.delete({
-     *   where: {
-     *     // ... filter to delete one DayPlanEntry
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DayPlanEntryDeleteArgs>(args: SelectSubset<T, DayPlanEntryDeleteArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DayPlanEntry.
-     * @param {DayPlanEntryUpdateArgs} args - Arguments to update one DayPlanEntry.
-     * @example
-     * // Update one DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DayPlanEntryUpdateArgs>(args: SelectSubset<T, DayPlanEntryUpdateArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DayPlanEntries.
-     * @param {DayPlanEntryDeleteManyArgs} args - Arguments to filter DayPlanEntries to delete.
-     * @example
-     * // Delete a few DayPlanEntries
-     * const { count } = await prisma.dayPlanEntry.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DayPlanEntryDeleteManyArgs>(args?: SelectSubset<T, DayPlanEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayPlanEntries.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DayPlanEntries
-     * const dayPlanEntry = await prisma.dayPlanEntry.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DayPlanEntryUpdateManyArgs>(args: SelectSubset<T, DayPlanEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DayPlanEntries and returns the data updated in the database.
-     * @param {DayPlanEntryUpdateManyAndReturnArgs} args - Arguments to update many DayPlanEntries.
-     * @example
-     * // Update many DayPlanEntries
-     * const dayPlanEntry = await prisma.dayPlanEntry.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more DayPlanEntries and only return the `id`
-     * const dayPlanEntryWithIdOnly = await prisma.dayPlanEntry.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends DayPlanEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, DayPlanEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one DayPlanEntry.
-     * @param {DayPlanEntryUpsertArgs} args - Arguments to update or create a DayPlanEntry.
-     * @example
-     * // Update or create a DayPlanEntry
-     * const dayPlanEntry = await prisma.dayPlanEntry.upsert({
-     *   create: {
-     *     // ... data to create a DayPlanEntry
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DayPlanEntry we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DayPlanEntryUpsertArgs>(args: SelectSubset<T, DayPlanEntryUpsertArgs<ExtArgs>>): Prisma__DayPlanEntryClient<$Result.GetResult<Prisma.$DayPlanEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DayPlanEntries.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryCountArgs} args - Arguments to filter DayPlanEntries to count.
-     * @example
-     * // Count the number of DayPlanEntries
-     * const count = await prisma.dayPlanEntry.count({
-     *   where: {
-     *     // ... the filter for the DayPlanEntries we want to count
-     *   }
-     * })
-    **/
-    count<T extends DayPlanEntryCountArgs>(
-      args?: Subset<T, DayPlanEntryCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DayPlanEntryCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DayPlanEntry.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DayPlanEntryAggregateArgs>(args: Subset<T, DayPlanEntryAggregateArgs>): Prisma.PrismaPromise<GetDayPlanEntryAggregateType<T>>
-
-    /**
-     * Group by DayPlanEntry.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayPlanEntryGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DayPlanEntryGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DayPlanEntryGroupByArgs['orderBy'] }
-        : { orderBy?: DayPlanEntryGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DayPlanEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayPlanEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DayPlanEntry model
-   */
-  readonly fields: DayPlanEntryFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DayPlanEntry.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DayPlanEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    dayPlan<T extends DayPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DayPlanDefaultArgs<ExtArgs>>): Prisma__DayPlanClient<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    dish<T extends DishDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DishDefaultArgs<ExtArgs>>): Prisma__DishClient<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DayPlanEntry model
-   */
-  interface DayPlanEntryFieldRefs {
-    readonly id: FieldRef<"DayPlanEntry", 'String'>
-    readonly dayPlanId: FieldRef<"DayPlanEntry", 'String'>
-    readonly dishId: FieldRef<"DayPlanEntry", 'String'>
-    readonly mealSlot: FieldRef<"DayPlanEntry", 'MealSlot'>
-    readonly servings: FieldRef<"DayPlanEntry", 'Float'>
-    readonly priority: FieldRef<"DayPlanEntry", 'Priority'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DayPlanEntry findUnique
-   */
-  export type DayPlanEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayPlanEntry to fetch.
-     */
-    where: DayPlanEntryWhereUniqueInput
-  }
-
-  /**
-   * DayPlanEntry findUniqueOrThrow
-   */
-  export type DayPlanEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayPlanEntry to fetch.
-     */
-    where: DayPlanEntryWhereUniqueInput
-  }
-
-  /**
-   * DayPlanEntry findFirst
-   */
-  export type DayPlanEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayPlanEntry to fetch.
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayPlanEntries to fetch.
-     */
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayPlanEntries.
-     */
-    cursor?: DayPlanEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayPlanEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayPlanEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayPlanEntries.
-     */
-    distinct?: DayPlanEntryScalarFieldEnum | DayPlanEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayPlanEntry findFirstOrThrow
-   */
-  export type DayPlanEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayPlanEntry to fetch.
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayPlanEntries to fetch.
-     */
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DayPlanEntries.
-     */
-    cursor?: DayPlanEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayPlanEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayPlanEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayPlanEntries.
-     */
-    distinct?: DayPlanEntryScalarFieldEnum | DayPlanEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayPlanEntry findMany
-   */
-  export type DayPlanEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter, which DayPlanEntries to fetch.
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DayPlanEntries to fetch.
-     */
-    orderBy?: DayPlanEntryOrderByWithRelationInput | DayPlanEntryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DayPlanEntries.
-     */
-    cursor?: DayPlanEntryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DayPlanEntries from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DayPlanEntries.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DayPlanEntries.
-     */
-    distinct?: DayPlanEntryScalarFieldEnum | DayPlanEntryScalarFieldEnum[]
-  }
-
-  /**
-   * DayPlanEntry create
-   */
-  export type DayPlanEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DayPlanEntry.
-     */
-    data: XOR<DayPlanEntryCreateInput, DayPlanEntryUncheckedCreateInput>
-  }
-
-  /**
-   * DayPlanEntry createMany
-   */
-  export type DayPlanEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DayPlanEntries.
-     */
-    data: DayPlanEntryCreateManyInput | DayPlanEntryCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DayPlanEntry createManyAndReturn
-   */
-  export type DayPlanEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * The data used to create many DayPlanEntries.
-     */
-    data: DayPlanEntryCreateManyInput | DayPlanEntryCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayPlanEntry update
-   */
-  export type DayPlanEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DayPlanEntry.
-     */
-    data: XOR<DayPlanEntryUpdateInput, DayPlanEntryUncheckedUpdateInput>
-    /**
-     * Choose, which DayPlanEntry to update.
-     */
-    where: DayPlanEntryWhereUniqueInput
-  }
-
-  /**
-   * DayPlanEntry updateMany
-   */
-  export type DayPlanEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DayPlanEntries.
-     */
-    data: XOR<DayPlanEntryUpdateManyMutationInput, DayPlanEntryUncheckedUpdateManyInput>
-    /**
-     * Filter which DayPlanEntries to update
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * Limit how many DayPlanEntries to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayPlanEntry updateManyAndReturn
-   */
-  export type DayPlanEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * The data used to update DayPlanEntries.
-     */
-    data: XOR<DayPlanEntryUpdateManyMutationInput, DayPlanEntryUncheckedUpdateManyInput>
-    /**
-     * Filter which DayPlanEntries to update
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * Limit how many DayPlanEntries to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DayPlanEntry upsert
-   */
-  export type DayPlanEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DayPlanEntry to update in case it exists.
-     */
-    where: DayPlanEntryWhereUniqueInput
-    /**
-     * In case the DayPlanEntry found by the `where` argument doesn't exist, create a new DayPlanEntry with this data.
-     */
-    create: XOR<DayPlanEntryCreateInput, DayPlanEntryUncheckedCreateInput>
-    /**
-     * In case the DayPlanEntry was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DayPlanEntryUpdateInput, DayPlanEntryUncheckedUpdateInput>
-  }
-
-  /**
-   * DayPlanEntry delete
-   */
-  export type DayPlanEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
-    /**
-     * Filter which DayPlanEntry to delete.
-     */
-    where: DayPlanEntryWhereUniqueInput
-  }
-
-  /**
-   * DayPlanEntry deleteMany
-   */
-  export type DayPlanEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DayPlanEntries to delete
-     */
-    where?: DayPlanEntryWhereInput
-    /**
-     * Limit how many DayPlanEntries to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DayPlanEntry without action
-   */
-  export type DayPlanEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DayPlanEntry
-     */
-    select?: DayPlanEntrySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DayPlanEntry
-     */
-    omit?: DayPlanEntryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DayPlanEntryInclude<ExtArgs> | null
   }
 
 
@@ -26940,1170 +22941,6 @@ export namespace Prisma {
 
 
   /**
-   * Model MealTemplateSlot
-   */
-
-  export type AggregateMealTemplateSlot = {
-    _count: MealTemplateSlotCountAggregateOutputType | null
-    _avg: MealTemplateSlotAvgAggregateOutputType | null
-    _sum: MealTemplateSlotSumAggregateOutputType | null
-    _min: MealTemplateSlotMinAggregateOutputType | null
-    _max: MealTemplateSlotMaxAggregateOutputType | null
-  }
-
-  export type MealTemplateSlotAvgAggregateOutputType = {
-    percentage: number | null
-    order: number | null
-    minProteinGrams: number | null
-    maxPctOfDaily: number | null
-    fiberPct: number | null
-  }
-
-  export type MealTemplateSlotSumAggregateOutputType = {
-    percentage: number | null
-    order: number | null
-    minProteinGrams: number | null
-    maxPctOfDaily: number | null
-    fiberPct: number | null
-  }
-
-  export type MealTemplateSlotMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    goal: $Enums.Goal | null
-    percentage: number | null
-    order: number | null
-    minProteinGrams: number | null
-    maxPctOfDaily: number | null
-    fiberPct: number | null
-  }
-
-  export type MealTemplateSlotMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    goal: $Enums.Goal | null
-    percentage: number | null
-    order: number | null
-    minProteinGrams: number | null
-    maxPctOfDaily: number | null
-    fiberPct: number | null
-  }
-
-  export type MealTemplateSlotCountAggregateOutputType = {
-    id: number
-    name: number
-    goal: number
-    percentage: number
-    order: number
-    minProteinGrams: number
-    maxPctOfDaily: number
-    fiberPct: number
-    _all: number
-  }
-
-
-  export type MealTemplateSlotAvgAggregateInputType = {
-    percentage?: true
-    order?: true
-    minProteinGrams?: true
-    maxPctOfDaily?: true
-    fiberPct?: true
-  }
-
-  export type MealTemplateSlotSumAggregateInputType = {
-    percentage?: true
-    order?: true
-    minProteinGrams?: true
-    maxPctOfDaily?: true
-    fiberPct?: true
-  }
-
-  export type MealTemplateSlotMinAggregateInputType = {
-    id?: true
-    name?: true
-    goal?: true
-    percentage?: true
-    order?: true
-    minProteinGrams?: true
-    maxPctOfDaily?: true
-    fiberPct?: true
-  }
-
-  export type MealTemplateSlotMaxAggregateInputType = {
-    id?: true
-    name?: true
-    goal?: true
-    percentage?: true
-    order?: true
-    minProteinGrams?: true
-    maxPctOfDaily?: true
-    fiberPct?: true
-  }
-
-  export type MealTemplateSlotCountAggregateInputType = {
-    id?: true
-    name?: true
-    goal?: true
-    percentage?: true
-    order?: true
-    minProteinGrams?: true
-    maxPctOfDaily?: true
-    fiberPct?: true
-    _all?: true
-  }
-
-  export type MealTemplateSlotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which MealTemplateSlot to aggregate.
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of MealTemplateSlots to fetch.
-     */
-    orderBy?: MealTemplateSlotOrderByWithRelationInput | MealTemplateSlotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: MealTemplateSlotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` MealTemplateSlots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` MealTemplateSlots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned MealTemplateSlots
-    **/
-    _count?: true | MealTemplateSlotCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: MealTemplateSlotAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: MealTemplateSlotSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: MealTemplateSlotMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: MealTemplateSlotMaxAggregateInputType
-  }
-
-  export type GetMealTemplateSlotAggregateType<T extends MealTemplateSlotAggregateArgs> = {
-        [P in keyof T & keyof AggregateMealTemplateSlot]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateMealTemplateSlot[P]>
-      : GetScalarType<T[P], AggregateMealTemplateSlot[P]>
-  }
-
-
-
-
-  export type MealTemplateSlotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MealTemplateSlotWhereInput
-    orderBy?: MealTemplateSlotOrderByWithAggregationInput | MealTemplateSlotOrderByWithAggregationInput[]
-    by: MealTemplateSlotScalarFieldEnum[] | MealTemplateSlotScalarFieldEnum
-    having?: MealTemplateSlotScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: MealTemplateSlotCountAggregateInputType | true
-    _avg?: MealTemplateSlotAvgAggregateInputType
-    _sum?: MealTemplateSlotSumAggregateInputType
-    _min?: MealTemplateSlotMinAggregateInputType
-    _max?: MealTemplateSlotMaxAggregateInputType
-  }
-
-  export type MealTemplateSlotGroupByOutputType = {
-    id: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams: number | null
-    maxPctOfDaily: number | null
-    fiberPct: number
-    _count: MealTemplateSlotCountAggregateOutputType | null
-    _avg: MealTemplateSlotAvgAggregateOutputType | null
-    _sum: MealTemplateSlotSumAggregateOutputType | null
-    _min: MealTemplateSlotMinAggregateOutputType | null
-    _max: MealTemplateSlotMaxAggregateOutputType | null
-  }
-
-  type GetMealTemplateSlotGroupByPayload<T extends MealTemplateSlotGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<MealTemplateSlotGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof MealTemplateSlotGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], MealTemplateSlotGroupByOutputType[P]>
-            : GetScalarType<T[P], MealTemplateSlotGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type MealTemplateSlotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    goal?: boolean
-    percentage?: boolean
-    order?: boolean
-    minProteinGrams?: boolean
-    maxPctOfDaily?: boolean
-    fiberPct?: boolean
-    mealSlots?: boolean | MealTemplateSlot$mealSlotsArgs<ExtArgs>
-    _count?: boolean | MealTemplateSlotCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["mealTemplateSlot"]>
-
-  export type MealTemplateSlotSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    goal?: boolean
-    percentage?: boolean
-    order?: boolean
-    minProteinGrams?: boolean
-    maxPctOfDaily?: boolean
-    fiberPct?: boolean
-  }, ExtArgs["result"]["mealTemplateSlot"]>
-
-  export type MealTemplateSlotSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    goal?: boolean
-    percentage?: boolean
-    order?: boolean
-    minProteinGrams?: boolean
-    maxPctOfDaily?: boolean
-    fiberPct?: boolean
-  }, ExtArgs["result"]["mealTemplateSlot"]>
-
-  export type MealTemplateSlotSelectScalar = {
-    id?: boolean
-    name?: boolean
-    goal?: boolean
-    percentage?: boolean
-    order?: boolean
-    minProteinGrams?: boolean
-    maxPctOfDaily?: boolean
-    fiberPct?: boolean
-  }
-
-  export type MealTemplateSlotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "goal" | "percentage" | "order" | "minProteinGrams" | "maxPctOfDaily" | "fiberPct", ExtArgs["result"]["mealTemplateSlot"]>
-  export type MealTemplateSlotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    mealSlots?: boolean | MealTemplateSlot$mealSlotsArgs<ExtArgs>
-    _count?: boolean | MealTemplateSlotCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type MealTemplateSlotIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type MealTemplateSlotIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $MealTemplateSlotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "MealTemplateSlot"
-    objects: {
-      mealSlots: Prisma.$MealSlotInstancePayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      goal: $Enums.Goal
-      percentage: number
-      order: number
-      minProteinGrams: number | null
-      maxPctOfDaily: number | null
-      fiberPct: number
-    }, ExtArgs["result"]["mealTemplateSlot"]>
-    composites: {}
-  }
-
-  type MealTemplateSlotGetPayload<S extends boolean | null | undefined | MealTemplateSlotDefaultArgs> = $Result.GetResult<Prisma.$MealTemplateSlotPayload, S>
-
-  type MealTemplateSlotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MealTemplateSlotFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MealTemplateSlotCountAggregateInputType | true
-    }
-
-  export interface MealTemplateSlotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MealTemplateSlot'], meta: { name: 'MealTemplateSlot' } }
-    /**
-     * Find zero or one MealTemplateSlot that matches the filter.
-     * @param {MealTemplateSlotFindUniqueArgs} args - Arguments to find a MealTemplateSlot
-     * @example
-     * // Get one MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends MealTemplateSlotFindUniqueArgs>(args: SelectSubset<T, MealTemplateSlotFindUniqueArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one MealTemplateSlot that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {MealTemplateSlotFindUniqueOrThrowArgs} args - Arguments to find a MealTemplateSlot
-     * @example
-     * // Get one MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends MealTemplateSlotFindUniqueOrThrowArgs>(args: SelectSubset<T, MealTemplateSlotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first MealTemplateSlot that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotFindFirstArgs} args - Arguments to find a MealTemplateSlot
-     * @example
-     * // Get one MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends MealTemplateSlotFindFirstArgs>(args?: SelectSubset<T, MealTemplateSlotFindFirstArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first MealTemplateSlot that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotFindFirstOrThrowArgs} args - Arguments to find a MealTemplateSlot
-     * @example
-     * // Get one MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends MealTemplateSlotFindFirstOrThrowArgs>(args?: SelectSubset<T, MealTemplateSlotFindFirstOrThrowArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more MealTemplateSlots that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all MealTemplateSlots
-     * const mealTemplateSlots = await prisma.mealTemplateSlot.findMany()
-     * 
-     * // Get first 10 MealTemplateSlots
-     * const mealTemplateSlots = await prisma.mealTemplateSlot.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const mealTemplateSlotWithIdOnly = await prisma.mealTemplateSlot.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends MealTemplateSlotFindManyArgs>(args?: SelectSubset<T, MealTemplateSlotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a MealTemplateSlot.
-     * @param {MealTemplateSlotCreateArgs} args - Arguments to create a MealTemplateSlot.
-     * @example
-     * // Create one MealTemplateSlot
-     * const MealTemplateSlot = await prisma.mealTemplateSlot.create({
-     *   data: {
-     *     // ... data to create a MealTemplateSlot
-     *   }
-     * })
-     * 
-     */
-    create<T extends MealTemplateSlotCreateArgs>(args: SelectSubset<T, MealTemplateSlotCreateArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many MealTemplateSlots.
-     * @param {MealTemplateSlotCreateManyArgs} args - Arguments to create many MealTemplateSlots.
-     * @example
-     * // Create many MealTemplateSlots
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends MealTemplateSlotCreateManyArgs>(args?: SelectSubset<T, MealTemplateSlotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many MealTemplateSlots and returns the data saved in the database.
-     * @param {MealTemplateSlotCreateManyAndReturnArgs} args - Arguments to create many MealTemplateSlots.
-     * @example
-     * // Create many MealTemplateSlots
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many MealTemplateSlots and only return the `id`
-     * const mealTemplateSlotWithIdOnly = await prisma.mealTemplateSlot.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends MealTemplateSlotCreateManyAndReturnArgs>(args?: SelectSubset<T, MealTemplateSlotCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a MealTemplateSlot.
-     * @param {MealTemplateSlotDeleteArgs} args - Arguments to delete one MealTemplateSlot.
-     * @example
-     * // Delete one MealTemplateSlot
-     * const MealTemplateSlot = await prisma.mealTemplateSlot.delete({
-     *   where: {
-     *     // ... filter to delete one MealTemplateSlot
-     *   }
-     * })
-     * 
-     */
-    delete<T extends MealTemplateSlotDeleteArgs>(args: SelectSubset<T, MealTemplateSlotDeleteArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one MealTemplateSlot.
-     * @param {MealTemplateSlotUpdateArgs} args - Arguments to update one MealTemplateSlot.
-     * @example
-     * // Update one MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends MealTemplateSlotUpdateArgs>(args: SelectSubset<T, MealTemplateSlotUpdateArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more MealTemplateSlots.
-     * @param {MealTemplateSlotDeleteManyArgs} args - Arguments to filter MealTemplateSlots to delete.
-     * @example
-     * // Delete a few MealTemplateSlots
-     * const { count } = await prisma.mealTemplateSlot.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends MealTemplateSlotDeleteManyArgs>(args?: SelectSubset<T, MealTemplateSlotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more MealTemplateSlots.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many MealTemplateSlots
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends MealTemplateSlotUpdateManyArgs>(args: SelectSubset<T, MealTemplateSlotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more MealTemplateSlots and returns the data updated in the database.
-     * @param {MealTemplateSlotUpdateManyAndReturnArgs} args - Arguments to update many MealTemplateSlots.
-     * @example
-     * // Update many MealTemplateSlots
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more MealTemplateSlots and only return the `id`
-     * const mealTemplateSlotWithIdOnly = await prisma.mealTemplateSlot.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends MealTemplateSlotUpdateManyAndReturnArgs>(args: SelectSubset<T, MealTemplateSlotUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one MealTemplateSlot.
-     * @param {MealTemplateSlotUpsertArgs} args - Arguments to update or create a MealTemplateSlot.
-     * @example
-     * // Update or create a MealTemplateSlot
-     * const mealTemplateSlot = await prisma.mealTemplateSlot.upsert({
-     *   create: {
-     *     // ... data to create a MealTemplateSlot
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the MealTemplateSlot we want to update
-     *   }
-     * })
-     */
-    upsert<T extends MealTemplateSlotUpsertArgs>(args: SelectSubset<T, MealTemplateSlotUpsertArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of MealTemplateSlots.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotCountArgs} args - Arguments to filter MealTemplateSlots to count.
-     * @example
-     * // Count the number of MealTemplateSlots
-     * const count = await prisma.mealTemplateSlot.count({
-     *   where: {
-     *     // ... the filter for the MealTemplateSlots we want to count
-     *   }
-     * })
-    **/
-    count<T extends MealTemplateSlotCountArgs>(
-      args?: Subset<T, MealTemplateSlotCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], MealTemplateSlotCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a MealTemplateSlot.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends MealTemplateSlotAggregateArgs>(args: Subset<T, MealTemplateSlotAggregateArgs>): Prisma.PrismaPromise<GetMealTemplateSlotAggregateType<T>>
-
-    /**
-     * Group by MealTemplateSlot.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MealTemplateSlotGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends MealTemplateSlotGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MealTemplateSlotGroupByArgs['orderBy'] }
-        : { orderBy?: MealTemplateSlotGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, MealTemplateSlotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMealTemplateSlotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the MealTemplateSlot model
-   */
-  readonly fields: MealTemplateSlotFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for MealTemplateSlot.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__MealTemplateSlotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    mealSlots<T extends MealTemplateSlot$mealSlotsArgs<ExtArgs> = {}>(args?: Subset<T, MealTemplateSlot$mealSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealSlotInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the MealTemplateSlot model
-   */
-  interface MealTemplateSlotFieldRefs {
-    readonly id: FieldRef<"MealTemplateSlot", 'String'>
-    readonly name: FieldRef<"MealTemplateSlot", 'String'>
-    readonly goal: FieldRef<"MealTemplateSlot", 'Goal'>
-    readonly percentage: FieldRef<"MealTemplateSlot", 'Float'>
-    readonly order: FieldRef<"MealTemplateSlot", 'Int'>
-    readonly minProteinGrams: FieldRef<"MealTemplateSlot", 'Float'>
-    readonly maxPctOfDaily: FieldRef<"MealTemplateSlot", 'Float'>
-    readonly fiberPct: FieldRef<"MealTemplateSlot", 'Float'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * MealTemplateSlot findUnique
-   */
-  export type MealTemplateSlotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter, which MealTemplateSlot to fetch.
-     */
-    where: MealTemplateSlotWhereUniqueInput
-  }
-
-  /**
-   * MealTemplateSlot findUniqueOrThrow
-   */
-  export type MealTemplateSlotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter, which MealTemplateSlot to fetch.
-     */
-    where: MealTemplateSlotWhereUniqueInput
-  }
-
-  /**
-   * MealTemplateSlot findFirst
-   */
-  export type MealTemplateSlotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter, which MealTemplateSlot to fetch.
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of MealTemplateSlots to fetch.
-     */
-    orderBy?: MealTemplateSlotOrderByWithRelationInput | MealTemplateSlotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for MealTemplateSlots.
-     */
-    cursor?: MealTemplateSlotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` MealTemplateSlots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` MealTemplateSlots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of MealTemplateSlots.
-     */
-    distinct?: MealTemplateSlotScalarFieldEnum | MealTemplateSlotScalarFieldEnum[]
-  }
-
-  /**
-   * MealTemplateSlot findFirstOrThrow
-   */
-  export type MealTemplateSlotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter, which MealTemplateSlot to fetch.
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of MealTemplateSlots to fetch.
-     */
-    orderBy?: MealTemplateSlotOrderByWithRelationInput | MealTemplateSlotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for MealTemplateSlots.
-     */
-    cursor?: MealTemplateSlotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` MealTemplateSlots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` MealTemplateSlots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of MealTemplateSlots.
-     */
-    distinct?: MealTemplateSlotScalarFieldEnum | MealTemplateSlotScalarFieldEnum[]
-  }
-
-  /**
-   * MealTemplateSlot findMany
-   */
-  export type MealTemplateSlotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter, which MealTemplateSlots to fetch.
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of MealTemplateSlots to fetch.
-     */
-    orderBy?: MealTemplateSlotOrderByWithRelationInput | MealTemplateSlotOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing MealTemplateSlots.
-     */
-    cursor?: MealTemplateSlotWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` MealTemplateSlots from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` MealTemplateSlots.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of MealTemplateSlots.
-     */
-    distinct?: MealTemplateSlotScalarFieldEnum | MealTemplateSlotScalarFieldEnum[]
-  }
-
-  /**
-   * MealTemplateSlot create
-   */
-  export type MealTemplateSlotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * The data needed to create a MealTemplateSlot.
-     */
-    data: XOR<MealTemplateSlotCreateInput, MealTemplateSlotUncheckedCreateInput>
-  }
-
-  /**
-   * MealTemplateSlot createMany
-   */
-  export type MealTemplateSlotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many MealTemplateSlots.
-     */
-    data: MealTemplateSlotCreateManyInput | MealTemplateSlotCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * MealTemplateSlot createManyAndReturn
-   */
-  export type MealTemplateSlotCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * The data used to create many MealTemplateSlots.
-     */
-    data: MealTemplateSlotCreateManyInput | MealTemplateSlotCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * MealTemplateSlot update
-   */
-  export type MealTemplateSlotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * The data needed to update a MealTemplateSlot.
-     */
-    data: XOR<MealTemplateSlotUpdateInput, MealTemplateSlotUncheckedUpdateInput>
-    /**
-     * Choose, which MealTemplateSlot to update.
-     */
-    where: MealTemplateSlotWhereUniqueInput
-  }
-
-  /**
-   * MealTemplateSlot updateMany
-   */
-  export type MealTemplateSlotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update MealTemplateSlots.
-     */
-    data: XOR<MealTemplateSlotUpdateManyMutationInput, MealTemplateSlotUncheckedUpdateManyInput>
-    /**
-     * Filter which MealTemplateSlots to update
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * Limit how many MealTemplateSlots to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * MealTemplateSlot updateManyAndReturn
-   */
-  export type MealTemplateSlotUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * The data used to update MealTemplateSlots.
-     */
-    data: XOR<MealTemplateSlotUpdateManyMutationInput, MealTemplateSlotUncheckedUpdateManyInput>
-    /**
-     * Filter which MealTemplateSlots to update
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * Limit how many MealTemplateSlots to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * MealTemplateSlot upsert
-   */
-  export type MealTemplateSlotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * The filter to search for the MealTemplateSlot to update in case it exists.
-     */
-    where: MealTemplateSlotWhereUniqueInput
-    /**
-     * In case the MealTemplateSlot found by the `where` argument doesn't exist, create a new MealTemplateSlot with this data.
-     */
-    create: XOR<MealTemplateSlotCreateInput, MealTemplateSlotUncheckedCreateInput>
-    /**
-     * In case the MealTemplateSlot was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<MealTemplateSlotUpdateInput, MealTemplateSlotUncheckedUpdateInput>
-  }
-
-  /**
-   * MealTemplateSlot delete
-   */
-  export type MealTemplateSlotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-    /**
-     * Filter which MealTemplateSlot to delete.
-     */
-    where: MealTemplateSlotWhereUniqueInput
-  }
-
-  /**
-   * MealTemplateSlot deleteMany
-   */
-  export type MealTemplateSlotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which MealTemplateSlots to delete
-     */
-    where?: MealTemplateSlotWhereInput
-    /**
-     * Limit how many MealTemplateSlots to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * MealTemplateSlot.mealSlots
-   */
-  export type MealTemplateSlot$mealSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealSlotInstance
-     */
-    select?: MealSlotInstanceSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealSlotInstance
-     */
-    omit?: MealSlotInstanceOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealSlotInstanceInclude<ExtArgs> | null
-    where?: MealSlotInstanceWhereInput
-    orderBy?: MealSlotInstanceOrderByWithRelationInput | MealSlotInstanceOrderByWithRelationInput[]
-    cursor?: MealSlotInstanceWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MealSlotInstanceScalarFieldEnum | MealSlotInstanceScalarFieldEnum[]
-  }
-
-  /**
-   * MealTemplateSlot without action
-   */
-  export type MealTemplateSlotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MealTemplateSlot
-     */
-    select?: MealTemplateSlotSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MealTemplateSlot
-     */
-    omit?: MealTemplateSlotOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MealTemplateSlotInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model MealSlotInstance
    */
 
@@ -28116,11 +22953,13 @@ export namespace Prisma {
   }
 
   export type MealSlotInstanceAvgAggregateOutputType = {
+    order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
   }
 
   export type MealSlotInstanceSumAggregateOutputType = {
+    order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
   }
@@ -28129,7 +22968,9 @@ export namespace Prisma {
     id: string | null
     dayPlanId: string | null
     personId: string | null
-    templateSlotId: string | null
+    name: string | null
+    timeWindow: string | null
+    order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
     createdAt: Date | null
@@ -28140,7 +22981,9 @@ export namespace Prisma {
     id: string | null
     dayPlanId: string | null
     personId: string | null
-    templateSlotId: string | null
+    name: string | null
+    timeWindow: string | null
+    order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
     createdAt: Date | null
@@ -28151,7 +22994,9 @@ export namespace Prisma {
     id: number
     dayPlanId: number
     personId: number
-    templateSlotId: number
+    name: number
+    timeWindow: number
+    order: number
     targetKcal: number
     targetFiberGrams: number
     createdAt: number
@@ -28161,11 +23006,13 @@ export namespace Prisma {
 
 
   export type MealSlotInstanceAvgAggregateInputType = {
+    order?: true
     targetKcal?: true
     targetFiberGrams?: true
   }
 
   export type MealSlotInstanceSumAggregateInputType = {
+    order?: true
     targetKcal?: true
     targetFiberGrams?: true
   }
@@ -28174,7 +23021,9 @@ export namespace Prisma {
     id?: true
     dayPlanId?: true
     personId?: true
-    templateSlotId?: true
+    name?: true
+    timeWindow?: true
+    order?: true
     targetKcal?: true
     targetFiberGrams?: true
     createdAt?: true
@@ -28185,7 +23034,9 @@ export namespace Prisma {
     id?: true
     dayPlanId?: true
     personId?: true
-    templateSlotId?: true
+    name?: true
+    timeWindow?: true
+    order?: true
     targetKcal?: true
     targetFiberGrams?: true
     createdAt?: true
@@ -28196,7 +23047,9 @@ export namespace Prisma {
     id?: true
     dayPlanId?: true
     personId?: true
-    templateSlotId?: true
+    name?: true
+    timeWindow?: true
+    order?: true
     targetKcal?: true
     targetFiberGrams?: true
     createdAt?: true
@@ -28294,7 +23147,9 @@ export namespace Prisma {
     id: string
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow: string | null
+    order: number
     targetKcal: number
     targetFiberGrams: number
     createdAt: Date
@@ -28324,14 +23179,15 @@ export namespace Prisma {
     id?: boolean
     dayPlanId?: boolean
     personId?: boolean
-    templateSlotId?: boolean
+    name?: boolean
+    timeWindow?: boolean
+    order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
     dishEntries?: boolean | MealSlotInstance$dishEntriesArgs<ExtArgs>
     productEntries?: boolean | MealSlotInstance$productEntriesArgs<ExtArgs>
     _count?: boolean | MealSlotInstanceCountOutputTypeDefaultArgs<ExtArgs>
@@ -28341,46 +23197,49 @@ export namespace Prisma {
     id?: boolean
     dayPlanId?: boolean
     personId?: boolean
-    templateSlotId?: boolean
+    name?: boolean
+    timeWindow?: boolean
+    order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mealSlotInstance"]>
 
   export type MealSlotInstanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     dayPlanId?: boolean
     personId?: boolean
-    templateSlotId?: boolean
+    name?: boolean
+    timeWindow?: boolean
+    order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mealSlotInstance"]>
 
   export type MealSlotInstanceSelectScalar = {
     id?: boolean
     dayPlanId?: boolean
     personId?: boolean
-    templateSlotId?: boolean
+    name?: boolean
+    timeWindow?: boolean
+    order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MealSlotInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "personId" | "templateSlotId" | "targetKcal" | "targetFiberGrams" | "createdAt" | "updatedAt", ExtArgs["result"]["mealSlotInstance"]>
+  export type MealSlotInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "personId" | "name" | "timeWindow" | "order" | "targetKcal" | "targetFiberGrams" | "createdAt" | "updatedAt", ExtArgs["result"]["mealSlotInstance"]>
   export type MealSlotInstanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
     dishEntries?: boolean | MealSlotInstance$dishEntriesArgs<ExtArgs>
     productEntries?: boolean | MealSlotInstance$productEntriesArgs<ExtArgs>
     _count?: boolean | MealSlotInstanceCountOutputTypeDefaultArgs<ExtArgs>
@@ -28388,12 +23247,10 @@ export namespace Prisma {
   export type MealSlotInstanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
   }
   export type MealSlotInstanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
-    templateSlot?: boolean | MealTemplateSlotDefaultArgs<ExtArgs>
   }
 
   export type $MealSlotInstancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -28401,7 +23258,6 @@ export namespace Prisma {
     objects: {
       dayPlan: Prisma.$DayPlanPayload<ExtArgs>
       person: Prisma.$NutritionPersonPayload<ExtArgs>
-      templateSlot: Prisma.$MealTemplateSlotPayload<ExtArgs>
       dishEntries: Prisma.$DishEntryPayload<ExtArgs>[]
       productEntries: Prisma.$ProductEntryPayload<ExtArgs>[]
     }
@@ -28409,7 +23265,9 @@ export namespace Prisma {
       id: string
       dayPlanId: string
       personId: string
-      templateSlotId: string
+      name: string
+      timeWindow: string | null
+      order: number
       targetKcal: number
       targetFiberGrams: number
       createdAt: Date
@@ -28810,7 +23668,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     dayPlan<T extends DayPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DayPlanDefaultArgs<ExtArgs>>): Prisma__DayPlanClient<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     person<T extends NutritionPersonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NutritionPersonDefaultArgs<ExtArgs>>): Prisma__NutritionPersonClient<$Result.GetResult<Prisma.$NutritionPersonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    templateSlot<T extends MealTemplateSlotDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MealTemplateSlotDefaultArgs<ExtArgs>>): Prisma__MealTemplateSlotClient<$Result.GetResult<Prisma.$MealTemplateSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     dishEntries<T extends MealSlotInstance$dishEntriesArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstance$dishEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     productEntries<T extends MealSlotInstance$productEntriesArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstance$productEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -28845,7 +23702,9 @@ export namespace Prisma {
     readonly id: FieldRef<"MealSlotInstance", 'String'>
     readonly dayPlanId: FieldRef<"MealSlotInstance", 'String'>
     readonly personId: FieldRef<"MealSlotInstance", 'String'>
-    readonly templateSlotId: FieldRef<"MealSlotInstance", 'String'>
+    readonly name: FieldRef<"MealSlotInstance", 'String'>
+    readonly timeWindow: FieldRef<"MealSlotInstance", 'String'>
+    readonly order: FieldRef<"MealSlotInstance", 'Int'>
     readonly targetKcal: FieldRef<"MealSlotInstance", 'Float'>
     readonly targetFiberGrams: FieldRef<"MealSlotInstance", 'Float'>
     readonly createdAt: FieldRef<"MealSlotInstance", 'DateTime'>
@@ -30449,11 +25308,13 @@ export namespace Prisma {
 
   export type DishEntryAvgAggregateOutputType = {
     portionWeight: number | null
+    servings: number | null
     fitScore: number | null
   }
 
   export type DishEntrySumAggregateOutputType = {
     portionWeight: number | null
+    servings: number | null
     fitScore: number | null
   }
 
@@ -30462,6 +25323,7 @@ export namespace Prisma {
     mealSlotId: string | null
     dishId: string | null
     portionWeight: number | null
+    servings: number | null
     isShared: boolean | null
     manualWeight: boolean | null
     fitScore: number | null
@@ -30474,6 +25336,7 @@ export namespace Prisma {
     mealSlotId: string | null
     dishId: string | null
     portionWeight: number | null
+    servings: number | null
     isShared: boolean | null
     manualWeight: boolean | null
     fitScore: number | null
@@ -30486,6 +25349,7 @@ export namespace Prisma {
     mealSlotId: number
     dishId: number
     portionWeight: number
+    servings: number
     isShared: number
     manualWeight: number
     fitScore: number
@@ -30497,11 +25361,13 @@ export namespace Prisma {
 
   export type DishEntryAvgAggregateInputType = {
     portionWeight?: true
+    servings?: true
     fitScore?: true
   }
 
   export type DishEntrySumAggregateInputType = {
     portionWeight?: true
+    servings?: true
     fitScore?: true
   }
 
@@ -30510,6 +25376,7 @@ export namespace Prisma {
     mealSlotId?: true
     dishId?: true
     portionWeight?: true
+    servings?: true
     isShared?: true
     manualWeight?: true
     fitScore?: true
@@ -30522,6 +25389,7 @@ export namespace Prisma {
     mealSlotId?: true
     dishId?: true
     portionWeight?: true
+    servings?: true
     isShared?: true
     manualWeight?: true
     fitScore?: true
@@ -30534,6 +25402,7 @@ export namespace Prisma {
     mealSlotId?: true
     dishId?: true
     portionWeight?: true
+    servings?: true
     isShared?: true
     manualWeight?: true
     fitScore?: true
@@ -30633,6 +25502,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     portionWeight: number
+    servings: number
     isShared: boolean
     manualWeight: boolean
     fitScore: number | null
@@ -30664,6 +25534,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     portionWeight?: boolean
+    servings?: boolean
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: boolean
@@ -30678,6 +25549,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     portionWeight?: boolean
+    servings?: boolean
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: boolean
@@ -30692,6 +25564,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     portionWeight?: boolean
+    servings?: boolean
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: boolean
@@ -30706,6 +25579,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     portionWeight?: boolean
+    servings?: boolean
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: boolean
@@ -30713,7 +25587,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "portionWeight" | "isShared" | "manualWeight" | "fitScore" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
+  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "portionWeight" | "servings" | "isShared" | "manualWeight" | "fitScore" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
   export type DishEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
@@ -30738,6 +25612,7 @@ export namespace Prisma {
       mealSlotId: string
       dishId: string
       portionWeight: number
+      servings: number
       isShared: boolean
       manualWeight: boolean
       fitScore: number | null
@@ -31172,6 +26047,7 @@ export namespace Prisma {
     readonly mealSlotId: FieldRef<"DishEntry", 'String'>
     readonly dishId: FieldRef<"DishEntry", 'String'>
     readonly portionWeight: FieldRef<"DishEntry", 'Float'>
+    readonly servings: FieldRef<"DishEntry", 'Float'>
     readonly isShared: FieldRef<"DishEntry", 'Boolean'>
     readonly manualWeight: FieldRef<"DishEntry", 'Boolean'>
     readonly fitScore: FieldRef<"DishEntry", 'Float'>
@@ -64496,34 +59372,10 @@ export namespace Prisma {
   export type DishIngredientScalarFieldEnum = (typeof DishIngredientScalarFieldEnum)[keyof typeof DishIngredientScalarFieldEnum]
 
 
-  export const DayTemplateScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    name: 'name',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type DayTemplateScalarFieldEnum = (typeof DayTemplateScalarFieldEnum)[keyof typeof DayTemplateScalarFieldEnum]
-
-
-  export const DayTemplateEntryScalarFieldEnum: {
-    id: 'id',
-    templateId: 'templateId',
-    dishId: 'dishId',
-    mealSlot: 'mealSlot',
-    servings: 'servings',
-    priority: 'priority'
-  };
-
-  export type DayTemplateEntryScalarFieldEnum = (typeof DayTemplateEntryScalarFieldEnum)[keyof typeof DayTemplateEntryScalarFieldEnum]
-
-
   export const WeekPlanScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
     name: 'name',
-    startDate: 'startDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -64535,26 +59387,13 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     weekPlanId: 'weekPlanId',
-    templateId: 'templateId',
-    date: 'date',
-    adherence: 'adherence',
+    dayOfWeek: 'dayOfWeek',
+    activity: 'activity',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type DayPlanScalarFieldEnum = (typeof DayPlanScalarFieldEnum)[keyof typeof DayPlanScalarFieldEnum]
-
-
-  export const DayPlanEntryScalarFieldEnum: {
-    id: 'id',
-    dayPlanId: 'dayPlanId',
-    dishId: 'dishId',
-    mealSlot: 'mealSlot',
-    servings: 'servings',
-    priority: 'priority'
-  };
-
-  export type DayPlanEntryScalarFieldEnum = (typeof DayPlanEntryScalarFieldEnum)[keyof typeof DayPlanEntryScalarFieldEnum]
 
 
   export const ShoppingListScalarFieldEnum: {
@@ -64581,25 +59420,13 @@ export namespace Prisma {
   export type ShoppingListItemScalarFieldEnum = (typeof ShoppingListItemScalarFieldEnum)[keyof typeof ShoppingListItemScalarFieldEnum]
 
 
-  export const MealTemplateSlotScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    goal: 'goal',
-    percentage: 'percentage',
-    order: 'order',
-    minProteinGrams: 'minProteinGrams',
-    maxPctOfDaily: 'maxPctOfDaily',
-    fiberPct: 'fiberPct'
-  };
-
-  export type MealTemplateSlotScalarFieldEnum = (typeof MealTemplateSlotScalarFieldEnum)[keyof typeof MealTemplateSlotScalarFieldEnum]
-
-
   export const MealSlotInstanceScalarFieldEnum: {
     id: 'id',
     dayPlanId: 'dayPlanId',
     personId: 'personId',
-    templateSlotId: 'templateSlotId',
+    name: 'name',
+    timeWindow: 'timeWindow',
+    order: 'order',
     targetKcal: 'targetKcal',
     targetFiberGrams: 'targetFiberGrams',
     createdAt: 'createdAt',
@@ -64626,6 +59453,7 @@ export namespace Prisma {
     mealSlotId: 'mealSlotId',
     dishId: 'dishId',
     portionWeight: 'portionWeight',
+    servings: 'servings',
     isShared: 'isShared',
     manualWeight: 'manualWeight',
     fitScore: 'fitScore',
@@ -65279,48 +60107,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'MealSlot'
-   */
-  export type EnumMealSlotFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MealSlot'>
-    
-
-
-  /**
-   * Reference to a field of type 'MealSlot[]'
-   */
-  export type ListEnumMealSlotFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MealSlot[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Priority'
-   */
-  export type EnumPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Priority'>
-    
-
-
-  /**
-   * Reference to a field of type 'Priority[]'
-   */
-  export type ListEnumPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Priority[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'PlanAdherence'
-   */
-  export type EnumPlanAdherenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanAdherence'>
-    
-
-
-  /**
-   * Reference to a field of type 'PlanAdherence[]'
-   */
-  export type ListEnumPlanAdherenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanAdherence[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Unit'
    */
   export type EnumUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Unit'>
@@ -65558,7 +60344,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassListRelationFilter
     dailyEntries?: DailyEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
-    dayTemplates?: DayTemplateListRelationFilter
     dishes?: DishListRelationFilter
     habits?: HabitListRelationFilter
     libraryItems?: LibraryItemListRelationFilter
@@ -65595,7 +60380,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassOrderByRelationAggregateInput
     dailyEntries?: DailyEntryOrderByRelationAggregateInput
     dayPlans?: DayPlanOrderByRelationAggregateInput
-    dayTemplates?: DayTemplateOrderByRelationAggregateInput
     dishes?: DishOrderByRelationAggregateInput
     habits?: HabitOrderByRelationAggregateInput
     libraryItems?: LibraryItemOrderByRelationAggregateInput
@@ -65635,7 +60419,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassListRelationFilter
     dailyEntries?: DailyEntryListRelationFilter
     dayPlans?: DayPlanListRelationFilter
-    dayTemplates?: DayTemplateListRelationFilter
     dishes?: DishListRelationFilter
     habits?: HabitListRelationFilter
     libraryItems?: LibraryItemListRelationFilter
@@ -66245,8 +61028,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     ingredients?: DishIngredientListRelationFilter
-    dayPlanEntries?: DayPlanEntryListRelationFilter
-    templateEntries?: DayTemplateEntryListRelationFilter
     dishEntries?: DishEntryListRelationFilter
   }
 
@@ -66261,8 +61042,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     ingredients?: DishIngredientOrderByRelationAggregateInput
-    dayPlanEntries?: DayPlanEntryOrderByRelationAggregateInput
-    templateEntries?: DayTemplateEntryOrderByRelationAggregateInput
     dishEntries?: DishEntryOrderByRelationAggregateInput
   }
 
@@ -66280,8 +61059,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Dish"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     ingredients?: DishIngredientListRelationFilter
-    dayPlanEntries?: DayPlanEntryListRelationFilter
-    templateEntries?: DayTemplateEntryListRelationFilter
     dishEntries?: DishEntryListRelationFilter
   }, "id">
 
@@ -66384,132 +61161,6 @@ export namespace Prisma {
     alternatives?: StringNullableListFilter<"DishIngredient">
   }
 
-  export type DayTemplateWhereInput = {
-    AND?: DayTemplateWhereInput | DayTemplateWhereInput[]
-    OR?: DayTemplateWhereInput[]
-    NOT?: DayTemplateWhereInput | DayTemplateWhereInput[]
-    id?: StringFilter<"DayTemplate"> | string
-    userId?: StringFilter<"DayTemplate"> | string
-    name?: StringFilter<"DayTemplate"> | string
-    createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    entries?: DayTemplateEntryListRelationFilter
-    dayPlans?: DayPlanListRelationFilter
-  }
-
-  export type DayTemplateOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    entries?: DayTemplateEntryOrderByRelationAggregateInput
-    dayPlans?: DayPlanOrderByRelationAggregateInput
-  }
-
-  export type DayTemplateWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: DayTemplateWhereInput | DayTemplateWhereInput[]
-    OR?: DayTemplateWhereInput[]
-    NOT?: DayTemplateWhereInput | DayTemplateWhereInput[]
-    userId?: StringFilter<"DayTemplate"> | string
-    name?: StringFilter<"DayTemplate"> | string
-    createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    entries?: DayTemplateEntryListRelationFilter
-    dayPlans?: DayPlanListRelationFilter
-  }, "id">
-
-  export type DayTemplateOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: DayTemplateCountOrderByAggregateInput
-    _max?: DayTemplateMaxOrderByAggregateInput
-    _min?: DayTemplateMinOrderByAggregateInput
-  }
-
-  export type DayTemplateScalarWhereWithAggregatesInput = {
-    AND?: DayTemplateScalarWhereWithAggregatesInput | DayTemplateScalarWhereWithAggregatesInput[]
-    OR?: DayTemplateScalarWhereWithAggregatesInput[]
-    NOT?: DayTemplateScalarWhereWithAggregatesInput | DayTemplateScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"DayTemplate"> | string
-    userId?: StringWithAggregatesFilter<"DayTemplate"> | string
-    name?: StringWithAggregatesFilter<"DayTemplate"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"DayTemplate"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"DayTemplate"> | Date | string
-  }
-
-  export type DayTemplateEntryWhereInput = {
-    AND?: DayTemplateEntryWhereInput | DayTemplateEntryWhereInput[]
-    OR?: DayTemplateEntryWhereInput[]
-    NOT?: DayTemplateEntryWhereInput | DayTemplateEntryWhereInput[]
-    id?: StringFilter<"DayTemplateEntry"> | string
-    templateId?: StringFilter<"DayTemplateEntry"> | string
-    dishId?: StringFilter<"DayTemplateEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayTemplateEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayTemplateEntry"> | number
-    priority?: EnumPriorityFilter<"DayTemplateEntry"> | $Enums.Priority
-    dish?: XOR<DishScalarRelationFilter, DishWhereInput>
-    template?: XOR<DayTemplateScalarRelationFilter, DayTemplateWhereInput>
-  }
-
-  export type DayTemplateEntryOrderByWithRelationInput = {
-    id?: SortOrder
-    templateId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-    dish?: DishOrderByWithRelationInput
-    template?: DayTemplateOrderByWithRelationInput
-  }
-
-  export type DayTemplateEntryWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: DayTemplateEntryWhereInput | DayTemplateEntryWhereInput[]
-    OR?: DayTemplateEntryWhereInput[]
-    NOT?: DayTemplateEntryWhereInput | DayTemplateEntryWhereInput[]
-    templateId?: StringFilter<"DayTemplateEntry"> | string
-    dishId?: StringFilter<"DayTemplateEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayTemplateEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayTemplateEntry"> | number
-    priority?: EnumPriorityFilter<"DayTemplateEntry"> | $Enums.Priority
-    dish?: XOR<DishScalarRelationFilter, DishWhereInput>
-    template?: XOR<DayTemplateScalarRelationFilter, DayTemplateWhereInput>
-  }, "id">
-
-  export type DayTemplateEntryOrderByWithAggregationInput = {
-    id?: SortOrder
-    templateId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-    _count?: DayTemplateEntryCountOrderByAggregateInput
-    _avg?: DayTemplateEntryAvgOrderByAggregateInput
-    _max?: DayTemplateEntryMaxOrderByAggregateInput
-    _min?: DayTemplateEntryMinOrderByAggregateInput
-    _sum?: DayTemplateEntrySumOrderByAggregateInput
-  }
-
-  export type DayTemplateEntryScalarWhereWithAggregatesInput = {
-    AND?: DayTemplateEntryScalarWhereWithAggregatesInput | DayTemplateEntryScalarWhereWithAggregatesInput[]
-    OR?: DayTemplateEntryScalarWhereWithAggregatesInput[]
-    NOT?: DayTemplateEntryScalarWhereWithAggregatesInput | DayTemplateEntryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"DayTemplateEntry"> | string
-    templateId?: StringWithAggregatesFilter<"DayTemplateEntry"> | string
-    dishId?: StringWithAggregatesFilter<"DayTemplateEntry"> | string
-    mealSlot?: EnumMealSlotWithAggregatesFilter<"DayTemplateEntry"> | $Enums.MealSlot
-    servings?: FloatWithAggregatesFilter<"DayTemplateEntry"> | number
-    priority?: EnumPriorityWithAggregatesFilter<"DayTemplateEntry"> | $Enums.Priority
-  }
-
   export type WeekPlanWhereInput = {
     AND?: WeekPlanWhereInput | WeekPlanWhereInput[]
     OR?: WeekPlanWhereInput[]
@@ -66517,7 +61168,6 @@ export namespace Prisma {
     id?: StringFilter<"WeekPlan"> | string
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
-    startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -66530,7 +61180,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrderInput | SortOrder
-    startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -66546,7 +61195,6 @@ export namespace Prisma {
     NOT?: WeekPlanWhereInput | WeekPlanWhereInput[]
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
-    startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -66559,7 +61207,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrderInput | SortOrder
-    startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WeekPlanCountOrderByAggregateInput
@@ -66574,7 +61221,6 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"WeekPlan"> | string
     userId?: StringWithAggregatesFilter<"WeekPlan"> | string
     name?: StringNullableWithAggregatesFilter<"WeekPlan"> | string | null
-    startDate?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
   }
@@ -66586,15 +61232,12 @@ export namespace Prisma {
     id?: StringFilter<"DayPlan"> | string
     userId?: StringFilter<"DayPlan"> | string
     weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
-    templateId?: StringNullableFilter<"DayPlan"> | string | null
-    date?: DateTimeFilter<"DayPlan"> | Date | string
-    adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
+    dayOfWeek?: IntFilter<"DayPlan"> | number
+    activity?: StringNullableFilter<"DayPlan"> | string | null
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
-    template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
-    entries?: DayPlanEntryListRelationFilter
     mealSlots?: MealSlotInstanceListRelationFilter
   }
 
@@ -66602,15 +61245,12 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
-    templateId?: SortOrderInput | SortOrder
-    date?: SortOrder
-    adherence?: SortOrder
+    dayOfWeek?: SortOrder
+    activity?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
-    template?: DayTemplateOrderByWithRelationInput
-    entries?: DayPlanEntryOrderByRelationAggregateInput
     mealSlots?: MealSlotInstanceOrderByRelationAggregateInput
   }
 
@@ -66621,15 +61261,12 @@ export namespace Prisma {
     NOT?: DayPlanWhereInput | DayPlanWhereInput[]
     userId?: StringFilter<"DayPlan"> | string
     weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
-    templateId?: StringNullableFilter<"DayPlan"> | string | null
-    date?: DateTimeFilter<"DayPlan"> | Date | string
-    adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
+    dayOfWeek?: IntFilter<"DayPlan"> | number
+    activity?: StringNullableFilter<"DayPlan"> | string | null
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
-    template?: XOR<DayTemplateNullableScalarRelationFilter, DayTemplateWhereInput> | null
-    entries?: DayPlanEntryListRelationFilter
     mealSlots?: MealSlotInstanceListRelationFilter
   }, "id">
 
@@ -66637,14 +61274,15 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     weekPlanId?: SortOrderInput | SortOrder
-    templateId?: SortOrderInput | SortOrder
-    date?: SortOrder
-    adherence?: SortOrder
+    dayOfWeek?: SortOrder
+    activity?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DayPlanCountOrderByAggregateInput
+    _avg?: DayPlanAvgOrderByAggregateInput
     _max?: DayPlanMaxOrderByAggregateInput
     _min?: DayPlanMinOrderByAggregateInput
+    _sum?: DayPlanSumOrderByAggregateInput
   }
 
   export type DayPlanScalarWhereWithAggregatesInput = {
@@ -66654,76 +61292,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"DayPlan"> | string
     userId?: StringWithAggregatesFilter<"DayPlan"> | string
     weekPlanId?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
-    templateId?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
-    date?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
-    adherence?: EnumPlanAdherenceWithAggregatesFilter<"DayPlan"> | $Enums.PlanAdherence
+    dayOfWeek?: IntWithAggregatesFilter<"DayPlan"> | number
+    activity?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
-  }
-
-  export type DayPlanEntryWhereInput = {
-    AND?: DayPlanEntryWhereInput | DayPlanEntryWhereInput[]
-    OR?: DayPlanEntryWhereInput[]
-    NOT?: DayPlanEntryWhereInput | DayPlanEntryWhereInput[]
-    id?: StringFilter<"DayPlanEntry"> | string
-    dayPlanId?: StringFilter<"DayPlanEntry"> | string
-    dishId?: StringFilter<"DayPlanEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayPlanEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayPlanEntry"> | number
-    priority?: EnumPriorityFilter<"DayPlanEntry"> | $Enums.Priority
-    dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
-    dish?: XOR<DishScalarRelationFilter, DishWhereInput>
-  }
-
-  export type DayPlanEntryOrderByWithRelationInput = {
-    id?: SortOrder
-    dayPlanId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-    dayPlan?: DayPlanOrderByWithRelationInput
-    dish?: DishOrderByWithRelationInput
-  }
-
-  export type DayPlanEntryWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: DayPlanEntryWhereInput | DayPlanEntryWhereInput[]
-    OR?: DayPlanEntryWhereInput[]
-    NOT?: DayPlanEntryWhereInput | DayPlanEntryWhereInput[]
-    dayPlanId?: StringFilter<"DayPlanEntry"> | string
-    dishId?: StringFilter<"DayPlanEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayPlanEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayPlanEntry"> | number
-    priority?: EnumPriorityFilter<"DayPlanEntry"> | $Enums.Priority
-    dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
-    dish?: XOR<DishScalarRelationFilter, DishWhereInput>
-  }, "id">
-
-  export type DayPlanEntryOrderByWithAggregationInput = {
-    id?: SortOrder
-    dayPlanId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-    _count?: DayPlanEntryCountOrderByAggregateInput
-    _avg?: DayPlanEntryAvgOrderByAggregateInput
-    _max?: DayPlanEntryMaxOrderByAggregateInput
-    _min?: DayPlanEntryMinOrderByAggregateInput
-    _sum?: DayPlanEntrySumOrderByAggregateInput
-  }
-
-  export type DayPlanEntryScalarWhereWithAggregatesInput = {
-    AND?: DayPlanEntryScalarWhereWithAggregatesInput | DayPlanEntryScalarWhereWithAggregatesInput[]
-    OR?: DayPlanEntryScalarWhereWithAggregatesInput[]
-    NOT?: DayPlanEntryScalarWhereWithAggregatesInput | DayPlanEntryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"DayPlanEntry"> | string
-    dayPlanId?: StringWithAggregatesFilter<"DayPlanEntry"> | string
-    dishId?: StringWithAggregatesFilter<"DayPlanEntry"> | string
-    mealSlot?: EnumMealSlotWithAggregatesFilter<"DayPlanEntry"> | $Enums.MealSlot
-    servings?: FloatWithAggregatesFilter<"DayPlanEntry"> | number
-    priority?: EnumPriorityWithAggregatesFilter<"DayPlanEntry"> | $Enums.Priority
   }
 
   export type ShoppingListWhereInput = {
@@ -66857,79 +61429,6 @@ export namespace Prisma {
     checked?: BoolWithAggregatesFilter<"ShoppingListItem"> | boolean
   }
 
-  export type MealTemplateSlotWhereInput = {
-    AND?: MealTemplateSlotWhereInput | MealTemplateSlotWhereInput[]
-    OR?: MealTemplateSlotWhereInput[]
-    NOT?: MealTemplateSlotWhereInput | MealTemplateSlotWhereInput[]
-    id?: UuidFilter<"MealTemplateSlot"> | string
-    name?: StringFilter<"MealTemplateSlot"> | string
-    goal?: EnumGoalFilter<"MealTemplateSlot"> | $Enums.Goal
-    percentage?: FloatFilter<"MealTemplateSlot"> | number
-    order?: IntFilter<"MealTemplateSlot"> | number
-    minProteinGrams?: FloatNullableFilter<"MealTemplateSlot"> | number | null
-    maxPctOfDaily?: FloatNullableFilter<"MealTemplateSlot"> | number | null
-    fiberPct?: FloatFilter<"MealTemplateSlot"> | number
-    mealSlots?: MealSlotInstanceListRelationFilter
-  }
-
-  export type MealTemplateSlotOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    goal?: SortOrder
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrderInput | SortOrder
-    maxPctOfDaily?: SortOrderInput | SortOrder
-    fiberPct?: SortOrder
-    mealSlots?: MealSlotInstanceOrderByRelationAggregateInput
-  }
-
-  export type MealTemplateSlotWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    name_goal?: MealTemplateSlotNameGoalCompoundUniqueInput
-    AND?: MealTemplateSlotWhereInput | MealTemplateSlotWhereInput[]
-    OR?: MealTemplateSlotWhereInput[]
-    NOT?: MealTemplateSlotWhereInput | MealTemplateSlotWhereInput[]
-    name?: StringFilter<"MealTemplateSlot"> | string
-    goal?: EnumGoalFilter<"MealTemplateSlot"> | $Enums.Goal
-    percentage?: FloatFilter<"MealTemplateSlot"> | number
-    order?: IntFilter<"MealTemplateSlot"> | number
-    minProteinGrams?: FloatNullableFilter<"MealTemplateSlot"> | number | null
-    maxPctOfDaily?: FloatNullableFilter<"MealTemplateSlot"> | number | null
-    fiberPct?: FloatFilter<"MealTemplateSlot"> | number
-    mealSlots?: MealSlotInstanceListRelationFilter
-  }, "id" | "name_goal">
-
-  export type MealTemplateSlotOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    goal?: SortOrder
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrderInput | SortOrder
-    maxPctOfDaily?: SortOrderInput | SortOrder
-    fiberPct?: SortOrder
-    _count?: MealTemplateSlotCountOrderByAggregateInput
-    _avg?: MealTemplateSlotAvgOrderByAggregateInput
-    _max?: MealTemplateSlotMaxOrderByAggregateInput
-    _min?: MealTemplateSlotMinOrderByAggregateInput
-    _sum?: MealTemplateSlotSumOrderByAggregateInput
-  }
-
-  export type MealTemplateSlotScalarWhereWithAggregatesInput = {
-    AND?: MealTemplateSlotScalarWhereWithAggregatesInput | MealTemplateSlotScalarWhereWithAggregatesInput[]
-    OR?: MealTemplateSlotScalarWhereWithAggregatesInput[]
-    NOT?: MealTemplateSlotScalarWhereWithAggregatesInput | MealTemplateSlotScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"MealTemplateSlot"> | string
-    name?: StringWithAggregatesFilter<"MealTemplateSlot"> | string
-    goal?: EnumGoalWithAggregatesFilter<"MealTemplateSlot"> | $Enums.Goal
-    percentage?: FloatWithAggregatesFilter<"MealTemplateSlot"> | number
-    order?: IntWithAggregatesFilter<"MealTemplateSlot"> | number
-    minProteinGrams?: FloatNullableWithAggregatesFilter<"MealTemplateSlot"> | number | null
-    maxPctOfDaily?: FloatNullableWithAggregatesFilter<"MealTemplateSlot"> | number | null
-    fiberPct?: FloatWithAggregatesFilter<"MealTemplateSlot"> | number
-  }
-
   export type MealSlotInstanceWhereInput = {
     AND?: MealSlotInstanceWhereInput | MealSlotInstanceWhereInput[]
     OR?: MealSlotInstanceWhereInput[]
@@ -66937,14 +61436,15 @@ export namespace Prisma {
     id?: StringFilter<"MealSlotInstance"> | string
     dayPlanId?: StringFilter<"MealSlotInstance"> | string
     personId?: StringFilter<"MealSlotInstance"> | string
-    templateSlotId?: UuidFilter<"MealSlotInstance"> | string
+    name?: StringFilter<"MealSlotInstance"> | string
+    timeWindow?: StringNullableFilter<"MealSlotInstance"> | string | null
+    order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
     person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
-    templateSlot?: XOR<MealTemplateSlotScalarRelationFilter, MealTemplateSlotWhereInput>
     dishEntries?: DishEntryListRelationFilter
     productEntries?: ProductEntryListRelationFilter
   }
@@ -66953,43 +61453,47 @@ export namespace Prisma {
     id?: SortOrder
     dayPlanId?: SortOrder
     personId?: SortOrder
-    templateSlotId?: SortOrder
+    name?: SortOrder
+    timeWindow?: SortOrderInput | SortOrder
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dayPlan?: DayPlanOrderByWithRelationInput
     person?: NutritionPersonOrderByWithRelationInput
-    templateSlot?: MealTemplateSlotOrderByWithRelationInput
     dishEntries?: DishEntryOrderByRelationAggregateInput
     productEntries?: ProductEntryOrderByRelationAggregateInput
   }
 
   export type MealSlotInstanceWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    dayPlanId_personId_templateSlotId?: MealSlotInstanceDayPlanIdPersonIdTemplateSlotIdCompoundUniqueInput
+    dayPlanId_personId_name?: MealSlotInstanceDayPlanIdPersonIdNameCompoundUniqueInput
     AND?: MealSlotInstanceWhereInput | MealSlotInstanceWhereInput[]
     OR?: MealSlotInstanceWhereInput[]
     NOT?: MealSlotInstanceWhereInput | MealSlotInstanceWhereInput[]
     dayPlanId?: StringFilter<"MealSlotInstance"> | string
     personId?: StringFilter<"MealSlotInstance"> | string
-    templateSlotId?: UuidFilter<"MealSlotInstance"> | string
+    name?: StringFilter<"MealSlotInstance"> | string
+    timeWindow?: StringNullableFilter<"MealSlotInstance"> | string | null
+    order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
     person?: XOR<NutritionPersonScalarRelationFilter, NutritionPersonWhereInput>
-    templateSlot?: XOR<MealTemplateSlotScalarRelationFilter, MealTemplateSlotWhereInput>
     dishEntries?: DishEntryListRelationFilter
     productEntries?: ProductEntryListRelationFilter
-  }, "id" | "dayPlanId_personId_templateSlotId">
+  }, "id" | "dayPlanId_personId_name">
 
   export type MealSlotInstanceOrderByWithAggregationInput = {
     id?: SortOrder
     dayPlanId?: SortOrder
     personId?: SortOrder
-    templateSlotId?: SortOrder
+    name?: SortOrder
+    timeWindow?: SortOrderInput | SortOrder
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
     createdAt?: SortOrder
@@ -67008,7 +61512,9 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"MealSlotInstance"> | string
     dayPlanId?: StringWithAggregatesFilter<"MealSlotInstance"> | string
     personId?: StringWithAggregatesFilter<"MealSlotInstance"> | string
-    templateSlotId?: UuidWithAggregatesFilter<"MealSlotInstance"> | string
+    name?: StringWithAggregatesFilter<"MealSlotInstance"> | string
+    timeWindow?: StringNullableWithAggregatesFilter<"MealSlotInstance"> | string | null
+    order?: IntWithAggregatesFilter<"MealSlotInstance"> | number
     targetKcal?: FloatWithAggregatesFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatWithAggregatesFilter<"MealSlotInstance"> | number
     createdAt?: DateTimeWithAggregatesFilter<"MealSlotInstance"> | Date | string
@@ -67088,6 +61594,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     portionWeight?: FloatFilter<"DishEntry"> | number
+    servings?: FloatFilter<"DishEntry"> | number
     isShared?: BoolFilter<"DishEntry"> | boolean
     manualWeight?: BoolFilter<"DishEntry"> | boolean
     fitScore?: FloatNullableFilter<"DishEntry"> | number | null
@@ -67102,6 +61609,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     portionWeight?: SortOrder
+    servings?: SortOrder
     isShared?: SortOrder
     manualWeight?: SortOrder
     fitScore?: SortOrderInput | SortOrder
@@ -67119,6 +61627,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     portionWeight?: FloatFilter<"DishEntry"> | number
+    servings?: FloatFilter<"DishEntry"> | number
     isShared?: BoolFilter<"DishEntry"> | boolean
     manualWeight?: BoolFilter<"DishEntry"> | boolean
     fitScore?: FloatNullableFilter<"DishEntry"> | number | null
@@ -67133,6 +61642,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     portionWeight?: SortOrder
+    servings?: SortOrder
     isShared?: SortOrder
     manualWeight?: SortOrder
     fitScore?: SortOrderInput | SortOrder
@@ -67153,6 +61663,7 @@ export namespace Prisma {
     mealSlotId?: StringWithAggregatesFilter<"DishEntry"> | string
     dishId?: StringWithAggregatesFilter<"DishEntry"> | string
     portionWeight?: FloatWithAggregatesFilter<"DishEntry"> | number
+    servings?: FloatWithAggregatesFilter<"DishEntry"> | number
     isShared?: BoolWithAggregatesFilter<"DishEntry"> | boolean
     manualWeight?: BoolWithAggregatesFilter<"DishEntry"> | boolean
     fitScore?: FloatNullableWithAggregatesFilter<"DishEntry"> | number | null
@@ -69470,7 +63981,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -69507,7 +64017,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -69544,7 +64053,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -69581,7 +64089,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -70252,8 +64759,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryCreateNestedManyWithoutDishInput
   }
 
@@ -70267,8 +64772,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutDishInput
   }
 
@@ -70282,8 +64785,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUpdateManyWithoutDishNestedInput
   }
 
@@ -70297,8 +64798,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
@@ -70394,134 +64893,9 @@ export namespace Prisma {
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
-  export type DayTemplateCreateInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDayTemplatesInput
-    entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUncheckedCreateInput = {
-    id?: string
-    userId: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
-    entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayTemplateEntryUncheckedUpdateManyWithoutTemplateNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateCreateManyInput = {
-    id?: string
-    userId: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayTemplateUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DayTemplateUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DayTemplateEntryCreateInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    dish: DishCreateNestedOneWithoutTemplateEntriesInput
-    template: DayTemplateCreateNestedOneWithoutEntriesInput
-  }
-
-  export type DayTemplateEntryUncheckedCreateInput = {
-    id?: string
-    templateId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayTemplateEntryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    dish?: DishUpdateOneRequiredWithoutTemplateEntriesNestedInput
-    template?: DayTemplateUpdateOneRequiredWithoutEntriesNestedInput
-  }
-
-  export type DayTemplateEntryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateId?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayTemplateEntryCreateManyInput = {
-    id?: string
-    templateId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayTemplateEntryUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayTemplateEntryUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateId?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
   export type WeekPlanCreateInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -70534,7 +64908,6 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -70545,7 +64918,6 @@ export namespace Prisma {
   export type WeekPlanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -70558,7 +64930,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -70570,7 +64941,6 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -70578,7 +64948,6 @@ export namespace Prisma {
   export type WeekPlanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -70587,21 +64956,18 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DayPlanCreateInput = {
     id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
   }
 
@@ -70609,25 +64975,21 @@ export namespace Prisma {
     id?: string
     userId: string
     weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
-    template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
-    entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
   }
 
@@ -70635,12 +64997,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
@@ -70648,17 +65008,16 @@ export namespace Prisma {
     id?: string
     userId: string
     weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DayPlanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -70667,72 +65026,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DayPlanEntryCreateInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    dayPlan: DayPlanCreateNestedOneWithoutEntriesInput
-    dish: DishCreateNestedOneWithoutDayPlanEntriesInput
-  }
-
-  export type DayPlanEntryUncheckedCreateInput = {
-    id?: string
-    dayPlanId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayPlanEntryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    dayPlan?: DayPlanUpdateOneRequiredWithoutEntriesNestedInput
-    dish?: DishUpdateOneRequiredWithoutDayPlanEntriesNestedInput
-  }
-
-  export type DayPlanEntryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayPlanEntryCreateManyInput = {
-    id?: string
-    dayPlanId: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayPlanEntryUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayPlanEntryUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
   }
 
   export type ShoppingListCreateInput = {
@@ -70861,96 +65158,17 @@ export namespace Prisma {
     checked?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type MealTemplateSlotCreateInput = {
-    id?: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams?: number | null
-    maxPctOfDaily?: number | null
-    fiberPct: number
-    mealSlots?: MealSlotInstanceCreateNestedManyWithoutTemplateSlotInput
-  }
-
-  export type MealTemplateSlotUncheckedCreateInput = {
-    id?: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams?: number | null
-    maxPctOfDaily?: number | null
-    fiberPct: number
-    mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutTemplateSlotInput
-  }
-
-  export type MealTemplateSlotUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-    mealSlots?: MealSlotInstanceUpdateManyWithoutTemplateSlotNestedInput
-  }
-
-  export type MealTemplateSlotUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutTemplateSlotNestedInput
-  }
-
-  export type MealTemplateSlotCreateManyInput = {
-    id?: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams?: number | null
-    maxPctOfDaily?: number | null
-    fiberPct: number
-  }
-
-  export type MealTemplateSlotUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type MealTemplateSlotUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-  }
-
   export type MealSlotInstanceCreateInput = {
     id?: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
-    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
     productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
@@ -70959,7 +65177,9 @@ export namespace Prisma {
     id?: string
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -70970,13 +65190,15 @@ export namespace Prisma {
 
   export type MealSlotInstanceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
-    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
     productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
@@ -70985,7 +65207,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70998,7 +65222,9 @@ export namespace Prisma {
     id?: string
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -71007,6 +65233,9 @@ export namespace Prisma {
 
   export type MealSlotInstanceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71017,7 +65246,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71088,6 +65319,7 @@ export namespace Prisma {
   export type DishEntryCreateInput = {
     id?: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -71102,6 +65334,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -71112,6 +65345,7 @@ export namespace Prisma {
   export type DishEntryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -71126,6 +65360,7 @@ export namespace Prisma {
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -71138,6 +65373,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -71148,6 +65384,7 @@ export namespace Prisma {
   export type DishEntryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -71160,6 +65397,7 @@ export namespace Prisma {
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -73748,12 +67986,6 @@ export namespace Prisma {
     none?: DayPlanWhereInput
   }
 
-  export type DayTemplateListRelationFilter = {
-    every?: DayTemplateWhereInput
-    some?: DayTemplateWhereInput
-    none?: DayTemplateWhereInput
-  }
-
   export type DishListRelationFilter = {
     every?: DishWhereInput
     some?: DishWhereInput
@@ -73886,10 +68118,6 @@ export namespace Prisma {
   }
 
   export type DayPlanOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DayTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -74626,30 +68854,10 @@ export namespace Prisma {
     not?: NestedEnumDishTypeFilter<$PrismaModel> | $Enums.DishType
   }
 
-  export type DayPlanEntryListRelationFilter = {
-    every?: DayPlanEntryWhereInput
-    some?: DayPlanEntryWhereInput
-    none?: DayPlanEntryWhereInput
-  }
-
-  export type DayTemplateEntryListRelationFilter = {
-    every?: DayTemplateEntryWhereInput
-    some?: DayTemplateEntryWhereInput
-    none?: DayTemplateEntryWhereInput
-  }
-
   export type DishEntryListRelationFilter = {
     every?: DishEntryWhereInput
     some?: DishEntryWhereInput
     none?: DishEntryWhereInput
-  }
-
-  export type DayPlanEntryOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DayTemplateEntryOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type DishEntryOrderByRelationAggregateInput = {
@@ -74785,104 +68993,6 @@ export namespace Prisma {
     rawWeight?: SortOrder
   }
 
-  export type DayTemplateCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type DayTemplateMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type DayTemplateMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    name?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type EnumMealSlotFilter<$PrismaModel = never> = {
-    equals?: $Enums.MealSlot | EnumMealSlotFieldRefInput<$PrismaModel>
-    in?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    not?: NestedEnumMealSlotFilter<$PrismaModel> | $Enums.MealSlot
-  }
-
-  export type EnumPriorityFilter<$PrismaModel = never> = {
-    equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
-    in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    not?: NestedEnumPriorityFilter<$PrismaModel> | $Enums.Priority
-  }
-
-  export type DayTemplateScalarRelationFilter = {
-    is?: DayTemplateWhereInput
-    isNot?: DayTemplateWhereInput
-  }
-
-  export type DayTemplateEntryCountOrderByAggregateInput = {
-    id?: SortOrder
-    templateId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayTemplateEntryAvgOrderByAggregateInput = {
-    servings?: SortOrder
-  }
-
-  export type DayTemplateEntryMaxOrderByAggregateInput = {
-    id?: SortOrder
-    templateId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayTemplateEntryMinOrderByAggregateInput = {
-    id?: SortOrder
-    templateId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayTemplateEntrySumOrderByAggregateInput = {
-    servings?: SortOrder
-  }
-
-  export type EnumMealSlotWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MealSlot | EnumMealSlotFieldRefInput<$PrismaModel>
-    in?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    not?: NestedEnumMealSlotWithAggregatesFilter<$PrismaModel> | $Enums.MealSlot
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMealSlotFilter<$PrismaModel>
-    _max?: NestedEnumMealSlotFilter<$PrismaModel>
-  }
-
-  export type EnumPriorityWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
-    in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    not?: NestedEnumPriorityWithAggregatesFilter<$PrismaModel> | $Enums.Priority
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPriorityFilter<$PrismaModel>
-    _max?: NestedEnumPriorityFilter<$PrismaModel>
-  }
-
   export type ShoppingCartNullableScalarRelationFilter = {
     is?: ShoppingCartWhereInput | null
     isNot?: ShoppingCartWhereInput | null
@@ -74892,7 +69002,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
-    startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -74901,7 +69010,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
-    startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -74910,16 +69018,8 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
-    startDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type EnumPlanAdherenceFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlanAdherence | EnumPlanAdherenceFieldRefInput<$PrismaModel>
-    in?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlanAdherenceFilter<$PrismaModel> | $Enums.PlanAdherence
   }
 
   export type WeekPlanNullableScalarRelationFilter = {
@@ -74927,29 +69027,26 @@ export namespace Prisma {
     isNot?: WeekPlanWhereInput | null
   }
 
-  export type DayTemplateNullableScalarRelationFilter = {
-    is?: DayTemplateWhereInput | null
-    isNot?: DayTemplateWhereInput | null
-  }
-
   export type DayPlanCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     weekPlanId?: SortOrder
-    templateId?: SortOrder
-    date?: SortOrder
-    adherence?: SortOrder
+    dayOfWeek?: SortOrder
+    activity?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type DayPlanAvgOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
   }
 
   export type DayPlanMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     weekPlanId?: SortOrder
-    templateId?: SortOrder
-    date?: SortOrder
-    adherence?: SortOrder
+    dayOfWeek?: SortOrder
+    activity?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -74958,61 +69055,14 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     weekPlanId?: SortOrder
-    templateId?: SortOrder
-    date?: SortOrder
-    adherence?: SortOrder
+    dayOfWeek?: SortOrder
+    activity?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type EnumPlanAdherenceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlanAdherence | EnumPlanAdherenceFieldRefInput<$PrismaModel>
-    in?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlanAdherenceWithAggregatesFilter<$PrismaModel> | $Enums.PlanAdherence
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPlanAdherenceFilter<$PrismaModel>
-    _max?: NestedEnumPlanAdherenceFilter<$PrismaModel>
-  }
-
-  export type DayPlanScalarRelationFilter = {
-    is?: DayPlanWhereInput
-    isNot?: DayPlanWhereInput
-  }
-
-  export type DayPlanEntryCountOrderByAggregateInput = {
-    id?: SortOrder
-    dayPlanId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayPlanEntryAvgOrderByAggregateInput = {
-    servings?: SortOrder
-  }
-
-  export type DayPlanEntryMaxOrderByAggregateInput = {
-    id?: SortOrder
-    dayPlanId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayPlanEntryMinOrderByAggregateInput = {
-    id?: SortOrder
-    dayPlanId?: SortOrder
-    dishId?: SortOrder
-    mealSlot?: SortOrder
-    servings?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type DayPlanEntrySumOrderByAggregateInput = {
-    servings?: SortOrder
+  export type DayPlanSumOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
   }
 
   export type ShoppingListCountOrderByAggregateInput = {
@@ -75112,85 +69162,9 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type UuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
-  export type MealTemplateSlotNameGoalCompoundUniqueInput = {
-    name: string
-    goal: $Enums.Goal
-  }
-
-  export type MealTemplateSlotCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    goal?: SortOrder
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrder
-    maxPctOfDaily?: SortOrder
-    fiberPct?: SortOrder
-  }
-
-  export type MealTemplateSlotAvgOrderByAggregateInput = {
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrder
-    maxPctOfDaily?: SortOrder
-    fiberPct?: SortOrder
-  }
-
-  export type MealTemplateSlotMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    goal?: SortOrder
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrder
-    maxPctOfDaily?: SortOrder
-    fiberPct?: SortOrder
-  }
-
-  export type MealTemplateSlotMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    goal?: SortOrder
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrder
-    maxPctOfDaily?: SortOrder
-    fiberPct?: SortOrder
-  }
-
-  export type MealTemplateSlotSumOrderByAggregateInput = {
-    percentage?: SortOrder
-    order?: SortOrder
-    minProteinGrams?: SortOrder
-    maxPctOfDaily?: SortOrder
-    fiberPct?: SortOrder
-  }
-
-  export type UuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+  export type DayPlanScalarRelationFilter = {
+    is?: DayPlanWhereInput
+    isNot?: DayPlanWhereInput
   }
 
   export type NutritionPersonScalarRelationFilter = {
@@ -75198,22 +69172,19 @@ export namespace Prisma {
     isNot?: NutritionPersonWhereInput
   }
 
-  export type MealTemplateSlotScalarRelationFilter = {
-    is?: MealTemplateSlotWhereInput
-    isNot?: MealTemplateSlotWhereInput
-  }
-
-  export type MealSlotInstanceDayPlanIdPersonIdTemplateSlotIdCompoundUniqueInput = {
+  export type MealSlotInstanceDayPlanIdPersonIdNameCompoundUniqueInput = {
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
   }
 
   export type MealSlotInstanceCountOrderByAggregateInput = {
     id?: SortOrder
     dayPlanId?: SortOrder
     personId?: SortOrder
-    templateSlotId?: SortOrder
+    name?: SortOrder
+    timeWindow?: SortOrder
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
     createdAt?: SortOrder
@@ -75221,6 +69192,7 @@ export namespace Prisma {
   }
 
   export type MealSlotInstanceAvgOrderByAggregateInput = {
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
   }
@@ -75229,7 +69201,9 @@ export namespace Prisma {
     id?: SortOrder
     dayPlanId?: SortOrder
     personId?: SortOrder
-    templateSlotId?: SortOrder
+    name?: SortOrder
+    timeWindow?: SortOrder
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
     createdAt?: SortOrder
@@ -75240,7 +69214,9 @@ export namespace Prisma {
     id?: SortOrder
     dayPlanId?: SortOrder
     personId?: SortOrder
-    templateSlotId?: SortOrder
+    name?: SortOrder
+    timeWindow?: SortOrder
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
     createdAt?: SortOrder
@@ -75248,6 +69224,7 @@ export namespace Prisma {
   }
 
   export type MealSlotInstanceSumOrderByAggregateInput = {
+    order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
   }
@@ -75297,6 +69274,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     portionWeight?: SortOrder
+    servings?: SortOrder
     isShared?: SortOrder
     manualWeight?: SortOrder
     fitScore?: SortOrder
@@ -75306,6 +69284,7 @@ export namespace Prisma {
 
   export type DishEntryAvgOrderByAggregateInput = {
     portionWeight?: SortOrder
+    servings?: SortOrder
     fitScore?: SortOrder
   }
 
@@ -75314,6 +69293,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     portionWeight?: SortOrder
+    servings?: SortOrder
     isShared?: SortOrder
     manualWeight?: SortOrder
     fitScore?: SortOrder
@@ -75326,6 +69306,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     portionWeight?: SortOrder
+    servings?: SortOrder
     isShared?: SortOrder
     manualWeight?: SortOrder
     fitScore?: SortOrder
@@ -75335,6 +69316,7 @@ export namespace Prisma {
 
   export type DishEntrySumOrderByAggregateInput = {
     portionWeight?: SortOrder
+    servings?: SortOrder
     fitScore?: SortOrder
   }
 
@@ -77149,13 +71131,6 @@ export namespace Prisma {
     connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
   }
 
-  export type DayTemplateCreateNestedManyWithoutUserInput = {
-    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
-    createMany?: DayTemplateCreateManyUserInputEnvelope
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-  }
-
   export type DishCreateNestedManyWithoutUserInput = {
     create?: XOR<DishCreateWithoutUserInput, DishUncheckedCreateWithoutUserInput> | DishCreateWithoutUserInput[] | DishUncheckedCreateWithoutUserInput[]
     connectOrCreate?: DishCreateOrConnectWithoutUserInput | DishCreateOrConnectWithoutUserInput[]
@@ -77315,13 +71290,6 @@ export namespace Prisma {
     connectOrCreate?: DayPlanCreateOrConnectWithoutUserInput | DayPlanCreateOrConnectWithoutUserInput[]
     createMany?: DayPlanCreateManyUserInputEnvelope
     connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-  }
-
-  export type DayTemplateUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
-    createMany?: DayTemplateCreateManyUserInputEnvelope
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
   }
 
   export type DishUncheckedCreateNestedManyWithoutUserInput = {
@@ -77531,20 +71499,6 @@ export namespace Prisma {
     update?: DayPlanUpdateWithWhereUniqueWithoutUserInput | DayPlanUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DayPlanUpdateManyWithWhereWithoutUserInput | DayPlanUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type DayTemplateUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
-    upsert?: DayTemplateUpsertWithWhereUniqueWithoutUserInput | DayTemplateUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DayTemplateCreateManyUserInputEnvelope
-    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    update?: DayTemplateUpdateWithWhereUniqueWithoutUserInput | DayTemplateUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DayTemplateUpdateManyWithWhereWithoutUserInput | DayTemplateUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
   }
 
   export type DishUpdateManyWithoutUserNestedInput = {
@@ -77867,20 +71821,6 @@ export namespace Prisma {
     update?: DayPlanUpdateWithWhereUniqueWithoutUserInput | DayPlanUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DayPlanUpdateManyWithWhereWithoutUserInput | DayPlanUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type DayTemplateUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput> | DayTemplateCreateWithoutUserInput[] | DayTemplateUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutUserInput | DayTemplateCreateOrConnectWithoutUserInput[]
-    upsert?: DayTemplateUpsertWithWhereUniqueWithoutUserInput | DayTemplateUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DayTemplateCreateManyUserInputEnvelope
-    set?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    disconnect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    delete?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    connect?: DayTemplateWhereUniqueInput | DayTemplateWhereUniqueInput[]
-    update?: DayTemplateUpdateWithWhereUniqueWithoutUserInput | DayTemplateUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DayTemplateUpdateManyWithWhereWithoutUserInput | DayTemplateUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
   }
 
   export type DishUncheckedUpdateManyWithoutUserNestedInput = {
@@ -78537,20 +72477,6 @@ export namespace Prisma {
     connect?: DishIngredientWhereUniqueInput | DishIngredientWhereUniqueInput[]
   }
 
-  export type DayPlanEntryCreateNestedManyWithoutDishInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput> | DayPlanEntryCreateWithoutDishInput[] | DayPlanEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDishInput | DayPlanEntryCreateOrConnectWithoutDishInput[]
-    createMany?: DayPlanEntryCreateManyDishInputEnvelope
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-  }
-
-  export type DayTemplateEntryCreateNestedManyWithoutDishInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput> | DayTemplateEntryCreateWithoutDishInput[] | DayTemplateEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutDishInput | DayTemplateEntryCreateOrConnectWithoutDishInput[]
-    createMany?: DayTemplateEntryCreateManyDishInputEnvelope
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-  }
-
   export type DishEntryCreateNestedManyWithoutDishInput = {
     create?: XOR<DishEntryCreateWithoutDishInput, DishEntryUncheckedCreateWithoutDishInput> | DishEntryCreateWithoutDishInput[] | DishEntryUncheckedCreateWithoutDishInput[]
     connectOrCreate?: DishEntryCreateOrConnectWithoutDishInput | DishEntryCreateOrConnectWithoutDishInput[]
@@ -78563,20 +72489,6 @@ export namespace Prisma {
     connectOrCreate?: DishIngredientCreateOrConnectWithoutDishInput | DishIngredientCreateOrConnectWithoutDishInput[]
     createMany?: DishIngredientCreateManyDishInputEnvelope
     connect?: DishIngredientWhereUniqueInput | DishIngredientWhereUniqueInput[]
-  }
-
-  export type DayPlanEntryUncheckedCreateNestedManyWithoutDishInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput> | DayPlanEntryCreateWithoutDishInput[] | DayPlanEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDishInput | DayPlanEntryCreateOrConnectWithoutDishInput[]
-    createMany?: DayPlanEntryCreateManyDishInputEnvelope
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-  }
-
-  export type DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput> | DayTemplateEntryCreateWithoutDishInput[] | DayTemplateEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutDishInput | DayTemplateEntryCreateOrConnectWithoutDishInput[]
-    createMany?: DayTemplateEntryCreateManyDishInputEnvelope
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
   }
 
   export type DishEntryUncheckedCreateNestedManyWithoutDishInput = {
@@ -78620,34 +72532,6 @@ export namespace Prisma {
     deleteMany?: DishIngredientScalarWhereInput | DishIngredientScalarWhereInput[]
   }
 
-  export type DayPlanEntryUpdateManyWithoutDishNestedInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput> | DayPlanEntryCreateWithoutDishInput[] | DayPlanEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDishInput | DayPlanEntryCreateOrConnectWithoutDishInput[]
-    upsert?: DayPlanEntryUpsertWithWhereUniqueWithoutDishInput | DayPlanEntryUpsertWithWhereUniqueWithoutDishInput[]
-    createMany?: DayPlanEntryCreateManyDishInputEnvelope
-    set?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    disconnect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    delete?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    update?: DayPlanEntryUpdateWithWhereUniqueWithoutDishInput | DayPlanEntryUpdateWithWhereUniqueWithoutDishInput[]
-    updateMany?: DayPlanEntryUpdateManyWithWhereWithoutDishInput | DayPlanEntryUpdateManyWithWhereWithoutDishInput[]
-    deleteMany?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-  }
-
-  export type DayTemplateEntryUpdateManyWithoutDishNestedInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput> | DayTemplateEntryCreateWithoutDishInput[] | DayTemplateEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutDishInput | DayTemplateEntryCreateOrConnectWithoutDishInput[]
-    upsert?: DayTemplateEntryUpsertWithWhereUniqueWithoutDishInput | DayTemplateEntryUpsertWithWhereUniqueWithoutDishInput[]
-    createMany?: DayTemplateEntryCreateManyDishInputEnvelope
-    set?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    disconnect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    delete?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    update?: DayTemplateEntryUpdateWithWhereUniqueWithoutDishInput | DayTemplateEntryUpdateWithWhereUniqueWithoutDishInput[]
-    updateMany?: DayTemplateEntryUpdateManyWithWhereWithoutDishInput | DayTemplateEntryUpdateManyWithWhereWithoutDishInput[]
-    deleteMany?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
-  }
-
   export type DishEntryUpdateManyWithoutDishNestedInput = {
     create?: XOR<DishEntryCreateWithoutDishInput, DishEntryUncheckedCreateWithoutDishInput> | DishEntryCreateWithoutDishInput[] | DishEntryUncheckedCreateWithoutDishInput[]
     connectOrCreate?: DishEntryCreateOrConnectWithoutDishInput | DishEntryCreateOrConnectWithoutDishInput[]
@@ -78674,34 +72558,6 @@ export namespace Prisma {
     update?: DishIngredientUpdateWithWhereUniqueWithoutDishInput | DishIngredientUpdateWithWhereUniqueWithoutDishInput[]
     updateMany?: DishIngredientUpdateManyWithWhereWithoutDishInput | DishIngredientUpdateManyWithWhereWithoutDishInput[]
     deleteMany?: DishIngredientScalarWhereInput | DishIngredientScalarWhereInput[]
-  }
-
-  export type DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput> | DayPlanEntryCreateWithoutDishInput[] | DayPlanEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDishInput | DayPlanEntryCreateOrConnectWithoutDishInput[]
-    upsert?: DayPlanEntryUpsertWithWhereUniqueWithoutDishInput | DayPlanEntryUpsertWithWhereUniqueWithoutDishInput[]
-    createMany?: DayPlanEntryCreateManyDishInputEnvelope
-    set?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    disconnect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    delete?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    update?: DayPlanEntryUpdateWithWhereUniqueWithoutDishInput | DayPlanEntryUpdateWithWhereUniqueWithoutDishInput[]
-    updateMany?: DayPlanEntryUpdateManyWithWhereWithoutDishInput | DayPlanEntryUpdateManyWithWhereWithoutDishInput[]
-    deleteMany?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-  }
-
-  export type DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput> | DayTemplateEntryCreateWithoutDishInput[] | DayTemplateEntryUncheckedCreateWithoutDishInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutDishInput | DayTemplateEntryCreateOrConnectWithoutDishInput[]
-    upsert?: DayTemplateEntryUpsertWithWhereUniqueWithoutDishInput | DayTemplateEntryUpsertWithWhereUniqueWithoutDishInput[]
-    createMany?: DayTemplateEntryCreateManyDishInputEnvelope
-    set?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    disconnect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    delete?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    update?: DayTemplateEntryUpdateWithWhereUniqueWithoutDishInput | DayTemplateEntryUpdateWithWhereUniqueWithoutDishInput[]
-    updateMany?: DayTemplateEntryUpdateManyWithWhereWithoutDishInput | DayTemplateEntryUpdateManyWithWhereWithoutDishInput[]
-    deleteMany?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
   }
 
   export type DishEntryUncheckedUpdateManyWithoutDishNestedInput = {
@@ -78769,140 +72625,6 @@ export namespace Prisma {
     delete?: CookingMethodWhereInput | boolean
     connect?: CookingMethodWhereUniqueInput
     update?: XOR<XOR<CookingMethodUpdateToOneWithWhereWithoutDishIngredientsInput, CookingMethodUpdateWithoutDishIngredientsInput>, CookingMethodUncheckedUpdateWithoutDishIngredientsInput>
-  }
-
-  export type UserCreateNestedOneWithoutDayTemplatesInput = {
-    create?: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDayTemplatesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type DayTemplateEntryCreateNestedManyWithoutTemplateInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput> | DayTemplateEntryCreateWithoutTemplateInput[] | DayTemplateEntryUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutTemplateInput | DayTemplateEntryCreateOrConnectWithoutTemplateInput[]
-    createMany?: DayTemplateEntryCreateManyTemplateInputEnvelope
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-  }
-
-  export type DayPlanCreateNestedManyWithoutTemplateInput = {
-    create?: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput> | DayPlanCreateWithoutTemplateInput[] | DayPlanUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutTemplateInput | DayPlanCreateOrConnectWithoutTemplateInput[]
-    createMany?: DayPlanCreateManyTemplateInputEnvelope
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-  }
-
-  export type DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput> | DayTemplateEntryCreateWithoutTemplateInput[] | DayTemplateEntryUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutTemplateInput | DayTemplateEntryCreateOrConnectWithoutTemplateInput[]
-    createMany?: DayTemplateEntryCreateManyTemplateInputEnvelope
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-  }
-
-  export type DayPlanUncheckedCreateNestedManyWithoutTemplateInput = {
-    create?: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput> | DayPlanCreateWithoutTemplateInput[] | DayPlanUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutTemplateInput | DayPlanCreateOrConnectWithoutTemplateInput[]
-    createMany?: DayPlanCreateManyTemplateInputEnvelope
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutDayTemplatesNestedInput = {
-    create?: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDayTemplatesInput
-    upsert?: UserUpsertWithoutDayTemplatesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDayTemplatesInput, UserUpdateWithoutDayTemplatesInput>, UserUncheckedUpdateWithoutDayTemplatesInput>
-  }
-
-  export type DayTemplateEntryUpdateManyWithoutTemplateNestedInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput> | DayTemplateEntryCreateWithoutTemplateInput[] | DayTemplateEntryUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutTemplateInput | DayTemplateEntryCreateOrConnectWithoutTemplateInput[]
-    upsert?: DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput | DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput[]
-    createMany?: DayTemplateEntryCreateManyTemplateInputEnvelope
-    set?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    disconnect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    delete?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    update?: DayTemplateEntryUpdateWithWhereUniqueWithoutTemplateInput | DayTemplateEntryUpdateWithWhereUniqueWithoutTemplateInput[]
-    updateMany?: DayTemplateEntryUpdateManyWithWhereWithoutTemplateInput | DayTemplateEntryUpdateManyWithWhereWithoutTemplateInput[]
-    deleteMany?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
-  }
-
-  export type DayPlanUpdateManyWithoutTemplateNestedInput = {
-    create?: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput> | DayPlanCreateWithoutTemplateInput[] | DayPlanUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutTemplateInput | DayPlanCreateOrConnectWithoutTemplateInput[]
-    upsert?: DayPlanUpsertWithWhereUniqueWithoutTemplateInput | DayPlanUpsertWithWhereUniqueWithoutTemplateInput[]
-    createMany?: DayPlanCreateManyTemplateInputEnvelope
-    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    update?: DayPlanUpdateWithWhereUniqueWithoutTemplateInput | DayPlanUpdateWithWhereUniqueWithoutTemplateInput[]
-    updateMany?: DayPlanUpdateManyWithWhereWithoutTemplateInput | DayPlanUpdateManyWithWhereWithoutTemplateInput[]
-    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type DayTemplateEntryUncheckedUpdateManyWithoutTemplateNestedInput = {
-    create?: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput> | DayTemplateEntryCreateWithoutTemplateInput[] | DayTemplateEntryUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayTemplateEntryCreateOrConnectWithoutTemplateInput | DayTemplateEntryCreateOrConnectWithoutTemplateInput[]
-    upsert?: DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput | DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput[]
-    createMany?: DayTemplateEntryCreateManyTemplateInputEnvelope
-    set?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    disconnect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    delete?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    connect?: DayTemplateEntryWhereUniqueInput | DayTemplateEntryWhereUniqueInput[]
-    update?: DayTemplateEntryUpdateWithWhereUniqueWithoutTemplateInput | DayTemplateEntryUpdateWithWhereUniqueWithoutTemplateInput[]
-    updateMany?: DayTemplateEntryUpdateManyWithWhereWithoutTemplateInput | DayTemplateEntryUpdateManyWithWhereWithoutTemplateInput[]
-    deleteMany?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
-  }
-
-  export type DayPlanUncheckedUpdateManyWithoutTemplateNestedInput = {
-    create?: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput> | DayPlanCreateWithoutTemplateInput[] | DayPlanUncheckedCreateWithoutTemplateInput[]
-    connectOrCreate?: DayPlanCreateOrConnectWithoutTemplateInput | DayPlanCreateOrConnectWithoutTemplateInput[]
-    upsert?: DayPlanUpsertWithWhereUniqueWithoutTemplateInput | DayPlanUpsertWithWhereUniqueWithoutTemplateInput[]
-    createMany?: DayPlanCreateManyTemplateInputEnvelope
-    set?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    disconnect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    delete?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    connect?: DayPlanWhereUniqueInput | DayPlanWhereUniqueInput[]
-    update?: DayPlanUpdateWithWhereUniqueWithoutTemplateInput | DayPlanUpdateWithWhereUniqueWithoutTemplateInput[]
-    updateMany?: DayPlanUpdateManyWithWhereWithoutTemplateInput | DayPlanUpdateManyWithWhereWithoutTemplateInput[]
-    deleteMany?: DayPlanScalarWhereInput | DayPlanScalarWhereInput[]
-  }
-
-  export type DishCreateNestedOneWithoutTemplateEntriesInput = {
-    create?: XOR<DishCreateWithoutTemplateEntriesInput, DishUncheckedCreateWithoutTemplateEntriesInput>
-    connectOrCreate?: DishCreateOrConnectWithoutTemplateEntriesInput
-    connect?: DishWhereUniqueInput
-  }
-
-  export type DayTemplateCreateNestedOneWithoutEntriesInput = {
-    create?: XOR<DayTemplateCreateWithoutEntriesInput, DayTemplateUncheckedCreateWithoutEntriesInput>
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutEntriesInput
-    connect?: DayTemplateWhereUniqueInput
-  }
-
-  export type EnumMealSlotFieldUpdateOperationsInput = {
-    set?: $Enums.MealSlot
-  }
-
-  export type EnumPriorityFieldUpdateOperationsInput = {
-    set?: $Enums.Priority
-  }
-
-  export type DishUpdateOneRequiredWithoutTemplateEntriesNestedInput = {
-    create?: XOR<DishCreateWithoutTemplateEntriesInput, DishUncheckedCreateWithoutTemplateEntriesInput>
-    connectOrCreate?: DishCreateOrConnectWithoutTemplateEntriesInput
-    upsert?: DishUpsertWithoutTemplateEntriesInput
-    connect?: DishWhereUniqueInput
-    update?: XOR<XOR<DishUpdateToOneWithWhereWithoutTemplateEntriesInput, DishUpdateWithoutTemplateEntriesInput>, DishUncheckedUpdateWithoutTemplateEntriesInput>
-  }
-
-  export type DayTemplateUpdateOneRequiredWithoutEntriesNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutEntriesInput, DayTemplateUncheckedCreateWithoutEntriesInput>
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutEntriesInput
-    upsert?: DayTemplateUpsertWithoutEntriesInput
-    connect?: DayTemplateWhereUniqueInput
-    update?: XOR<XOR<DayTemplateUpdateToOneWithWhereWithoutEntriesInput, DayTemplateUpdateWithoutEntriesInput>, DayTemplateUncheckedUpdateWithoutEntriesInput>
   }
 
   export type UserCreateNestedOneWithoutWeekPlansInput = {
@@ -79047,19 +72769,6 @@ export namespace Prisma {
     connect?: WeekPlanWhereUniqueInput
   }
 
-  export type DayTemplateCreateNestedOneWithoutDayPlansInput = {
-    create?: XOR<DayTemplateCreateWithoutDayPlansInput, DayTemplateUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutDayPlansInput
-    connect?: DayTemplateWhereUniqueInput
-  }
-
-  export type DayPlanEntryCreateNestedManyWithoutDayPlanInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput> | DayPlanEntryCreateWithoutDayPlanInput[] | DayPlanEntryUncheckedCreateWithoutDayPlanInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDayPlanInput | DayPlanEntryCreateOrConnectWithoutDayPlanInput[]
-    createMany?: DayPlanEntryCreateManyDayPlanInputEnvelope
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-  }
-
   export type MealSlotInstanceCreateNestedManyWithoutDayPlanInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
@@ -79067,22 +72776,11 @@ export namespace Prisma {
     connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
   }
 
-  export type DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput> | DayPlanEntryCreateWithoutDayPlanInput[] | DayPlanEntryUncheckedCreateWithoutDayPlanInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDayPlanInput | DayPlanEntryCreateOrConnectWithoutDayPlanInput[]
-    createMany?: DayPlanEntryCreateManyDayPlanInputEnvelope
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-  }
-
   export type MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
     createMany?: MealSlotInstanceCreateManyDayPlanInputEnvelope
     connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-  }
-
-  export type EnumPlanAdherenceFieldUpdateOperationsInput = {
-    set?: $Enums.PlanAdherence
   }
 
   export type UserUpdateOneRequiredWithoutDayPlansNestedInput = {
@@ -79103,30 +72801,6 @@ export namespace Prisma {
     update?: XOR<XOR<WeekPlanUpdateToOneWithWhereWithoutDayPlansInput, WeekPlanUpdateWithoutDayPlansInput>, WeekPlanUncheckedUpdateWithoutDayPlansInput>
   }
 
-  export type DayTemplateUpdateOneWithoutDayPlansNestedInput = {
-    create?: XOR<DayTemplateCreateWithoutDayPlansInput, DayTemplateUncheckedCreateWithoutDayPlansInput>
-    connectOrCreate?: DayTemplateCreateOrConnectWithoutDayPlansInput
-    upsert?: DayTemplateUpsertWithoutDayPlansInput
-    disconnect?: DayTemplateWhereInput | boolean
-    delete?: DayTemplateWhereInput | boolean
-    connect?: DayTemplateWhereUniqueInput
-    update?: XOR<XOR<DayTemplateUpdateToOneWithWhereWithoutDayPlansInput, DayTemplateUpdateWithoutDayPlansInput>, DayTemplateUncheckedUpdateWithoutDayPlansInput>
-  }
-
-  export type DayPlanEntryUpdateManyWithoutDayPlanNestedInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput> | DayPlanEntryCreateWithoutDayPlanInput[] | DayPlanEntryUncheckedCreateWithoutDayPlanInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDayPlanInput | DayPlanEntryCreateOrConnectWithoutDayPlanInput[]
-    upsert?: DayPlanEntryUpsertWithWhereUniqueWithoutDayPlanInput | DayPlanEntryUpsertWithWhereUniqueWithoutDayPlanInput[]
-    createMany?: DayPlanEntryCreateManyDayPlanInputEnvelope
-    set?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    disconnect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    delete?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    update?: DayPlanEntryUpdateWithWhereUniqueWithoutDayPlanInput | DayPlanEntryUpdateWithWhereUniqueWithoutDayPlanInput[]
-    updateMany?: DayPlanEntryUpdateManyWithWhereWithoutDayPlanInput | DayPlanEntryUpdateManyWithWhereWithoutDayPlanInput[]
-    deleteMany?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-  }
-
   export type MealSlotInstanceUpdateManyWithoutDayPlanNestedInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
@@ -79141,20 +72815,6 @@ export namespace Prisma {
     deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
   }
 
-  export type DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput = {
-    create?: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput> | DayPlanEntryCreateWithoutDayPlanInput[] | DayPlanEntryUncheckedCreateWithoutDayPlanInput[]
-    connectOrCreate?: DayPlanEntryCreateOrConnectWithoutDayPlanInput | DayPlanEntryCreateOrConnectWithoutDayPlanInput[]
-    upsert?: DayPlanEntryUpsertWithWhereUniqueWithoutDayPlanInput | DayPlanEntryUpsertWithWhereUniqueWithoutDayPlanInput[]
-    createMany?: DayPlanEntryCreateManyDayPlanInputEnvelope
-    set?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    disconnect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    delete?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    connect?: DayPlanEntryWhereUniqueInput | DayPlanEntryWhereUniqueInput[]
-    update?: DayPlanEntryUpdateWithWhereUniqueWithoutDayPlanInput | DayPlanEntryUpdateWithWhereUniqueWithoutDayPlanInput[]
-    updateMany?: DayPlanEntryUpdateManyWithWhereWithoutDayPlanInput | DayPlanEntryUpdateManyWithWhereWithoutDayPlanInput[]
-    deleteMany?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-  }
-
   export type MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
@@ -79167,34 +72827,6 @@ export namespace Prisma {
     update?: MealSlotInstanceUpdateWithWhereUniqueWithoutDayPlanInput | MealSlotInstanceUpdateWithWhereUniqueWithoutDayPlanInput[]
     updateMany?: MealSlotInstanceUpdateManyWithWhereWithoutDayPlanInput | MealSlotInstanceUpdateManyWithWhereWithoutDayPlanInput[]
     deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
-  }
-
-  export type DayPlanCreateNestedOneWithoutEntriesInput = {
-    create?: XOR<DayPlanCreateWithoutEntriesInput, DayPlanUncheckedCreateWithoutEntriesInput>
-    connectOrCreate?: DayPlanCreateOrConnectWithoutEntriesInput
-    connect?: DayPlanWhereUniqueInput
-  }
-
-  export type DishCreateNestedOneWithoutDayPlanEntriesInput = {
-    create?: XOR<DishCreateWithoutDayPlanEntriesInput, DishUncheckedCreateWithoutDayPlanEntriesInput>
-    connectOrCreate?: DishCreateOrConnectWithoutDayPlanEntriesInput
-    connect?: DishWhereUniqueInput
-  }
-
-  export type DayPlanUpdateOneRequiredWithoutEntriesNestedInput = {
-    create?: XOR<DayPlanCreateWithoutEntriesInput, DayPlanUncheckedCreateWithoutEntriesInput>
-    connectOrCreate?: DayPlanCreateOrConnectWithoutEntriesInput
-    upsert?: DayPlanUpsertWithoutEntriesInput
-    connect?: DayPlanWhereUniqueInput
-    update?: XOR<XOR<DayPlanUpdateToOneWithWhereWithoutEntriesInput, DayPlanUpdateWithoutEntriesInput>, DayPlanUncheckedUpdateWithoutEntriesInput>
-  }
-
-  export type DishUpdateOneRequiredWithoutDayPlanEntriesNestedInput = {
-    create?: XOR<DishCreateWithoutDayPlanEntriesInput, DishUncheckedCreateWithoutDayPlanEntriesInput>
-    connectOrCreate?: DishCreateOrConnectWithoutDayPlanEntriesInput
-    upsert?: DishUpsertWithoutDayPlanEntriesInput
-    connect?: DishWhereUniqueInput
-    update?: XOR<XOR<DishUpdateToOneWithWhereWithoutDayPlanEntriesInput, DishUpdateWithoutDayPlanEntriesInput>, DishUncheckedUpdateWithoutDayPlanEntriesInput>
   }
 
   export type UserCreateNestedOneWithoutShoppingListsInput = {
@@ -79305,48 +72937,6 @@ export namespace Prisma {
     update?: XOR<XOR<ShoppingListUpdateToOneWithWhereWithoutItemsInput, ShoppingListUpdateWithoutItemsInput>, ShoppingListUncheckedUpdateWithoutItemsInput>
   }
 
-  export type MealSlotInstanceCreateNestedManyWithoutTemplateSlotInput = {
-    create?: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput> | MealSlotInstanceCreateWithoutTemplateSlotInput[] | MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput[]
-    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput | MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput[]
-    createMany?: MealSlotInstanceCreateManyTemplateSlotInputEnvelope
-    connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-  }
-
-  export type MealSlotInstanceUncheckedCreateNestedManyWithoutTemplateSlotInput = {
-    create?: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput> | MealSlotInstanceCreateWithoutTemplateSlotInput[] | MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput[]
-    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput | MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput[]
-    createMany?: MealSlotInstanceCreateManyTemplateSlotInputEnvelope
-    connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-  }
-
-  export type MealSlotInstanceUpdateManyWithoutTemplateSlotNestedInput = {
-    create?: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput> | MealSlotInstanceCreateWithoutTemplateSlotInput[] | MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput[]
-    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput | MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput[]
-    upsert?: MealSlotInstanceUpsertWithWhereUniqueWithoutTemplateSlotInput | MealSlotInstanceUpsertWithWhereUniqueWithoutTemplateSlotInput[]
-    createMany?: MealSlotInstanceCreateManyTemplateSlotInputEnvelope
-    set?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    disconnect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    delete?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    update?: MealSlotInstanceUpdateWithWhereUniqueWithoutTemplateSlotInput | MealSlotInstanceUpdateWithWhereUniqueWithoutTemplateSlotInput[]
-    updateMany?: MealSlotInstanceUpdateManyWithWhereWithoutTemplateSlotInput | MealSlotInstanceUpdateManyWithWhereWithoutTemplateSlotInput[]
-    deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
-  }
-
-  export type MealSlotInstanceUncheckedUpdateManyWithoutTemplateSlotNestedInput = {
-    create?: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput> | MealSlotInstanceCreateWithoutTemplateSlotInput[] | MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput[]
-    connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput | MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput[]
-    upsert?: MealSlotInstanceUpsertWithWhereUniqueWithoutTemplateSlotInput | MealSlotInstanceUpsertWithWhereUniqueWithoutTemplateSlotInput[]
-    createMany?: MealSlotInstanceCreateManyTemplateSlotInputEnvelope
-    set?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    disconnect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    delete?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
-    update?: MealSlotInstanceUpdateWithWhereUniqueWithoutTemplateSlotInput | MealSlotInstanceUpdateWithWhereUniqueWithoutTemplateSlotInput[]
-    updateMany?: MealSlotInstanceUpdateManyWithWhereWithoutTemplateSlotInput | MealSlotInstanceUpdateManyWithWhereWithoutTemplateSlotInput[]
-    deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
-  }
-
   export type DayPlanCreateNestedOneWithoutMealSlotsInput = {
     create?: XOR<DayPlanCreateWithoutMealSlotsInput, DayPlanUncheckedCreateWithoutMealSlotsInput>
     connectOrCreate?: DayPlanCreateOrConnectWithoutMealSlotsInput
@@ -79357,12 +72947,6 @@ export namespace Prisma {
     create?: XOR<NutritionPersonCreateWithoutMealSlotsInput, NutritionPersonUncheckedCreateWithoutMealSlotsInput>
     connectOrCreate?: NutritionPersonCreateOrConnectWithoutMealSlotsInput
     connect?: NutritionPersonWhereUniqueInput
-  }
-
-  export type MealTemplateSlotCreateNestedOneWithoutMealSlotsInput = {
-    create?: XOR<MealTemplateSlotCreateWithoutMealSlotsInput, MealTemplateSlotUncheckedCreateWithoutMealSlotsInput>
-    connectOrCreate?: MealTemplateSlotCreateOrConnectWithoutMealSlotsInput
-    connect?: MealTemplateSlotWhereUniqueInput
   }
 
   export type DishEntryCreateNestedManyWithoutMealSlotInput = {
@@ -79407,14 +72991,6 @@ export namespace Prisma {
     upsert?: NutritionPersonUpsertWithoutMealSlotsInput
     connect?: NutritionPersonWhereUniqueInput
     update?: XOR<XOR<NutritionPersonUpdateToOneWithWhereWithoutMealSlotsInput, NutritionPersonUpdateWithoutMealSlotsInput>, NutritionPersonUncheckedUpdateWithoutMealSlotsInput>
-  }
-
-  export type MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput = {
-    create?: XOR<MealTemplateSlotCreateWithoutMealSlotsInput, MealTemplateSlotUncheckedCreateWithoutMealSlotsInput>
-    connectOrCreate?: MealTemplateSlotCreateOrConnectWithoutMealSlotsInput
-    upsert?: MealTemplateSlotUpsertWithoutMealSlotsInput
-    connect?: MealTemplateSlotWhereUniqueInput
-    update?: XOR<XOR<MealTemplateSlotUpdateToOneWithWhereWithoutMealSlotsInput, MealTemplateSlotUpdateWithoutMealSlotsInput>, MealTemplateSlotUncheckedUpdateWithoutMealSlotsInput>
   }
 
   export type DishEntryUpdateManyWithoutMealSlotNestedInput = {
@@ -81218,57 +74794,6 @@ export namespace Prisma {
     _max?: NestedEnumDishTypeFilter<$PrismaModel>
   }
 
-  export type NestedEnumMealSlotFilter<$PrismaModel = never> = {
-    equals?: $Enums.MealSlot | EnumMealSlotFieldRefInput<$PrismaModel>
-    in?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    not?: NestedEnumMealSlotFilter<$PrismaModel> | $Enums.MealSlot
-  }
-
-  export type NestedEnumPriorityFilter<$PrismaModel = never> = {
-    equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
-    in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    not?: NestedEnumPriorityFilter<$PrismaModel> | $Enums.Priority
-  }
-
-  export type NestedEnumMealSlotWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MealSlot | EnumMealSlotFieldRefInput<$PrismaModel>
-    in?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MealSlot[] | ListEnumMealSlotFieldRefInput<$PrismaModel>
-    not?: NestedEnumMealSlotWithAggregatesFilter<$PrismaModel> | $Enums.MealSlot
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMealSlotFilter<$PrismaModel>
-    _max?: NestedEnumMealSlotFilter<$PrismaModel>
-  }
-
-  export type NestedEnumPriorityWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Priority | EnumPriorityFieldRefInput<$PrismaModel>
-    in?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Priority[] | ListEnumPriorityFieldRefInput<$PrismaModel>
-    not?: NestedEnumPriorityWithAggregatesFilter<$PrismaModel> | $Enums.Priority
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPriorityFilter<$PrismaModel>
-    _max?: NestedEnumPriorityFilter<$PrismaModel>
-  }
-
-  export type NestedEnumPlanAdherenceFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlanAdherence | EnumPlanAdherenceFieldRefInput<$PrismaModel>
-    in?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlanAdherenceFilter<$PrismaModel> | $Enums.PlanAdherence
-  }
-
-  export type NestedEnumPlanAdherenceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlanAdherence | EnumPlanAdherenceFieldRefInput<$PrismaModel>
-    in?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlanAdherence[] | ListEnumPlanAdherenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlanAdherenceWithAggregatesFilter<$PrismaModel> | $Enums.PlanAdherence
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPlanAdherenceFilter<$PrismaModel>
-    _max?: NestedEnumPlanAdherenceFilter<$PrismaModel>
-  }
-
   export type NestedEnumUnitFilter<$PrismaModel = never> = {
     equals?: $Enums.Unit | EnumUnitFieldRefInput<$PrismaModel>
     in?: $Enums.Unit[] | ListEnumUnitFieldRefInput<$PrismaModel>
@@ -81297,31 +74822,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedUuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidFilter<$PrismaModel> | string
-  }
-
-  export type NestedUuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedEnumCartItemStatusFilter<$PrismaModel = never> = {
@@ -81769,25 +75269,21 @@ export namespace Prisma {
 
   export type DayPlanCreateWithoutUserInput = {
     id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutUserInput = {
     id?: string
     weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
   }
 
@@ -81801,34 +75297,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DayTemplateCreateWithoutUserInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateCreateOrConnectWithoutUserInput = {
-    where: DayTemplateWhereUniqueInput
-    create: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput>
-  }
-
-  export type DayTemplateCreateManyUserInputEnvelope = {
-    data: DayTemplateCreateManyUserInput | DayTemplateCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DishCreateWithoutUserInput = {
     id?: string
     name: string
@@ -81838,8 +75306,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryCreateNestedManyWithoutDishInput
   }
 
@@ -81852,8 +75318,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutDishInput
   }
 
@@ -82352,7 +75816,6 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutUserInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
@@ -82363,7 +75826,6 @@ export namespace Prisma {
   export type WeekPlanUncheckedCreateWithoutUserInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -82654,38 +76116,10 @@ export namespace Prisma {
     id?: StringFilter<"DayPlan"> | string
     userId?: StringFilter<"DayPlan"> | string
     weekPlanId?: StringNullableFilter<"DayPlan"> | string | null
-    templateId?: StringNullableFilter<"DayPlan"> | string | null
-    date?: DateTimeFilter<"DayPlan"> | Date | string
-    adherence?: EnumPlanAdherenceFilter<"DayPlan"> | $Enums.PlanAdherence
+    dayOfWeek?: IntFilter<"DayPlan"> | number
+    activity?: StringNullableFilter<"DayPlan"> | string | null
     createdAt?: DateTimeFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeFilter<"DayPlan"> | Date | string
-  }
-
-  export type DayTemplateUpsertWithWhereUniqueWithoutUserInput = {
-    where: DayTemplateWhereUniqueInput
-    update: XOR<DayTemplateUpdateWithoutUserInput, DayTemplateUncheckedUpdateWithoutUserInput>
-    create: XOR<DayTemplateCreateWithoutUserInput, DayTemplateUncheckedCreateWithoutUserInput>
-  }
-
-  export type DayTemplateUpdateWithWhereUniqueWithoutUserInput = {
-    where: DayTemplateWhereUniqueInput
-    data: XOR<DayTemplateUpdateWithoutUserInput, DayTemplateUncheckedUpdateWithoutUserInput>
-  }
-
-  export type DayTemplateUpdateManyWithWhereWithoutUserInput = {
-    where: DayTemplateScalarWhereInput
-    data: XOR<DayTemplateUpdateManyMutationInput, DayTemplateUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type DayTemplateScalarWhereInput = {
-    AND?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-    OR?: DayTemplateScalarWhereInput[]
-    NOT?: DayTemplateScalarWhereInput | DayTemplateScalarWhereInput[]
-    id?: StringFilter<"DayTemplate"> | string
-    userId?: StringFilter<"DayTemplate"> | string
-    name?: StringFilter<"DayTemplate"> | string
-    createdAt?: DateTimeFilter<"DayTemplate"> | Date | string
-    updatedAt?: DateTimeFilter<"DayTemplate"> | Date | string
   }
 
   export type DishUpsertWithWhereUniqueWithoutUserInput = {
@@ -83159,7 +76593,6 @@ export namespace Prisma {
     id?: StringFilter<"WeekPlan"> | string
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
-    startDate?: DateTimeFilter<"WeekPlan"> | Date | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
   }
@@ -83306,7 +76739,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -83342,7 +76774,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -83394,7 +76825,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -83430,7 +76860,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -83465,7 +76894,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -83501,7 +76929,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -83553,7 +76980,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -83589,7 +77015,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -83626,7 +77051,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -83662,7 +77086,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -83714,7 +77137,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -83750,7 +77172,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -83786,7 +77207,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -83822,7 +77242,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -83850,12 +77269,14 @@ export namespace Prisma {
 
   export type MealSlotInstanceCreateWithoutPersonInput = {
     id?: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
-    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
     productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
@@ -83863,7 +77284,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedCreateWithoutPersonInput = {
     id?: string
     dayPlanId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -83908,7 +77331,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -83944,7 +77366,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -83988,7 +77409,9 @@ export namespace Prisma {
     id?: StringFilter<"MealSlotInstance"> | string
     dayPlanId?: StringFilter<"MealSlotInstance"> | string
     personId?: StringFilter<"MealSlotInstance"> | string
-    templateSlotId?: UuidFilter<"MealSlotInstance"> | string
+    name?: StringFilter<"MealSlotInstance"> | string
+    timeWindow?: StringNullableFilter<"MealSlotInstance"> | string | null
+    order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
@@ -84010,7 +77433,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -84046,7 +77468,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -84212,7 +77633,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -84248,7 +77668,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -84443,7 +77862,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
@@ -84479,7 +77897,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
@@ -84531,61 +77948,10 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DayPlanEntryCreateWithoutDishInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    dayPlan: DayPlanCreateNestedOneWithoutEntriesInput
-  }
-
-  export type DayPlanEntryUncheckedCreateWithoutDishInput = {
-    id?: string
-    dayPlanId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayPlanEntryCreateOrConnectWithoutDishInput = {
-    where: DayPlanEntryWhereUniqueInput
-    create: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput>
-  }
-
-  export type DayPlanEntryCreateManyDishInputEnvelope = {
-    data: DayPlanEntryCreateManyDishInput | DayPlanEntryCreateManyDishInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DayTemplateEntryCreateWithoutDishInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    template: DayTemplateCreateNestedOneWithoutEntriesInput
-  }
-
-  export type DayTemplateEntryUncheckedCreateWithoutDishInput = {
-    id?: string
-    templateId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayTemplateEntryCreateOrConnectWithoutDishInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    create: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput>
-  }
-
-  export type DayTemplateEntryCreateManyDishInputEnvelope = {
-    data: DayTemplateEntryCreateManyDishInput | DayTemplateEntryCreateManyDishInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DishEntryCreateWithoutDishInput = {
     id?: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -84598,6 +77964,7 @@ export namespace Prisma {
     id?: string
     mealSlotId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -84641,7 +78008,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
@@ -84677,7 +78043,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
@@ -84714,62 +78079,6 @@ export namespace Prisma {
     data: XOR<DishIngredientUpdateManyMutationInput, DishIngredientUncheckedUpdateManyWithoutDishInput>
   }
 
-  export type DayPlanEntryUpsertWithWhereUniqueWithoutDishInput = {
-    where: DayPlanEntryWhereUniqueInput
-    update: XOR<DayPlanEntryUpdateWithoutDishInput, DayPlanEntryUncheckedUpdateWithoutDishInput>
-    create: XOR<DayPlanEntryCreateWithoutDishInput, DayPlanEntryUncheckedCreateWithoutDishInput>
-  }
-
-  export type DayPlanEntryUpdateWithWhereUniqueWithoutDishInput = {
-    where: DayPlanEntryWhereUniqueInput
-    data: XOR<DayPlanEntryUpdateWithoutDishInput, DayPlanEntryUncheckedUpdateWithoutDishInput>
-  }
-
-  export type DayPlanEntryUpdateManyWithWhereWithoutDishInput = {
-    where: DayPlanEntryScalarWhereInput
-    data: XOR<DayPlanEntryUpdateManyMutationInput, DayPlanEntryUncheckedUpdateManyWithoutDishInput>
-  }
-
-  export type DayPlanEntryScalarWhereInput = {
-    AND?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-    OR?: DayPlanEntryScalarWhereInput[]
-    NOT?: DayPlanEntryScalarWhereInput | DayPlanEntryScalarWhereInput[]
-    id?: StringFilter<"DayPlanEntry"> | string
-    dayPlanId?: StringFilter<"DayPlanEntry"> | string
-    dishId?: StringFilter<"DayPlanEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayPlanEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayPlanEntry"> | number
-    priority?: EnumPriorityFilter<"DayPlanEntry"> | $Enums.Priority
-  }
-
-  export type DayTemplateEntryUpsertWithWhereUniqueWithoutDishInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    update: XOR<DayTemplateEntryUpdateWithoutDishInput, DayTemplateEntryUncheckedUpdateWithoutDishInput>
-    create: XOR<DayTemplateEntryCreateWithoutDishInput, DayTemplateEntryUncheckedCreateWithoutDishInput>
-  }
-
-  export type DayTemplateEntryUpdateWithWhereUniqueWithoutDishInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    data: XOR<DayTemplateEntryUpdateWithoutDishInput, DayTemplateEntryUncheckedUpdateWithoutDishInput>
-  }
-
-  export type DayTemplateEntryUpdateManyWithWhereWithoutDishInput = {
-    where: DayTemplateEntryScalarWhereInput
-    data: XOR<DayTemplateEntryUpdateManyMutationInput, DayTemplateEntryUncheckedUpdateManyWithoutDishInput>
-  }
-
-  export type DayTemplateEntryScalarWhereInput = {
-    AND?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
-    OR?: DayTemplateEntryScalarWhereInput[]
-    NOT?: DayTemplateEntryScalarWhereInput | DayTemplateEntryScalarWhereInput[]
-    id?: StringFilter<"DayTemplateEntry"> | string
-    templateId?: StringFilter<"DayTemplateEntry"> | string
-    dishId?: StringFilter<"DayTemplateEntry"> | string
-    mealSlot?: EnumMealSlotFilter<"DayTemplateEntry"> | $Enums.MealSlot
-    servings?: FloatFilter<"DayTemplateEntry"> | number
-    priority?: EnumPriorityFilter<"DayTemplateEntry"> | $Enums.Priority
-  }
-
   export type DishEntryUpsertWithWhereUniqueWithoutDishInput = {
     where: DishEntryWhereUniqueInput
     update: XOR<DishEntryUpdateWithoutDishInput, DishEntryUncheckedUpdateWithoutDishInput>
@@ -84794,6 +78103,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     portionWeight?: FloatFilter<"DishEntry"> | number
+    servings?: FloatFilter<"DishEntry"> | number
     isShared?: BoolFilter<"DishEntry"> | boolean
     manualWeight?: BoolFilter<"DishEntry"> | boolean
     fitScore?: FloatNullableFilter<"DishEntry"> | number | null
@@ -84810,8 +78120,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryCreateNestedManyWithoutDishInput
   }
 
@@ -84824,8 +78132,6 @@ export namespace Prisma {
     type?: $Enums.DishType
     createdAt?: Date | string
     updatedAt?: Date | string
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutDishInput
   }
 
@@ -84932,8 +78238,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
-    dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUpdateManyWithoutDishNestedInput
   }
 
@@ -84946,8 +78250,6 @@ export namespace Prisma {
     type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
@@ -85041,382 +78343,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutDayTemplatesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dishes?: DishCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
-    milestones?: MilestoneCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
-    sprints?: SprintCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
-    visions?: VisionCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutDayTemplatesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
-    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutDayTemplatesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
-  }
-
-  export type DayTemplateEntryCreateWithoutTemplateInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    dish: DishCreateNestedOneWithoutTemplateEntriesInput
-  }
-
-  export type DayTemplateEntryUncheckedCreateWithoutTemplateInput = {
-    id?: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayTemplateEntryCreateOrConnectWithoutTemplateInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    create: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput>
-  }
-
-  export type DayTemplateEntryCreateManyTemplateInputEnvelope = {
-    data: DayTemplateEntryCreateManyTemplateInput | DayTemplateEntryCreateManyTemplateInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DayPlanCreateWithoutTemplateInput = {
-    id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDayPlansInput
-    weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
-    mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanUncheckedCreateWithoutTemplateInput = {
-    id?: string
-    userId: string
-    weekPlanId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
-    mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanCreateOrConnectWithoutTemplateInput = {
-    where: DayPlanWhereUniqueInput
-    create: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput>
-  }
-
-  export type DayPlanCreateManyTemplateInputEnvelope = {
-    data: DayPlanCreateManyTemplateInput | DayPlanCreateManyTemplateInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutDayTemplatesInput = {
-    update: XOR<UserUpdateWithoutDayTemplatesInput, UserUncheckedUpdateWithoutDayTemplatesInput>
-    create: XOR<UserCreateWithoutDayTemplatesInput, UserUncheckedCreateWithoutDayTemplatesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDayTemplatesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDayTemplatesInput, UserUncheckedUpdateWithoutDayTemplatesInput>
-  }
-
-  export type UserUpdateWithoutDayTemplatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dishes?: DishUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
-    sprints?: SprintUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
-    visions?: VisionUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDayTemplatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type DayTemplateEntryUpsertWithWhereUniqueWithoutTemplateInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    update: XOR<DayTemplateEntryUpdateWithoutTemplateInput, DayTemplateEntryUncheckedUpdateWithoutTemplateInput>
-    create: XOR<DayTemplateEntryCreateWithoutTemplateInput, DayTemplateEntryUncheckedCreateWithoutTemplateInput>
-  }
-
-  export type DayTemplateEntryUpdateWithWhereUniqueWithoutTemplateInput = {
-    where: DayTemplateEntryWhereUniqueInput
-    data: XOR<DayTemplateEntryUpdateWithoutTemplateInput, DayTemplateEntryUncheckedUpdateWithoutTemplateInput>
-  }
-
-  export type DayTemplateEntryUpdateManyWithWhereWithoutTemplateInput = {
-    where: DayTemplateEntryScalarWhereInput
-    data: XOR<DayTemplateEntryUpdateManyMutationInput, DayTemplateEntryUncheckedUpdateManyWithoutTemplateInput>
-  }
-
-  export type DayPlanUpsertWithWhereUniqueWithoutTemplateInput = {
-    where: DayPlanWhereUniqueInput
-    update: XOR<DayPlanUpdateWithoutTemplateInput, DayPlanUncheckedUpdateWithoutTemplateInput>
-    create: XOR<DayPlanCreateWithoutTemplateInput, DayPlanUncheckedCreateWithoutTemplateInput>
-  }
-
-  export type DayPlanUpdateWithWhereUniqueWithoutTemplateInput = {
-    where: DayPlanWhereUniqueInput
-    data: XOR<DayPlanUpdateWithoutTemplateInput, DayPlanUncheckedUpdateWithoutTemplateInput>
-  }
-
-  export type DayPlanUpdateManyWithWhereWithoutTemplateInput = {
-    where: DayPlanScalarWhereInput
-    data: XOR<DayPlanUpdateManyMutationInput, DayPlanUncheckedUpdateManyWithoutTemplateInput>
-  }
-
-  export type DishCreateWithoutTemplateEntriesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    servings?: number
-    type?: $Enums.DishType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDishesInput
-    ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    dishEntries?: DishEntryCreateNestedManyWithoutDishInput
-  }
-
-  export type DishUncheckedCreateWithoutTemplateEntriesInput = {
-    id?: string
-    userId: string
-    name: string
-    description?: string | null
-    servings?: number
-    type?: $Enums.DishType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    dishEntries?: DishEntryUncheckedCreateNestedManyWithoutDishInput
-  }
-
-  export type DishCreateOrConnectWithoutTemplateEntriesInput = {
-    where: DishWhereUniqueInput
-    create: XOR<DishCreateWithoutTemplateEntriesInput, DishUncheckedCreateWithoutTemplateEntriesInput>
-  }
-
-  export type DayTemplateCreateWithoutEntriesInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDayTemplatesInput
-    dayPlans?: DayPlanCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUncheckedCreateWithoutEntriesInput = {
-    id?: string
-    userId: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateCreateOrConnectWithoutEntriesInput = {
-    where: DayTemplateWhereUniqueInput
-    create: XOR<DayTemplateCreateWithoutEntriesInput, DayTemplateUncheckedCreateWithoutEntriesInput>
-  }
-
-  export type DishUpsertWithoutTemplateEntriesInput = {
-    update: XOR<DishUpdateWithoutTemplateEntriesInput, DishUncheckedUpdateWithoutTemplateEntriesInput>
-    create: XOR<DishCreateWithoutTemplateEntriesInput, DishUncheckedCreateWithoutTemplateEntriesInput>
-    where?: DishWhereInput
-  }
-
-  export type DishUpdateToOneWithWhereWithoutTemplateEntriesInput = {
-    where?: DishWhereInput
-    data: XOR<DishUpdateWithoutTemplateEntriesInput, DishUncheckedUpdateWithoutTemplateEntriesInput>
-  }
-
-  export type DishUpdateWithoutTemplateEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    servings?: IntFieldUpdateOperationsInput | number
-    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDishesNestedInput
-    ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
-    dishEntries?: DishEntryUpdateManyWithoutDishNestedInput
-  }
-
-  export type DishUncheckedUpdateWithoutTemplateEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    servings?: IntFieldUpdateOperationsInput | number
-    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
-    dishEntries?: DishEntryUncheckedUpdateManyWithoutDishNestedInput
-  }
-
-  export type DayTemplateUpsertWithoutEntriesInput = {
-    update: XOR<DayTemplateUpdateWithoutEntriesInput, DayTemplateUncheckedUpdateWithoutEntriesInput>
-    create: XOR<DayTemplateCreateWithoutEntriesInput, DayTemplateUncheckedCreateWithoutEntriesInput>
-    where?: DayTemplateWhereInput
-  }
-
-  export type DayTemplateUpdateToOneWithWhereWithoutEntriesInput = {
-    where?: DayTemplateWhereInput
-    data: XOR<DayTemplateUpdateWithoutEntriesInput, DayTemplateUncheckedUpdateWithoutEntriesInput>
-  }
-
-  export type DayTemplateUpdateWithoutEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateUncheckedUpdateWithoutEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutTemplateNestedInput
-  }
-
   export type UserCreateWithoutWeekPlansInput = {
     id?: string
     name?: string | null
@@ -85432,7 +78358,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -85468,7 +78393,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -85496,25 +78420,21 @@ export namespace Prisma {
 
   export type DayPlanCreateWithoutWeekPlanInput = {
     id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutWeekPlanInput = {
     id?: string
     userId: string
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
   }
 
@@ -85601,7 +78521,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -85637,7 +78556,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -85729,7 +78647,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -85765,7 +78682,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -85795,7 +78711,6 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutDayPlansInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -85807,7 +78722,6 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -85819,63 +78733,16 @@ export namespace Prisma {
     create: XOR<WeekPlanCreateWithoutDayPlansInput, WeekPlanUncheckedCreateWithoutDayPlansInput>
   }
 
-  export type DayTemplateCreateWithoutDayPlansInput = {
-    id?: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDayTemplatesInput
-    entries?: DayTemplateEntryCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateUncheckedCreateWithoutDayPlansInput = {
-    id?: string
-    userId: string
-    name: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    entries?: DayTemplateEntryUncheckedCreateNestedManyWithoutTemplateInput
-  }
-
-  export type DayTemplateCreateOrConnectWithoutDayPlansInput = {
-    where: DayTemplateWhereUniqueInput
-    create: XOR<DayTemplateCreateWithoutDayPlansInput, DayTemplateUncheckedCreateWithoutDayPlansInput>
-  }
-
-  export type DayPlanEntryCreateWithoutDayPlanInput = {
-    id?: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-    dish: DishCreateNestedOneWithoutDayPlanEntriesInput
-  }
-
-  export type DayPlanEntryUncheckedCreateWithoutDayPlanInput = {
-    id?: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayPlanEntryCreateOrConnectWithoutDayPlanInput = {
-    where: DayPlanEntryWhereUniqueInput
-    create: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput>
-  }
-
-  export type DayPlanEntryCreateManyDayPlanInputEnvelope = {
-    data: DayPlanEntryCreateManyDayPlanInput | DayPlanEntryCreateManyDayPlanInput[]
-    skipDuplicates?: boolean
-  }
-
   export type MealSlotInstanceCreateWithoutDayPlanInput = {
     id?: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
-    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
     productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
@@ -85883,7 +78750,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedCreateWithoutDayPlanInput = {
     id?: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -85927,7 +78796,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -85963,7 +78831,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -85999,7 +78866,6 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -86011,56 +78877,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutWeekPlanNestedInput
     cart?: ShoppingCartUncheckedUpdateOneWithoutWeekPlanNestedInput
-  }
-
-  export type DayTemplateUpsertWithoutDayPlansInput = {
-    update: XOR<DayTemplateUpdateWithoutDayPlansInput, DayTemplateUncheckedUpdateWithoutDayPlansInput>
-    create: XOR<DayTemplateCreateWithoutDayPlansInput, DayTemplateUncheckedCreateWithoutDayPlansInput>
-    where?: DayTemplateWhereInput
-  }
-
-  export type DayTemplateUpdateToOneWithWhereWithoutDayPlansInput = {
-    where?: DayTemplateWhereInput
-    data: XOR<DayTemplateUpdateWithoutDayPlansInput, DayTemplateUncheckedUpdateWithoutDayPlansInput>
-  }
-
-  export type DayTemplateUpdateWithoutDayPlansInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDayTemplatesNestedInput
-    entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateUncheckedUpdateWithoutDayPlansInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayTemplateEntryUncheckedUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayPlanEntryUpsertWithWhereUniqueWithoutDayPlanInput = {
-    where: DayPlanEntryWhereUniqueInput
-    update: XOR<DayPlanEntryUpdateWithoutDayPlanInput, DayPlanEntryUncheckedUpdateWithoutDayPlanInput>
-    create: XOR<DayPlanEntryCreateWithoutDayPlanInput, DayPlanEntryUncheckedCreateWithoutDayPlanInput>
-  }
-
-  export type DayPlanEntryUpdateWithWhereUniqueWithoutDayPlanInput = {
-    where: DayPlanEntryWhereUniqueInput
-    data: XOR<DayPlanEntryUpdateWithoutDayPlanInput, DayPlanEntryUncheckedUpdateWithoutDayPlanInput>
-  }
-
-  export type DayPlanEntryUpdateManyWithWhereWithoutDayPlanInput = {
-    where: DayPlanEntryScalarWhereInput
-    data: XOR<DayPlanEntryUpdateManyMutationInput, DayPlanEntryUncheckedUpdateManyWithoutDayPlanInput>
   }
 
   export type MealSlotInstanceUpsertWithWhereUniqueWithoutDayPlanInput = {
@@ -86079,142 +78899,6 @@ export namespace Prisma {
     data: XOR<MealSlotInstanceUpdateManyMutationInput, MealSlotInstanceUncheckedUpdateManyWithoutDayPlanInput>
   }
 
-  export type DayPlanCreateWithoutEntriesInput = {
-    id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDayPlansInput
-    weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanUncheckedCreateWithoutEntriesInput = {
-    id?: string
-    userId: string
-    weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
-  }
-
-  export type DayPlanCreateOrConnectWithoutEntriesInput = {
-    where: DayPlanWhereUniqueInput
-    create: XOR<DayPlanCreateWithoutEntriesInput, DayPlanUncheckedCreateWithoutEntriesInput>
-  }
-
-  export type DishCreateWithoutDayPlanEntriesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    servings?: number
-    type?: $Enums.DishType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDishesInput
-    ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
-    dishEntries?: DishEntryCreateNestedManyWithoutDishInput
-  }
-
-  export type DishUncheckedCreateWithoutDayPlanEntriesInput = {
-    id?: string
-    userId: string
-    name: string
-    description?: string | null
-    servings?: number
-    type?: $Enums.DishType
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
-    dishEntries?: DishEntryUncheckedCreateNestedManyWithoutDishInput
-  }
-
-  export type DishCreateOrConnectWithoutDayPlanEntriesInput = {
-    where: DishWhereUniqueInput
-    create: XOR<DishCreateWithoutDayPlanEntriesInput, DishUncheckedCreateWithoutDayPlanEntriesInput>
-  }
-
-  export type DayPlanUpsertWithoutEntriesInput = {
-    update: XOR<DayPlanUpdateWithoutEntriesInput, DayPlanUncheckedUpdateWithoutEntriesInput>
-    create: XOR<DayPlanCreateWithoutEntriesInput, DayPlanUncheckedCreateWithoutEntriesInput>
-    where?: DayPlanWhereInput
-  }
-
-  export type DayPlanUpdateToOneWithWhereWithoutEntriesInput = {
-    where?: DayPlanWhereInput
-    data: XOR<DayPlanUpdateWithoutEntriesInput, DayPlanUncheckedUpdateWithoutEntriesInput>
-  }
-
-  export type DayPlanUpdateWithoutEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
-    weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
-    template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
-    mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
-  }
-
-  export type DayPlanUncheckedUpdateWithoutEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
-  }
-
-  export type DishUpsertWithoutDayPlanEntriesInput = {
-    update: XOR<DishUpdateWithoutDayPlanEntriesInput, DishUncheckedUpdateWithoutDayPlanEntriesInput>
-    create: XOR<DishCreateWithoutDayPlanEntriesInput, DishUncheckedCreateWithoutDayPlanEntriesInput>
-    where?: DishWhereInput
-  }
-
-  export type DishUpdateToOneWithWhereWithoutDayPlanEntriesInput = {
-    where?: DishWhereInput
-    data: XOR<DishUpdateWithoutDayPlanEntriesInput, DishUncheckedUpdateWithoutDayPlanEntriesInput>
-  }
-
-  export type DishUpdateWithoutDayPlanEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    servings?: IntFieldUpdateOperationsInput | number
-    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDishesNestedInput
-    ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
-    dishEntries?: DishEntryUpdateManyWithoutDishNestedInput
-  }
-
-  export type DishUncheckedUpdateWithoutDayPlanEntriesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    servings?: IntFieldUpdateOperationsInput | number
-    type?: EnumDishTypeFieldUpdateOperationsInput | $Enums.DishType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
-    dishEntries?: DishEntryUncheckedUpdateManyWithoutDishNestedInput
-  }
-
   export type UserCreateWithoutShoppingListsInput = {
     id?: string
     name?: string | null
@@ -86230,7 +78914,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -86266,7 +78949,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -86295,7 +78977,6 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutShoppingListsInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -86307,7 +78988,6 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -86371,7 +79051,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -86407,7 +79086,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -86442,7 +79120,6 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -86454,7 +79131,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -86645,78 +79321,24 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MealSlotInstanceCreateWithoutTemplateSlotInput = {
-    id?: string
-    targetKcal: number
-    targetFiberGrams: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
-    person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
-    dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
-    productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
-  }
-
-  export type MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput = {
-    id?: string
-    dayPlanId: string
-    personId: string
-    targetKcal: number
-    targetFiberGrams: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
-    productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
-  }
-
-  export type MealSlotInstanceCreateOrConnectWithoutTemplateSlotInput = {
-    where: MealSlotInstanceWhereUniqueInput
-    create: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput>
-  }
-
-  export type MealSlotInstanceCreateManyTemplateSlotInputEnvelope = {
-    data: MealSlotInstanceCreateManyTemplateSlotInput | MealSlotInstanceCreateManyTemplateSlotInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MealSlotInstanceUpsertWithWhereUniqueWithoutTemplateSlotInput = {
-    where: MealSlotInstanceWhereUniqueInput
-    update: XOR<MealSlotInstanceUpdateWithoutTemplateSlotInput, MealSlotInstanceUncheckedUpdateWithoutTemplateSlotInput>
-    create: XOR<MealSlotInstanceCreateWithoutTemplateSlotInput, MealSlotInstanceUncheckedCreateWithoutTemplateSlotInput>
-  }
-
-  export type MealSlotInstanceUpdateWithWhereUniqueWithoutTemplateSlotInput = {
-    where: MealSlotInstanceWhereUniqueInput
-    data: XOR<MealSlotInstanceUpdateWithoutTemplateSlotInput, MealSlotInstanceUncheckedUpdateWithoutTemplateSlotInput>
-  }
-
-  export type MealSlotInstanceUpdateManyWithWhereWithoutTemplateSlotInput = {
-    where: MealSlotInstanceScalarWhereInput
-    data: XOR<MealSlotInstanceUpdateManyMutationInput, MealSlotInstanceUncheckedUpdateManyWithoutTemplateSlotInput>
-  }
-
   export type DayPlanCreateWithoutMealSlotsInput = {
     id?: string
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
-    template?: DayTemplateCreateNestedOneWithoutDayPlansInput
-    entries?: DayPlanEntryCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutMealSlotsInput = {
     id?: string
     userId: string
     weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    entries?: DayPlanEntryUncheckedCreateNestedManyWithoutDayPlanInput
   }
 
   export type DayPlanCreateOrConnectWithoutMealSlotsInput = {
@@ -86757,36 +79379,10 @@ export namespace Prisma {
     create: XOR<NutritionPersonCreateWithoutMealSlotsInput, NutritionPersonUncheckedCreateWithoutMealSlotsInput>
   }
 
-  export type MealTemplateSlotCreateWithoutMealSlotsInput = {
-    id?: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams?: number | null
-    maxPctOfDaily?: number | null
-    fiberPct: number
-  }
-
-  export type MealTemplateSlotUncheckedCreateWithoutMealSlotsInput = {
-    id?: string
-    name: string
-    goal: $Enums.Goal
-    percentage: number
-    order: number
-    minProteinGrams?: number | null
-    maxPctOfDaily?: number | null
-    fiberPct: number
-  }
-
-  export type MealTemplateSlotCreateOrConnectWithoutMealSlotsInput = {
-    where: MealTemplateSlotWhereUniqueInput
-    create: XOR<MealTemplateSlotCreateWithoutMealSlotsInput, MealTemplateSlotUncheckedCreateWithoutMealSlotsInput>
-  }
-
   export type DishEntryCreateWithoutMealSlotInput = {
     id?: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -86799,6 +79395,7 @@ export namespace Prisma {
     id?: string
     dishId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -86855,26 +79452,22 @@ export namespace Prisma {
 
   export type DayPlanUpdateWithoutMealSlotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
-    template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
-    entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutMealSlotsInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
   export type NutritionPersonUpsertWithoutMealSlotsInput = {
@@ -86916,39 +79509,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MealTemplateSlotUpsertWithoutMealSlotsInput = {
-    update: XOR<MealTemplateSlotUpdateWithoutMealSlotsInput, MealTemplateSlotUncheckedUpdateWithoutMealSlotsInput>
-    create: XOR<MealTemplateSlotCreateWithoutMealSlotsInput, MealTemplateSlotUncheckedCreateWithoutMealSlotsInput>
-    where?: MealTemplateSlotWhereInput
-  }
-
-  export type MealTemplateSlotUpdateToOneWithWhereWithoutMealSlotsInput = {
-    where?: MealTemplateSlotWhereInput
-    data: XOR<MealTemplateSlotUpdateWithoutMealSlotsInput, MealTemplateSlotUncheckedUpdateWithoutMealSlotsInput>
-  }
-
-  export type MealTemplateSlotUpdateWithoutMealSlotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type MealTemplateSlotUncheckedUpdateWithoutMealSlotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    goal?: EnumGoalFieldUpdateOperationsInput | $Enums.Goal
-    percentage?: FloatFieldUpdateOperationsInput | number
-    order?: IntFieldUpdateOperationsInput | number
-    minProteinGrams?: NullableFloatFieldUpdateOperationsInput | number | null
-    maxPctOfDaily?: NullableFloatFieldUpdateOperationsInput | number | null
-    fiberPct?: FloatFieldUpdateOperationsInput | number
-  }
-
   export type DishEntryUpsertWithWhereUniqueWithoutMealSlotInput = {
     where: DishEntryWhereUniqueInput
     update: XOR<DishEntryUpdateWithoutMealSlotInput, DishEntryUncheckedUpdateWithoutMealSlotInput>
@@ -86983,13 +79543,15 @@ export namespace Prisma {
 
   export type MealSlotInstanceCreateWithoutProductEntriesInput = {
     id?: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
-    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     dishEntries?: DishEntryCreateNestedManyWithoutMealSlotInput
   }
 
@@ -86997,7 +79559,9 @@ export namespace Prisma {
     id?: string
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -87078,13 +79642,15 @@ export namespace Prisma {
 
   export type MealSlotInstanceUpdateWithoutProductEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
-    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
   }
 
@@ -87092,7 +79658,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -87171,8 +79739,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDishesInput
     ingredients?: DishIngredientCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryCreateNestedManyWithoutDishInput
   }
 
   export type DishUncheckedCreateWithoutDishEntriesInput = {
@@ -87185,8 +79751,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishIngredientUncheckedCreateNestedManyWithoutDishInput
-    dayPlanEntries?: DayPlanEntryUncheckedCreateNestedManyWithoutDishInput
-    templateEntries?: DayTemplateEntryUncheckedCreateNestedManyWithoutDishInput
   }
 
   export type DishCreateOrConnectWithoutDishEntriesInput = {
@@ -87196,13 +79760,15 @@ export namespace Prisma {
 
   export type MealSlotInstanceCreateWithoutDishEntriesInput = {
     id?: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
-    templateSlot: MealTemplateSlotCreateNestedOneWithoutMealSlotsInput
     productEntries?: ProductEntryCreateNestedManyWithoutMealSlotInput
   }
 
@@ -87210,7 +79776,9 @@ export namespace Prisma {
     id?: string
     dayPlanId: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -87244,8 +79812,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDishesNestedInput
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
   }
 
   export type DishUncheckedUpdateWithoutDishEntriesInput = {
@@ -87258,8 +79824,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
   export type MealSlotInstanceUpsertWithoutDishEntriesInput = {
@@ -87275,13 +79839,15 @@ export namespace Prisma {
 
   export type MealSlotInstanceUpdateWithoutDishEntriesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
-    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
 
@@ -87289,7 +79855,9 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -87300,7 +79868,6 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutCartInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -87312,7 +79879,6 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -87374,7 +79940,6 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -87386,7 +79951,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -87624,7 +80188,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -87660,7 +80223,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -87856,7 +80418,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -87892,7 +80453,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -88171,7 +80731,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -88207,7 +80766,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -88412,7 +80970,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -88448,7 +81005,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -88483,7 +81039,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -88519,7 +81074,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -88571,7 +81125,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -88607,7 +81160,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -88677,7 +81229,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
@@ -88713,7 +81264,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
@@ -88826,7 +81376,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
@@ -88862,7 +81411,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
@@ -89000,7 +81548,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
@@ -89036,7 +81583,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
@@ -89088,7 +81634,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
@@ -89124,7 +81669,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
@@ -89160,7 +81704,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -89196,7 +81739,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -89248,7 +81790,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -89284,7 +81825,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -89479,7 +82019,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -89515,7 +82054,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -89721,7 +82259,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -89757,7 +82294,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -90099,7 +82635,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -90135,7 +82670,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -90187,7 +82721,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -90223,7 +82756,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -90258,7 +82790,6 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -90294,7 +82825,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -90346,7 +82876,6 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -90382,7 +82911,6 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -90452,7 +82980,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -90488,7 +83015,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -90579,7 +83105,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -90615,7 +83140,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -90685,7 +83209,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -90721,7 +83244,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -90823,7 +83345,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -90859,7 +83380,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -91694,7 +84214,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -91730,7 +84249,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -91782,7 +84300,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -91818,7 +84335,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -91854,7 +84370,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -91890,7 +84405,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -91942,7 +84456,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -91978,7 +84491,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -92014,7 +84526,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateCreateNestedManyWithoutUserInput
     dishes?: DishCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
@@ -92050,7 +84561,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dayTemplates?: DayTemplateUncheckedCreateNestedManyWithoutUserInput
     dishes?: DishUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
     libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
@@ -92102,7 +84612,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUpdateManyWithoutUserNestedInput
     dishes?: DishUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
@@ -92138,7 +84647,6 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dayTemplates?: DayTemplateUncheckedUpdateManyWithoutUserNestedInput
     dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
     libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
@@ -92218,16 +84726,8 @@ export namespace Prisma {
   export type DayPlanCreateManyUserInput = {
     id?: string
     weekPlanId?: string | null
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayTemplateCreateManyUserInput = {
-    id?: string
-    name: string
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -92403,7 +84903,6 @@ export namespace Prisma {
   export type WeekPlanCreateManyUserInput = {
     id?: string
     name?: string | null
-    startDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -92625,59 +85124,29 @@ export namespace Prisma {
 
   export type DayPlanUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
-    template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
-    entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DayTemplateUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayTemplateEntryUpdateManyWithoutTemplateNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayTemplateEntryUncheckedUpdateManyWithoutTemplateNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutTemplateNestedInput
-  }
-
-  export type DayTemplateUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -92691,8 +85160,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUpdateManyWithoutDishNestedInput
   }
 
@@ -92705,8 +85172,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishIngredientUncheckedUpdateManyWithoutDishNestedInput
-    dayPlanEntries?: DayPlanEntryUncheckedUpdateManyWithoutDishNestedInput
-    templateEntries?: DayTemplateEntryUncheckedUpdateManyWithoutDishNestedInput
     dishEntries?: DishEntryUncheckedUpdateManyWithoutDishNestedInput
   }
 
@@ -93233,7 +85698,6 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
@@ -93244,7 +85708,6 @@ export namespace Prisma {
   export type WeekPlanUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -93255,7 +85718,6 @@ export namespace Prisma {
   export type WeekPlanUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -93404,7 +85866,9 @@ export namespace Prisma {
   export type MealSlotInstanceCreateManyPersonInput = {
     id?: string
     dayPlanId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
@@ -93413,12 +85877,14 @@ export namespace Prisma {
 
   export type MealSlotInstanceUpdateWithoutPersonInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
-    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
     productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
@@ -93426,7 +85892,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedUpdateWithoutPersonInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -93438,7 +85906,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedUpdateManyWithoutPersonInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayPlanId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -93633,26 +86103,11 @@ export namespace Prisma {
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
-  export type DayPlanEntryCreateManyDishInput = {
-    id?: string
-    dayPlanId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayTemplateEntryCreateManyDishInput = {
-    id?: string
-    templateId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
   export type DishEntryCreateManyDishInput = {
     id?: string
     mealSlotId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -93684,57 +86139,10 @@ export namespace Prisma {
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
-  export type DayPlanEntryUpdateWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    dayPlan?: DayPlanUpdateOneRequiredWithoutEntriesNestedInput
-  }
-
-  export type DayPlanEntryUncheckedUpdateWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayPlanEntryUncheckedUpdateManyWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayTemplateEntryUpdateWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    template?: DayTemplateUpdateOneRequiredWithoutEntriesNestedInput
-  }
-
-  export type DayTemplateEntryUncheckedUpdateWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayTemplateEntryUncheckedUpdateManyWithoutDishInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    templateId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
   export type DishEntryUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -93747,6 +86155,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -93758,6 +86167,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -93765,88 +86175,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayTemplateEntryCreateManyTemplateInput = {
-    id?: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
-  export type DayPlanCreateManyTemplateInput = {
-    id?: string
-    userId: string
-    weekPlanId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayTemplateEntryUpdateWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    dish?: DishUpdateOneRequiredWithoutTemplateEntriesNestedInput
-  }
-
-  export type DayTemplateEntryUncheckedUpdateWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayTemplateEntryUncheckedUpdateManyWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayPlanUpdateWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
-    weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
-    entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
-    mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
-  }
-
-  export type DayPlanUncheckedUpdateWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
-    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
-  }
-
-  export type DayPlanUncheckedUpdateManyWithoutTemplateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type DayPlanCreateManyWeekPlanInput = {
     id?: string
     userId: string
-    templateId?: string | null
-    date: Date | string
-    adherence?: $Enums.PlanAdherence
+    dayOfWeek: number
+    activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -93861,34 +86194,29 @@ export namespace Prisma {
 
   export type DayPlanUpdateWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
-    template?: DayTemplateUpdateOneWithoutDayPlansNestedInput
-    entries?: DayPlanEntryUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    entries?: DayPlanEntryUncheckedUpdateManyWithoutDayPlanNestedInput
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateManyWithoutWeekPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    templateId?: NullableStringFieldUpdateOperationsInput | string | null
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    adherence?: EnumPlanAdherenceFieldUpdateOperationsInput | $Enums.PlanAdherence
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -93919,56 +86247,28 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayPlanEntryCreateManyDayPlanInput = {
-    id?: string
-    dishId: string
-    mealSlot: $Enums.MealSlot
-    servings?: number
-    priority?: $Enums.Priority
-  }
-
   export type MealSlotInstanceCreateManyDayPlanInput = {
     id?: string
     personId: string
-    templateSlotId: string
+    name: string
+    timeWindow?: string | null
+    order?: number
     targetKcal: number
     targetFiberGrams: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type DayPlanEntryUpdateWithoutDayPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    dish?: DishUpdateOneRequiredWithoutDayPlanEntriesNestedInput
-  }
-
-  export type DayPlanEntryUncheckedUpdateWithoutDayPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
-  export type DayPlanEntryUncheckedUpdateManyWithoutDayPlanInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dishId?: StringFieldUpdateOperationsInput | string
-    mealSlot?: EnumMealSlotFieldUpdateOperationsInput | $Enums.MealSlot
-    servings?: FloatFieldUpdateOperationsInput | number
-    priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-  }
-
   export type MealSlotInstanceUpdateWithoutDayPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
-    templateSlot?: MealTemplateSlotUpdateOneRequiredWithoutMealSlotsNestedInput
     dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
     productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
   }
@@ -93976,7 +86276,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedUpdateWithoutDayPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -93988,7 +86290,9 @@ export namespace Prisma {
   export type MealSlotInstanceUncheckedUpdateManyWithoutDayPlanInput = {
     id?: StringFieldUpdateOperationsInput | string
     personId?: StringFieldUpdateOperationsInput | string
-    templateSlotId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    timeWindow?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -94027,54 +86331,11 @@ export namespace Prisma {
     checked?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type MealSlotInstanceCreateManyTemplateSlotInput = {
-    id?: string
-    dayPlanId: string
-    personId: string
-    targetKcal: number
-    targetFiberGrams: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MealSlotInstanceUpdateWithoutTemplateSlotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    targetKcal?: FloatFieldUpdateOperationsInput | number
-    targetFiberGrams?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
-    person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
-    dishEntries?: DishEntryUpdateManyWithoutMealSlotNestedInput
-    productEntries?: ProductEntryUpdateManyWithoutMealSlotNestedInput
-  }
-
-  export type MealSlotInstanceUncheckedUpdateWithoutTemplateSlotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
-    targetKcal?: FloatFieldUpdateOperationsInput | number
-    targetFiberGrams?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
-    productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
-  }
-
-  export type MealSlotInstanceUncheckedUpdateManyWithoutTemplateSlotInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dayPlanId?: StringFieldUpdateOperationsInput | string
-    personId?: StringFieldUpdateOperationsInput | string
-    targetKcal?: FloatFieldUpdateOperationsInput | number
-    targetFiberGrams?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type DishEntryCreateManyMealSlotInput = {
     id?: string
     dishId: string
     portionWeight: number
+    servings?: number
     isShared?: boolean
     manualWeight?: boolean
     fitScore?: number | null
@@ -94093,6 +86354,7 @@ export namespace Prisma {
   export type DishEntryUpdateWithoutMealSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -94105,6 +86367,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -94116,6 +86379,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     portionWeight?: FloatFieldUpdateOperationsInput | number
+    servings?: FloatFieldUpdateOperationsInput | number
     isShared?: BoolFieldUpdateOperationsInput | boolean
     manualWeight?: BoolFieldUpdateOperationsInput | boolean
     fitScore?: NullableFloatFieldUpdateOperationsInput | number | null

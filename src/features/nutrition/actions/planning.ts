@@ -2,12 +2,21 @@
 
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
-import { calculateDishNutrition, calculateFitScore } from "@/lib/nutrition/calculations"
-import { DishEntry, Goal, ProductEntry } from "@/app/generated/prisma"
+import { calculateDishNutrition } from "@/lib/nutrition/calculations"
+import { DishEntry, ProductEntry } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
+const DEFAULT_MEAL_SLOTS = [
+  { name: "Передтрен", timeWindow: "07:00", order: 0, kcalPct: 0.05, fiberPct: 0 },
+  { name: "Сніданок", timeWindow: "08:30", order: 1, kcalPct: 0.25, fiberPct: 0.25 },
+  { name: "Обід", timeWindow: "13:00", order: 2, kcalPct: 0.40, fiberPct: 0.45 },
+  { name: "Вечеря", timeWindow: "19:00", order: 3, kcalPct: 0.30, fiberPct: 0.30 },
+]
+
+const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
+
 export async function createWeekPlan(
-  startDate: Date,
+  name: string,
   personIds: string[]
 ): Promise<ActionResult<{ weekPlanId: string }>> {
   try {
@@ -20,35 +29,29 @@ export async function createWeekPlan(
     if (persons.length === 0) return { success: false, error: "No valid persons found" }
     if (persons.length !== personIds.length) return { success: false, error: "Some persons do not belong to you" }
 
-    const templateSlots = await prisma.mealTemplateSlot.findMany({
-      orderBy: { order: "asc" },
-    })
-
     const weekPlan = await prisma.weekPlan.create({
       data: {
-        startDate,
+        name,
         userId,
         dayPlans: {
-          create: Array.from({ length: 7 }, (_, dayIndex) => {
-            const date = new Date(startDate)
-            date.setDate(date.getDate() + dayIndex)
-            return {
-              date,
-              userId,
-              mealSlots: {
-                create: persons.flatMap((person) => {
-                  const goal = person.goal as Goal
-                  const slotsForGoal = templateSlots.filter((ts) => ts.goal === goal)
-                  return slotsForGoal.map((slotTemplate) => ({
-                    personId: person.id,
-                    templateSlotId: slotTemplate.id,
-                    targetKcal: ((person.targetKcal ?? 2000) * slotTemplate.percentage) / 100,
-                    targetFiberGrams: ((person.fiberGrams ?? 30) * slotTemplate.fiberPct),
-                  }))
-                }),
-              },
-            }
-          }),
+          create: Array.from({ length: 7 }, (_, dayIndex) => ({
+            userId,
+            dayOfWeek: dayIndex,
+            mealSlots: {
+              create: persons.flatMap((person) => {
+                const targetKcal = person.targetKcal ?? 2000
+                const fiberGrams = person.fiberGrams ?? 30
+                return DEFAULT_MEAL_SLOTS.map((slot) => ({
+                  personId: person.id,
+                  name: slot.name,
+                  timeWindow: slot.timeWindow,
+                  order: slot.order,
+                  targetKcal: targetKcal * slot.kcalPct,
+                  targetFiberGrams: fiberGrams * slot.fiberPct,
+                }))
+              }),
+            },
+          })),
         },
       },
     })
@@ -62,11 +65,11 @@ export async function createWeekPlan(
 
 export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
   id: string
-  startDate: Date
+  name: string | null
   persons: {
     id: string
     name: string | null
-    goal: Goal
+    goal: string
     targetKcal: number
     proteinPct: number
     fatPct: number
@@ -74,13 +77,15 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
     fiberGrams: number
   }[]
   days: {
-    date: Date
+    dayOfWeek: number
+    activity: string | null
     slots: {
       id: string
       personId: string
       personName: string | null
-      templateSlotName: string
-      templateSlotOrder: number
+      name: string
+      timeWindow: string | null
+      order: number
       targetKcal: number
       targetFiberGrams: number
       actualKcal: number
@@ -88,12 +93,12 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       actualFat: number
       actualCarbs: number
       actualFiber: number
-      violations: string[]
       entries: {
         id: string
         dishId: string
         dishName: string
         portionWeight: number
+        servings: number
         isShared: boolean
         fitScore: number | null
       }[]
@@ -117,12 +122,11 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       where: { id: weekPlanId, userId },
       include: {
         dayPlans: {
-          orderBy: { date: "asc" },
+          orderBy: { dayOfWeek: "asc" },
           include: {
             mealSlots: {
               include: {
                 person: true,
-                templateSlot: true,
                 dishEntries: {
                   include: {
                     dish: {
@@ -143,7 +147,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
                   orderBy: { createdAt: "asc" },
                 },
               },
-              orderBy: { templateSlot: { order: "asc" } },
+              orderBy: { order: "asc" },
             },
           },
         },
@@ -177,15 +181,15 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         let actualFat = 0
         let actualCarbs = 0
         let actualFiber = 0
-        const violations: string[] = []
 
         const entries = slot.dishEntries.map((entry) => {
           const nutrition = calculateDishNutrition(entry.dish)
-          const portionKcal = (nutrition.per100g.kcal * entry.portionWeight) / 100
-          const portionProtein = (nutrition.per100g.protein * entry.portionWeight) / 100
-          const portionFat = (nutrition.per100g.fat * entry.portionWeight) / 100
-          const portionCarbs = (nutrition.per100g.carbs * entry.portionWeight) / 100
-          const portionFiber = (nutrition.per100g.fiber * entry.portionWeight) / 100
+          const totalWeight = entry.portionWeight * entry.servings
+          const portionKcal = (nutrition.per100g.kcal * totalWeight) / 100
+          const portionProtein = (nutrition.per100g.protein * totalWeight) / 100
+          const portionFat = (nutrition.per100g.fat * totalWeight) / 100
+          const portionCarbs = (nutrition.per100g.carbs * totalWeight) / 100
+          const portionFiber = (nutrition.per100g.fiber * totalWeight) / 100
 
           actualKcal += portionKcal
           actualProtein += portionProtein
@@ -193,25 +197,12 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           actualCarbs += portionCarbs
           actualFiber += portionFiber
 
-          if (entry.fitScore != null) {
-            try {
-              const fitResult = calculateFitScore(
-                nutrition.per100g,
-                entry.portionWeight,
-                slot.person,
-                slot.templateSlot
-              )
-              violations.push(...fitResult.warnings)
-            } catch {
-              // skip fit score calc if template slot data is incomplete
-            }
-          }
-
           return {
             id: entry.id,
             dishId: entry.dishId,
             dishName: entry.dish.name,
             portionWeight: entry.portionWeight,
+            servings: entry.servings,
             isShared: entry.isShared,
             fitScore: entry.fitScore,
           }
@@ -248,8 +239,9 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           id: slot.id,
           personId: slot.personId,
           personName: slot.person.name,
-          templateSlotName: slot.templateSlot.name,
-          templateSlotOrder: slot.templateSlot.order,
+          name: slot.name,
+          timeWindow: slot.timeWindow,
+          order: slot.order,
           targetKcal: slot.targetKcal,
           targetFiberGrams: slot.targetFiberGrams,
           actualKcal,
@@ -257,14 +249,14 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           actualFat,
           actualCarbs,
           actualFiber,
-          violations,
           entries,
           productEntries,
         }
       })
 
       return {
-        date: day.date,
+        dayOfWeek: day.dayOfWeek,
+        activity: day.activity,
         slots,
       }
     })
@@ -273,7 +265,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       success: true,
       data: {
         id: weekPlan.id,
-        startDate: weekPlan.startDate,
+        name: weekPlan.name,
         persons: Array.from(personMap.values()),
         days,
       },
@@ -283,18 +275,18 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
   }
 }
 
-export async function getLatestWeekPlan(): Promise<ActionResult<{ id: string; startDate: Date } | null>> {
+export async function getLatestWeekPlan(): Promise<ActionResult<{ id: string; name: string | null } | null>> {
   try {
     const userId = await getRequiredUserId()
     const plan = await prisma.weekPlan.findFirst({
       where: { userId },
-      orderBy: { startDate: "desc" },
-      select: { id: true, startDate: true },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true },
     })
 
     if (!plan) return { success: true, data: null }
 
-    return { success: true, data: { id: plan.id, startDate: plan.startDate } }
+    return { success: true, data: { id: plan.id, name: plan.name } }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to get latest week plan" }
   }
@@ -304,8 +296,9 @@ export async function addDishToSlot(
   slotId: string,
   dishId: string,
   isShared: boolean,
+  servings?: number,
   manualWeight?: number
-): Promise<ActionResult<{ dishEntry: DishEntry; warnings: string[] }>> {
+): Promise<ActionResult<{ dishEntry: DishEntry }>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -313,7 +306,6 @@ export async function addDishToSlot(
       where: { id: slotId },
       include: {
         person: true,
-        templateSlot: true,
         dayPlan: true,
       },
     })
@@ -341,24 +333,20 @@ export async function addDishToSlot(
     }
 
     const nutrition = calculateDishNutrition(dish)
-    const portionWeight =
-      manualWeight ?? (slot.targetKcal * 100) / (nutrition.per100g.kcal || 1)
-
-    const fitResult = calculateFitScore(
-      nutrition.per100g,
-      portionWeight,
-      slot.person,
-      slot.templateSlot
-    )
+    
+    // Auto-calculate servings if not provided
+    const dishServings = servings ?? (slot.targetKcal / (nutrition.perServing.kcal || 1))
+    const portionWeight = manualWeight ?? (dishServings * (nutrition.total.weight / (dish.servings || 1)))
 
     const dishEntry = await prisma.dishEntry.create({
       data: {
         mealSlotId: slotId,
         dishId,
         portionWeight,
+        servings: dishServings,
         isShared,
         manualWeight: !!manualWeight,
-        fitScore: fitResult.fitScore,
+        fitScore: null,
       },
     })
 
@@ -375,27 +363,20 @@ export async function addDishToSlot(
           where: {
             dayPlanId: slot.dayPlanId,
             personId: otherPerson.id,
-            templateSlot: { name: slot.templateSlot.name },
+            name: slot.name,
           },
-          include: { templateSlot: true, person: true },
         })
 
         if (otherSlot) {
-          const otherFitResult = calculateFitScore(
-            nutrition.per100g,
-            portionWeight,
-            otherPerson,
-            otherSlot.templateSlot
-          )
-
           await prisma.dishEntry.create({
             data: {
               mealSlotId: otherSlot.id,
               dishId,
               portionWeight,
+              servings: dishServings,
               isShared: true,
               manualWeight: !!manualWeight,
-              fitScore: otherFitResult.fitScore,
+              fitScore: null,
             },
           })
         }
@@ -403,7 +384,7 @@ export async function addDishToSlot(
     }
 
     invalidateFoodCache(userId)
-    return { success: true, data: { dishEntry, warnings: fitResult.warnings } }
+    return { success: true, data: { dishEntry } }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to add dish to slot" }
   }
@@ -411,7 +392,8 @@ export async function addDishToSlot(
 
 export async function updatePortionWeight(
   dishEntryId: string,
-  weight: number
+  weight: number,
+  servings?: number
 ): Promise<ActionResult<DishEntry>> {
   try {
     const userId = await getRequiredUserId()
@@ -421,8 +403,6 @@ export async function updatePortionWeight(
       include: {
         mealSlot: {
           include: {
-            person: true,
-            templateSlot: true,
             dayPlan: true,
           },
         },
@@ -446,38 +426,12 @@ export async function updatePortionWeight(
       if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
     }
 
-    const nutrition = calculateDishNutrition(entry.dish)
-    const fitResult = calculateFitScore(
-      nutrition.per100g,
-      weight,
-      entry.mealSlot.person,
-      entry.mealSlot.templateSlot
-    )
-
     const updated = await prisma.dishEntry.update({
       where: { id: dishEntryId },
       data: {
         portionWeight: weight,
+        ...(servings !== undefined ? { servings } : {}),
         manualWeight: true,
-        fitScore: fitResult.fitScore,
-      },
-      include: {
-        mealSlot: {
-          include: {
-            person: true,
-            templateSlot: true,
-          },
-        },
-        dish: {
-          include: {
-            ingredients: {
-              include: {
-                product: true,
-                cookingMethod: true,
-              },
-            },
-          },
-        },
       },
     })
 
@@ -485,6 +439,43 @@ export async function updatePortionWeight(
     return { success: true, data: updated }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update portion weight" }
+  }
+}
+
+export async function updateDishServings(
+  dishEntryId: string,
+  servings: number
+): Promise<ActionResult<DishEntry>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const entry = await prisma.dishEntry.findUnique({
+      where: { id: dishEntryId },
+      include: {
+        mealSlot: {
+          include: {
+            dayPlan: true,
+          },
+        },
+      },
+    })
+
+    if (!entry) return { success: false, error: "Dish entry not found" }
+
+    if (entry.mealSlot.dayPlan.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: entry.mealSlot.dayPlan.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    const updated = await prisma.dishEntry.update({
+      where: { id: dishEntryId },
+      data: { servings },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: updated }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update servings" }
   }
 }
 
@@ -534,7 +525,7 @@ export async function getWeekSummary(
     targetFat: number
     targetCarbs: number
     targetFiber: number
-    repeatedDishes: { dishName: string; count: number; days: string[] }[]
+    repeatedDishes: { dishName: string; count: number; days: number[] }[]
   }[]
 }>> {
   try {
@@ -578,7 +569,7 @@ export async function getWeekSummary(
       totalCarbs: number
       totalFiber: number
       dayCount: number
-      dishCounts: Map<string, { count: number; name: string; days: Set<string> }>
+      dishCounts: Map<string, { count: number; name: string; days: Set<number> }>
       targetKcal: number
       targetProtein: number
       targetFat: number
@@ -587,7 +578,6 @@ export async function getWeekSummary(
     }>()
 
     for (const day of weekPlan.dayPlans) {
-      const dateStr = day.date.toISOString().split("T")[0]
       let dayHasEntries = false
       for (const slot of day.mealSlots) {
         const pid = slot.personId
@@ -613,15 +603,16 @@ export async function getWeekSummary(
         for (const entry of slot.dishEntries) {
           dayHasEntries = true
           const nutrition = calculateDishNutrition(entry.dish)
-          p.totalKcal += (nutrition.per100g.kcal * entry.portionWeight) / 100
-          p.totalProtein += (nutrition.per100g.protein * entry.portionWeight) / 100
-          p.totalFat += (nutrition.per100g.fat * entry.portionWeight) / 100
-          p.totalCarbs += (nutrition.per100g.carbs * entry.portionWeight) / 100
-          p.totalFiber += (nutrition.per100g.fiber * entry.portionWeight) / 100
+          const totalWeight = entry.portionWeight * entry.servings
+          p.totalKcal += (nutrition.per100g.kcal * totalWeight) / 100
+          p.totalProtein += (nutrition.per100g.protein * totalWeight) / 100
+          p.totalFat += (nutrition.per100g.fat * totalWeight) / 100
+          p.totalCarbs += (nutrition.per100g.carbs * totalWeight) / 100
+          p.totalFiber += (nutrition.per100g.fiber * totalWeight) / 100
 
-          const dc = p.dishCounts.get(entry.dishId) ?? { count: 0, name: entry.dish.name, days: new Set<string>() }
+          const dc = p.dishCounts.get(entry.dishId) ?? { count: 0, name: entry.dish.name, days: new Set<number>() }
           dc.count++
-          dc.days.add(dateStr)
+          dc.days.add(day.dayOfWeek)
           p.dishCounts.set(entry.dishId, dc)
         }
       }
@@ -665,13 +656,13 @@ export async function getWeekSummary(
   }
 }
 
-export async function getWeekPlans(): Promise<ActionResult<{ id: string; startDate: Date; name: string | null }[]>> {
+export async function getWeekPlans(): Promise<ActionResult<{ id: string; name: string | null; createdAt: Date }[]>> {
   try {
     const userId = await getRequiredUserId()
     const plans = await prisma.weekPlan.findMany({
       where: { userId },
-      select: { id: true, startDate: true, name: true },
-      orderBy: { startDate: "desc" },
+      select: { id: true, name: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
       take: 10,
     })
     return { success: true, data: plans }
@@ -763,5 +754,156 @@ export async function updateProductEntryWeight(
     return { success: true, data: updated }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update product entry weight" }
+  }
+}
+
+export async function updateDayActivity(
+  dayPlanId: string,
+  activity: string | null
+): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const day = await prisma.dayPlan.findUnique({
+      where: { id: dayPlanId },
+      include: { weekPlan: true },
+    })
+    if (!day) return { success: false, error: "Day not found" }
+
+    if (day.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: day.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    await prisma.dayPlan.update({
+      where: { id: dayPlanId },
+      data: { activity },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update activity" }
+  }
+}
+
+export async function deleteWeekPlan(weekPlanId: string): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+    const plan = await prisma.weekPlan.findUnique({ where: { id: weekPlanId } })
+    if (!plan) return { success: false, error: "Week plan not found" }
+    if (plan.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    await prisma.weekPlan.delete({ where: { id: weekPlanId } })
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to delete week plan" }
+  }
+}
+
+interface ImportWeekPlanResult {
+  imported: boolean
+  weekPlanId: string
+  errors: string[]
+}
+
+export async function importWeekPlanFromJson(json: string): Promise<ActionResult<ImportWeekPlanResult>> {
+  try {
+    const userId = await getRequiredUserId()
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(json)
+    } catch {
+      return { success: false, error: "Invalid JSON format" }
+    }
+
+    const data = parsed as Record<string, unknown>
+    if (!data.name || !Array.isArray(data.days)) {
+      return { success: false, error: "JSON must have 'name' and 'days' fields" }
+    }
+
+    const persons = await prisma.nutritionPerson.findMany({ where: { userId } })
+    if (persons.length === 0) return { success: false, error: "No persons found. Create profiles first." }
+
+    const result: ImportWeekPlanResult = { imported: false, weekPlanId: "", errors: [] }
+
+    const weekPlan = await prisma.weekPlan.create({
+      data: {
+        name: String(data.name),
+        userId,
+        dayPlans: {
+          create: (data.days as Record<string, unknown>[]).map((day) => ({
+            userId,
+            dayOfWeek: Number(day.dayOfWeek) ?? 0,
+            activity: (day.activity as string) || null,
+            mealSlots: {
+              create: persons.flatMap((person) => {
+                const targetKcal = person.targetKcal ?? 2000
+                const fiberGrams = person.fiberGrams ?? 30
+                const slots = (day.mealSlots as Record<string, unknown>[]) || []
+                return slots.map((slot) => ({
+                  personId: person.id,
+                  name: String(slot.name),
+                  timeWindow: (slot.timeWindow as string) || null,
+                  order: Number(slot.order) ?? 0,
+                  targetKcal: targetKcal * ((Number(slot.kcalPct) ?? 0.25)),
+                  targetFiberGrams: fiberGrams * ((Number(slot.fiberPct) ?? 0.25)),
+                }))
+              }),
+            },
+          })),
+        },
+      },
+    })
+
+    result.imported = true
+    result.weekPlanId = weekPlan.id
+    invalidateFoodCache(userId)
+    return { success: true, data: result }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to import week plan" }
+  }
+}
+
+export async function exportWeekPlan(weekPlanId: string): Promise<ActionResult<string>> {
+  try {
+    const userId = await getRequiredUserId()
+    const weekPlan = await prisma.weekPlan.findUnique({
+      where: { id: weekPlanId, userId },
+      include: {
+        dayPlans: {
+          orderBy: { dayOfWeek: "asc" },
+          include: {
+            mealSlots: {
+              orderBy: { order: "asc" },
+            },
+          },
+        },
+      },
+    })
+
+    if (!weekPlan) return { success: false, error: "Week plan not found" }
+
+    const firstDaySlots = weekPlan.dayPlans[0]?.mealSlots || []
+
+    const json = {
+      name: weekPlan.name,
+      days: weekPlan.dayPlans.map((day) => ({
+        dayOfWeek: day.dayOfWeek,
+        activity: day.activity,
+        mealSlots: firstDaySlots.map((slot) => ({
+          name: slot.name,
+          timeWindow: slot.timeWindow,
+          order: slot.order,
+          kcalPct: slot.targetKcal / (firstDaySlots.reduce((sum, s) => sum + s.targetKcal, 0) || 1),
+          fiberPct: slot.targetFiberGrams / (firstDaySlots.reduce((sum, s) => sum + s.targetFiberGrams, 0) || 1),
+        })),
+      })),
+    }
+
+    return { success: true, data: JSON.stringify(json, null, 2) }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to export week plan" }
   }
 }

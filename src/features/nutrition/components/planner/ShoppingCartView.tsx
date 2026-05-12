@@ -32,7 +32,7 @@ interface ShoppingCartViewProps {
   weekPlanId: string
   totalCost: number
   personCosts: Record<string, { name: string; cost: number }>
-  varietyWarnings: { dishName: string; count: number; days: string[] }[]
+  varietyWarnings: { dishName: string; count: number; days: number[] }[]
 }
 
 export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, personCosts, varietyWarnings }: ShoppingCartViewProps) {

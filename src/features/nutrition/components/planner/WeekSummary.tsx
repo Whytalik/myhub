@@ -11,7 +11,7 @@
   targetFat: number
   targetCarbs: number
   targetFiber: number
-  repeatedDishes: { dishName: string; count: number; days: string[] }[]
+  repeatedDishes: { dishName: string; count: number; days: number[] }[]
 }
 
 interface WeekSummaryProps {

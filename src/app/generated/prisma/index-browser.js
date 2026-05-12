@@ -236,28 +236,10 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   alternatives: 'alternatives'
 };
 
-exports.Prisma.DayTemplateScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  name: 'name',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.DayTemplateEntryScalarFieldEnum = {
-  id: 'id',
-  templateId: 'templateId',
-  dishId: 'dishId',
-  mealSlot: 'mealSlot',
-  servings: 'servings',
-  priority: 'priority'
-};
-
 exports.Prisma.WeekPlanScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
-  startDate: 'startDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -266,20 +248,10 @@ exports.Prisma.DayPlanScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   weekPlanId: 'weekPlanId',
-  templateId: 'templateId',
-  date: 'date',
-  adherence: 'adherence',
+  dayOfWeek: 'dayOfWeek',
+  activity: 'activity',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.DayPlanEntryScalarFieldEnum = {
-  id: 'id',
-  dayPlanId: 'dayPlanId',
-  dishId: 'dishId',
-  mealSlot: 'mealSlot',
-  servings: 'servings',
-  priority: 'priority'
 };
 
 exports.Prisma.ShoppingListScalarFieldEnum = {
@@ -300,22 +272,13 @@ exports.Prisma.ShoppingListItemScalarFieldEnum = {
   checked: 'checked'
 };
 
-exports.Prisma.MealTemplateSlotScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  goal: 'goal',
-  percentage: 'percentage',
-  order: 'order',
-  minProteinGrams: 'minProteinGrams',
-  maxPctOfDaily: 'maxPctOfDaily',
-  fiberPct: 'fiberPct'
-};
-
 exports.Prisma.MealSlotInstanceScalarFieldEnum = {
   id: 'id',
   dayPlanId: 'dayPlanId',
   personId: 'personId',
-  templateSlotId: 'templateSlotId',
+  name: 'name',
+  timeWindow: 'timeWindow',
+  order: 'order',
   targetKcal: 'targetKcal',
   targetFiberGrams: 'targetFiberGrams',
   createdAt: 'createdAt',
@@ -336,6 +299,7 @@ exports.Prisma.DishEntryScalarFieldEnum = {
   mealSlotId: 'mealSlotId',
   dishId: 'dishId',
   portionWeight: 'portionWeight',
+  servings: 'servings',
   isShared: 'isShared',
   manualWeight: 'manualWeight',
   fitScore: 'fitScore',
@@ -775,25 +739,6 @@ exports.DishType = exports.$Enums.DishType = {
   BASE: 'BASE'
 };
 
-exports.MealSlot = exports.$Enums.MealSlot = {
-  BREAKFAST: 'BREAKFAST',
-  LUNCH: 'LUNCH',
-  DINNER: 'DINNER',
-  SNACK: 'SNACK'
-};
-
-exports.Priority = exports.$Enums.Priority = {
-  FIXED: 'FIXED',
-  FLEXIBLE: 'FLEXIBLE',
-  AUTO: 'AUTO'
-};
-
-exports.PlanAdherence = exports.$Enums.PlanAdherence = {
-  PLANNED: 'PLANNED',
-  FOLLOWED: 'FOLLOWED',
-  DEVIATED: 'DEVIATED'
-};
-
 exports.Unit = exports.$Enums.Unit = {
   GRAM: 'GRAM',
   ML: 'ML',
@@ -913,14 +858,10 @@ exports.Prisma.ModelName = {
   CookingMethod: 'CookingMethod',
   Dish: 'Dish',
   DishIngredient: 'DishIngredient',
-  DayTemplate: 'DayTemplate',
-  DayTemplateEntry: 'DayTemplateEntry',
   WeekPlan: 'WeekPlan',
   DayPlan: 'DayPlan',
-  DayPlanEntry: 'DayPlanEntry',
   ShoppingList: 'ShoppingList',
   ShoppingListItem: 'ShoppingListItem',
-  MealTemplateSlot: 'MealTemplateSlot',
   MealSlotInstance: 'MealSlotInstance',
   ProductEntry: 'ProductEntry',
   DishEntry: 'DishEntry',

@@ -28,12 +28,11 @@ interface DishPickerProps {
   onAdd: (dishId: string, isShared: boolean, weight: number) => void
   dishes: Dish[]
   person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
-  slot: { percentage: number; minProteinGrams?: number | null; maxPctOfDaily?: number | null }
   isSharedInitial?: boolean
   slotName?: string
 }
 
-export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSharedInitial = false, slotName = "slot" }: DishPickerProps) {
+export function DishPicker({ isOpen, onClose, onAdd, dishes, person, isSharedInitial = false, slotName = "slot" }: DishPickerProps) {
   const [search, setSearch] = useState("")
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null)
   const [isShared, setIsShared] = useState(isSharedInitial)
@@ -54,18 +53,14 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
   const calculatedWeight = useMemo(() => {
     if (!selectedDish) return 0
     if (manualWeight) return parseFloat(manualWeight) || 0
-    const targetKcal = (person.targetKcal ?? 2000) * ((slot.percentage || 25) / 100)
+    const targetKcal = (person.targetKcal ?? 2000) * 0.25
     return (targetKcal * 100) / (selectedDish.per100g.kcal || 1)
-  }, [selectedDish, manualWeight, person, slot])
+  }, [selectedDish, manualWeight, person])
 
   const fit = useMemo(() => {
     if (!selectedDish) return null
-    return calculateFitScore(selectedDish.per100g, calculatedWeight, person, {
-      percentage: slot.percentage,
-      minProteinGrams: slot.minProteinGrams ?? null,
-      maxPctOfDaily: slot.maxPctOfDaily ?? null,
-    })
-  }, [selectedDish, calculatedWeight, person, slot])
+    return calculateFitScore(selectedDish.per100g, calculatedWeight, person)
+  }, [selectedDish, calculatedWeight, person])
 
   return (
     <Dialog isOpen={isOpen} onClose={onClose} title={`Додати страву до ${slotName}`} maxWidth="max-w-md">
@@ -111,12 +106,8 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slot, isSha
 
         <div className="max-h-60 overflow-y-auto space-y-2 pr-2">
           {filteredDishes.map((dish) => {
-            const previewWeight = (person.targetKcal * (slot.percentage / 100) * 100) / (dish.per100g.kcal || 1)
-            const previewFit = calculateFitScore(dish.per100g, previewWeight, person, {
-              percentage: slot.percentage,
-              minProteinGrams: slot.minProteinGrams ?? null,
-              maxPctOfDaily: slot.maxPctOfDaily ?? null,
-            })
+            const previewWeight = (person.targetKcal * 0.25 * 100) / (dish.per100g.kcal || 1)
+            const previewFit = calculateFitScore(dish.per100g, previewWeight, person)
             const score = previewFit.fitScore
 
             return (

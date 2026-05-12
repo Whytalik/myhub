@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import { Calendar, Users } from "lucide-react"
+import { Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
@@ -20,12 +20,7 @@ interface CreatePlanFormProps {
 export function CreatePlanForm({ persons }: CreatePlanFormProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [startDate, setStartDate] = useState(() => {
-    const today = new Date()
-    const monday = new Date(today)
-    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7))
-    return monday.toISOString().split("T")[0]
-  })
+  const [name, setName] = useState("")
   const [selectedPersons, setSelectedPersons] = useState<string[]>(persons.map(p => p.id))
 
   const togglePerson = (id: string) => {
@@ -35,11 +30,11 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
   }
 
   const handleCreate = () => {
-    if (!startDate) { toast.error("Select a start date"); return }
     if (selectedPersons.length === 0) { toast.error("Select at least one person"); return }
 
     startTransition(async () => {
-      const result = await createWeekPlan(new Date(startDate), selectedPersons)
+      const planName = name.trim() || `Week Plan`
+      const result = await createWeekPlan(planName, selectedPersons)
       if (result.success) {
         toast.success("Week plan created")
         router.push("/nutrition/week")
@@ -65,18 +60,15 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
     <div className="bg-surface border border-border rounded-2xl p-6 space-y-6">
       <h3 className="text-note font-mono tracking-[0.2em] text-muted">Create New Week Plan</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-caption font-mono text-muted tracking-widest pl-1">Start Date (Monday)</label>
-          <div className="flex items-center gap-2">
-            <Calendar size={14} className="text-muted" />
-            <Input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="font-mono"
-            />
-          </div>
+          <label className="text-caption font-mono text-muted tracking-widest pl-1">Plan Name</label>
+          <Input
+            placeholder="e.g. Week 20, Cutting Phase..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="font-mono"
+          />
         </div>
 
         <div className="space-y-2">

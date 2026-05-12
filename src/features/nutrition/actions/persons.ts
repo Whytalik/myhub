@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
-import { NutritionPerson, Goal, MealTemplateSlot } from "@/app/generated/prisma"
+import { NutritionPerson, Goal } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
 
 interface CreatePersonData {
@@ -82,18 +82,5 @@ export async function getPersons(): Promise<ActionResult<NutritionPerson[]>> {
     return { success: true, data: persons }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to get persons" }
-  }
-}
-
-export async function getMealTemplateSlots(goal?: Goal): Promise<ActionResult<MealTemplateSlot[]>> {
-  try {
-    await getRequiredUserId()
-    const slots = await prisma.mealTemplateSlot.findMany({
-      where: goal ? { goal } : undefined,
-      orderBy: [{ goal: "asc" }, { order: "asc" }],
-    })
-    return { success: true, data: slots }
-  } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to get meal template slots" }
   }
 }
