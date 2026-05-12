@@ -189,7 +189,7 @@ model DayPlan {
   id         String             @id @default(cuid())
   userId     String
   weekPlanId String?
-  dayOfWeek  Int
+  dayOfWeek  Int                @default(0)
   activity   String?
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
