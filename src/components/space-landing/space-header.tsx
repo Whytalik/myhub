@@ -12,7 +12,7 @@ export function SpaceHeader({ label, title, description }: SpaceHeaderProps) {
     <div className="flex flex-col mb-16">
       <Breadcrumb items={[{ label }]} />
       <Heading title={title} />
-      <p className="text-body text-secondary max-w-2xl leading-relaxed">
+      <p className="text-base text-secondary max-w-2xl leading-relaxed">
         {description}
       </p>
     </div>

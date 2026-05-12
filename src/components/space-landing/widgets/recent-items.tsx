@@ -19,15 +19,15 @@ export function RecentItems({ title, items, emptyMessage = "No items yet", actio
   return (
     <div className="bg-surface border border-border rounded-xl p-5 mb-12">
       <div className="flex items-center justify-between mb-4">
-        <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">{title}</h4>
+        <h4 className="text-note font-mono text-accent uppercase tracking-[0.3em]">{title}</h4>
         {actionLabel && actionHref && (
-          <Link href={actionHref} className="text-caption font-mono text-muted hover:text-text transition-colors uppercase tracking-[0.2em]">
+          <Link href={actionHref} className="text-note font-mono text-muted hover:text-text transition-colors uppercase tracking-[0.2em]">
             {actionLabel} →
           </Link>
         )}
       </div>
       {items.length === 0 ? (
-        <p className="text-base text-secondary text-center py-6">{emptyMessage}</p>
+        <p className="text-body text-secondary text-center py-6">{emptyMessage}</p>
       ) : (
         <div className="space-y-2">
           {items.map((item, i) => (
@@ -37,10 +37,10 @@ export function RecentItems({ title, items, emptyMessage = "No items yet", actio
               className="flex items-center justify-between p-3 rounded-lg bg-bg/40 hover:bg-raised transition-colors group"
             >
               <div>
-                <p className="text-base font-medium text-text group-hover:text-accent transition-colors">{item.title}</p>
-                {item.subtitle && <p className="text-caption text-secondary mt-0.5">{item.subtitle}</p>}
+                <p className="text-body font-medium text-text group-hover:text-accent transition-colors">{item.title}</p>
+                {item.subtitle && <p className="text-note text-secondary mt-0.5">{item.subtitle}</p>}
               </div>
-              {item.date && <span className="text-caption font-mono text-muted">{item.date}</span>}
+              {item.date && <span className="text-note font-mono text-muted">{item.date}</span>}
             </Link>
           ))}
         </div>

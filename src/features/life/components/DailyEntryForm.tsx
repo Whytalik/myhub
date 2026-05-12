@@ -202,9 +202,9 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       )}
       {/* Header Controls */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-2xl shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 md:gap-6 min-w-0">
-          <div className="flex items-center gap-2 text-caption md:text-note font-mono text-muted uppercase tracking-wider bg-raised px-3 py-1.5 rounded-lg border border-border/50 self-start sm:self-auto shrink-0">
-            <Clock size={12} className="text-accent" />
+        <div className="flex flex-wrap items-center gap-4 md:gap-6">
+          <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text uppercase tracking-wider bg-raised px-4 py-2 rounded-lg border border-border/50 shrink-0">
+            <Clock size={14} className="text-accent" />
             <span>{dateLabel}</span>
           </div>
           
@@ -242,7 +242,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3 px-2">
                           <div className="h-px flex-1 bg-border/40" />
-                          <span className="text-caption font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap text-emerald-500">Daily Scrum Standup</span>
+                          <span className="text-note font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap text-emerald-500">Daily Scrum Standup</span>
                           <div className="h-px flex-1 bg-border/40" />
                         </div>
                         <StandupSection
@@ -255,10 +255,10 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
 
                       {/* Body Metrics */}
                       <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-2xl px-5 py-4">
-                        <span className="text-caption font-mono uppercase tracking-widest text-muted mr-2">Body</span>
+                        <span className="text-note font-mono uppercase tracking-widest text-muted mr-2">Body</span>
                         <div className="flex items-center gap-2">
                           <Weight size={12} className="text-muted" />
-                          <span className="text-caption font-mono uppercase tracking-wider text-muted">Weight</span>
+                          <span className="text-note font-mono uppercase tracking-wider text-muted">Weight</span>
                           <Input
                             type="number"
                             step="0.1"
@@ -420,7 +420,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3 px-2">
                           <div className="h-px flex-1 bg-border/40" />
-                          <span className="text-caption font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap">Task Planning</span>
+                          <span className="text-note font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap">Task Planning</span>
                           <div className="h-px flex-1 bg-border/40" />
                         </div>
                         <Link
@@ -429,7 +429,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                         >
                           <div className="flex items-center gap-3">
                             <CalendarDays size={16} className="text-accent" />
-                            <span className="text-base font-medium text-text">Plan your tasks</span>
+                            <span className="text-body font-medium text-text">Plan your tasks</span>
                             <span className="text-note font-mono text-muted">Open calendar view</span>
                           </div>
                           <span className="text-muted group-hover:text-accent transition-colors">→</span>
@@ -455,7 +455,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-caption md:text-note font-mono text-muted px-2 md:px-0 shrink-0">
+        <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text px-2 md:px-0 shrink-0">
           {isPending ? (
             <><Loader2 size={12} className="animate-spin" /> Saving...</>
           ) : savedAt ? (

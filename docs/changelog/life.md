@@ -1,3 +1,15 @@
+## 2026-05-12
+
+### Enhanced: Global font size increase across all domains
+- Updated CSS typography tokens in `globals.css`: increased all base sizes by ~15-30% (label: 7→8.75px, caption: 9.6→10.5px, note: 10.5→11.4px, body: 12.25→14px). Added new tokens: `subtitle`, `heading`, `title`.
+- Updated all UI components: Tabs, Breadcrumb, Heading, SpaceHeader, SpaceIntelligence, ModuleQuickAccess, StatsSummary, DailyOverview, QuickActions, RecentItems.
+- Updated all domain pages: Home, Life, Nutrition, Fitness, Languages, Planning, Library, Wealth, Health, Operations, Vault, Trading, Fishing, Other, Life System, Profile.
+- Updated Journal: DailyEntryForm date header, section labels, JournalHistoryView group headers and entry texts.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ## 2026-05-01
 
 ### Fixed: Task Resizing & Day View UI

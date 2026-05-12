@@ -89,7 +89,7 @@ export default function LanguageDetailPage() {
             <Heading title="Language Hub" className="text-2xl font-black uppercase tracking-tighter" />
             <div className="flex items-center gap-3 mt-1">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-              <p className="text-secondary font-mono text-caption uppercase tracking-[0.25em]">
+              <p className="text-secondary font-mono text-note uppercase tracking-[0.25em]">
                 Active Neural Environment
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function LanguageDetailPage() {
                   <div className="p-2.5 rounded-2xl bg-accent text-bg shadow-lg shadow-accent/20">
                     <Target size={20} strokeWidth={3} />
                   </div>
-                  <h4 className="font-black text-base uppercase tracking-tight">Mastery Radar</h4>
+                  <h4 className="font-black text-body uppercase tracking-tight">Mastery Radar</h4>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -124,7 +124,7 @@ export default function LanguageDetailPage() {
                         <div className="flex justify-between items-center mb-4">
                           <div className="flex items-center gap-2.5">
                             <Icon size={14} className="text-accent" />
-                            <span className="text-caption font-mono font-bold uppercase tracking-widest text-muted">{stat.sphere}</span>
+                            <span className="text-note font-mono font-bold uppercase tracking-widest text-muted">{stat.sphere}</span>
                           </div>
                           <span className="text-body font-black uppercase">{Math.round(stat.mastery)}%</span>
                         </div>
@@ -149,7 +149,7 @@ export default function LanguageDetailPage() {
             <div className="bg-surface/30 border border-border/30 rounded-[32px] p-8">
               <div className="flex items-center gap-4 mb-6">
                 <Brain size={18} className="text-accent/60" />
-                <h4 className="text-note font-mono text-muted uppercase tracking-[0.3em] font-bold">Neural Insights</h4>
+                <h4 className="text-body font-mono text-muted uppercase tracking-[0.3em] font-bold">Neural Insights</h4>
               </div>
 Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo; through listening 
                  to reach the next proficiency milestone.
@@ -164,19 +164,19 @@ Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo
                 <div className="p-2.5 rounded-2xl bg-accent/10 text-accent">
                   <LayoutDashboard size={20} />
                 </div>
-                <h4 className="font-black text-base uppercase tracking-tight">Status</h4>
+                <h4 className="font-black text-body uppercase tracking-tight">Status</h4>
               </div>
               <div className="space-y-8">
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
-                  <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">Neural Streak</span>
-                  <span className="text-base font-black uppercase">0 Days</span>
+                  <span className="text-note font-mono text-muted uppercase tracking-widest font-bold">Neural Streak</span>
+                  <span className="text-body font-black uppercase">0 Days</span>
                 </div>
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
-                  <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">Total Depth</span>
-                  <span className="text-base font-black uppercase">0 Logs</span>
+                  <span className="text-note font-mono text-muted uppercase tracking-widest font-bold">Total Depth</span>
+                  <span className="text-body font-black uppercase">0 Logs</span>
                 </div>
                 <div className="flex justify-between items-end border-b border-border/20 pb-4">
-                  <span className="text-caption font-mono text-muted uppercase tracking-widest font-bold">CEFR Target</span>
+                  <span className="text-note font-mono text-muted uppercase tracking-widest font-bold">CEFR Target</span>
                   <span className="text-2xl font-black uppercase text-accent">Level A1</span>
                 </div>
               </div>
@@ -197,14 +197,14 @@ Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo
               <div className="p-3 rounded-2xl bg-accent text-bg shadow-lg shadow-accent/20">
                 <History size={24} strokeWidth={3} />
               </div>
-              <h4 className="font-black text-xl uppercase tracking-tight">Immersion History</h4>
+               <h4 className="font-black text-subtitle uppercase tracking-tight">Immersion History</h4>
            </div>
            
            <div className="flex flex-col items-center justify-center py-32 text-center">
               <div className="w-24 h-24 rounded-[32px] bg-raised/50 border border-border/40 flex items-center justify-center text-muted/30 mb-8 shadow-inner">
                 <History size={48} />
               </div>
-              <p className="text-secondary font-mono text-note uppercase tracking-[0.2em] font-bold">No sessions mapped in this quadrant</p>
+               <p className="text-secondary font-mono text-body uppercase tracking-[0.2em] font-bold">No sessions mapped in this quadrant</p>
            </div>
         </div>
       )}
@@ -215,9 +215,9 @@ Your cognitive load is currently optimized. Continue building &ldquo;Input&rdquo
               <div className="p-3 rounded-2xl bg-accent text-bg shadow-lg shadow-accent/20">
                 <Book size={24} strokeWidth={3} />
               </div>
-              <h4 className="font-black text-xl uppercase tracking-tight">Resource Matrix</h4>
+               <h4 className="font-black text-subtitle uppercase tracking-tight">Resource Matrix</h4>
            </div>
-           <p className="text-secondary font-mono text-note uppercase tracking-[0.2em] font-bold">System materials pending library initialization</p>
+            <p className="text-secondary font-mono text-body uppercase tracking-[0.2em] font-bold">System materials pending library initialization</p>
         </div>
       )}
     </div>

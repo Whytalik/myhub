@@ -3,7 +3,7 @@ interface HeadingProps {
   className?: string;
 }
 
-export function Heading({ title, className = "text-2xl md:text-3xl" }: HeadingProps) {
+export function Heading({ title, className = "text-heading md:text-title" }: HeadingProps) {
   return (
     <div className="mb-4">
       <h1 className={`${className} font-heading text-text leading-none tracking-tight`}>

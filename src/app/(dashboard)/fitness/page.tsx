@@ -49,7 +49,7 @@ export default function FitnessPage() {
     >
       <div className="mb-20">
         <div className="flex items-center gap-3 mb-8">
-          <h4 className="text-caption font-mono text-accent uppercase tracking-[0.3em]">Training Principles</h4>
+          <h4 className="text-note font-mono text-accent uppercase tracking-[0.3em]">Training Principles</h4>
           <div className="h-px flex-1 bg-border/30" />
         </div>
 
@@ -66,9 +66,9 @@ export default function FitnessPage() {
                 </span>
                 <div className="flex items-center gap-2">
                   <p.icon size={14} className="text-accent/60" />
-                  <h5 className="font-mono text-note text-text uppercase tracking-widest">{p.name}</h5>
+                  <h5 className="font-mono text-body text-text uppercase tracking-widest">{p.name}</h5>
                 </div>
-                <p className="text-secondary text-sm leading-relaxed pr-4">{p.desc}</p>
+                <p className="text-secondary text-base leading-relaxed pr-4">{p.desc}</p>
               </div>
               {i < 2 && (
                 <div className="hidden md:block absolute top-1/2 -right-4 -translate-y-1/2 text-border">→</div>

@@ -6,7 +6,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <div className="flex items-center gap-1.5 text-caption font-mono uppercase tracking-[0.2em] mb-6">
+    <div className="flex items-center gap-1.5 text-note font-mono uppercase tracking-[0.2em] mb-6">
       <Link href="/" className="text-muted hover:text-accent transition-colors">hub</Link>
       {items.map((item, index) => (
         <span key={index} className="flex items-center gap-1.5">

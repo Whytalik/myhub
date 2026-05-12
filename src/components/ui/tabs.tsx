@@ -26,7 +26,7 @@ export function Tabs({
   onTabChange, 
   className,
   contentClassName,
-  size = "text-sm md:text-base"
+  size = "text-note md:text-body"
 }: TabsProps) {
   const [internalActiveTab, setInternalActiveTab] = React.useState(tabs[0]?.id);
   const activeTab = controlledActiveTab ?? internalActiveTab;

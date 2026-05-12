@@ -33,22 +33,22 @@ export function ModuleQuickAccess({ modules }: ModuleQuickAccessProps) {
           <div className="relative z-10">
             <div className="flex justify-between items-start mb-4">
               <div className="flex flex-col gap-1.5">
-                <h3 className="font-heading text-2xl text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
+                <h3 className="font-heading text-heading text-text uppercase leading-none tracking-tight group-hover:text-accent transition-colors">
                   {module.title}
                 </h3>
                 <div className="flex items-center gap-2">
                   {module.status && (
-                    <span className="text-label font-mono text-accent uppercase tracking-[0.2em]">
+                    <span className="text-caption font-mono text-accent uppercase tracking-[0.2em]">
                       {module.status}
                     </span>
                   )}
                   {module.count && (
-                    <span className="text-label font-mono text-accent uppercase tracking-[0.2em] bg-accent/10 px-1.5 py-0.5 rounded">
+                    <span className="text-caption font-mono text-accent uppercase tracking-[0.2em] bg-accent/10 px-1.5 py-0.5 rounded">
                       {module.count}
                     </span>
                   )}
                   {module.badge && (
-                    <span className="text-label font-mono text-muted uppercase tracking-[0.2em]">
+                    <span className="text-caption font-mono text-muted uppercase tracking-[0.2em]">
                       {module.badge}
                     </span>
                   )}
@@ -58,10 +58,10 @@ export function ModuleQuickAccess({ modules }: ModuleQuickAccessProps) {
                 <module.icon size={20} />
               </div>
             </div>
-            <p className="text-secondary text-sm leading-relaxed mb-5 max-w-[80%]">
+            <p className="text-base leading-relaxed mb-5 max-w-[80%]">
               {module.description}
             </p>
-            <div className="flex items-center gap-2 text-caption font-mono text-muted hover:text-text transition-colors">
+            <div className="flex items-center gap-2 text-note font-mono text-muted hover:text-text transition-colors">
               <span>Enter Space</span>
               <span>→</span>
             </div>

@@ -22,8 +22,8 @@ function StatCard({ icon: Icon, label, value, color }: { icon: React.ElementType
         <Icon size={16} style={{ color }} />
       </div>
       <div className="flex flex-col">
-        <span className="text-[10px] font-mono uppercase tracking-wider text-muted">{label}</span>
-        <span className="text-base font-bold text-text">{value}</span>
+        <span className="text-caption font-mono uppercase tracking-wider text-muted">{label}</span>
+        <span className="text-body font-bold text-text">{value}</span>
       </div>
     </div>
   );
@@ -36,7 +36,7 @@ function DomainSection({ title, icon: Icon, color, children }: { title: string; 
         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
           <Icon size={16} style={{ color }} />
         </div>
-        <h3 className="text-base font-bold text-text">{title}</h3>
+        <h3 className="text-body font-bold text-text">{title}</h3>
       </div>
       <div className="p-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
         {children}
@@ -59,29 +59,29 @@ export function ProfileDisplay({ user, stats }: ProfileDisplayProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Identity Card */}
         <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-5">
-          <h3 className="text-note font-mono text-muted uppercase tracking-widest font-bold flex items-center gap-2">
+          <h3 className="text-body font-mono text-muted uppercase tracking-widest font-bold flex items-center gap-2">
             <User size={14} /> Identity
           </h3>
 
           <div className="flex flex-col gap-4">
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Display Name</label>
-              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text">
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Display Name</label>
+              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text">
                 {user.name || "Not set"}
               </div>
             </div>
 
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Email</label>
-              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text flex items-center gap-2">
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Email</label>
+              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text flex items-center gap-2">
                 <Mail size={14} className="text-muted shrink-0" />
                 <span className="truncate">{user.email || "Not set"}</span>
               </div>
             </div>
 
             <div className="flex-1">
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">System Status</label>
-              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base font-bold" style={{ color: statusColors[user.systemStatus] || "#a3a3a3" }}>
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">System Status</label>
+              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body font-bold" style={{ color: statusColors[user.systemStatus] || "#a3a3a3" }}>
                 {user.systemStatus.replace(/_/g, " ")}
               </div>
             </div>
@@ -90,37 +90,37 @@ export function ProfileDisplay({ user, stats }: ProfileDisplayProps) {
 
         {/* Security Card */}
         <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-5">
-          <h3 className="text-note font-mono text-muted uppercase tracking-widest font-bold flex items-center gap-2">
+          <h3 className="text-body font-mono text-muted uppercase tracking-widest font-bold flex items-center gap-2">
             <Shield size={14} /> Security
           </h3>
 
           <div className="flex flex-col gap-4">
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Password</label>
-              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text flex items-center gap-2">
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Password</label>
+              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text flex items-center gap-2">
                 <Key size={14} className="text-muted shrink-0" />
                 <span>{user.privateTaskPasswordHash ? "Set" : "Not configured"}</span>
               </div>
             </div>
 
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Email Verified</label>
-              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text">
+              <label className="text-caption font-mono uppercase tracking-wider text-muted">Email Verified</label>
+              <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text">
                 {user.emailVerified ? user.emailVerified.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "No"}
               </div>
             </div>
 
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Member Since</label>
-                <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text flex items-center gap-2">
+                <label className="text-caption font-mono uppercase tracking-wider text-muted">Member Since</label>
+                <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text flex items-center gap-2">
                   <Calendar size={14} className="text-muted shrink-0" />
                   <span>{user.createdAt.toLocaleDateString("en-US", { month: "short", year: "numeric" })}</span>
                 </div>
               </div>
               <div className="flex-1">
-                <label className="text-[10px] font-mono uppercase tracking-wider text-muted">Last Updated</label>
-                <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-base text-text flex items-center gap-2">
+                <label className="text-caption font-mono uppercase tracking-wider text-muted">Last Updated</label>
+                <div className="mt-1 bg-raised border border-border rounded-xl px-4 py-2.5 text-body text-text flex items-center gap-2">
                   <Clock size={14} className="text-muted shrink-0" />
                   <span>{user.updatedAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                 </div>
@@ -132,7 +132,7 @@ export function ProfileDisplay({ user, stats }: ProfileDisplayProps) {
 
       {/* Domain Stats */}
       <div className="flex flex-col gap-5">
-        <h3 className="text-note font-mono text-muted uppercase tracking-widest font-bold pl-1">Domain Activity</h3>
+        <h3 className="text-body font-mono text-muted uppercase tracking-widest font-bold pl-1">Domain Activity</h3>
 
         <DomainSection title="Operations" icon={Activity} color="#6366f1">
           <StatCard icon={Target} label="Tasks" value={stats.operations.tasks} color="#6366f1" />

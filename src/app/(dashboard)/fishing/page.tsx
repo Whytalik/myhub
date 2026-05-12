@@ -17,8 +17,8 @@ export default function FishingPage() {
     >
       <div className="bg-surface/30 border border-dashed border-border/40 p-24 rounded-2xl text-center">
         <Fish size={48} className="mx-auto text-muted/20 mb-6" />
-        <h3 className="text-base font-black uppercase tracking-tight text-muted mb-4">Fishing Space Coming Soon</h3>
-        <p className="text-secondary text-base max-w-md mx-auto">
+        <h3 className="text-body font-black uppercase tracking-tight text-muted mb-4">Fishing Space Coming Soon</h3>
+        <p className="text-secondary text-body max-w-md mx-auto">
           Trip logs, catch tracking, and spot mapping are currently under development.
         </p>
       </div>

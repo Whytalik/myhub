@@ -21,10 +21,10 @@ export function StatsSummary({ stats, className }: StatsSummaryProps) {
         const content = (
           <>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-label font-mono text-muted uppercase tracking-[0.2em]">{stat.label}</p>
+              <p className="text-caption font-mono text-muted uppercase tracking-[0.2em]">{stat.label}</p>
               {stat.icon && <stat.icon size={11} className="text-accent/60" />}
             </div>
-            <p className="text-base font-heading text-text uppercase tracking-tight">{stat.value}</p>
+            <p className="text-body font-heading text-text uppercase tracking-tight">{stat.value}</p>
           </>
         );
 

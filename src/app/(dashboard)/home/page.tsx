@@ -126,9 +126,9 @@ export default async function HomePage() {
       {/* Header */}
       <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <p className="text-note font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
-          <p className="text-note font-mono text-accent uppercase tracking-[0.2em] mb-3">{greeting}</p>
-          <h1 className="font-heading text-xl md:text-2xl text-text leading-none tracking-tight">{name}</h1>
+          <p className="text-body font-mono text-muted uppercase tracking-[0.25em] mb-1">{today}</p>
+          <p className="text-body font-mono text-accent uppercase tracking-[0.2em] mb-3">{greeting}</p>
+          <h1 className="font-heading text-heading md:text-subtitle text-text leading-none tracking-tight">{name}</h1>
           <div className="h-0.5 w-12 bg-accent mt-4" />
         </div>
         
@@ -153,18 +153,18 @@ export default async function HomePage() {
               <div className="flex items-center gap-2.5">
                 <Flame size={15} className={streak > 0 ? "text-accent" : "text-muted"} />
                 <div>
-                  <p className="text-base font-heading text-text leading-none">{streak}</p>
-                  <p className="text-caption font-mono text-muted uppercase tracking-wider">Streak</p>
+                  <p className="text-body font-heading text-text leading-none">{streak}</p>
+                  <p className="text-note font-mono text-muted uppercase tracking-wider">Streak</p>
                 </div>
               </div>
               <div className="hidden sm:block w-px h-8 bg-border" />
               <div className="flex items-center gap-2.5">
                 <Zap size={15} className="text-muted" />
                 <div>
-                  <p className="text-lg font-heading text-text leading-none">
+                  <p className="text-subtitle font-heading text-text leading-none">
                     {avgEnergy !== null ? avgEnergy.toFixed(1) : "—"}
                   </p>
-                  <p className="text-caption font-mono text-muted uppercase tracking-wider">Avg Energy</p>
+                  <p className="text-note font-mono text-muted uppercase tracking-wider">Avg Energy</p>
                 </div>
               </div>
               <div className="hidden sm:block w-px h-8 bg-border" />
@@ -174,13 +174,13 @@ export default async function HomePage() {
                   <p className="text-body font-semibold text-text leading-none">
                     {todayDone ? "Logged" : "Pending"}
                   </p>
-                  <p className="text-caption font-mono text-muted uppercase tracking-wider">Today&apos;s Entry</p>
+                  <p className="text-note font-mono text-muted uppercase tracking-wider">Today&apos;s Entry</p>
                 </div>
               </div>
               <div className="w-full md:w-auto md:ml-auto pt-2 md:pt-0 border-t md:border-none border-border/40">
                 <Link
                   href="/life/journal"
-                  className="inline-flex items-center gap-1.5 text-note font-mono text-accent hover:underline uppercase tracking-wider"
+                  className="inline-flex items-center gap-1.5 text-body font-mono text-accent hover:underline uppercase tracking-wider"
                 >
                   {todayDone ? "View entry" : "Log today"}
                   <ArrowRight size={12} />
@@ -196,7 +196,7 @@ export default async function HomePage() {
                 <div key={group.name}>
                   <div className="flex items-center gap-2 mb-4">
                      <group.icon size={14} className="text-accent" />
-                     <h2 className="text-note font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
+                      <h2 className="text-body font-mono text-muted uppercase tracking-[0.3em]">{group.name}</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {group.spaces.map(({ label, description, icon: Icon, href }) => (
@@ -209,8 +209,8 @@ export default async function HomePage() {
                           <Icon size={22} className="text-accent" />
                         </div>
                         <div className="text-center px-2">
-                          <p className="text-base font-semibold text-text leading-none mb-1">{label}</p>
-                          <p className="text-caption text-muted leading-snug">{description}</p>
+                          <p className="text-body font-semibold text-text leading-none mb-1">{label}</p>
+                          <p className="text-note text-muted leading-snug">{description}</p>
                         </div>
                       </Link>
                     ))}

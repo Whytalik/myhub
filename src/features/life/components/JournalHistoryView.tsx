@@ -121,7 +121,7 @@ export function JournalHistoryView({ entries }: Props) {
           <div key={key} className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-border/40" />
-              <span className="text-caption font-mono text-muted uppercase tracking-[0.4em] px-4">{key}</span>
+              <span className="text-note font-mono text-muted uppercase tracking-[0.4em] px-4">{key}</span>
               <div className="h-px flex-1 bg-border/40" />
             </div>
 
@@ -145,7 +145,7 @@ export function JournalHistoryView({ entries }: Props) {
                         {label}
                       </span>
 
-                      <div className="flex items-center gap-5 text-base font-mono text-muted">
+                        <div className="flex items-center gap-5 text-body font-mono text-muted">
                         <span className="flex items-center gap-1.5" title="Sleep">
                           <Moon size={13} className="text-accent/60" />
                           {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
@@ -175,7 +175,7 @@ export function JournalHistoryView({ entries }: Props) {
                       </div>
 
                       {e.winToday && (
-                        <span className="text-base text-secondary truncate flex-1 italic">
+                        <span className="text-body text-secondary truncate flex-1 italic">
                           &ldquo;{e.winToday}&rdquo;
                         </span>
                       )}
@@ -213,7 +213,7 @@ export function JournalHistoryView({ entries }: Props) {
       {hasMore && (
         <button 
           onClick={() => setVisibleGroups(prev => prev + 5)}
-          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-note font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
+          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-body font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
         >
           <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
           Show More Groups

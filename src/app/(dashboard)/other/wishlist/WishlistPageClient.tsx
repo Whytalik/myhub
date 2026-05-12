@@ -50,8 +50,8 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
              <ShoppingCart size={40} />
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="text-base font-heading uppercase tracking-tight text-text">Your wishlist is empty</h3>
-            <p className="text-secondary text-base max-w-xs mx-auto">
+            <h3 className="text-body font-heading uppercase tracking-tight text-text">Your wishlist is empty</h3>
+            <p className="text-secondary text-body max-w-xs mx-auto">
               Start adding items you want to acquire or experiences you want to have.
             </p>
           </div>
@@ -71,7 +71,7 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
                 
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-3">
-                    <h4 className="text-base font-heading uppercase tracking-tight text-text">
+                    <h4 className="text-body font-heading uppercase tracking-tight text-text">
                       {item.name}
                     </h4>
                     <span className="text-caption font-mono px-2 py-0.5 rounded-full bg-accent/10 text-accent uppercase tracking-widest">
@@ -79,7 +79,7 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
                     </span>
                   </div>
                   {item.description && (
-                    <p className="text-secondary text-base">{item.description}</p>
+                    <p className="text-secondary text-body">{item.description}</p>
                   )}
                 </div>
               </div>
@@ -87,7 +87,7 @@ export function WishlistPageClient({ items }: WishlistPageClientProps) {
               <div className="flex items-center gap-8">
                 {item.price && (
                   <div className="flex flex-col items-end">
-                    <span className="text-caption font-mono text-muted uppercase tracking-widest">Price</span>
+                    <span className="text-note font-mono text-muted uppercase tracking-widest">Price</span>
                     <span className="text-text font-bold">${item.price.toFixed(2)}</span>
                   </div>
                 )}

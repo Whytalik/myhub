@@ -36,7 +36,7 @@ export default async function JournalHistoryPage() {
       </div>
 
       {entries.length === 0 ? (
-        <div className="bg-surface border border-border rounded-2xl p-20 text-center text-muted text-base italic">
+        <div className="bg-surface border border-border rounded-2xl p-20 text-center text-muted text-body italic">
           No entries recorded yet
         </div>
       ) : (

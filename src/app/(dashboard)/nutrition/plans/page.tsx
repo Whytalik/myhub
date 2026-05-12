@@ -28,7 +28,7 @@ export default async function PlansPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div className="flex flex-col gap-1">
           <Heading title="Plans" />
-          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
+          <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
             Weekly meal planning overview.
           </p>
         </div>
@@ -48,7 +48,7 @@ export default async function PlansPage() {
                 className="block bg-surface border border-border rounded-xl p-4 hover:border-accent/30 transition-colors"
               >
                 <h3 className="font-semibold">{plan.name || "Week Plan"}</h3>
-                <p className="text-sm text-muted">{plan.startDate.toLocaleDateString()}</p>
+                <p className="text-sm text-muted">{plan.createdAt.toLocaleDateString()}</p>
               </a>
             ))}
           </div>

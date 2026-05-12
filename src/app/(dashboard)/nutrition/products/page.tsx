@@ -24,7 +24,7 @@ export default async function ProductsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div className="flex flex-col gap-1">
           <Heading title="Products" />
-          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
+          <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
             Personal product database with macros and pricing.
           </p>
         </div>
