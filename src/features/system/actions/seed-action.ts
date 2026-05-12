@@ -57,7 +57,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     }
 
     // 2. DISHES
-    const dishes = [
+    const dishesData = [
       {
         id: `bagel-${userId}`,
         name: "Сирні Бейгли",
@@ -80,13 +80,49 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
           { productId: globalProducts["Помідори чері"], weight: 50 },
           { productId: globalProducts["Пекінська капуста"], weight: 50 },
         ]
+      },
+      {
+        id: `snack-choc-${userId}`,
+        name: "Шоколадний Снек",
+        servings: 1,
+        type: "SNACK",
+        ingredients: [
+          { productId: globalProducts["Шоколад 80-85%"], weight: 20 },
+          { productId: globalProducts["Горіхи (Мигдаль/Арахіс)"], weight: 20 },
+        ]
+      },
+      {
+        id: `snack-pb-${userId}`,
+        name: "Снек з Арахісовою Пастою",
+        servings: 1,
+        type: "SNACK",
+        ingredients: [
+          { productId: globalProducts["Арахісова паста"], weight: 20 },
+          { productId: globalProducts["Банан"], weight: 100 },
+        ]
       }
     ];
 
-    for (const dish of dishes) {
+    for (const dish of dishesData) {
+      // Delete existing ingredients to prevent duplicates on re-seed
+      const existingDish = await prisma.dish.findUnique({ where: { id: dish.id } });
+      if (existingDish) {
+        await prisma.dishIngredient.deleteMany({ where: { dishId: dish.id } });
+      }
+
       await prisma.dish.upsert({
         where: { id: dish.id },
-        update: {},
+        update: {
+          name: dish.name,
+          servings: dish.servings,
+          type: dish.type as any,
+          ingredients: {
+            create: dish.ingredients.map(ing => ({
+              productId: ing.productId,
+              rawWeight: ing.weight
+            }))
+          }
+        },
         create: {
           id: dish.id,
           userId,
@@ -104,23 +140,119 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     }
 
     // 3. PROFILES
+    const vitaliiProfileId = "vitalii-profile";
+    const gfProfileId = "gf-profile";
+
     await prisma.nutritionPerson.upsert({
-      where: { id: "vitalii-profile" },
+      where: { id: vitaliiProfileId },
       update: { targetKcal: 1700, userId },
       create: {
-        id: "vitalii-profile", userId, name: "Vitalii", targetKcal: 1700,
+        id: vitaliiProfileId, userId, name: "Vitalii", targetKcal: 1700,
         proteinPct: 45, fatPct: 30, carbsPct: 25, goal: "LOSE"
       }
     });
 
     await prisma.nutritionPerson.upsert({
-      where: { id: "gf-profile" },
+      where: { id: gfProfileId },
       update: { targetKcal: 2300, userId },
       create: {
-        id: "gf-profile", userId, name: "GF", targetKcal: 2300,
+        id: gfProfileId, userId, name: "GF", targetKcal: 2300,
         proteinPct: 15, fatPct: 25, carbsPct: 60, goal: "GAIN"
       }
     });
+
+    // 4. WEEK PLAN
+    console.log("Creating Week Plan...");
+    
+    // Cleanup old visual plans for this user if they exist to avoid clutter
+    const oldPlans = await prisma.weekPlan.findMany({
+      where: { userId, name: "Visual Plan Week" }
+    });
+    for (const plan of oldPlans) {
+      await prisma.weekPlan.delete({ where: { id: plan.id } });
+    }
+
+    const weekPlan = await prisma.weekPlan.create({
+      data: {
+        name: "Visual Plan Week",
+        userId,
+        dayPlans: {
+          create: Array.from({ length: 7 }, (_, i) => ({
+            userId,
+            dayOfWeek: i,
+            mealSlots: {
+              create: [
+                // Vitalii
+                { personId: vitaliiProfileId, name: "Сніданок", order: 1, targetKcal: 1700 * 0.25, targetFiberGrams: 7.5 },
+                { personId: vitaliiProfileId, name: "Обід", order: 2, targetKcal: 1700 * 0.40, targetFiberGrams: 13.5 },
+                { personId: vitaliiProfileId, name: "Снек 1", order: 3, targetKcal: 1700 * 0.15, targetFiberGrams: 4.5 },
+                { personId: vitaliiProfileId, name: "Снек 2", order: 4, targetKcal: 1700 * 0.20, targetFiberGrams: 4.5 },
+                // GF
+                { personId: gfProfileId, name: "Сніданок", order: 1, targetKcal: 2300 * 0.25, targetFiberGrams: 7.5 },
+                { personId: gfProfileId, name: "Обід", order: 2, targetKcal: 2300 * 0.40, targetFiberGrams: 13.5 },
+                { personId: gfProfileId, name: "Снек 1", order: 3, targetKcal: 2300 * 0.15, targetFiberGrams: 4.5 },
+                { personId: gfProfileId, name: "Снек 2", order: 4, targetKcal: 2300 * 0.20, targetFiberGrams: 4.5 },
+              ]
+            }
+          }))
+        }
+      },
+      include: {
+        dayPlans: {
+          include: {
+            mealSlots: true
+          }
+        }
+      }
+    });
+
+    // 5. Populate Slots with DishEntries (with auto-portion logic)
+    console.log("Adding dishes to slots...");
+    
+    // We need to fetch dishes with ingredients to calculate stats
+    const allUserDishes = await prisma.dish.findMany({
+      where: { userId },
+      include: { ingredients: { include: { product: true } } }
+    });
+
+    const findDish = (name: string) => allUserDishes.find(d => d.name === name);
+    
+    const bagelDish = findDish("Сирні Бейгли");
+    const kebabDish = findDish("Кебаб Домашній");
+    const chocSnack = findDish("Шоколадний Снек");
+    const pbSnack = findDish("Снек з Арахісовою Пастою");
+
+    for (const day of weekPlan.dayPlans) {
+      for (const slot of day.mealSlots) {
+        let selectedDish = null;
+        if (slot.name === "Сніданок") selectedDish = bagelDish;
+        else if (slot.name === "Обід") selectedDish = kebabDish;
+        else if (slot.name === "Снек 1") selectedDish = chocSnack;
+        else if (slot.name === "Снек 2") selectedDish = pbSnack;
+
+        if (selectedDish) {
+          // Calculate servings based on targetKcal
+          const totalKcal = selectedDish.ingredients.reduce((acc, ing) => {
+            return acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100;
+          }, 0);
+          
+          const kcalPerServing = totalKcal / (selectedDish.servings || 1);
+          const servings = slot.targetKcal / (kcalPerServing || 1);
+          const totalWeight = selectedDish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
+          const portionWeight = servings * (totalWeight / (selectedDish.servings || 1));
+
+          await prisma.dishEntry.create({
+            data: {
+              mealSlotId: slot.id,
+              dishId: selectedDish.id,
+              portionWeight,
+              servings,
+              isShared: true
+            }
+          });
+        }
+      }
+    }
 
     invalidateFoodCache(userId)
     return { success: true, data: undefined }
