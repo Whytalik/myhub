@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { getUserProfile } from "@/features/profile/services/profile-service";
+import { getUserProfile, getDomainStats } from "@/features/profile/services/profile-service";
 import { ProfileDisplay } from "./ProfileDisplay";
 import { SpaceLanding } from "@/components/space-landing";
 
@@ -13,25 +13,28 @@ export default async function ProfilePage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const user = await getUserProfile(session.user.id);
+  const [user, stats] = await Promise.all([
+    getUserProfile(session.user.id),
+    getDomainStats(session.user.id),
+  ]);
   if (!user) redirect("/login");
 
   return (
     <SpaceLanding
       header={{
         label: "identity",
-        title: "Account Details",
-        description: "Your identity across the hub. Manage your name, security settings, and personal data.",
+        title: "Account Profile",
+        description: "Your identity, security settings, and activity across all spaces.",
       }}
       intelligence={{
         items: [
-          { label: "Authentication", value: "NextAuth.js" },
-          { label: "Data Storage", value: "PostgreSQL" },
-          { label: "Privacy", value: "Fully Isolated" },
+          { label: "Auth", value: "NextAuth v5" },
+          { label: "Status", value: user.systemStatus },
+          { label: "Data", value: "PostgreSQL" },
         ],
       }}
     >
-      <ProfileDisplay user={user as { id: string; name: string | null; email: string | null; createdAt: Date }} />
+      <ProfileDisplay user={user} stats={stats} />
     </SpaceLanding>
   );
 }

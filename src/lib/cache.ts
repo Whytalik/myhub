@@ -34,7 +34,7 @@ export const getCachedUserProfile = unstable_cache(
   async (userId: string) => {
     return prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, name: true, email: true, image: true, createdAt: true },
+      select: { id: true, name: true, email: true, emailVerified: true, image: true, systemStatus: true, privateTaskPasswordHash: true, createdAt: true, updatedAt: true },
     });
   },
   [],
