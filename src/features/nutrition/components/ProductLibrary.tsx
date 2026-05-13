@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Select } from "@/components/ui/select";
+import { TabBar } from "@/components/ui/tab-bar";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
 import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts, exportProducts, deleteAllUserProducts } from "../actions/products";
 import { JsonImportModal } from "./JsonImportModal";
@@ -495,52 +496,21 @@ const handleDeleteAll = () => {
         /* Full library grid */
         <>
           {/* Main group tabs */}
-          <div className="flex overflow-x-auto scrollbar-hide gap-2 pb-2">
-            {groupTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedGroup(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-note font-medium whitespace-nowrap transition-all ${
-                  selectedGroup === tab.id
-                    ? "bg-accent text-bg font-semibold"
-                    : "bg-surface border border-border/50 text-secondary hover:text-text"
-                }`}
-              >
-                {tab.label}
-                <span className={`text-label px-1.5 py-0.5 rounded-md ${
-                  selectedGroup === tab.id ? "bg-white/20" : "bg-raised"
-                }`}>{tab.count}</span>
-              </button>
-            ))}
-          </div>
+          <TabBar
+            tabs={groupTabs}
+            activeId={selectedGroup}
+            onTabChange={setSelectedGroup}
+            variant="primary"
+          />
 
           {/* Subcategory tabs */}
           {subTabs.length > 1 && (
-            <div className="flex overflow-x-auto scrollbar-hide gap-1.5 pb-2">
-              <button
-                onClick={() => setSelectedSubTab(null)}
-                className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
-                  !selectedSubTab
-                    ? "bg-text text-bg"
-                    : "text-muted hover:text-text hover:bg-raised"
-                }`}
-              >
-                ALL
-              </button>
-              {subTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedSubTab(tab.id)}
-                  className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
-                    selectedSubTab === tab.id
-                      ? "bg-accent/20 text-accent"
-                      : "text-muted hover:text-text hover:bg-raised"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+            <TabBar
+              tabs={[{ id: "__all__", label: "ALL" }, ...subTabs]}
+              activeId={selectedSubTab || "__all__"}
+              onTabChange={(id) => setSelectedSubTab(id === "__all__" ? null : id)}
+              variant="sub"
+            />
           )}
 
           {displayedCategories.length > 0 ? (

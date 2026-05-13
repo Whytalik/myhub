@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { TabBar } from "@/components/ui/tab-bar";
 import { calculateDishStats, DishWithIngredients } from "../logic/recalculator";
 import { deleteDish, exportDishes, deleteAllUserDishes } from "../actions/dishes";
 import { DishImportModal } from "./DishImportModal";
@@ -232,54 +233,22 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
       {/* Group tabs */}
       {!isSearchMode && (
-        <div className="flex overflow-x-auto scrollbar-hide gap-2 pb-2">
-          {groupTabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => { setSelectedGroup(tab.id); setTypeFilter(null); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-note font-medium whitespace-nowrap transition-all ${
-                selectedGroup === tab.id
-                  ? "bg-accent text-bg font-semibold"
-                  : "bg-surface border border-border/50 text-secondary hover:text-text"
-              }`}
-            >
-              {tab.label}
-              <span className={`text-label px-1.5 py-0.5 rounded-md ${
-                selectedGroup === tab.id ? "bg-white/20" : "bg-raised"
-              }`}>{tab.count}</span>
-            </button>
-          ))}
-        </div>
+        <TabBar
+          tabs={groupTabs}
+          activeId={selectedGroup}
+          onTabChange={(id) => { setSelectedGroup(id); setTypeFilter(null); }}
+          variant="primary"
+        />
       )}
 
       {/* Subcategory pills */}
       {!isSearchMode && subTabs.length > 1 && (
-        <div className="flex overflow-x-auto scrollbar-hide gap-1.5 pb-2">
-          <button
-            onClick={() => setTypeFilter(null)}
-            className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
-              !typeFilter
-                ? "bg-text text-bg"
-                : "text-muted hover:text-text hover:bg-raised"
-            }`}
-          >
-            ALL
-          </button>
-          {subTabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setTypeFilter(typeFilter === tab.id ? null : tab.id as DishType)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
-                typeFilter === tab.id
-                  ? "bg-accent/20 text-accent"
-                  : "text-muted hover:text-text hover:bg-raised"
-              }`}
-            >
-              <span>{tab.emoji}</span>
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
+        <TabBar
+          tabs={[{ id: "__all__", label: "ALL" }, ...subTabs.map(t => ({ ...t, icon: <span>{t.emoji}</span> }))]}
+          activeId={typeFilter || "__all__"}
+          onTabChange={(id) => setTypeFilter(id === "__all__" ? null : id as DishType)}
+          variant="sub"
+        />
       )}
 
       {/* Results count */}
