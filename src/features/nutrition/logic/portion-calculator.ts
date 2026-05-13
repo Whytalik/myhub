@@ -1,4 +1,16 @@
 import { DishWithIngredients, calculateDishStats } from "./recalculator";
+import dishesData from "../data/dishes.json";
+
+const dishJsonMap = new Map(
+  (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+)
+
+function getDishWeights(dish: DishWithIngredients) {
+  const dishJson = dishJsonMap.get(dish.name)
+  return dishJson
+    ? dishJson.ingredients.map((ing, idx) => ({ ingredientIndex: idx, rawWeight: ing.rawWeight }))
+    : dish.ingredients.map((_, idx) => ({ ingredientIndex: idx, rawWeight: 0 }))
+}
 
 /**
  * Calculates how many servings of a dish are needed to fulfill a target calorie count.
@@ -11,7 +23,8 @@ export function calculateRequiredServings(
   dish: DishWithIngredients,
   targetKcal: number
 ): number {
-  const stats = calculateDishStats(dish);
+  const weights = getDishWeights(dish)
+  const stats = calculateDishStats(dish, weights);
   
   if (stats.calories <= 0) return 1; // Prevent division by zero
   

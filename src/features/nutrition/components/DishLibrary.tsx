@@ -13,6 +13,7 @@ import { deleteDish, exportDishes, deleteAllUserDishes } from "../actions/dishes
 import { DishImportModal } from "./DishImportModal";
 import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
+import dishesData from "../data/dishes.json";
 
 interface DishLibraryProps {
   initialDishes: DishWithIngredients[];
@@ -117,10 +118,24 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
     });
   };
 
+  const dishJsonMap = useMemo(() => {
+    return new Map(
+      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+    )
+  }, [])
+
+  const getDishWeights = (dish: DishWithIngredients) => {
+    const dishJson = dishJsonMap.get(dish.name)
+    return dishJson
+      ? dishJson.ingredients.map((ing, idx) => ({ ingredientIndex: idx, rawWeight: ing.rawWeight }))
+      : dish.ingredients.map((_, idx) => ({ ingredientIndex: idx, rawWeight: 0 }))
+  }
+
   const getDishCost = (dish: DishWithIngredients): number => {
-    return dish.ingredients.reduce((sum, ing) => {
+    const weights = getDishWeights(dish)
+    return dish.ingredients.reduce((sum, ing, idx) => {
       const pricePer100g = ing.product.price ? ing.product.price / 100 : 0;
-      return sum + pricePer100g * ing.rawWeight;
+      return sum + pricePer100g * (weights[idx]?.rawWeight ?? 0);
     }, 0);
   };
 
@@ -215,12 +230,10 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
       {filteredDishes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDishes.map((dish) => {
-            const stats = calculateDishStats(dish);
+            const weights = getDishWeights(dish)
+            const stats = calculateDishStats(dish, weights);
             const costPerServing = getCostPerServing(dish);
-            const totalWeight = dish.ingredients.reduce(
-              (s, ing) => s + ing.rawWeight,
-              0
-            );
+            const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
             const kcalPer100g =
               totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
 

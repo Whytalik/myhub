@@ -7,7 +7,8 @@ import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, toggleSlotLock } from "../../actions/planning"
+import { DayPrepBlock } from "./DayPrepBlock"
+import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, toggleSlotLock } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -29,8 +30,10 @@ interface WeekPlannerProps {
       fiberGrams: number
     }[]
     days: {
+      dayPlanId: string
       dayOfWeek: number
       activity: string | null
+      prepNote: { id: string; content: string; steps: string[] } | null
       slots: {
         id: string
         personId: string
@@ -50,18 +53,30 @@ interface WeekPlannerProps {
           id: string
           dishId: string
           dishName: string
-          portionWeight: number
-          servings: number
-          isShared: boolean
-          fitScore: number | null
-          selectedAlternatives?: Record<string, string | null>
-          ingredients?: {
+          dishType: string
+          dishServings: number
+          nutrition: {
+            kcal: number
+            protein: number
+            fat: number
+            carbs: number
+            fiber: number
+          }
+          ingredients: {
             id: string
             productId: string
             productName: string
-            rawWeight: number
+            cookingMethodName: string | null
+            coefficient: number
             alternatives: string[]
+            ingredientIndex: number
+            weight: number
+            inputState: string
+            rawWeight: number
+            cookedWeight: number
+            unit: string | null
           }[]
+          selectedAlternatives: Record<string, string | null>
         }[]
         productEntries: {
           id: string
@@ -81,6 +96,14 @@ interface WeekPlannerProps {
     id: string
     name: string
     type?: DishType
+    templateTotalWeight: number
+    ingredients: {
+      id: string
+      productId: string
+      productName: string
+      rawWeight: number
+      alternatives: string[]
+    }[]
     per100g: {
       kcal: number
       protein: number
@@ -112,8 +135,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
     slotName: string
   } | null>(null)
-  const [editingEntry, setEditingEntry] = useState<{ id: string; weight: string } | null>(null)
-  const [editingServings, setEditingServings] = useState<{ id: string; servings: string } | null>(null)
+  const [editingIngredient, setEditingIngredient] = useState<{ entryId: string; ingredientIndex: number; weight: string } | null>(null)
   const [productPickerSlotId, setProductPickerSlotId] = useState<string | null>(null)
   const [productSearch, setProductSearch] = useState("")
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
@@ -131,16 +153,19 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }, [weekPlan.days, activeDay])
 
-  const handleAddDish = (dishId: string, isShared: boolean, weight: number) => {
+  const handleAddDish = (dishId: string, weights: { ingredientIndex: number; weight: number; inputState?: "RAW" | "COOKED"; unit?: string | null }[]) => {
     if (!pickerConfig) return
 
     startTransition(async () => {
       const result = await addDishToSlot(
         pickerConfig.slotId,
         dishId,
-        isShared,
-        1,
-        weight,
+        weights.map(w => ({
+          ingredientIndex: w.ingredientIndex,
+          weight: w.weight,
+          inputState: w.inputState as "RAW" | "COOKED" | undefined,
+          unit: w.unit ?? undefined,
+        })),
       )
 
       if (result.success) {
@@ -162,26 +187,14 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
-  const handleUpdateWeight = (entryId: string, weight: number) => {
+  const handleUpdateIngredientWeight = (entryId: string, ingredientIndex: number, weight: number) => {
     startTransition(async () => {
-      const result = await updatePortionWeight(entryId, weight)
+      const result = await updateDishEntryIngredient(entryId, ingredientIndex, weight)
       if (result.success) {
         toast.success("Weight updated")
-        setEditingEntry(null)
+        setEditingIngredient(null)
       } else {
         toast.error(result.error || "Failed to update weight")
-      }
-    })
-  }
-
-  const handleUpdateServings = (entryId: string, servings: number) => {
-    startTransition(async () => {
-      const result = await updateDishServings(entryId, servings)
-      if (result.success) {
-        toast.success("Servings updated")
-        setEditingServings(null)
-      } else {
-        toast.error(result.error || "Failed to update servings")
       }
     })
   }
@@ -360,6 +373,30 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         </div>
       )}
 
+      {/* Day Prep Block */}
+      {currentDay && (
+        <DayPrepBlock
+          dayPlanId={currentDay.dayPlanId}
+          dayName={DAY_NAMES[currentDay.dayOfWeek]}
+          prepNote={currentDay.prepNote}
+          slots={currentDay.slots.map(s => ({
+            entries: s.entries.map(e => ({
+              dishName: e.dishName,
+              ingredients: e.ingredients.map(ing => ({
+                productName: ing.productName,
+                cookingMethodName: ing.cookingMethodName,
+                coefficient: ing.coefficient,
+                weight: ing.weight,
+                inputState: ing.inputState,
+                rawWeight: ing.rawWeight,
+                cookedWeight: ing.cookedWeight,
+                unit: ing.unit,
+              })),
+            })),
+          }))}
+        />
+      )}
+
       {/* Table layout: meal slots as columns, persons as rows within each slot */}
       {currentDay && mealSlotNames.map((slotName) => {
         const slotGroup = currentDay.slots.filter(s => s.name === slotName)
@@ -401,127 +438,33 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
                     <div className="space-y-2">
                       {(slot.entries || []).map((entry) => {
-                        const dish = dishes.find(d => d.id === entry.dishId)
-                        const totalWeight = entry.portionWeight * entry.servings
-                        const entryKcal = dish ? (dish.per100g.kcal * totalWeight) / 100 : 0
-                        const isEditingWeight = editingEntry?.id === entry.id
-                        const isEditingServings = editingServings?.id === entry.id
+                        const isEditingIng = editingIngredient?.entryId === entry.id
 
                         return (
                           <div key={entry.id} className="flex flex-col bg-background/50 p-2 rounded gap-2">
                             <div className="flex justify-between items-center text-sm">
                               <div className="flex items-center gap-2">
                                 <span className="font-bold">{entry.dishName}</span>
-                                {isEditingServings ? (
-                                  <div className="flex items-center gap-1">
-                                    <input
-                                      type="number"
-                                      className="w-12 h-5 text-caption font-mono bg-background border rounded px-1"
-                                      value={editingServings.servings}
-                                      autoFocus
-                                      onChange={(e) => setEditingServings({ ...editingServings, servings: e.target.value })}
-                                      onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                          const s = parseFloat(editingServings.servings)
-                                          if (s > 0) handleUpdateServings(entry.id, s)
-                                        }
-                                        if (e.key === "Escape") setEditingServings(null)
-                                      }}
-                                    />
-                                    <span className="text-label text-muted-foreground">serv</span>
-                                  </div>
-                                ) : (
-                                  <button
-                                    className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
-                                    onClick={() => setEditingServings({ id: entry.id, servings: String(entry.servings) })}
-                                  >
-                                    {entry.servings.toFixed(1)} serv
-                                  </button>
-                                )}
-                                {isEditingWeight ? (
-                                  <div className="flex items-center gap-1">
-                                    <input
-                                      type="number"
-                                      className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
-                                      value={editingEntry.weight}
-                                      autoFocus
-                                      onChange={(e) => setEditingEntry({ ...editingEntry, weight: e.target.value })}
-                                      onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                          const w = parseFloat(editingEntry.weight)
-                                          if (w > 0) handleUpdateWeight(entry.id, w)
-                                        }
-                                        if (e.key === "Escape") setEditingEntry(null)
-                                      }}
-                                    />
-                                    <span className="text-label text-muted-foreground">g</span>
-                                  </div>
-                                ) : (
-                                  <button
-                                    className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
-                                    onClick={() => setEditingEntry({ id: entry.id, weight: String(entry.portionWeight) })}
-                                  >
-                                    {entry.portionWeight.toFixed(0)}g
-                                  </button>
-                                )}
-                                <span className="text-label font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
-                                {entry.fitScore !== null && entry.fitScore !== undefined && (
-                                  <span className={`h-4 text-[10px] px-1 border rounded ${
-                                    entry.fitScore > 0.8 ? "text-green-600 border-green-600" :
-                                    entry.fitScore > 0.5 ? "text-yellow-600 border-yellow-600" :
-                                    "text-red-600 border-red-600"
-                                  }`}>
-                                    {(entry.fitScore * 100).toFixed(0)}%
-                                  </span>
-                                )}
+                                <span className="text-label font-mono text-muted-foreground">{entry.nutrition.kcal.toFixed(0)} kcal</span>
+                                <span className="text-caption text-muted-foreground">P:{entry.nutrition.protein.toFixed(0)} F:{entry.nutrition.fat.toFixed(0)} C:{entry.nutrition.carbs.toFixed(0)}</span>
                               </div>
-                              <div className="flex items-center gap-1">
-                                {isEditingWeight && (
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-5 w-5 text-green-500 hover:text-green-600"
-                                    onClick={() => {
-                                      const w = parseFloat(editingEntry.weight)
-                                      if (w > 0) handleUpdateWeight(entry.id, w)
-                                    }}
-                                    disabled={isPending}
-                                  >
-                                    <span className="text-caption">✓</span>
-                                  </Button>
-                                )}
-                                {isEditingServings && (
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-5 w-5 text-green-500 hover:text-green-600"
-                                    onClick={() => {
-                                      const s = parseFloat(editingServings.servings)
-                                      if (s > 0) handleUpdateServings(entry.id, s)
-                                    }}
-                                    disabled={isPending}
-                                  >
-                                    <span className="text-caption">✓</span>
-                                  </Button>
-                                )}
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
-                                  onClick={() => handleRemoveDish(entry.id)}
-                                  disabled={isPending || slot.locked}
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </Button>
-                              </div>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                onClick={() => handleRemoveDish(entry.id)}
+                                disabled={isPending || slot.locked}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
                             </div>
 
-                            {/* Dish ingredients list */}
+                            {/* Dish ingredients list with editable weights */}
                             {entry.ingredients && entry.ingredients.length > 0 && (
                               <div className="flex flex-col gap-1 pl-2 border-l-2 border-accent/10 mt-1">
-                                {entry.ingredients.map((ing, idx) => {
-                                  const selectedAlts = entry.selectedAlternatives as Record<string, string> || {};
-                                  const currentProductId = selectedAlts[String(idx)] || ing.productId;
+                                {entry.ingredients.map((ing) => {
+                                  const selectedAlts = entry.selectedAlternatives || {};
+                                  const currentProductId = selectedAlts[String(ing.ingredientIndex)] || ing.productId;
                                   const isAlternative = currentProductId !== ing.productId;
                                   
                                   const allOptions = [
@@ -532,18 +475,60 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                     }).filter(Boolean) as { id: string, name: string }[]
                                   ];
 
+                                  const isEditingThis = isEditingIng && editingIngredient?.ingredientIndex === ing.ingredientIndex;
+
                                   return (
-                                    <div key={idx} className="flex flex-wrap gap-1 items-center">
+                                    <div key={ing.ingredientIndex} className="flex flex-wrap gap-1 items-center">
                                       <span className={`text-[10px] lowercase ${isAlternative ? 'text-accent/70' : 'text-muted-foreground'}`}>
                                         {ing.productName}:
                                       </span>
-                                      <span className="text-[10px] font-mono text-muted-foreground">{ing.rawWeight}g</span>
+                                      {isEditingThis ? (
+                                        <div className="flex items-center gap-1">
+                                          <input
+                                            type="number"
+                                            className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
+                                            value={editingIngredient.weight}
+                                            autoFocus
+                                            onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter") {
+                                                const w = parseFloat(editingIngredient.weight)
+                                                if (w > 0) handleUpdateIngredientWeight(entry.id, ing.ingredientIndex, w)
+                                              }
+                                              if (e.key === "Escape") setEditingIngredient(null)
+                                            }}
+                                          />
+                                          <span className="text-label text-muted-foreground">g</span>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-5 w-5 text-green-500 hover:text-green-600"
+                                            onClick={() => {
+                                              const w = parseFloat(editingIngredient.weight)
+                                              if (w > 0) handleUpdateIngredientWeight(entry.id, ing.ingredientIndex, w)
+                                            }}
+                                            disabled={isPending}
+                                          >
+                                            <span className="text-caption">✓</span>
+                                          </Button>
+                                        </div>
+                                      ) : (
+                                        <button
+                                          className="text-[10px] font-mono text-muted-foreground hover:text-accent underline decoration-dotted"
+                                          onClick={() => setEditingIngredient({ entryId: entry.id, ingredientIndex: ing.ingredientIndex, weight: String(ing.weight) })}
+                                        >
+                                          {ing.weight.toFixed(0)}г
+                                          {ing.inputState === "COOKED" && <span className="text-[8px] text-accent/60 ml-0.5">готове</span>}
+                                          {ing.coefficient !== 1 && <span className="text-[8px] text-muted-foreground/50 ml-0.5">≈{ing.rawWeight.toFixed(0)}г сире</span>}
+                                        </button>
+                                      )}
+                                      {ing.unit && <span className="text-[9px] text-muted-foreground">{ing.unit}</span>}
                                       {ing.alternatives && ing.alternatives.length > 0 && (
                                         <div className="flex flex-wrap gap-0.5">
                                           {allOptions.map((opt) => (
                                             <button
                                               key={opt.id}
-                                              onClick={() => handleUpdateAlternative(entry.id, idx, opt.id === ing.productId ? null : opt.id)}
+                                              onClick={() => handleUpdateAlternative(entry.id, ing.ingredientIndex, opt.id === ing.productId ? null : opt.id)}
                                               className={`text-[9px] px-1 py-0.5 rounded transition-colors leading-none border ${
                                                 currentProductId === opt.id 
                                                   ? "bg-accent/20 text-accent border-accent/40 font-bold" 

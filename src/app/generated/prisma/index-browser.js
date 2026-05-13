@@ -232,8 +232,16 @@ exports.Prisma.DishIngredientScalarFieldEnum = {
   dishId: 'dishId',
   productId: 'productId',
   cookingMethodId: 'cookingMethodId',
-  rawWeight: 'rawWeight',
   alternatives: 'alternatives'
+};
+
+exports.Prisma.DishEntryIngredientScalarFieldEnum = {
+  id: 'id',
+  dishEntryId: 'dishEntryId',
+  ingredientIndex: 'ingredientIndex',
+  weight: 'weight',
+  inputState: 'inputState',
+  unit: 'unit'
 };
 
 exports.Prisma.WeekPlanScalarFieldEnum = {
@@ -250,6 +258,15 @@ exports.Prisma.DayPlanScalarFieldEnum = {
   weekPlanId: 'weekPlanId',
   dayOfWeek: 'dayOfWeek',
   activity: 'activity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DayPrepNoteScalarFieldEnum = {
+  id: 'id',
+  dayPlanId: 'dayPlanId',
+  content: 'content',
+  steps: 'steps',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -281,6 +298,7 @@ exports.Prisma.MealSlotInstanceScalarFieldEnum = {
   order: 'order',
   targetKcal: 'targetKcal',
   targetFiberGrams: 'targetFiberGrams',
+  locked: 'locked',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -298,11 +316,7 @@ exports.Prisma.DishEntryScalarFieldEnum = {
   id: 'id',
   mealSlotId: 'mealSlotId',
   dishId: 'dishId',
-  portionWeight: 'portionWeight',
-  servings: 'servings',
-  isShared: 'isShared',
-  manualWeight: 'manualWeight',
-  fitScore: 'fitScore',
+  selectedAlternatives: 'selectedAlternatives',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -739,6 +753,11 @@ exports.DishType = exports.$Enums.DishType = {
   BASE: 'BASE'
 };
 
+exports.IngredientInputState = exports.$Enums.IngredientInputState = {
+  RAW: 'RAW',
+  COOKED: 'COOKED'
+};
+
 exports.Unit = exports.$Enums.Unit = {
   GRAM: 'GRAM',
   ML: 'ML',
@@ -858,8 +877,10 @@ exports.Prisma.ModelName = {
   CookingMethod: 'CookingMethod',
   Dish: 'Dish',
   DishIngredient: 'DishIngredient',
+  DishEntryIngredient: 'DishEntryIngredient',
   WeekPlan: 'WeekPlan',
   DayPlan: 'DayPlan',
+  DayPrepNote: 'DayPrepNote',
   ShoppingList: 'ShoppingList',
   ShoppingListItem: 'ShoppingListItem',
   MealSlotInstance: 'MealSlotInstance',

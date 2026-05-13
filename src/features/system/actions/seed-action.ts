@@ -161,7 +161,6 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
               if (!product) return null;
               return {
                 productId: product.id,
-                rawWeight: ing.rawWeight,
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
@@ -181,7 +180,6 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
               if (!product) return null;
               return {
                 productId: product.id,
-                rawWeight: ing.rawWeight,
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
@@ -258,6 +256,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     });
 
     const findDish = (name: string) => allDishes.find(d => d.name === name);
+    const findDishJson = (name: string) => (dishesData as unknown as JsonDish[]).find(d => d.name === name);
 
     for (const day of weekPlan.dayPlans) {
       const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
@@ -275,18 +274,34 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         if (!dishName) continue;
 
         const dish = findDish(dishName);
-        if (dish) {
-          const totalWeight = dish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
-          const portionWeight = totalWeight / (dish.servings || 1);
+        const dishJson = findDishJson(dishName);
+        if (dish && dishJson) {
+          const targetKcal = slot.targetKcal;
+          const dishTotalKcal = dishJson.ingredients.reduce((acc, ing) => {
+            const prod = globalProducts[ing.productName];
+            return acc + (prod ? (ing.rawWeight * prod.caloriesPer100) / 100 : 0);
+          }, 0);
+          
+          const scale = targetKcal > 0 && dishTotalKcal > 0 ? (targetKcal / dishTotalKcal) : 1;
 
-          await prisma.dishEntry.create({
+          const dishEntry = await prisma.dishEntry.create({
             data: {
               mealSlotId: slot.id,
               dishId: dish.id,
-              portionWeight,
-              servings: 1,
-              isShared: true
             }
+          });
+
+          await prisma.dishEntryIngredient.createMany({
+            data: dishJson.ingredients.map((ing, idx) => {
+              const prod = globalProducts[ing.productName];
+              return {
+                dishEntryId: dishEntry.id,
+                ingredientIndex: idx,
+                weight: ing.rawWeight * scale,
+                inputState: "RAW",
+                unit: prod?.unit ?? null,
+              };
+            })
           });
         }
       }

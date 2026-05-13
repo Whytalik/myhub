@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Trash2, Edit2, ChevronRight } from "lucide-react"
+import { Trash2, Edit2, ChevronRight, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog } from "@/components/ui/dialog"
-import { deleteWeekPlan, updateWeekPlanName } from "../../actions/planning"
+import { deleteWeekPlan, updateWeekPlanName, duplicateWeekPlan } from "../../actions/planning"
 import { toast } from "sonner"
 import Link from "next/link"
 
@@ -51,6 +51,18 @@ export function PlanList({ initialPlans }: PlanListProps) {
     })
   }
 
+  const handleDuplicate = (planId: string) => {
+    startTransition(async () => {
+      const result = await duplicateWeekPlan(planId)
+      if (result.success) {
+        toast.success("Plan duplicated")
+        window.location.reload()
+      } else {
+        toast.error(result.error || "Failed to duplicate")
+      }
+    })
+  }
+
   return (
     <div className="space-y-4">
       {plans.length === 0 ? (
@@ -74,6 +86,15 @@ export function PlanList({ initialPlans }: PlanListProps) {
               </Link>
 
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-muted hover:text-accent"
+                  onClick={() => handleDuplicate(plan.id)}
+                  disabled={isPending}
+                >
+                  <Copy size={14} />
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon"

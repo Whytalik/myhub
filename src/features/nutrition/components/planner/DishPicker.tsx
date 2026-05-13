@@ -13,6 +13,14 @@ interface Dish {
   id: string
   name: string
   type?: DishType
+  templateTotalWeight: number
+  ingredients: {
+    id: string
+    productId: string
+    productName: string
+    rawWeight: number
+    alternatives: string[]
+  }[]
   per100g: {
     kcal: number
     protein: number
@@ -25,17 +33,15 @@ interface Dish {
 interface DishPickerProps {
   isOpen: boolean
   onClose: () => void
-  onAdd: (dishId: string, isShared: boolean, weight: number) => void
+  onAdd: (dishId: string, weights: { ingredientIndex: number; weight: number; inputState?: "RAW" | "COOKED"; unit?: string | null }[]) => void
   dishes: Dish[]
   person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
-  isSharedInitial?: boolean
   slotName?: string
 }
 
-export function DishPicker({ isOpen, onClose, onAdd, dishes, person, isSharedInitial = false, slotName = "slot" }: DishPickerProps) {
+export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slotName = "slot" }: DishPickerProps) {
   const [search, setSearch] = useState("")
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null)
-  const [isShared, setIsShared] = useState(isSharedInitial)
   const [selectedDishId, setSelectedDishId] = useState<string | null>(null)
   const [manualWeight, setManualWeight] = useState<string>("")
 
@@ -145,28 +151,14 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, isSharedIni
 
         {selectedDish && (
           <div className="p-4 border-t bg-muted/30 space-y-3 rounded-b-lg">
-            <div className="flex gap-4">
-              <div className="flex-1 space-y-1">
-                <label className="text-caption uppercase font-bold text-muted-foreground">Вага (г)</label>
-                <Input
-                  type="number"
-                  value={manualWeight || calculatedWeight.toFixed(0)}
-                  onChange={(e) => setManualWeight(e.target.value)}
-                  placeholder={calculatedWeight.toFixed(0)}
-                />
-              </div>
-              <div className="flex items-center space-x-2 pt-5">
-                <input
-                  type="checkbox"
-                  id="shared"
-                  checked={isShared}
-                  onChange={(e) => setIsShared(e.target.checked)}
-                  className="h-4 w-4"
-                />
-                <label htmlFor="shared" className="text-sm font-medium leading-none cursor-pointer">
-                  Спільна
-                </label>
-              </div>
+            <div className="space-y-1">
+              <label className="text-caption uppercase font-bold text-muted-foreground">Вага порції (г)</label>
+              <Input
+                type="number"
+                value={manualWeight || calculatedWeight.toFixed(0)}
+                onChange={(e) => setManualWeight(e.target.value)}
+                placeholder={calculatedWeight.toFixed(0)}
+              />
             </div>
 
             {fit && fit.warnings.length > 0 && (
@@ -181,7 +173,14 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, isSharedIni
             <Button
               className="w-full"
               onClick={() => {
-                onAdd(selectedDish.id, isShared, calculatedWeight)
+                const weight = calculatedWeight
+                const ingredientWeights = selectedDish.ingredients.map((ing, idx) => ({
+                  ingredientIndex: idx,
+                  weight: (ing.rawWeight / selectedDish.templateTotalWeight) * weight,
+                  inputState: "RAW" as const,
+                  unit: null,
+                }))
+                onAdd(selectedDish.id, ingredientWeights)
                 onClose()
               }}
             >

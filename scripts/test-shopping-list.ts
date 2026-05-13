@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/prisma";
 import { aggregateShoppingList, FullWeekPlan } from "../src/features/nutrition/logic/shopping-list";
+import { FoodProduct } from "../src/app/generated/prisma";
 
 async function main() {
   const weekPlanId = process.argv[2];
@@ -28,6 +29,7 @@ async function main() {
                       },
                     },
                   },
+                  ingredients: true,
                 },
               },
             },
@@ -42,7 +44,10 @@ async function main() {
     process.exit(1);
   }
 
-  const shoppingList = aggregateShoppingList(weekPlan as unknown as FullWeekPlan);
+  const products = await prisma.foodProduct.findMany();
+  const productMap = new Map<string, FoodProduct>(products.map(p => [p.id, p]));
+
+  const shoppingList = aggregateShoppingList(weekPlan as unknown as FullWeekPlan, productMap);
 
   console.log(`\n--- Shopping List for: ${weekPlan.name} ---`);
   console.log(`Total Products: ${shoppingList.length}\n`);

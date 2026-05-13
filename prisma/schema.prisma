@@ -164,13 +164,24 @@ model DishIngredient {
   dishId          String
   productId       String
   cookingMethodId String?
-  rawWeight       Float
   alternatives    String[]       @default([])
   dish            Dish           @relation(fields: [dishId], references: [id], onDelete: Cascade)
   product         FoodProduct    @relation(fields: [productId], references: [id])
   cookingMethod   CookingMethod? @relation(fields: [cookingMethodId], references: [id])
 
   @@unique([dishId, productId, cookingMethodId])
+}
+
+model DishEntryIngredient {
+  id              String                @id @default(uuid())
+  dishEntryId     String
+  ingredientIndex Int
+  weight          Float
+  inputState      IngredientInputState  @default(RAW)
+  unit            String?
+  dishEntry       DishEntry             @relation(fields: [dishEntryId], references: [id], onDelete: Cascade)
+
+  @@unique([dishEntryId, ingredientIndex])
 }
 
 model WeekPlan {
@@ -196,6 +207,17 @@ model DayPlan {
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id], onDelete: Cascade)
   mealSlots  MealSlotInstance[]
+  prepNote   DayPrepNote?
+}
+
+model DayPrepNote {
+  id        String   @id @default(uuid())
+  dayPlanId String   @unique
+  content   String   @default("")
+  steps     String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  dayPlan   DayPlan  @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
 }
 
 model ShoppingList {
@@ -253,19 +275,15 @@ model ProductEntry {
 }
 
 model DishEntry {
-  id                   String           @id @default(uuid())
+  id                   String                @id @default(uuid())
   mealSlotId           String
   dishId               String
-  portionWeight        Float
-  servings             Float            @default(1)
-  isShared             Boolean          @default(false)
-  manualWeight         Boolean          @default(false)
-  fitScore             Float?
   selectedAlternatives Json?
-  createdAt            DateTime         @default(now())
-  updatedAt            DateTime         @updatedAt
-  dish                 Dish             @relation(fields: [dishId], references: [id])
-  mealSlot             MealSlotInstance @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  dish                 Dish                  @relation(fields: [dishId], references: [id])
+  mealSlot             MealSlotInstance      @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  ingredients          DishEntryIngredient[]
 }
 
 model ShoppingCart {

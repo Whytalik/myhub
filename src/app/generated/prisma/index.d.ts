@@ -64,6 +64,11 @@ export type Dish = $Result.DefaultSelection<Prisma.$DishPayload>
  */
 export type DishIngredient = $Result.DefaultSelection<Prisma.$DishIngredientPayload>
 /**
+ * Model DishEntryIngredient
+ * 
+ */
+export type DishEntryIngredient = $Result.DefaultSelection<Prisma.$DishEntryIngredientPayload>
+/**
  * Model WeekPlan
  * 
  */
@@ -73,6 +78,11 @@ export type WeekPlan = $Result.DefaultSelection<Prisma.$WeekPlanPayload>
  * 
  */
 export type DayPlan = $Result.DefaultSelection<Prisma.$DayPlanPayload>
+/**
+ * Model DayPrepNote
+ * 
+ */
+export type DayPrepNote = $Result.DefaultSelection<Prisma.$DayPrepNotePayload>
 /**
  * Model ShoppingList
  * 
@@ -827,6 +837,16 @@ export class PrismaClient<
   get dishIngredient(): Prisma.DishIngredientDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.dishEntryIngredient`: Exposes CRUD operations for the **DishEntryIngredient** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DishEntryIngredients
+    * const dishEntryIngredients = await prisma.dishEntryIngredient.findMany()
+    * ```
+    */
+  get dishEntryIngredient(): Prisma.DishEntryIngredientDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.weekPlan`: Exposes CRUD operations for the **WeekPlan** model.
     * Example usage:
     * ```ts
@@ -845,6 +865,16 @@ export class PrismaClient<
     * ```
     */
   get dayPlan(): Prisma.DayPlanDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dayPrepNote`: Exposes CRUD operations for the **DayPrepNote** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DayPrepNotes
+    * const dayPrepNotes = await prisma.dayPrepNote.findMany()
+    * ```
+    */
+  get dayPrepNote(): Prisma.DayPrepNoteDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.shoppingList`: Exposes CRUD operations for the **ShoppingList** model.
@@ -1619,8 +1649,10 @@ export namespace Prisma {
     CookingMethod: 'CookingMethod',
     Dish: 'Dish',
     DishIngredient: 'DishIngredient',
+    DishEntryIngredient: 'DishEntryIngredient',
     WeekPlan: 'WeekPlan',
     DayPlan: 'DayPlan',
+    DayPrepNote: 'DayPrepNote',
     ShoppingList: 'ShoppingList',
     ShoppingListItem: 'ShoppingListItem',
     MealSlotInstance: 'MealSlotInstance',
@@ -1669,7 +1701,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "weekPlan" | "dayPlan" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2413,6 +2445,80 @@ export namespace Prisma {
           }
         }
       }
+      DishEntryIngredient: {
+        payload: Prisma.$DishEntryIngredientPayload<ExtArgs>
+        fields: Prisma.DishEntryIngredientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DishEntryIngredientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DishEntryIngredientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          findFirst: {
+            args: Prisma.DishEntryIngredientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DishEntryIngredientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          findMany: {
+            args: Prisma.DishEntryIngredientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>[]
+          }
+          create: {
+            args: Prisma.DishEntryIngredientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          createMany: {
+            args: Prisma.DishEntryIngredientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DishEntryIngredientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>[]
+          }
+          delete: {
+            args: Prisma.DishEntryIngredientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          update: {
+            args: Prisma.DishEntryIngredientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          deleteMany: {
+            args: Prisma.DishEntryIngredientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DishEntryIngredientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DishEntryIngredientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>[]
+          }
+          upsert: {
+            args: Prisma.DishEntryIngredientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DishEntryIngredientPayload>
+          }
+          aggregate: {
+            args: Prisma.DishEntryIngredientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDishEntryIngredient>
+          }
+          groupBy: {
+            args: Prisma.DishEntryIngredientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DishEntryIngredientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DishEntryIngredientCountArgs<ExtArgs>
+            result: $Utils.Optional<DishEntryIngredientCountAggregateOutputType> | number
+          }
+        }
+      }
       WeekPlan: {
         payload: Prisma.$WeekPlanPayload<ExtArgs>
         fields: Prisma.WeekPlanFieldRefs
@@ -2558,6 +2664,80 @@ export namespace Prisma {
           count: {
             args: Prisma.DayPlanCountArgs<ExtArgs>
             result: $Utils.Optional<DayPlanCountAggregateOutputType> | number
+          }
+        }
+      }
+      DayPrepNote: {
+        payload: Prisma.$DayPrepNotePayload<ExtArgs>
+        fields: Prisma.DayPrepNoteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DayPrepNoteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DayPrepNoteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          findFirst: {
+            args: Prisma.DayPrepNoteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DayPrepNoteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          findMany: {
+            args: Prisma.DayPrepNoteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>[]
+          }
+          create: {
+            args: Prisma.DayPrepNoteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          createMany: {
+            args: Prisma.DayPrepNoteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DayPrepNoteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>[]
+          }
+          delete: {
+            args: Prisma.DayPrepNoteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          update: {
+            args: Prisma.DayPrepNoteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          deleteMany: {
+            args: Prisma.DayPrepNoteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DayPrepNoteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DayPrepNoteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>[]
+          }
+          upsert: {
+            args: Prisma.DayPrepNoteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DayPrepNotePayload>
+          }
+          aggregate: {
+            args: Prisma.DayPrepNoteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDayPrepNote>
+          }
+          groupBy: {
+            args: Prisma.DayPrepNoteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DayPrepNoteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DayPrepNoteCountArgs<ExtArgs>
+            result: $Utils.Optional<DayPrepNoteCountAggregateOutputType> | number
           }
         }
       }
@@ -5121,8 +5301,10 @@ export namespace Prisma {
     cookingMethod?: CookingMethodOmit
     dish?: DishOmit
     dishIngredient?: DishIngredientOmit
+    dishEntryIngredient?: DishEntryIngredientOmit
     weekPlan?: WeekPlanOmit
     dayPlan?: DayPlanOmit
+    dayPrepNote?: DayPrepNoteOmit
     shoppingList?: ShoppingListOmit
     shoppingListItem?: ShoppingListItemOmit
     mealSlotInstance?: MealSlotInstanceOmit
@@ -5759,6 +5941,37 @@ export namespace Prisma {
    */
   export type MealSlotInstanceCountOutputTypeCountProductEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductEntryWhereInput
+  }
+
+
+  /**
+   * Count Type DishEntryCountOutputType
+   */
+
+  export type DishEntryCountOutputType = {
+    ingredients: number
+  }
+
+  export type DishEntryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ingredients?: boolean | DishEntryCountOutputTypeCountIngredientsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DishEntryCountOutputType without action
+   */
+  export type DishEntryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryCountOutputType
+     */
+    select?: DishEntryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DishEntryCountOutputType without action
+   */
+  export type DishEntryCountOutputTypeCountIngredientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DishEntryIngredientWhereInput
   }
 
 
@@ -17230,18 +17443,8 @@ export namespace Prisma {
 
   export type AggregateDishIngredient = {
     _count: DishIngredientCountAggregateOutputType | null
-    _avg: DishIngredientAvgAggregateOutputType | null
-    _sum: DishIngredientSumAggregateOutputType | null
     _min: DishIngredientMinAggregateOutputType | null
     _max: DishIngredientMaxAggregateOutputType | null
-  }
-
-  export type DishIngredientAvgAggregateOutputType = {
-    rawWeight: number | null
-  }
-
-  export type DishIngredientSumAggregateOutputType = {
-    rawWeight: number | null
   }
 
   export type DishIngredientMinAggregateOutputType = {
@@ -17249,7 +17452,6 @@ export namespace Prisma {
     dishId: string | null
     productId: string | null
     cookingMethodId: string | null
-    rawWeight: number | null
   }
 
   export type DishIngredientMaxAggregateOutputType = {
@@ -17257,7 +17459,6 @@ export namespace Prisma {
     dishId: string | null
     productId: string | null
     cookingMethodId: string | null
-    rawWeight: number | null
   }
 
   export type DishIngredientCountAggregateOutputType = {
@@ -17265,26 +17466,16 @@ export namespace Prisma {
     dishId: number
     productId: number
     cookingMethodId: number
-    rawWeight: number
     alternatives: number
     _all: number
   }
 
-
-  export type DishIngredientAvgAggregateInputType = {
-    rawWeight?: true
-  }
-
-  export type DishIngredientSumAggregateInputType = {
-    rawWeight?: true
-  }
 
   export type DishIngredientMinAggregateInputType = {
     id?: true
     dishId?: true
     productId?: true
     cookingMethodId?: true
-    rawWeight?: true
   }
 
   export type DishIngredientMaxAggregateInputType = {
@@ -17292,7 +17483,6 @@ export namespace Prisma {
     dishId?: true
     productId?: true
     cookingMethodId?: true
-    rawWeight?: true
   }
 
   export type DishIngredientCountAggregateInputType = {
@@ -17300,7 +17490,6 @@ export namespace Prisma {
     dishId?: true
     productId?: true
     cookingMethodId?: true
-    rawWeight?: true
     alternatives?: true
     _all?: true
   }
@@ -17343,18 +17532,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: DishIngredientAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DishIngredientSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: DishIngredientMinAggregateInputType
@@ -17385,8 +17562,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DishIngredientCountAggregateInputType | true
-    _avg?: DishIngredientAvgAggregateInputType
-    _sum?: DishIngredientSumAggregateInputType
     _min?: DishIngredientMinAggregateInputType
     _max?: DishIngredientMaxAggregateInputType
   }
@@ -17396,11 +17571,8 @@ export namespace Prisma {
     dishId: string
     productId: string
     cookingMethodId: string | null
-    rawWeight: number
     alternatives: string[]
     _count: DishIngredientCountAggregateOutputType | null
-    _avg: DishIngredientAvgAggregateOutputType | null
-    _sum: DishIngredientSumAggregateOutputType | null
     _min: DishIngredientMinAggregateOutputType | null
     _max: DishIngredientMaxAggregateOutputType | null
   }
@@ -17424,7 +17596,6 @@ export namespace Prisma {
     dishId?: boolean
     productId?: boolean
     cookingMethodId?: boolean
-    rawWeight?: boolean
     alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
@@ -17436,7 +17607,6 @@ export namespace Prisma {
     dishId?: boolean
     productId?: boolean
     cookingMethodId?: boolean
-    rawWeight?: boolean
     alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
@@ -17448,7 +17618,6 @@ export namespace Prisma {
     dishId?: boolean
     productId?: boolean
     cookingMethodId?: boolean
-    rawWeight?: boolean
     alternatives?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
@@ -17460,11 +17629,10 @@ export namespace Prisma {
     dishId?: boolean
     productId?: boolean
     cookingMethodId?: boolean
-    rawWeight?: boolean
     alternatives?: boolean
   }
 
-  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "cookingMethodId" | "rawWeight" | "alternatives", ExtArgs["result"]["dishIngredient"]>
+  export type DishIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishId" | "productId" | "cookingMethodId" | "alternatives", ExtArgs["result"]["dishIngredient"]>
   export type DishIngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     product?: boolean | FoodProductDefaultArgs<ExtArgs>
@@ -17493,7 +17661,6 @@ export namespace Prisma {
       dishId: string
       productId: string
       cookingMethodId: string | null
-      rawWeight: number
       alternatives: string[]
     }, ExtArgs["result"]["dishIngredient"]>
     composites: {}
@@ -17925,7 +18092,6 @@ export namespace Prisma {
     readonly dishId: FieldRef<"DishIngredient", 'String'>
     readonly productId: FieldRef<"DishIngredient", 'String'>
     readonly cookingMethodId: FieldRef<"DishIngredient", 'String'>
-    readonly rawWeight: FieldRef<"DishIngredient", 'Float'>
     readonly alternatives: FieldRef<"DishIngredient", 'String[]'>
   }
     
@@ -18362,6 +18528,1120 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DishIngredientInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DishEntryIngredient
+   */
+
+  export type AggregateDishEntryIngredient = {
+    _count: DishEntryIngredientCountAggregateOutputType | null
+    _avg: DishEntryIngredientAvgAggregateOutputType | null
+    _sum: DishEntryIngredientSumAggregateOutputType | null
+    _min: DishEntryIngredientMinAggregateOutputType | null
+    _max: DishEntryIngredientMaxAggregateOutputType | null
+  }
+
+  export type DishEntryIngredientAvgAggregateOutputType = {
+    ingredientIndex: number | null
+    weight: number | null
+  }
+
+  export type DishEntryIngredientSumAggregateOutputType = {
+    ingredientIndex: number | null
+    weight: number | null
+  }
+
+  export type DishEntryIngredientMinAggregateOutputType = {
+    id: string | null
+    dishEntryId: string | null
+    ingredientIndex: number | null
+    weight: number | null
+    inputState: $Enums.IngredientInputState | null
+    unit: string | null
+  }
+
+  export type DishEntryIngredientMaxAggregateOutputType = {
+    id: string | null
+    dishEntryId: string | null
+    ingredientIndex: number | null
+    weight: number | null
+    inputState: $Enums.IngredientInputState | null
+    unit: string | null
+  }
+
+  export type DishEntryIngredientCountAggregateOutputType = {
+    id: number
+    dishEntryId: number
+    ingredientIndex: number
+    weight: number
+    inputState: number
+    unit: number
+    _all: number
+  }
+
+
+  export type DishEntryIngredientAvgAggregateInputType = {
+    ingredientIndex?: true
+    weight?: true
+  }
+
+  export type DishEntryIngredientSumAggregateInputType = {
+    ingredientIndex?: true
+    weight?: true
+  }
+
+  export type DishEntryIngredientMinAggregateInputType = {
+    id?: true
+    dishEntryId?: true
+    ingredientIndex?: true
+    weight?: true
+    inputState?: true
+    unit?: true
+  }
+
+  export type DishEntryIngredientMaxAggregateInputType = {
+    id?: true
+    dishEntryId?: true
+    ingredientIndex?: true
+    weight?: true
+    inputState?: true
+    unit?: true
+  }
+
+  export type DishEntryIngredientCountAggregateInputType = {
+    id?: true
+    dishEntryId?: true
+    ingredientIndex?: true
+    weight?: true
+    inputState?: true
+    unit?: true
+    _all?: true
+  }
+
+  export type DishEntryIngredientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DishEntryIngredient to aggregate.
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DishEntryIngredients to fetch.
+     */
+    orderBy?: DishEntryIngredientOrderByWithRelationInput | DishEntryIngredientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DishEntryIngredientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DishEntryIngredients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DishEntryIngredients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DishEntryIngredients
+    **/
+    _count?: true | DishEntryIngredientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DishEntryIngredientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DishEntryIngredientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DishEntryIngredientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DishEntryIngredientMaxAggregateInputType
+  }
+
+  export type GetDishEntryIngredientAggregateType<T extends DishEntryIngredientAggregateArgs> = {
+        [P in keyof T & keyof AggregateDishEntryIngredient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDishEntryIngredient[P]>
+      : GetScalarType<T[P], AggregateDishEntryIngredient[P]>
+  }
+
+
+
+
+  export type DishEntryIngredientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DishEntryIngredientWhereInput
+    orderBy?: DishEntryIngredientOrderByWithAggregationInput | DishEntryIngredientOrderByWithAggregationInput[]
+    by: DishEntryIngredientScalarFieldEnum[] | DishEntryIngredientScalarFieldEnum
+    having?: DishEntryIngredientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DishEntryIngredientCountAggregateInputType | true
+    _avg?: DishEntryIngredientAvgAggregateInputType
+    _sum?: DishEntryIngredientSumAggregateInputType
+    _min?: DishEntryIngredientMinAggregateInputType
+    _max?: DishEntryIngredientMaxAggregateInputType
+  }
+
+  export type DishEntryIngredientGroupByOutputType = {
+    id: string
+    dishEntryId: string
+    ingredientIndex: number
+    weight: number
+    inputState: $Enums.IngredientInputState
+    unit: string | null
+    _count: DishEntryIngredientCountAggregateOutputType | null
+    _avg: DishEntryIngredientAvgAggregateOutputType | null
+    _sum: DishEntryIngredientSumAggregateOutputType | null
+    _min: DishEntryIngredientMinAggregateOutputType | null
+    _max: DishEntryIngredientMaxAggregateOutputType | null
+  }
+
+  type GetDishEntryIngredientGroupByPayload<T extends DishEntryIngredientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DishEntryIngredientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DishEntryIngredientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DishEntryIngredientGroupByOutputType[P]>
+            : GetScalarType<T[P], DishEntryIngredientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DishEntryIngredientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dishEntryId?: boolean
+    ingredientIndex?: boolean
+    weight?: boolean
+    inputState?: boolean
+    unit?: boolean
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dishEntryIngredient"]>
+
+  export type DishEntryIngredientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dishEntryId?: boolean
+    ingredientIndex?: boolean
+    weight?: boolean
+    inputState?: boolean
+    unit?: boolean
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dishEntryIngredient"]>
+
+  export type DishEntryIngredientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dishEntryId?: boolean
+    ingredientIndex?: boolean
+    weight?: boolean
+    inputState?: boolean
+    unit?: boolean
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dishEntryIngredient"]>
+
+  export type DishEntryIngredientSelectScalar = {
+    id?: boolean
+    dishEntryId?: boolean
+    ingredientIndex?: boolean
+    weight?: boolean
+    inputState?: boolean
+    unit?: boolean
+  }
+
+  export type DishEntryIngredientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dishEntryId" | "ingredientIndex" | "weight" | "inputState" | "unit", ExtArgs["result"]["dishEntryIngredient"]>
+  export type DishEntryIngredientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }
+  export type DishEntryIngredientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }
+  export type DishEntryIngredientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dishEntry?: boolean | DishEntryDefaultArgs<ExtArgs>
+  }
+
+  export type $DishEntryIngredientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DishEntryIngredient"
+    objects: {
+      dishEntry: Prisma.$DishEntryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dishEntryId: string
+      ingredientIndex: number
+      weight: number
+      inputState: $Enums.IngredientInputState
+      unit: string | null
+    }, ExtArgs["result"]["dishEntryIngredient"]>
+    composites: {}
+  }
+
+  type DishEntryIngredientGetPayload<S extends boolean | null | undefined | DishEntryIngredientDefaultArgs> = $Result.GetResult<Prisma.$DishEntryIngredientPayload, S>
+
+  type DishEntryIngredientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DishEntryIngredientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DishEntryIngredientCountAggregateInputType | true
+    }
+
+  export interface DishEntryIngredientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DishEntryIngredient'], meta: { name: 'DishEntryIngredient' } }
+    /**
+     * Find zero or one DishEntryIngredient that matches the filter.
+     * @param {DishEntryIngredientFindUniqueArgs} args - Arguments to find a DishEntryIngredient
+     * @example
+     * // Get one DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DishEntryIngredientFindUniqueArgs>(args: SelectSubset<T, DishEntryIngredientFindUniqueArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DishEntryIngredient that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DishEntryIngredientFindUniqueOrThrowArgs} args - Arguments to find a DishEntryIngredient
+     * @example
+     * // Get one DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DishEntryIngredientFindUniqueOrThrowArgs>(args: SelectSubset<T, DishEntryIngredientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DishEntryIngredient that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientFindFirstArgs} args - Arguments to find a DishEntryIngredient
+     * @example
+     * // Get one DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DishEntryIngredientFindFirstArgs>(args?: SelectSubset<T, DishEntryIngredientFindFirstArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DishEntryIngredient that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientFindFirstOrThrowArgs} args - Arguments to find a DishEntryIngredient
+     * @example
+     * // Get one DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DishEntryIngredientFindFirstOrThrowArgs>(args?: SelectSubset<T, DishEntryIngredientFindFirstOrThrowArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DishEntryIngredients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DishEntryIngredients
+     * const dishEntryIngredients = await prisma.dishEntryIngredient.findMany()
+     * 
+     * // Get first 10 DishEntryIngredients
+     * const dishEntryIngredients = await prisma.dishEntryIngredient.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dishEntryIngredientWithIdOnly = await prisma.dishEntryIngredient.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DishEntryIngredientFindManyArgs>(args?: SelectSubset<T, DishEntryIngredientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DishEntryIngredient.
+     * @param {DishEntryIngredientCreateArgs} args - Arguments to create a DishEntryIngredient.
+     * @example
+     * // Create one DishEntryIngredient
+     * const DishEntryIngredient = await prisma.dishEntryIngredient.create({
+     *   data: {
+     *     // ... data to create a DishEntryIngredient
+     *   }
+     * })
+     * 
+     */
+    create<T extends DishEntryIngredientCreateArgs>(args: SelectSubset<T, DishEntryIngredientCreateArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DishEntryIngredients.
+     * @param {DishEntryIngredientCreateManyArgs} args - Arguments to create many DishEntryIngredients.
+     * @example
+     * // Create many DishEntryIngredients
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DishEntryIngredientCreateManyArgs>(args?: SelectSubset<T, DishEntryIngredientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DishEntryIngredients and returns the data saved in the database.
+     * @param {DishEntryIngredientCreateManyAndReturnArgs} args - Arguments to create many DishEntryIngredients.
+     * @example
+     * // Create many DishEntryIngredients
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DishEntryIngredients and only return the `id`
+     * const dishEntryIngredientWithIdOnly = await prisma.dishEntryIngredient.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DishEntryIngredientCreateManyAndReturnArgs>(args?: SelectSubset<T, DishEntryIngredientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DishEntryIngredient.
+     * @param {DishEntryIngredientDeleteArgs} args - Arguments to delete one DishEntryIngredient.
+     * @example
+     * // Delete one DishEntryIngredient
+     * const DishEntryIngredient = await prisma.dishEntryIngredient.delete({
+     *   where: {
+     *     // ... filter to delete one DishEntryIngredient
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DishEntryIngredientDeleteArgs>(args: SelectSubset<T, DishEntryIngredientDeleteArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DishEntryIngredient.
+     * @param {DishEntryIngredientUpdateArgs} args - Arguments to update one DishEntryIngredient.
+     * @example
+     * // Update one DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DishEntryIngredientUpdateArgs>(args: SelectSubset<T, DishEntryIngredientUpdateArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DishEntryIngredients.
+     * @param {DishEntryIngredientDeleteManyArgs} args - Arguments to filter DishEntryIngredients to delete.
+     * @example
+     * // Delete a few DishEntryIngredients
+     * const { count } = await prisma.dishEntryIngredient.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DishEntryIngredientDeleteManyArgs>(args?: SelectSubset<T, DishEntryIngredientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DishEntryIngredients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DishEntryIngredients
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DishEntryIngredientUpdateManyArgs>(args: SelectSubset<T, DishEntryIngredientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DishEntryIngredients and returns the data updated in the database.
+     * @param {DishEntryIngredientUpdateManyAndReturnArgs} args - Arguments to update many DishEntryIngredients.
+     * @example
+     * // Update many DishEntryIngredients
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DishEntryIngredients and only return the `id`
+     * const dishEntryIngredientWithIdOnly = await prisma.dishEntryIngredient.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DishEntryIngredientUpdateManyAndReturnArgs>(args: SelectSubset<T, DishEntryIngredientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DishEntryIngredient.
+     * @param {DishEntryIngredientUpsertArgs} args - Arguments to update or create a DishEntryIngredient.
+     * @example
+     * // Update or create a DishEntryIngredient
+     * const dishEntryIngredient = await prisma.dishEntryIngredient.upsert({
+     *   create: {
+     *     // ... data to create a DishEntryIngredient
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DishEntryIngredient we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DishEntryIngredientUpsertArgs>(args: SelectSubset<T, DishEntryIngredientUpsertArgs<ExtArgs>>): Prisma__DishEntryIngredientClient<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DishEntryIngredients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientCountArgs} args - Arguments to filter DishEntryIngredients to count.
+     * @example
+     * // Count the number of DishEntryIngredients
+     * const count = await prisma.dishEntryIngredient.count({
+     *   where: {
+     *     // ... the filter for the DishEntryIngredients we want to count
+     *   }
+     * })
+    **/
+    count<T extends DishEntryIngredientCountArgs>(
+      args?: Subset<T, DishEntryIngredientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DishEntryIngredientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DishEntryIngredient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DishEntryIngredientAggregateArgs>(args: Subset<T, DishEntryIngredientAggregateArgs>): Prisma.PrismaPromise<GetDishEntryIngredientAggregateType<T>>
+
+    /**
+     * Group by DishEntryIngredient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DishEntryIngredientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DishEntryIngredientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DishEntryIngredientGroupByArgs['orderBy'] }
+        : { orderBy?: DishEntryIngredientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DishEntryIngredientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDishEntryIngredientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DishEntryIngredient model
+   */
+  readonly fields: DishEntryIngredientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DishEntryIngredient.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DishEntryIngredientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dishEntry<T extends DishEntryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DishEntryDefaultArgs<ExtArgs>>): Prisma__DishEntryClient<$Result.GetResult<Prisma.$DishEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DishEntryIngredient model
+   */
+  interface DishEntryIngredientFieldRefs {
+    readonly id: FieldRef<"DishEntryIngredient", 'String'>
+    readonly dishEntryId: FieldRef<"DishEntryIngredient", 'String'>
+    readonly ingredientIndex: FieldRef<"DishEntryIngredient", 'Int'>
+    readonly weight: FieldRef<"DishEntryIngredient", 'Float'>
+    readonly inputState: FieldRef<"DishEntryIngredient", 'IngredientInputState'>
+    readonly unit: FieldRef<"DishEntryIngredient", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DishEntryIngredient findUnique
+   */
+  export type DishEntryIngredientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter, which DishEntryIngredient to fetch.
+     */
+    where: DishEntryIngredientWhereUniqueInput
+  }
+
+  /**
+   * DishEntryIngredient findUniqueOrThrow
+   */
+  export type DishEntryIngredientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter, which DishEntryIngredient to fetch.
+     */
+    where: DishEntryIngredientWhereUniqueInput
+  }
+
+  /**
+   * DishEntryIngredient findFirst
+   */
+  export type DishEntryIngredientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter, which DishEntryIngredient to fetch.
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DishEntryIngredients to fetch.
+     */
+    orderBy?: DishEntryIngredientOrderByWithRelationInput | DishEntryIngredientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DishEntryIngredients.
+     */
+    cursor?: DishEntryIngredientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DishEntryIngredients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DishEntryIngredients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DishEntryIngredients.
+     */
+    distinct?: DishEntryIngredientScalarFieldEnum | DishEntryIngredientScalarFieldEnum[]
+  }
+
+  /**
+   * DishEntryIngredient findFirstOrThrow
+   */
+  export type DishEntryIngredientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter, which DishEntryIngredient to fetch.
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DishEntryIngredients to fetch.
+     */
+    orderBy?: DishEntryIngredientOrderByWithRelationInput | DishEntryIngredientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DishEntryIngredients.
+     */
+    cursor?: DishEntryIngredientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DishEntryIngredients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DishEntryIngredients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DishEntryIngredients.
+     */
+    distinct?: DishEntryIngredientScalarFieldEnum | DishEntryIngredientScalarFieldEnum[]
+  }
+
+  /**
+   * DishEntryIngredient findMany
+   */
+  export type DishEntryIngredientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter, which DishEntryIngredients to fetch.
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DishEntryIngredients to fetch.
+     */
+    orderBy?: DishEntryIngredientOrderByWithRelationInput | DishEntryIngredientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DishEntryIngredients.
+     */
+    cursor?: DishEntryIngredientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DishEntryIngredients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DishEntryIngredients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DishEntryIngredients.
+     */
+    distinct?: DishEntryIngredientScalarFieldEnum | DishEntryIngredientScalarFieldEnum[]
+  }
+
+  /**
+   * DishEntryIngredient create
+   */
+  export type DishEntryIngredientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DishEntryIngredient.
+     */
+    data: XOR<DishEntryIngredientCreateInput, DishEntryIngredientUncheckedCreateInput>
+  }
+
+  /**
+   * DishEntryIngredient createMany
+   */
+  export type DishEntryIngredientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DishEntryIngredients.
+     */
+    data: DishEntryIngredientCreateManyInput | DishEntryIngredientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DishEntryIngredient createManyAndReturn
+   */
+  export type DishEntryIngredientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * The data used to create many DishEntryIngredients.
+     */
+    data: DishEntryIngredientCreateManyInput | DishEntryIngredientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DishEntryIngredient update
+   */
+  export type DishEntryIngredientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DishEntryIngredient.
+     */
+    data: XOR<DishEntryIngredientUpdateInput, DishEntryIngredientUncheckedUpdateInput>
+    /**
+     * Choose, which DishEntryIngredient to update.
+     */
+    where: DishEntryIngredientWhereUniqueInput
+  }
+
+  /**
+   * DishEntryIngredient updateMany
+   */
+  export type DishEntryIngredientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DishEntryIngredients.
+     */
+    data: XOR<DishEntryIngredientUpdateManyMutationInput, DishEntryIngredientUncheckedUpdateManyInput>
+    /**
+     * Filter which DishEntryIngredients to update
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * Limit how many DishEntryIngredients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DishEntryIngredient updateManyAndReturn
+   */
+  export type DishEntryIngredientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * The data used to update DishEntryIngredients.
+     */
+    data: XOR<DishEntryIngredientUpdateManyMutationInput, DishEntryIngredientUncheckedUpdateManyInput>
+    /**
+     * Filter which DishEntryIngredients to update
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * Limit how many DishEntryIngredients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DishEntryIngredient upsert
+   */
+  export type DishEntryIngredientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DishEntryIngredient to update in case it exists.
+     */
+    where: DishEntryIngredientWhereUniqueInput
+    /**
+     * In case the DishEntryIngredient found by the `where` argument doesn't exist, create a new DishEntryIngredient with this data.
+     */
+    create: XOR<DishEntryIngredientCreateInput, DishEntryIngredientUncheckedCreateInput>
+    /**
+     * In case the DishEntryIngredient was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DishEntryIngredientUpdateInput, DishEntryIngredientUncheckedUpdateInput>
+  }
+
+  /**
+   * DishEntryIngredient delete
+   */
+  export type DishEntryIngredientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    /**
+     * Filter which DishEntryIngredient to delete.
+     */
+    where: DishEntryIngredientWhereUniqueInput
+  }
+
+  /**
+   * DishEntryIngredient deleteMany
+   */
+  export type DishEntryIngredientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DishEntryIngredients to delete
+     */
+    where?: DishEntryIngredientWhereInput
+    /**
+     * Limit how many DishEntryIngredients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DishEntryIngredient without action
+   */
+  export type DishEntryIngredientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
   }
 
 
@@ -19726,6 +21006,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     mealSlots?: boolean | DayPlan$mealSlotsArgs<ExtArgs>
+    prepNote?: boolean | DayPlan$prepNoteArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dayPlan"]>
 
@@ -19768,6 +21049,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     weekPlan?: boolean | DayPlan$weekPlanArgs<ExtArgs>
     mealSlots?: boolean | DayPlan$mealSlotsArgs<ExtArgs>
+    prepNote?: boolean | DayPlan$prepNoteArgs<ExtArgs>
     _count?: boolean | DayPlanCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DayPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19785,6 +21067,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       weekPlan: Prisma.$WeekPlanPayload<ExtArgs> | null
       mealSlots: Prisma.$MealSlotInstancePayload<ExtArgs>[]
+      prepNote: Prisma.$DayPrepNotePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20191,6 +21474,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     weekPlan<T extends DayPlan$weekPlanArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$weekPlanArgs<ExtArgs>>): Prisma__WeekPlanClient<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     mealSlots<T extends DayPlan$mealSlotsArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$mealSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MealSlotInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    prepNote<T extends DayPlan$prepNoteArgs<ExtArgs> = {}>(args?: Subset<T, DayPlan$prepNoteArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20671,6 +21955,25 @@ export namespace Prisma {
   }
 
   /**
+   * DayPlan.prepNote
+   */
+  export type DayPlan$prepNoteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    where?: DayPrepNoteWhereInput
+  }
+
+  /**
    * DayPlan without action
    */
   export type DayPlanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20686,6 +21989,1078 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DayPlanInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DayPrepNote
+   */
+
+  export type AggregateDayPrepNote = {
+    _count: DayPrepNoteCountAggregateOutputType | null
+    _min: DayPrepNoteMinAggregateOutputType | null
+    _max: DayPrepNoteMaxAggregateOutputType | null
+  }
+
+  export type DayPrepNoteMinAggregateOutputType = {
+    id: string | null
+    dayPlanId: string | null
+    content: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DayPrepNoteMaxAggregateOutputType = {
+    id: string | null
+    dayPlanId: string | null
+    content: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DayPrepNoteCountAggregateOutputType = {
+    id: number
+    dayPlanId: number
+    content: number
+    steps: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DayPrepNoteMinAggregateInputType = {
+    id?: true
+    dayPlanId?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DayPrepNoteMaxAggregateInputType = {
+    id?: true
+    dayPlanId?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DayPrepNoteCountAggregateInputType = {
+    id?: true
+    dayPlanId?: true
+    content?: true
+    steps?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DayPrepNoteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DayPrepNote to aggregate.
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DayPrepNotes to fetch.
+     */
+    orderBy?: DayPrepNoteOrderByWithRelationInput | DayPrepNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DayPrepNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DayPrepNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DayPrepNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DayPrepNotes
+    **/
+    _count?: true | DayPrepNoteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DayPrepNoteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DayPrepNoteMaxAggregateInputType
+  }
+
+  export type GetDayPrepNoteAggregateType<T extends DayPrepNoteAggregateArgs> = {
+        [P in keyof T & keyof AggregateDayPrepNote]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDayPrepNote[P]>
+      : GetScalarType<T[P], AggregateDayPrepNote[P]>
+  }
+
+
+
+
+  export type DayPrepNoteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DayPrepNoteWhereInput
+    orderBy?: DayPrepNoteOrderByWithAggregationInput | DayPrepNoteOrderByWithAggregationInput[]
+    by: DayPrepNoteScalarFieldEnum[] | DayPrepNoteScalarFieldEnum
+    having?: DayPrepNoteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DayPrepNoteCountAggregateInputType | true
+    _min?: DayPrepNoteMinAggregateInputType
+    _max?: DayPrepNoteMaxAggregateInputType
+  }
+
+  export type DayPrepNoteGroupByOutputType = {
+    id: string
+    dayPlanId: string
+    content: string
+    steps: string[]
+    createdAt: Date
+    updatedAt: Date
+    _count: DayPrepNoteCountAggregateOutputType | null
+    _min: DayPrepNoteMinAggregateOutputType | null
+    _max: DayPrepNoteMaxAggregateOutputType | null
+  }
+
+  type GetDayPrepNoteGroupByPayload<T extends DayPrepNoteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DayPrepNoteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DayPrepNoteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DayPrepNoteGroupByOutputType[P]>
+            : GetScalarType<T[P], DayPrepNoteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DayPrepNoteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dayPlanId?: boolean
+    content?: boolean
+    steps?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dayPrepNote"]>
+
+  export type DayPrepNoteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dayPlanId?: boolean
+    content?: boolean
+    steps?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dayPrepNote"]>
+
+  export type DayPrepNoteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dayPlanId?: boolean
+    content?: boolean
+    steps?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dayPrepNote"]>
+
+  export type DayPrepNoteSelectScalar = {
+    id?: boolean
+    dayPlanId?: boolean
+    content?: boolean
+    steps?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DayPrepNoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "content" | "steps" | "createdAt" | "updatedAt", ExtArgs["result"]["dayPrepNote"]>
+  export type DayPrepNoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }
+  export type DayPrepNoteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }
+  export type DayPrepNoteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
+  }
+
+  export type $DayPrepNotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DayPrepNote"
+    objects: {
+      dayPlan: Prisma.$DayPlanPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dayPlanId: string
+      content: string
+      steps: string[]
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dayPrepNote"]>
+    composites: {}
+  }
+
+  type DayPrepNoteGetPayload<S extends boolean | null | undefined | DayPrepNoteDefaultArgs> = $Result.GetResult<Prisma.$DayPrepNotePayload, S>
+
+  type DayPrepNoteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DayPrepNoteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DayPrepNoteCountAggregateInputType | true
+    }
+
+  export interface DayPrepNoteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DayPrepNote'], meta: { name: 'DayPrepNote' } }
+    /**
+     * Find zero or one DayPrepNote that matches the filter.
+     * @param {DayPrepNoteFindUniqueArgs} args - Arguments to find a DayPrepNote
+     * @example
+     * // Get one DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DayPrepNoteFindUniqueArgs>(args: SelectSubset<T, DayPrepNoteFindUniqueArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DayPrepNote that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DayPrepNoteFindUniqueOrThrowArgs} args - Arguments to find a DayPrepNote
+     * @example
+     * // Get one DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DayPrepNoteFindUniqueOrThrowArgs>(args: SelectSubset<T, DayPrepNoteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DayPrepNote that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteFindFirstArgs} args - Arguments to find a DayPrepNote
+     * @example
+     * // Get one DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DayPrepNoteFindFirstArgs>(args?: SelectSubset<T, DayPrepNoteFindFirstArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DayPrepNote that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteFindFirstOrThrowArgs} args - Arguments to find a DayPrepNote
+     * @example
+     * // Get one DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DayPrepNoteFindFirstOrThrowArgs>(args?: SelectSubset<T, DayPrepNoteFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DayPrepNotes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DayPrepNotes
+     * const dayPrepNotes = await prisma.dayPrepNote.findMany()
+     * 
+     * // Get first 10 DayPrepNotes
+     * const dayPrepNotes = await prisma.dayPrepNote.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dayPrepNoteWithIdOnly = await prisma.dayPrepNote.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DayPrepNoteFindManyArgs>(args?: SelectSubset<T, DayPrepNoteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DayPrepNote.
+     * @param {DayPrepNoteCreateArgs} args - Arguments to create a DayPrepNote.
+     * @example
+     * // Create one DayPrepNote
+     * const DayPrepNote = await prisma.dayPrepNote.create({
+     *   data: {
+     *     // ... data to create a DayPrepNote
+     *   }
+     * })
+     * 
+     */
+    create<T extends DayPrepNoteCreateArgs>(args: SelectSubset<T, DayPrepNoteCreateArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DayPrepNotes.
+     * @param {DayPrepNoteCreateManyArgs} args - Arguments to create many DayPrepNotes.
+     * @example
+     * // Create many DayPrepNotes
+     * const dayPrepNote = await prisma.dayPrepNote.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DayPrepNoteCreateManyArgs>(args?: SelectSubset<T, DayPrepNoteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DayPrepNotes and returns the data saved in the database.
+     * @param {DayPrepNoteCreateManyAndReturnArgs} args - Arguments to create many DayPrepNotes.
+     * @example
+     * // Create many DayPrepNotes
+     * const dayPrepNote = await prisma.dayPrepNote.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DayPrepNotes and only return the `id`
+     * const dayPrepNoteWithIdOnly = await prisma.dayPrepNote.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DayPrepNoteCreateManyAndReturnArgs>(args?: SelectSubset<T, DayPrepNoteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DayPrepNote.
+     * @param {DayPrepNoteDeleteArgs} args - Arguments to delete one DayPrepNote.
+     * @example
+     * // Delete one DayPrepNote
+     * const DayPrepNote = await prisma.dayPrepNote.delete({
+     *   where: {
+     *     // ... filter to delete one DayPrepNote
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DayPrepNoteDeleteArgs>(args: SelectSubset<T, DayPrepNoteDeleteArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DayPrepNote.
+     * @param {DayPrepNoteUpdateArgs} args - Arguments to update one DayPrepNote.
+     * @example
+     * // Update one DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DayPrepNoteUpdateArgs>(args: SelectSubset<T, DayPrepNoteUpdateArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DayPrepNotes.
+     * @param {DayPrepNoteDeleteManyArgs} args - Arguments to filter DayPrepNotes to delete.
+     * @example
+     * // Delete a few DayPrepNotes
+     * const { count } = await prisma.dayPrepNote.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DayPrepNoteDeleteManyArgs>(args?: SelectSubset<T, DayPrepNoteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DayPrepNotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DayPrepNotes
+     * const dayPrepNote = await prisma.dayPrepNote.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DayPrepNoteUpdateManyArgs>(args: SelectSubset<T, DayPrepNoteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DayPrepNotes and returns the data updated in the database.
+     * @param {DayPrepNoteUpdateManyAndReturnArgs} args - Arguments to update many DayPrepNotes.
+     * @example
+     * // Update many DayPrepNotes
+     * const dayPrepNote = await prisma.dayPrepNote.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DayPrepNotes and only return the `id`
+     * const dayPrepNoteWithIdOnly = await prisma.dayPrepNote.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DayPrepNoteUpdateManyAndReturnArgs>(args: SelectSubset<T, DayPrepNoteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DayPrepNote.
+     * @param {DayPrepNoteUpsertArgs} args - Arguments to update or create a DayPrepNote.
+     * @example
+     * // Update or create a DayPrepNote
+     * const dayPrepNote = await prisma.dayPrepNote.upsert({
+     *   create: {
+     *     // ... data to create a DayPrepNote
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DayPrepNote we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DayPrepNoteUpsertArgs>(args: SelectSubset<T, DayPrepNoteUpsertArgs<ExtArgs>>): Prisma__DayPrepNoteClient<$Result.GetResult<Prisma.$DayPrepNotePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DayPrepNotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteCountArgs} args - Arguments to filter DayPrepNotes to count.
+     * @example
+     * // Count the number of DayPrepNotes
+     * const count = await prisma.dayPrepNote.count({
+     *   where: {
+     *     // ... the filter for the DayPrepNotes we want to count
+     *   }
+     * })
+    **/
+    count<T extends DayPrepNoteCountArgs>(
+      args?: Subset<T, DayPrepNoteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DayPrepNoteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DayPrepNote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DayPrepNoteAggregateArgs>(args: Subset<T, DayPrepNoteAggregateArgs>): Prisma.PrismaPromise<GetDayPrepNoteAggregateType<T>>
+
+    /**
+     * Group by DayPrepNote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayPrepNoteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DayPrepNoteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DayPrepNoteGroupByArgs['orderBy'] }
+        : { orderBy?: DayPrepNoteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DayPrepNoteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayPrepNoteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DayPrepNote model
+   */
+  readonly fields: DayPrepNoteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DayPrepNote.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DayPrepNoteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dayPlan<T extends DayPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DayPlanDefaultArgs<ExtArgs>>): Prisma__DayPlanClient<$Result.GetResult<Prisma.$DayPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DayPrepNote model
+   */
+  interface DayPrepNoteFieldRefs {
+    readonly id: FieldRef<"DayPrepNote", 'String'>
+    readonly dayPlanId: FieldRef<"DayPrepNote", 'String'>
+    readonly content: FieldRef<"DayPrepNote", 'String'>
+    readonly steps: FieldRef<"DayPrepNote", 'String[]'>
+    readonly createdAt: FieldRef<"DayPrepNote", 'DateTime'>
+    readonly updatedAt: FieldRef<"DayPrepNote", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DayPrepNote findUnique
+   */
+  export type DayPrepNoteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which DayPrepNote to fetch.
+     */
+    where: DayPrepNoteWhereUniqueInput
+  }
+
+  /**
+   * DayPrepNote findUniqueOrThrow
+   */
+  export type DayPrepNoteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which DayPrepNote to fetch.
+     */
+    where: DayPrepNoteWhereUniqueInput
+  }
+
+  /**
+   * DayPrepNote findFirst
+   */
+  export type DayPrepNoteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which DayPrepNote to fetch.
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DayPrepNotes to fetch.
+     */
+    orderBy?: DayPrepNoteOrderByWithRelationInput | DayPrepNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DayPrepNotes.
+     */
+    cursor?: DayPrepNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DayPrepNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DayPrepNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DayPrepNotes.
+     */
+    distinct?: DayPrepNoteScalarFieldEnum | DayPrepNoteScalarFieldEnum[]
+  }
+
+  /**
+   * DayPrepNote findFirstOrThrow
+   */
+  export type DayPrepNoteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which DayPrepNote to fetch.
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DayPrepNotes to fetch.
+     */
+    orderBy?: DayPrepNoteOrderByWithRelationInput | DayPrepNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DayPrepNotes.
+     */
+    cursor?: DayPrepNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DayPrepNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DayPrepNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DayPrepNotes.
+     */
+    distinct?: DayPrepNoteScalarFieldEnum | DayPrepNoteScalarFieldEnum[]
+  }
+
+  /**
+   * DayPrepNote findMany
+   */
+  export type DayPrepNoteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter, which DayPrepNotes to fetch.
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DayPrepNotes to fetch.
+     */
+    orderBy?: DayPrepNoteOrderByWithRelationInput | DayPrepNoteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DayPrepNotes.
+     */
+    cursor?: DayPrepNoteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DayPrepNotes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DayPrepNotes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DayPrepNotes.
+     */
+    distinct?: DayPrepNoteScalarFieldEnum | DayPrepNoteScalarFieldEnum[]
+  }
+
+  /**
+   * DayPrepNote create
+   */
+  export type DayPrepNoteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DayPrepNote.
+     */
+    data: XOR<DayPrepNoteCreateInput, DayPrepNoteUncheckedCreateInput>
+  }
+
+  /**
+   * DayPrepNote createMany
+   */
+  export type DayPrepNoteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DayPrepNotes.
+     */
+    data: DayPrepNoteCreateManyInput | DayPrepNoteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DayPrepNote createManyAndReturn
+   */
+  export type DayPrepNoteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * The data used to create many DayPrepNotes.
+     */
+    data: DayPrepNoteCreateManyInput | DayPrepNoteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DayPrepNote update
+   */
+  export type DayPrepNoteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DayPrepNote.
+     */
+    data: XOR<DayPrepNoteUpdateInput, DayPrepNoteUncheckedUpdateInput>
+    /**
+     * Choose, which DayPrepNote to update.
+     */
+    where: DayPrepNoteWhereUniqueInput
+  }
+
+  /**
+   * DayPrepNote updateMany
+   */
+  export type DayPrepNoteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DayPrepNotes.
+     */
+    data: XOR<DayPrepNoteUpdateManyMutationInput, DayPrepNoteUncheckedUpdateManyInput>
+    /**
+     * Filter which DayPrepNotes to update
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * Limit how many DayPrepNotes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DayPrepNote updateManyAndReturn
+   */
+  export type DayPrepNoteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * The data used to update DayPrepNotes.
+     */
+    data: XOR<DayPrepNoteUpdateManyMutationInput, DayPrepNoteUncheckedUpdateManyInput>
+    /**
+     * Filter which DayPrepNotes to update
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * Limit how many DayPrepNotes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DayPrepNote upsert
+   */
+  export type DayPrepNoteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DayPrepNote to update in case it exists.
+     */
+    where: DayPrepNoteWhereUniqueInput
+    /**
+     * In case the DayPrepNote found by the `where` argument doesn't exist, create a new DayPrepNote with this data.
+     */
+    create: XOR<DayPrepNoteCreateInput, DayPrepNoteUncheckedCreateInput>
+    /**
+     * In case the DayPrepNote was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DayPrepNoteUpdateInput, DayPrepNoteUncheckedUpdateInput>
+  }
+
+  /**
+   * DayPrepNote delete
+   */
+  export type DayPrepNoteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
+    /**
+     * Filter which DayPrepNote to delete.
+     */
+    where: DayPrepNoteWhereUniqueInput
+  }
+
+  /**
+   * DayPrepNote deleteMany
+   */
+  export type DayPrepNoteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DayPrepNotes to delete
+     */
+    where?: DayPrepNoteWhereInput
+    /**
+     * Limit how many DayPrepNotes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DayPrepNote without action
+   */
+  export type DayPrepNoteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DayPrepNote
+     */
+    select?: DayPrepNoteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DayPrepNote
+     */
+    omit?: DayPrepNoteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayPrepNoteInclude<ExtArgs> | null
   }
 
 
@@ -22973,6 +25348,7 @@ export namespace Prisma {
     order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
+    locked: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22986,6 +25362,7 @@ export namespace Prisma {
     order: number | null
     targetKcal: number | null
     targetFiberGrams: number | null
+    locked: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -22999,6 +25376,7 @@ export namespace Prisma {
     order: number
     targetKcal: number
     targetFiberGrams: number
+    locked: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -23026,6 +25404,7 @@ export namespace Prisma {
     order?: true
     targetKcal?: true
     targetFiberGrams?: true
+    locked?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -23039,6 +25418,7 @@ export namespace Prisma {
     order?: true
     targetKcal?: true
     targetFiberGrams?: true
+    locked?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -23052,6 +25432,7 @@ export namespace Prisma {
     order?: true
     targetKcal?: true
     targetFiberGrams?: true
+    locked?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -23152,6 +25533,7 @@ export namespace Prisma {
     order: number
     targetKcal: number
     targetFiberGrams: number
+    locked: boolean
     createdAt: Date
     updatedAt: Date
     _count: MealSlotInstanceCountAggregateOutputType | null
@@ -23184,6 +25566,7 @@ export namespace Prisma {
     order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
+    locked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
@@ -23202,6 +25585,7 @@ export namespace Prisma {
     order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
+    locked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
@@ -23217,6 +25601,7 @@ export namespace Prisma {
     order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
+    locked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
@@ -23232,11 +25617,12 @@ export namespace Prisma {
     order?: boolean
     targetKcal?: boolean
     targetFiberGrams?: boolean
+    locked?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MealSlotInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "personId" | "name" | "timeWindow" | "order" | "targetKcal" | "targetFiberGrams" | "createdAt" | "updatedAt", ExtArgs["result"]["mealSlotInstance"]>
+  export type MealSlotInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dayPlanId" | "personId" | "name" | "timeWindow" | "order" | "targetKcal" | "targetFiberGrams" | "locked" | "createdAt" | "updatedAt", ExtArgs["result"]["mealSlotInstance"]>
   export type MealSlotInstanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dayPlan?: boolean | DayPlanDefaultArgs<ExtArgs>
     person?: boolean | NutritionPersonDefaultArgs<ExtArgs>
@@ -23270,6 +25656,7 @@ export namespace Prisma {
       order: number
       targetKcal: number
       targetFiberGrams: number
+      locked: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["mealSlotInstance"]>
@@ -23707,6 +26094,7 @@ export namespace Prisma {
     readonly order: FieldRef<"MealSlotInstance", 'Int'>
     readonly targetKcal: FieldRef<"MealSlotInstance", 'Float'>
     readonly targetFiberGrams: FieldRef<"MealSlotInstance", 'Float'>
+    readonly locked: FieldRef<"MealSlotInstance", 'Boolean'>
     readonly createdAt: FieldRef<"MealSlotInstance", 'DateTime'>
     readonly updatedAt: FieldRef<"MealSlotInstance", 'DateTime'>
   }
@@ -25300,33 +27688,14 @@ export namespace Prisma {
 
   export type AggregateDishEntry = {
     _count: DishEntryCountAggregateOutputType | null
-    _avg: DishEntryAvgAggregateOutputType | null
-    _sum: DishEntrySumAggregateOutputType | null
     _min: DishEntryMinAggregateOutputType | null
     _max: DishEntryMaxAggregateOutputType | null
-  }
-
-  export type DishEntryAvgAggregateOutputType = {
-    portionWeight: number | null
-    servings: number | null
-    fitScore: number | null
-  }
-
-  export type DishEntrySumAggregateOutputType = {
-    portionWeight: number | null
-    servings: number | null
-    fitScore: number | null
   }
 
   export type DishEntryMinAggregateOutputType = {
     id: string | null
     mealSlotId: string | null
     dishId: string | null
-    portionWeight: number | null
-    servings: number | null
-    isShared: boolean | null
-    manualWeight: boolean | null
-    fitScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -25335,11 +27704,6 @@ export namespace Prisma {
     id: string | null
     mealSlotId: string | null
     dishId: string | null
-    portionWeight: number | null
-    servings: number | null
-    isShared: boolean | null
-    manualWeight: boolean | null
-    fitScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -25348,38 +27712,17 @@ export namespace Prisma {
     id: number
     mealSlotId: number
     dishId: number
-    portionWeight: number
-    servings: number
-    isShared: number
-    manualWeight: number
-    fitScore: number
+    selectedAlternatives: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
-  export type DishEntryAvgAggregateInputType = {
-    portionWeight?: true
-    servings?: true
-    fitScore?: true
-  }
-
-  export type DishEntrySumAggregateInputType = {
-    portionWeight?: true
-    servings?: true
-    fitScore?: true
-  }
-
   export type DishEntryMinAggregateInputType = {
     id?: true
     mealSlotId?: true
     dishId?: true
-    portionWeight?: true
-    servings?: true
-    isShared?: true
-    manualWeight?: true
-    fitScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -25388,11 +27731,6 @@ export namespace Prisma {
     id?: true
     mealSlotId?: true
     dishId?: true
-    portionWeight?: true
-    servings?: true
-    isShared?: true
-    manualWeight?: true
-    fitScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -25401,11 +27739,7 @@ export namespace Prisma {
     id?: true
     mealSlotId?: true
     dishId?: true
-    portionWeight?: true
-    servings?: true
-    isShared?: true
-    manualWeight?: true
-    fitScore?: true
+    selectedAlternatives?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -25449,18 +27783,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: DishEntryAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DishEntrySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: DishEntryMinAggregateInputType
@@ -25491,8 +27813,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DishEntryCountAggregateInputType | true
-    _avg?: DishEntryAvgAggregateInputType
-    _sum?: DishEntrySumAggregateInputType
     _min?: DishEntryMinAggregateInputType
     _max?: DishEntryMaxAggregateInputType
   }
@@ -25501,16 +27821,10 @@ export namespace Prisma {
     id: string
     mealSlotId: string
     dishId: string
-    portionWeight: number
-    servings: number
-    isShared: boolean
-    manualWeight: boolean
-    fitScore: number | null
+    selectedAlternatives: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: DishEntryCountAggregateOutputType | null
-    _avg: DishEntryAvgAggregateOutputType | null
-    _sum: DishEntrySumAggregateOutputType | null
     _min: DishEntryMinAggregateOutputType | null
     _max: DishEntryMaxAggregateOutputType | null
   }
@@ -25533,26 +27847,20 @@ export namespace Prisma {
     id?: boolean
     mealSlotId?: boolean
     dishId?: boolean
-    portionWeight?: boolean
-    servings?: boolean
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: boolean
+    selectedAlternatives?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
     mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    ingredients?: boolean | DishEntry$ingredientsArgs<ExtArgs>
+    _count?: boolean | DishEntryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dishEntry"]>
 
   export type DishEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     mealSlotId?: boolean
     dishId?: boolean
-    portionWeight?: boolean
-    servings?: boolean
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: boolean
+    selectedAlternatives?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -25563,11 +27871,7 @@ export namespace Prisma {
     id?: boolean
     mealSlotId?: boolean
     dishId?: boolean
-    portionWeight?: boolean
-    servings?: boolean
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: boolean
+    selectedAlternatives?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -25578,19 +27882,17 @@ export namespace Prisma {
     id?: boolean
     mealSlotId?: boolean
     dishId?: boolean
-    portionWeight?: boolean
-    servings?: boolean
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: boolean
+    selectedAlternatives?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "portionWeight" | "servings" | "isShared" | "manualWeight" | "fitScore" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
+  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "selectedAlternatives" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
   export type DishEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
+    ingredients?: boolean | DishEntry$ingredientsArgs<ExtArgs>
+    _count?: boolean | DishEntryCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DishEntryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -25606,16 +27908,13 @@ export namespace Prisma {
     objects: {
       dish: Prisma.$DishPayload<ExtArgs>
       mealSlot: Prisma.$MealSlotInstancePayload<ExtArgs>
+      ingredients: Prisma.$DishEntryIngredientPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       mealSlotId: string
       dishId: string
-      portionWeight: number
-      servings: number
-      isShared: boolean
-      manualWeight: boolean
-      fitScore: number | null
+      selectedAlternatives: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dishEntry"]>
@@ -26014,6 +28313,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     dish<T extends DishDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DishDefaultArgs<ExtArgs>>): Prisma__DishClient<$Result.GetResult<Prisma.$DishPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     mealSlot<T extends MealSlotInstanceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MealSlotInstanceDefaultArgs<ExtArgs>>): Prisma__MealSlotInstanceClient<$Result.GetResult<Prisma.$MealSlotInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ingredients<T extends DishEntry$ingredientsArgs<ExtArgs> = {}>(args?: Subset<T, DishEntry$ingredientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DishEntryIngredientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26046,11 +28346,7 @@ export namespace Prisma {
     readonly id: FieldRef<"DishEntry", 'String'>
     readonly mealSlotId: FieldRef<"DishEntry", 'String'>
     readonly dishId: FieldRef<"DishEntry", 'String'>
-    readonly portionWeight: FieldRef<"DishEntry", 'Float'>
-    readonly servings: FieldRef<"DishEntry", 'Float'>
-    readonly isShared: FieldRef<"DishEntry", 'Boolean'>
-    readonly manualWeight: FieldRef<"DishEntry", 'Boolean'>
-    readonly fitScore: FieldRef<"DishEntry", 'Float'>
+    readonly selectedAlternatives: FieldRef<"DishEntry", 'Json'>
     readonly createdAt: FieldRef<"DishEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DishEntry", 'DateTime'>
   }
@@ -26451,6 +28747,30 @@ export namespace Prisma {
      * Limit how many DishEntries to delete.
      */
     limit?: number
+  }
+
+  /**
+   * DishEntry.ingredients
+   */
+  export type DishEntry$ingredientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DishEntryIngredient
+     */
+    select?: DishEntryIngredientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DishEntryIngredient
+     */
+    omit?: DishEntryIngredientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DishEntryIngredientInclude<ExtArgs> | null
+    where?: DishEntryIngredientWhereInput
+    orderBy?: DishEntryIngredientOrderByWithRelationInput | DishEntryIngredientOrderByWithRelationInput[]
+    cursor?: DishEntryIngredientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DishEntryIngredientScalarFieldEnum | DishEntryIngredientScalarFieldEnum[]
   }
 
   /**
@@ -59365,11 +61685,22 @@ export namespace Prisma {
     dishId: 'dishId',
     productId: 'productId',
     cookingMethodId: 'cookingMethodId',
-    rawWeight: 'rawWeight',
     alternatives: 'alternatives'
   };
 
   export type DishIngredientScalarFieldEnum = (typeof DishIngredientScalarFieldEnum)[keyof typeof DishIngredientScalarFieldEnum]
+
+
+  export const DishEntryIngredientScalarFieldEnum: {
+    id: 'id',
+    dishEntryId: 'dishEntryId',
+    ingredientIndex: 'ingredientIndex',
+    weight: 'weight',
+    inputState: 'inputState',
+    unit: 'unit'
+  };
+
+  export type DishEntryIngredientScalarFieldEnum = (typeof DishEntryIngredientScalarFieldEnum)[keyof typeof DishEntryIngredientScalarFieldEnum]
 
 
   export const WeekPlanScalarFieldEnum: {
@@ -59394,6 +61725,18 @@ export namespace Prisma {
   };
 
   export type DayPlanScalarFieldEnum = (typeof DayPlanScalarFieldEnum)[keyof typeof DayPlanScalarFieldEnum]
+
+
+  export const DayPrepNoteScalarFieldEnum: {
+    id: 'id',
+    dayPlanId: 'dayPlanId',
+    content: 'content',
+    steps: 'steps',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DayPrepNoteScalarFieldEnum = (typeof DayPrepNoteScalarFieldEnum)[keyof typeof DayPrepNoteScalarFieldEnum]
 
 
   export const ShoppingListScalarFieldEnum: {
@@ -59429,6 +61772,7 @@ export namespace Prisma {
     order: 'order',
     targetKcal: 'targetKcal',
     targetFiberGrams: 'targetFiberGrams',
+    locked: 'locked',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -59452,11 +61796,7 @@ export namespace Prisma {
     id: 'id',
     mealSlotId: 'mealSlotId',
     dishId: 'dishId',
-    portionWeight: 'portionWeight',
-    servings: 'servings',
-    isShared: 'isShared',
-    manualWeight: 'manualWeight',
-    fitScore: 'fitScore',
+    selectedAlternatives: 'selectedAlternatives',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -60107,6 +62447,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'IngredientInputState'
+   */
+  export type EnumIngredientInputStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IngredientInputState'>
+    
+
+
+  /**
+   * Reference to a field of type 'IngredientInputState[]'
+   */
+  export type ListEnumIngredientInputStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IngredientInputState[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Unit'
    */
   export type EnumUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Unit'>
@@ -60124,6 +62478,20 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -60166,20 +62534,6 @@ export namespace Prisma {
    * Reference to a field of type 'TaskPriority[]'
    */
   export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -61100,7 +63454,6 @@ export namespace Prisma {
     dishId?: StringFilter<"DishIngredient"> | string
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
-    rawWeight?: FloatFilter<"DishIngredient"> | number
     alternatives?: StringNullableListFilter<"DishIngredient">
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
@@ -61112,7 +63465,6 @@ export namespace Prisma {
     dishId?: SortOrder
     productId?: SortOrder
     cookingMethodId?: SortOrderInput | SortOrder
-    rawWeight?: SortOrder
     alternatives?: SortOrder
     dish?: DishOrderByWithRelationInput
     product?: FoodProductOrderByWithRelationInput
@@ -61128,7 +63480,6 @@ export namespace Prisma {
     dishId?: StringFilter<"DishIngredient"> | string
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
-    rawWeight?: FloatFilter<"DishIngredient"> | number
     alternatives?: StringNullableListFilter<"DishIngredient">
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     product?: XOR<FoodProductScalarRelationFilter, FoodProductWhereInput>
@@ -61140,13 +63491,10 @@ export namespace Prisma {
     dishId?: SortOrder
     productId?: SortOrder
     cookingMethodId?: SortOrderInput | SortOrder
-    rawWeight?: SortOrder
     alternatives?: SortOrder
     _count?: DishIngredientCountOrderByAggregateInput
-    _avg?: DishIngredientAvgOrderByAggregateInput
     _max?: DishIngredientMaxOrderByAggregateInput
     _min?: DishIngredientMinOrderByAggregateInput
-    _sum?: DishIngredientSumOrderByAggregateInput
   }
 
   export type DishIngredientScalarWhereWithAggregatesInput = {
@@ -61157,8 +63505,70 @@ export namespace Prisma {
     dishId?: StringWithAggregatesFilter<"DishIngredient"> | string
     productId?: StringWithAggregatesFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableWithAggregatesFilter<"DishIngredient"> | string | null
-    rawWeight?: FloatWithAggregatesFilter<"DishIngredient"> | number
     alternatives?: StringNullableListFilter<"DishIngredient">
+  }
+
+  export type DishEntryIngredientWhereInput = {
+    AND?: DishEntryIngredientWhereInput | DishEntryIngredientWhereInput[]
+    OR?: DishEntryIngredientWhereInput[]
+    NOT?: DishEntryIngredientWhereInput | DishEntryIngredientWhereInput[]
+    id?: StringFilter<"DishEntryIngredient"> | string
+    dishEntryId?: StringFilter<"DishEntryIngredient"> | string
+    ingredientIndex?: IntFilter<"DishEntryIngredient"> | number
+    weight?: FloatFilter<"DishEntryIngredient"> | number
+    inputState?: EnumIngredientInputStateFilter<"DishEntryIngredient"> | $Enums.IngredientInputState
+    unit?: StringNullableFilter<"DishEntryIngredient"> | string | null
+    dishEntry?: XOR<DishEntryScalarRelationFilter, DishEntryWhereInput>
+  }
+
+  export type DishEntryIngredientOrderByWithRelationInput = {
+    id?: SortOrder
+    dishEntryId?: SortOrder
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+    inputState?: SortOrder
+    unit?: SortOrderInput | SortOrder
+    dishEntry?: DishEntryOrderByWithRelationInput
+  }
+
+  export type DishEntryIngredientWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    dishEntryId_ingredientIndex?: DishEntryIngredientDishEntryIdIngredientIndexCompoundUniqueInput
+    AND?: DishEntryIngredientWhereInput | DishEntryIngredientWhereInput[]
+    OR?: DishEntryIngredientWhereInput[]
+    NOT?: DishEntryIngredientWhereInput | DishEntryIngredientWhereInput[]
+    dishEntryId?: StringFilter<"DishEntryIngredient"> | string
+    ingredientIndex?: IntFilter<"DishEntryIngredient"> | number
+    weight?: FloatFilter<"DishEntryIngredient"> | number
+    inputState?: EnumIngredientInputStateFilter<"DishEntryIngredient"> | $Enums.IngredientInputState
+    unit?: StringNullableFilter<"DishEntryIngredient"> | string | null
+    dishEntry?: XOR<DishEntryScalarRelationFilter, DishEntryWhereInput>
+  }, "id" | "dishEntryId_ingredientIndex">
+
+  export type DishEntryIngredientOrderByWithAggregationInput = {
+    id?: SortOrder
+    dishEntryId?: SortOrder
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+    inputState?: SortOrder
+    unit?: SortOrderInput | SortOrder
+    _count?: DishEntryIngredientCountOrderByAggregateInput
+    _avg?: DishEntryIngredientAvgOrderByAggregateInput
+    _max?: DishEntryIngredientMaxOrderByAggregateInput
+    _min?: DishEntryIngredientMinOrderByAggregateInput
+    _sum?: DishEntryIngredientSumOrderByAggregateInput
+  }
+
+  export type DishEntryIngredientScalarWhereWithAggregatesInput = {
+    AND?: DishEntryIngredientScalarWhereWithAggregatesInput | DishEntryIngredientScalarWhereWithAggregatesInput[]
+    OR?: DishEntryIngredientScalarWhereWithAggregatesInput[]
+    NOT?: DishEntryIngredientScalarWhereWithAggregatesInput | DishEntryIngredientScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DishEntryIngredient"> | string
+    dishEntryId?: StringWithAggregatesFilter<"DishEntryIngredient"> | string
+    ingredientIndex?: IntWithAggregatesFilter<"DishEntryIngredient"> | number
+    weight?: FloatWithAggregatesFilter<"DishEntryIngredient"> | number
+    inputState?: EnumIngredientInputStateWithAggregatesFilter<"DishEntryIngredient"> | $Enums.IngredientInputState
+    unit?: StringNullableWithAggregatesFilter<"DishEntryIngredient"> | string | null
   }
 
   export type WeekPlanWhereInput = {
@@ -61239,6 +63649,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     mealSlots?: MealSlotInstanceListRelationFilter
+    prepNote?: XOR<DayPrepNoteNullableScalarRelationFilter, DayPrepNoteWhereInput> | null
   }
 
   export type DayPlanOrderByWithRelationInput = {
@@ -61252,6 +63663,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     weekPlan?: WeekPlanOrderByWithRelationInput
     mealSlots?: MealSlotInstanceOrderByRelationAggregateInput
+    prepNote?: DayPrepNoteOrderByWithRelationInput
   }
 
   export type DayPlanWhereUniqueInput = Prisma.AtLeast<{
@@ -61268,6 +63680,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     weekPlan?: XOR<WeekPlanNullableScalarRelationFilter, WeekPlanWhereInput> | null
     mealSlots?: MealSlotInstanceListRelationFilter
+    prepNote?: XOR<DayPrepNoteNullableScalarRelationFilter, DayPrepNoteWhereInput> | null
   }, "id">
 
   export type DayPlanOrderByWithAggregationInput = {
@@ -61296,6 +63709,66 @@ export namespace Prisma {
     activity?: StringNullableWithAggregatesFilter<"DayPlan"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DayPlan"> | Date | string
+  }
+
+  export type DayPrepNoteWhereInput = {
+    AND?: DayPrepNoteWhereInput | DayPrepNoteWhereInput[]
+    OR?: DayPrepNoteWhereInput[]
+    NOT?: DayPrepNoteWhereInput | DayPrepNoteWhereInput[]
+    id?: StringFilter<"DayPrepNote"> | string
+    dayPlanId?: StringFilter<"DayPrepNote"> | string
+    content?: StringFilter<"DayPrepNote"> | string
+    steps?: StringNullableListFilter<"DayPrepNote">
+    createdAt?: DateTimeFilter<"DayPrepNote"> | Date | string
+    updatedAt?: DateTimeFilter<"DayPrepNote"> | Date | string
+    dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
+  }
+
+  export type DayPrepNoteOrderByWithRelationInput = {
+    id?: SortOrder
+    dayPlanId?: SortOrder
+    content?: SortOrder
+    steps?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    dayPlan?: DayPlanOrderByWithRelationInput
+  }
+
+  export type DayPrepNoteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    dayPlanId?: string
+    AND?: DayPrepNoteWhereInput | DayPrepNoteWhereInput[]
+    OR?: DayPrepNoteWhereInput[]
+    NOT?: DayPrepNoteWhereInput | DayPrepNoteWhereInput[]
+    content?: StringFilter<"DayPrepNote"> | string
+    steps?: StringNullableListFilter<"DayPrepNote">
+    createdAt?: DateTimeFilter<"DayPrepNote"> | Date | string
+    updatedAt?: DateTimeFilter<"DayPrepNote"> | Date | string
+    dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
+  }, "id" | "dayPlanId">
+
+  export type DayPrepNoteOrderByWithAggregationInput = {
+    id?: SortOrder
+    dayPlanId?: SortOrder
+    content?: SortOrder
+    steps?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DayPrepNoteCountOrderByAggregateInput
+    _max?: DayPrepNoteMaxOrderByAggregateInput
+    _min?: DayPrepNoteMinOrderByAggregateInput
+  }
+
+  export type DayPrepNoteScalarWhereWithAggregatesInput = {
+    AND?: DayPrepNoteScalarWhereWithAggregatesInput | DayPrepNoteScalarWhereWithAggregatesInput[]
+    OR?: DayPrepNoteScalarWhereWithAggregatesInput[]
+    NOT?: DayPrepNoteScalarWhereWithAggregatesInput | DayPrepNoteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DayPrepNote"> | string
+    dayPlanId?: StringWithAggregatesFilter<"DayPrepNote"> | string
+    content?: StringWithAggregatesFilter<"DayPrepNote"> | string
+    steps?: StringNullableListFilter<"DayPrepNote">
+    createdAt?: DateTimeWithAggregatesFilter<"DayPrepNote"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DayPrepNote"> | Date | string
   }
 
   export type ShoppingListWhereInput = {
@@ -61441,6 +63914,7 @@ export namespace Prisma {
     order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
+    locked?: BoolFilter<"MealSlotInstance"> | boolean
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
@@ -61458,6 +63932,7 @@ export namespace Prisma {
     order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
+    locked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dayPlan?: DayPlanOrderByWithRelationInput
@@ -61479,6 +63954,7 @@ export namespace Prisma {
     order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
+    locked?: BoolFilter<"MealSlotInstance"> | boolean
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     dayPlan?: XOR<DayPlanScalarRelationFilter, DayPlanWhereInput>
@@ -61496,6 +63972,7 @@ export namespace Prisma {
     order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
+    locked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MealSlotInstanceCountOrderByAggregateInput
@@ -61517,6 +63994,7 @@ export namespace Prisma {
     order?: IntWithAggregatesFilter<"MealSlotInstance"> | number
     targetKcal?: FloatWithAggregatesFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatWithAggregatesFilter<"MealSlotInstance"> | number
+    locked?: BoolWithAggregatesFilter<"MealSlotInstance"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MealSlotInstance"> | Date | string
   }
@@ -61593,30 +64071,24 @@ export namespace Prisma {
     id?: StringFilter<"DishEntry"> | string
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
-    portionWeight?: FloatFilter<"DishEntry"> | number
-    servings?: FloatFilter<"DishEntry"> | number
-    isShared?: BoolFilter<"DishEntry"> | boolean
-    manualWeight?: BoolFilter<"DishEntry"> | boolean
-    fitScore?: FloatNullableFilter<"DishEntry"> | number | null
+    selectedAlternatives?: JsonNullableFilter<"DishEntry">
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     mealSlot?: XOR<MealSlotInstanceScalarRelationFilter, MealSlotInstanceWhereInput>
+    ingredients?: DishEntryIngredientListRelationFilter
   }
 
   export type DishEntryOrderByWithRelationInput = {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    isShared?: SortOrder
-    manualWeight?: SortOrder
-    fitScore?: SortOrderInput | SortOrder
+    selectedAlternatives?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dish?: DishOrderByWithRelationInput
     mealSlot?: MealSlotInstanceOrderByWithRelationInput
+    ingredients?: DishEntryIngredientOrderByRelationAggregateInput
   }
 
   export type DishEntryWhereUniqueInput = Prisma.AtLeast<{
@@ -61626,33 +64098,24 @@ export namespace Prisma {
     NOT?: DishEntryWhereInput | DishEntryWhereInput[]
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
-    portionWeight?: FloatFilter<"DishEntry"> | number
-    servings?: FloatFilter<"DishEntry"> | number
-    isShared?: BoolFilter<"DishEntry"> | boolean
-    manualWeight?: BoolFilter<"DishEntry"> | boolean
-    fitScore?: FloatNullableFilter<"DishEntry"> | number | null
+    selectedAlternatives?: JsonNullableFilter<"DishEntry">
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
     mealSlot?: XOR<MealSlotInstanceScalarRelationFilter, MealSlotInstanceWhereInput>
+    ingredients?: DishEntryIngredientListRelationFilter
   }, "id">
 
   export type DishEntryOrderByWithAggregationInput = {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    isShared?: SortOrder
-    manualWeight?: SortOrder
-    fitScore?: SortOrderInput | SortOrder
+    selectedAlternatives?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DishEntryCountOrderByAggregateInput
-    _avg?: DishEntryAvgOrderByAggregateInput
     _max?: DishEntryMaxOrderByAggregateInput
     _min?: DishEntryMinOrderByAggregateInput
-    _sum?: DishEntrySumOrderByAggregateInput
   }
 
   export type DishEntryScalarWhereWithAggregatesInput = {
@@ -61662,11 +64125,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"DishEntry"> | string
     mealSlotId?: StringWithAggregatesFilter<"DishEntry"> | string
     dishId?: StringWithAggregatesFilter<"DishEntry"> | string
-    portionWeight?: FloatWithAggregatesFilter<"DishEntry"> | number
-    servings?: FloatWithAggregatesFilter<"DishEntry"> | number
-    isShared?: BoolWithAggregatesFilter<"DishEntry"> | boolean
-    manualWeight?: BoolWithAggregatesFilter<"DishEntry"> | boolean
-    fitScore?: FloatNullableWithAggregatesFilter<"DishEntry"> | number | null
+    selectedAlternatives?: JsonNullableWithAggregatesFilter<"DishEntry">
     createdAt?: DateTimeWithAggregatesFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DishEntry"> | Date | string
   }
@@ -64835,7 +67294,6 @@ export namespace Prisma {
 
   export type DishIngredientCreateInput = {
     id?: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
@@ -64847,13 +67305,11 @@ export namespace Prisma {
     dishId: string
     productId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
@@ -64865,7 +67321,6 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -64874,13 +67329,11 @@ export namespace Prisma {
     dishId: string
     productId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -64889,8 +67342,69 @@ export namespace Prisma {
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
+  }
+
+  export type DishEntryIngredientCreateInput = {
+    id?: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+    dishEntry: DishEntryCreateNestedOneWithoutIngredientsInput
+  }
+
+  export type DishEntryIngredientUncheckedCreateInput = {
+    id?: string
+    dishEntryId: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+  }
+
+  export type DishEntryIngredientUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    dishEntry?: DishEntryUpdateOneRequiredWithoutIngredientsNestedInput
+  }
+
+  export type DishEntryIngredientUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dishEntryId?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DishEntryIngredientCreateManyInput = {
+    id?: string
+    dishEntryId: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+  }
+
+  export type DishEntryIngredientUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DishEntryIngredientUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dishEntryId?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WeekPlanCreateInput = {
@@ -64969,6 +67483,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateInput = {
@@ -64980,6 +67495,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteUncheckedCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanUpdateInput = {
@@ -64991,6 +67507,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateInput = {
@@ -65002,6 +67519,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUncheckedUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanCreateManyInput = {
@@ -65028,6 +67546,68 @@ export namespace Prisma {
     weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
     dayOfWeek?: IntFieldUpdateOperationsInput | number
     activity?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayPrepNoteCreateInput = {
+    id?: string
+    content?: string
+    steps?: DayPrepNoteCreatestepsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayPlan: DayPlanCreateNestedOneWithoutPrepNoteInput
+  }
+
+  export type DayPrepNoteUncheckedCreateInput = {
+    id?: string
+    dayPlanId: string
+    content?: string
+    steps?: DayPrepNoteCreatestepsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayPrepNoteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayPlan?: DayPlanUpdateOneRequiredWithoutPrepNoteNestedInput
+  }
+
+  export type DayPrepNoteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayPlanId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayPrepNoteCreateManyInput = {
+    id?: string
+    dayPlanId: string
+    content?: string
+    steps?: DayPrepNoteCreatestepsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayPrepNoteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayPrepNoteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayPlanId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65165,6 +67745,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
@@ -65182,6 +67763,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
@@ -65195,6 +67777,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
@@ -65212,6 +67795,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
@@ -65227,6 +67811,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65238,6 +67823,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65251,6 +67837,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65318,76 +67905,56 @@ export namespace Prisma {
 
   export type DishEntryCreateInput = {
     id?: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     dish: DishCreateNestedOneWithoutDishEntriesInput
     mealSlot: MealSlotInstanceCreateNestedOneWithoutDishEntriesInput
+    ingredients?: DishEntryIngredientCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryUncheckedCreateInput = {
     id?: string
     mealSlotId: string
     dishId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
     mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutDishEntriesNestedInput
+    ingredients?: DishEntryIngredientUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryCreateManyInput = {
     id?: string
     mealSlotId: string
     dishId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DishEntryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65396,11 +67963,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68965,12 +71528,7 @@ export namespace Prisma {
     dishId?: SortOrder
     productId?: SortOrder
     cookingMethodId?: SortOrder
-    rawWeight?: SortOrder
     alternatives?: SortOrder
-  }
-
-  export type DishIngredientAvgOrderByAggregateInput = {
-    rawWeight?: SortOrder
   }
 
   export type DishIngredientMaxOrderByAggregateInput = {
@@ -68978,7 +71536,6 @@ export namespace Prisma {
     dishId?: SortOrder
     productId?: SortOrder
     cookingMethodId?: SortOrder
-    rawWeight?: SortOrder
   }
 
   export type DishIngredientMinOrderByAggregateInput = {
@@ -68986,11 +71543,70 @@ export namespace Prisma {
     dishId?: SortOrder
     productId?: SortOrder
     cookingMethodId?: SortOrder
-    rawWeight?: SortOrder
   }
 
-  export type DishIngredientSumOrderByAggregateInput = {
-    rawWeight?: SortOrder
+  export type EnumIngredientInputStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateFilter<$PrismaModel> | $Enums.IngredientInputState
+  }
+
+  export type DishEntryScalarRelationFilter = {
+    is?: DishEntryWhereInput
+    isNot?: DishEntryWhereInput
+  }
+
+  export type DishEntryIngredientDishEntryIdIngredientIndexCompoundUniqueInput = {
+    dishEntryId: string
+    ingredientIndex: number
+  }
+
+  export type DishEntryIngredientCountOrderByAggregateInput = {
+    id?: SortOrder
+    dishEntryId?: SortOrder
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+    inputState?: SortOrder
+    unit?: SortOrder
+  }
+
+  export type DishEntryIngredientAvgOrderByAggregateInput = {
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type DishEntryIngredientMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dishEntryId?: SortOrder
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+    inputState?: SortOrder
+    unit?: SortOrder
+  }
+
+  export type DishEntryIngredientMinOrderByAggregateInput = {
+    id?: SortOrder
+    dishEntryId?: SortOrder
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+    inputState?: SortOrder
+    unit?: SortOrder
+  }
+
+  export type DishEntryIngredientSumOrderByAggregateInput = {
+    ingredientIndex?: SortOrder
+    weight?: SortOrder
+  }
+
+  export type EnumIngredientInputStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel> | $Enums.IngredientInputState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIngredientInputStateFilter<$PrismaModel>
+    _max?: NestedEnumIngredientInputStateFilter<$PrismaModel>
   }
 
   export type ShoppingCartNullableScalarRelationFilter = {
@@ -69025,6 +71641,11 @@ export namespace Prisma {
   export type WeekPlanNullableScalarRelationFilter = {
     is?: WeekPlanWhereInput | null
     isNot?: WeekPlanWhereInput | null
+  }
+
+  export type DayPrepNoteNullableScalarRelationFilter = {
+    is?: DayPrepNoteWhereInput | null
+    isNot?: DayPrepNoteWhereInput | null
   }
 
   export type DayPlanCountOrderByAggregateInput = {
@@ -69063,6 +71684,36 @@ export namespace Prisma {
 
   export type DayPlanSumOrderByAggregateInput = {
     dayOfWeek?: SortOrder
+  }
+
+  export type DayPlanScalarRelationFilter = {
+    is?: DayPlanWhereInput
+    isNot?: DayPlanWhereInput
+  }
+
+  export type DayPrepNoteCountOrderByAggregateInput = {
+    id?: SortOrder
+    dayPlanId?: SortOrder
+    content?: SortOrder
+    steps?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DayPrepNoteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dayPlanId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DayPrepNoteMinOrderByAggregateInput = {
+    id?: SortOrder
+    dayPlanId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ShoppingListCountOrderByAggregateInput = {
@@ -69162,11 +71813,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type DayPlanScalarRelationFilter = {
-    is?: DayPlanWhereInput
-    isNot?: DayPlanWhereInput
-  }
-
   export type NutritionPersonScalarRelationFilter = {
     is?: NutritionPersonWhereInput
     isNot?: NutritionPersonWhereInput
@@ -69187,6 +71833,7 @@ export namespace Prisma {
     order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
+    locked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69206,6 +71853,7 @@ export namespace Prisma {
     order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
+    locked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69219,6 +71867,7 @@ export namespace Prisma {
     order?: SortOrder
     targetKcal?: SortOrder
     targetFiberGrams?: SortOrder
+    locked?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69268,35 +71917,53 @@ export namespace Prisma {
   export type ProductEntrySumOrderByAggregateInput = {
     portionWeight?: SortOrder
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type DishEntryIngredientListRelationFilter = {
+    every?: DishEntryIngredientWhereInput
+    some?: DishEntryIngredientWhereInput
+    none?: DishEntryIngredientWhereInput
+  }
+
+  export type DishEntryIngredientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
 
   export type DishEntryCountOrderByAggregateInput = {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    isShared?: SortOrder
-    manualWeight?: SortOrder
-    fitScore?: SortOrder
+    selectedAlternatives?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type DishEntryAvgOrderByAggregateInput = {
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    fitScore?: SortOrder
   }
 
   export type DishEntryMaxOrderByAggregateInput = {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    isShared?: SortOrder
-    manualWeight?: SortOrder
-    fitScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69305,19 +71972,34 @@ export namespace Prisma {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    isShared?: SortOrder
-    manualWeight?: SortOrder
-    fitScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type DishEntrySumOrderByAggregateInput = {
-    portionWeight?: SortOrder
-    servings?: SortOrder
-    fitScore?: SortOrder
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type WeekPlanScalarRelationFilter = {
@@ -69616,29 +72298,6 @@ export namespace Prisma {
     _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
     _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type DailyEntryUserIdDateCompoundUniqueInput = {
     userId: string
@@ -69756,32 +72415,6 @@ export namespace Prisma {
     eveningEnergy?: SortOrder
     nutrition?: SortOrder
     recoveryScore?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type HabitCompletionListRelationFilter = {
@@ -72627,6 +75260,24 @@ export namespace Prisma {
     update?: XOR<XOR<CookingMethodUpdateToOneWithWhereWithoutDishIngredientsInput, CookingMethodUpdateWithoutDishIngredientsInput>, CookingMethodUncheckedUpdateWithoutDishIngredientsInput>
   }
 
+  export type DishEntryCreateNestedOneWithoutIngredientsInput = {
+    create?: XOR<DishEntryCreateWithoutIngredientsInput, DishEntryUncheckedCreateWithoutIngredientsInput>
+    connectOrCreate?: DishEntryCreateOrConnectWithoutIngredientsInput
+    connect?: DishEntryWhereUniqueInput
+  }
+
+  export type EnumIngredientInputStateFieldUpdateOperationsInput = {
+    set?: $Enums.IngredientInputState
+  }
+
+  export type DishEntryUpdateOneRequiredWithoutIngredientsNestedInput = {
+    create?: XOR<DishEntryCreateWithoutIngredientsInput, DishEntryUncheckedCreateWithoutIngredientsInput>
+    connectOrCreate?: DishEntryCreateOrConnectWithoutIngredientsInput
+    upsert?: DishEntryUpsertWithoutIngredientsInput
+    connect?: DishEntryWhereUniqueInput
+    update?: XOR<XOR<DishEntryUpdateToOneWithWhereWithoutIngredientsInput, DishEntryUpdateWithoutIngredientsInput>, DishEntryUncheckedUpdateWithoutIngredientsInput>
+  }
+
   export type UserCreateNestedOneWithoutWeekPlansInput = {
     create?: XOR<UserCreateWithoutWeekPlansInput, UserUncheckedCreateWithoutWeekPlansInput>
     connectOrCreate?: UserCreateOrConnectWithoutWeekPlansInput
@@ -72776,11 +75427,23 @@ export namespace Prisma {
     connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
   }
 
+  export type DayPrepNoteCreateNestedOneWithoutDayPlanInput = {
+    create?: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
+    connectOrCreate?: DayPrepNoteCreateOrConnectWithoutDayPlanInput
+    connect?: DayPrepNoteWhereUniqueInput
+  }
+
   export type MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
     createMany?: MealSlotInstanceCreateManyDayPlanInputEnvelope
     connect?: MealSlotInstanceWhereUniqueInput | MealSlotInstanceWhereUniqueInput[]
+  }
+
+  export type DayPrepNoteUncheckedCreateNestedOneWithoutDayPlanInput = {
+    create?: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
+    connectOrCreate?: DayPrepNoteCreateOrConnectWithoutDayPlanInput
+    connect?: DayPrepNoteWhereUniqueInput
   }
 
   export type UserUpdateOneRequiredWithoutDayPlansNestedInput = {
@@ -72815,6 +75478,16 @@ export namespace Prisma {
     deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
   }
 
+  export type DayPrepNoteUpdateOneWithoutDayPlanNestedInput = {
+    create?: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
+    connectOrCreate?: DayPrepNoteCreateOrConnectWithoutDayPlanInput
+    upsert?: DayPrepNoteUpsertWithoutDayPlanInput
+    disconnect?: DayPrepNoteWhereInput | boolean
+    delete?: DayPrepNoteWhereInput | boolean
+    connect?: DayPrepNoteWhereUniqueInput
+    update?: XOR<XOR<DayPrepNoteUpdateToOneWithWhereWithoutDayPlanInput, DayPrepNoteUpdateWithoutDayPlanInput>, DayPrepNoteUncheckedUpdateWithoutDayPlanInput>
+  }
+
   export type MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput = {
     create?: XOR<MealSlotInstanceCreateWithoutDayPlanInput, MealSlotInstanceUncheckedCreateWithoutDayPlanInput> | MealSlotInstanceCreateWithoutDayPlanInput[] | MealSlotInstanceUncheckedCreateWithoutDayPlanInput[]
     connectOrCreate?: MealSlotInstanceCreateOrConnectWithoutDayPlanInput | MealSlotInstanceCreateOrConnectWithoutDayPlanInput[]
@@ -72827,6 +75500,39 @@ export namespace Prisma {
     update?: MealSlotInstanceUpdateWithWhereUniqueWithoutDayPlanInput | MealSlotInstanceUpdateWithWhereUniqueWithoutDayPlanInput[]
     updateMany?: MealSlotInstanceUpdateManyWithWhereWithoutDayPlanInput | MealSlotInstanceUpdateManyWithWhereWithoutDayPlanInput[]
     deleteMany?: MealSlotInstanceScalarWhereInput | MealSlotInstanceScalarWhereInput[]
+  }
+
+  export type DayPrepNoteUncheckedUpdateOneWithoutDayPlanNestedInput = {
+    create?: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
+    connectOrCreate?: DayPrepNoteCreateOrConnectWithoutDayPlanInput
+    upsert?: DayPrepNoteUpsertWithoutDayPlanInput
+    disconnect?: DayPrepNoteWhereInput | boolean
+    delete?: DayPrepNoteWhereInput | boolean
+    connect?: DayPrepNoteWhereUniqueInput
+    update?: XOR<XOR<DayPrepNoteUpdateToOneWithWhereWithoutDayPlanInput, DayPrepNoteUpdateWithoutDayPlanInput>, DayPrepNoteUncheckedUpdateWithoutDayPlanInput>
+  }
+
+  export type DayPrepNoteCreatestepsInput = {
+    set: string[]
+  }
+
+  export type DayPlanCreateNestedOneWithoutPrepNoteInput = {
+    create?: XOR<DayPlanCreateWithoutPrepNoteInput, DayPlanUncheckedCreateWithoutPrepNoteInput>
+    connectOrCreate?: DayPlanCreateOrConnectWithoutPrepNoteInput
+    connect?: DayPlanWhereUniqueInput
+  }
+
+  export type DayPrepNoteUpdatestepsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type DayPlanUpdateOneRequiredWithoutPrepNoteNestedInput = {
+    create?: XOR<DayPlanCreateWithoutPrepNoteInput, DayPlanUncheckedCreateWithoutPrepNoteInput>
+    connectOrCreate?: DayPlanCreateOrConnectWithoutPrepNoteInput
+    upsert?: DayPlanUpsertWithoutPrepNoteInput
+    connect?: DayPlanWhereUniqueInput
+    update?: XOR<XOR<DayPlanUpdateToOneWithWhereWithoutPrepNoteInput, DayPlanUpdateWithoutPrepNoteInput>, DayPlanUncheckedUpdateWithoutPrepNoteInput>
   }
 
   export type UserCreateNestedOneWithoutShoppingListsInput = {
@@ -73089,6 +75795,20 @@ export namespace Prisma {
     connect?: MealSlotInstanceWhereUniqueInput
   }
 
+  export type DishEntryIngredientCreateNestedManyWithoutDishEntryInput = {
+    create?: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput> | DishEntryIngredientCreateWithoutDishEntryInput[] | DishEntryIngredientUncheckedCreateWithoutDishEntryInput[]
+    connectOrCreate?: DishEntryIngredientCreateOrConnectWithoutDishEntryInput | DishEntryIngredientCreateOrConnectWithoutDishEntryInput[]
+    createMany?: DishEntryIngredientCreateManyDishEntryInputEnvelope
+    connect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+  }
+
+  export type DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput = {
+    create?: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput> | DishEntryIngredientCreateWithoutDishEntryInput[] | DishEntryIngredientUncheckedCreateWithoutDishEntryInput[]
+    connectOrCreate?: DishEntryIngredientCreateOrConnectWithoutDishEntryInput | DishEntryIngredientCreateOrConnectWithoutDishEntryInput[]
+    createMany?: DishEntryIngredientCreateManyDishEntryInputEnvelope
+    connect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+  }
+
   export type DishUpdateOneRequiredWithoutDishEntriesNestedInput = {
     create?: XOR<DishCreateWithoutDishEntriesInput, DishUncheckedCreateWithoutDishEntriesInput>
     connectOrCreate?: DishCreateOrConnectWithoutDishEntriesInput
@@ -73103,6 +75823,34 @@ export namespace Prisma {
     upsert?: MealSlotInstanceUpsertWithoutDishEntriesInput
     connect?: MealSlotInstanceWhereUniqueInput
     update?: XOR<XOR<MealSlotInstanceUpdateToOneWithWhereWithoutDishEntriesInput, MealSlotInstanceUpdateWithoutDishEntriesInput>, MealSlotInstanceUncheckedUpdateWithoutDishEntriesInput>
+  }
+
+  export type DishEntryIngredientUpdateManyWithoutDishEntryNestedInput = {
+    create?: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput> | DishEntryIngredientCreateWithoutDishEntryInput[] | DishEntryIngredientUncheckedCreateWithoutDishEntryInput[]
+    connectOrCreate?: DishEntryIngredientCreateOrConnectWithoutDishEntryInput | DishEntryIngredientCreateOrConnectWithoutDishEntryInput[]
+    upsert?: DishEntryIngredientUpsertWithWhereUniqueWithoutDishEntryInput | DishEntryIngredientUpsertWithWhereUniqueWithoutDishEntryInput[]
+    createMany?: DishEntryIngredientCreateManyDishEntryInputEnvelope
+    set?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    disconnect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    delete?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    connect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    update?: DishEntryIngredientUpdateWithWhereUniqueWithoutDishEntryInput | DishEntryIngredientUpdateWithWhereUniqueWithoutDishEntryInput[]
+    updateMany?: DishEntryIngredientUpdateManyWithWhereWithoutDishEntryInput | DishEntryIngredientUpdateManyWithWhereWithoutDishEntryInput[]
+    deleteMany?: DishEntryIngredientScalarWhereInput | DishEntryIngredientScalarWhereInput[]
+  }
+
+  export type DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput = {
+    create?: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput> | DishEntryIngredientCreateWithoutDishEntryInput[] | DishEntryIngredientUncheckedCreateWithoutDishEntryInput[]
+    connectOrCreate?: DishEntryIngredientCreateOrConnectWithoutDishEntryInput | DishEntryIngredientCreateOrConnectWithoutDishEntryInput[]
+    upsert?: DishEntryIngredientUpsertWithWhereUniqueWithoutDishEntryInput | DishEntryIngredientUpsertWithWhereUniqueWithoutDishEntryInput[]
+    createMany?: DishEntryIngredientCreateManyDishEntryInputEnvelope
+    set?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    disconnect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    delete?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    connect?: DishEntryIngredientWhereUniqueInput | DishEntryIngredientWhereUniqueInput[]
+    update?: DishEntryIngredientUpdateWithWhereUniqueWithoutDishEntryInput | DishEntryIngredientUpdateWithWhereUniqueWithoutDishEntryInput[]
+    updateMany?: DishEntryIngredientUpdateManyWithWhereWithoutDishEntryInput | DishEntryIngredientUpdateManyWithWhereWithoutDishEntryInput[]
+    deleteMany?: DishEntryIngredientScalarWhereInput | DishEntryIngredientScalarWhereInput[]
   }
 
   export type WeekPlanCreateNestedOneWithoutCartInput = {
@@ -74794,6 +77542,23 @@ export namespace Prisma {
     _max?: NestedEnumDishTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumIngredientInputStateFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateFilter<$PrismaModel> | $Enums.IngredientInputState
+  }
+
+  export type NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.IngredientInputState | EnumIngredientInputStateFieldRefInput<$PrismaModel>
+    in?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    notIn?: $Enums.IngredientInputState[] | ListEnumIngredientInputStateFieldRefInput<$PrismaModel>
+    not?: NestedEnumIngredientInputStateWithAggregatesFilter<$PrismaModel> | $Enums.IngredientInputState
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumIngredientInputStateFilter<$PrismaModel>
+    _max?: NestedEnumIngredientInputStateFilter<$PrismaModel>
+  }
+
   export type NestedEnumUnitFilter<$PrismaModel = never> = {
     equals?: $Enums.Unit | EnumUnitFieldRefInput<$PrismaModel>
     in?: $Enums.Unit[] | ListEnumUnitFieldRefInput<$PrismaModel>
@@ -74822,6 +77587,29 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumCartItemStatusFilter<$PrismaModel = never> = {
@@ -74873,29 +77661,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
     _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumLibraryItemTypeFilter<$PrismaModel = never> = {
@@ -75275,6 +78040,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutUserInput = {
@@ -75285,6 +78051,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteUncheckedCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanCreateOrConnectWithoutUserInput = {
@@ -77274,6 +80041,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
@@ -77289,6 +80057,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
@@ -77414,6 +80183,7 @@ export namespace Prisma {
     order?: IntFilter<"MealSlotInstance"> | number
     targetKcal?: FloatFilter<"MealSlotInstance"> | number
     targetFiberGrams?: FloatFilter<"MealSlotInstance"> | number
+    locked?: BoolFilter<"MealSlotInstance"> | boolean
     createdAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MealSlotInstance"> | Date | string
   }
@@ -77495,7 +80265,6 @@ export namespace Prisma {
 
   export type DishIngredientCreateWithoutProductInput = {
     id?: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     cookingMethod?: CookingMethodCreateNestedOneWithoutDishIngredientsInput
@@ -77505,7 +80274,6 @@ export namespace Prisma {
     id?: string
     dishId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
@@ -77712,7 +80480,6 @@ export namespace Prisma {
     dishId?: StringFilter<"DishIngredient"> | string
     productId?: StringFilter<"DishIngredient"> | string
     cookingMethodId?: StringNullableFilter<"DishIngredient"> | string | null
-    rawWeight?: FloatFilter<"DishIngredient"> | number
     alternatives?: StringNullableListFilter<"DishIngredient">
   }
 
@@ -77807,7 +80574,6 @@ export namespace Prisma {
 
   export type DishIngredientCreateWithoutCookingMethodInput = {
     id?: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
     dish: DishCreateNestedOneWithoutIngredientsInput
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
@@ -77817,7 +80583,6 @@ export namespace Prisma {
     id?: string
     dishId: string
     productId: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
@@ -77924,7 +80689,6 @@ export namespace Prisma {
 
   export type DishIngredientCreateWithoutDishInput = {
     id?: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
     product: FoodProductCreateNestedOneWithoutDishIngredientsInput
     cookingMethod?: CookingMethodCreateNestedOneWithoutDishIngredientsInput
@@ -77934,7 +80698,6 @@ export namespace Prisma {
     id?: string
     productId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
@@ -77950,26 +80713,20 @@ export namespace Prisma {
 
   export type DishEntryCreateWithoutDishInput = {
     id?: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     mealSlot: MealSlotInstanceCreateNestedOneWithoutDishEntriesInput
+    ingredients?: DishEntryIngredientCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryUncheckedCreateWithoutDishInput = {
     id?: string
     mealSlotId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryCreateOrConnectWithoutDishInput = {
@@ -78102,11 +80859,7 @@ export namespace Prisma {
     id?: StringFilter<"DishEntry"> | string
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
-    portionWeight?: FloatFilter<"DishEntry"> | number
-    servings?: FloatFilter<"DishEntry"> | number
-    isShared?: BoolFilter<"DishEntry"> | boolean
-    manualWeight?: BoolFilter<"DishEntry"> | boolean
-    fitScore?: FloatNullableFilter<"DishEntry"> | number | null
+    selectedAlternatives?: JsonNullableFilter<"DishEntry">
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
   }
@@ -78343,6 +81096,58 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DishEntryCreateWithoutIngredientsInput = {
+    id?: string
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dish: DishCreateNestedOneWithoutDishEntriesInput
+    mealSlot: MealSlotInstanceCreateNestedOneWithoutDishEntriesInput
+  }
+
+  export type DishEntryUncheckedCreateWithoutIngredientsInput = {
+    id?: string
+    mealSlotId: string
+    dishId: string
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DishEntryCreateOrConnectWithoutIngredientsInput = {
+    where: DishEntryWhereUniqueInput
+    create: XOR<DishEntryCreateWithoutIngredientsInput, DishEntryUncheckedCreateWithoutIngredientsInput>
+  }
+
+  export type DishEntryUpsertWithoutIngredientsInput = {
+    update: XOR<DishEntryUpdateWithoutIngredientsInput, DishEntryUncheckedUpdateWithoutIngredientsInput>
+    create: XOR<DishEntryCreateWithoutIngredientsInput, DishEntryUncheckedCreateWithoutIngredientsInput>
+    where?: DishEntryWhereInput
+  }
+
+  export type DishEntryUpdateToOneWithWhereWithoutIngredientsInput = {
+    where?: DishEntryWhereInput
+    data: XOR<DishEntryUpdateWithoutIngredientsInput, DishEntryUncheckedUpdateWithoutIngredientsInput>
+  }
+
+  export type DishEntryUpdateWithoutIngredientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
+    mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutDishEntriesNestedInput
+  }
+
+  export type DishEntryUncheckedUpdateWithoutIngredientsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mealSlotId?: StringFieldUpdateOperationsInput | string
+    dishId?: StringFieldUpdateOperationsInput | string
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutWeekPlansInput = {
     id?: string
     name?: string | null
@@ -78426,6 +81231,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDayPlansInput
     mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutWeekPlanInput = {
@@ -78436,6 +81242,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
+    prepNote?: DayPrepNoteUncheckedCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanCreateOrConnectWithoutWeekPlanInput = {
@@ -78740,6 +81547,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     person: NutritionPersonCreateNestedOneWithoutMealSlotsInput
@@ -78755,6 +81563,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
@@ -78769,6 +81578,27 @@ export namespace Prisma {
   export type MealSlotInstanceCreateManyDayPlanInputEnvelope = {
     data: MealSlotInstanceCreateManyDayPlanInput | MealSlotInstanceCreateManyDayPlanInput[]
     skipDuplicates?: boolean
+  }
+
+  export type DayPrepNoteCreateWithoutDayPlanInput = {
+    id?: string
+    content?: string
+    steps?: DayPrepNoteCreatestepsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayPrepNoteUncheckedCreateWithoutDayPlanInput = {
+    id?: string
+    content?: string
+    steps?: DayPrepNoteCreatestepsInput | string[]
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayPrepNoteCreateOrConnectWithoutDayPlanInput = {
+    where: DayPrepNoteWhereUniqueInput
+    create: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
   }
 
   export type UserUpsertWithoutDayPlansInput = {
@@ -78897,6 +81727,93 @@ export namespace Prisma {
   export type MealSlotInstanceUpdateManyWithWhereWithoutDayPlanInput = {
     where: MealSlotInstanceScalarWhereInput
     data: XOR<MealSlotInstanceUpdateManyMutationInput, MealSlotInstanceUncheckedUpdateManyWithoutDayPlanInput>
+  }
+
+  export type DayPrepNoteUpsertWithoutDayPlanInput = {
+    update: XOR<DayPrepNoteUpdateWithoutDayPlanInput, DayPrepNoteUncheckedUpdateWithoutDayPlanInput>
+    create: XOR<DayPrepNoteCreateWithoutDayPlanInput, DayPrepNoteUncheckedCreateWithoutDayPlanInput>
+    where?: DayPrepNoteWhereInput
+  }
+
+  export type DayPrepNoteUpdateToOneWithWhereWithoutDayPlanInput = {
+    where?: DayPrepNoteWhereInput
+    data: XOR<DayPrepNoteUpdateWithoutDayPlanInput, DayPrepNoteUncheckedUpdateWithoutDayPlanInput>
+  }
+
+  export type DayPrepNoteUpdateWithoutDayPlanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayPrepNoteUncheckedUpdateWithoutDayPlanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    steps?: DayPrepNoteUpdatestepsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayPlanCreateWithoutPrepNoteInput = {
+    id?: string
+    dayOfWeek?: number
+    activity?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDayPlansInput
+    weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
+    mealSlots?: MealSlotInstanceCreateNestedManyWithoutDayPlanInput
+  }
+
+  export type DayPlanUncheckedCreateWithoutPrepNoteInput = {
+    id?: string
+    userId: string
+    weekPlanId?: string | null
+    dayOfWeek?: number
+    activity?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    mealSlots?: MealSlotInstanceUncheckedCreateNestedManyWithoutDayPlanInput
+  }
+
+  export type DayPlanCreateOrConnectWithoutPrepNoteInput = {
+    where: DayPlanWhereUniqueInput
+    create: XOR<DayPlanCreateWithoutPrepNoteInput, DayPlanUncheckedCreateWithoutPrepNoteInput>
+  }
+
+  export type DayPlanUpsertWithoutPrepNoteInput = {
+    update: XOR<DayPlanUpdateWithoutPrepNoteInput, DayPlanUncheckedUpdateWithoutPrepNoteInput>
+    create: XOR<DayPlanCreateWithoutPrepNoteInput, DayPlanUncheckedCreateWithoutPrepNoteInput>
+    where?: DayPlanWhereInput
+  }
+
+  export type DayPlanUpdateToOneWithWhereWithoutPrepNoteInput = {
+    where?: DayPlanWhereInput
+    data: XOR<DayPlanUpdateWithoutPrepNoteInput, DayPlanUncheckedUpdateWithoutPrepNoteInput>
+  }
+
+  export type DayPlanUpdateWithoutPrepNoteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
+    weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
+    mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
+  }
+
+  export type DayPlanUncheckedUpdateWithoutPrepNoteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    weekPlanId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    activity?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
   }
 
   export type UserCreateWithoutShoppingListsInput = {
@@ -79329,6 +82246,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDayPlansInput
     weekPlan?: WeekPlanCreateNestedOneWithoutDayPlansInput
+    prepNote?: DayPrepNoteCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanUncheckedCreateWithoutMealSlotsInput = {
@@ -79339,6 +82257,7 @@ export namespace Prisma {
     activity?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prepNote?: DayPrepNoteUncheckedCreateNestedOneWithoutDayPlanInput
   }
 
   export type DayPlanCreateOrConnectWithoutMealSlotsInput = {
@@ -79381,26 +82300,20 @@ export namespace Prisma {
 
   export type DishEntryCreateWithoutMealSlotInput = {
     id?: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     dish: DishCreateNestedOneWithoutDishEntriesInput
+    ingredients?: DishEntryIngredientCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryUncheckedCreateWithoutMealSlotInput = {
     id?: string
     dishId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
   }
 
   export type DishEntryCreateOrConnectWithoutMealSlotInput = {
@@ -79458,6 +82371,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
+    prepNote?: DayPrepNoteUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutMealSlotsInput = {
@@ -79468,6 +82382,7 @@ export namespace Prisma {
     activity?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prepNote?: DayPrepNoteUncheckedUpdateOneWithoutDayPlanNestedInput
   }
 
   export type NutritionPersonUpsertWithoutMealSlotsInput = {
@@ -79548,6 +82463,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
@@ -79564,6 +82480,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dishEntries?: DishEntryUncheckedCreateNestedManyWithoutMealSlotInput
@@ -79647,6 +82564,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
@@ -79663,6 +82581,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
@@ -79765,6 +82684,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlan: DayPlanCreateNestedOneWithoutMealSlotsInput
@@ -79781,6 +82701,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     productEntries?: ProductEntryUncheckedCreateNestedManyWithoutMealSlotInput
@@ -79789,6 +82710,32 @@ export namespace Prisma {
   export type MealSlotInstanceCreateOrConnectWithoutDishEntriesInput = {
     where: MealSlotInstanceWhereUniqueInput
     create: XOR<MealSlotInstanceCreateWithoutDishEntriesInput, MealSlotInstanceUncheckedCreateWithoutDishEntriesInput>
+  }
+
+  export type DishEntryIngredientCreateWithoutDishEntryInput = {
+    id?: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+  }
+
+  export type DishEntryIngredientUncheckedCreateWithoutDishEntryInput = {
+    id?: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+  }
+
+  export type DishEntryIngredientCreateOrConnectWithoutDishEntryInput = {
+    where: DishEntryIngredientWhereUniqueInput
+    create: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput>
+  }
+
+  export type DishEntryIngredientCreateManyDishEntryInputEnvelope = {
+    data: DishEntryIngredientCreateManyDishEntryInput | DishEntryIngredientCreateManyDishEntryInput[]
+    skipDuplicates?: boolean
   }
 
   export type DishUpsertWithoutDishEntriesInput = {
@@ -79844,6 +82791,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
@@ -79860,9 +82808,38 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productEntries?: ProductEntryUncheckedUpdateManyWithoutMealSlotNestedInput
+  }
+
+  export type DishEntryIngredientUpsertWithWhereUniqueWithoutDishEntryInput = {
+    where: DishEntryIngredientWhereUniqueInput
+    update: XOR<DishEntryIngredientUpdateWithoutDishEntryInput, DishEntryIngredientUncheckedUpdateWithoutDishEntryInput>
+    create: XOR<DishEntryIngredientCreateWithoutDishEntryInput, DishEntryIngredientUncheckedCreateWithoutDishEntryInput>
+  }
+
+  export type DishEntryIngredientUpdateWithWhereUniqueWithoutDishEntryInput = {
+    where: DishEntryIngredientWhereUniqueInput
+    data: XOR<DishEntryIngredientUpdateWithoutDishEntryInput, DishEntryIngredientUncheckedUpdateWithoutDishEntryInput>
+  }
+
+  export type DishEntryIngredientUpdateManyWithWhereWithoutDishEntryInput = {
+    where: DishEntryIngredientScalarWhereInput
+    data: XOR<DishEntryIngredientUpdateManyMutationInput, DishEntryIngredientUncheckedUpdateManyWithoutDishEntryInput>
+  }
+
+  export type DishEntryIngredientScalarWhereInput = {
+    AND?: DishEntryIngredientScalarWhereInput | DishEntryIngredientScalarWhereInput[]
+    OR?: DishEntryIngredientScalarWhereInput[]
+    NOT?: DishEntryIngredientScalarWhereInput | DishEntryIngredientScalarWhereInput[]
+    id?: StringFilter<"DishEntryIngredient"> | string
+    dishEntryId?: StringFilter<"DishEntryIngredient"> | string
+    ingredientIndex?: IntFilter<"DishEntryIngredient"> | number
+    weight?: FloatFilter<"DishEntryIngredient"> | number
+    inputState?: EnumIngredientInputStateFilter<"DishEntryIngredient"> | $Enums.IngredientInputState
+    unit?: StringNullableFilter<"DishEntryIngredient"> | string | null
   }
 
   export type WeekPlanCreateWithoutCartInput = {
@@ -85130,6 +88107,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weekPlan?: WeekPlanUpdateOneWithoutDayPlansNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutUserInput = {
@@ -85140,6 +88118,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUncheckedUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateManyWithoutUserInput = {
@@ -85871,6 +88850,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85882,6 +88862,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlan?: DayPlanUpdateOneRequiredWithoutMealSlotsNestedInput
@@ -85897,6 +88878,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
@@ -85911,6 +88893,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -85919,7 +88902,6 @@ export namespace Prisma {
     id?: string
     dishId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
@@ -85954,7 +88936,6 @@ export namespace Prisma {
 
   export type DishIngredientUpdateWithoutProductInput = {
     id?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     cookingMethod?: CookingMethodUpdateOneWithoutDishIngredientsNestedInput
@@ -85964,7 +88945,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -85972,7 +88952,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -86067,13 +89046,11 @@ export namespace Prisma {
     id?: string
     dishId: string
     productId: string
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishIngredientUpdateWithoutCookingMethodInput = {
     id?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
     dish?: DishUpdateOneRequiredWithoutIngredientsNestedInput
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
@@ -86083,7 +89060,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -86091,7 +89067,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -86099,25 +89074,19 @@ export namespace Prisma {
     id?: string
     productId: string
     cookingMethodId?: string | null
-    rawWeight: number
     alternatives?: DishIngredientCreatealternativesInput | string[]
   }
 
   export type DishEntryCreateManyDishInput = {
     id?: string
     mealSlotId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type DishIngredientUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
     product?: FoodProductUpdateOneRequiredWithoutDishIngredientsNestedInput
     cookingMethod?: CookingMethodUpdateOneWithoutDishIngredientsNestedInput
@@ -86127,7 +89096,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
@@ -86135,42 +89103,31 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     productId?: StringFieldUpdateOperationsInput | string
     cookingMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawWeight?: FloatFieldUpdateOperationsInput | number
     alternatives?: DishIngredientUpdatealternativesInput | string[]
   }
 
   export type DishEntryUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutDishEntriesNestedInput
+    ingredients?: DishEntryIngredientUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryUncheckedUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryUncheckedUpdateManyWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -86200,6 +89157,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDayPlansNestedInput
     mealSlots?: MealSlotInstanceUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateWithoutWeekPlanInput = {
@@ -86210,6 +89168,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mealSlots?: MealSlotInstanceUncheckedUpdateManyWithoutDayPlanNestedInput
+    prepNote?: DayPrepNoteUncheckedUpdateOneWithoutDayPlanNestedInput
   }
 
   export type DayPlanUncheckedUpdateManyWithoutWeekPlanInput = {
@@ -86255,6 +89214,7 @@ export namespace Prisma {
     order?: number
     targetKcal: number
     targetFiberGrams: number
+    locked?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -86266,6 +89226,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     person?: NutritionPersonUpdateOneRequiredWithoutMealSlotsNestedInput
@@ -86281,6 +89242,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dishEntries?: DishEntryUncheckedUpdateManyWithoutMealSlotNestedInput
@@ -86295,6 +89257,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     targetKcal?: FloatFieldUpdateOperationsInput | number
     targetFiberGrams?: FloatFieldUpdateOperationsInput | number
+    locked?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -86334,11 +89297,7 @@ export namespace Prisma {
   export type DishEntryCreateManyMealSlotInput = {
     id?: string
     dishId: string
-    portionWeight: number
-    servings?: number
-    isShared?: boolean
-    manualWeight?: boolean
-    fitScore?: number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -86353,36 +89312,26 @@ export namespace Prisma {
 
   export type DishEntryUpdateWithoutMealSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
+    ingredients?: DishEntryIngredientUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryUncheckedUpdateWithoutMealSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
   }
 
   export type DishEntryUncheckedUpdateManyWithoutMealSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
-    portionWeight?: FloatFieldUpdateOperationsInput | number
-    servings?: FloatFieldUpdateOperationsInput | number
-    isShared?: BoolFieldUpdateOperationsInput | boolean
-    manualWeight?: BoolFieldUpdateOperationsInput | boolean
-    fitScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -86409,6 +89358,38 @@ export namespace Prisma {
     portionWeight?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DishEntryIngredientCreateManyDishEntryInput = {
+    id?: string
+    ingredientIndex: number
+    weight: number
+    inputState?: $Enums.IngredientInputState
+    unit?: string | null
+  }
+
+  export type DishEntryIngredientUpdateWithoutDishEntryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DishEntryIngredientUncheckedUpdateWithoutDishEntryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DishEntryIngredientUncheckedUpdateManyWithoutDishEntryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ingredientIndex?: IntFieldUpdateOperationsInput | number
+    weight?: FloatFieldUpdateOperationsInput | number
+    inputState?: EnumIngredientInputStateFieldUpdateOperationsInput | $Enums.IngredientInputState
+    unit?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CartItemCreateManyCartInput = {

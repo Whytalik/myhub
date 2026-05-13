@@ -1,3 +1,38 @@
+## [2026-05-13] Raw/Cooked Weight States + Day Prep Block
+
+Added support for entering ingredient weights as either raw or cooked, with automatic conversion for shopping cart calculations. Added per-day prep block with auto-generated steps, editable notes, and daily product list.
+
+- **Schema**: `DishEntryIngredient` now has `weight` (input weight), `inputState` (RAW | COOKED) instead of `rawWeight`. Added `DayPrepNote` model (content, steps[]) with 1:1 relation to DayPlan.
+- **Calculations**: Added `toRawWeight(weight, inputState, coefficient)` helper — converts cooked weight back to raw using cooking method coefficient. `calculateEntryNutrition` accepts `EntryWeightInput` with inputState.
+- **Planning Actions**: `addDishToSlot` accepts `inputState` per ingredient. `updateDishEntryIngredient` accepts `weight` + `inputState`. `getWeekPlan` returns `weight`, `inputState`, `rawWeight` (computed), `cookedWeight`, `coefficient` per ingredient. Added `getDayPrepNote` and `updateDayPrepNote` actions. Days include `dayPlanId` and `prepNote`.
+- **Shopping Cart**: `generateShoppingCart` computes raw weight from `weight / coefficient` when inputState is COOKED, ensuring cart always shows raw ingredient needs.
+- **UI**: `DayPrepBlock` component — auto-generates numbered prep steps from dish ingredients (grouped by cooking method), shows daily raw product list, editable notes textarea. `WeekPlanner` shows input weight with "готове" indicator for cooked entries and "≈Xг сире" hint when coefficient ≠ 1.
+- **Duplicate**: Week plan duplication now copies `DayPrepNote` data.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
+## [2026-05-13] Per-Person Ingredient Weights via DishEntryIngredient Table
+
+Major refactor: replaced shared/serving-based portioning with per-person ingredient weights stored in new `DishEntryIngredient` table.
+
+- **Schema**: Removed `isShared`, `portionWeight`, `servings`, `manualWeight`, `fitScore` from `DishEntry`. Removed `rawWeight` from `DishIngredient`. Added `DishEntryIngredient` (dishEntryId, ingredientIndex, rawWeight, unit).
+- **Calculations**: Rewrote `calculations.ts` — `calculateEntryNutrition` accepts explicit weight array per ingredient index. `calculateDishNutrition` requires weights parameter (no fallback to template weights).
+- **Planning Actions**: `addDishToSlot` now accepts `ingredientWeights[]` instead of `isShared/servings/manualWeight`. `updatePortionWeight`/`updateDishServings` replaced with `updateDishEntryIngredient`. `getWeekPlan` returns per-entry nutrition totals and ingredient-level weights. Added `duplicateWeekPlan` action.
+- **Shopping Cart**: `generateShoppingCart` now aggregates directly from `DishEntryIngredient` rows instead of computing ratios from servings.
+- **UI**: `DishPicker` removed "Shared" checkbox; calculates per-ingredient weights by scaling template to target portion weight. `WeekPlanner` shows per-ingredient weight editing, nutrition totals (kcal/P/F/C) per entry. `PlanList` has Duplicate button.
+- **Seed/Scripts**: Updated `seed-action.ts`, `generate-visual-week.ts`, `seed-global-visual-plan.ts`, `test-shopping-list.ts` to populate/use `DishEntryIngredient`.
+- **Supporting files**: Updated `recalculator.ts`, `shopping-list.ts`, `portion-calculator.ts`, `DishBuilder.tsx`, `DishLibrary.tsx`, `dishes.ts` actions to work without `DishIngredient.rawWeight`.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
 ## [2026-05-13] Plans page revalidation, profile name editing, and UI fixes
 
 - **Plans page**: Added `revalidatePath("/nutrition/plans")` to `createWeekPlan` action so the plans list updates immediately after creating a new week plan.

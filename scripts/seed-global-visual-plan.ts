@@ -250,6 +250,10 @@ async function main() {
       include: { ingredients: { include: { product: true } } }
     });
     const findDish = (name: string) => allDishes.find(d => d.name === name);
+    const findDishJson = (name: string) => (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).find(d => d.name === name);
+    const productMap = new Map(
+      (await prisma.foodProduct.findMany()).map(p => [p.name, p])
+    );
 
     for (const day of weekPlan.dayPlans) {
       const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
@@ -260,14 +264,25 @@ async function main() {
         if (dayName === "Пт" && slot.name === "Вечеря") dishName = "Кебаб Класичний";
         if (!dishName) continue;
         const dish = findDish(dishName);
-        if (dish) {
-          const totalKcal = dish.ingredients.reduce((acc, ing) => acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100, 0);
-          const kcalPerServing = totalKcal / (dish.servings || 1);
-          const servings = slot.targetKcal / (kcalPerServing || 1);
-          const totalWeight = dish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
-          const portionWeight = servings * (totalWeight / (dish.servings || 1));
-          await prisma.dishEntry.create({
-            data: { mealSlotId: slot.id, dishId: dish.id, portionWeight, servings, isShared: true }
+        const dishJson = findDishJson(dishName);
+        if (dish && dishJson) {
+          const totalKcal = dishJson.ingredients.reduce((acc, ing) => {
+            const prod = productMap.get(ing.productName);
+            return acc + (prod ? (ing.rawWeight * prod.caloriesPer100) / 100 : 0);
+          }, 0);
+          const scale = slot.targetKcal > 0 && totalKcal > 0 ? slot.targetKcal / (totalKcal / (dish.servings || 1)) : 1;
+
+          const dishEntry = await prisma.dishEntry.create({
+            data: { mealSlotId: slot.id, dishId: dish.id }
+          });
+
+          await prisma.dishEntryIngredient.createMany({
+            data: dishJson.ingredients.map((ing, idx) => ({
+              dishEntryId: dishEntry.id,
+              ingredientIndex: idx,
+              weight: ing.rawWeight * scale,
+              inputState: "RAW",
+            }))
           });
         }
       }

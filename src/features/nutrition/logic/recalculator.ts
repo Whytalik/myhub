@@ -1,17 +1,20 @@
-import { FoodProduct, Dish, DishEntry, CookingMethod } from "@/app/generated/prisma";
+import { FoodProduct, Dish, DishEntry, CookingMethod, DishEntryIngredient } from "@/app/generated/prisma";
 
 export interface IngredientWithProduct {
   id: string;
   dishId: string;
   productId: string;
   cookingMethodId: string | null;
-  rawWeight: number;
+  alternatives: string[];
   product: FoodProduct;
   cookingMethod: CookingMethod | null;
 }
 
 export type DishWithIngredients = Dish & { ingredients: IngredientWithProduct[] };
-export type EntryWithDish = DishEntry & { dish: DishWithIngredients };
+export type EntryWithIngredients = DishEntry & {
+  dish: DishWithIngredients;
+  ingredients: DishEntryIngredient[];
+};
 
 export interface PlanSummary {
   calories: number;
@@ -33,15 +36,16 @@ export function calculateRawIngredientStats(product: FoodProduct, grams: number)
   };
 }
 
-export function calculateIngredientStats(ing: IngredientWithProduct): PlanSummary {
-  const cookedWeight = ing.rawWeight * (ing.cookingMethod?.coefficient ?? 1);
+export function calculateIngredientStats(ing: IngredientWithProduct, rawWeight: number): PlanSummary {
+  const cookedWeight = rawWeight * (ing.cookingMethod?.coefficient ?? 1);
   return calculateRawIngredientStats(ing.product, cookedWeight);
 }
 
-export function calculateDishStats(dish: DishWithIngredients): PlanSummary {
+export function calculateDishStats(dish: DishWithIngredients, weights: { ingredientIndex: number; rawWeight: number }[]): PlanSummary {
   const totalNutrition = dish.ingredients.reduce(
-    (acc, ing) => {
-      const stats = calculateIngredientStats(ing);
+    (acc, ing, idx) => {
+      const weight = weights.find(w => w.ingredientIndex === idx)?.rawWeight ?? 0;
+      const stats = calculateIngredientStats(ing, weight);
       return {
         calories: acc.calories + stats.calories,
         protein: acc.protein + stats.protein,
@@ -53,31 +57,15 @@ export function calculateDishStats(dish: DishWithIngredients): PlanSummary {
     { calories: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 }
   );
 
-  const perServing = dish.servings > 0 ? dish.servings : 1;
-
-  return {
-    calories: totalNutrition.calories / perServing,
-    protein: totalNutrition.protein / perServing,
-    fat: totalNutrition.fat / perServing,
-    carbs: totalNutrition.carbs / perServing,
-    fiber: totalNutrition.fiber / perServing,
-  };
+  return totalNutrition;
 }
 
-export function calculateEntryStats(entry: EntryWithDish): PlanSummary {
-  const dishStats = calculateDishStats(entry.dish);
-  const portionFactor = entry.portionWeight / 100;
-
-  return {
-    calories: dishStats.calories * portionFactor,
-    protein: dishStats.protein * portionFactor,
-    fat: dishStats.fat * portionFactor,
-    carbs: dishStats.carbs * portionFactor,
-    fiber: dishStats.fiber * portionFactor,
-  };
+export function calculateEntryStats(entry: EntryWithIngredients): PlanSummary {
+  const weights = entry.ingredients.map(ing => ({ ingredientIndex: ing.ingredientIndex, rawWeight: ing.weight }));
+  return calculateDishStats(entry.dish, weights);
 }
 
-export function calculateMealSlotStats(entries: EntryWithDish[]): PlanSummary {
+export function calculateMealSlotStats(entries: EntryWithIngredients[]): PlanSummary {
   return entries.reduce(
     (acc, entry) => {
       const stats = calculateEntryStats(entry);
@@ -93,7 +81,7 @@ export function calculateMealSlotStats(entries: EntryWithDish[]): PlanSummary {
   );
 }
 
-export function calculateDayPlanStats(mealSlots: Array<{ entries: EntryWithDish[] }>): PlanSummary {
+export function calculateDayPlanStats(mealSlots: Array<{ entries: EntryWithIngredients[] }>): PlanSummary {
   return mealSlots.reduce(
     (acc, slot) => {
       const stats = calculateMealSlotStats(slot.entries);

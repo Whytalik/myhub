@@ -99,8 +99,8 @@ async function main() {
       servings: 4,
       ingredients: {
         create: [
-          { productId: products["Сир кисломолочний 0-2%"].id, rawWeight: 250 },
-          { productId: products["Борошно пшеничне"].id, rawWeight: 250 },
+          { productId: products["Сир кисломолочний 0-2%"].id },
+          { productId: products["Борошно пшеничне"].id },
         ]
       }
     }
@@ -116,9 +116,9 @@ async function main() {
       servings: 1,
       ingredients: {
         create: [
-          { productId: products["Лаваш"].id, rawWeight: 100 },
-          { productId: products["Куряче філе"].id, rawWeight: 150 },
-          { productId: products["Йогурт густий"].id, rawWeight: 50 },
+          { productId: products["Лаваш"].id },
+          { productId: products["Куряче філе"].id },
+          { productId: products["Йогурт густий"].id },
         ]
       }
     }

@@ -2,9 +2,12 @@
 
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
-import { calculateDishNutrition } from "@/lib/nutrition/calculations"
-import { CartItem, CartItemStatus, FoodProduct } from "@/app/generated/prisma"
+import { CartItem, CartItemStatus, FoodProduct, IngredientInputState } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
+
+function toRawWeight(weight: number, inputState: IngredientInputState, coefficient: number): number {
+  return inputState === IngredientInputState.COOKED ? weight / coefficient : weight
+}
 
 export async function generateShoppingCart(
   weekPlanId: string
@@ -26,12 +29,12 @@ export async function generateShoppingCart(
                       include: {
                         ingredients: {
                           include: {
-                            product: true,
                             cookingMethod: true,
                           },
                         },
                       },
                     },
+                    ingredients: true,
                   },
                 },
               },
@@ -49,26 +52,20 @@ export async function generateShoppingCart(
     for (const day of weekPlan.dayPlans) {
       for (const slot of day.mealSlots) {
         for (const entry of slot.dishEntries) {
-          const dish = entry.dish
-          const nutrition = calculateDishNutrition(dish)
-
-          if (nutrition.totalCookedWeight === 0) continue
-
-          const ratio = entry.portionWeight / nutrition.totalCookedWeight
           const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {}
 
-          for (let i = 0; i < dish.ingredients.length; i++) {
-            const ing = dish.ingredients[i]
-            const requiredRaw = ratio * ing.rawWeight
-            
-            // Use selected alternative productId if it exists for this ingredient index
-            const productId = selectedAlts[String(i)] || ing.productId
-            
+          for (const ing of entry.ingredients) {
+            const dishIng = entry.dish.ingredients[ing.ingredientIndex]
+            if (!dishIng) continue
+
+            const productId = selectedAlts[String(ing.ingredientIndex)] || dishIng.productId
+            const coeff = dishIng.cookingMethod?.coefficient ?? 1.0
+            const rawWeight = toRawWeight(ing.weight, ing.inputState, coeff)
             const existing = productRequirements.get(productId) ?? {
               totalRaw: 0,
               personIds: new Set<string>(),
             }
-            existing.totalRaw += requiredRaw
+            existing.totalRaw += rawWeight
             existing.personIds.add(slot.personId)
             productRequirements.set(productId, existing)
           }

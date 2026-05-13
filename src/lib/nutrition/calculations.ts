@@ -1,4 +1,4 @@
-import { Dish, DishIngredient, FoodProduct, CookingMethod, NutritionPerson } from "@/app/generated/prisma"
+import { Dish, DishIngredient, FoodProduct, CookingMethod, NutritionPerson, IngredientInputState } from "@/app/generated/prisma"
 
 export interface DishNutritionResult {
   totalCookedWeight: number
@@ -16,19 +16,72 @@ export interface DishNutritionResult {
     carbs: number
     fiber: number
   }
-  perServing: {
+  totalCost: number
+}
+
+export interface EntryNutritionResult {
+  total: {
     kcal: number
     protein: number
     fat: number
     carbs: number
     fiber: number
   }
-  totalCost: number
 }
 
 export interface FitScoreResult {
   fitScore: number
   warnings: string[]
+}
+
+export interface EntryWeightInput {
+  ingredientIndex: number
+  weight: number
+  inputState: IngredientInputState
+}
+
+export function toRawWeight(weight: number, inputState: IngredientInputState, coefficient: number): number {
+  return inputState === IngredientInputState.COOKED ? weight / coefficient : weight
+}
+
+export function calculateEntryNutrition(
+  dish: Dish & {
+    ingredients: (DishIngredient & {
+      product: FoodProduct
+      cookingMethod: CookingMethod | null
+    })[]
+  },
+  ingredientWeights: EntryWeightInput[]
+): EntryNutritionResult {
+  let totalKcal = 0
+  let totalProtein = 0
+  let totalFat = 0
+  let totalCarbs = 0
+  let totalFiber = 0
+
+  for (let i = 0; i < dish.ingredients.length; i++) {
+    const ing = dish.ingredients[i]
+    const weightEntry = ingredientWeights.find(w => w.ingredientIndex === i)
+    const coeff = ing.cookingMethod?.coefficient ?? 1.0
+    const rawWeight = weightEntry ? toRawWeight(weightEntry.weight, weightEntry.inputState, coeff) : 0
+
+    const p = ing.product
+    totalKcal += (rawWeight * (p.caloriesPer100 ?? 0)) / 100
+    totalProtein += (rawWeight * (p.proteinPer100 ?? 0)) / 100
+    totalFat += (rawWeight * (p.fatPer100 ?? 0)) / 100
+    totalCarbs += (rawWeight * (p.carbsPer100 ?? 0)) / 100
+    totalFiber += (rawWeight * (p.fiberPer100 ?? 0)) / 100
+  }
+
+  return {
+    total: {
+      kcal: totalKcal,
+      protein: totalProtein,
+      fat: totalFat,
+      carbs: totalCarbs,
+      fiber: totalFiber,
+    }
+  }
 }
 
 export function calculateDishNutrition(
@@ -37,7 +90,8 @@ export function calculateDishNutrition(
       product: FoodProduct
       cookingMethod: CookingMethod | null
     })[]
-  }
+  },
+  weights: { ingredientIndex: number; rawWeight: number }[]
 ): DishNutritionResult {
   let totalKcal = 0
   let totalProtein = 0
@@ -47,8 +101,10 @@ export function calculateDishNutrition(
   let totalCookedWeight = 0
   let totalCost = 0
 
-  for (const ing of dish.ingredients) {
-    const rawWeight = ing.rawWeight
+  for (let i = 0; i < dish.ingredients.length; i++) {
+    const ing = dish.ingredients[i]
+    const weightEntry = weights.find(w => w.ingredientIndex === i)
+    const rawWeight = weightEntry?.rawWeight ?? 0
     const coeff = ing.cookingMethod?.coefficient ?? 1.0
 
     const p = ing.product
@@ -70,7 +126,6 @@ export function calculateDishNutrition(
   }
 
   const divisor = totalCookedWeight > 0 ? totalCookedWeight / 100 : 1
-  const servs = dish.servings > 0 ? dish.servings : 1
 
   return {
     totalCookedWeight,
@@ -87,13 +142,6 @@ export function calculateDishNutrition(
       fat: totalFat / divisor,
       carbs: totalCarbs / divisor,
       fiber: totalFiber / divisor,
-    },
-    perServing: {
-      kcal: totalKcal / servs,
-      protein: totalProtein / servs,
-      fat: totalFat / servs,
-      carbs: totalCarbs / servs,
-      fiber: totalFiber / servs,
     },
     totalCost,
   }
@@ -131,4 +179,3 @@ export function calculateFitScore(
 
   return { fitScore, warnings: [] }
 }
-

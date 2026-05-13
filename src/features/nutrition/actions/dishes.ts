@@ -5,6 +5,7 @@ import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { calculateDishNutrition } from "@/lib/nutrition/calculations"
 import { Dish, DishIngredient, FoodProduct, CookingMethod } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
+import dishesData from "../data/dishes.json"
 
 import type { DishType } from "../constants/dish-types"
 import { z } from "zod"
@@ -148,8 +149,17 @@ export async function getDishes(): Promise<ActionResult<DishNutritionSummary[]>>
       orderBy: { name: "asc" },
     })
 
+    const dishJsonMap = new Map(
+      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+    )
+
     const summaries: DishNutritionSummary[] = dishes.map((dish) => {
-      const nutrition = calculateDishNutrition(dish)
+      const dishJson = dishJsonMap.get(dish.name)
+      const weights = dishJson
+        ? dishJson.ingredients.map((ing, idx) => ({ ingredientIndex: idx, rawWeight: ing.rawWeight }))
+        : dish.ingredients.map((_, idx) => ({ ingredientIndex: idx, rawWeight: 0 }))
+
+      const nutrition = calculateDishNutrition(dish, weights)
       return {
         id: dish.id,
         name: dish.name,
@@ -193,6 +203,14 @@ export async function getDishesForPicker(): Promise<ActionResult<{
   id: string
   name: string
   type: DishType
+  templateTotalWeight: number
+  ingredients: {
+    id: string
+    productId: string
+    productName: string
+    rawWeight: number
+    alternatives: string[]
+  }[]
   per100g: {
     kcal: number
     protein: number
@@ -215,18 +233,44 @@ export async function getDishesForPicker(): Promise<ActionResult<{
       orderBy: { name: "asc" },
     })
 
+    const dishJsonMap = new Map(
+      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+    )
+
     const result = dishes.map((dish) => {
-      const nutrition = calculateDishNutrition({
-        ...dish,
-        ingredients: dish.ingredients.map(ing => ({
-          ...ing,
-          cookingMethod: null,
-        })),
-      })
+      const dishJson = dishJsonMap.get(dish.name)
+      const weights = dishJson
+        ? dishJson.ingredients.map((ing, idx) => ({
+            ingredientIndex: idx,
+            rawWeight: ing.rawWeight,
+          }))
+        : dish.ingredients.map((_, idx) => ({ ingredientIndex: idx, rawWeight: 0 }))
+
+      const totalWeight = weights.reduce((sum, w) => sum + w.rawWeight, 0)
+
+      const nutrition = calculateDishNutrition(
+        {
+          ...dish,
+          ingredients: dish.ingredients.map(ing => ({
+            ...ing,
+            cookingMethod: null,
+          })),
+        },
+        weights
+      )
+
       return {
         id: dish.id,
         name: dish.name,
         type: dish.type as DishType,
+        templateTotalWeight: totalWeight,
+        ingredients: dish.ingredients.map((ing, idx) => ({
+          id: ing.id,
+          productId: ing.productId,
+          productName: ing.product.name,
+          rawWeight: weights[idx]?.rawWeight ?? 0,
+          alternatives: ing.alternatives,
+        })),
         per100g: nutrition.per100g,
       }
     })
@@ -399,18 +443,25 @@ export async function exportDishes(): Promise<ActionResult<string>> {
       orderBy: { name: "asc" },
     })
 
-    const json = dishes.map(d => ({
-      name: d.name,
-      type: d.type,
-      servings: d.servings,
-      description: d.description || undefined,
-      ingredients: d.ingredients.map(ing => ({
-        productName: ing.product.name,
-        alternatives: ing.alternatives.length > 0 ? ing.alternatives : undefined,
-        rawWeight: ing.rawWeight,
-        cookingMethod: ing.cookingMethod?.name ?? "RAW",
-      })),
-    }))
+    const dishJsonMap = new Map(
+      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+    )
+
+    const json = dishes.map(d => {
+      const dishJson = dishJsonMap.get(d.name)
+      return {
+        name: d.name,
+        type: d.type,
+        servings: d.servings,
+        description: d.description || undefined,
+        ingredients: d.ingredients.map((ing, idx) => ({
+          productName: ing.product.name,
+          alternatives: ing.alternatives.length > 0 ? ing.alternatives : undefined,
+          rawWeight: dishJson?.ingredients[idx]?.rawWeight ?? 0,
+          cookingMethod: ing.cookingMethod?.name ?? "RAW",
+        })),
+      }
+    })
 
     return { success: true, data: JSON.stringify(json, null, 2) }
   } catch (error) {

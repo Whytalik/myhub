@@ -1,9 +1,9 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
+import { Prisma, ProductEntry, IngredientInputState } from "@/app/generated/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
-import { calculateDishNutrition } from "@/lib/nutrition/calculations"
-import { DishEntry, ProductEntry } from "@/app/generated/prisma"
+import { calculateEntryNutrition, toRawWeight, EntryWeightInput } from "@/lib/nutrition/calculations"
 import { invalidateFoodCache } from "@/lib/revalidate"
 import { revalidatePath } from "next/cache"
 
@@ -77,8 +77,10 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
     fiberGrams: number
   }[]
   days: {
+    dayPlanId: string
     dayOfWeek: number
     activity: string | null
+    prepNote: { id: string; content: string; steps: string[] } | null
     slots: {
       id: string
       personId: string
@@ -98,10 +100,30 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         id: string
         dishId: string
         dishName: string
-        portionWeight: number
-        servings: number
-        isShared: boolean
-        fitScore: number | null
+        dishType: string
+        dishServings: number
+        nutrition: {
+          kcal: number
+          protein: number
+          fat: number
+          carbs: number
+          fiber: number
+        }
+        ingredients: {
+          id: string
+          productId: string
+          productName: string
+          cookingMethodName: string | null
+          coefficient: number
+          alternatives: string[]
+          ingredientIndex: number
+          weight: number
+          inputState: string
+          rawWeight: number
+          cookedWeight: number
+          unit: string | null
+        }[]
+        selectedAlternatives: Record<string, string | null>
       }[]
       productEntries: {
         id: string
@@ -125,6 +147,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         dayPlans: {
           orderBy: { dayOfWeek: "asc" },
           include: {
+            prepNote: true,
             mealSlots: {
               include: {
                 person: true,
@@ -139,6 +162,9 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
                           },
                         },
                       },
+                    },
+                    ingredients: {
+                      orderBy: { ingredientIndex: "asc" },
                     },
                   },
                   orderBy: { createdAt: "asc" },
@@ -184,36 +210,58 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         let actualFiber = 0
 
         const entries = slot.dishEntries.map((entry) => {
-          const nutrition = calculateDishNutrition(entry.dish)
-          const totalWeight = entry.portionWeight * entry.servings
-          const portionKcal = (nutrition.per100g.kcal * totalWeight) / 100
-          const portionProtein = (nutrition.per100g.protein * totalWeight) / 100
-          const portionFat = (nutrition.per100g.fat * totalWeight) / 100
-          const portionCarbs = (nutrition.per100g.carbs * totalWeight) / 100
-          const portionFiber = (nutrition.per100g.fiber * totalWeight) / 100
+          const weights: EntryWeightInput[] = entry.ingredients.map((ing) => ({
+            ingredientIndex: ing.ingredientIndex,
+            weight: ing.weight,
+            inputState: ing.inputState,
+          }))
 
-          actualKcal += portionKcal
-          actualProtein += portionProtein
-          actualFat += portionFat
-          actualCarbs += portionCarbs
-          actualFiber += portionFiber
+          const nutrition = calculateEntryNutrition(entry.dish, weights)
+
+          actualKcal += nutrition.total.kcal
+          actualProtein += nutrition.total.protein
+          actualFat += nutrition.total.fat
+          actualCarbs += nutrition.total.carbs
+          actualFiber += nutrition.total.fiber
+
+          const selectedAlts = (entry.selectedAlternatives as Record<string, string | null>) || {}
+
+          const ingredients = entry.dish.ingredients.map((ing, idx) => {
+            const entryIng = entry.ingredients.find((ei) => ei.ingredientIndex === idx)
+            const coeff = ing.cookingMethod?.coefficient ?? 1.0
+            const weight = entryIng?.weight ?? 0
+            const inputState = entryIng?.inputState ?? IngredientInputState.RAW
+            const rawWeight = toRawWeight(weight, inputState, coeff)
+            const cookedWeight = weight * coeff
+            const currentProductId = selectedAlts[String(idx)] || ing.productId
+            const isAlternative = currentProductId !== ing.productId
+            const altName = isAlternative ? (ing.alternatives[0] ?? ing.product.name) : ing.product.name
+
+            return {
+              id: ing.id,
+              productId: ing.productId,
+              productName: isAlternative ? altName : ing.product.name,
+              cookingMethodName: ing.cookingMethod?.name ?? null,
+              coefficient: coeff,
+              alternatives: ing.alternatives,
+              ingredientIndex: idx,
+              weight,
+              inputState,
+              rawWeight,
+              cookedWeight,
+              unit: entryIng?.unit ?? null,
+            }
+          })
 
           return {
             id: entry.id,
             dishId: entry.dishId,
             dishName: entry.dish.name,
-            portionWeight: entry.portionWeight,
-            servings: entry.servings,
-            isShared: entry.isShared,
-            fitScore: entry.fitScore,
-            selectedAlternatives: entry.selectedAlternatives,
-            ingredients: entry.dish.ingredients.map(ing => ({
-              id: ing.id,
-              productId: ing.productId,
-              productName: ing.product.name,
-              rawWeight: ing.rawWeight,
-              alternatives: ing.alternatives,
-            })),
+            dishType: entry.dish.type,
+            dishServings: entry.dish.servings,
+            nutrition: nutrition.total,
+            ingredients,
+            selectedAlternatives: selectedAlts,
           }
         })
 
@@ -265,8 +313,10 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       })
 
       return {
+        dayPlanId: day.id,
         dayOfWeek: day.dayOfWeek,
         activity: day.activity,
+        prepNote: day.prepNote ? { id: day.prepNote.id, content: day.prepNote.content, steps: day.prepNote.steps } : null,
         slots,
       }
     })
@@ -305,10 +355,8 @@ export async function getLatestWeekPlan(): Promise<ActionResult<{ id: string; na
 export async function addDishToSlot(
   slotId: string,
   dishId: string,
-  isShared: boolean,
-  servings?: number,
-  manualWeight?: number
-): Promise<ActionResult<{ dishEntry: DishEntry }>> {
+  ingredientWeights: { ingredientIndex: number; weight: number; inputState?: IngredientInputState; unit?: string }[]
+): Promise<ActionResult<{ dishEntryId: string }>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -342,120 +390,35 @@ export async function addDishToSlot(
       if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
     }
 
-    const nutrition = calculateDishNutrition(dish)
-    
-    // Auto-calculate servings if not provided
-    const dishServings = servings ?? (slot.targetKcal / (nutrition.perServing.kcal || 1))
-    const portionWeight = manualWeight ?? (dishServings * (nutrition.totalCookedWeight / (dish.servings || 1)))
-
     const dishEntry = await prisma.dishEntry.create({
       data: {
         mealSlotId: slotId,
         dishId,
-        portionWeight,
-        servings: dishServings,
-        isShared,
-        manualWeight: !!manualWeight,
-        fitScore: null,
+        ingredients: {
+          create: ingredientWeights.map((w) => ({
+            ingredientIndex: w.ingredientIndex,
+            weight: w.weight,
+            inputState: w.inputState ?? IngredientInputState.RAW,
+            unit: w.unit ?? null,
+          })),
+        },
       },
     })
 
-    if (isShared) {
-      const otherPerson = await prisma.nutritionPerson.findFirst({
-        where: {
-          id: { not: slot.personId },
-          userId: slot.person.userId ?? undefined,
-        },
-      })
-
-      if (otherPerson) {
-        const otherSlot = await prisma.mealSlotInstance.findFirst({
-          where: {
-            dayPlanId: slot.dayPlanId,
-            personId: otherPerson.id,
-            name: slot.name,
-          },
-        })
-
-        if (otherSlot) {
-          await prisma.dishEntry.create({
-            data: {
-              mealSlotId: otherSlot.id,
-              dishId,
-              portionWeight,
-              servings: dishServings,
-              isShared: true,
-              manualWeight: !!manualWeight,
-              fitScore: null,
-            },
-          })
-        }
-      }
-    }
-
     invalidateFoodCache(userId)
-    return { success: true, data: { dishEntry } }
+    return { success: true, data: { dishEntryId: dishEntry.id } }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to add dish to slot" }
   }
 }
 
-export async function updatePortionWeight(
+export async function updateDishEntryIngredient(
   dishEntryId: string,
+  ingredientIndex: number,
   weight: number,
-  servings?: number
-): Promise<ActionResult<DishEntry>> {
-  try {
-    const userId = await getRequiredUserId()
-
-    const entry = await prisma.dishEntry.findUnique({
-      where: { id: dishEntryId },
-      include: {
-        mealSlot: {
-          include: {
-            dayPlan: true,
-          },
-        },
-        dish: {
-          include: {
-            ingredients: {
-              include: {
-                product: true,
-                cookingMethod: true,
-              },
-            },
-          },
-        },
-      },
-    })
-
-    if (!entry) return { success: false, error: "Dish entry not found" }
-
-    if (entry.mealSlot.dayPlan.weekPlanId) {
-      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: entry.mealSlot.dayPlan.weekPlanId } })
-      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
-    }
-
-    const updated = await prisma.dishEntry.update({
-      where: { id: dishEntryId },
-      data: {
-        portionWeight: weight,
-        ...(servings !== undefined ? { servings } : {}),
-        manualWeight: true,
-      },
-    })
-
-    invalidateFoodCache(userId)
-    return { success: true, data: updated }
-  } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to update portion weight" }
-  }
-}
-
-export async function updateDishServings(
-  dishEntryId: string,
-  servings: number
-): Promise<ActionResult<DishEntry>> {
+  inputState?: IngredientInputState,
+  unit?: string
+): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -477,15 +440,31 @@ export async function updateDishServings(
       if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
     }
 
-    const updated = await prisma.dishEntry.update({
-      where: { id: dishEntryId },
-      data: { servings },
+    await prisma.dishEntryIngredient.upsert({
+      where: {
+        dishEntryId_ingredientIndex: {
+          dishEntryId,
+          ingredientIndex,
+        },
+      },
+      create: {
+        dishEntryId,
+        ingredientIndex,
+        weight,
+        inputState: inputState ?? IngredientInputState.RAW,
+        unit: unit ?? null,
+      },
+      update: {
+        weight,
+        inputState: inputState ?? undefined,
+        unit: unit ?? null,
+      },
     })
 
     invalidateFoodCache(userId)
-    return { success: true, data: updated }
+    return { success: true, data: undefined }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to update servings" }
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update ingredient weight" }
   }
 }
 
@@ -493,7 +472,7 @@ export async function updateDishEntryAlternative(
   dishEntryId: string,
   ingredientIndex: number,
   alternativeProductId: string | null
-): Promise<ActionResult<DishEntry>> {
+): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -524,13 +503,13 @@ export async function updateDishEntryAlternative(
       delete selectedAlts[String(ingredientIndex)]
     }
 
-    const updatedEntry = await prisma.dishEntry.update({
+    await prisma.dishEntry.update({
       where: { id: dishEntryId },
       data: { selectedAlternatives: selectedAlts }
     })
 
     invalidateFoodCache(userId)
-    return { success: true, data: updatedEntry }
+    return { success: true, data: undefined }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update alternative" }
   }
@@ -607,6 +586,7 @@ export async function getWeekSummary(
                         },
                       },
                     },
+                    ingredients: true,
                   },
                 },
               },
@@ -659,13 +639,17 @@ export async function getWeekSummary(
 
         for (const entry of slot.dishEntries) {
           dayHasEntries = true
-          const nutrition = calculateDishNutrition(entry.dish)
-          const totalWeight = entry.portionWeight * entry.servings
-          p.totalKcal += (nutrition.per100g.kcal * totalWeight) / 100
-          p.totalProtein += (nutrition.per100g.protein * totalWeight) / 100
-          p.totalFat += (nutrition.per100g.fat * totalWeight) / 100
-          p.totalCarbs += (nutrition.per100g.carbs * totalWeight) / 100
-          p.totalFiber += (nutrition.per100g.fiber * totalWeight) / 100
+          const weights: EntryWeightInput[] = entry.ingredients.map((ing) => ({
+            ingredientIndex: ing.ingredientIndex,
+            weight: ing.weight,
+            inputState: ing.inputState,
+          }))
+          const nutrition = calculateEntryNutrition(entry.dish, weights)
+          p.totalKcal += nutrition.total.kcal
+          p.totalProtein += nutrition.total.protein
+          p.totalFat += nutrition.total.fat
+          p.totalCarbs += nutrition.total.carbs
+          p.totalFiber += nutrition.total.fiber
 
           const dc = p.dishCounts.get(entry.dishId) ?? { count: 0, name: entry.dish.name, days: new Set<number>() }
           dc.count++
@@ -902,6 +886,120 @@ export async function updateWeekPlanName(
   }
 }
 
+export async function duplicateWeekPlan(weekPlanId: string): Promise<ActionResult<{ weekPlanId: string }>> {
+  try {
+    const userId = await getRequiredUserId()
+    const plan = await prisma.weekPlan.findUnique({
+      where: { id: weekPlanId, userId },
+      include: {
+        dayPlans: {
+          orderBy: { dayOfWeek: "asc" },
+          include: {
+            prepNote: true,
+            mealSlots: {
+              orderBy: { order: "asc" },
+              include: {
+                dishEntries: {
+                  include: {
+                    ingredients: true,
+                  },
+                },
+                productEntries: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    if (!plan) return { success: false, error: "Week plan not found" }
+
+    const daysToCopy = plan.dayPlans
+    const newPlan = await prisma.$transaction(async (tx) => {
+      const created = await tx.weekPlan.create({
+        data: {
+          name: `${plan.name || "Week Plan"} (copy)`,
+          userId,
+        },
+      })
+
+      for (const day of daysToCopy) {
+        const dayPlan = await tx.dayPlan.create({
+          data: {
+            userId,
+            weekPlanId: created.id,
+            dayOfWeek: day.dayOfWeek,
+            activity: day.activity,
+          },
+        })
+
+        if (day.prepNote) {
+          await tx.dayPrepNote.create({
+            data: {
+              dayPlanId: dayPlan.id,
+              content: day.prepNote.content,
+              steps: day.prepNote.steps,
+            },
+          })
+        }
+
+        for (const slot of day.mealSlots) {
+          const mealSlot = await tx.mealSlotInstance.create({
+            data: {
+              dayPlanId: dayPlan.id,
+              personId: slot.personId,
+              name: slot.name,
+              timeWindow: slot.timeWindow,
+              order: slot.order,
+              targetKcal: slot.targetKcal,
+              targetFiberGrams: slot.targetFiberGrams,
+              locked: false,
+            },
+          })
+
+          for (const entry of slot.dishEntries) {
+            const dishEntry = await tx.dishEntry.create({
+              data: {
+                mealSlotId: mealSlot.id,
+                dishId: entry.dishId,
+                selectedAlternatives: (entry.selectedAlternatives as Prisma.InputJsonValue) ?? undefined,
+              },
+            })
+
+            if (entry.ingredients.length > 0) {
+              await tx.dishEntryIngredient.createMany({
+                data: entry.ingredients.map((ing) => ({
+                  dishEntryId: dishEntry.id,
+                  ingredientIndex: ing.ingredientIndex,
+                  weight: ing.weight,
+                  inputState: ing.inputState,
+                  unit: ing.unit,
+                })),
+              })
+            }
+          }
+
+          for (const pe of slot.productEntries) {
+            await tx.productEntry.create({
+              data: {
+                mealSlotId: mealSlot.id,
+                productId: pe.productId,
+                portionWeight: pe.portionWeight,
+              },
+            })
+          }
+        }
+      }
+
+      return created
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: { weekPlanId: newPlan.id } }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to duplicate week plan" }
+  }
+}
+
 interface ImportWeekPlanResult {
   imported: boolean
   weekPlanId: string
@@ -1005,5 +1103,65 @@ export async function exportWeekPlan(weekPlanId: string): Promise<ActionResult<s
     return { success: true, data: JSON.stringify(json, null, 2) }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to export week plan" }
+  }
+}
+
+export async function getDayPrepNote(dayPlanId: string): Promise<ActionResult<{
+  id: string
+  content: string
+  steps: string[]
+} | null>> {
+  try {
+    const userId = await getRequiredUserId()
+    const dayPlan = await prisma.dayPlan.findUnique({
+      where: { id: dayPlanId },
+      include: { weekPlan: true },
+    })
+    if (!dayPlan) return { success: false, error: "Day plan not found" }
+    if (dayPlan.weekPlan?.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    const note = await prisma.dayPrepNote.findUnique({
+      where: { dayPlanId },
+    })
+
+    if (!note) return { success: true, data: null }
+
+    return {
+      success: true,
+      data: {
+        id: note.id,
+        content: note.content,
+        steps: note.steps,
+      },
+    }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to get prep note" }
+  }
+}
+
+export async function updateDayPrepNote(
+  dayPlanId: string,
+  content: string,
+  steps: string[]
+): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+    const dayPlan = await prisma.dayPlan.findUnique({
+      where: { id: dayPlanId },
+      include: { weekPlan: true },
+    })
+    if (!dayPlan) return { success: false, error: "Day plan not found" }
+    if (dayPlan.weekPlan?.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    await prisma.dayPrepNote.upsert({
+      where: { dayPlanId },
+      create: { dayPlanId, content, steps },
+      update: { content, steps },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update prep note" }
   }
 }

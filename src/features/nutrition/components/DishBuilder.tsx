@@ -13,6 +13,7 @@ import { createDish, updateDish } from "../actions/dishes";
 import type { CreateDishInput, DishIngredientInput, DishType } from "../types";
 import { DishWithIngredients } from "../logic/recalculator";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
+import dishesData from "../data/dishes.json";
 
 interface DishBuilderProps {
   products: FoodProduct[];
@@ -157,22 +158,31 @@ export function DishBuilder({
   const [dishType, setDishType] = useState<DishType>(
     ((initialDish as DishWithIngredients & { type?: string })?.type as DishType) || "MAIN"
   );
+  const dishJsonMap = useMemo(() => {
+    return new Map(
+      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+    )
+  }, [])
+
   const [ingredients, setIngredients] = useState<IngredientRow[]>(
     initialDish
-      ? initialDish.ingredients.map((ing) => ({
-          tempId: ing.id,
-          productId: ing.productId,
-          productName: ing.product.name,
-          productCalories: ing.product.caloriesPer100 || 0,
-          productProtein: ing.product.proteinPer100 || 0,
-          productFat: ing.product.fatPer100 || 0,
-          productCarbs: ing.product.carbsPer100 || 0,
-          productFiber: ing.product.fiberPer100 || 0,
-          productPrice: ing.product.price || 0,
-          rawWeight: ing.rawWeight,
-          cookingMethodId: ing.cookingMethodId || "",
-          confirmed: false,
-        }))
+      ? (() => {
+          const dishJson = dishJsonMap.get(initialDish.name)
+          return initialDish.ingredients.map((ing, idx) => ({
+            tempId: ing.id,
+            productId: ing.productId,
+            productName: ing.product.name,
+            productCalories: ing.product.caloriesPer100 || 0,
+            productProtein: ing.product.proteinPer100 || 0,
+            productFat: ing.product.fatPer100 || 0,
+            productCarbs: ing.product.carbsPer100 || 0,
+            productFiber: ing.product.fiberPer100 || 0,
+            productPrice: ing.product.price || 0,
+            rawWeight: dishJson?.ingredients[idx]?.rawWeight ?? 0,
+            cookingMethodId: ing.cookingMethodId || "",
+            confirmed: false,
+          }))
+        })()
       : []
   );
 
