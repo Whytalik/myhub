@@ -177,5 +177,3 @@ export const MEAL_TYPE_STYLE: Record<string, { active: string; inactive: string 
 
 export const CHOICES_STORAGE_KEY = "visual-plan-choices";
 export const CHOICES_EVENT = "visual-plan-choices-changed";
-
-export const SCHEDULE_DEFAULT_CHOICES: Record<string, string> = {};

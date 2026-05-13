@@ -1,3 +1,20 @@
+## [2026-05-13] Dead Code Cleanup — Nutrition Domain
+
+Removed all dead/unused code from the nutrition domain.
+
+- **Deleted 7 files**: `actions/prices.ts` (stub Silpo price fetcher), `logic/portion-calculator.ts`, `logic/importers/index.ts` (web scraper never wired up), `logic/shopping-list.ts` (superseded by `actions/shopping.ts`), `components/visual-plan/SaucesAndMarinades.tsx`, `components/visual-plan/Favorites.tsx`, `scripts/test-shopping-list.ts` (test script for deleted shopping-list.ts).
+- **Cleaned `actions/planning.ts`**: Removed 5 dead exports — `updateProductEntryWeight`, `updateDayActivity`, `importWeekPlanFromJson`, `exportWeekPlan`, `getDayPrepNote`.
+- **Cleaned `logic/recalculator.ts`**: Removed 5 dead exports — `calculateRawIngredientStats`, `calculateIngredientStats`, `calculateEntryStats`, `calculateMealSlotStats`, `calculateDayPlanStats`. Kept `DishWithIngredients`, `IngredientWithProduct`, `EntryWithIngredients`, `PlanSummary` types and `calculateDishStats`.
+- **Cleaned `types.ts`**: Removed 6 dead interfaces — `CreateProductInput`, `UpdateProductInput`, `UpdateDishInput`, `CreateProductEntryInput`, `CreatePersonInput`, `UpdatePersonInput`, `CreateWeekPlanInput`. Removed unused `Store` re-export.
+- **Cleaned `schemas.ts`**: Removed 8 dead exports — `createPersonSchema`, `dishIngredientSchema`, `createDishSchema`, `createProductEntrySchema`, `CreatePersonFormData`, `CreateDishFormData`, `CreateProductEntryFormData`. Kept only `createProductSchema` (used by JSON import).
+- **Cleaned `constants/meal-variants.ts`**: Removed empty `SCHEDULE_DEFAULT_CHOICES` export.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI unchanged
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
 ## [2026-05-13] Raw/Cooked Weight States + Day Prep Block
 
 Added support for entering ingredient weights as either raw or cooked, with automatic conversion for shopping cart calculations. Added per-day prep block with auto-generated steps, editable notes, and daily product list.
