@@ -11,7 +11,7 @@ import {
   Sparkles, Compass
 } from "lucide-react";
 import { getTodayEntry } from "@/features/life/services/journal-service";
-import { getCachedSystemStatus, getCachedEntriesForStats, getCachedActiveHabits, getCachedTasksByDate, getCachedAllTasks, getCachedActiveSprint, getCachedAnnualCompass, getCachedVision, getCachedDayPlans, getCachedPersons } from "@/lib/cache";
+import { getCachedSystemStatus, getCachedEntriesForStats, getCachedActiveHabits, getCachedTasksByDate, getCachedAllTasks, getCachedActiveSprint, getCachedAnnualCompass, getCachedVision } from "@/lib/cache";
 import { SOSButton } from "@/features/system/components/sos-button";
 import { recoveryService } from "@/features/system/services/recovery-service";
 import { CrisisDashboard } from "@/features/system/components/crisis-dashboard";
@@ -19,20 +19,6 @@ import { CrisisDashboard } from "@/features/system/components/crisis-dashboard";
 export const metadata: Metadata = {
   title: "Hub",
 };
-
-const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const MEAL_ICONS: Record<string, string> = {
-  "breakfast": "🌅",
-  "lunch": "☀️",
-  "dinner": "🌙",
-  "snack": "🍎",
-  "pre-workout": "⚡",
-};
-
-function getTodayDayOfWeek(): number {
-  const jsDay = new Date().getDay();
-  return jsDay === 0 ? 6 : jsDay - 1;
-}
 
 function getStatusIcon(status: string) {
   switch (status) {
@@ -88,8 +74,6 @@ export default async function HomePage() {
   let activeSprint: Awaited<ReturnType<typeof getCachedActiveSprint>> = null;
   let annualCompass: Awaited<ReturnType<typeof getCachedAnnualCompass>> = null;
   let vision: Awaited<ReturnType<typeof getCachedVision>> = null;
-  let dayPlans: Awaited<ReturnType<typeof getCachedDayPlans>> = [];
-  let persons: Awaited<ReturnType<typeof getCachedPersons>> = [];
 
   if (userId) {
     const results = await Promise.all([
@@ -101,8 +85,6 @@ export default async function HomePage() {
       getCachedActiveSprint(userId).catch(() => null),
       getCachedAnnualCompass(userId, new Date().getFullYear()).catch(() => null),
       getCachedVision(userId).catch(() => null),
-      getCachedDayPlans(userId).catch(() => []),
-      getCachedPersons(userId).catch(() => []),
     ]);
     todayEntry = results[0];
     entries = results[1];
@@ -112,8 +94,6 @@ export default async function HomePage() {
     activeSprint = results[5];
     annualCompass = results[6];
     vision = results[7];
-    dayPlans = results[8];
-    persons = results[9];
 
     todayDone = !!todayEntry;
 
@@ -152,9 +132,6 @@ export default async function HomePage() {
     const completed = h.completions.some(c => format(new Date(c.date), "yyyy-MM-dd") === todayStr);
     return { ...h, completed };
   });
-
-  const todayDayOfWeek = getTodayDayOfWeek();
-  const todayPlan = dayPlans.find(dp => dp.dayOfWeek === todayDayOfWeek);
 
   const sprintProgress = activeSprint?.objectives.reduce((acc, obj) => {
     const totalKR = obj.keyResults.length;
@@ -355,62 +332,6 @@ export default async function HomePage() {
           )}
 
           {/* Today's Meal Plan */}
-          {todayPlan && todayPlan.mealSlots.length > 0 && (
-            <div className="bg-surface rounded-xl border border-border/50 p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <Utensils size={16} className="text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="text-body font-semibold text-text-primary">Today&apos;s Meals</h3>
-                    <p className="text-note font-mono text-text-muted">{DAY_NAMES[todayDayOfWeek]}</p>
-                  </div>
-                </div>
-                <Link href="/nutrition/plans" className="text-note text-accent hover:underline flex items-center gap-1">
-                  Plan <ChevronRight size={12} />
-                </Link>
-              </div>
-              <div className="space-y-3">
-                {todayPlan.mealSlots
-                  .sort((a, b) => a.order - b.order)
-                  .map(slot => {
-                    const person = persons.find(p => p.id === slot.personId);
-                    const dishes = slot.dishEntries.map(de => de.dish.name);
-                    const icon = MEAL_ICONS[slot.name.toLowerCase()] || "🍽️";
-                    return (
-                      <div key={slot.id} className="flex items-start gap-3 p-3 rounded-lg bg-bg/30">
-                        <span className="text-lg shrink-0 mt-0.5">{icon}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-body font-medium text-text-primary">{slot.name}</span>
-                            {slot.timeWindow && (
-                              <span className="text-micro font-mono text-text-muted">{slot.timeWindow}</span>
-                            )}
-                            {person && (
-                              <span className="text-micro px-1.5 py-0.5 rounded bg-accent/10 text-accent">{person.name}</span>
-                            )}
-                          </div>
-                          {dishes.length > 0 ? (
-                            <div className="flex flex-wrap gap-1">
-                              {dishes.map((d, i) => (
-                                <span key={i} className="text-note text-text-secondary">{d}{i < dishes.length - 1 ? "," : ""}</span>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-note text-text-muted italic">No dishes planned</p>
-                          )}
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="text-note font-mono text-text-muted">{Math.round(slot.targetKcal)} kcal</p>
-                          <p className="text-micro font-mono text-text-muted">{Math.round(slot.targetFiberGrams)}g fiber</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Right Column: North Star + Attention */}
