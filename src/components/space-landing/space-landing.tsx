@@ -5,9 +5,9 @@ interface SpaceLandingProps {
   header: {
     label: string;
     title: string;
-    description: string;
+    description?: string;
   };
-  children: React.ReactNode;
+  children?: React.ReactNode;
   intelligence?: {
     title?: string;
     items: { label: string; value: string }[];
