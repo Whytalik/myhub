@@ -374,7 +374,7 @@ export function Sidebar({
         `}
       >
         {/* Sidebar Header */}
-        <div className="shrink-0 h-16 flex items-center justify-between relative pl-5 pr-4 border-b border-border-dim">
+        <div className="shrink-0 h-20 flex items-center justify-between relative pl-8 pr-6 border-b border-border-dim">
           <Link href="/home" className="flex items-center gap-4 group">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
               <Sparkles size={20} className="text-bg" />

@@ -1,11 +1,11 @@
 ﻿"use client";
 
 import { useSpace } from "./space-provider";
-import { 
-  Briefcase, 
-  Shield, 
-  Brain, 
-  Database, 
+import {
+  Briefcase,
+  Shield,
+  Brain,
+  Database,
   Package
 } from "lucide-react";
 import Link from "next/link";
@@ -25,17 +25,12 @@ export function MobileBottomNav() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    // Знаходимо основний контейнер, який скролиться
     const scrollContainer = document.querySelector('main');
     if (!scrollContainer) return;
 
     const handleScroll = () => {
       const currentScrollY = scrollContainer.scrollTop;
-      
-      // Логіка: 
-      // 1. Якщо скролимо вниз (current > last) і ми не біля самого верху -> ховаємо
-      // 2. Якщо скролимо вгору (current < last) -> показуємо
-      // Додаємо поріг (threshold) у 10px, щоб уникнути тремтіння
+
       if (Math.abs(currentScrollY - lastScrollY.current) < 10) return;
 
       if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
@@ -43,7 +38,7 @@ export function MobileBottomNav() {
       } else {
         setIsVisible(true);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
 
@@ -52,9 +47,9 @@ export function MobileBottomNav() {
   }, []);
 
   return (
-    <nav 
+    <nav
       className={`
-        lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface/90 backdrop-blur-xl border-t border-border z-[100] flex items-center justify-around px-2 pb-safe
+        lg:hidden fixed bottom-0 left-0 right-0 h-14 bg-surface/90 backdrop-blur-xl border-t border-border-dim z-[100] flex items-center justify-around px-2 pb-safe
         transition-transform duration-500 ease-in-out
         ${isVisible ? "translate-y-0" : "translate-y-full"}
       `}
@@ -62,7 +57,7 @@ export function MobileBottomNav() {
       {DOMAINS.map((domain) => {
         const Icon = domain.icon;
         const isActive = activeDomain === domain.id;
-        
+
         return (
           <Link
             key={domain.id}
@@ -71,12 +66,12 @@ export function MobileBottomNav() {
               isActive ? "text-accent" : "text-muted"
             }`}
           >
-            <div className={`p-1.5 rounded-xl transition-all duration-300 ${
-              isActive ? "bg-accent/15 scale-110" : ""
+            <div className={`p-1.5 rounded-lg transition-all duration-300 ${
+              isActive ? "bg-accent/10 scale-105" : ""
             }`}>
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
             </div>
-            <span className={`text-label font-bold uppercase tracking-tighter transition-colors duration-300 ${
+            <span className={`text-label font-medium uppercase tracking-tighter transition-colors duration-300 ${
               isActive ? "text-text" : "text-muted"
             }`}>
               {domain.label}

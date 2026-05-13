@@ -61,14 +61,13 @@ export function AIChatWidget() {
 
     try {
       const result = await aiChatAction(userMessage, domain, provider);
-      
-      // Use taskData from result (direct execution) or fetch if only IDs were returned (unlikely now)
+
       let finalTaskData: (Record<string, unknown> | TaskData)[] = result.taskData || [];
-      
+
       const taskIds = result.actions
         .filter(a => a.action.includes("Task") && a.payload.id && !finalTaskData.find(t => t.id === a.payload.id))
         .map(a => a.payload.id as string);
-        
+
       if (taskIds.length > 0) {
         const fetched = (await aiGetTasksAction(taskIds)) as unknown as TaskData[];
         finalTaskData = [...finalTaskData, ...fetched];
@@ -76,9 +75,9 @@ export function AIChatWidget() {
 
       setMessages((prev) => [
         ...prev,
-        { 
-          role: "assistant", 
-          content: result.reply, 
+        {
+          role: "assistant",
+          content: result.reply,
           actions: result.actions,
           metadata: result.metadata,
           taskData: finalTaskData as Record<string, unknown>[],
@@ -117,7 +116,7 @@ export function AIChatWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 right-4 z-50 h-12 w-12 rounded-full bg-accent text-bg shadow-lg hover:bg-accent/90 transition-all active:scale-95 flex items-center justify-center md:bottom-6"
+        className="fixed bottom-20 right-4 z-50 h-12 w-12 rounded-full bg-accent text-bg shadow-lg hover:bg-accent-hover transition-all active:scale-95 flex items-center justify-center md:bottom-6"
       >
         <Sparkles size={20} />
       </button>
@@ -127,20 +126,20 @@ export function AIChatWidget() {
   const modalContent = (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-12">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-bg/60 backdrop-blur-md animate-in fade-in duration-300"
+      <div
+        className="absolute inset-0 bg-bg/70 backdrop-blur-xl animate-in fade-in duration-300"
         onClick={() => setIsOpen(false)}
       />
 
       {/* Main Container */}
-      <div className="relative z-[10001] w-full max-w-5xl h-[85vh] bg-surface/90 border border-border rounded-3xl shadow-2xl flex overflow-hidden animate-in zoom-in-95 fade-in duration-300">
-        
+      <div className="relative z-[10001] w-full max-w-5xl h-[85vh] bg-elevated border border-border/50 rounded-xl shadow-elevated flex overflow-hidden animate-in zoom-in-95 fade-in duration-300">
+
         {/* Left Sidebar: Suggestions */}
         {suggestionIds.length > 0 && (
           <div className="relative w-80 border-r border-border/50 flex flex-col animate-in slide-in-from-left duration-500 overflow-hidden">
-            <div className="absolute inset-0 bg-raised/30 backdrop-blur-xl -z-10" />
+            <div className="absolute inset-0 bg-surface/50 backdrop-blur-xl -z-10" />
             <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-transparent">
-              <span className="text-caption font-mono uppercase tracking-[0.2em] text-muted">Draft Actions</span>
+              <span className="text-caption font-mono uppercase tracking-wider text-muted">Draft Actions</span>
               <Sparkles size={14} className="text-accent/40" />
             </div>
             <div className="flex-1 overflow-y-auto custom-scrollbar bg-transparent text-left">
@@ -170,18 +169,18 @@ export function AIChatWidget() {
                 className="w-24"
               />
             </div>
-            
+
             <div className="flex items-center gap-2">
               <button
                 onClick={handleClear}
-                className="p-2 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+                className="p-2 hover:bg-surface-hover rounded-lg text-muted hover:text-text transition-all"
                 title="Clear"
               >
                 <Trash2 size={14} />
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+                className="p-2 hover:bg-surface-hover rounded-lg text-muted hover:text-text transition-all"
               >
                 <X size={16} />
               </button>
@@ -192,7 +191,7 @@ export function AIChatWidget() {
           <div className="flex-1 overflow-y-auto px-8 py-8 space-y-8 custom-scrollbar">
           {messages.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center max-w-sm mx-auto animate-in fade-in duration-700">
-              <div className="w-16 h-16 rounded-3xl bg-accent/5 flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-accent/8 flex items-center justify-center mb-6">
                 <Sparkles size={32} strokeWidth={1.5} className="text-accent/40" />
               </div>
               <h3 className="text-sm font-bold text-text mb-2">Hello! I&apos;m Karasik</h3>
@@ -226,12 +225,12 @@ export function AIChatWidget() {
                 <div
                   className={`max-w-[80%] text-base leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-accent/5 text-accent px-5 py-3 rounded-2xl border border-accent/10"
+                      ? "bg-accent/8 text-accent px-5 py-3 rounded-xl border border-accent/10"
                       : "text-text"
                   }`}
                 >
                   {msg.role === "assistant" && msg.metadata && (
-                    <div className="flex items-center gap-2 text-label font-mono text-muted/50 mb-2 uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-label font-mono text-muted/50 mb-2 uppercase tracking-wider">
                       <span>{(msg.metadata.responseTime / 1000).toFixed(1)}s</span>
                       {msg.metadata.usage && (
                         <>
@@ -247,21 +246,21 @@ export function AIChatWidget() {
                   {msg.role === "assistant" && msg.taskData && msg.taskData.length > 0 && (
                     <div className="mt-4 flex flex-col gap-2">
                       {msg.taskData.filter((t): t is TaskData => typeof t.id === "string" && typeof t.title === "string").map((task) => (
-                        <Link 
+                        <Link
                           key={task.id}
                           href={`/life/tasks?focus=${task.id}`}
-                          className="group/link flex items-center justify-between w-full max-w-sm p-3 rounded-2xl bg-raised border border-border/50 hover:border-accent/40 hover:bg-accent/[0.02] transition-all"
+                          className="group/link flex items-center justify-between w-full max-w-sm p-3 rounded-xl bg-surface-hover border border-border/50 hover:border-accent/40 transition-all"
                         >
                           <div className="flex items-center gap-3 overflow-hidden">
-                            <div className="w-8 h-8 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 group-hover/link:bg-accent/20 transition-colors">
+                            <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 group-hover/link:bg-accent/15 transition-colors">
                               <ExternalLink size={14} className="text-accent" />
                             </div>
                             <div className="overflow-hidden">
-                              <p className="text-body font-bold text-text truncate">{task.title}</p>
+                              <p className="text-body font-medium text-text truncate">{task.title}</p>
                               <p className="text-caption font-mono text-muted uppercase tracking-wider">Open in Tasks</p>
                             </div>
                           </div>
-                          <span className="text-caption font-bold px-2 py-0.5 rounded-lg bg-bg/50 border border-border/50 text-muted group-hover/link:text-accent group-hover/link:border-accent/20 transition-all">
+                          <span className="text-caption font-medium px-2 py-0.5 rounded-lg bg-bg/50 border border-border/50 text-muted group-hover/link:text-accent group-hover/link:border-accent/20 transition-all">
                             {task.priority}
                           </span>
                         </Link>
@@ -271,12 +270,12 @@ export function AIChatWidget() {
 
                   {/* Pending Confirmation Indicator */}
                   {msg.role === "assistant" && msg.suggestionIds && msg.suggestionIds.length > 0 && (
-                    <div className="mt-3 p-3 rounded-xl bg-accent/5 border border-accent/20 flex items-center gap-3">
+                    <div className="mt-3 p-3 rounded-xl bg-accent/8 border border-accent/15 flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                         <Sparkles size={14} className="text-accent" />
                       </div>
                       <div className="flex-1 text-left">
-                        <p className="text-sm font-bold text-text">Created {msg.suggestionIds.length} draft actions</p>
+                        <p className="text-sm font-medium text-text">Created {msg.suggestionIds.length} draft actions</p>
                         <p className="text-caption text-muted leading-tight">Review and confirm them in the sidebar</p>
                       </div>
                     </div>
@@ -295,7 +294,7 @@ export function AIChatWidget() {
 
           {/* Input Area */}
           <div className="p-8">
-            <div className="relative max-w-2xl mx-auto flex items-center gap-3 bg-raised/50 border border-border rounded-2xl px-4 py-2 focus-within:border-accent/30 transition-all">
+            <div className="relative max-w-2xl mx-auto flex items-center gap-3 bg-surface-hover border border-border rounded-xl px-4 py-2 focus-within:border-accent/30 transition-all">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -308,7 +307,7 @@ export function AIChatWidget() {
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="!h-8 !w-8 !rounded-xl"
+                className="!h-8 !w-8 !rounded-lg"
                 size="icon"
                 variant="primary"
               >
@@ -321,7 +320,7 @@ export function AIChatWidget() {
     </div>
   );
 
-  return typeof document !== "undefined" 
-    ? createPortal(modalContent, document.body) 
+  return typeof document !== "undefined"
+    ? createPortal(modalContent, document.body)
     : null;
 }

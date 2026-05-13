@@ -20,10 +20,10 @@ interface TabsProps {
   size?: string;
 }
 
-export function Tabs({ 
-  tabs, 
-  activeTab: controlledActiveTab, 
-  onTabChange, 
+export function Tabs({
+  tabs,
+  activeTab: controlledActiveTab,
+  onTabChange,
   className,
   contentClassName,
   size = "text-note md:text-body"
@@ -31,7 +31,6 @@ export function Tabs({
   const [internalActiveTab, setInternalActiveTab] = React.useState(tabs[0]?.id);
   const activeTab = controlledActiveTab ?? internalActiveTab;
 
-  // Track which tabs have been visited to implement lazy mounting + keep alive
   const [visitedTabs, setVisitedTabs] = React.useState<Set<string>>(new Set([activeTab]));
 
   React.useEffect(() => {
@@ -54,7 +53,7 @@ export function Tabs({
   return (
     <div className="flex flex-col w-full min-w-0 gap-6">
       <div className={`flex w-full overflow-x-auto scrollbar-hide ${className}`}>
-        <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm w-fit relative">
+        <div className="flex p-1 bg-surface border border-border/50 rounded-xl shadow-sm w-fit relative">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -62,10 +61,10 @@ export function Tabs({
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
                 className={`
-                  relative flex items-center gap-2 whitespace-nowrap px-3 md:px-6 py-2 rounded-xl ${size} font-mono uppercase tracking-widest transition-colors duration-200 z-10
+                  relative flex items-center gap-2 whitespace-nowrap px-4 md:px-6 py-2 rounded-lg ${size} font-medium transition-colors duration-200 z-10
                   ${
                     isActive
-                      ? "text-bg font-bold"
+                      ? "text-bg font-semibold"
                       : "text-secondary hover:text-text"
                   }
                   ${isPending && isActive ? "opacity-70" : ""}
@@ -74,7 +73,7 @@ export function Tabs({
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
+                    className="absolute inset-0 bg-accent rounded-lg shadow-sm"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}

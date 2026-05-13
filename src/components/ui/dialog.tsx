@@ -12,8 +12,8 @@ interface DialogProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   maxWidth?: string;
-  bare?: boolean; // skip the left-border content wrapper
-  noScroll?: boolean; // disable internal scrolling
+  bare?: boolean;
+  noScroll?: boolean;
 }
 
 export function Dialog({
@@ -44,19 +44,19 @@ export function Dialog({
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div 
+    <div
       className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center sm:p-4"
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Backdrop */}
+      {/* Backdrop — glassmorphism */}
       <div
-        className="absolute inset-0 bg-bg/90 backdrop-blur-md animate-in fade-in duration-300"
+        className="absolute inset-0 bg-bg/70 backdrop-blur-xl animate-in fade-in duration-300"
         onClick={onClose}
       />
 
       {/* Content */}
       <div
-        className={`relative w-full bg-elevated border border-border rounded-t-xl sm:rounded-xl shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
+        className={`relative w-full bg-elevated border border-border/50 rounded-xl shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
         <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
@@ -64,7 +64,7 @@ export function Dialog({
             <div className="flex items-start justify-between mb-3">
               <div className="space-y-0.5">
                 {title && (
-                  <h3 className="text-heading font-black text-text-primary leading-tight">
+                  <h3 className="text-heading font-bold text-text-primary leading-tight">
                     {title}
                   </h3>
                 )}
@@ -74,15 +74,15 @@ export function Dialog({
                   </p>
                 )}
               </div>
-              <button 
+              <button
                 onClick={onClose}
-                className="p-1.5 hover:bg-surface-hover rounded-sm text-text-muted hover:text-text-primary transition-all active:scale-90"
+                className="p-1.5 hover:bg-surface-hover rounded-lg text-text-muted hover:text-text-primary transition-all active:scale-90"
               >
                 <X size={18} />
               </button>
             </div>
           )}
-          
+
           {children}
         </div>
 
@@ -142,10 +142,10 @@ export function ConfirmationDialog({
               onConfirm();
               onClose();
             }}
-            className={`px-6 py-2 rounded-sm text-note font-bold transition-all active:scale-95 ${
+            className={`px-6 py-2 rounded-lg text-note font-bold transition-all active:scale-95 ${
               variant === "danger"
-                ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20"
-                : "bg-accent text-[#0f0d0a] hover:opacity-90 shadow-lg shadow-accent/10"
+                ? "bg-danger/10 text-danger hover:bg-danger/20 border border-danger/20"
+                : "bg-accent text-bg hover:bg-accent-hover shadow-sm"
             }`}
           >
             {confirmLabel}

@@ -5,12 +5,12 @@ import { DomainHeader } from "@/components/domain-header";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { AIChatWidget } from "@/features/ai/components/ai-chat";
 
-export function DashboardUIWrapper({ 
+export function DashboardUIWrapper({
   children,
   initialOrder,
   initialOpenSections,
   user
-}: { 
+}: {
   children: React.ReactNode;
   initialOrder?: string[];
   initialCustomizations?: Record<string, { icon?: string; color?: string }>;
@@ -30,9 +30,11 @@ export function DashboardUIWrapper({
       {/* Main Container */}
       <div className="flex flex-col flex-1 min-w-0 relative h-full overflow-hidden z-0">
         <DomainHeader />
-        
+
         <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0" style={{ viewTransitionName: 'page-content' }}>
-          {children}
+          <div className="max-w-7xl mx-auto px-6 py-6 md:px-10 md:py-8">
+            {children}
+          </div>
         </main>
 
         {/* Mobile Bottom Nav */}

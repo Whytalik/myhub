@@ -1,3 +1,21 @@
+## [2026-05-13] — Calm OS: Full Design Redesign
+
+### Changed
+- **Design Tokens**: Neutral dark bg (`#0a0a0b`), muted blue accent (`#60a5fa`), reduced-contrast text (`#e4e4e7`), pastel domain colors
+- **Typography**: Base 15px, heading weight 700 (was 800), relaxed tracking, line-height 1.6 for body
+- **UI Components**: rounded-lg buttons/inputs, pill-style tabs, glassmorphism dialogs, simplified section headers
+- **Layout**: Sidebar simplified (active left-border indicator, no status badges), domain header h-16 with glassmorphism, max-w-7xl content container
+- **Home Page**: Integrated greeting with accent name, flatter stats strip, domain cards without aspect-square constraint
+- **Feature Components**: SprintBoard, JournalHistoryView, AIChat, SettingsModal — all updated with new tokens, spacing, and radii
+- **Light Theme**: Updated to match new neutral palette with darker accent (`#3b82f6`)
+
+### Verification Checklist:
+- [x] Logic implemented (15+ files across tokens, components, layout, pages, features)
+- [x] UI updated (full redesign)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+- [x] Verified with `pnpm build`
+
 ## [2026-05-13] - Tailwind v4 Token Refactoring
 
 ### Changed

@@ -2,11 +2,11 @@
 
 import { useSpace } from "./space-provider";
 import { useSidebar } from "./sidebar-provider";
-import { 
-  Briefcase, 
-  Shield, 
-  Brain, 
-  Database, 
+import {
+  Briefcase,
+  Shield,
+  Brain,
+  Database,
   Package,
   Menu,
   X,
@@ -38,20 +38,20 @@ export function DomainHeader() {
   const visibleDomains = DOMAINS_CONFIG;
 
   return (
-    <header className="h-20 border-b border-border bg-bg/80 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
+    <header className="h-16 border-b border-border-dim bg-bg/60 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
       <div className="flex items-center gap-3 w-full lg:w-auto">
         {/* Mobile: Burger + Logo */}
         <div className="flex lg:hidden items-center justify-between w-full">
           <Link href="/home" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-sm bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
-              <Sparkles size={16} className="text-[#0f0d0a]" fill="currentColor" />
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
+              <Sparkles size={16} className="text-bg" />
             </div>
-            <span className="text-heading font-black tracking-tighter leading-none text-text-primary">MyHub</span>
+            <span className="text-heading font-bold tracking-tight leading-none text-text-primary">MyHub</span>
           </Link>
 
-          <button 
+          <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="p-2 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
+            className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
             aria-label="Toggle Spaces Menu"
           >
             {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -65,25 +65,25 @@ export function DomainHeader() {
             const isActive = activeDomain === domain.id;
             const status = DOMAIN_STATUS[domain.id] ?? "active";
             const isLocked = status === "locked";
-            
+
             return (
               <div
                 key={domain.id}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-sm transition-all duration-300 shrink-0 ${
+                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 shrink-0 ${
                   isLocked
                     ? "opacity-30 cursor-not-allowed"
-                    : isActive 
-                      ? "bg-accent/10 border border-accent/20" 
+                    : isActive
+                      ? "bg-accent/10 border border-accent/20"
                       : "hover:bg-surface-hover border border-transparent"
                 }`}
               >
-                <Icon 
-                  size={14} 
+                <Icon
+                  size={14}
                   className={`transition-colors duration-300 ${
                     isLocked ? "text-text-muted" : isActive ? "text-accent" : "text-text-muted group-hover:text-text-primary"
-                  }`} 
+                  }`}
                 />
-                <span className={`text-note font-semibold transition-colors duration-300 ${
+                <span className={`text-note font-medium transition-colors duration-300 ${
                   isLocked ? "text-text-muted" : isActive ? "text-text-primary" : "text-text-muted"
                 }`}>
                   {domain.label}
