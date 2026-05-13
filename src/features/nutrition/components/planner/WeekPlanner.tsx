@@ -1,14 +1,13 @@
 "use client"
 
 import { useState, useTransition, useMemo } from "react"
-import { Plus, Trash2, Search, Lock, Unlock } from "lucide-react"
+import { Plus, Trash2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { DayPrepBlock } from "./DayPrepBlock"
-import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, toggleSlotLock } from "../../actions/planning"
+import { addDishToSlot, addProductToSlot, deleteWeekPlan, updateWeekPlanName } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -135,7 +134,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     person: { targetKcal: number; proteinPct: number; fatPct: number; carbsPct: number; fiberGrams: number }
     slotName: string
   } | null>(null)
-  const [editingIngredient, setEditingIngredient] = useState<{ entryId: string; ingredientIndex: number; weight: string } | null>(null)
   const [productPickerSlotId, setProductPickerSlotId] = useState<string | null>(null)
   const [productSearch, setProductSearch] = useState("")
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
@@ -176,29 +174,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
-  const handleRemoveDish = (entryId: string) => {
-    startTransition(async () => {
-      const result = await removeDishFromSlot(entryId)
-      if (result.success) {
-        toast.success("Dish removed")
-      } else {
-        toast.error(result.error || "Failed to remove dish")
-      }
-    })
-  }
-
-  const handleUpdateIngredientWeight = (entryId: string, ingredientIndex: number, weight: number) => {
-    startTransition(async () => {
-      const result = await updateDishEntryIngredient(entryId, ingredientIndex, weight)
-      if (result.success) {
-        toast.success("Weight updated")
-        setEditingIngredient(null)
-      } else {
-        toast.error(result.error || "Failed to update weight")
-      }
-    })
-  }
-
   const handleAddProduct = () => {
     if (!productPickerSlotId || !selectedProductId) return
     const weight = parseFloat(productWeight)
@@ -214,17 +189,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         setProductWeight("100")
       } else {
         toast.error(result.error || "Failed to add product")
-      }
-    })
-  }
-
-  const handleRemoveProduct = (entryId: string) => {
-    startTransition(async () => {
-      const result = await removeProductFromSlot(entryId)
-      if (result.success) {
-        toast.success("Product removed")
-      } else {
-        toast.error(result.error || "Failed to remove product")
       }
     })
   }
@@ -250,28 +214,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         setIsEditingName(false)
       } else {
         toast.error(result.error || "Failed to update name")
-      }
-    })
-  }
-
-  const handleUpdateAlternative = (entryId: string, ingredientIndex: number, alternativeProductId: string | null) => {
-    startTransition(async () => {
-      const result = await updateDishEntryAlternative(entryId, ingredientIndex, alternativeProductId)
-      if (result.success) {
-        toast.success("Alternative updated")
-      } else {
-        toast.error(result.error || "Failed to update alternative")
-      }
-    })
-  }
-
-  const handleToggleLock = (slotId: string) => {
-    startTransition(async () => {
-      const result = await toggleSlotLock(slotId)
-      if (result.success) {
-        toast.success(result.data.locked ? "Slot locked" : "Slot unlocked")
-      } else {
-        toast.error(result.error || "Failed to toggle lock")
       }
     })
   }
@@ -373,34 +315,33 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         </div>
       )}
 
-      {/* Day Prep Block */}
-      {currentDay && (
-        <DayPrepBlock
-          dayPlanId={currentDay.dayPlanId}
-          dayName={DAY_NAMES[currentDay.dayOfWeek]}
-          prepNote={currentDay.prepNote}
-          slots={currentDay.slots.map(s => ({
-            entries: s.entries.map(e => ({
-              dishName: e.dishName,
-              ingredients: e.ingredients.map(ing => ({
-                productName: ing.productName,
-                cookingMethodName: ing.cookingMethodName,
-                coefficient: ing.coefficient,
-                weight: ing.weight,
-                inputState: ing.inputState,
-                rawWeight: ing.rawWeight,
-                cookedWeight: ing.cookedWeight,
-                unit: ing.unit,
-              })),
-            })),
-          }))}
-        />
-      )}
-
-      {/* Table layout: meal slots as columns, persons as rows within each slot */}
+      {/* Meal table: rows = meals, columns = persons with grams */}
       {currentDay && mealSlotNames.map((slotName) => {
         const slotGroup = currentDay.slots.filter(s => s.name === slotName)
         const timeWindow = slotGroup[0]?.timeWindow
+
+        // Collect all dish entries across persons for this meal slot
+        const allDishes = new Map<string, { personId: string; personName: string; entry: WeekPlannerProps["weekPlan"]["days"][number]["slots"][number]["entries"][number] }>()
+        slotGroup.forEach(slot => {
+          slot.entries.forEach(entry => {
+            allDishes.set(entry.dishName + slot.personId, { personId: slot.personId, personName: slot.personName ?? "", entry })
+          })
+        })
+
+        // Group by dish name
+        const dishGroups = new Map<string, { personId: string; personName: string; entry: WeekPlannerProps["weekPlan"]["days"][number]["slots"][number]["entries"][number]; ingredients: Map<string, { productName: string; weight: number }> }[]>()
+        allDishes.forEach(({ personId, personName, entry }) => {
+          if (!dishGroups.has(entry.dishName)) {
+            dishGroups.set(entry.dishName, [])
+          }
+          const ingredients = new Map<string, { productName: string; weight: number }>()
+          entry.ingredients.forEach(ing => {
+            ingredients.set(ing.productName, { productName: ing.productName, weight: ing.weight })
+          })
+          dishGroups.get(entry.dishName)!.push({ personId, personName, entry, ingredients })
+        })
+
+        const persons = weekPlan.persons
 
         return (
           <div key={slotName} className="space-y-2">
@@ -411,202 +352,148 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               )}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              {slotGroup.map((slot) => {
-                const diff = Math.abs(slot.actualKcal - slot.targetKcal) / (slot.targetKcal || 1)
-                const colorClass = diff < 0.1 ? "border-green-500/50 bg-green-50/50 dark:bg-green-900/10" :
-                                   diff < 0.2 ? "border-yellow-500/50 bg-yellow-50/50 dark:bg-yellow-900/10" :
-                                   "border-red-500/50 bg-red-50/50 dark:bg-red-900/10"
-
-                return (
-                  <div key={slot.id} className={`p-3 rounded-lg border ${colorClass} ${slot.locked ? 'opacity-75' : ''}`}>
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="text-sm font-semibold">{slot.personName}</div>
-                        <button
-                          onClick={() => handleToggleLock(slot.id)}
-                          className={`p-0.5 rounded transition-colors ${slot.locked ? 'text-accent hover:text-accent/70' : 'text-muted-foreground/30 hover:text-muted-foreground'}`}
-                          title={slot.locked ? "Unlock slot" : "Lock slot"}
-                        >
-                          {slot.locked ? <Lock size={12} /> : <Unlock size={12} />}
-                        </button>
-                      </div>
-                      <div className="text-caption text-muted-foreground">
-                        {slot.actualKcal.toFixed(0)} / {slot.targetKcal.toFixed(0)} kcal
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {(slot.entries || []).map((entry) => {
-                        const isEditingIng = editingIngredient?.entryId === entry.id
-
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 px-3 font-bold text-muted-foreground uppercase text-caption">Прийом</th>
+                    {persons.map(p => (
+                      <th key={p.id} className="text-left py-2 px-3 font-bold text-muted-foreground uppercase text-caption">{p.name ?? "Unknown"}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from(dishGroups.entries()).map(([dishName, group]) => (
+                    <tr key={dishName} className="border-b border-border/50 hover:bg-raised/50">
+                      <td className="py-2 px-3 font-medium">{dishName}</td>
+                      {persons.map(person => {
+                        const personEntry = group.find(g => g.personId === person.id)
+                        if (!personEntry) {
+                          return <td key={person.id} className="py-2 px-3 text-muted-foreground">—</td>
+                        }
+                        const totalWeight = Array.from(personEntry.ingredients.values()).reduce((sum, ing) => sum + ing.weight, 0)
                         return (
-                          <div key={entry.id} className="flex flex-col bg-background/50 p-2 rounded gap-2">
-                            <div className="flex justify-between items-center text-sm">
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold">{entry.dishName}</span>
-                                <span className="text-label font-mono text-muted-foreground">{entry.nutrition.kcal.toFixed(0)} kcal</span>
-                                <span className="text-caption text-muted-foreground">P:{entry.nutrition.protein.toFixed(0)} F:{entry.nutrition.fat.toFixed(0)} C:{entry.nutrition.carbs.toFixed(0)}</span>
-                              </div>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
-                                onClick={() => handleRemoveDish(entry.id)}
-                                disabled={isPending || slot.locked}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </div>
-
-                            {/* Dish ingredients list with editable weights */}
-                            {entry.ingredients && entry.ingredients.length > 0 && (
-                              <div className="flex flex-col gap-1 pl-2 border-l-2 border-accent/10 mt-1">
-                                {entry.ingredients.map((ing) => {
-                                  const selectedAlts = entry.selectedAlternatives || {};
-                                  const currentProductId = selectedAlts[String(ing.ingredientIndex)] || ing.productId;
-                                  const isAlternative = currentProductId !== ing.productId;
-                                  
-                                  const allOptions = [
-                                    { id: ing.productId, name: ing.productName },
-                                    ...ing.alternatives.map(altName => {
-                                      const p = products.find(prod => prod.name.toLowerCase() === altName.toLowerCase());
-                                      return p ? { id: p.id, name: p.name } : null;
-                                    }).filter(Boolean) as { id: string, name: string }[]
-                                  ];
-
-                                  const isEditingThis = isEditingIng && editingIngredient?.ingredientIndex === ing.ingredientIndex;
-
-                                  return (
-                                    <div key={ing.ingredientIndex} className="flex flex-wrap gap-1 items-center">
-                                      <span className={`text-[10px] lowercase ${isAlternative ? 'text-accent/70' : 'text-muted-foreground'}`}>
-                                        {ing.productName}:
-                                      </span>
-                                      {isEditingThis ? (
-                                        <div className="flex items-center gap-1">
-                                          <input
-                                            type="number"
-                                            className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
-                                            value={editingIngredient.weight}
-                                            autoFocus
-                                            onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
-                                            onKeyDown={(e) => {
-                                              if (e.key === "Enter") {
-                                                const w = parseFloat(editingIngredient.weight)
-                                                if (w > 0) handleUpdateIngredientWeight(entry.id, ing.ingredientIndex, w)
-                                              }
-                                              if (e.key === "Escape") setEditingIngredient(null)
-                                            }}
-                                          />
-                                          <span className="text-label text-muted-foreground">g</span>
-                                          <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-5 w-5 text-green-500 hover:text-green-600"
-                                            onClick={() => {
-                                              const w = parseFloat(editingIngredient.weight)
-                                              if (w > 0) handleUpdateIngredientWeight(entry.id, ing.ingredientIndex, w)
-                                            }}
-                                            disabled={isPending}
-                                          >
-                                            <span className="text-caption">✓</span>
-                                          </Button>
-                                        </div>
-                                      ) : (
-                                        <button
-                                          className="text-[10px] font-mono text-muted-foreground hover:text-accent underline decoration-dotted"
-                                          onClick={() => setEditingIngredient({ entryId: entry.id, ingredientIndex: ing.ingredientIndex, weight: String(ing.weight) })}
-                                        >
-                                          {ing.weight.toFixed(0)}г
-                                          {ing.inputState === "COOKED" && <span className="text-[8px] text-accent/60 ml-0.5">готове</span>}
-                                          {ing.coefficient !== 1 && <span className="text-[8px] text-muted-foreground/50 ml-0.5">≈{ing.rawWeight.toFixed(0)}г сире</span>}
-                                        </button>
-                                      )}
-                                      {ing.unit && <span className="text-[9px] text-muted-foreground">{ing.unit}</span>}
-                                      {ing.alternatives && ing.alternatives.length > 0 && (
-                                        <div className="flex flex-wrap gap-0.5">
-                                          {allOptions.map((opt) => (
-                                            <button
-                                              key={opt.id}
-                                              onClick={() => handleUpdateAlternative(entry.id, ing.ingredientIndex, opt.id === ing.productId ? null : opt.id)}
-                                              className={`text-[9px] px-1 py-0.5 rounded transition-colors leading-none border ${
-                                                currentProductId === opt.id 
-                                                  ? "bg-accent/20 text-accent border-accent/40 font-bold" 
-                                                  : "bg-white/5 text-muted-foreground/50 border-border hover:bg-raised"
-                                              }`}
-                                            >
-                                              {opt.name}
-                                            </button>
-                                          ))}
-                                        </div>
-                                      )}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
+                          <td key={person.id} className="py-2 px-3 font-mono">
+                            {totalWeight.toFixed(0)}г
+                          </td>
                         )
                       })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-                      {/* Product entries */}
-                      {(slot.productEntries || []).map((pe) => (
-                        <div key={pe.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-sm border-l-2 border-green-500/40">
-                          <div className="flex items-center gap-2">
-                            <span className="text-green-600 dark:text-green-400 text-label">🥩</span>
-                            <span className="font-medium">{pe.productName}</span>
-                            <span className="text-caption text-muted-foreground font-mono">{pe.portionWeight.toFixed(0)}g</span>
-                            <span className="text-label font-mono text-muted-foreground">{pe.kcal.toFixed(0)} kcal</span>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-5 w-5 text-red-500 hover:text-red-600"
-                            onClick={() => handleRemoveProduct(pe.id)}
-                            disabled={isPending || slot.locked}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      ))}
-
-                      {/* Add buttons */}
-                      <div className="flex gap-1.5 mt-2">
-                        <Button
-                          variant="ghost"
-                          className="flex-1 h-8 border-dashed border-2 text-muted-foreground hover:text-primary"
-                          onClick={() => {
-                            const person = weekPlan.persons.find((p) => p.id === slot.personId)
-                            if (!person) return
-                            setPickerConfig({
-                              slotId: slot.id,
-                              person,
-                              slotName: slot.name
-                            })
-                          }}
-                          disabled={isPending || slot.locked}
-                        >
-                          <Plus className="h-4 w-4 mr-1" />
-                          <span className="text-caption">Страву</span>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          className="h-8 px-3 border-dashed border-2 text-muted-foreground hover:text-green-500 hover:border-green-500/40"
-                          onClick={() => setProductPickerSlotId(slot.id)}
-                          disabled={isPending || slot.locked}
-                        >
-                          <Plus className="h-3 w-3 mr-1" />
-                          <span className="text-caption">Продукт</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
+            {/* Add buttons for each person */}
+            <div className="flex gap-2 mt-2">
+              {slotGroup.map(slot => (
+                <div key={slot.id} className="flex gap-1.5 flex-1">
+                  <Button
+                    variant="ghost"
+                    className="flex-1 h-8 border-dashed border-2 text-muted-foreground hover:text-primary"
+                    onClick={() => {
+                      const person = weekPlan.persons.find((p) => p.id === slot.personId)
+                      if (!person) return
+                      setPickerConfig({
+                        slotId: slot.id,
+                        person,
+                        slotName: slot.name
+                      })
+                    }}
+                    disabled={isPending || slot.locked}
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    <span className="text-caption">Страву ({slot.personName})</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="h-8 px-3 border-dashed border-2 text-muted-foreground hover:text-green-500 hover:border-green-500/40"
+                    onClick={() => setProductPickerSlotId(slot.id)}
+                    disabled={isPending || slot.locked}
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    <span className="text-caption">Продукт</span>
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
         )
       })}
+
+      {/* Cooking algorithm for the day */}
+      {currentDay && (() => {
+        const allEntries = currentDay.slots.flatMap(s => s.entries)
+        const dishMap = new Map<string, { totalRawWeight: number; ingredients: Map<string, { productName: string; cookingMethod: string | null; coefficient: number; totalRaw: number; totalCooked: number }> }>()
+        
+        allEntries.forEach(entry => {
+          if (!dishMap.has(entry.dishId)) {
+            dishMap.set(entry.dishId, {
+              totalRawWeight: 0,
+              ingredients: new Map()
+            })
+          }
+          const dish = dishMap.get(entry.dishId)!
+          entry.ingredients.forEach(ing => {
+            if (!dish.ingredients.has(ing.productId)) {
+              dish.ingredients.set(ing.productId, {
+                productName: ing.productName,
+                cookingMethod: ing.cookingMethodName,
+                coefficient: ing.coefficient,
+                totalRaw: 0,
+                totalCooked: 0
+              })
+            }
+            const ingredient = dish.ingredients.get(ing.productId)!
+            ingredient.totalRaw += ing.rawWeight
+            ingredient.totalCooked += ing.cookedWeight
+            dish.totalRawWeight += ing.rawWeight
+          })
+        })
+
+        const cookingSteps = Array.from(dishMap.entries()).map(([_dishId, dish]) => {
+          const ingredients = Array.from(dish.ingredients.values())
+          return {
+            dishName: ingredients[0]?.productName ? `${ingredients.length} продуктів` : "Страва",
+            ingredients: ingredients,
+            totalRaw: dish.totalRawWeight
+          }
+        })
+
+        if (cookingSteps.length === 0) return null
+
+        return (
+          <div className="space-y-4 bg-raised border rounded-xl p-4">
+            <h3 className="font-bold text-base flex items-center gap-2">
+              <span className="text-accent">🍳</span>
+              Алгоритм приготування на день
+            </h3>
+            
+            <div className="space-y-3">
+              {cookingSteps.map((step, idx) => (
+                <div key={idx} className="border-l-2 border-accent/30 pl-3">
+                  <div className="text-sm font-medium mb-1">
+                    {idx + 1}. Приготувати: {step.ingredients.map(i => i.productName).join(", ")}
+                  </div>
+                  <div className="space-y-0.5">
+                    {step.ingredients.map((ing, ingIdx) => (
+                      <div key={ingIdx} className="text-sm text-muted-foreground font-mono">
+                        {ing.productName}: {ing.totalRaw.toFixed(0)}г сире → {ing.totalCooked.toFixed(0)}г {ing.cookingMethod ?? "готове"}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-2 border-t border-border">
+              <div className="text-sm font-medium">
+                Загалом продуктів на день: {cookingSteps.reduce((sum, step) => sum + step.totalRaw, 0).toFixed(0)}г (сирі)
+              </div>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Dish Picker Dialog */}
       {pickerConfig && (

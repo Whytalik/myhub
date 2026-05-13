@@ -68,14 +68,14 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
     <div className="px-6 md:px-14 py-8 md:py-10">
       <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
       <Heading title="Week Plan" />
-      <div className="mt-6">
-        <WeekPlanner weekPlan={weekPlan} dishes={dishes} products={products} />
-      </div>
       {summary && (
-        <div className="mt-8">
+        <div className="mb-6">
           <WeekSummary summary={summary} />
         </div>
       )}
+      <div className="mt-6">
+        <WeekPlanner weekPlan={weekPlan} dishes={dishes} products={products} />
+      </div>
     </div>
   );
 }
