@@ -5,6 +5,7 @@ import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { calculateDishNutrition } from "@/lib/nutrition/calculations"
 import { DishEntry, ProductEntry } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
+import { revalidatePath } from "next/cache"
 
 const DEFAULT_MEAL_SLOTS = [
   { name: "Передтрен", timeWindow: "07:00", order: 0, kcalPct: 0.05, fiberPct: 0 },
@@ -55,6 +56,7 @@ export async function createWeekPlan(
     })
 
     invalidateFoodCache(userId)
+    revalidatePath("/nutrition/plans")
     return { success: true, data: { weekPlanId: weekPlan.id } }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to create week plan" }

@@ -245,12 +245,14 @@ function CalendarDayCell({
   currentMonth, 
   onAdd,
   mode,
+  tasksForDay = [],
 }: { 
   day: Date, 
   currentMonth: Date, 
   onAdd?: (date: Date) => void,
   isDraggingAny: boolean,
   mode: "month" | "week" | "day",
+  tasksForDay?: TaskData[],
 }) {
   const dateKey = format(day, "yyyy-MM-dd");
   const { setNodeRef, isOver } = useDroppable({
@@ -260,6 +262,11 @@ function CalendarDayCell({
   const isCurrentMonth = isSameMonth(day, currentMonth);
   const isTodayDate = isToday(day);
   const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+
+  const timesForDay = tasksForDay
+    .filter(t => t.plannedDate && t.hasPlannedTime)
+    .map(t => format(new Date(t.plannedDate!), "HH:mm"))
+    .sort();
 
   return (
     <div
@@ -284,6 +291,15 @@ function CalendarDayCell({
           `}>
             {format(day, "d")}
           </span>
+          {timesForDay.length > 0 && (
+            <div className="flex flex-wrap gap-0.5 mt-1">
+              {timesForDay.map((time, i) => (
+                <span key={i} className="text-[9px] md:text-[10px] font-mono font-bold text-accent/60">
+                  {time}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {onAdd && (
@@ -738,6 +754,20 @@ export function TaskCalendar({
     return Math.max(cellMinHeight, neededHeight);
   }, [mode, maxLevelByColumn]);
 
+  const tasksByDayIndex = useMemo(() => {
+    const map: Record<number, TaskData[]> = {};
+    localTasks.forEach(task => {
+      if (!task.plannedDate) return;
+      const taskDate = new Date(task.plannedDate);
+      const idx = days.findIndex(d => isSameDay(d, taskDate));
+      if (idx >= 0) {
+        if (!map[idx]) map[idx] = [];
+        map[idx].push(task);
+      }
+    });
+    return map;
+  }, [localTasks, days]);
+
   const renderGridBody = () => (
     <div className="overflow-x-auto scrollbar-hide">
       <div className="min-w-[800px]">
@@ -765,6 +795,7 @@ export function TaskCalendar({
                 }}
                 isDraggingAny={isDraggingAny}
                 mode={mode}
+                tasksForDay={tasksByDayIndex[i] || []}
               />
             ))}
           </div>

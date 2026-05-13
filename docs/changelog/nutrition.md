@@ -1,3 +1,14 @@
+## [2026-05-13] Plans page revalidation & Profile name editing
+
+- **Plans page**: Added `revalidatePath("/nutrition/plans")` to `createWeekPlan` action so the plans list updates immediately after creating a new week plan.
+- **Profile name editing**: Added inline name editing to `PersonForm` profile cards — hover over the name to see the edit pencil, click to edit inline with save/cancel buttons.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-13] Ingredient Alternatives in Week Planner & Cart
 
 Реалізовано підтримку вибору альтернативних інгредієнтів у тижневому планувальнику з автоматичним оновленням кошика.
