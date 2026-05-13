@@ -1,4 +1,4 @@
-import { AlertTriangle, Lightbulb, Target } from "lucide-react";
+import { AlertTriangle, Lightbulb, Target, ArrowRight } from "lucide-react";
 
 interface SpaceDescriptionProps {
   problem: string;
@@ -7,41 +7,46 @@ interface SpaceDescriptionProps {
 }
 
 export function SpaceDescription({ problem, solution, result }: SpaceDescriptionProps) {
+  const steps = [
+    { label: "Problem", text: problem, icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-500/10", border: "border-rose-500/20" },
+    { label: "Solution", text: solution, icon: Lightbulb, color: "text-accent", bg: "bg-accent/10", border: "border-accent/20" },
+    { label: "Result", text: result, icon: Target, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
+  ];
+
   return (
-    <div className="mb-10">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-0 rounded-xl border border-border overflow-hidden">
-        {/* Problem */}
-        <div className="relative p-5 bg-surface border-b md:border-b-0 md:border-r border-border">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-md bg-danger/10">
-              <AlertTriangle size={14} className="text-danger" />
-            </div>
-            <span className="text-caption font-medium uppercase tracking-wider text-danger">Problem</span>
-          </div>
-          <p className="text-note text-text-secondary leading-relaxed">{problem}</p>
-        </div>
+    <div className="mb-12">
+      <div className="relative flex flex-col md:flex-row gap-6 md:gap-0">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          const isLast = index === steps.length - 1;
+          
+          return (
+            <div key={step.label} className="relative flex-1 group">
+              {/* Connector Line (Desktop) */}
+              {!isLast && (
+                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-px bg-border -translate-y-1/2 z-10">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-border" />
+                </div>
+              )}
 
-        {/* Solution */}
-        <div className="relative p-5 bg-surface border-b md:border-b-0 md:border-r border-border">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-md bg-accent/10">
-              <Lightbulb size={14} className="text-accent" />
+              <div className={`relative p-6 rounded-xl border bg-surface ${step.border} hover:shadow-lg transition-all duration-300`}>
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-lg ${step.bg} shrink-0`}>
+                    <Icon size={20} className={step.color} />
+                  </div>
+                  <div>
+                    <h4 className={`text-caption font-bold uppercase tracking-wider ${step.color} mb-2`}>
+                      {step.label}
+                    </h4>
+                    <p className="text-note text-text-secondary leading-relaxed">
+                      {step.text}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <span className="text-caption font-medium uppercase tracking-wider text-accent">Solution</span>
-          </div>
-          <p className="text-note text-text-secondary leading-relaxed">{solution}</p>
-        </div>
-
-        {/* Result */}
-        <div className="relative p-5 bg-surface">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-md bg-success/10">
-              <Target size={14} className="text-success" />
-            </div>
-            <span className="text-caption font-medium uppercase tracking-wider text-success">Result</span>
-          </div>
-          <p className="text-note text-text-secondary leading-relaxed">{result}</p>
-        </div>
+          );
+        })}
       </div>
     </div>
   );
