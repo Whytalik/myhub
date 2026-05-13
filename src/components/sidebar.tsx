@@ -250,7 +250,7 @@ export function Sidebar({
             return (
               <div
                 key={item.href}
-                className={`flex flex-col transition-all duration-200 group/item overflow-hidden rounded-lg ${
+                className={`flex flex-col transition-all duration-200 group/item overflow-hidden rounded-lg relative ${
                   isItemActive && !isDisabled ? "bg-[var(--item-bg)]" : "bg-transparent"
                 } ${!isDisabled ? "hover:bg-surface-hover" : ""}`}
                 style={{
@@ -258,7 +258,7 @@ export function Sidebar({
                 } as React.CSSProperties}
               >
                 {isItemActive && !isDisabled && (
-                  <div className="absolute left-0 w-0.5 h-8 rounded-r-full" style={{ backgroundColor: color.text }} />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-r-full" style={{ backgroundColor: color.text }} />
                 )}
                 <div className="flex items-center group/link relative w-full">
                   {isDisabled ? (
@@ -376,7 +376,7 @@ export function Sidebar({
         {/* Sidebar Header */}
         <div className="shrink-0 h-20 flex items-center justify-between relative pl-8 pr-6 border-b border-border-dim">
           <Link href="/home" className="flex items-center gap-4 group">
-            <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shrink-0 transition-shadow duration-200 group-hover:shadow-[0_0_16px_rgba(96,165,250,0.3)]">
               <Sparkles size={20} className="text-bg" />
             </div>
 
