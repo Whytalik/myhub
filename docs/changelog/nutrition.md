@@ -1,3 +1,34 @@
+## [2026-05-13] Ingredient Alternatives in Week Planner & Cart
+
+Реалізовано підтримку вибору альтернативних інгредієнтів у тижневому планувальнику з автоматичним оновленням кошика.
+
+- **Schema**: Додано поле `selectedAlternatives Json?` до моделі `DishEntry` для збереження вибору користувача.
+- **Planner UI**: У `WeekPlanner` додано відображення альтернатив для кожного інгредієнта страви. Користувач може перемикатися між варіантами (наприклад, "Яблуко" vs "Груша"), і цей вибір зберігається в БД.
+- **Server Actions**: Створено екшн `updateDishEntryAlternative` для оновлення вибраних продуктів у записі страви. Оновлено `getWeekPlan` для повернення даних про інгредієнти та вибрані альтернативи.
+- **Shopping Cart**: Оновлено логіку `generateShoppingCart` — тепер при генерації кошика система враховує вибрані альтернативи та додає саме ці продукти до списку покупок замість основних.
+- **Verification**:
+    - [x] Logic implemented (Database + Actions)
+    - [x] UI updated (Planner with alternative buttons)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+---
+
+## [2026-05-13] Exhaustive Visual Plan Seeding & Data Sync
+
+Повна синхронізація сід-логіки з вичерпними даними Visual Plan.
+
+- **Data Sync**: Оновлено `scripts/seed-global-visual-plan.ts` та `seedVisualPlanAction` у `src/features/system/actions/seed-action.ts` для використання повних наборів даних з `products.json` та `dishes.json`.
+- **1:1 Week Plan**: Реалізовано автоматичне створення тижневого плану "Visual Plan Week (1:1)", що повністю відповідає розкладу та вибору страв на сторінці Visual Plan (включаючи Передтрен, Сніданок, Обід та Вечерю для кожного дня тижня).
+- **Composite Products**: Реалізовано автоматичне створення глобальних продуктів для соусів та маринадів, що складаються з кількох інгредієнтів, на основі їхнього складу в `dishes.json`.
+- **Logic Refinement**: Додано мапінг методів приготування (`cookingMethodId`) на основі категорій продуктів та виправлено невідповідність назв (наприклад, "Ткемалі").
+- **Exhaustive Dataset**: Тепер сід завантажує всі 103 продукти та 37 еталонних страв, забезпечуючи 100% відповідність Visual Plan.
+- **Verification**:
+    - [x] Logic implemented (Sync CLI & UI actions)
+    - [x] Exhaustive seeding verified with `npx tsx scripts/seed-global-visual-plan.ts`
+    - [x] Verified with `pnpm tsc --noEmit`
+
+---
+
 ## [2026-05-12] Grocery Price Update — May 2026 Ukraine Prices
 
 Updated all product prices in `product-info.ts` based on real Silpo.ua data for May 2026.

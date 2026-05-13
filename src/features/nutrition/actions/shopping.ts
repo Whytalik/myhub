@@ -55,16 +55,22 @@ export async function generateShoppingCart(
           if (nutrition.totalCookedWeight === 0) continue
 
           const ratio = entry.portionWeight / nutrition.totalCookedWeight
+          const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {}
 
-          for (const ing of dish.ingredients) {
+          for (let i = 0; i < dish.ingredients.length; i++) {
+            const ing = dish.ingredients[i]
             const requiredRaw = ratio * ing.rawWeight
-            const existing = productRequirements.get(ing.productId) ?? {
+            
+            // Use selected alternative productId if it exists for this ingredient index
+            const productId = selectedAlts[String(i)] || ing.productId
+            
+            const existing = productRequirements.get(productId) ?? {
               totalRaw: 0,
               personIds: new Set<string>(),
             }
             existing.totalRaw += requiredRaw
             existing.personIds.add(slot.personId)
-            productRequirements.set(ing.productId, existing)
+            productRequirements.set(productId, existing)
           }
         }
       }

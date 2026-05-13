@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useState, useTransition, useMemo } from "react"
 import { Plus, Trash2, Search } from "lucide-react"
@@ -7,7 +7,7 @@ import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -53,6 +53,14 @@ interface WeekPlannerProps {
           servings: number
           isShared: boolean
           fitScore: number | null
+          selectedAlternatives?: any
+          ingredients?: {
+            id: string
+            productId: string
+            productName: string
+            rawWeight: number
+            alternatives: string[]
+          }[]
         }[]
         productEntries: {
           id: string
@@ -232,6 +240,17 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
+  const handleUpdateAlternative = (entryId: string, ingredientIndex: number, alternativeProductId: string | null) => {
+    startTransition(async () => {
+      const result = await updateDishEntryAlternative(entryId, ingredientIndex, alternativeProductId)
+      if (result.success) {
+        toast.success("Alternative updated")
+      } else {
+        toast.error(result.error || "Failed to update alternative")
+      }
+    })
+  }
+
   const currentDay = weekPlan.days.find(d => d.dayOfWeek === activeDay)
 
   return (
@@ -364,7 +383,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                       </div>
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       {(slot.entries || []).map((entry) => {
                         const dish = dishes.find(d => d.id === entry.dishId)
                         const totalWeight = entry.portionWeight * entry.servings
@@ -373,111 +392,154 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                         const isEditingServings = editingServings?.id === entry.id
 
                         return (
-                          <div key={entry.id} className="flex justify-between items-center bg-background/50 p-1.5 rounded text-sm">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">{entry.dishName}</span>
-                              {isEditingServings ? (
-                                <div className="flex items-center gap-1">
-                                  <input
-                                    type="number"
-                                    className="w-12 h-5 text-caption font-mono bg-background border rounded px-1"
-                                    value={editingServings.servings}
-                                    autoFocus
-                                    onChange={(e) => setEditingServings({ ...editingServings, servings: e.target.value })}
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") {
-                                        const s = parseFloat(editingServings.servings)
-                                        if (s > 0) handleUpdateServings(entry.id, s)
-                                      }
-                                      if (e.key === "Escape") setEditingServings(null)
+                          <div key={entry.id} className="flex flex-col bg-background/50 p-2 rounded gap-2">
+                            <div className="flex justify-between items-center text-sm">
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold">{entry.dishName}</span>
+                                {isEditingServings ? (
+                                  <div className="flex items-center gap-1">
+                                    <input
+                                      type="number"
+                                      className="w-12 h-5 text-caption font-mono bg-background border rounded px-1"
+                                      value={editingServings.servings}
+                                      autoFocus
+                                      onChange={(e) => setEditingServings({ ...editingServings, servings: e.target.value })}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          const s = parseFloat(editingServings.servings)
+                                          if (s > 0) handleUpdateServings(entry.id, s)
+                                        }
+                                        if (e.key === "Escape") setEditingServings(null)
+                                      }}
+                                    />
+                                    <span className="text-label text-muted-foreground">serv</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
+                                    onClick={() => setEditingServings({ id: entry.id, servings: String(entry.servings) })}
+                                  >
+                                    {entry.servings.toFixed(1)} serv
+                                  </button>
+                                )}
+                                {isEditingWeight ? (
+                                  <div className="flex items-center gap-1">
+                                    <input
+                                      type="number"
+                                      className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
+                                      value={editingEntry.weight}
+                                      autoFocus
+                                      onChange={(e) => setEditingEntry({ ...editingEntry, weight: e.target.value })}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          const w = parseFloat(editingEntry.weight)
+                                          if (w > 0) handleUpdateWeight(entry.id, w)
+                                        }
+                                        if (e.key === "Escape") setEditingEntry(null)
+                                      }}
+                                    />
+                                    <span className="text-label text-muted-foreground">g</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
+                                    onClick={() => setEditingEntry({ id: entry.id, weight: String(entry.portionWeight) })}
+                                  >
+                                    {entry.portionWeight.toFixed(0)}g
+                                  </button>
+                                )}
+                                <span className="text-label font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
+                                {entry.fitScore !== null && entry.fitScore !== undefined && (
+                                  <span className={`h-4 text-[10px] px-1 border rounded ${
+                                    entry.fitScore > 0.8 ? "text-green-600 border-green-600" :
+                                    entry.fitScore > 0.5 ? "text-yellow-600 border-yellow-600" :
+                                    "text-red-600 border-red-600"
+                                  }`}>
+                                    {(entry.fitScore * 100).toFixed(0)}%
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                {isEditingWeight && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-5 w-5 text-green-500 hover:text-green-600"
+                                    onClick={() => {
+                                      const w = parseFloat(editingEntry.weight)
+                                      if (w > 0) handleUpdateWeight(entry.id, w)
                                     }}
-                                  />
-                                  <span className="text-label text-muted-foreground">serv</span>
-                                </div>
-                              ) : (
-                                <button
-                                  className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
-                                  onClick={() => setEditingServings({ id: entry.id, servings: String(entry.servings) })}
-                                >
-                                  {entry.servings.toFixed(1)} serv
-                                </button>
-                              )}
-                              {isEditingWeight ? (
-                                <div className="flex items-center gap-1">
-                                  <input
-                                    type="number"
-                                    className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
-                                    value={editingEntry.weight}
-                                    autoFocus
-                                    onChange={(e) => setEditingEntry({ ...editingEntry, weight: e.target.value })}
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") {
-                                        const w = parseFloat(editingEntry.weight)
-                                        if (w > 0) handleUpdateWeight(entry.id, w)
-                                      }
-                                      if (e.key === "Escape") setEditingEntry(null)
+                                    disabled={isPending}
+                                  >
+                                    <span className="text-caption">✓</span>
+                                  </Button>
+                                )}
+                                {isEditingServings && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-5 w-5 text-green-500 hover:text-green-600"
+                                    onClick={() => {
+                                      const s = parseFloat(editingServings.servings)
+                                      if (s > 0) handleUpdateServings(entry.id, s)
                                     }}
-                                  />
-                                  <span className="text-label text-muted-foreground">g</span>
-                                </div>
-                              ) : (
-                                <button
-                                  className="text-caption text-muted-foreground hover:text-accent underline decoration-dotted"
-                                  onClick={() => setEditingEntry({ id: entry.id, weight: String(entry.portionWeight) })}
-                                >
-                                  {entry.portionWeight.toFixed(0)}g
-                                </button>
-                              )}
-                              <span className="text-label font-mono text-muted-foreground">{entryKcal.toFixed(0)} kcal</span>
-                              {entry.fitScore !== null && entry.fitScore !== undefined && (
-                                <span className={`h-4 text-[10px] px-1 border rounded ${
-                                  entry.fitScore > 0.8 ? "text-green-600 border-green-600" :
-                                  entry.fitScore > 0.5 ? "text-yellow-600 border-yellow-600" :
-                                  "text-red-600 border-red-600"
-                                }`}>
-                                  {(entry.fitScore * 100).toFixed(0)}%
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {isEditingWeight && (
+                                    disabled={isPending}
+                                  >
+                                    <span className="text-caption">✓</span>
+                                  </Button>
+                                )}
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  className="h-5 w-5 text-green-500 hover:text-green-600"
-                                  onClick={() => {
-                                    const w = parseFloat(editingEntry.weight)
-                                    if (w > 0) handleUpdateWeight(entry.id, w)
-                                  }}
+                                  className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                  onClick={() => handleRemoveDish(entry.id)}
                                   disabled={isPending}
                                 >
-                                  <span className="text-caption">✓</span>
+                                  <Trash2 className="h-3 w-3" />
                                 </Button>
-                              )}
-                              {isEditingServings && (
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-5 w-5 text-green-500 hover:text-green-600"
-                                  onClick={() => {
-                                    const s = parseFloat(editingServings.servings)
-                                    if (s > 0) handleUpdateServings(entry.id, s)
-                                  }}
-                                  disabled={isPending}
-                                >
-                                  <span className="text-caption">✓</span>
-                                </Button>
-                              )}
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
-                                onClick={() => handleRemoveDish(entry.id)}
-                                disabled={isPending}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
+                              </div>
                             </div>
+
+                            {/* Alternatives selection */}
+                            {entry.ingredients && entry.ingredients.length > 0 && (
+                              <div className="flex flex-col gap-1.5 pl-2 border-l-2 border-accent/20">
+                                {entry.ingredients.map((ing, idx) => {
+                                  if (!ing.alternatives || ing.alternatives.length === 0) return null;
+                                  
+                                  const selectedAlts = entry.selectedAlternatives as Record<string, string> || {};
+                                  const currentProductId = selectedAlts[String(idx)] || ing.productId;
+                                  
+                                  const allOptions = [
+                                    { id: ing.productId, name: ing.productName },
+                                    ...ing.alternatives.map(altName => {
+                                      const p = products.find(prod => prod.name.toLowerCase() === altName.toLowerCase());
+                                      return p ? { id: p.id, name: p.name } : null;
+                                    }).filter(Boolean) as { id: string, name: string }[]
+                                  ];
+
+                                  return (
+                                    <div key={idx} className="flex flex-wrap gap-1 items-center">
+                                      <span className="text-[10px] text-muted-foreground lowercase">{ing.productName}:</span>
+                                      <div className="flex flex-wrap gap-1">
+                                        {allOptions.map((opt) => (
+                                          <button
+                                            key={opt.id}
+                                            onClick={() => handleUpdateAlternative(entry.id, idx, opt.id === ing.productId ? null : opt.id)}
+                                            className={`text-[9px] px-1.5 py-0.5 rounded transition-colors leading-none border ${
+                                              currentProductId === opt.id 
+                                                ? "bg-accent text-white border-transparent font-bold" 
+                                                : "bg-white/5 text-muted-foreground border-border hover:bg-raised"
+                                            }`}
+                                          >
+                                            {opt.name}
+                                          </button>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
                           </div>
                         )
                       })}
@@ -504,7 +566,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                       ))}
 
                       {/* Add buttons */}
-                      <div className="flex gap-1.5">
+                      <div className="flex gap-1.5 mt-2">
                         <Button
                           variant="ghost"
                           className="flex-1 h-8 border-dashed border-2 text-muted-foreground hover:text-primary"

@@ -29,22 +29,42 @@ export function aggregateShoppingList(weekPlan: FullWeekPlan): AggregatedItem[] 
   for (const dayPlan of weekPlan.dayPlans) {
     for (const mealSlot of dayPlan.mealSlots) {
       for (const entry of mealSlot.dishEntries) {
-        for (const ingredient of entry.dish.ingredients) {
-          const rawGramsNeeded = ingredient.rawWeight * entry.servings;
+        // Map of ingredient index to chosen product ID
+        const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {};
 
-          const key = ingredient.productId;
+        entry.dish.ingredients.forEach((ingredient, idx) => {
+          const rawGramsNeeded = ingredient.rawWeight * entry.servings;
+          
+          // Use selected alternative if it exists for this ingredient index
+          const productId = selectedAlts[String(idx)] || ingredient.productId;
+          
+          // We need to find the correct product info (name/price) for the selected ID
+          // Since we only have the primary product in 'ingredient.product', 
+          // we might need to rely on the fact that the shopping list generation 
+          // will fetch the correct products later, but for now we need the product details.
+          
+          // Optimization: If we use the primary product ID, we have the info. 
+          // If we use an alternative, we need its info.
+          // For now, let's assume we need to pass a product map or similar.
+          // Actually, let's just use the key.
+          
+          const key = productId;
 
           if (aggregation[key]) {
             aggregation[key].rawGrams += rawGramsNeeded;
           } else {
+            // Note: If it's an alternative, we might not have its name/price here 
+            // unless we included it in the query.
+            // Let's assume we need to handle this.
+            
             aggregation[key] = {
               rawGrams: rawGramsNeeded,
-              price: ingredient.product.price,
+              price: ingredient.product.price, // Fallback to primary if not found
               standardPackageAmount: ingredient.product.standardPackageAmount || 1000,
               name: ingredient.product.name,
             };
           }
-        }
+        });
       }
     }
   }

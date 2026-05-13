@@ -252,18 +252,19 @@ model ProductEntry {
 }
 
 model DishEntry {
-  id            String           @id @default(uuid())
-  mealSlotId    String
-  dishId        String
-  portionWeight Float
-  servings      Float            @default(1)
-  isShared      Boolean          @default(false)
-  manualWeight  Boolean          @default(false)
-  fitScore      Float?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  dish          Dish             @relation(fields: [dishId], references: [id])
-  mealSlot      MealSlotInstance @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  id                   String           @id @default(uuid())
+  mealSlotId           String
+  dishId               String
+  portionWeight        Float
+  servings             Float            @default(1)
+  isShared             Boolean          @default(false)
+  manualWeight         Boolean          @default(false)
+  fitScore             Float?
+  selectedAlternatives Json?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  dish                 Dish             @relation(fields: [dishId], references: [id])
+  mealSlot             MealSlotInstance @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
 }
 
 model ShoppingCart {

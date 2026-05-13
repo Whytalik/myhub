@@ -1,147 +1,253 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/prisma";
+import fs from "fs";
+import path from "path";
+import { WEEKLY_SCHEDULE } from "../src/features/nutrition/constants/meal-variants";
 
 async function main() {
-  console.log("Starting global visual plan seed...");
+  console.log("Starting exhaustive global visual plan seed...");
 
-  // 1. Create Global Products (userId: null)
-  const productsData = [
-    { name: "Сир кисломолочний 0-2%", kcal: 80, p: 16, f: 0.5, c: 3, fiber: 0, unit: "г", pkg: 250, cat: "Dairy" },
-    { name: "Борошно пшеничне", kcal: 340, p: 10, f: 1, c: 70, fiber: 3, unit: "г", pkg: 1000, cat: "Grocery" },
-    { name: "Лаваш", kcal: 240, p: 8, f: 1, c: 48, fiber: 2, unit: "г", pkg: 200, cat: "Bakery" },
-    { name: "Куряче філе", kcal: 110, p: 23, f: 2, c: 0, fiber: 0, unit: "г", pkg: 500, cat: "Meat" },
-    { name: "Йогурт густий (Грецький)", kcal: 60, p: 4, f: 3, c: 5, fiber: 0, unit: "г", pkg: 300, cat: "Dairy" },
-    { name: "Помідори чері", kcal: 18, p: 0.9, f: 0.2, c: 4, fiber: 1.2, unit: "г", pkg: 250, cat: "Vegetables" },
-    { name: "Пекінська капуста", kcal: 16, p: 1.2, f: 0.2, c: 3.2, fiber: 1.2, unit: "г", pkg: 500, cat: "Vegetables" },
-    { name: "Шоколад 80-85%", kcal: 580, p: 8, f: 45, c: 20, fiber: 10, unit: "г", pkg: 100, cat: "Snacks" },
-    { name: "Горіхи (Мигдаль/Арахіс)", kcal: 600, p: 25, f: 50, c: 15, fiber: 9, unit: "г", pkg: 150, cat: "Snacks" },
-    { name: "Арахісова паста", kcal: 600, p: 25, f: 50, c: 15, fiber: 6, unit: "г", pkg: 300, cat: "Snacks" },
-    { name: "Банан", kcal: 89, p: 1.1, f: 0.3, c: 22.8, fiber: 2.6, unit: "г", pkg: 1000, cat: "Fruits" },
-  ];
+  // 1. Load Data
+  const productsPath = path.join(process.cwd(), "src/features/nutrition/data/products.json");
+  const dishesPath = path.join(process.cwd(), "src/features/nutrition/data/dishes.json");
 
-  const globalProducts: Record<string, string> = {};
+  const productsData = JSON.parse(fs.readFileSync(productsPath, "utf-8"));
+  const dishesData = JSON.parse(fs.readFileSync(dishesPath, "utf-8"));
+
+  // 2. Fetch Cooking Methods for mapping
+  const cookingMethods = await prisma.cookingMethod.findMany();
+  const getMethodId = (methodName: string, category: string) => {
+    if (methodName === "RAW") return cookingMethods.find(m => m.name === "Сире")?.id;
+    if (methodName === "BAKED") return cookingMethods.find(m => m.name === "Запікання")?.id;
+    if (methodName === "FRIED") return cookingMethods.find(m => m.name === "Смаження без олії")?.id;
+    if (methodName === "BOILED") {
+      if (category === "GRAINS" || category === "BAKERY") {
+        return cookingMethods.find(m => m.name === "Варіння крупи/макарони")?.id;
+      }
+      return cookingMethods.find(m => m.name === "Варіння м'ясо/риба")?.id;
+    }
+    return null;
+  };
+
+  // 3. Seed Global Products (First Pass)
+  console.log(`Seeding ${productsData.length} global products...`);
+  const globalProducts: Record<string, any> = {};
 
   for (const p of productsData) {
     const productId = `global-${p.name.replace(/\s+/g, '-').toLowerCase()}`;
     const product = await prisma.foodProduct.upsert({
       where: { id: productId },
       update: {
-        caloriesPer100: p.kcal,
-        proteinPer100: p.p,
-        fatPer100: p.f,
-        carbsPer100: p.c,
-        fiberPer100: p.fiber,
-        standardPackageAmount: p.pkg,
+        caloriesPer100: p.caloriesPer100,
+        proteinPer100: p.proteinPer100,
+        fatPer100: p.fatPer100,
+        carbsPer100: p.carbsPer100,
+        fiberPer100: p.fiberPer100,
+        unit: p.unit,
+        standardPackageAmount: p.standardPackageAmount,
+        category: p.category,
+        price: p.price || 0,
       },
       create: {
         id: productId,
-        userId: null, // Global product
+        userId: null,
         name: p.name,
-        caloriesPer100: p.kcal,
-        proteinPer100: p.p,
-        fatPer100: p.f,
-        carbsPer100: p.c,
-        fiberPer100: p.fiber,
+        caloriesPer100: p.caloriesPer100,
+        proteinPer100: p.proteinPer100,
+        fatPer100: p.fatPer100,
+        carbsPer100: p.carbsPer100,
+        fiberPer100: p.fiberPer100,
         unit: p.unit,
-        standardPackageAmount: p.pkg,
-        category: p.cat,
+        standardPackageAmount: p.standardPackageAmount,
+        category: p.category,
+        price: p.price || 0,
       }
     });
-    globalProducts[p.name] = product.id;
+    globalProducts[p.name] = product;
   }
-  
-  console.log("Global products seeded.");
 
-  // 2. Iterate all users to create standard Dishes
+  // 4. Handle "Ткемалі" mismatch
+  if (globalProducts["Ткемалі готовий"]) {
+    globalProducts["Ткемалі"] = globalProducts["Ткемалі готовий"];
+  }
+
+  // 5. Create Global Products for MARINADES/SAUCES from dishes.json
+  console.log("Creating global products for composite sauces/marinades...");
+  for (const d of dishesData) {
+    if (["MARINADE", "SAUCE", "DRESSING"].includes(d.type)) {
+      let totalKcal = 0, totalP = 0, totalF = 0, totalC = 0, totalFiber = 0, totalWeight = 0;
+      
+      for (const ing of d.ingredients) {
+        const prod = globalProducts[ing.productName];
+        if (prod) {
+          totalWeight += ing.rawWeight;
+          totalKcal += (ing.rawWeight * prod.caloriesPer100) / 100;
+          totalP += (ing.rawWeight * prod.proteinPer100) / 100;
+          totalF += (ing.rawWeight * prod.fatPer100) / 100;
+          totalC += (ing.rawWeight * prod.carbsPer100) / 100;
+          totalFiber += (ing.rawWeight * prod.fiberPer100) / 100;
+        }
+      }
+
+      if (totalWeight > 0) {
+        const productId = `global-${d.name.replace(/\s+/g, '-').toLowerCase()}`;
+        const product = await prisma.foodProduct.upsert({
+          where: { id: productId },
+          update: {
+            caloriesPer100: (totalKcal / totalWeight) * 100,
+            proteinPer100: (totalP / totalWeight) * 100,
+            fatPer100: (totalF / totalWeight) * 100,
+            carbsPer100: (totalC / totalWeight) * 100,
+            fiberPer100: (totalFiber / totalWeight) * 100,
+          },
+          create: {
+            id: productId,
+            userId: null,
+            name: d.name,
+            caloriesPer100: (totalKcal / totalWeight) * 100,
+            proteinPer100: (totalP / totalWeight) * 100,
+            fatPer100: (totalF / totalWeight) * 100,
+            carbsPer100: (totalC / totalWeight) * 100,
+            fiberPer100: (totalFiber / totalWeight) * 100,
+            unit: "GRAM",
+            standardPackageAmount: 100,
+            category: "SAUCES"
+          }
+        });
+        globalProducts[d.name] = product;
+      }
+    }
+  }
+
+  // 6. Seed Dishes & Plans for all users
   const users = await prisma.user.findMany();
-  console.log(`Found ${users.length} users. Seeding dishes for each...`);
+  console.log(`Found ${users.length} users. Seeding data...`);
+
+  const dayNamesMap: Record<string, number> = { "Пн": 0, "Вт": 1, "Ср": 2, "Чт": 3, "Пт": 4, "Сб": 5, "Нд": 6 };
 
   for (const user of users) {
-    // Bagels
-    const bagelId = `bagel-${user.id}`;
-    await prisma.dish.upsert({
-      where: { id: bagelId },
-      update: {},
-      create: {
-        id: bagelId,
-        userId: user.id,
-        name: "Сирні Бейгли",
-        servings: 4,
-        type: "MAIN",
-        ingredients: {
-          create: [
-            { productId: globalProducts["Сир кисломолочний 0-2%"], rawWeight: 250 },
-            { productId: globalProducts["Борошно пшеничне"], rawWeight: 250 },
-          ]
+    // Seed Dishes
+    for (const d of dishesData) {
+      const dishId = `${d.name.replace(/\s+/g, '-').toLowerCase()}-${user.id}`;
+      await prisma.dishIngredient.deleteMany({ where: { dishId } });
+      await prisma.dish.upsert({
+        where: { id: dishId },
+        update: {
+          name: d.name,
+          description: d.description,
+          servings: d.servings,
+          type: d.type as any,
+          ingredients: {
+            create: d.ingredients.map((ing: any) => {
+              const product = globalProducts[ing.productName];
+              if (!product) return null;
+              return {
+                productId: product.id,
+                rawWeight: ing.rawWeight,
+                cookingMethodId: getMethodId(ing.cookingMethod, product.category),
+                alternatives: ing.alternatives || []
+              };
+            }).filter(Boolean)
+          }
+        },
+        create: {
+          id: dishId,
+          userId: user.id,
+          name: d.name,
+          description: d.description,
+          servings: d.servings,
+          type: d.type as any,
+          ingredients: {
+            create: d.ingredients.map((ing: any) => {
+              const product = globalProducts[ing.productName];
+              if (!product) return null;
+              return {
+                productId: product.id,
+                rawWeight: ing.rawWeight,
+                cookingMethodId: getMethodId(ing.cookingMethod, product.category),
+                alternatives: ing.alternatives || []
+              };
+            }).filter(Boolean)
+          }
         }
-      }
+      });
+    }
+
+    // Seed Persons
+    const vitaliiId = "vitalii-profile";
+    const olesyaId = "gf-profile";
+    await prisma.nutritionPerson.upsert({
+      where: { id: vitaliiId },
+      update: { targetKcal: 1700 },
+      create: { id: vitaliiId, userId: user.id, name: "Віталій", targetKcal: 1700 }
+    });
+    await prisma.nutritionPerson.upsert({
+      where: { id: olesyaId },
+      update: { targetKcal: 2300 },
+      create: { id: olesyaId, userId: user.id, name: "Олеся", targetKcal: 2300 }
     });
 
-    // Kebab
-    const kebabId = `kebab-${user.id}`;
-    await prisma.dish.upsert({
-      where: { id: kebabId },
-      update: {},
-      create: {
-        id: kebabId,
+    // Seed Week Plan
+    const planName = "Visual Plan Week (1:1)";
+    await prisma.weekPlan.deleteMany({ where: { userId: user.id, name: planName } });
+    const weekPlan = await prisma.weekPlan.create({
+      data: {
+        name: planName,
         userId: user.id,
-        name: "Кебаб Домашній",
-        servings: 1,
-        type: "MAIN",
-        ingredients: {
-          create: [
-            { productId: globalProducts["Лаваш"], rawWeight: 100 },
-            { productId: globalProducts["Куряче філе"], rawWeight: 150 },
-            { productId: globalProducts["Йогурт густий (Грецький)"], rawWeight: 50 },
-            { productId: globalProducts["Помідори чері"], rawWeight: 50 },
-            { productId: globalProducts["Пекінська капуста"], rawWeight: 50 },
-          ]
+        dayPlans: {
+          create: WEEKLY_SCHEDULE.map((ws) => ({
+            userId: user.id,
+            dayOfWeek: dayNamesMap[ws.day],
+            activity: ws.activity === "gym" ? "Тренажерний зал" : "Кардіо / Біг",
+            mealSlots: {
+              create: [
+                { personId: vitaliiId, name: "Передтрен", order: 1, targetKcal: 200, targetFiberGrams: 0 },
+                { personId: vitaliiId, name: "Сніданок", order: 2, targetKcal: 500, targetFiberGrams: 8 },
+                { personId: vitaliiId, name: "Обід", order: 3, targetKcal: 600, targetFiberGrams: 12 },
+                { personId: vitaliiId, name: "Вечеря", order: 4, targetKcal: 400, targetFiberGrams: 10 },
+                { personId: olesyaId, name: "Передтрен", order: 1, targetKcal: 300, targetFiberGrams: 0 },
+                { personId: olesyaId, name: "Сніданок", order: 2, targetKcal: 700, targetFiberGrams: 8 },
+                { personId: olesyaId, name: "Обід", order: 3, targetKcal: 800, targetFiberGrams: 12 },
+                { personId: olesyaId, name: "Вечеря", order: 4, targetKcal: 500, targetFiberGrams: 10 },
+              ]
+            }
+          }))
         }
-      }
+      },
+      include: { dayPlans: { include: { mealSlots: true } } }
     });
 
-    // Chocolate Snack
-    const chocSnackId = `choc-snack-${user.id}`;
-    await prisma.dish.upsert({
-      where: { id: chocSnackId },
-      update: {},
-      create: {
-        id: chocSnackId,
-        userId: user.id,
-        name: "Шоколадний Снек",
-        servings: 1,
-        type: "SNACK",
-        ingredients: {
-          create: [
-            { productId: globalProducts["Шоколад 80-85%"], rawWeight: 20 },
-            { productId: globalProducts["Горіхи (Мигдаль/Арахіс)"], rawWeight: 20 },
-          ]
-        }
-      }
+    // Fill Slots
+    const allDishes = await prisma.dish.findMany({
+      where: { userId: user.id },
+      include: { ingredients: { include: { product: true } } }
     });
+    const findDish = (name: string) => allDishes.find(d => d.name === name);
 
-    // Peanut Butter Snack
-    const pbSnackId = `pb-snack-${user.id}`;
-    await prisma.dish.upsert({
-      where: { id: pbSnackId },
-      update: {},
-      create: {
-        id: pbSnackId,
-        userId: user.id,
-        name: "Снек з Арахісовою Пастою",
-        servings: 1,
-        type: "SNACK",
-        ingredients: {
-          create: [
-            { productId: globalProducts["Арахісова паста"], rawWeight: 20 },
-            { productId: globalProducts["Банан"], rawWeight: 100 },
-          ]
+    for (const day of weekPlan.dayPlans) {
+      const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
+      const ws = WEEKLY_SCHEDULE.find(s => s.day === dayName);
+      if (!ws) continue;
+      for (const slot of day.mealSlots) {
+        let dishName = ws.defaults[slot.name];
+        if (dayName === "Пт" && slot.name === "Вечеря") dishName = "Кебаб Класичний";
+        if (!dishName) continue;
+        const dish = findDish(dishName);
+        if (dish) {
+          const totalKcal = dish.ingredients.reduce((acc, ing) => acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100, 0);
+          const kcalPerServing = totalKcal / (dish.servings || 1);
+          const servings = slot.targetKcal / (kcalPerServing || 1);
+          const totalWeight = dish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
+          const portionWeight = servings * (totalWeight / (dish.servings || 1));
+          await prisma.dishEntry.create({
+            data: { mealSlotId: slot.id, dishId: dish.id, portionWeight, servings, isShared: true }
+          });
         }
       }
-    });
+    }
   }
 
-  console.log("All global dishes seeded for all users.");
+  console.log("Exhaustive visual plan seeded successfully.");
 }
 
 main()

@@ -3,248 +3,262 @@
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { invalidateFoodCache } from "@/lib/revalidate"
+import productsData from "../../nutrition/data/products.json"
+import dishesData from "../../nutrition/data/dishes.json"
+import { WEEKLY_SCHEDULE, MEAL_VARIANTS } from "../../nutrition/constants/meal-variants"
 
 export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
     
-    console.log("Starting Visual Plan Seeding via Server Action...");
+    console.log("Starting exhaustive Visual Plan Seeding...");
 
-    // 1. PRODUCTS
-    const productsData = [
-      { name: "Сир кисломолочний 0-2%", kcal: 80, p: 16, f: 0.5, c: 3, fiber: 0, unit: "г", pkg: 250, cat: "Dairy" },
-      { name: "Борошно пшеничне", kcal: 340, p: 10, f: 1, c: 70, fiber: 3, unit: "г", pkg: 1000, cat: "Grocery" },
-      { name: "Лаваш", kcal: 240, p: 8, f: 1, c: 48, fiber: 2, unit: "г", pkg: 200, cat: "Bakery" },
-      { name: "Куряче філе", kcal: 110, p: 23, f: 2, c: 0, fiber: 0, unit: "г", pkg: 500, cat: "Meat" },
-      { name: "Йогурт густий (Грецький)", kcal: 60, p: 4, f: 3, c: 5, fiber: 0, unit: "г", pkg: 300, cat: "Dairy" },
-      { name: "Помідори чері", kcal: 18, p: 0.9, f: 0.2, c: 4, fiber: 1.2, unit: "г", pkg: 250, cat: "Vegetables" },
-      { name: "Пекінська капуста", kcal: 16, p: 1.2, f: 0.2, c: 3.2, fiber: 1.2, unit: "г", pkg: 500, cat: "Vegetables" },
-      { name: "Шоколад 80-85%", kcal: 580, p: 8, f: 45, c: 20, fiber: 10, unit: "г", pkg: 100, cat: "Snacks" },
-      { name: "Горіхи (Мигдаль/Арахіс)", kcal: 600, p: 25, f: 50, c: 15, fiber: 9, unit: "г", pkg: 150, cat: "Snacks" },
-      { name: "Арахісова паста", kcal: 600, p: 25, f: 50, c: 15, fiber: 6, unit: "г", pkg: 300, cat: "Snacks" },
-      { name: "Банан", kcal: 89, p: 1.1, f: 0.3, c: 22.8, fiber: 2.6, unit: "г", pkg: 1000, cat: "Fruits" },
-    ];
-
-    const globalProducts: Record<string, string> = {};
+    // 1. GLOBAL PRODUCTS (UserId: null)
+    const globalProducts: Record<string, any> = {};
 
     for (const p of productsData) {
       const productId = `global-${p.name.replace(/\s+/g, '-').toLowerCase()}`;
       const product = await prisma.foodProduct.upsert({
         where: { id: productId },
         update: {
-          caloriesPer100: p.kcal,
-          proteinPer100: p.p,
-          fatPer100: p.f,
-          carbsPer100: p.c,
-          fiberPer100: p.fiber,
-          standardPackageAmount: p.pkg,
+          caloriesPer100: p.caloriesPer100,
+          proteinPer100: p.proteinPer100,
+          fatPer100: p.fatPer100,
+          carbsPer100: p.carbsPer100,
+          fiberPer100: p.fiberPer100,
+          unit: p.unit,
+          standardPackageAmount: p.standardPackageAmount,
+          category: p.category,
+          price: p.price || 0,
         },
         create: {
           id: productId,
           userId: null,
           name: p.name,
-          caloriesPer100: p.kcal,
-          proteinPer100: p.p,
-          fatPer100: p.f,
-          carbsPer100: p.c,
-          fiberPer100: p.fiber,
+          caloriesPer100: p.caloriesPer100,
+          proteinPer100: p.proteinPer100,
+          fatPer100: p.fatPer100,
+          carbsPer100: p.carbsPer100,
+          fiberPer100: p.fiberPer100,
           unit: p.unit,
-          standardPackageAmount: p.pkg,
-          category: p.cat,
+          standardPackageAmount: p.standardPackageAmount,
+          category: p.category,
+          price: p.price || 0,
         }
       });
-      globalProducts[p.name] = product.id;
+      globalProducts[p.name] = product;
     }
 
-    // 2. DISHES
-    const dishesData = [
-      {
-        id: `bagel-${userId}`,
-        name: "Сирні Бейгли",
-        servings: 4,
-        type: "MAIN",
-        ingredients: [
-          { productId: globalProducts["Сир кисломолочний 0-2%"], weight: 250 },
-          { productId: globalProducts["Борошно пшеничне"], weight: 250 },
-        ]
-      },
-      {
-        id: `kebab-${userId}`,
-        name: "Кебаб Домашній",
-        servings: 1,
-        type: "MAIN",
-        ingredients: [
-          { productId: globalProducts["Лаваш"], weight: 100 },
-          { productId: globalProducts["Куряче філе"], weight: 150 },
-          { productId: globalProducts["Йогурт густий (Грецький)"], weight: 50 },
-          { productId: globalProducts["Помідори чері"], weight: 50 },
-          { productId: globalProducts["Пекінська капуста"], weight: 50 },
-        ]
-      },
-      {
-        id: `snack-choc-${userId}`,
-        name: "Шоколадний Снек",
-        servings: 1,
-        type: "SNACK",
-        ingredients: [
-          { productId: globalProducts["Шоколад 80-85%"], weight: 20 },
-          { productId: globalProducts["Горіхи (Мигдаль/Арахіс)"], weight: 20 },
-        ]
-      },
-      {
-        id: `snack-pb-${userId}`,
-        name: "Снек з Арахісовою Пастою",
-        servings: 1,
-        type: "SNACK",
-        ingredients: [
-          { productId: globalProducts["Арахісова паста"], weight: 20 },
-          { productId: globalProducts["Банан"], weight: 100 },
-        ]
-      }
-    ];
+    // 2. Handle specific product name mismatches
+    if (globalProducts["Ткемалі готовий"]) {
+      globalProducts["Ткемалі"] = globalProducts["Ткемалі готовий"];
+    }
 
-    for (const dish of dishesData) {
-      // Delete existing ingredients to prevent duplicates on re-seed
-      const existingDish = await prisma.dish.findUnique({ where: { id: dish.id } });
-      if (existingDish) {
-        await prisma.dishIngredient.deleteMany({ where: { dishId: dish.id } });
+    // 3. Create Global Products for MARINADES/SAUCES/DRESSINGS from dishes.json
+    for (const d of dishesData) {
+      if (["MARINADE", "SAUCE", "DRESSING"].includes(d.type)) {
+        let totalKcal = 0, totalP = 0, totalF = 0, totalC = 0, totalFiber = 0, totalWeight = 0;
+        
+        for (const ing of d.ingredients) {
+          const prod = globalProducts[ing.productName];
+          if (prod) {
+            totalWeight += ing.rawWeight;
+            totalKcal += (ing.rawWeight * prod.caloriesPer100) / 100;
+            totalP += (ing.rawWeight * prod.proteinPer100) / 100;
+            totalF += (ing.rawWeight * prod.fatPer100) / 100;
+            totalC += (ing.rawWeight * prod.carbsPer100) / 100;
+            totalFiber += (ing.rawWeight * prod.fiberPer100) / 100;
+          }
+        }
+
+        if (totalWeight > 0) {
+          const productId = `global-${d.name.replace(/\s+/g, '-').toLowerCase()}`;
+          const product = await prisma.foodProduct.upsert({
+            where: { id: productId },
+            update: {
+              caloriesPer100: (totalKcal / totalWeight) * 100,
+              proteinPer100: (totalP / totalWeight) * 100,
+              fatPer100: (totalF / totalWeight) * 100,
+              carbsPer100: (totalC / totalWeight) * 100,
+              fiberPer100: (totalFiber / totalWeight) * 100,
+            },
+            create: {
+              id: productId,
+              userId: null,
+              name: d.name,
+              caloriesPer100: (totalKcal / totalWeight) * 100,
+              proteinPer100: (totalP / totalWeight) * 100,
+              fatPer100: (totalF / totalWeight) * 100,
+              carbsPer100: (totalC / totalWeight) * 100,
+              fiberPer100: (totalFiber / totalWeight) * 100,
+              unit: "GRAM",
+              standardPackageAmount: 100,
+              category: "SAUCES"
+            }
+          });
+          globalProducts[d.name] = product;
+        }
       }
+    }
+
+    // 4. COOKING METHODS MAPPING
+    const cookingMethods = await prisma.cookingMethod.findMany();
+    const getMethodId = (methodName: string, category: string) => {
+      if (methodName === "RAW") return cookingMethods.find(m => m.name === "Сире")?.id;
+      if (methodName === "BAKED") return cookingMethods.find(m => m.name === "Запікання")?.id;
+      if (methodName === "FRIED") return cookingMethods.find(m => m.name === "Смаження без олії")?.id;
+      if (methodName === "BOILED") {
+        if (category === "GRAINS" || category === "BAKERY") {
+          return cookingMethods.find(m => m.name === "Варіння крупи/макарони")?.id;
+        }
+        return cookingMethods.find(m => m.name === "Варіння м'ясо/риба")?.id;
+      }
+      return null;
+    };
+
+    // 5. DISHES FOR USER
+    for (const d of dishesData) {
+      const dishId = `${d.name.replace(/\s+/g, '-').toLowerCase()}-${userId}`;
+      await prisma.dishIngredient.deleteMany({ where: { dishId } });
 
       await prisma.dish.upsert({
-        where: { id: dish.id },
+        where: { id: dishId },
         update: {
-          name: dish.name,
-          servings: dish.servings,
-          type: dish.type as any,
+          name: d.name,
+          description: d.description,
+          servings: d.servings,
+          type: d.type as any,
           ingredients: {
-            create: dish.ingredients.map(ing => ({
-              productId: ing.productId,
-              rawWeight: ing.weight
-            }))
+            create: d.ingredients.map((ing: any) => {
+              const product = globalProducts[ing.productName];
+              if (!product) return null;
+              return {
+                productId: product.id,
+                rawWeight: ing.rawWeight,
+                cookingMethodId: getMethodId(ing.cookingMethod, product.category),
+                alternatives: ing.alternatives || []
+              };
+            }).filter(Boolean)
           }
         },
         create: {
-          id: dish.id,
+          id: dishId,
           userId,
-          name: dish.name,
-          servings: dish.servings,
-          type: dish.type as any,
+          name: d.name,
+          description: d.description,
+          servings: d.servings,
+          type: d.type as any,
           ingredients: {
-            create: dish.ingredients.map(ing => ({
-              productId: ing.productId,
-              rawWeight: ing.weight
-            }))
+            create: d.ingredients.map((ing: any) => {
+              const product = globalProducts[ing.productName];
+              if (!product) return null;
+              return {
+                productId: product.id,
+                rawWeight: ing.rawWeight,
+                cookingMethodId: getMethodId(ing.cookingMethod, product.category),
+                alternatives: ing.alternatives || []
+              };
+            }).filter(Boolean)
           }
         }
       });
     }
 
-    // 3. PROFILES
-    const vitaliiProfileId = "vitalii-profile";
-    const gfProfileId = "gf-profile";
+    // 6. NUTRITION PERSONS
+    const vitaliiId = "vitalii-profile";
+    const gfId = "gf-profile";
 
-    await prisma.nutritionPerson.upsert({
-      where: { id: vitaliiProfileId },
-      update: { targetKcal: 1700, userId },
+    const vitalii = await prisma.nutritionPerson.upsert({
+      where: { id: vitaliiId },
+      update: { targetKcal: 1700, proteinPct: 45, fatPct: 30, carbsPct: 25, goal: "LOSE" },
       create: {
-        id: vitaliiProfileId, userId, name: "Vitalii", targetKcal: 1700,
+        id: vitaliiId, userId, name: "Віталій", targetKcal: 1700,
         proteinPct: 45, fatPct: 30, carbsPct: 25, goal: "LOSE"
       }
     });
 
-    await prisma.nutritionPerson.upsert({
-      where: { id: gfProfileId },
-      update: { targetKcal: 2300, userId },
+    const olesya = await prisma.nutritionPerson.upsert({
+      where: { id: gfId },
+      update: { targetKcal: 2300, proteinPct: 15, fatPct: 25, carbsPct: 60, goal: "GAIN" },
       create: {
-        id: gfProfileId, userId, name: "GF", targetKcal: 2300,
+        id: gfId, userId, name: "Олеся", targetKcal: 2300,
         proteinPct: 15, fatPct: 25, carbsPct: 60, goal: "GAIN"
       }
     });
 
-    // 4. WEEK PLAN
-    console.log("Creating Week Plan...");
-    
-    // Cleanup old visual plans for this user if they exist to avoid clutter
-    const oldPlans = await prisma.weekPlan.findMany({
-      where: { userId, name: "Visual Plan Week" }
-    });
+    // 7. WEEK PLAN (Based on WEEKLY_SCHEDULE)
+    const planName = "Visual Plan Week (1:1)";
+    const oldPlans = await prisma.weekPlan.findMany({ where: { userId, name: planName } });
     for (const plan of oldPlans) {
       await prisma.weekPlan.delete({ where: { id: plan.id } });
     }
 
+    const dayNamesMap: Record<string, number> = { "Пн": 0, "Вт": 1, "Ср": 2, "Чт": 3, "Пт": 4, "Сб": 5, "Нд": 6 };
+
     const weekPlan = await prisma.weekPlan.create({
       data: {
-        name: "Visual Plan Week",
+        name: planName,
         userId,
         dayPlans: {
-          create: Array.from({ length: 7 }, (_, i) => ({
+          create: WEEKLY_SCHEDULE.map((ws) => ({
             userId,
-            dayOfWeek: i,
+            dayOfWeek: dayNamesMap[ws.day],
+            activity: ws.activity === "gym" ? "Тренажерний зал" : "Кардіо / Біг",
             mealSlots: {
               create: [
-                // Vitalii
-                { personId: vitaliiProfileId, name: "Сніданок", order: 1, targetKcal: 1700 * 0.25, targetFiberGrams: 7.5 },
-                { personId: vitaliiProfileId, name: "Обід", order: 2, targetKcal: 1700 * 0.40, targetFiberGrams: 13.5 },
-                { personId: vitaliiProfileId, name: "Снек 1", order: 3, targetKcal: 1700 * 0.15, targetFiberGrams: 4.5 },
-                { personId: vitaliiProfileId, name: "Снек 2", order: 4, targetKcal: 1700 * 0.20, targetFiberGrams: 4.5 },
-                // GF
-                { personId: gfProfileId, name: "Сніданок", order: 1, targetKcal: 2300 * 0.25, targetFiberGrams: 7.5 },
-                { personId: gfProfileId, name: "Обід", order: 2, targetKcal: 2300 * 0.40, targetFiberGrams: 13.5 },
-                { personId: gfProfileId, name: "Снек 1", order: 3, targetKcal: 2300 * 0.15, targetFiberGrams: 4.5 },
-                { personId: gfProfileId, name: "Снек 2", order: 4, targetKcal: 2300 * 0.20, targetFiberGrams: 4.5 },
+                // Vitalii Slots
+                { personId: vitaliiId, name: "Передтрен", order: 1, targetKcal: 200, targetFiberGrams: 0 },
+                { personId: vitaliiId, name: "Сніданок", order: 2, targetKcal: 500, targetFiberGrams: 8 },
+                { personId: vitaliiId, name: "Обід", order: 3, targetKcal: 600, targetFiberGrams: 12 },
+                { personId: vitaliiId, name: "Вечеря", order: 4, targetKcal: 400, targetFiberGrams: 10 },
+                // Olesya Slots
+                { personId: gfId, name: "Передтрен", order: 1, targetKcal: 300, targetFiberGrams: 0 },
+                { personId: gfId, name: "Сніданок", order: 2, targetKcal: 700, targetFiberGrams: 8 },
+                { personId: gfId, name: "Обід", order: 3, targetKcal: 800, targetFiberGrams: 12 },
+                { personId: gfId, name: "Вечеря", order: 4, targetKcal: 500, targetFiberGrams: 10 },
               ]
             }
           }))
         }
       },
-      include: {
-        dayPlans: {
-          include: {
-            mealSlots: true
-          }
-        }
-      }
+      include: { dayPlans: { include: { mealSlots: true } } }
     });
 
-    // 5. Populate Slots with DishEntries (with auto-portion logic)
-    console.log("Adding dishes to slots...");
-    
-    // We need to fetch dishes with ingredients to calculate stats
-    const allUserDishes = await prisma.dish.findMany({
+    // 8. FILL SLOTS (AUTO-PORTION)
+    const allDishes = await prisma.dish.findMany({
       where: { userId },
       include: { ingredients: { include: { product: true } } }
     });
 
-    const findDish = (name: string) => allUserDishes.find(d => d.name === name);
-    
-    const bagelDish = findDish("Сирні Бейгли");
-    const kebabDish = findDish("Кебаб Домашній");
-    const chocSnack = findDish("Шоколадний Снек");
-    const pbSnack = findDish("Снек з Арахісовою Пастою");
+    const findDish = (name: string) => allDishes.find(d => d.name === name);
 
     for (const day of weekPlan.dayPlans) {
-      for (const slot of day.mealSlots) {
-        let selectedDish = null;
-        if (slot.name === "Сніданок") selectedDish = bagelDish;
-        else if (slot.name === "Обід") selectedDish = kebabDish;
-        else if (slot.name === "Снек 1") selectedDish = chocSnack;
-        else if (slot.name === "Снек 2") selectedDish = pbSnack;
+      const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
+      const ws = WEEKLY_SCHEDULE.find(s => s.day === dayName);
+      if (!ws) continue;
 
-        if (selectedDish) {
-          // Calculate servings based on targetKcal
-          const totalKcal = selectedDish.ingredients.reduce((acc, ing) => {
-            return acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100;
-          }, 0);
-          
-          const kcalPerServing = totalKcal / (selectedDish.servings || 1);
+      for (const slot of day.mealSlots) {
+        let dishName = ws.defaults[slot.name];
+        
+        // Special case: Friday Dinner is Fast Food
+        if (dayName === "Пт" && slot.name === "Вечеря") {
+          dishName = "Кебаб Класичний";
+        }
+
+        if (!dishName) continue;
+
+        const dish = findDish(dishName);
+        if (dish) {
+          const totalKcal = dish.ingredients.reduce((acc, ing) => acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100, 0);
+          const kcalPerServing = totalKcal / (dish.servings || 1);
           const servings = slot.targetKcal / (kcalPerServing || 1);
-          const totalWeight = selectedDish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
-          const portionWeight = servings * (totalWeight / (selectedDish.servings || 1));
+          const totalWeight = dish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
+          const portionWeight = servings * (totalWeight / (dish.servings || 1));
 
           await prisma.dishEntry.create({
             data: {
               mealSlotId: slot.id,
-              dishId: selectedDish.id,
+              dishId: dish.id,
               portionWeight,
               servings,
               isShared: true

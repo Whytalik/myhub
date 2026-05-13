@@ -205,6 +205,14 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
             servings: entry.servings,
             isShared: entry.isShared,
             fitScore: entry.fitScore,
+            selectedAlternatives: entry.selectedAlternatives,
+            ingredients: entry.dish.ingredients.map(ing => ({
+              id: ing.id,
+              productId: ing.productId,
+              productName: ing.product.name,
+              rawWeight: ing.rawWeight,
+              alternatives: ing.alternatives,
+            })),
           }
         })
 
@@ -479,7 +487,54 @@ export async function updateDishServings(
   }
 }
 
-export async function removeDishFromSlot(dishEntryId: string): Promise<ActionResult<void>> {
+export async function updateDishEntryAlternative(
+  dishEntryId: string,
+  ingredientIndex: number,
+  alternativeProductId: string | null
+): Promise<ActionResult<DishEntry>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const entry = await prisma.dishEntry.findUnique({
+      where: { id: dishEntryId },
+      include: {
+        mealSlot: {
+          include: {
+            dayPlan: {
+              include: {
+                weekPlan: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!entry) return { success: false, error: "Dish entry not found" }
+    if (entry.mealSlot.dayPlan.weekPlan?.userId !== userId) {
+      return { success: false, error: "Unauthorized" }
+    }
+
+    const selectedAlts = (entry.selectedAlternatives as Record<string, string | null>) || {}
+    if (alternativeProductId) {
+      selectedAlts[String(ingredientIndex)] = alternativeProductId
+    } else {
+      delete selectedAlts[String(ingredientIndex)]
+    }
+
+    const updatedEntry = await prisma.dishEntry.update({
+      where: { id: dishEntryId },
+      data: { selectedAlternatives: selectedAlts }
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: updatedEntry }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update alternative" }
+  }
+}
+
+export async function removeDishFromSlot(entryId: string): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
