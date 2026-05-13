@@ -1,4 +1,4 @@
-import { AlertTriangle, Lightbulb, Target, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface SpaceDescriptionProps {
   problem: string;
@@ -7,46 +7,40 @@ interface SpaceDescriptionProps {
 }
 
 export function SpaceDescription({ problem, solution, result }: SpaceDescriptionProps) {
-  const steps = [
-    { label: "Problem", text: problem, icon: AlertTriangle, color: "text-rose-500", bg: "bg-rose-500/10", border: "border-rose-500/20" },
-    { label: "Solution", text: solution, icon: Lightbulb, color: "text-accent", bg: "bg-accent/10", border: "border-accent/20" },
-    { label: "Result", text: result, icon: Target, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
-  ];
-
   return (
-    <div className="mb-12">
-      <div className="relative flex flex-col md:flex-row gap-6 md:gap-0">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          const isLast = index === steps.length - 1;
-          
-          return (
-            <div key={step.label} className="relative flex-1 group">
-              {/* Connector Line (Desktop) */}
-              {!isLast && (
-                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-px bg-border -translate-y-1/2 z-10">
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-border" />
-                </div>
-              )}
+    <div className="mb-6 relative rounded-[1.25rem] bg-surface/30 border border-border p-6 md:p-8 overflow-hidden backdrop-blur-sm">
+      {/* Subtle background glow */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[64px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+      
+      <div className="relative z-10 flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center">
+        {/* Problem */}
+        <div className="flex-1">
+          <div className="flex items-center gap-2 text-text-muted mb-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-danger/60" />
+            <span className="text-micro font-medium uppercase tracking-wider">The Challenge</span>
+          </div>
+          <p className="text-note text-text-secondary leading-relaxed">{problem}</p>
+        </div>
 
-              <div className={`relative p-6 rounded-xl border bg-surface ${step.border} hover:shadow-lg transition-all duration-300`}>
-                <div className="flex items-start gap-4">
-                  <div className={`p-2.5 rounded-lg ${step.bg} shrink-0`}>
-                    <Icon size={20} className={step.color} />
-                  </div>
-                  <div>
-                    <h4 className={`text-caption font-bold uppercase tracking-wider ${step.color} mb-2`}>
-                      {step.label}
-                    </h4>
-                    <p className="text-note text-text-secondary leading-relaxed">
-                      {step.text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {/* Bridge */}
+        <div className="hidden md:flex shrink-0 items-center justify-center text-text-muted/40">
+          <ArrowRight size={20} strokeWidth={1.5} />
+        </div>
+
+        {/* Result */}
+        <div className="flex-1">
+          <div className="flex items-center gap-2 text-text-muted mb-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-success/60" />
+            <span className="text-micro font-medium uppercase tracking-wider">The Outcome</span>
+          </div>
+          <p className="text-note text-text-primary font-medium leading-relaxed">{result}</p>
+        </div>
+      </div>
+      
+      {/* Connection to Nav */}
+      <div className="mt-8 pt-6 border-t border-border/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+         <p className="text-note text-accent/90">{solution}</p>
+         <span className="text-micro text-text-muted uppercase tracking-widest shrink-0">Explore Tools &darr;</span>
       </div>
     </div>
   );

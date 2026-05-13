@@ -375,7 +375,7 @@ export function Sidebar({
       >
         {/* Sidebar Header */}
         <div className={`shrink-0 h-20 flex items-center relative border-b border-border-dim ${isExpanded ? "px-6" : "justify-center"}`}>
-          <Link href="/home" className="flex items-center gap-4 group shrink-0">
+          <Link href="/home" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shrink-0 transition-shadow duration-200 group-hover:shadow-[0_0_16px_rgba(96,165,250,0.3)]">
               <Sparkles size={20} className="text-bg" />
             </div>
@@ -383,10 +383,10 @@ export function Sidebar({
             <AnimatePresence initial={false}>
               {isExpanded && (
                 <motion.div
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
                   className="flex flex-col overflow-hidden whitespace-nowrap"
                 >
                   <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
