@@ -1,5 +1,3 @@
-"use client";
-
 import { LucideIcon, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 

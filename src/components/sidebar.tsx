@@ -372,16 +372,26 @@ export function Sidebar({
         `}
       >
         {/* Sidebar Header */}
-        <div className="shrink-0 h-20 flex items-center relative border-b border-border-dim px-6">
+        <div className={`shrink-0 h-20 flex items-center relative border-b border-border-dim ${isExpanded ? "px-6" : "justify-center px-0"}`}>
           <Link href="/home" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shrink-0 transition-shadow duration-200 group-hover:shadow-[0_0_16px_rgba(96,165,250,0.3)]">
               <Sparkles size={20} className="text-bg" />
             </div>
 
-            <div className={`flex flex-col overflow-hidden whitespace-nowrap transition-opacity duration-150 ${isExpanded ? "opacity-100" : "opacity-0 pointer-events-none absolute"}`}>
-              <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
-              <p className="text-micro font-mono text-accent uppercase tracking-wider mt-0.5">Personal OS</p>
-            </div>
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={LABEL_TRANSITION}
+                  className="flex flex-col overflow-hidden whitespace-nowrap"
+                >
+                  <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
+                  <p className="text-micro font-mono text-accent uppercase tracking-wider mt-0.5">Personal OS</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Link>
 
           <AnimatePresence initial={false}>

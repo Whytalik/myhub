@@ -215,50 +215,8 @@ export default async function HomePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Today's Focus */}
+        {/* Left Column: Tasks + Habits */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Active Sprint */}
-          {activeSprint && (
-            <div className="bg-surface rounded-xl border border-border/50 p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <Target size={16} className="text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="text-body font-semibold text-text-primary">Sprint {activeSprint.number} · {activeSprint.year}</h3>
-                    {sprintDaysLeft !== null && (
-                      <p className="text-note font-mono text-text-muted">
-                        {sprintDaysLeft > 0 ? `${sprintDaysLeft} days left` : "Ended"}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <Link href="/planning/sprints" className="text-note text-accent hover:underline flex items-center gap-1">
-                  Details <ChevronRight size={12} />
-                </Link>
-              </div>
-              <div className="flex items-center gap-4 mb-3">
-                <div className="flex-1 h-2 bg-bg rounded-full overflow-hidden">
-                  <div className="h-full bg-accent rounded-full transition-all" style={{ width: `${sprintProgressAvg}%` }} />
-                </div>
-                <span className="text-note font-mono text-text-muted">{sprintProgressAvg.toFixed(0)}%</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {activeSprint.objectives.slice(0, 4).map(obj => (
-                  <span key={obj.id} className="text-micro px-2 py-1 rounded-lg bg-bg/50 border border-border/50 text-text-secondary">
-                    {obj.title}
-                  </span>
-                ))}
-                {activeSprint.objectives.length > 4 && (
-                  <span className="text-micro px-2 py-1 rounded-lg bg-bg/50 border border-border/50 text-text-muted">
-                    +{activeSprint.objectives.length - 4} more
-                  </span>
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Today's Tasks */}
           <div className="bg-surface rounded-xl border border-border/50 p-5">
             <div className="flex items-center justify-between mb-4">
@@ -279,7 +237,7 @@ export default async function HomePage() {
               <p className="text-note text-text-muted text-center py-6">No tasks scheduled for today</p>
             ) : (
               <div className="space-y-1.5">
-                {todayTasks.slice(0, 6).map(task => (
+                {todayTasks.slice(0, 8).map(task => (
                   <div key={task.id} className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-hover transition-colors group">
                     {getStatusIcon(task.status)}
                     <span className={`flex-1 text-body truncate ${task.status === "DONE" ? "line-through text-text-muted" : "text-text-primary"}`}>
@@ -288,9 +246,9 @@ export default async function HomePage() {
                     {getPriorityBadge(task.priority)}
                   </div>
                 ))}
-                {todayTasks.length > 6 && (
+                {todayTasks.length > 8 && (
                   <Link href="/life/tasks" className="flex items-center justify-center gap-1 py-2 text-note text-text-muted hover:text-accent transition-colors">
-                    +{todayTasks.length - 6} more <ChevronRight size={12} />
+                    +{todayTasks.length - 8} more <ChevronRight size={12} />
                   </Link>
                 )}
               </div>
@@ -314,15 +272,15 @@ export default async function HomePage() {
                   All <ChevronRight size={12} />
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {todayHabits.map(habit => (
-                  <div key={habit.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg ${habit.completed ? "bg-accent/5" : "bg-bg/30"}`}>
+                  <div key={habit.id} className={`flex items-center gap-2 px-3 py-2.5 rounded-lg ${habit.completed ? "bg-accent/5" : "bg-bg/30"}`}>
                     {habit.completed ? (
                       <CheckCircle2 size={14} className="text-accent shrink-0" />
                     ) : (
                       <Circle size={14} className="text-text-muted/40 shrink-0" />
                     )}
-                    <span className={`text-body truncate ${habit.completed ? "text-accent" : "text-text-secondary"}`}>
+                    <span className={`text-note truncate ${habit.completed ? "text-accent" : "text-text-secondary"}`}>
                       {habit.name}
                     </span>
                   </div>
@@ -330,12 +288,52 @@ export default async function HomePage() {
               </div>
             </div>
           )}
-
-          {/* Today's Meal Plan */}
         </div>
 
-        {/* Right Column: North Star + Attention */}
+        {/* Right Column: Sprint + North Star + Attention + Quick Access */}
         <div className="space-y-6">
+          {/* Active Sprint */}
+          {activeSprint && (
+            <div className="bg-surface rounded-xl border border-border/50 p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                    <Target size={16} className="text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="text-body font-semibold text-text-primary">Sprint {activeSprint.number}</h3>
+                    {sprintDaysLeft !== null && (
+                      <p className="text-note font-mono text-text-muted">
+                        {sprintDaysLeft > 0 ? `${sprintDaysLeft}d left` : "Ended"}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <Link href="/planning/sprints" className="text-note text-accent hover:underline flex items-center gap-1">
+                  Details <ChevronRight size={12} />
+                </Link>
+              </div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex-1 h-2 bg-bg rounded-full overflow-hidden">
+                  <div className="h-full bg-accent rounded-full transition-all" style={{ width: `${sprintProgressAvg}%` }} />
+                </div>
+                <span className="text-note font-mono text-text-muted">{sprintProgressAvg.toFixed(0)}%</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {activeSprint.objectives.slice(0, 3).map(obj => (
+                  <span key={obj.id} className="text-micro px-2 py-1 rounded-lg bg-bg/50 border border-border/50 text-text-secondary truncate max-w-full">
+                    {obj.title}
+                  </span>
+                ))}
+                {activeSprint.objectives.length > 3 && (
+                  <span className="text-micro px-2 py-1 rounded-lg bg-bg/50 border border-border/50 text-text-muted">
+                    +{activeSprint.objectives.length - 3}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* North Star */}
           {(annualCompass || vision) && (
             <div className="bg-surface rounded-xl border border-border/50 p-5">
@@ -358,7 +356,7 @@ export default async function HomePage() {
                 {vision && (
                   <div>
                     <p className="text-micro font-mono text-text-muted uppercase tracking-wider mb-1">Vision</p>
-                    <p className="text-note text-text-secondary leading-relaxed line-clamp-4">{vision.content}</p>
+                    <p className="text-note text-text-secondary leading-relaxed line-clamp-3">{vision.content}</p>
                   </div>
                 )}
               </div>
@@ -372,7 +370,7 @@ export default async function HomePage() {
                 <div className="w-8 h-8 rounded-lg bg-danger/10 flex items-center justify-center">
                   <AlertCircle size={16} className="text-danger" />
                 </div>
-                <h3 className="text-body font-semibold text-text-primary">Attention Needed</h3>
+                <h3 className="text-body font-semibold text-text-primary">Attention</h3>
               </div>
               <div className="space-y-3">
                 {overdueTasks.length > 0 && (
