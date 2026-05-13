@@ -56,7 +56,7 @@ export function Dialog({
 
       {/* Content */}
       <div
-        className={`relative w-full bg-elevated border border-border/50 rounded-xl shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
+        className={`relative w-full bg-elevated border border-border/50 rounded-xl shadow-elevated overflow-hidden animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300`}
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
         <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
