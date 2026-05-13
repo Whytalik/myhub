@@ -36,6 +36,7 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const color = watch("color");
   const icon = watch("icon");
   const name = watch("name");

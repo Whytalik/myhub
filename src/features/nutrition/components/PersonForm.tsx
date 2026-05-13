@@ -20,7 +20,6 @@ function ProfileCard({
   currentFPct,
   currentCPct,
   sum,
-  isPending,
   onGoalUpdate,
   onDelete,
 }: {
@@ -30,7 +29,6 @@ function ProfileCard({
   currentFPct: number;
   currentCPct: number;
   sum: number;
-  isPending: boolean;
   onGoalUpdate: (id: string, pPct: number, fPct: number, cPct: number, fiber: number, targetKcal: number) => void;
   onDelete: () => void;
 }) {
@@ -294,7 +292,6 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
               currentFPct={currentFPct}
               currentCPct={currentCPct}
               sum={sum}
-              isPending={isPending}
               onGoalUpdate={handleGoalUpdate}
               onDelete={() => setPersonToDelete(person)}
             />

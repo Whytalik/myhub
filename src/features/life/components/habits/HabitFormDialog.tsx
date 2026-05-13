@@ -36,6 +36,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
     },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const reminderTime = watch("reminderTime");
 
   const onSubmit = (data: HabitFormData) => {
