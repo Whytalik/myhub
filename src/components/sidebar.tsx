@@ -372,7 +372,7 @@ export function Sidebar({
         `}
       >
         {/* Sidebar Header */}
-        <div className={`shrink-0 h-20 flex items-center relative border-b border-border-dim ${isExpanded ? "px-6" : "justify-center px-0"}`}>
+        <div className="shrink-0 h-20 flex items-center relative border-b border-border-dim px-6">
           <Link href="/home" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center shrink-0 transition-shadow duration-200 group-hover:shadow-[0_0_16px_rgba(96,165,250,0.3)]">
               <Sparkles size={20} className="text-bg" />
