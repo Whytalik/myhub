@@ -234,12 +234,12 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
             mealSlots: {
               create: [
                 // Vitalii Slots
-                { personId: vitaliiId, name: "Передтрен", order: 1, targetKcal: 200, targetFiberGrams: 0 },
+                { personId: vitaliiId, name: "Передтрен", order: 1, targetKcal: 100, targetFiberGrams: 0 },
                 { personId: vitaliiId, name: "Сніданок", order: 2, targetKcal: 500, targetFiberGrams: 8 },
                 { personId: vitaliiId, name: "Обід", order: 3, targetKcal: 600, targetFiberGrams: 12 },
                 { personId: vitaliiId, name: "Вечеря", order: 4, targetKcal: 400, targetFiberGrams: 10 },
                 // Olesya Slots
-                { personId: gfId, name: "Передтрен", order: 1, targetKcal: 300, targetFiberGrams: 0 },
+                { personId: gfId, name: "Передтрен", order: 1, targetKcal: 150, targetFiberGrams: 0 },
                 { personId: gfId, name: "Сніданок", order: 2, targetKcal: 700, targetFiberGrams: 8 },
                 { personId: gfId, name: "Обід", order: 3, targetKcal: 800, targetFiberGrams: 12 },
                 { personId: gfId, name: "Вечеря", order: 4, targetKcal: 500, targetFiberGrams: 10 },

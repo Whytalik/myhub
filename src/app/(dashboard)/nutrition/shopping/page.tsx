@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Heading } from "@/components/ui/heading";
 import { getLatestWeekPlan } from "@/features/nutrition/actions/planning"
-import { getShoppingCart } from "@/features/nutrition/actions/shopping"
+import { getShoppingCart, generateShoppingCart } from "@/features/nutrition/actions/shopping"
 import { ShoppingCartView } from "@/features/nutrition/components/planner/ShoppingCartView"
 
 export const metadata: Metadata = {
@@ -26,7 +26,12 @@ export default async function ShoppingPage() {
     );
   }
 
-  const cartResult = await getShoppingCart(latestPlanResult.data.id);
+  const weekPlanId = latestPlanResult.data.id;
+
+  // Auto-generate cart if it doesn't exist
+  await generateShoppingCart(weekPlanId);
+
+  const cartResult = await getShoppingCart(weekPlanId);
   if (!cartResult.success || !cartResult.data) {
     return (
       <div className="px-6 md:px-14 py-8 md:py-10">
@@ -78,7 +83,7 @@ export default async function ShoppingPage() {
       <Heading title="Shopping Cart" />
       <div className="mt-6">
         <ShoppingCartView
-          weekPlanId={latestPlanResult.data.id}
+          weekPlanId={weekPlanId}
           itemsByCategory={groupedByCategory}
           totalCost={cartData.totalCost}
           personCosts={cartData.personCosts}

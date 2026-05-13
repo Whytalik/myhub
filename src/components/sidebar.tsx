@@ -202,7 +202,7 @@ export function Sidebar({
       <div key={label} className={`flex flex-col gap-4 w-full ${groupDisabled ? "opacity-30 pointer-events-none" : ""}`}>
         <div className="flex flex-col gap-2 w-full">
           {items.map((item) => {
-            const isItemActive = pathname.startsWith(item.href);
+            const isItemActive = pathname === item.href || pathname.startsWith(item.href + '/') || (item.href === '/nutrition/plans' && pathname === '/nutrition/week');
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? false;
             const isDisabled = item.status === "disabled" || groupDisabled;

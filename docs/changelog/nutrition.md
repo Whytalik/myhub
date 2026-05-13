@@ -1,7 +1,11 @@
-## [2026-05-13] Plans page revalidation & Profile name editing
+## [2026-05-13] Plans page revalidation, profile name editing, and UI fixes
 
 - **Plans page**: Added `revalidatePath("/nutrition/plans")` to `createWeekPlan` action so the plans list updates immediately after creating a new week plan.
 - **Profile name editing**: Added inline name editing to `PersonForm` profile cards — hover over the name to see the edit pencil, click to edit inline with save/cancel buttons.
+- **Sidebar**: `/nutrition/week` now activates the Plans tab in the sidebar.
+- **WeekPlanner**: Now shows all dish ingredients with weights, not just alternatives. Alternative buttons are shown inline next to each ingredient.
+- **Shopping**: Auto-generates shopping cart on page load if it doesn't exist.
+- **Seed action**: Reduced Передтрен kcal targets (Vitalii: 200→100, GF: 300→150) to prevent unrealistic portion sizes.
 - **Verification**:
     - [x] Logic implemented
     - [x] UI updated

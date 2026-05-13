@@ -500,14 +500,13 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                               </div>
                             </div>
 
-                            {/* Alternatives selection */}
+                            {/* Dish ingredients list */}
                             {entry.ingredients && entry.ingredients.length > 0 && (
-                              <div className="flex flex-col gap-1.5 pl-2 border-l-2 border-accent/20">
+                              <div className="flex flex-col gap-1 pl-2 border-l-2 border-accent/10 mt-1">
                                 {entry.ingredients.map((ing, idx) => {
-                                  if (!ing.alternatives || ing.alternatives.length === 0) return null;
-                                  
                                   const selectedAlts = entry.selectedAlternatives as Record<string, string> || {};
                                   const currentProductId = selectedAlts[String(idx)] || ing.productId;
+                                  const isAlternative = currentProductId !== ing.productId;
                                   
                                   const allOptions = [
                                     { id: ing.productId, name: ing.productName },
@@ -519,22 +518,27 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
                                   return (
                                     <div key={idx} className="flex flex-wrap gap-1 items-center">
-                                      <span className="text-[10px] text-muted-foreground lowercase">{ing.productName}:</span>
-                                      <div className="flex flex-wrap gap-1">
-                                        {allOptions.map((opt) => (
-                                          <button
-                                            key={opt.id}
-                                            onClick={() => handleUpdateAlternative(entry.id, idx, opt.id === ing.productId ? null : opt.id)}
-                                            className={`text-[9px] px-1.5 py-0.5 rounded transition-colors leading-none border ${
-                                              currentProductId === opt.id 
-                                                ? "bg-accent text-white border-transparent font-bold" 
-                                                : "bg-white/5 text-muted-foreground border-border hover:bg-raised"
-                                            }`}
-                                          >
-                                            {opt.name}
-                                          </button>
-                                        ))}
-                                      </div>
+                                      <span className={`text-[10px] lowercase ${isAlternative ? 'text-accent/70' : 'text-muted-foreground'}`}>
+                                        {ing.productName}:
+                                      </span>
+                                      <span className="text-[10px] font-mono text-muted-foreground">{ing.rawWeight}g</span>
+                                      {ing.alternatives && ing.alternatives.length > 0 && (
+                                        <div className="flex flex-wrap gap-0.5">
+                                          {allOptions.map((opt) => (
+                                            <button
+                                              key={opt.id}
+                                              onClick={() => handleUpdateAlternative(entry.id, idx, opt.id === ing.productId ? null : opt.id)}
+                                              className={`text-[9px] px-1 py-0.5 rounded transition-colors leading-none border ${
+                                                currentProductId === opt.id 
+                                                  ? "bg-accent/20 text-accent border-accent/40 font-bold" 
+                                                  : "bg-white/5 text-muted-foreground/50 border-border hover:bg-raised"
+                                              }`}
+                                            >
+                                              {opt.name}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      )}
                                     </div>
                                   );
                                 })}
