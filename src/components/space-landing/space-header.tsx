@@ -14,8 +14,9 @@ export function SpaceHeader({ label, title, description }: SpaceHeaderProps) {
         <Breadcrumb items={[{ label }]} />
       </div>
       <Heading title={title} />
+      <div className="h-px w-full bg-border-dim mt-4 mb-3" />
       {description && (
-        <p className="text-body text-text-secondary max-w-2xl leading-relaxed mt-3">
+        <p className="text-body text-text-secondary max-w-2xl leading-relaxed">
           {description}
         </p>
       )}
