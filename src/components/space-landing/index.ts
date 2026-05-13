@@ -1,5 +1,7 @@
 export { SpaceLanding } from "./space-landing";
 export { SpaceHeader } from "./space-header";
+export { SpaceDescription } from "./space-description";
+export { SpaceNav } from "./space-nav";
 export { WidgetGrid } from "./widget-grid";
 export { SpaceIntelligence } from "./space-intelligence";
 export { SpaceError } from "./space-error";

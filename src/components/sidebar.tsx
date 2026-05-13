@@ -258,7 +258,7 @@ export function Sidebar({
                 } as React.CSSProperties}
               >
                 {isItemActive && !isDisabled && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-r-full" style={{ backgroundColor: color.text }} />
+                  <div className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full" style={{ backgroundColor: color.text }} />
                 )}
                 <div className="flex items-center group/link relative w-full">
                   {isDisabled ? (
