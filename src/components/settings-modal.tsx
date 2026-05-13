@@ -460,7 +460,7 @@ export function SettingsModal({
         <div className="flex flex-col w-full sm:w-[800px] min-h-[600px] sm:min-h-[650px] text-text">
 
           {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-surface-hover shrink-0">
+          <div className="flex items-center justify-between px-6 py-3 border-b border-border bg-surface-hover shrink-0">
             <h2 className="text-heading font-bold text-text-primary">Settings</h2>
             <button onClick={onClose} className="p-1.5 hover:bg-surface rounded-lg text-muted hover:text-text transition-all">
               <X size={18} />
@@ -507,7 +507,7 @@ export function SettingsModal({
             </div>
 
             {/* Content */}
-            <div className="flex-1 bg-surface overflow-y-auto p-5">
+            <div className="flex-1 bg-surface overflow-y-auto px-6 py-5">
 
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
