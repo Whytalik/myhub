@@ -18,26 +18,31 @@ export default async function ShoppingPage() {
   const latestPlanResult = await getLatestWeekPlan();
   if (!latestPlanResult.success || !latestPlanResult.data) {
     return (
-      <div className="px-6 md:px-14 py-8 md:py-10">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-        <Heading title="Shopping Cart" />
-        <p className="text-muted mt-4">Create a week plan first to generate a shopping cart.</p>
+      <div className="w-full">
+        <div className="mb-8">
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
+          <Heading title="Shopping Cart" />
+          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+          <p className="text-body text-text-secondary mt-4">Create a week plan first to generate a shopping cart.</p>
+        </div>
       </div>
     );
   }
 
   const weekPlanId = latestPlanResult.data.id;
 
-  // Auto-generate cart if it doesn't exist
   await generateShoppingCart(weekPlanId);
 
   const cartResult = await getShoppingCart(weekPlanId);
   if (!cartResult.success || !cartResult.data) {
     return (
-      <div className="px-6 md:px-14 py-8 md:py-10">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-        <Heading title="Shopping Cart" />
-        <p className="text-muted mt-4">No shopping cart found for this week plan.</p>
+      <div className="w-full">
+        <div className="mb-8">
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
+          <Heading title="Shopping Cart" />
+          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+          <p className="text-body text-text-secondary mt-4">No shopping cart found for this week plan.</p>
+        </div>
       </div>
     );
   }
@@ -78,9 +83,13 @@ export default async function ShoppingPage() {
   }
 
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-      <Heading title="Shopping Cart" />
+    <div className="w-full">
+      <div className="mb-8">
+        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
+        <Heading title="Shopping Cart" />
+        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+        <p className="text-body text-text-secondary">Aggregated ingredients for the week.</p>
+      </div>
       <div className="mt-6">
         <ShoppingCartView
           weekPlanId={weekPlanId}

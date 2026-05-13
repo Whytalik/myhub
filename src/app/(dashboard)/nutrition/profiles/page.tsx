@@ -18,16 +18,12 @@ export default async function ProfilesPage() {
   const persons = personsResult.success ? personsResult.data : [];
 
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "profiles" }]} />
-
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <div className="flex flex-col gap-1">
-          <Heading title="Profiles" />
-          <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
-            Nutrition goals and macro targets per person.
-          </p>
-        </div>
+    <div className="w-full">
+      <div className="mb-8">
+        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "profiles" }]} />
+        <Heading title="Profiles" />
+        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+        <p className="text-body text-text-secondary">Nutrition goals and macro targets per person.</p>
       </div>
 
       <div className="animate-in fade-in duration-500">

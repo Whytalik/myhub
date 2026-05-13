@@ -34,10 +34,13 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
 
   if (!activePlanId) {
     return (
-      <div className="px-6 md:px-14 py-8 md:py-10">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
-        <Heading title="Week Plan" />
-        <p className="text-muted mt-4">No week plans found. Create one from the profiles page.</p>
+      <div className="w-full">
+        <div className="mb-8">
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
+          <Heading title="Week Plan" />
+          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+          <p className="text-body text-text-secondary mt-4">No week plans found. Create one from the Plans page.</p>
+        </div>
       </div>
     );
   }
@@ -56,18 +59,25 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
 
   if (!weekPlan) {
     return (
-      <div className="px-6 md:px-14 py-8 md:py-10">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
-        <Heading title="Week Plan" />
-        <p className="text-muted mt-4">Failed to load week plan.</p>
+      <div className="w-full">
+        <div className="mb-8">
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
+          <Heading title="Week Plan" />
+          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+          <p className="text-body text-text-secondary mt-4">Failed to load week plan.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
-      <Heading title="Week Plan" />
+    <div className="w-full">
+      <div className="mb-8">
+        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
+        <Heading title="Week Plan" />
+        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+        <p className="text-body text-text-secondary">Weekly meal schedule and nutrition tracking.</p>
+      </div>
       {summary && (
         <div className="mb-6">
           <WeekSummary summary={summary} />

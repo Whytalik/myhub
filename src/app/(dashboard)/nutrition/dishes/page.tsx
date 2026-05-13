@@ -66,16 +66,12 @@ export default async function DishesPage({
   const cookingMethods = methodsResult.success ? methodsResult.data : [];
 
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "dishes" }]} />
-
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <div className="flex flex-col gap-1">
-          <Heading title={isCreating ? "New Dish" : "Dishes"} />
-          <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
-            Recipe repository with automated macro scaling.
-          </p>
-        </div>
+    <div className="w-full">
+      <div className="mb-8">
+        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "dishes" }]} />
+        <Heading title={isCreating ? "New Dish" : "Dishes"} />
+        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+        <p className="text-body text-text-secondary">Recipe repository with automated macro scaling.</p>
       </div>
 
       <div className="animate-in fade-in duration-500">
