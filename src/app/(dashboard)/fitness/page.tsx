@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
-import { SpaceLanding } from "@/components/space-landing";
+import { SpaceLanding, SpaceDescription, SpaceNav } from "@/components/space-landing";
+import { Dumbbell, Activity, TrendingUp } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Fitness Space",
@@ -13,6 +14,34 @@ export default function FitnessPage() {
         title: "Fitness Space",
         description: "",
       }}
-    />
+    >
+      <SpaceDescription
+        problem="Workouts without structure lead to plateaus and inconsistent progress."
+        solution="Exercise library, structured workout plans, and progressive overload tracking."
+        result="Measurable strength and fitness gains over time."
+      />
+      <SpaceNav
+        items={[
+          {
+            title: "Workouts",
+            description: "Log & plan training sessions",
+            href: "/fitness/workouts",
+            icon: Dumbbell,
+          },
+          {
+            title: "Exercises",
+            description: "Personal exercise library",
+            href: "/fitness/exercises",
+            icon: Activity,
+          },
+          {
+            title: "Progress",
+            description: "Volume, PRs & body metrics",
+            href: "/fitness/progress",
+            icon: TrendingUp,
+          },
+        ]}
+      />
+    </SpaceLanding>
   );
 }

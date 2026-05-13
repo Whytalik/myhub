@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { SpaceLanding } from "@/components/space-landing";
+import { SpaceLanding, SpaceDescription, SpaceNav } from "@/components/space-landing";
+import { BookText, CheckCircle2, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Life Space",
@@ -19,6 +20,34 @@ export default async function LifeSpacePage() {
         title: "Life Space",
         description: "",
       }}
-    />
+    >
+      <SpaceDescription
+        problem="Days blur together without reflection, and good intentions fade without tracking."
+        solution="Daily journal with routines, habit compounding, and hierarchical task management."
+        result="Consistent growth through daily discipline."
+      />
+      <SpaceNav
+        items={[
+          {
+            title: "Journal",
+            description: "Routines, sleep, energy & mood",
+            href: "/life/journal",
+            icon: BookText,
+          },
+          {
+            title: "Tasks",
+            description: "Hierarchical task management",
+            href: "/life/tasks",
+            icon: CheckCircle2,
+          },
+          {
+            title: "Habits",
+            description: "Daily discipline tracker",
+            href: "/life/habits",
+            icon: Zap,
+          },
+        ]}
+      />
+    </SpaceLanding>
   );
 }

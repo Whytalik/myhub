@@ -32,7 +32,7 @@ export function DashboardUIWrapper({
         <DomainHeader />
 
         <main className="flex-1 overflow-y-auto scrollbar-hide relative bg-bg/50 pb-20 lg:pb-0" style={{ viewTransitionName: 'page-content' }}>
-          <div className="px-6 py-6 md:px-10 md:py-8">
+          <div className="px-4 py-4 md:px-6 md:py-6">
             {children}
           </div>
         </main>
