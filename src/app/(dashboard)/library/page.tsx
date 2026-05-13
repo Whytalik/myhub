@@ -18,7 +18,7 @@ export default async function LibrarySpacePage() {
       header={{
         label: "library space",
         title: "Library Space",
-        description: "",
+        description: "Books, articles, and courses.",
       }}
     >
       <SpaceDescription

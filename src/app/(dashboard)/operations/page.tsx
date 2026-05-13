@@ -17,7 +17,7 @@ export default async function OperationsPage() {
       header={{
         label: "operations",
         title: "Operations",
-        description: "",
+        description: "The engine of your Personal OS.",
       }}
     >
       <SpaceDescription

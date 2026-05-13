@@ -17,7 +17,7 @@ export default async function HealthPage() {
       header={{
         label: "health",
         title: "Health",
-        description: "",
+        description: "Physical foundation of performance.",
       }}
     >
       <SpaceDescription

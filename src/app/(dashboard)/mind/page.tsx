@@ -17,7 +17,7 @@ export default async function MindPage() {
       header={{
         label: "mind",
         title: "Mind",
-        description: "",
+        description: "Intellectual growth and knowledge management.",
       }}
     >
       <SpaceDescription

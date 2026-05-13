@@ -18,7 +18,7 @@ export default async function LanguagesPage() {
       header={{
         label: "language space",
         title: "Language Space",
-        description: "",
+        description: "Vocabulary, immersion, and resources.",
       }}
     >
       <SpaceDescription

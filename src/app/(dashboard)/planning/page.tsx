@@ -18,7 +18,7 @@ export default async function PlanningSpacePage() {
       header={{
         label: "planning space",
         title: "Planning Space",
-        description: "",
+        description: "Vision, milestones, and 12-week sprints.",
       }}
     >
       <SpaceDescription

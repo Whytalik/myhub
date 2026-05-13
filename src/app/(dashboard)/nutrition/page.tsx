@@ -18,7 +18,7 @@ export default async function NutritionSpacePage() {
       header={{
         label: "nutrition space",
         title: "Nutrition Space",
-        description: "",
+        description: "Meal planning, macro tracking, and shopping.",
       }}
     >
       <SpaceDescription

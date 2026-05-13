@@ -17,7 +17,7 @@ export default async function WealthPage() {
       header={{
         label: "wealth",
         title: "Wealth",
-        description: "",
+        description: "Financial resources and investment strategy.",
       }}
     >
       <SpaceDescription

@@ -12,7 +12,7 @@ export default function TradingPage() {
       header={{
         label: "trading space",
         title: "Trading Space",
-        description: "",
+        description: "Trade journal and portfolio.",
       }}
     >
       <SpaceDescription

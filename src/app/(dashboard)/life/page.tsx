@@ -18,7 +18,7 @@ export default async function LifeSpacePage() {
       header={{
         label: "life space",
         title: "Life Space",
-        description: "",
+        description: "Daily journal, habits, and task management.",
       }}
     >
       <SpaceDescription

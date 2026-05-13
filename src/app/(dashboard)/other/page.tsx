@@ -17,7 +17,7 @@ export default async function OtherSpacePage() {
       header={{
         label: "misc / other",
         title: "Misc / Other",
-        description: "",
+        description: "Wishlist and standalone tools.",
       }}
     >
       <SpaceDescription

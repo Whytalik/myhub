@@ -12,7 +12,7 @@ export default function FitnessPage() {
       header={{
         label: "fitness space",
         title: "Fitness Space",
-        description: "",
+        description: "Workouts, exercises, and progress tracking.",
       }}
     >
       <SpaceDescription

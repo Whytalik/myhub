@@ -17,7 +17,7 @@ interface SpaceLandingProps {
 
 export function SpaceLanding({ header, children, intelligence, className }: SpaceLandingProps) {
   return (
-    <div className={`py-6 md:py-8 pb-12 ${className || ""}`}>
+    <div className={`pb-12 ${className || ""}`}>
       <SpaceHeader
         label={header.label}
         title={header.title}

@@ -17,7 +17,7 @@ export default async function VaultPage() {
       header={{
         label: "vault",
         title: "Vault",
-        description: "",
+        description: "Secondary storage and utilities.",
       }}
     >
       <SpaceDescription
