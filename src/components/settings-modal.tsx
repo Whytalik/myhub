@@ -187,7 +187,7 @@ function SortableItem({
         <div className={`p-1.5 rounded-lg border transition-colors ${isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"}`}>
           <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} style={{ color: isDragging ? undefined : color }} strokeWidth={2.5} />
         </div>
-        <span className={`flex-1 text-[var(--text-settings-item)] font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
+        <span className={`flex-1 text-note font-bold truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
         <ChevronDown size={14} className={`text-muted transition-transform duration-300 ${isSelected ? "rotate-180 text-accent" : ""}`} />
       </div>
 
@@ -496,13 +496,13 @@ export function SettingsModal({
           </div>
 
           {/* Desktop: vertical tabs */}
-          <div className="hidden sm:flex w-44 border-r border-border/50 bg-raised/30 p-2 flex-col gap-1 shrink-0">
+          <div className="hidden sm:flex w-44 border-r border-border bg-surface-hover p-2 flex-col gap-1 shrink-0">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[var(--text-settings-tab)] font-bold transition-all ${
-                  activeTab === tab.id ? "bg-accent text-bg shadow-sm" : "text-muted hover:text-text hover:bg-raised/80"
+                className={`flex items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-note font-semibold transition-all ${
+                  activeTab === tab.id ? "bg-accent text-[#0f0d0a] shadow-card" : "text-text-secondary hover:text-text-primary hover:bg-surface"
                 }`}
               >
                 <tab.icon size={14} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
@@ -510,7 +510,7 @@ export function SettingsModal({
               </button>
             ))}
             <div className="mt-auto p-2 text-center">
-              <span className="text-[var(--text-settings-version)] font-mono text-accent uppercase font-bold tracking-tighter opacity-40">V1.2.6</span>
+              <span className="text-micro font-mono text-accent uppercase font-bold tracking-wider opacity-40">v1.2.6</span>
             </div>
           </div>
 
@@ -525,12 +525,12 @@ export function SettingsModal({
               {activeTab === "general" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
-                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Profile</h4>
+                    <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3">Profile</h4>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-caption font-bold uppercase text-muted">Display Name</label>
+                      <label className="text-caption font-semibold text-text-muted">Display Name</label>
                       <div className="flex gap-2">
-                        <input className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-[var(--text-settings-input)] outline-none transition-all text-text focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-caption font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                        <input className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-[var(--radius-sm)] text-note outline-none transition-all text-text-primary focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                         </button>
                       </div>
@@ -538,20 +538,20 @@ export function SettingsModal({
                   </section>
 
                   <section>
-                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3 flex items-center gap-2">
+                    <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3 flex items-center gap-2">
                       <Lock size={12} /> Private Tasks
                     </h4>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-caption font-bold uppercase text-muted">Password</label>
+                      <label className="text-caption font-semibold text-text-muted">Password</label>
                       <div className="flex gap-2">
                         <input 
                           type="password"
-                          className="flex-1 bg-raised border border-border px-3 py-1.5 rounded-xl text-[var(--text-settings-input)] outline-none transition-all text-text focus:border-accent/40" 
+                          className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-[var(--radius-sm)] text-note outline-none transition-all text-text-primary focus:border-accent/40" 
                           value={privatePassword} 
                           onChange={(e) => setPrivatePassword(e.target.value)} 
                           placeholder="Set password to hide tasks"
                         />
-                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-bg rounded-xl text-caption font-bold uppercase disabled:opacity-30 flex items-center gap-2 h-9">
+                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : isPasswordSaved ? <Check size={12} /> : "Save"}
                         </button>
                       </div>
@@ -563,15 +563,15 @@ export function SettingsModal({
               {activeTab === "appearance" && (
                 <div className="space-y-5 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
-                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Theme</h4>
+                    <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3">Theme</h4>
                     <div className="grid grid-cols-2 gap-2">
-                       <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "dark" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                          <div className="flex items-center gap-2"><Moon size={14} /><span className="text-caption font-bold uppercase">Dark</span></div>
-                          {theme === "dark" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                       <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-[var(--radius-md)] border transition-all ${theme === "dark" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
+                          <div className="flex items-center gap-2"><Moon size={14} /><span className="text-caption font-bold">Dark Mode</span></div>
+                          {theme === "dark" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                        </button>
-                       <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-xl border transition-all ${theme === "light" ? "bg-accent/10 border-accent text-accent" : "bg-raised/30 border-border text-muted hover:text-text"}`}>
-                          <div className="flex items-center gap-2"><Sun size={14} /><span className="text-caption font-bold uppercase">Light</span></div>
-                          {theme === "light" && <div className="w-1 h-1 rounded-full bg-accent" />}
+                       <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-[var(--radius-md)] border transition-all ${theme === "light" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
+                          <div className="flex items-center gap-2"><Sun size={14} /><span className="text-caption font-bold">Light Mode</span></div>
+                          {theme === "light" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                        </button>
                     </div>
                   </section>
@@ -581,15 +581,14 @@ export function SettingsModal({
               {activeTab === "domains" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Domains</h4>
-                    {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                    <h4 className="text-micro font-bold uppercase tracking-widest text-accent">Domains</h4>
+                    {isSaved && <span className="text-micro font-bold text-emerald-500 uppercase animate-pulse tracking-widest">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
                         {domains.map((domain) => {
                           const custom = customizations[domain.id];
-                          // ?????? ????????? ????? ? SPACE_THEMES ?? ID ??????
                           const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[domain.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || domain.icon) : domain.icon;
 
@@ -610,22 +609,21 @@ export function SettingsModal({
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-label text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
+                  <p className="text-micro text-text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
               {activeTab === "spaces" && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Spaces</h4>
-                    {isSaved && <span className="text-label font-bold text-emerald-500 uppercase animate-pulse">Saved</span>}
+                    <h4 className="text-micro font-bold uppercase tracking-widest text-accent">Spaces</h4>
+                    {isSaved && <span className="text-micro font-bold text-emerald-500 uppercase animate-pulse tracking-widest">Saved</span>}
                   </div>
                   <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
                     <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
                       <div className="flex flex-col gap-2 pb-2">
                         {spaces.map((space) => {
                           const custom = customizations[space.id];
-                          // ?????? ????????? ????? ? SPACE_THEMES ?? ID ??????
                           const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[space.id]?.accent || "#fbbf24";
                           const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || space.icon) : space.icon;
 
@@ -646,31 +644,31 @@ export function SettingsModal({
                       </div>
                     </SortableContext>
                   </DndContext>
-                  <p className="text-label text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
+                  <p className="text-micro text-text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
               {activeTab === "data" && (
                 <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
-                  <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold mb-3">Management</h4>
+                  <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3">Management</h4>
                   <div className="grid grid-cols-1 gap-2">
-                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-note font-bold">Export JSON</h5><p className="text-label text-muted">Complete backup.</p></div>
-                        <button onClick={handleExport} className="p-2 bg-accent text-bg rounded-lg hover:scale-105 active:scale-95 transition-all shadow-md shadow-accent/20"><Download size={14} strokeWidth={2.5} /></button>
+                     <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                        <div><h5 className="text-note font-bold text-text-primary">Export JSON</h5><p className="text-micro text-text-muted">Complete system backup.</p></div>
+                        <button onClick={handleExport} className="p-2.5 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] hover:scale-105 active:scale-95 transition-all shadow-card"><Download size={14} strokeWidth={2.5} /></button>
                      </div>
-                     <div className="p-3 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
-                        <div><h5 className="text-note font-bold">Import Backup</h5><p className="text-label text-muted">Restore state.</p></div>
+                     <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                        <div><h5 className="text-note font-bold text-text-primary">Import Backup</h5><p className="text-micro text-text-muted">Restore system state.</p></div>
                         <div className="flex items-center gap-2">
                           <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
-                          <button onClick={() => fileInputRef.current?.click()} className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
+                          <button onClick={() => fileInputRef.current?.click()} className="p-2.5 bg-surface border border-border rounded-[var(--radius-sm)] hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
                         </div>
                      </div>
-                     <div className="p-3 border border-red-500/10 bg-red-500/5 rounded-xl flex items-center justify-between">
-                          <div><h5 className="text-note font-bold text-red-500">Reset System</h5><p className="text-label text-red-500/60">Wipe all records.</p></div>
-                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                     <div className="p-4 border border-red-500/10 bg-red-500/5 rounded-[var(--radius-md)] flex items-center justify-between">
+                          <div><h5 className="text-note font-bold text-red-500">Reset System</h5><p className="text-micro text-red-500/60">Wipe all local records.</p></div>
+                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-[var(--radius-sm)] hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
                      </div>
-                     <div className="p-3 border border-accent/10 bg-accent/5 rounded-xl flex items-center justify-between mt-2">
-                          <div><h5 className="text-note font-bold text-accent">Seed Visual Plan</h5><p className="text-label text-accent/60">Populate with default data.</p></div>
+                     <div className="p-4 border border-accent/10 bg-accent/5 rounded-[var(--radius-md)] flex items-center justify-between mt-2">
+                          <div><h5 className="text-note font-bold text-accent">Seed Visual Plan</h5><p className="text-micro text-accent/60">Populate with default data.</p></div>
                           <button 
                             onClick={async () => {
                               startTransition(async () => {
@@ -680,7 +678,7 @@ export function SettingsModal({
                               });
                             }} 
                             disabled={isPending}
-                            className="p-2 bg-accent/10 text-accent border border-accent/20 rounded-lg hover:bg-accent/20 transition-all disabled:opacity-50"
+                            className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-[var(--radius-sm)] hover:bg-accent/20 transition-all disabled:opacity-50"
                           >
                             <Database size={14} />
                           </button>
@@ -693,33 +691,33 @@ export function SettingsModal({
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
                   <section>
                     <div className="flex justify-between items-center mb-3">
-                       <h4 className="text-[var(--text-settings-heading)] font-mono uppercase tracking-[0.2em] text-accent font-bold">Push Notifications</h4>
+                       <h4 className="text-micro font-bold uppercase tracking-widest text-accent">Push Notifications</h4>
                        {deviceCount > 0 && (
-                         <span className="text-label font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
+                         <span className="text-micro font-bold bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 animate-pulse">
                            {deviceCount} Linked Device{deviceCount > 1 ? 's' : ''}
                          </span>
                        )}
                     </div>
 
                     {!isNotificationSupported ? (
-                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500 text-caption leading-relaxed">
+                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-[var(--radius-md)] text-amber-500 text-caption leading-relaxed">
                           Your browser does not support push notifications. If you are on iPhone, make sure to &quot;Add to Home Screen&quot; first.
                        </div>
                     ) : (
                       <div className="space-y-3">
-                         <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                         <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                               <div className={`p-2 rounded-lg ${isSubscribed ? "bg-emerald-500/10 text-emerald-500" : "bg-accent/10 text-accent"}`}>
+                               <div className={`p-2 rounded-[var(--radius-sm)] ${isSubscribed ? "bg-emerald-500/10 text-emerald-500" : "bg-accent/10 text-accent"}`}>
                                   <Smartphone size={16} />
                                </div>
                                <div>
-                                  <h5 className="text-note font-bold">Current Device</h5>
-                                  <p className="text-label text-muted">{isSubscribed ? "Connection established" : "Ready to link"}</p>
+                                  <h5 className="text-note font-bold text-text-primary">Current Device</h5>
+                                  <p className="text-micro text-text-muted">{isSubscribed ? "Connection established" : "Ready to link"}</p>
                                </div>
                             </div>
                             <button 
                               onClick={subscribeToPush}
-                              className={`px-3 py-1.5 rounded-lg text-label font-bold uppercase transition-all bg-accent text-bg hover:scale-105 active:scale-95`}
+                              className={`px-3 py-1.5 rounded-[var(--radius-sm)] text-micro font-bold uppercase transition-all bg-accent text-[#0f0d0a] hover:scale-105 active:scale-95 shadow-card`}
                             >
                                {isSubscribed ? "Re-link" : "Link"}
                             </button>
@@ -727,22 +725,22 @@ export function SettingsModal({
 
                          {deviceCount > 0 && (
                             <div className="space-y-2">
-                               <div className="p-4 bg-raised/30 border border-border rounded-xl flex items-center justify-between">
+                               <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
                                   <div className="flex items-center gap-3">
-                                     <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                                     <div className="p-2 rounded-[var(--radius-sm)] bg-blue-500/10 text-blue-500">
                                         <Bell size={16} />
                                      </div>
                                      <div>
-                                        <h5 className="text-note font-bold">Broadcast Test</h5>
-                                        <p className="text-label text-muted">Ping all {deviceCount} linked devices.</p>
+                                        <h5 className="text-note font-bold text-text-primary">Broadcast Test</h5>
+                                        <p className="text-micro text-text-muted">Ping all {deviceCount} linked devices.</p>
                                      </div>
                                   </div>
                                   <button 
                                     type="button"
                                     onClick={testPush}
-                                    className="p-2 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"
+                                    className="p-2 bg-surface border border-border rounded-[var(--radius-sm)] hover:border-accent transition-all active:scale-95"
                                   >
-                                     <Check size={14} className="text-muted" />
+                                     <Check size={14} className="text-text-muted" />
                                   </button>
                                </div>
                             </div>
@@ -750,7 +748,7 @@ export function SettingsModal({
                       </div>
                     )}
                   </section>
-                  <p className="text-label text-muted leading-relaxed italic opacity-70">
+                  <p className="text-micro text-text-muted leading-relaxed italic opacity-70">
                     To link your iPhone, open the app from your Home Screen and click &quot;Link&quot; here.
                   </p>
                 </div>

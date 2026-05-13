@@ -250,16 +250,16 @@ export function Sidebar({
                 style={{ pointerEvents: isExpanded ? "auto" : "none" }}
               >
                 <span
-                  className="text-[var(--text-sidebar-label)] font-bold whitespace-nowrap"
+                  className="text-note font-semibold whitespace-nowrap"
                   style={{ color: color.text }}
                 >
                   {item.label}
                 </span>
                 {isExpanded && isDisabled && (
-                  <Lock size={10} className="text-muted/30 shrink-0" />
+                  <Lock size={10} className="text-text-muted/30 shrink-0" />
                 )}
                 {isExpanded && item.status !== "disabled" && (
-                    <span className={`text-[10px] text-[var(--text-sidebar-badge)] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded ${statusBadge.bg} ${statusBadge.color}`}>
+                    <span className={`text-micro font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-[var(--radius-xs)] ${statusBadge.bg} ${statusBadge.color}`}>
                     {statusBadge.label}
                   </span>
                 )}
@@ -337,10 +337,10 @@ export function Sidebar({
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-lg text-[var(--text-sidebar-sub)] transition-colors duration-200 ${
+                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-[var(--radius-sm)] text-caption transition-colors duration-200 ${
                               isSubActive
                                 ? "font-bold"
-                                : "text-muted hover:text-[var(--hover-text)] hover:bg-[var(--hover-bg)]"
+                                : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                             }`}
                             style={{
                               color: isSubActive ? color.text : undefined,
@@ -414,8 +414,8 @@ export function Sidebar({
                   transition={LABEL_TRANSITION}
                   className="flex flex-col overflow-hidden whitespace-nowrap"
                 >
-                  <h1 className="text-[var(--text-sidebar-title)] font-black text-text tracking-tighter leading-none">MYHUB</h1>
-                  <p className="text-[var(--text-sidebar-subtitle)] font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
+                  <h1 className="text-heading font-black text-text-primary tracking-tighter leading-none">MyHub</h1>
+                  <p className="text-micro font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -433,17 +433,17 @@ export function Sidebar({
                 {/* Mobile: X close button */}
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="lg:hidden p-2 rounded-xl text-muted hover:text-text hover:bg-raised transition-all duration-200"
+                  className="lg:hidden p-2 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                 >
                   <X size={16} />
                 </button>
                 {/* Desktop: Pin button */}
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-                  className={`hidden lg:flex p-2 rounded-xl transition-all duration-200 ${
+                  className={`hidden lg:flex p-2 rounded-[var(--radius-sm)] transition-all duration-200 ${
                     !isCollapsed
                       ? "text-accent bg-accent/10 border border-accent/20"
-                      : "text-muted hover:text-text hover:bg-raised"
+                      : "text-text-muted hover:text-text-primary hover:bg-surface-hover"
                   }`}
                 >
                   <motion.div
@@ -501,7 +501,7 @@ export function Sidebar({
             <>
               <Link href="/profile" className="flex items-center gap-4 group/profile-link">
                 <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0 group-hover/profile-link:scale-105 transition-transform duration-200 shadow-lg shadow-accent/5">
-                  <span className="text-accent text-[var(--text-sidebar-avatar)] font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
+                  <span className="text-accent text-body font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
 
                 <AnimatePresence initial={false}>
@@ -513,7 +513,7 @@ export function Sidebar({
                       transition={LABEL_TRANSITION}
                       className="flex flex-col overflow-hidden whitespace-nowrap"
                     >
-                      <p className="text-[var(--text-sidebar-user)] font-bold text-text truncate leading-none">{user.name}</p>
+                      <p className="text-note font-bold text-text-primary truncate leading-none">{user.name}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -533,13 +533,13 @@ export function Sidebar({
                         setIsSettingsOpen(true);
                         setIsMobileOpen(false);
                       }}
-                      className="p-1.5 rounded-lg text-muted hover:text-text hover:bg-raised transition-all duration-200"
+                      className="p-1.5 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                     >
                       <Settings2 size={13} />
                     </button>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                      className="p-1.5 rounded-[var(--radius-sm)] text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
                     >
                       <LogOut size={13} />
                     </button>

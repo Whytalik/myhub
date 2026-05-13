@@ -56,7 +56,7 @@ export function Dialog({
 
       {/* Content */}
       <div
-        className={`relative w-full bg-surface border border-border rounded-t-2xl sm:rounded-2xl shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
+        className={`relative w-full bg-elevated border border-border rounded-t-[var(--radius-xl)] sm:rounded-[var(--radius-xl)] shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
         <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
@@ -64,19 +64,19 @@ export function Dialog({
             <div className="flex items-start justify-between mb-3">
               <div className="space-y-0.5">
                 {title && (
-                  <h3 className="text-base font-black text-text tracking-tight leading-none">
+                  <h3 className="text-heading font-black text-text-primary leading-tight">
                     {title}
                   </h3>
                 )}
                 {description && (
-                  <p className="text-caption font-mono text-muted tracking-wider">
+                  <p className="text-caption text-text-secondary">
                     {description}
                   </p>
                 )}
               </div>
               <button 
                 onClick={onClose}
-                className="p-1 hover:bg-raised rounded text-muted hover:text-text transition-all active:scale-90"
+                className="p-1.5 hover:bg-surface-hover rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary transition-all active:scale-90"
               >
                 <X size={18} />
               </button>
@@ -87,7 +87,7 @@ export function Dialog({
         </div>
 
         {footer && (
-          <div className="bg-raised/30 border-t border-border/50 p-4 flex justify-end gap-2">
+          <div className="bg-surface-hover border-t border-border p-4 flex justify-end gap-2">
             {footer}
           </div>
         )}
@@ -127,13 +127,13 @@ export function ConfirmationDialog({
       maxWidth="400px"
     >
       <div className="flex flex-col gap-6">
-        <p className="text-body text-secondary leading-relaxed">
+        <p className="text-body text-text-secondary leading-relaxed">
           {description}
         </p>
         <div className="flex justify-end gap-3 pt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-note font-mono tracking-wider text-muted hover:text-text transition-colors"
+            className="px-4 py-2 text-note font-semibold text-text-muted hover:text-text-primary transition-colors"
           >
             {cancelLabel}
           </button>
@@ -142,10 +142,10 @@ export function ConfirmationDialog({
               onConfirm();
               onClose();
             }}
-            className={`px-6 py-2 rounded-xl text-note font-mono tracking-wider font-bold transition-all active:scale-95 ${
+            className={`px-6 py-2 rounded-[var(--radius-sm)] text-note font-bold transition-all active:scale-95 ${
               variant === "danger"
                 ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20"
-                : "bg-accent text-bg hover:bg-accent/90"
+                : "bg-accent text-[#0f0d0a] hover:opacity-90 shadow-lg shadow-accent/10"
             }`}
           >
             {confirmLabel}

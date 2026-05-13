@@ -9,10 +9,10 @@ interface SpaceHeaderProps {
 
 export function SpaceHeader({ label, title, description }: SpaceHeaderProps) {
   return (
-    <div className="flex flex-col mb-16">
+    <div className="flex flex-col mb-10">
       <Breadcrumb items={[{ label }]} />
       <Heading title={title} />
-      <p className="text-base text-secondary max-w-2xl leading-relaxed">
+      <p className="text-note text-text-secondary max-w-2xl leading-relaxed">
         {description}
       </p>
     </div>

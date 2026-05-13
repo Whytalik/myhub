@@ -9,8 +9,19 @@
   - [x] UI updated
   - [x] Verified with tsc / lint
 
+### Added: Graph view filters
+- Implemented task filtering for the Graph (Mind Map) view.
+- Added a "Hide Done" toggle that filters out completed subtasks while keeping active ones and roots.
+- Integrated filtering state in `TasksPageClient` and updated `TaskGraph` to use memoized filtered tasks.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified (no regressions in life domain)
+
 ### Fixed: Month view calendar cell height adaptation
-- Task overlay container now dynamically calculates minimum height based on the maximum number of stacked task levels across all columns, preventing task cards from being clipped when multiple tasks stack vertically.
+- Refactored calendar grid to group days by week rows, allowing each row to expand vertically independently based on its specific task count.
+- Implemented row-based height calculation using individual task heights and levels, ensuring the grid cell backgrounds and borders perfectly match the task overlay.
+- Fixed clipping issues where tasks would overflow the calendar cells when many tasks were scheduled on the same day.
 - Verification:
   - [x] Logic implemented
   - [x] UI updated

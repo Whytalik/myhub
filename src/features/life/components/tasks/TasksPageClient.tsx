@@ -1,14 +1,13 @@
 ﻿"use client";
 
-import { useState, lazy, Suspense } from "react";
-import { Layers, Plus, Loader2 } from "lucide-react";
+import { useState, lazy, Suspense, useMemo, useTransition } from "react";
+import { Layers, Plus, Loader2, CheckCircle2 } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { instantDuplicateTaskAction, instantAddSubtaskAction } from "@/features/life/actions/task-actions";
-import { useTransition } from "react";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
 import { SphereGrid } from "./SphereGrid";
@@ -29,6 +28,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "gallery");
+  const [hideDoneSubtasks, setHideDoneSubtasks] = useState(false);
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -103,6 +103,14 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
   const tasks = initialTasks;
 
+  const filteredTasks = useMemo(() => {
+    let result = tasks;
+    if (hideDoneSubtasks) {
+      result = result.filter(t => !(t.parentId && t.status === 'DONE'));
+    }
+    return result;
+  }, [tasks, hideDoneSubtasks]);
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-6">
@@ -143,6 +151,19 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
+              {view === "graph" && (
+                <Button
+                  variant={hideDoneSubtasks ? "primary" : "outline"}
+                  size="sm"
+                  onClick={() => setHideDoneSubtasks(!hideDoneSubtasks)}
+                  className="rounded-xl px-4 h-10 sm:h-9 text-note font-bold transition-all"
+                  title="Toggle completed subtasks"
+                >
+                  <CheckCircle2 size={14} className={hideDoneSubtasks ? "mr-2" : "mr-2 text-muted/50"} />
+                  {hideDoneSubtasks ? "Showing Active" : "Hide Done"}
+                </Button>
+              )}
+
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -202,7 +223,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         {view === "graph" && (
           <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
             <TaskGraph
-              tasks={tasks}
+              tasks={filteredTasks}
               spheres={spheres}
               onEdit={handleEdit}
               onDuplicate={handleDuplicate}

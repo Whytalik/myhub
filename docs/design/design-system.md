@@ -20,78 +20,70 @@ The entire OS is organized into 5 fundamental **Life Domains**. Every tool and p
 
 ---
 
-## 3. Typography: "The Modern Engineer"
-We use two primary fonts to balance aesthetic appeal with technical precision.
+## 3. Typography: "The Clean OS"
+We prioritize readability and clarity, using a consistent typographic scale across the entire system.
 
-| Role      | Font Family     | Weight       | Tracking | Usage                            |
-|-----------|-----------------|--------------|----------|----------------------------------|
-| Headings  | DM Sans         | 900 (Black)  | -0.06em  | Hero titles, Domain headers      |
-| UI / Body | DM Sans         | 400 - 600    | -0.015em | General interface, Descriptions  |
-| Technical | Geist Mono      | 500 - 700    | 0.25em   | Metadata, Metrics, Sidenotes     |
+| Role      | Font Family     | Usage                            |
+|-----------|-----------------|----------------------------------|
+| UI / Body | Inter           | General interface, Descriptions  |
+| Technical | Geist Mono      | Metadata, Metrics, Sidenotes     |
 
-### Heading Scale (Compact)
-- **Hero Title**: `text-5xl md:text-7xl font-heading uppercase`
-- **Section Label**: `text-[10px] font-mono uppercase tracking-[0.4em]`
-- **Metric Value**: `text-2xl font-heading uppercase tracking-tighter`
+### Semantic Scale
+- **Micro**: `0.75rem` — Badges, micro-statuses.
+- **Label**: `0.8125rem` — Form labels, tags.
+- **Caption**: `0.875rem` — Metadata, dates.
+- **Note**: `0.9375rem` — Supporting text in cards.
+- **Body**: `1rem` — Primary content.
+- **Subtitle**: `1.125rem` — Inner card headers.
+- **Heading**: `1.3125rem` — Block headers, dialog titles.
+- **Title**: `1.5625rem` — Page headers.
+- **Hero**: `2.25rem` — Large metrics, status displays.
 
----
-
-## 4. Color Palette & Theming
-The system supports full **Light** and **Dark** modes via CSS variables defined in `globals.css`.
-
-| Token             | Dark (Default) | Light Mode   | Usage                                |
-|-------------------|----------------|--------------|--------------------------------------|
-| `--color-bg`      | `#0f0d0a`      | `#f7f5f2`    | Global canvas background             |
-| `--color-surface` | `#1a1712`      | `#ffffff`    | Sidebar, Primary cards               |
-| `--color-raised`  | `#221e18`      | `#efedea`    | Hover states, Secondary backgrounds  |
-| `--color-border`  | `#2c271f`      | `#e2e0db`    | Structural dividers                  |
-| `--color-text`    | `#ffffff`      | `#1a1712`    | Primary content                      |
-| `--color-secondary`| `#d1c7bc`      | `#4a453e`    | Supporting information               |
-| `--color-accent`  | Domain-linked  | Domain-linked| Dynamic accent based on Space        |
+*Note: Avoid forced uppercase transformations and excessive letter-spacing unless specifically required for technical labels.*
 
 ---
 
-## 5. UI Components & Patterns
+## 4. Color Palette & Theming (Elevation & Hierarchy)
+The system supports full **Light** and **Dark** modes via semantic CSS variables.
 
-### 5.1 DomainHeader (Context Switcher)
-- **Visuals**: Permanent horizontal bar (`h-14`) at the top.
+### Dark Mode (Default)
+| Token             | Value          | Usage                                |
+|-------------------|----------------|--------------------------------------|
+| `--color-bg`      | `#0f0d0a`      | Base canvas background               |
+| `--color-surface` | `#171410`      | Primary cards, sidebars              |
+| `--color-surface-hover` | `#1f1b16`| Hover states for surfaces            |
+| `--color-elevated`| `#26221c`      | Modals, dropdowns, overlays          |
+
+### Text Hierarchy
+- **Primary**: `#f2ede9` — High contrast content.
+- **Secondary**: `#b5a89a` — Supporting information.
+- **Muted**: `#786e63` — Non-essential metadata.
+
+---
+
+## 5. Shape & Structure (Radii)
+We use a standardized radius system to ensure visual cohesion across all components.
+
+- **XS**: `0.25rem` (4px) — Checkboxes.
+- **SM**: `0.375rem` (6px) — Buttons, inputs.
+- **MD**: `0.5rem` (8px) — Small cards.
+- **LG**: `0.75rem` (12px) — Standard content cards.
+- **XL**: `1rem` (16px) — Large blocks, dialogs.
+- **Panel**: `1.5rem` (24px) — Large interactive containers (Graphs, Calendars).
+
+---
+
+## 6. UI Components & Patterns
+
+### 6.1 DomainHeader (Context Switcher)
+- **Visuals**: Permanent horizontal bar at the top.
 - **Behavior**: Switches the active Domain, triggering a Sidebar filter and navigating to the Domain Hub.
-- **Active State**: Inverted colors (Dark on Accent) with no underline.
 
-### 5.2 Contextual Sidebar
-- **States**: 
-    - **Rail (w-20)**: Icon-only mode for focus.
-    - **Expanded (w-64)**: Full labels and sub-navigation.
-- **Pinning**: Manual toggle between Rail and Expanded states.
-- **Interactivity**: Active Space card is highlighted with the Space's unique accent color (8% opacity bg, 25% opacity border).
+### 6.2 Contextual Sidebar
+- **States**: Rail and Expanded modes.
+- **Pinning**: Manual toggle between states.
 
-### 5.3 Domain Hubs (Landing Pages)
-Built using the **`DomainTemplate`** to ensure 100% visual stability during navigation.
-- **Rules**: 
-    - No vertical scroll for the main dashboard ("Single Screen Design").
-    - **Top Area**: Breadcrumbs.
-    - **Hero Area**: Big typography mission statement.
-    - **Content Area**: Horizontal Space Cards.
-    - **Bottom Area**: Fixed 3-column metrics strip.
-
----
-
-## 6. Data Organization Principles
-
-### Hierarchical Lineage
-Every record must have a clear lineage:
-`Domain` -> `Space` -> `Tool` -> `Sub-tool` -> `Entry`
-*Example:* `Operations` -> `Life Space` -> `Journal` -> `Morning Routine` -> `Checkmark`.
-
-### Data Governance (Export/Import)
-- **Deep Restore**: The system must maintain relational integrity during imports by mapping old IDs to newly generated database IDs.
-- **Recursive Tasks**: Parent-child relationships in tasks must be restored in order of depth.
-- **Safe Migrations**: Always use `prisma db push` on production without `--accept-data-loss` to protect the state.
-
----
-
-## 7. Interaction Rules for AI Agents
-1.  **Always use `DomainTemplate`** for new high-level pages.
-2.  **Never hardcode colors**: Use `var(--color-...)` or pass color props to template components.
-3.  **Typography consistency**: Use `font-heading` for titles and `font-mono` for anything quantifiable.
-4.  **Compactness first**: If adding content creates a scroll on a hub page, simplify or move to a sub-page.
+### 6.3 Domain Hubs (Landing Pages)
+Built using the **`DomainTemplate`** for visual stability.
+- **Principles**: Single screen focus, hierarchical grouping, clear navigation paths.
+- **Accentuation**: Use domain-specific colors (`--color-domain-*`) sparingly to indicate active context.

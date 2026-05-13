@@ -8,13 +8,13 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "default", ...props }, ref) => {
-    const baseStyles = "inline-flex items-center justify-center rounded-xl text-note font-mono uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
+    const baseStyles = "inline-flex items-center justify-center rounded-[var(--radius-sm)] text-note font-semibold transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
     
     const variants = {
-      primary: "bg-accent text-bg hover:bg-accent/90 font-bold",
-      secondary: "bg-raised text-text hover:bg-raised/80 border border-border",
-      outline: "border border-border bg-transparent hover:bg-raised text-secondary hover:text-text",
-      ghost: "bg-transparent hover:bg-raised text-secondary hover:text-text border-transparent",
+      primary: "bg-accent text-[#0f0d0a] hover:opacity-90",
+      secondary: "bg-surface-hover text-text-primary hover:bg-elevated border border-border",
+      outline: "border border-border bg-transparent hover:bg-surface-hover text-text-secondary hover:text-text-primary",
+      ghost: "bg-transparent hover:bg-surface-hover text-text-secondary hover:text-text-primary",
       danger: "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20",
     };
 

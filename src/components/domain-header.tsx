@@ -43,15 +43,15 @@ export function DomainHeader() {
         {/* Mobile: Burger + Logo */}
         <div className="flex lg:hidden items-center justify-between w-full">
           <Link href="/home" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
-              <Sparkles size={16} className="text-bg" fill="currentColor" />
+            <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
+              <Sparkles size={16} className="text-[#0f0d0a]" fill="currentColor" />
             </div>
-            <span className="text-[var(--text-header-logo)] font-black tracking-tighter uppercase leading-none">MYHUB</span>
+            <span className="text-heading font-black tracking-tighter leading-none text-text-primary">MyHub</span>
           </Link>
 
           <button 
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="p-2 rounded-xl text-muted hover:text-text hover:bg-raised transition-all duration-300"
+            className="p-2 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
             aria-label="Toggle Spaces Menu"
           >
             {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -69,26 +69,26 @@ export function DomainHeader() {
             return (
               <div
                 key={domain.id}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all duration-500 shrink-0 ${
+                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-[var(--radius-sm)] transition-all duration-300 shrink-0 ${
                   isLocked
                     ? "opacity-30 cursor-not-allowed"
                     : isActive 
                       ? "bg-accent/10 border border-accent/20" 
-                      : "hover:bg-raised border border-transparent"
+                      : "hover:bg-surface-hover border border-transparent"
                 }`}
               >
                 <Icon 
                   size={14} 
                   className={`transition-colors duration-300 ${
-                    isLocked ? "text-muted" : isActive ? "text-accent" : "text-muted group-hover:text-text"
+                    isLocked ? "text-text-muted" : isActive ? "text-accent" : "text-text-muted group-hover:text-text-primary"
                   }`} 
                 />
-                <span className={`text-[var(--text-header-domain)] font-bold uppercase tracking-widest transition-colors duration-300 ${
-                  isLocked ? "text-muted" : isActive ? "text-text" : "text-muted"
+                <span className={`text-note font-semibold transition-colors duration-300 ${
+                  isLocked ? "text-text-muted" : isActive ? "text-text-primary" : "text-text-muted"
                 }`}>
                   {domain.label}
                 </span>
-                {isLocked && <Lock size={10} className="text-muted/40" />}
+                {isLocked && <Lock size={10} className="text-text-muted/40" />}
                 {!isLocked && (
                   <Link href={domain.href} className="absolute inset-0" />
                 )}

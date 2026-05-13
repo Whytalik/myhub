@@ -5,11 +5,10 @@ interface HeadingProps {
 
 export function Heading({ title, className = "text-heading md:text-title" }: HeadingProps) {
   return (
-    <div className="mb-4">
-      <h1 className={`${className} font-heading text-text leading-none tracking-tight`}>
+    <div className="mb-2">
+      <h1 className={`${className} font-heading text-text-primary leading-tight`}>
         {title}
       </h1>
-      <div className="mt-4 h-[2px] w-16 bg-accent" />
     </div>
   );
 }
