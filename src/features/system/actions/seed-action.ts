@@ -276,18 +276,15 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
 
         const dish = findDish(dishName);
         if (dish) {
-          const totalKcal = dish.ingredients.reduce((acc, ing) => acc + (ing.rawWeight * (ing.product.caloriesPer100 || 0)) / 100, 0);
-          const kcalPerServing = totalKcal / (dish.servings || 1);
-          const servings = slot.targetKcal / (kcalPerServing || 1);
           const totalWeight = dish.ingredients.reduce((acc, ing) => acc + ing.rawWeight, 0);
-          const portionWeight = servings * (totalWeight / (dish.servings || 1));
+          const portionWeight = totalWeight / (dish.servings || 1);
 
           await prisma.dishEntry.create({
             data: {
               mealSlotId: slot.id,
               dishId: dish.id,
               portionWeight,
-              servings,
+              servings: 1,
               isShared: true
             }
           });
