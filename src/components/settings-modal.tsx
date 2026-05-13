@@ -501,7 +501,7 @@ export function SettingsModal({
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-[var(--radius-md)] text-note font-semibold transition-all ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-md text-note font-semibold transition-all ${
                   activeTab === tab.id ? "bg-accent text-[#0f0d0a] shadow-card" : "text-text-secondary hover:text-text-primary hover:bg-surface"
                 }`}
               >
@@ -529,8 +529,8 @@ export function SettingsModal({
                     <div className="flex flex-col gap-1.5">
                       <label className="text-caption font-semibold text-text-muted">Display Name</label>
                       <div className="flex gap-2">
-                        <input className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-[var(--radius-sm)] text-note outline-none transition-all text-text-primary focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
+                        <input className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-sm text-note outline-none transition-all text-text-primary focus:border-accent/40" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+                        <button onClick={handleUpdateName} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-sm text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
                         </button>
                       </div>
@@ -546,12 +546,12 @@ export function SettingsModal({
                       <div className="flex gap-2">
                         <input 
                           type="password"
-                          className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-[var(--radius-sm)] text-note outline-none transition-all text-text-primary focus:border-accent/40" 
+                          className="flex-1 bg-surface-hover border border-border px-3 py-1.5 rounded-sm text-note outline-none transition-all text-text-primary focus:border-accent/40" 
                           value={privatePassword} 
                           onChange={(e) => setPrivatePassword(e.target.value)} 
                           placeholder="Set password to hide tasks"
                         />
-                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
+                        <button onClick={handleUpdatePassword} disabled={isPending} className="px-3 bg-accent text-[#0f0d0a] rounded-sm text-caption font-bold disabled:opacity-30 flex items-center gap-2 h-9">
                           {isPending ? <Loader2 size={12} className="animate-spin" /> : isPasswordSaved ? <Check size={12} /> : "Save"}
                         </button>
                       </div>
@@ -565,11 +565,11 @@ export function SettingsModal({
                   <section>
                     <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3">Theme</h4>
                     <div className="grid grid-cols-2 gap-2">
-                       <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-[var(--radius-md)] border transition-all ${theme === "dark" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
+                       <button onClick={() => setTheme("dark")} className={`flex items-center justify-between p-3 rounded-md border transition-all ${theme === "dark" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
                           <div className="flex items-center gap-2"><Moon size={14} /><span className="text-caption font-bold">Dark Mode</span></div>
                           {theme === "dark" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                        </button>
-                       <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-[var(--radius-md)] border transition-all ${theme === "light" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
+                       <button onClick={() => setTheme("light")} className={`flex items-center justify-between p-3 rounded-md border transition-all ${theme === "light" ? "bg-accent/10 border-accent/40 text-accent" : "bg-surface-hover border-border text-text-muted hover:text-text-primary"}`}>
                           <div className="flex items-center gap-2"><Sun size={14} /><span className="text-caption font-bold">Light Mode</span></div>
                           {theme === "light" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
                        </button>
@@ -652,22 +652,22 @@ export function SettingsModal({
                 <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
                   <h4 className="text-micro font-bold uppercase tracking-widest text-accent mb-3">Management</h4>
                   <div className="grid grid-cols-1 gap-2">
-                     <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                     <div className="p-4 bg-surface-hover border border-border rounded-md flex items-center justify-between">
                         <div><h5 className="text-note font-bold text-text-primary">Export JSON</h5><p className="text-micro text-text-muted">Complete system backup.</p></div>
-                        <button onClick={handleExport} className="p-2.5 bg-accent text-[#0f0d0a] rounded-[var(--radius-sm)] hover:scale-105 active:scale-95 transition-all shadow-card"><Download size={14} strokeWidth={2.5} /></button>
+                        <button onClick={handleExport} className="p-2.5 bg-accent text-[#0f0d0a] rounded-sm hover:scale-105 active:scale-95 transition-all shadow-card"><Download size={14} strokeWidth={2.5} /></button>
                      </div>
-                     <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                     <div className="p-4 bg-surface-hover border border-border rounded-md flex items-center justify-between">
                         <div><h5 className="text-note font-bold text-text-primary">Import Backup</h5><p className="text-micro text-text-muted">Restore system state.</p></div>
                         <div className="flex items-center gap-2">
                           <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
-                          <button onClick={() => fileInputRef.current?.click()} className="p-2.5 bg-surface border border-border rounded-[var(--radius-sm)] hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
+                          <button onClick={() => fileInputRef.current?.click()} className="p-2.5 bg-surface border border-border rounded-sm hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
                         </div>
                      </div>
-                     <div className="p-4 border border-red-500/10 bg-red-500/5 rounded-[var(--radius-md)] flex items-center justify-between">
+                     <div className="p-4 border border-red-500/10 bg-red-500/5 rounded-md flex items-center justify-between">
                           <div><h5 className="text-note font-bold text-red-500">Reset System</h5><p className="text-micro text-red-500/60">Wipe all local records.</p></div>
-                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-[var(--radius-sm)] hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2.5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-sm hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
                      </div>
-                     <div className="p-4 border border-accent/10 bg-accent/5 rounded-[var(--radius-md)] flex items-center justify-between mt-2">
+                     <div className="p-4 border border-accent/10 bg-accent/5 rounded-md flex items-center justify-between mt-2">
                           <div><h5 className="text-note font-bold text-accent">Seed Visual Plan</h5><p className="text-micro text-accent/60">Populate with default data.</p></div>
                           <button 
                             onClick={async () => {
@@ -678,7 +678,7 @@ export function SettingsModal({
                               });
                             }} 
                             disabled={isPending}
-                            className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-[var(--radius-sm)] hover:bg-accent/20 transition-all disabled:opacity-50"
+                            className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-sm hover:bg-accent/20 transition-all disabled:opacity-50"
                           >
                             <Database size={14} />
                           </button>
@@ -700,14 +700,14 @@ export function SettingsModal({
                     </div>
 
                     {!isNotificationSupported ? (
-                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-[var(--radius-md)] text-amber-500 text-caption leading-relaxed">
+                       <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-md text-amber-500 text-caption leading-relaxed">
                           Your browser does not support push notifications. If you are on iPhone, make sure to &quot;Add to Home Screen&quot; first.
                        </div>
                     ) : (
                       <div className="space-y-3">
-                         <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                         <div className="p-4 bg-surface-hover border border-border rounded-md flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                               <div className={`p-2 rounded-[var(--radius-sm)] ${isSubscribed ? "bg-emerald-500/10 text-emerald-500" : "bg-accent/10 text-accent"}`}>
+                               <div className={`p-2 rounded-sm ${isSubscribed ? "bg-emerald-500/10 text-emerald-500" : "bg-accent/10 text-accent"}`}>
                                   <Smartphone size={16} />
                                </div>
                                <div>
@@ -717,7 +717,7 @@ export function SettingsModal({
                             </div>
                             <button 
                               onClick={subscribeToPush}
-                              className={`px-3 py-1.5 rounded-[var(--radius-sm)] text-micro font-bold uppercase transition-all bg-accent text-[#0f0d0a] hover:scale-105 active:scale-95 shadow-card`}
+                              className={`px-3 py-1.5 rounded-sm text-micro font-bold uppercase transition-all bg-accent text-[#0f0d0a] hover:scale-105 active:scale-95 shadow-card`}
                             >
                                {isSubscribed ? "Re-link" : "Link"}
                             </button>
@@ -725,9 +725,9 @@ export function SettingsModal({
 
                          {deviceCount > 0 && (
                             <div className="space-y-2">
-                               <div className="p-4 bg-surface-hover border border-border rounded-[var(--radius-md)] flex items-center justify-between">
+                               <div className="p-4 bg-surface-hover border border-border rounded-md flex items-center justify-between">
                                   <div className="flex items-center gap-3">
-                                     <div className="p-2 rounded-[var(--radius-sm)] bg-blue-500/10 text-blue-500">
+                                     <div className="p-2 rounded-sm bg-blue-500/10 text-blue-500">
                                         <Bell size={16} />
                                      </div>
                                      <div>
@@ -738,7 +738,7 @@ export function SettingsModal({
                                   <button 
                                     type="button"
                                     onClick={testPush}
-                                    className="p-2 bg-surface border border-border rounded-[var(--radius-sm)] hover:border-accent transition-all active:scale-95"
+                                    className="p-2 bg-surface border border-border rounded-sm hover:border-accent transition-all active:scale-95"
                                   >
                                      <Check size={14} className="text-text-muted" />
                                   </button>

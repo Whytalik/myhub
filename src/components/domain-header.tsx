@@ -43,7 +43,7 @@ export function DomainHeader() {
         {/* Mobile: Burger + Logo */}
         <div className="flex lg:hidden items-center justify-between w-full">
           <Link href="/home" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[var(--radius-sm)] bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
+            <div className="w-8 h-8 rounded-sm bg-accent flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
               <Sparkles size={16} className="text-[#0f0d0a]" fill="currentColor" />
             </div>
             <span className="text-heading font-black tracking-tighter leading-none text-text-primary">MyHub</span>
@@ -51,7 +51,7 @@ export function DomainHeader() {
 
           <button 
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="p-2 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
+            className="p-2 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
             aria-label="Toggle Spaces Menu"
           >
             {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -69,7 +69,7 @@ export function DomainHeader() {
             return (
               <div
                 key={domain.id}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-[var(--radius-sm)] transition-all duration-300 shrink-0 ${
+                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-sm transition-all duration-300 shrink-0 ${
                   isLocked
                     ? "opacity-30 cursor-not-allowed"
                     : isActive 

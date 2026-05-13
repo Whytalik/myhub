@@ -259,7 +259,7 @@ export function Sidebar({
                   <Lock size={10} className="text-text-muted/30 shrink-0" />
                 )}
                 {isExpanded && item.status !== "disabled" && (
-                    <span className={`text-micro font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-[var(--radius-xs)] ${statusBadge.bg} ${statusBadge.color}`}>
+                    <span className={`text-micro font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-xs ${statusBadge.bg} ${statusBadge.color}`}>
                     {statusBadge.label}
                   </span>
                 )}
@@ -337,7 +337,7 @@ export function Sidebar({
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-[var(--radius-sm)] text-caption transition-colors duration-200 ${
+                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-sm text-caption transition-colors duration-200 ${
                               isSubActive
                                 ? "font-bold"
                                 : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
@@ -433,14 +433,14 @@ export function Sidebar({
                 {/* Mobile: X close button */}
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="lg:hidden p-2 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
+                  className="lg:hidden p-2 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                 >
                   <X size={16} />
                 </button>
                 {/* Desktop: Pin button */}
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-                  className={`hidden lg:flex p-2 rounded-[var(--radius-sm)] transition-all duration-200 ${
+                  className={`hidden lg:flex p-2 rounded-sm transition-all duration-200 ${
                     !isCollapsed
                       ? "text-accent bg-accent/10 border border-accent/20"
                       : "text-text-muted hover:text-text-primary hover:bg-surface-hover"
@@ -533,13 +533,13 @@ export function Sidebar({
                         setIsSettingsOpen(true);
                         setIsMobileOpen(false);
                       }}
-                      className="p-1.5 rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
+                      className="p-1.5 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                     >
                       <Settings2 size={13} />
                     </button>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="p-1.5 rounded-[var(--radius-sm)] text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                      className="p-1.5 rounded-sm text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
                     >
                       <LogOut size={13} />
                     </button>

@@ -56,7 +56,7 @@ export function Dialog({
 
       {/* Content */}
       <div
-        className={`relative w-full bg-elevated border border-border rounded-t-[var(--radius-xl)] sm:rounded-[var(--radius-xl)] shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
+        className={`relative w-full bg-elevated border border-border rounded-t-xl sm:rounded-xl shadow-elevated animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300 ${bare ? "" : "overflow-hidden"}`}
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
         <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
@@ -76,7 +76,7 @@ export function Dialog({
               </div>
               <button 
                 onClick={onClose}
-                className="p-1.5 hover:bg-surface-hover rounded-[var(--radius-sm)] text-text-muted hover:text-text-primary transition-all active:scale-90"
+                className="p-1.5 hover:bg-surface-hover rounded-sm text-text-muted hover:text-text-primary transition-all active:scale-90"
               >
                 <X size={18} />
               </button>
@@ -142,7 +142,7 @@ export function ConfirmationDialog({
               onConfirm();
               onClose();
             }}
-            className={`px-6 py-2 rounded-[var(--radius-sm)] text-note font-bold transition-all active:scale-95 ${
+            className={`px-6 py-2 rounded-sm text-note font-bold transition-all active:scale-95 ${
               variant === "danger"
                 ? "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20"
                 : "bg-accent text-[#0f0d0a] hover:opacity-90 shadow-lg shadow-accent/10"

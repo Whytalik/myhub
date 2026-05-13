@@ -82,7 +82,7 @@ html {
 
 body {
   background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-text-primary);
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.015em;
@@ -98,6 +98,15 @@ h1, h2, h3, h4, .font-heading {
   font-weight: 800;
   letter-spacing: -0.04em;
 }
+
+/* Custom Background Utilities (legacy compatibility) */
+.bg-raised { background-color: var(--color-surface-hover); }
+.bg-card { background-color: var(--color-surface); }
+
+/* Custom Text Color Utilities (Tailwind v4 doesn't auto-generate from --color-text-*) */
+.text-muted { color: var(--color-text-muted); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-text { color: var(--color-text-primary); }
 
 /* Hide scrollbar by default */
 * {

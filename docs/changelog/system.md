@@ -1,3 +1,14 @@
+## [2026-05-13] - Tailwind v4 Token Refactoring
+
+### Changed
+- Replaced `rounded-[var(--radius-*)]` with native Tailwind v4 utilities (`rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-t-xl`) across 7 component files (38 occurrences).
+- Tailwind v4 `@theme` automatically generates utilities for all defined tokens — no need for arbitrary value syntax.
+
+### Verification Checklist:
+- [x] UI updated (7 files: settings-modal, dialog, button, section-header, space-intelligence, sidebar, domain-header)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+
 ## [2026-05-01] - Multi-Provider AI Support (Groq, Google, OpenRouter)
 
 ### Added
