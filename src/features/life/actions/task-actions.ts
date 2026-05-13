@@ -63,7 +63,6 @@ export async function getAllSpheresAction(): Promise<ActionResult<Awaited<Return
 
 export async function instantDuplicateTaskAction(task: TaskData): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id: _id, children: _children, ...rest } = task;
     const newTask = await taskService.upsertTask(userId, {
       ...rest,

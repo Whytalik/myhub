@@ -17,7 +17,6 @@ export async function getEntryByDate(userId: string, date: Date) {
 
 export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {
   const date = new Date(input.date);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { date: _date, ...data } = input;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

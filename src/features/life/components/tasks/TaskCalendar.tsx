@@ -74,7 +74,7 @@ function TaskCalendarCard({
   startIdx,
   endIdx,
   level = 0,
-  rowIdx = 0,
+  rowIdx: _rowIdx = 0,
   onResize,
   isResizing = false,
   onResizeStart,
@@ -126,7 +126,7 @@ function TaskCalendarCard({
   } : {};
 
   const overlayStyle: React.CSSProperties = isOverlay ? {
-    gridRowStart: rowIdx + 1,
+    gridRowStart: 1,
     gridColumnStart: ((startIdx ?? 0) % 7) + 1,
     gridColumnEnd: `span ${Math.max(((endIdx ?? startIdx ?? 0) - (startIdx ?? 0)) + 1, 1)}`,
     left: '0',
@@ -246,6 +246,7 @@ function CalendarDayCell({
   onAdd,
   mode,
   tasksForDay = [],
+  minHeight,
 }: { 
   day: Date, 
   currentMonth: Date, 
@@ -253,6 +254,7 @@ function CalendarDayCell({
   isDraggingAny: boolean,
   mode: "month" | "week" | "day",
   tasksForDay?: TaskData[],
+  minHeight?: number;
 }) {
   const dateKey = format(day, "yyyy-MM-dd");
   const { setNodeRef, isOver } = useDroppable({
@@ -271,9 +273,10 @@ function CalendarDayCell({
   return (
     <div
       ref={setNodeRef}
+      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
       className={`
         p-1 md:p-2 border-r border-b border-white/[0.03] transition-colors flex flex-col gap-1 group/cell
-        ${mode === 'month' ? 'min-h-[120px] md:min-h-[200px]' : 'min-h-[350px] md:min-h-[500px] flex-1'}
+        ${mode === 'month' ? (minHeight ? '' : 'min-h-[120px] md:min-h-[200px]') : (minHeight ? '' : 'min-h-[350px] md:min-h-[500px] flex-1')}
         ${!isCurrentMonth && mode === 'month' ? "bg-bg/40 opacity-20" : isWeekend ? "bg-[#11100e]" : "bg-[#141414]"}
         ${isOver ? "bg-accent/[0.05] border-accent/20" : ""}
       `}
@@ -735,24 +738,39 @@ export function TaskCalendar({
     }
   };
 
-  const maxLevelByColumn = useMemo(() => {
-    const maxLevel: Record<number, number> = {};
-    allTasksWithLevels.forEach(seg => {
-      for (let i = seg.startIdx; i <= seg.endIdx; i++) {
-        maxLevel[i] = Math.max(maxLevel[i] ?? 0, seg.level);
-      }
-    });
-    return Object.values(maxLevel).reduce((max, l) => Math.max(max, l), 0);
-  }, [allTasksWithLevels]);
+  const weeks = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < days.length; i += 7) {
+      result.push(days.slice(i, i + 7));
+    }
+    return result;
+  }, [days]);
 
-  const overlayMinHeight = useMemo(() => {
+  const rowHeights = useMemo(() => {
+    const heights: Record<number, number> = {};
     const baseTop = mode === 'month' ? 64 : 74;
     const padding = 8;
-    const taskHeight = 80;
-    const cellMinHeight = mode === 'month' ? 200 : 500;
-    const neededHeight = baseTop + (maxLevelByColumn + 1) * (taskHeight + padding);
-    return Math.max(cellMinHeight, neededHeight);
-  }, [mode, maxLevelByColumn]);
+    const minCellHeight = mode === 'month' ? 200 : 500;
+
+    const rowCount = Math.ceil(days.length / 7);
+    
+    for (let r = 0; r < rowCount; r++) {
+      let total = baseTop;
+      const rowSegments = allTasksWithLevels.filter(s => s.rowIdx === r);
+      const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map(s => s.level)) : -1;
+      
+      if (maxLevel >= 0) {
+        for (let l = 0; l <= maxLevel; l++) {
+          const levelTasks = rowSegments.filter(s => s.level === l);
+          const maxHeight = levelTasks.reduce((max, s) => Math.max(max, taskHeights[s.task.id] || 80), 80);
+          total += maxHeight + padding;
+        }
+      }
+      heights[r] = Math.max(minCellHeight, total);
+    }
+    
+    return heights;
+  }, [allTasksWithLevels, taskHeights, mode, days.length]);
 
   const tasksByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
@@ -779,59 +797,63 @@ export function TaskCalendar({
           ))}
         </div>
 
-        <div className="relative min-w-full">
-          <div className="grid grid-cols-7 border-l border-t border-white/[0.03]">
-            {days.map((day, i) => (
-              <CalendarDayCell 
-                key={i} 
-                day={day} 
-                currentMonth={currentDate} 
-                onAdd={(date) => {
-                  setEditingTask({ plannedDate: date } as TaskData);
-                  setParentTask(null);
-                  setIsDuplicate(false);
-                  setDialogVersion(v => v + 1);
-                  setDialogOpen(true);
-                }}
-                isDraggingAny={isDraggingAny}
-                mode={mode}
-                tasksForDay={tasksByDayIndex[i] || []}
-              />
-            ))}
-          </div>
+        <div className="relative min-w-full flex flex-col border-l border-white/[0.03]">
+          {weeks.map((week, weekIdx) => (
+            <div key={weekIdx} className="relative">
+              <div className="grid grid-cols-7">
+                {week.map((day, dayIdx) => (
+                  <CalendarDayCell 
+                    key={dayIdx} 
+                    day={day} 
+                    currentMonth={currentDate} 
+                    onAdd={(date) => {
+                      setEditingTask({ plannedDate: date } as TaskData);
+                      setParentTask(null);
+                      setIsDuplicate(false);
+                      setDialogVersion(v => v + 1);
+                      setDialogOpen(true);
+                    }}
+                    isDraggingAny={isDraggingAny}
+                    mode={mode}
+                    tasksForDay={tasksByDayIndex[weekIdx * 7 + dayIdx] || []}
+                    minHeight={rowHeights[weekIdx]}
+                  />
+                ))}
+              </div>
 
-          <div 
-            className="absolute left-0 right-0 top-0 pointer-events-none grid grid-cols-7"
-            style={{ minHeight: `${overlayMinHeight}px` }}
-          >
-            {allTasksWithLevels.map((seg) => (
-              <TaskCalendarCard
-                key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
-                task={seg.task}
-                startIdx={seg.startIdx}
-                endIdx={seg.endIdx}
-                level={seg.level}
-                rowIdx={seg.rowIdx}
-                onEdit={handleEdit}
-                onDuplicate={handleDuplicate}
-                onAddChild={handleAddChild}
-                onDelete={handleTaskDeleted}
-                allTasks={parentResolutionTasks}
-                mode={mode}
-                days={days}
-                onResize={handleResize}
-                isResizing={resizingTaskId === seg.task.id}
-                onResizeStart={(id) => setResizingTaskId(id)}
-                onResizeEnd={() => setResizingTaskId(null)}
-                isOverlay
-                isDraggable
-                onHeightChange={handleHeightChange}
-                style={{
-                  top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
-                }}
-              />
-            ))}
-          </div>
+              <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
+                {allTasksWithLevels
+                  .filter(seg => seg.rowIdx === weekIdx)
+                  .map((seg) => (
+                    <TaskCalendarCard
+                      key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
+                      task={seg.task}
+                      startIdx={seg.startIdx}
+                      endIdx={seg.endIdx}
+                      level={seg.level}
+                      rowIdx={seg.rowIdx}
+                      onEdit={handleEdit}
+                      onDuplicate={handleDuplicate}
+                      onAddChild={handleAddChild}
+                      onDelete={handleTaskDeleted}
+                      allTasks={parentResolutionTasks}
+                      mode={mode}
+                      days={days}
+                      onResize={handleResize}
+                      isResizing={resizingTaskId === seg.task.id}
+                      onResizeStart={(id) => setResizingTaskId(id)}
+                      onResizeEnd={() => setResizingTaskId(null)}
+                      isOverlay
+                      isDraggable
+                      onHeightChange={handleHeightChange}
+                      style={{
+                        top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
+                      }}
+                    />
+                  ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
