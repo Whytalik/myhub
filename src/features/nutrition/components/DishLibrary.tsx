@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Trash2, Edit2, Upload, Download } from "lucide-react";
+import { Search, Plus, Trash2, Edit2, Upload, Download, UtensilsCrossed } from "lucide-react";
 import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,12 @@ import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
 import dishesData from "../data/dishes.json";
 
+const DISH_GROUPS: Record<string, DishType[]> = {
+  ALL: DISH_TYPE_ORDER,
+  "Main": ["MAIN", "SOUP", "SIDE", "SALAD"],
+  "Other": ["SNACK", "SAUCE", "MARINADE", "BASE"],
+};
+
 interface DishLibraryProps {
   initialDishes: DishWithIngredients[];
 }
@@ -24,6 +30,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [dishes, setDishes] = useState(initialDishes);
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState("ALL");
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
@@ -45,6 +52,38 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         d.ingredients.some((ing) => ing.product.name.toLowerCase().includes(q))
     );
   }, [dishes, searchQuery, typeFilter]);
+
+  const groupTabs = useMemo(() => {
+    return Object.entries(DISH_GROUPS).map(([key, types]) => ({
+      id: key,
+      label: key,
+      count: types.filter(t => dishes.some(d => ((d as DishWithIngredients & { type?: string }).type ?? "MAIN") === t)).length,
+    })).filter(tab => tab.count > 0 || tab.id === "ALL");
+  }, [dishes]);
+
+  const subTabs = useMemo(() => {
+    if (selectedGroup === "ALL") {
+      return DISH_TYPE_ORDER.map(t => ({ id: t, label: DISH_TYPE_META[t].label, emoji: DISH_TYPE_META[t].emoji }));
+    }
+    return DISH_GROUPS[selectedGroup].map(t => ({ id: t, label: DISH_TYPE_META[t].label, emoji: DISH_TYPE_META[t].emoji }));
+  }, [selectedGroup]);
+
+  const displayedTypes = useMemo(() => {
+    if (typeFilter) return [typeFilter];
+    if (selectedGroup === "ALL") return DISH_TYPE_ORDER;
+    return DISH_GROUPS[selectedGroup];
+  }, [selectedGroup, typeFilter]);
+
+  const groupedDishes = useMemo(() => {
+    const groups: Record<string, DishWithIngredients[]> = {};
+    filteredDishes.forEach(d => {
+      const t = (d as DishWithIngredients & { type?: string }).type ?? "MAIN";
+      if (!displayedTypes.includes(t as DishType)) return;
+      if (!groups[t]) groups[t] = [];
+      groups[t].push(d);
+    });
+    return groups;
+  }, [filteredDishes, displayedTypes]);
 
   const handleCreate = () => {
     router.push("/nutrition/dishes?create=true");
@@ -145,6 +184,8 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
     return totalCost / servings;
   };
 
+  const isSearchMode = searchQuery.trim().length >= 2;
+
   return (
     <div className="space-y-4">
       {/* Search + Actions Bar */}
@@ -189,38 +230,60 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         </div>
       </div>
 
-      {/* Type Filter Pills */}
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => setTypeFilter(null)}
-          className={`px-3 py-1.5 rounded-xl text-note font-mono border transition-all ${
-            !typeFilter ? "bg-accent/10 text-accent border-accent/30 font-semibold" : "border-border text-muted hover:text-text"
-          }`}
-        >
-          Всі
-        </button>
-        {DISH_TYPE_ORDER.map((t) => {
-          const meta = DISH_TYPE_META[t];
-          const active = typeFilter === t;
-          return (
+      {/* Group tabs */}
+      {!isSearchMode && (
+        <div className="flex overflow-x-auto scrollbar-hide gap-2 pb-2">
+          {groupTabs.map((tab) => (
             <button
-              key={t}
-              onClick={() => setTypeFilter(active ? null : t)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-note font-mono border transition-all ${
-                active
-                  ? `${meta.bg} ${meta.color} ${meta.border} font-semibold`
-                  : "border-border text-muted hover:text-text"
+              key={tab.id}
+              onClick={() => { setSelectedGroup(tab.id); setTypeFilter(null); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-note font-medium whitespace-nowrap transition-all ${
+                selectedGroup === tab.id
+                  ? "bg-accent text-bg font-semibold"
+                  : "bg-surface border border-border/50 text-secondary hover:text-text"
               }`}
             >
-              <span>{meta.emoji}</span>
-              <span>{meta.label}</span>
+              {tab.label}
+              <span className={`text-label px-1.5 py-0.5 rounded-md ${
+                selectedGroup === tab.id ? "bg-white/20" : "bg-raised"
+              }`}>{tab.count}</span>
             </button>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Subcategory pills */}
+      {!isSearchMode && subTabs.length > 1 && (
+        <div className="flex overflow-x-auto scrollbar-hide gap-1.5 pb-2">
+          <button
+            onClick={() => setTypeFilter(null)}
+            className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
+              !typeFilter
+                ? "bg-text text-bg"
+                : "text-muted hover:text-text hover:bg-raised"
+            }`}
+          >
+            ALL
+          </button>
+          {subTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setTypeFilter(typeFilter === tab.id ? null : tab.id as DishType)}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
+                typeFilter === tab.id
+                  ? "bg-accent/20 text-accent"
+                  : "text-muted hover:text-text hover:bg-raised"
+              }`}
+            >
+              <span>{tab.emoji}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Results count */}
-      {searchQuery && (
+      {isSearchMode && (
         <p className="text-note text-muted font-mono">
           {filteredDishes.length} result{filteredDishes.length !== 1 ? "s" : ""} for &quot;{searchQuery}&quot;
         </p>
@@ -228,120 +291,76 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
       {/* Cards Grid */}
       {filteredDishes.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredDishes.map((dish) => {
-            const weights = getDishWeights(dish)
-            const stats = calculateDishStats(dish, weights);
-            const costPerServing = getCostPerServing(dish);
-            const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
-            const kcalPer100g =
-              totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+        <>
+          {isSearchMode ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredDishes.map((dish) => {
+                const weights = getDishWeights(dish)
+                const stats = calculateDishStats(dish, weights);
+                const costPerServing = getCostPerServing(dish);
+                const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
 
-            return (
-              <div
-                key={dish.id}
-                className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative"
-              >
-                {/* Edit + Delete buttons */}
-                <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={() => handleEdit(dish.id)}
-                    className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors"
-                  >
-                    <Edit2 size={13} />
-                  </button>
-                  <button
-                    onClick={() => setDishToDelete(dish)}
-                    className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
-                  >
-                    <Trash2 size={13} />
-                  </button>
-                </div>
+                return (
+                  <DishCard
+                    key={dish.id}
+                    dish={dish}
+                    stats={stats}
+                    costPerServing={costPerServing}
+                    kcalPer100g={kcalPer100g}
+                    onEdit={handleEdit}
+                    onDelete={setDishToDelete}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {displayedTypes.map((type) => {
+                const typeDishes = groupedDishes[type];
+                if (!typeDishes || typeDishes.length === 0) return null;
+                const meta = DISH_TYPE_META[type];
 
-                {/* Type Badge */}
-                {(() => {
-                  const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
-                  const meta = DISH_TYPE_META[t];
-                  return (
-                    <span className={`inline-flex items-center gap-1 text-label font-mono px-2 py-0.5 rounded-lg ${meta.bg} ${meta.color} mb-2`}>
-                      {meta.emoji} {meta.label}
-                    </span>
-                  );
-                })()}
+                return (
+                  <div key={type} className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <div className="h-px flex-1 bg-border" />
+                      <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">
+                        {meta.emoji} {meta.label}
+                      </h2>
+                      <div className="h-px flex-1 bg-border" />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {typeDishes.map((dish) => {
+                        const weights = getDishWeights(dish)
+                        const stats = calculateDishStats(dish, weights);
+                        const costPerServing = getCostPerServing(dish);
+                        const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                        const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
 
-                {/* Name */}
-                <h3 className="text-lg font-semibold text-text mb-1 pr-8">
-                  {dish.name}
-                </h3>
-
-                {/* Description */}
-                {dish.description && (
-                  <p className="text-note text-muted line-clamp-2 mb-3">
-                    {dish.description}
-                  </p>
-                )}
-
-                {/* Nutrition per 100g */}
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="flex items-center gap-1">
-                    <span className="text-text font-mono text-base font-bold">
-                      {Math.round(kcalPer100g)}
-                    </span>
-                    <span className="text-muted text-caption font-mono">
-                      kcal/100g
-                    </span>
+                        return (
+                          <DishCard
+                            key={dish.id}
+                            dish={dish}
+                            stats={stats}
+                            costPerServing={costPerServing}
+                            kcalPer100g={kcalPer100g}
+                            onEdit={handleEdit}
+                            onDelete={setDishToDelete}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-
-                {/* Macros */}
-                <div className="flex gap-3 text-note font-mono text-secondary mb-3">
-                  <span>
-                    P: <b className="text-accent">{stats.protein.toFixed(1)}g</b>
-                  </span>
-                  <span>
-                    F: <b className="text-secondary">{stats.fat.toFixed(1)}g</b>
-                  </span>
-                  <span>
-                    C: <b className="text-text">{stats.carbs.toFixed(1)}g</b>
-                  </span>
-                </div>
-
-                {/* Servings + Cost */}
-                <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                  <span className="text-caption font-mono text-muted">
-                    {dish.servings} serving{dish.servings !== 1 ? "s" : ""}
-                  </span>
-                  {costPerServing > 0 && (
-                    <span className="text-note font-mono text-amber-500 font-bold">
-                      {costPerServing.toFixed(1)}?/serving
-                    </span>
-                  )}
-                </div>
-
-                {/* Ingredients preview */}
-                <div className="flex flex-wrap gap-1 mt-3">
-                  {dish.ingredients.slice(0, 4).map((ing) => (
-                    <span
-                      key={ing.id}
-                      className="text-label font-mono bg-raised px-1.5 py-0.5 rounded text-secondary border border-border/50"
-                    >
-                      {ing.product.name}
-                    </span>
-                  ))}
-                  {dish.ingredients.length > 4 && (
-                    <span className="text-label font-mono text-muted">
-                      +{dish.ingredients.length - 4} more
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          )}
+        </>
       ) : (
         <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
           <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border mb-4">
-            <Plus size={32} className="text-muted/40" />
+            <UtensilsCrossed size={32} className="text-muted/40" />
           </div>
           <p className="text-base font-bold text-text mb-1">
             {searchQuery ? "No dishes found" : "No dishes yet"}
@@ -424,6 +443,108 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         onClose={() => setShowImportModal(false)}
         onImported={handleImported}
       />
+    </div>
+  );
+}
+
+function DishCard({
+  dish,
+  stats,
+  costPerServing,
+  kcalPer100g,
+  onEdit,
+  onDelete,
+}: {
+  dish: DishWithIngredients;
+  stats: { calories: number; protein: number; fat: number; carbs: number; fiber: number };
+  costPerServing: number;
+  kcalPer100g: number;
+  onEdit: (id: string) => void;
+  onDelete: (dish: DishWithIngredients) => void;
+}) {
+  const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
+  const meta = DISH_TYPE_META[t];
+
+  return (
+    <div className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative">
+      <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          onClick={() => onEdit(dish.id)}
+          className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors"
+        >
+          <Edit2 size={13} />
+        </button>
+        <button
+          onClick={() => onDelete(dish)}
+          className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
+        >
+          <Trash2 size={13} />
+        </button>
+      </div>
+
+      <span className={`inline-flex items-center gap-1 text-label font-mono px-2 py-0.5 rounded-lg ${meta.bg} ${meta.color} mb-2`}>
+        {meta.emoji} {meta.label}
+      </span>
+
+      <h3 className="text-lg font-semibold text-text mb-1 pr-16">
+        {dish.name}
+      </h3>
+
+      {dish.description && (
+        <p className="text-note text-muted line-clamp-2 mb-3">
+          {dish.description}
+        </p>
+      )}
+
+      <div className="flex items-center gap-4 mb-3">
+        <div className="flex items-center gap-1">
+          <span className="text-text font-mono text-base font-bold">
+            {Math.round(kcalPer100g)}
+          </span>
+          <span className="text-muted text-caption font-mono">
+            kcal/100g
+          </span>
+        </div>
+      </div>
+
+      <div className="flex gap-3 text-note font-mono text-secondary mb-3">
+        <span>
+          P: <b className="text-accent">{stats.protein.toFixed(1)}g</b>
+        </span>
+        <span>
+          F: <b className="text-secondary">{stats.fat.toFixed(1)}g</b>
+        </span>
+        <span>
+          C: <b className="text-text">{stats.carbs.toFixed(1)}g</b>
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between pt-3 border-t border-border/50">
+        <span className="text-caption font-mono text-muted">
+          {dish.servings} serving{dish.servings !== 1 ? "s" : ""}
+        </span>
+        {costPerServing > 0 && (
+          <span className="text-note font-mono text-amber-500 font-bold">
+            {costPerServing.toFixed(1)}₴/serving
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-1 mt-3">
+        {dish.ingredients.slice(0, 4).map((ing) => (
+          <span
+            key={ing.id}
+            className="text-label font-mono bg-raised px-1.5 py-0.5 rounded text-secondary border border-border/50"
+          >
+            {ing.product.name}
+          </span>
+        ))}
+        {dish.ingredients.length > 4 && (
+          <span className="text-label font-mono text-muted">
+            +{dish.ingredients.length - 4} more
+          </span>
+        )}
+      </div>
     </div>
   );
 }

@@ -66,6 +66,7 @@ export async function createWeekPlan(
 export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
   id: string
   name: string | null
+  notes: string
   persons: {
     id: string
     name: string | null
@@ -326,6 +327,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       data: {
         id: weekPlan.id,
         name: weekPlan.name,
+        notes: weekPlan.notes,
         persons: Array.from(personMap.values()),
         days,
       },
@@ -964,5 +966,27 @@ export async function updateDayPrepNote(
     return { success: true, data: undefined }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update prep note" }
+  }
+}
+
+export async function updateWeekPlanNotes(
+  weekPlanId: string,
+  notes: string
+): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+    const plan = await prisma.weekPlan.findUnique({ where: { id: weekPlanId } })
+    if (!plan) return { success: false, error: "Week plan not found" }
+    if (plan.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    await prisma.weekPlan.update({
+      where: { id: weekPlanId },
+      data: { notes },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update week plan notes" }
   }
 }

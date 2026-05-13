@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Select } from "@/components/ui/select";
-import { Tabs } from "@/components/ui/tabs";
 import { FoodProduct, NutritionSource } from "@/app/generated/prisma";
 import { deleteProduct, createProduct, updateProduct, importFromOpenFoodFacts, unifiedSearchProducts, exportProducts, deleteAllUserProducts } from "../actions/products";
 import { JsonImportModal } from "./JsonImportModal";
@@ -17,6 +16,14 @@ import { STORE_META, ALL_STORES } from "../constants/stores";
 interface ProductLibraryProps {
   initialProducts: FoodProduct[];
 }
+
+const CATEGORY_GROUPS: Record<string, string[]> = {
+  ALL: ["FRUITS", "VEGETABLES", "DAIRY", "MEAT", "FISH", "GRAINS", "LEGUMES", "NUTS", "OILS", "BEVERAGES", "SNACKS", "BAKERY", "SPICES", "SAUCES", "OTHER"],
+  "Fresh": ["FRUITS", "VEGETABLES"],
+  "Protein": ["MEAT", "FISH", "LEGUMES", "NUTS"],
+  "Pantry": ["DAIRY", "GRAINS", "OILS", "SPICES", "SAUCES", "BAKERY"],
+  "Other": ["BEVERAGES", "SNACKS", "OTHER"],
+};
 
 const CATEGORIES = ["FRUITS", "VEGETABLES", "DAIRY", "MEAT", "FISH", "GRAINS", "LEGUMES", "NUTS", "OILS", "BEVERAGES", "SNACKS", "BAKERY", "SPICES", "SAUCES", "OTHER"];
 
@@ -71,7 +78,8 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [importingCode, setImportingCode] = useState<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [selectedTab, setSelectedTab] = useState("ALL");
+  const [selectedGroup, setSelectedGroup] = useState("ALL");
+  const [selectedSubTab, setSelectedSubTab] = useState<string | null>(null);
   const [showImportModal, setShowImportModal] = useState(false);
 
   // Debounced unified search
@@ -101,6 +109,10 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     };
   }, [searchQuery]);
 
+  useEffect(() => {
+    setSelectedSubTab(null);
+  }, [selectedGroup]);
+
   // Library grid (when not searching)
   const groupedProducts = useMemo(() => {
     const groups: Record<string, FoodProduct[]> = {};
@@ -118,16 +130,31 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
     return [...predefined, ...others];
   }, [groupedProducts]);
 
-  const displayedCategories = useMemo(() => {
-    if (selectedTab === "ALL") return activeCategories;
-    return activeCategories.filter(cat => cat === selectedTab);
-  }, [activeCategories, selectedTab]);
-
-  const tabItems = useMemo(() => {
-    const items = [{ id: "ALL", label: "ALL" }];
-    activeCategories.forEach(cat => items.push({ id: cat, label: cat }));
-    return items;
+  const groupTabs = useMemo(() => {
+    return Object.keys(CATEGORY_GROUPS).map(key => ({
+      id: key,
+      label: key,
+      count: key === "ALL"
+        ? activeCategories.length
+        : CATEGORY_GROUPS[key].filter(cat => activeCategories.includes(cat)).length,
+    })).filter(tab => tab.count > 0 || tab.id === "ALL");
   }, [activeCategories]);
+
+  const subTabs = useMemo(() => {
+    if (selectedGroup === "ALL") {
+      return activeCategories.map(cat => ({ id: cat, label: cat }));
+    }
+    const groupCats = CATEGORY_GROUPS[selectedGroup] || [];
+    return groupCats
+      .filter(cat => activeCategories.includes(cat))
+      .map(cat => ({ id: cat, label: cat }));
+  }, [selectedGroup, activeCategories]);
+
+  const displayedCategories = useMemo(() => {
+    if (selectedSubTab) return [selectedSubTab];
+    if (selectedGroup === "ALL") return activeCategories;
+    return CATEGORY_GROUPS[selectedGroup]?.filter(cat => activeCategories.includes(cat)) || [];
+  }, [selectedGroup, selectedSubTab, activeCategories]);
 
   const openCreateForm = () => {
     setEditingProduct(null);
@@ -370,7 +397,7 @@ const handleDeleteAll = () => {
             size="sm"
             className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
             onClick={() => setShowDeleteAllDialog(true)}
-            disabled={isDeletingAll || products.filter(p => !!p.userId).length === 0}
+            disabled={isDeletingAll || isPending || products.filter(p => !!p.userId).length === 0}
           >
             <Trash2 size={14} className="mr-1.5" /> Delete All
           </Button>
@@ -467,7 +494,54 @@ const handleDeleteAll = () => {
       ) : (
         /* Full library grid */
         <>
-          <Tabs tabs={tabItems} activeTab={selectedTab} onTabChange={setSelectedTab} className="mb-2" />
+          {/* Main group tabs */}
+          <div className="flex overflow-x-auto scrollbar-hide gap-2 pb-2">
+            {groupTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedGroup(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-note font-medium whitespace-nowrap transition-all ${
+                  selectedGroup === tab.id
+                    ? "bg-accent text-bg font-semibold"
+                    : "bg-surface border border-border/50 text-secondary hover:text-text"
+                }`}
+              >
+                {tab.label}
+                <span className={`text-label px-1.5 py-0.5 rounded-md ${
+                  selectedGroup === tab.id ? "bg-white/20" : "bg-raised"
+                }`}>{tab.count}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Subcategory tabs */}
+          {subTabs.length > 1 && (
+            <div className="flex overflow-x-auto scrollbar-hide gap-1.5 pb-2">
+              <button
+                onClick={() => setSelectedSubTab(null)}
+                className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
+                  !selectedSubTab
+                    ? "bg-text text-bg"
+                    : "text-muted hover:text-text hover:bg-raised"
+                }`}
+              >
+                ALL
+              </button>
+              {subTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedSubTab(tab.id)}
+                  className={`px-3 py-1.5 rounded-lg text-caption font-mono whitespace-nowrap transition-all ${
+                    selectedSubTab === tab.id
+                      ? "bg-accent/20 text-accent"
+                      : "text-muted hover:text-text hover:bg-raised"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           {displayedCategories.length > 0 ? (
             <div className="space-y-8">

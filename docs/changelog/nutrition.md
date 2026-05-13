@@ -1,3 +1,34 @@
+## [2026-05-13] Week Plan Redesign — Color-coded Meals, Visual Stats, Notes, Editable Cooking List
+
+Major redesign of the week plan page with color-coded meal slots, visual person macro chips, editable notes block, and editable cooking list per day.
+
+- **Schema**: Added `notes` field to `WeekPlan` model. Added `updateWeekPlanNotes` action.
+- **Week page**: Dynamic breadcrumbs (`Nutrition Space / Plans / Week_Name`), dynamic page title from plan name. Fixed Plans tab active state for `/nutrition/week` route.
+- **WeekPlanner**: Each meal type (Передтрен/Сніданок/Обід/Вечеря) gets unique color scheme (purple/amber/emerald/blue) across borders, backgrounds, icons, badges, and hover states. Person macro stats rendered as `PersonMacroChip` with mini bar chart showing protein/fat/carbs ratios. Replaced auto-generated cooking algorithm with editable cooking list per day (uses existing `DayPrepNote.content`). Added editable notes block for the whole week plan.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
+## [2026-05-13] Nutrition UI Polish — Modals, Tabs, Badges, Planner Redesign
+
+Refactored nutrition domain UI for better UX: moved inline forms to modals, added two-level category navigation, added "Actual" badge to latest week plan, and redesigned WeekPlanner and DishLibrary components.
+
+- **PersonForm**: Moved "Add New Profile" from inline form to a modal dialog triggered by button. Cleaner profiles page with profile count and single action button.
+- **ProductLibrary**: Replaced single-row Tabs with two-level navigation: main group tabs (ALL, Fresh, Protein, Pantry, Other) with counts + subcategory pills. Fixed "Delete All" button disabled state.
+- **CreatePlanForm**: Moved "Create New Week Plan" from inline card to a modal dialog triggered by button.
+- **PlanList**: Added "Actual" badge to the most recently created week plan with highlighted border.
+- **WeekPlanner**: Redesigned meal slot cards with header icons (Flame/Clock), per-person KBJU chips, colored status borders (green/yellow/red by kcal deviation), hover-reveal delete buttons, and redesigned cooking algorithm with numbered step timeline.
+- **DishLibrary**: Added two-level navigation (groups: ALL/Main/Other + subcategory pills with emojis). Extracted DishCard component for consistent styling.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint && pnpm build`
+
+---
+
 ## [2026-05-13] Dead Code Cleanup — Nutrition Domain
 
 Removed all dead/unused code from the nutrition domain.

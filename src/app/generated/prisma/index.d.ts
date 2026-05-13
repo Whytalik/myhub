@@ -19659,6 +19659,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19667,6 +19668,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19675,6 +19677,7 @@ export namespace Prisma {
     id: number
     userId: number
     name: number
+    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19685,6 +19688,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19693,6 +19697,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19701,6 +19706,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19782,6 +19788,7 @@ export namespace Prisma {
     id: string
     userId: string
     name: string | null
+    notes: string
     createdAt: Date
     updatedAt: Date
     _count: WeekPlanCountAggregateOutputType | null
@@ -19807,6 +19814,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19820,6 +19828,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19829,6 +19838,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19838,11 +19848,12 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
+  export type WeekPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["weekPlan"]>
   export type WeekPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     dayPlans?: boolean | WeekPlan$dayPlansArgs<ExtArgs>
@@ -19869,6 +19880,7 @@ export namespace Prisma {
       id: string
       userId: string
       name: string | null
+      notes: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["weekPlan"]>
@@ -20301,6 +20313,7 @@ export namespace Prisma {
     readonly id: FieldRef<"WeekPlan", 'String'>
     readonly userId: FieldRef<"WeekPlan", 'String'>
     readonly name: FieldRef<"WeekPlan", 'String'>
+    readonly notes: FieldRef<"WeekPlan", 'String'>
     readonly createdAt: FieldRef<"WeekPlan", 'DateTime'>
     readonly updatedAt: FieldRef<"WeekPlan", 'DateTime'>
   }
@@ -61707,6 +61720,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     name: 'name',
+    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -63578,6 +63592,7 @@ export namespace Prisma {
     id?: StringFilter<"WeekPlan"> | string
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
+    notes?: StringFilter<"WeekPlan"> | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -63590,6 +63605,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrderInput | SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -63605,6 +63621,7 @@ export namespace Prisma {
     NOT?: WeekPlanWhereInput | WeekPlanWhereInput[]
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
+    notes?: StringFilter<"WeekPlan"> | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -63617,6 +63634,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrderInput | SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WeekPlanCountOrderByAggregateInput
@@ -63631,6 +63649,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"WeekPlan"> | string
     userId?: StringWithAggregatesFilter<"WeekPlan"> | string
     name?: StringNullableWithAggregatesFilter<"WeekPlan"> | string | null
+    notes?: StringWithAggregatesFilter<"WeekPlan"> | string
     createdAt?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WeekPlan"> | Date | string
   }
@@ -67410,6 +67429,7 @@ export namespace Prisma {
   export type WeekPlanCreateInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -67422,6 +67442,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -67432,6 +67453,7 @@ export namespace Prisma {
   export type WeekPlanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -67444,6 +67466,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -67455,6 +67478,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -67462,6 +67486,7 @@ export namespace Prisma {
   export type WeekPlanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -67470,6 +67495,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -71618,6 +71644,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -71626,6 +71653,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -71634,6 +71662,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -78583,6 +78612,7 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutUserInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanCreateNestedManyWithoutWeekPlanInput
@@ -78593,6 +78623,7 @@ export namespace Prisma {
   export type WeekPlanUncheckedCreateWithoutUserInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -79360,6 +79391,7 @@ export namespace Prisma {
     id?: StringFilter<"WeekPlan"> | string
     userId?: StringFilter<"WeekPlan"> | string
     name?: StringNullableFilter<"WeekPlan"> | string | null
+    notes?: StringFilter<"WeekPlan"> | string
     createdAt?: DateTimeFilter<"WeekPlan"> | Date | string
     updatedAt?: DateTimeFilter<"WeekPlan"> | Date | string
   }
@@ -81518,6 +81550,7 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutDayPlansInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -81529,6 +81562,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -81696,6 +81730,7 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutDayPlansInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -81707,6 +81742,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shoppingLists?: ShoppingListUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -81894,6 +81930,7 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutShoppingListsInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -81905,6 +81942,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -82037,6 +82075,7 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutShoppingListsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -82048,6 +82087,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -82845,6 +82885,7 @@ export namespace Prisma {
   export type WeekPlanCreateWithoutCartInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekPlansInput
@@ -82856,6 +82897,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     dayPlans?: DayPlanUncheckedCreateNestedManyWithoutWeekPlanInput
@@ -82917,6 +82959,7 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekPlansNestedInput
@@ -82928,6 +82971,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -87880,6 +87924,7 @@ export namespace Prisma {
   export type WeekPlanCreateManyUserInput = {
     id?: string
     name?: string | null
+    notes?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -88677,6 +88722,7 @@ export namespace Prisma {
   export type WeekPlanUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUpdateManyWithoutWeekPlanNestedInput
@@ -88687,6 +88733,7 @@ export namespace Prisma {
   export type WeekPlanUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayPlans?: DayPlanUncheckedUpdateManyWithoutWeekPlanNestedInput
@@ -88697,6 +88744,7 @@ export namespace Prisma {
   export type WeekPlanUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

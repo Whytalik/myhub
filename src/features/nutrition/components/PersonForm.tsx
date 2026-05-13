@@ -198,16 +198,17 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
   const [isPending, startTransition] = useTransition();
   const [newName, setNewName] = useState("");
   const [personToDelete, setPersonToDelete] = useState<NutritionPerson | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     setPersons(initialPersons);
   }, [initialPersons]);
 
   const handleCreate = async () => {
-    if (!newName) return;
+    if (!newName.trim()) return;
     startTransition(async () => {
       const result = await createPerson({
-        name: newName,
+        name: newName.trim(),
         goal: Goal.MAINTAIN,
         targetKcal: 2000,
         proteinPct: 30,
@@ -218,6 +219,7 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
       if (result.success) {
         setPersons(prev => [...prev, result.data]);
         setNewName("");
+        setShowCreateModal(false);
         toast.success("Profile created");
       } else {
         toast.error(result.error || "Failed to create profile");
@@ -259,20 +261,12 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
   };
 
   return (
-    <div className="space-y-12">
-      <div className="bg-surface border border-border p-6 rounded-2xl max-w-md">
-        <h3 className="text-note font-mono tracking-[0.2em] text-muted mb-4">Add New Profile</h3>
-        <div className="flex gap-2">
-          <Input
-            placeholder="Person Name..."
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-          />
-          <Button variant="primary" size="sm" className="rounded-xl" onClick={handleCreate} disabled={isPending || !newName}>
-            <UserPlus size={14} className="mr-1.5" /> Add
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-caption font-mono text-muted tracking-wider">{persons.length} profile{persons.length !== 1 ? "s" : ""}</p>
+        <Button variant="primary" size="sm" className="rounded-xl" onClick={() => setShowCreateModal(true)}>
+          <UserPlus size={14} className="mr-1.5" /> Add Profile
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -298,6 +292,33 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
           );
         })}
       </div>
+
+      <Dialog
+        isOpen={showCreateModal}
+        onClose={() => { setShowCreateModal(false); setNewName(""); }}
+        title="Add New Profile"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => { setShowCreateModal(false); setNewName(""); }}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleCreate} disabled={isPending || !newName.trim()}>
+              {isPending ? "Creating..." : "Create"}
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <label className="text-caption font-mono text-muted tracking-wider">Profile Name</label>
+          <Input
+            placeholder="e.g. John, Kids, etc."
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+            autoFocus
+          />
+        </div>
+      </Dialog>
 
       <Dialog
         isOpen={!!personToDelete}

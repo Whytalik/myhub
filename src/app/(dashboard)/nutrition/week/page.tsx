@@ -9,12 +9,33 @@ import { getProducts } from "@/features/nutrition/actions/products"
 import { WeekPlanner } from "@/features/nutrition/components/planner/WeekPlanner"
 import { WeekSummary } from "@/features/nutrition/components/planner/WeekSummary"
 
-export const metadata: Metadata = {
-  title: "Week Plan",
-};
-
 interface WeekPageProps {
   searchParams: Promise<{ id?: string }>;
+}
+
+export async function generateMetadata({ searchParams }: WeekPageProps): Promise<Metadata> {
+  const { id: planId } = await searchParams;
+  let activePlanId = planId;
+
+  if (!activePlanId) {
+    const latestPlanResult = await getLatestWeekPlan();
+    if (latestPlanResult.success && latestPlanResult.data) {
+      activePlanId = latestPlanResult.data.id;
+    }
+  }
+
+  if (activePlanId) {
+    const weekPlanResult = await getWeekPlan(activePlanId);
+    if (weekPlanResult.success && weekPlanResult.data) {
+      return {
+        title: weekPlanResult.data.name || "Week Plan",
+      };
+    }
+  }
+
+  return {
+    title: "Week Plan",
+  };
 }
 
 export default async function WeekPage({ searchParams }: WeekPageProps) {
@@ -36,7 +57,7 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
     return (
       <div className="w-full">
         <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
           <Heading title="Week Plan" />
           <div className="h-px w-full bg-border-dim mt-4 mb-3" />
           <p className="text-body text-text-secondary mt-4">No week plans found. Create one from the Plans page.</p>
@@ -61,7 +82,7 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
     return (
       <div className="w-full">
         <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
+          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
           <Heading title="Week Plan" />
           <div className="h-px w-full bg-border-dim mt-4 mb-3" />
           <p className="text-body text-text-secondary mt-4">Failed to load week plan.</p>
@@ -70,11 +91,13 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
     );
   }
 
+  const planName = weekPlan.name || "Week Plan";
+
   return (
     <div className="w-full">
       <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "week" }]} />
-        <Heading title="Week Plan" />
+        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: planName }]} />
+        <Heading title={planName} />
         <div className="h-px w-full bg-border-dim mt-4 mb-3" />
         <p className="text-body text-text-secondary">Weekly meal schedule and nutrition tracking.</p>
       </div>

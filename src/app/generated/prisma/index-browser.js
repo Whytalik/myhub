@@ -248,6 +248,7 @@ exports.Prisma.WeekPlanScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

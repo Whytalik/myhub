@@ -31,8 +31,8 @@ export default async function PlansPage() {
         <p className="text-body text-text-secondary">Weekly meal planning overview.</p>
       </div>
 
-      <div className="space-y-8 animate-in fade-in duration-500">
-        <CreatePlanForm persons={persons} />
+      <CreatePlanForm persons={persons} />
+      <div className="mt-8 animate-in fade-in duration-500">
         <PlanList initialPlans={weekPlans} />
       </div>
     </div>
