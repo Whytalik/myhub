@@ -8,18 +8,39 @@ interface SpaceHeaderProps {
 }
 
 export function SpaceHeader({ label, title, description }: SpaceHeaderProps) {
+  // Map label to domain color for the accent glow
+  const getDomainColor = (l: string) => {
+    const map: Record<string, string> = {
+      operations: "bg-domain-ops",
+      health: "bg-domain-health",
+      mind: "bg-domain-mind",
+      wealth: "bg-domain-wealth",
+      vault: "bg-domain-vault",
+    };
+    return map[l.toLowerCase()] || "bg-accent";
+  };
+
+  const domainColor = getDomainColor(label);
+
   return (
-    <div className="flex flex-col mb-10">
-      <div className="mb-4">
+    <div className="flex flex-col mb-10 relative">
+      {/* Decorative accent glow */}
+      <div className={`absolute -top-20 -left-20 w-64 h-64 ${domainColor} opacity-[0.03] blur-[100px] pointer-events-none rounded-full`} />
+      
+      <div className="mb-4 relative z-10">
         <Breadcrumb items={[{ label }]} />
       </div>
-      <Heading title={title} />
-      <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-      {description && (
-        <p className="text-body text-text-secondary max-w-2xl leading-relaxed">
-          {description}
-        </p>
-      )}
+      
+      <div className="flex flex-col gap-2 relative z-10">
+        <Heading title={title} className="text-hero tracking-tight" />
+        {description && (
+          <p className="text-subtitle text-text-secondary max-w-2xl leading-relaxed font-medium">
+            {description}
+          </p>
+        )}
+      </div>
+
+      <div className="h-px w-full bg-gradient-to-r from-border-dim via-border to-transparent mt-6 mb-2 opacity-50" />
     </div>
   );
 }

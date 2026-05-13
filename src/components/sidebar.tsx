@@ -378,20 +378,12 @@ export function Sidebar({
               <Sparkles size={20} className="text-bg" />
             </div>
 
-            <AnimatePresence initial={false}>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="flex flex-col overflow-hidden whitespace-nowrap"
-                >
-                  <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
-                  <p className="text-micro font-mono text-accent uppercase tracking-wider mt-0.5">Personal OS</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {isExpanded && (
+              <div className="flex flex-col overflow-hidden whitespace-nowrap">
+                <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
+                <p className="text-micro font-mono text-accent uppercase tracking-wider mt-0.5">Personal OS</p>
+              </div>
+            )}
           </Link>
 
           <AnimatePresence initial={false}>

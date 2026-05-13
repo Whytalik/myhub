@@ -10,20 +10,24 @@ interface SpaceLandingProps {
   children?: React.ReactNode;
   intelligence?: {
     title?: string;
-    items: { label: string; value: string }[];
+    items: { label: string; value: string; trend?: "up" | "down" | "stable" }[];
   };
   className?: string;
 }
 
 export function SpaceLanding({ header, children, intelligence, className }: SpaceLandingProps) {
   return (
-    <div className={`pb-8 ${className || ""}`}>
+    <div className={`pb-16 max-w-7xl mx-auto ${className || ""}`}>
       <SpaceHeader
         label={header.label}
         title={header.title}
         description={header.description}
       />
-      {children}
+      
+      <main className="space-y-12">
+        {children}
+      </main>
+
       {intelligence && (
         <SpaceIntelligence title={intelligence.title} items={intelligence.items} />
       )}

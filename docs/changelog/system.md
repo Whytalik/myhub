@@ -1,3 +1,22 @@
+## [2026-05-13] — Calm OS: Bento Hub Landing Pages
+
+### Added
+- **New Component: `SpaceNavTile`**: High-fidelity bento-style tile for navigation with support for "primary" emphasis, live stats, and hover effects.
+
+### Changed
+- **Architecture**: Shifted domain landing pages from linear lists to a "Bento Hub" grid system.
+- **`SpaceHeader`**: Enhanced with domain-specific background glows (accented colors) and updated hero typography.
+- **`SpaceDescription`**: Refactored to "Thesis" variant (Challenge -> Method -> Outcome) with glassmorphism and animated entry points.
+- **`SpaceIntelligence`**: Redesigned as a telemetry grid for clearer system data visualization.
+- **Cleanup**: Removed all legacy widgets in `src/components/space-landing/widgets` to favor the new bento architecture.
+- **Implementation**: Fully refactored Operations, Health, Mind, Wealth, and Vault domain hubs to use the new layout.
+
+### Verification Checklist:
+- [x] Logic implemented (Bento Grid architecture)
+- [x] UI updated (SpaceLanding overhaul)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint` (Fixed unescaped entities)
+
 ## [2026-05-13] — Calm OS: Full Design Redesign
 
 ### Changed
@@ -195,7 +214,8 @@
 ## [2026-04-30] - Life Sphere Sync & Icon Fixes
 ### Added
 - Implemented \sphereSyncService\ to automatically ensure all users have the default life spheres (Finance, University, etc.).
-- Integrated sphere sync into the daily system check (\unDailyCheck\).
+- Integrated sphere sync into the daily system check (\
+unDailyCheck\).
 
 ### Fixed
 - Fixed missing 'Finance' and 'University' icons in the Task creation form by updating \lucide-icons-map.ts\.
