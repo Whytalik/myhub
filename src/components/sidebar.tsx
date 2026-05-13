@@ -39,13 +39,6 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 
 type SpaceStatus = "active" | "dev" | "soon" | "disabled";
 
-const STATUS_CONFIG: Record<SpaceStatus, { label: string; color: string; bg: string }> = {
-  active: { label: "Active", color: "text-emerald-400", bg: "bg-emerald-400/10" },
-  dev: { label: "In Dev", color: "text-amber-400", bg: "bg-amber-400/10" },
-  soon: { label: "Soon", color: "text-blue-400", bg: "bg-blue-400/10" },
-  disabled: { label: "Disabled", color: "text-muted/40", bg: "bg-muted/5" },
-};
-
 interface SpaceNavItem {
   id: string;
   label: string;
@@ -159,7 +152,7 @@ export function Sidebar({
     return ALL_DOMAINS;
   }, [initialOrder, ALL_DOMAINS]);
 
-  const [order, setOrder] = useState<string[]>(getInitialOrder);
+  const [order, setOrder] = useState<string[]>(getInitialOrder());
 
   useEffect(() => {
     setOrder(getInitialOrder());
@@ -199,10 +192,10 @@ export function Sidebar({
     groupDisabled = false,
   ) => {
     return (
-      <div key={label} className={`flex flex-col gap-4 w-full ${groupDisabled ? "opacity-30 pointer-events-none" : ""}`}>
-        <div className="flex flex-col gap-2 w-full">
+      <div key={label} className={`flex flex-col gap-3 w-full ${groupDisabled ? "opacity-30 pointer-events-none" : ""}`}>
+        <div className="flex flex-col gap-1.5 w-full">
           {items.map((item) => {
-            const isItemActive = pathname === item.href || pathname.startsWith(item.href + '/') || (item.href === '/nutrition/plans' && pathname === '/nutrition/week');
+            const isItemActive = pathname === item.href || pathname.startsWith(item.href + '/') || (item.href === '/nutrition/plans' && pathname.startsWith('/nutrition/week'));
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? false;
             const isDisabled = item.status === "disabled" || groupDisabled;
@@ -213,15 +206,10 @@ export function Sidebar({
 
             const color = {
               text: baseColor,
-              bgActive: `${baseColor}18`,
-              bgHover: `${baseColor}12`,
-              bgInactive: "transparent",
-              borderActive: `${baseColor}40`,
-              borderHover: `${baseColor}50`,
-              glow: `${baseColor}20`
+              bgActive: `${baseColor}12`,
+              bgHover: `${baseColor}08`,
+              borderActive: `${baseColor}30`,
             };
-
-            const statusBadge = STATUS_CONFIG[item.status];
 
             const linkContent = (
               <motion.div
@@ -230,67 +218,55 @@ export function Sidebar({
                 transition={SIDEBAR_SPRING}
                 className="flex items-center w-full h-full"
               >
-              <div className={`w-9 h-9 flex items-center justify-center shrink-0 rounded-xl transition-all duration-200 ${
-                !isExpanded && isItemActive && !isDisabled ? "shadow-[0_0_15px_-3px_var(--glow-color)]" : ""
-              } ${!isExpanded && !isDisabled ? "group-hover/item:scale-110" : ""}`}
-              style={{ backgroundColor: !isExpanded && isItemActive && !isDisabled ? `${color.text}15` : undefined }}>
-                <ItemIcon
-                  size={18}
-                  style={{ color: color.text }}
-                  strokeWidth={isItemActive && !isDisabled ? 2.5 : 2}
-                  className="transition-colors duration-200"
-                />
-              </div>
+                <div className="w-9 h-9 flex items-center justify-center shrink-0 rounded-lg">
+                  <ItemIcon
+                    size={18}
+                    style={{ color: color.text }}
+                    strokeWidth={isItemActive && !isDisabled ? 2.5 : 2}
+                    className="transition-colors duration-200"
+                  />
+                </div>
 
-              <motion.div
-                initial={false}
-                animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
-                transition={LABEL_TRANSITION}
-                className="ml-3 overflow-hidden flex items-center gap-2"
-                style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-              >
-                <span
-                  className="text-note font-semibold whitespace-nowrap"
-                  style={{ color: color.text }}
+                <motion.div
+                  initial={false}
+                  animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
+                  transition={LABEL_TRANSITION}
+                  className="ml-3 overflow-hidden flex items-center gap-2"
+                  style={{ pointerEvents: isExpanded ? "auto" : "none" }}
                 >
-                  {item.label}
-                </span>
-                {isExpanded && isDisabled && (
-                  <Lock size={10} className="text-text-muted/30 shrink-0" />
-                )}
-                {isExpanded && item.status !== "disabled" && (
-                    <span className={`text-micro font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-xs ${statusBadge.bg} ${statusBadge.color}`}>
-                    {statusBadge.label}
+                  <span
+                    className="text-note font-medium whitespace-nowrap"
+                    style={{ color: color.text }}
+                  >
+                    {item.label}
                   </span>
-                )}
-              </motion.div>
+                  {isExpanded && isDisabled && (
+                    <Lock size={10} className="text-text-muted/30 shrink-0" />
+                  )}
+                </motion.div>
               </motion.div>
             );
 
             return (
               <div
                 key={item.href}
-                className={`flex flex-col border transition-colors duration-200 group/item overflow-hidden rounded-2xl bg-[var(--item-bg)] border-[var(--item-border)] ${
-                  !isDisabled ? "hover:bg-[var(--hover-bg)] hover:border-[var(--hover-border)]" : ""
-                } ${
-                  isItemActive && !isDisabled ? "shadow-[0_8px_20px_-6px_var(--glow-color)]" : ""
-                }`}
+                className={`flex flex-col transition-all duration-200 group/item overflow-hidden rounded-lg ${
+                  isItemActive && !isDisabled ? "bg-[var(--item-bg)]" : "bg-transparent"
+                } ${!isDisabled ? "hover:bg-surface-hover" : ""}`}
                 style={{
-                  "--item-bg": isItemActive && !isDisabled ? color.bgActive : "transparent",
-                  "--item-border": isItemActive && !isDisabled ? color.borderActive : `${baseColor}25`,
-                  "--hover-bg": color.bgHover,
-                  "--hover-border": color.borderHover,
-                  "--hover-text": color.text,
-                  "--glow-color": color.glow,
+                  "--item-bg": color.bgActive,
                 } as React.CSSProperties}
               >
+                {isItemActive && !isDisabled && (
+                  <div className="absolute left-0 w-0.5 h-8 rounded-r-full" style={{ backgroundColor: color.text }} />
+                )}
                 <div className="flex items-center group/link relative w-full">
                   {isDisabled ? (
-                    <div className="flex-1 flex items-center h-12 opacity-40 cursor-not-allowed">
+                    <div className="flex-1 flex items-center h-11 opacity-40 cursor-not-allowed">
                       {linkContent}
                     </div>
                   ) : (
-                    <Link href={item.href} className="flex-1 flex items-center h-12">
+                    <Link href={item.href} className="flex-1 flex items-center h-11">
                       {linkContent}
                     </Link>
                   )}
@@ -301,8 +277,8 @@ export function Sidebar({
                       animate={{ opacity: isExpanded ? 1 : 0 }}
                       transition={{ duration: 0.15 }}
                       onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleSection(subSectionKey); }}
-                      className="p-3 transition-colors duration-200"
-                      style={{ pointerEvents: isExpanded ? "auto" : "none", color: color.text }}
+                      className="p-2 transition-colors duration-200 text-text-muted hover:text-text-primary"
+                      style={{ pointerEvents: isExpanded ? "auto" : "none" }}
                     >
                       <motion.div
                         initial={false}
@@ -325,10 +301,10 @@ export function Sidebar({
                     transition={SUBMENU_TRANSITION}
                     style={{ overflow: "hidden" }}
                   >
-                    <div className="flex flex-col gap-1 pl-3 pr-2 pb-2 pt-1">
+                    <div className="flex flex-col gap-0.5 pl-3 pr-2 pb-2 pt-1">
                       <div
                         className="h-px mb-1 transition-colors duration-500"
-                        style={{ backgroundColor: isItemActive ? color.borderActive : "rgba(255,255,255,0.05)" }}
+                        style={{ backgroundColor: isItemActive ? color.borderActive : "rgba(255,255,255,0.04)" }}
                       />
                       {item.subItems.map((sub) => {
                         const SubIcon = sub.icon;
@@ -337,14 +313,13 @@ export function Sidebar({
                           <Link
                             key={sub.href}
                             href={sub.href}
-                            className={`flex items-center gap-3 px-3 py-2.5 lg:py-2 rounded-sm text-caption transition-colors duration-200 ${
+                            className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 ${
                               isSubActive
-                                ? "font-bold"
+                                ? "font-medium text-text-primary"
                                 : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                             }`}
                             style={{
                               color: isSubActive ? color.text : undefined,
-                              backgroundColor: isSubActive ? color.bgHover : undefined,
                             }}
                           >
                             <SubIcon
@@ -388,21 +363,21 @@ export function Sidebar({
         onMouseLeave={() => setIsHovered(false)}
         style={{ viewTransitionName: 'sidebar' }}
         animate={{
-          width: isMobileOpen ? 288 : (isExpanded ? 280 : 80),
+          width: isMobileOpen ? 288 : (isExpanded ? 280 : 72),
         }}
         initial={false}
         transition={SIDEBAR_SPRING}
         className={`
-          fixed inset-y-0 left-0 z-[2000] lg:sticky lg:top-0 h-screen bg-surface border-r border-border flex flex-col shrink-0 overflow-hidden
+          fixed inset-y-0 left-0 z-[2000] lg:sticky lg:top-0 h-screen bg-surface border-r border-border-dim flex flex-col shrink-0 overflow-hidden
           transition-transform duration-300 ease-out
           ${isMobileOpen ? "translate-x-0 shadow-[20px_0_50px_rgba(0,0,0,0.5)]" : "-translate-x-full lg:translate-x-0"}
         `}
       >
         {/* Sidebar Header */}
-        <div className="shrink-0 h-20 flex items-center justify-between relative pl-6 pr-5 py-4 border-b border-border">
-          <Link href="/home" className="flex items-center gap-5 group">
-            <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
-              <Sparkles size={22} className="text-bg" fill="currentColor" />
+        <div className="shrink-0 h-16 flex items-center justify-between relative pl-5 pr-4 border-b border-border-dim">
+          <Link href="/home" className="flex items-center gap-4 group">
+            <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
+              <Sparkles size={20} className="text-bg" />
             </div>
 
             <AnimatePresence initial={false}>
@@ -414,8 +389,8 @@ export function Sidebar({
                   transition={LABEL_TRANSITION}
                   className="flex flex-col overflow-hidden whitespace-nowrap"
                 >
-                  <h1 className="text-heading font-black text-text-primary tracking-tighter leading-none">MyHub</h1>
-                  <p className="text-micro font-mono text-accent uppercase tracking-widest mt-1">Personal OS</p>
+                  <h1 className="text-heading font-bold text-text-primary tracking-tight leading-none">MyHub</h1>
+                  <p className="text-micro font-mono text-accent uppercase tracking-wider mt-0.5">Personal OS</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -430,19 +405,17 @@ export function Sidebar({
                 transition={{ duration: 0.15 }}
                 className="shrink-0 flex items-center"
               >
-                {/* Mobile: X close button */}
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="lg:hidden p-2 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
+                  className="lg:hidden p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                 >
                   <X size={16} />
                 </button>
-                {/* Desktop: Pin button */}
                 <button
                   onClick={(e) => { e.stopPropagation(); toggleSidebar(); }}
-                  className={`hidden lg:flex p-2 rounded-sm transition-all duration-200 ${
+                  className={`hidden lg:flex p-2 rounded-lg transition-all duration-200 ${
                     !isCollapsed
-                      ? "text-accent bg-accent/10 border border-accent/20"
+                      ? "text-accent bg-accent/10"
                       : "text-text-muted hover:text-text-primary hover:bg-surface-hover"
                   }`}
                 >
@@ -494,14 +467,14 @@ export function Sidebar({
 
         {/* User Footer */}
         <div className={`
-          shrink-0 flex items-center justify-between relative pl-5 pr-4 py-4 overflow-hidden border-t border-border bg-surface
+          shrink-0 flex items-center justify-between relative pl-5 pr-4 py-4 overflow-hidden border-t border-border-dim bg-surface
           ${isMobileOpen ? "pb-24 lg:pb-4" : "pb-4"}
         `}>
           {user && (
             <>
-              <Link href="/profile" className="flex items-center gap-4 group/profile-link">
-                <div className="w-10 h-10 rounded-xl bg-accent/15 border border-accent/20 flex items-center justify-center shrink-0 group-hover/profile-link:scale-105 transition-transform duration-200 shadow-lg shadow-accent/5">
-                  <span className="text-accent text-body font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
+              <Link href="/profile" className="flex items-center gap-3 group/profile-link">
+                <div className="w-9 h-9 rounded-lg bg-accent/10 border border-accent/15 flex items-center justify-center shrink-0 group-hover/profile-link:scale-105 transition-transform duration-200">
+                  <span className="text-accent text-note font-bold">{user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}</span>
                 </div>
 
                 <AnimatePresence initial={false}>
@@ -513,7 +486,7 @@ export function Sidebar({
                       transition={LABEL_TRANSITION}
                       className="flex flex-col overflow-hidden whitespace-nowrap"
                     >
-                      <p className="text-note font-bold text-text-primary truncate leading-none">{user.name}</p>
+                      <p className="text-note font-medium text-text-primary truncate leading-none">{user.name}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -533,15 +506,15 @@ export function Sidebar({
                         setIsSettingsOpen(true);
                         setIsMobileOpen(false);
                       }}
-                      className="p-1.5 rounded-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
+                      className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-200"
                     >
-                      <Settings2 size={13} />
+                      <Settings2 size={14} />
                     </button>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="p-1.5 rounded-sm text-text-muted hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
+                      className="p-2 rounded-lg text-text-muted hover:text-danger hover:bg-danger/10 transition-all duration-200"
                     >
-                      <LogOut size={13} />
+                      <LogOut size={14} />
                     </button>
                   </motion.div>
                 )}
