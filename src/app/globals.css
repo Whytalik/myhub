@@ -19,36 +19,36 @@
   --color-life:        #6fbfbf;
   --color-life-muted:  #0d2424;
 
-  --text-label:   0.625rem;
-  --text-caption: 0.75rem;
-  --text-note:    0.8125rem;
-  --text-xs:      0.875rem;
-  --text-body:    1rem;
-  --text-base:    0.9375rem;
-  --text-subtitle: 1.125rem;
-  --text-heading: 1.375rem;
-  --text-title:   1.625rem;
+  --text-label:   0.8125rem;
+  --text-caption: 0.9375rem;
+  --text-note:    1rem;
+  --text-xs:      1.0625rem;
+  --text-body:    1.1875rem;
+  --text-base:    1.125rem;
+  --text-subtitle: 1.3125rem;
+  --text-heading: 1.5625rem;
+  --text-title:   1.8125rem;
 
   /* Sidebar font sizes */
-  --text-sidebar-label: 0.875rem;
-  --text-sidebar-sub: 0.8125rem;
-  --text-sidebar-badge: 0.5625rem;
-  --text-sidebar-title: 1.125rem;
-  --text-sidebar-subtitle: 0.625rem;
-  --text-sidebar-user: 0.875rem;
-  --text-sidebar-user-label: 0.6875rem;
-  --text-sidebar-avatar: 0.8125rem;
+  --text-sidebar-label: 1.0625rem;
+  --text-sidebar-sub: 1rem;
+  --text-sidebar-badge: 0.75rem;
+  --text-sidebar-title: 1.3125rem;
+  --text-sidebar-subtitle: 0.8125rem;
+  --text-sidebar-user: 1.0625rem;
+  --text-sidebar-user-label: 0.875rem;
+  --text-sidebar-avatar: 1rem;
 
   /* Settings modal font sizes */
-  --text-settings-item: 0.875rem;
-  --text-settings-tab: 0.875rem;
-  --text-settings-version: 0.5625rem;
-  --text-settings-heading: 0.5625rem;
-  --text-settings-input: 0.875rem;
+  --text-settings-item: 1.0625rem;
+  --text-settings-tab: 1.0625rem;
+  --text-settings-version: 0.75rem;
+  --text-settings-heading: 0.75rem;
+  --text-settings-input: 1.0625rem;
 
   /* Domain header font sizes */
-  --text-header-logo: 0.875rem;
-  --text-header-domain: 0.75rem;
+  --text-header-logo: 1.0625rem;
+  --text-header-domain: 0.9375rem;
 }
 
 /* Light Theme Variables */

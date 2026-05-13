@@ -1,3 +1,21 @@
+## 2026-05-13
+
+### Enhanced: Global font size increase (+3px)
+- Increased all CSS typography tokens in `globals.css` by +3px: label (10→13px), caption (12→15px), note (13→16px), xs (14→17px), body (16→19px), subtitle (18→21px), heading (22→25px), title (26→29px).
+- Updated sidebar, settings modal, and domain header font tokens by +3px each.
+- Applies globally across all domains and components via Tailwind `@theme` tokens.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
+### Fixed: Month view calendar cell height adaptation
+- Task overlay container now dynamically calculates minimum height based on the maximum number of stacked task levels across all columns, preventing task cards from being clipped when multiple tasks stack vertically.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ## 2026-05-12
 
 ### Enhanced: Global font size increase across all domains

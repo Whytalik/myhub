@@ -13,8 +13,6 @@ const DEFAULT_MEAL_SLOTS = [
   { name: "Вечеря", timeWindow: "19:00", order: 3, kcalPct: 0.30, fiberPct: 0.30 },
 ]
 
-const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
-
 export async function createWeekPlan(
   name: string,
   personIds: string[]
@@ -539,7 +537,7 @@ export async function removeDishFromSlot(entryId: string): Promise<ActionResult<
     const userId = await getRequiredUserId()
 
     const entry = await prisma.dishEntry.findUnique({
-      where: { id: dishEntryId },
+      where: { id: entryId },
       include: {
         mealSlot: {
           include: {
@@ -556,7 +554,7 @@ export async function removeDishFromSlot(entryId: string): Promise<ActionResult<
       if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
     }
 
-    await prisma.dishEntry.delete({ where: { id: dishEntryId } })
+    await prisma.dishEntry.delete({ where: { id: entryId } })
     invalidateFoodCache(userId)
     return { success: true, data: undefined }
   } catch (error) {

@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/prisma";
-import { createWeekPlan, addDishToSlot } from "../src/features/nutrition/actions/planning";
 
 /**
  * Script to generate a complete Week Plan with automated portions
@@ -16,7 +15,6 @@ async function main() {
   // to ensure correct logic execution.
   
   const userId = user.id;
-  const personIds = ["vitalii-profile", "gf-profile"];
   
   console.log("Creating Week Plan...");
   

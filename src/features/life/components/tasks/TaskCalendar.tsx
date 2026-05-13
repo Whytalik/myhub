@@ -719,6 +719,25 @@ export function TaskCalendar({
     }
   };
 
+  const maxLevelByColumn = useMemo(() => {
+    const maxLevel: Record<number, number> = {};
+    allTasksWithLevels.forEach(seg => {
+      for (let i = seg.startIdx; i <= seg.endIdx; i++) {
+        maxLevel[i] = Math.max(maxLevel[i] ?? 0, seg.level);
+      }
+    });
+    return Object.values(maxLevel).reduce((max, l) => Math.max(max, l), 0);
+  }, [allTasksWithLevels]);
+
+  const overlayMinHeight = useMemo(() => {
+    const baseTop = mode === 'month' ? 64 : 74;
+    const padding = 8;
+    const taskHeight = 80;
+    const cellMinHeight = mode === 'month' ? 200 : 500;
+    const neededHeight = baseTop + (maxLevelByColumn + 1) * (taskHeight + padding);
+    return Math.max(cellMinHeight, neededHeight);
+  }, [mode, maxLevelByColumn]);
+
   const renderGridBody = () => (
     <div className="overflow-x-auto scrollbar-hide">
       <div className="min-w-[800px]">
@@ -750,7 +769,10 @@ export function TaskCalendar({
             ))}
           </div>
 
-          <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
+          <div 
+            className="absolute left-0 right-0 top-0 pointer-events-none grid grid-cols-7"
+            style={{ minHeight: `${overlayMinHeight}px` }}
+          >
             {allTasksWithLevels.map((seg) => (
               <TaskCalendarCard
                 key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}

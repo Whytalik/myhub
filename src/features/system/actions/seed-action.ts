@@ -5,7 +5,34 @@ import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { invalidateFoodCache } from "@/lib/revalidate"
 import productsData from "../../nutrition/data/products.json"
 import dishesData from "../../nutrition/data/dishes.json"
-import { WEEKLY_SCHEDULE, MEAL_VARIANTS } from "../../nutrition/constants/meal-variants"
+import { WEEKLY_SCHEDULE } from "../../nutrition/constants/meal-variants"
+import { FoodProduct, CookingMethod, DishType, Unit } from "@/app/generated/prisma"
+
+interface JsonProduct {
+  name: string
+  caloriesPer100: number
+  proteinPer100: number
+  fatPer100: number
+  carbsPer100: number
+  fiberPer100: number
+  unit: string
+  standardPackageAmount: number
+  category: string
+  price?: number
+}
+
+interface JsonDish {
+  name: string
+  type: string
+  servings: number
+  description?: string
+  ingredients: {
+    productName: string
+    rawWeight: number
+    cookingMethod: string
+    alternatives?: string[]
+  }[]
+}
 
 export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
   try {
@@ -14,9 +41,9 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     console.log("Starting exhaustive Visual Plan Seeding...");
 
     // 1. GLOBAL PRODUCTS (UserId: null)
-    const globalProducts: Record<string, any> = {};
+    const globalProducts: Record<string, FoodProduct> = {};
 
-    for (const p of productsData) {
+    for (const p of productsData as unknown as JsonProduct[]) {
       const productId = `global-${p.name.replace(/\s+/g, '-').toLowerCase()}`;
       const product = await prisma.foodProduct.upsert({
         where: { id: productId },
@@ -26,7 +53,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
           fatPer100: p.fatPer100,
           carbsPer100: p.carbsPer100,
           fiberPer100: p.fiberPer100,
-          unit: p.unit,
+          unit: p.unit as Unit,
           standardPackageAmount: p.standardPackageAmount,
           category: p.category,
           price: p.price || 0,
@@ -40,7 +67,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
           fatPer100: p.fatPer100,
           carbsPer100: p.carbsPer100,
           fiberPer100: p.fiberPer100,
-          unit: p.unit,
+          unit: p.unit as Unit,
           standardPackageAmount: p.standardPackageAmount,
           category: p.category,
           price: p.price || 0,
@@ -55,7 +82,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     }
 
     // 3. Create Global Products for MARINADES/SAUCES/DRESSINGS from dishes.json
-    for (const d of dishesData) {
+    for (const d of dishesData as unknown as JsonDish[]) {
       if (["MARINADE", "SAUCE", "DRESSING"].includes(d.type)) {
         let totalKcal = 0, totalP = 0, totalF = 0, totalC = 0, totalFiber = 0, totalWeight = 0;
         
@@ -91,7 +118,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
               fatPer100: (totalF / totalWeight) * 100,
               carbsPer100: (totalC / totalWeight) * 100,
               fiberPer100: (totalFiber / totalWeight) * 100,
-              unit: "GRAM",
+              unit: Unit.GRAM,
               standardPackageAmount: 100,
               category: "SAUCES"
             }
@@ -102,7 +129,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     }
 
     // 4. COOKING METHODS MAPPING
-    const cookingMethods = await prisma.cookingMethod.findMany();
+    const cookingMethods: CookingMethod[] = await prisma.cookingMethod.findMany();
     const getMethodId = (methodName: string, category: string) => {
       if (methodName === "RAW") return cookingMethods.find(m => m.name === "Сире")?.id;
       if (methodName === "BAKED") return cookingMethods.find(m => m.name === "Запікання")?.id;
@@ -117,7 +144,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     };
 
     // 5. DISHES FOR USER
-    for (const d of dishesData) {
+    for (const d of dishesData as unknown as JsonDish[]) {
       const dishId = `${d.name.replace(/\s+/g, '-').toLowerCase()}-${userId}`;
       await prisma.dishIngredient.deleteMany({ where: { dishId } });
 
@@ -127,9 +154,9 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
           name: d.name,
           description: d.description,
           servings: d.servings,
-          type: d.type as any,
+          type: d.type as DishType,
           ingredients: {
-            create: d.ingredients.map((ing: any) => {
+            create: d.ingredients.map((ing) => {
               const product = globalProducts[ing.productName];
               if (!product) return null;
               return {
@@ -138,7 +165,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
-            }).filter(Boolean)
+            }).filter((i): i is NonNullable<typeof i> => i !== null)
           }
         },
         create: {
@@ -147,9 +174,9 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
           name: d.name,
           description: d.description,
           servings: d.servings,
-          type: d.type as any,
+          type: d.type as DishType,
           ingredients: {
-            create: d.ingredients.map((ing: any) => {
+            create: d.ingredients.map((ing) => {
               const product = globalProducts[ing.productName];
               if (!product) return null;
               return {
@@ -158,7 +185,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
-            }).filter(Boolean)
+            }).filter((i): i is NonNullable<typeof i> => i !== null)
           }
         }
       });
@@ -168,7 +195,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     const vitaliiId = "vitalii-profile";
     const gfId = "gf-profile";
 
-    const vitalii = await prisma.nutritionPerson.upsert({
+    await prisma.nutritionPerson.upsert({
       where: { id: vitaliiId },
       update: { targetKcal: 1700, proteinPct: 45, fatPct: 30, carbsPct: 25, goal: "LOSE" },
       create: {
@@ -177,7 +204,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       }
     });
 
-    const olesya = await prisma.nutritionPerson.upsert({
+    await prisma.nutritionPerson.upsert({
       where: { id: gfId },
       update: { targetKcal: 2300, proteinPct: 15, fatPct: 25, carbsPct: 60, goal: "GAIN" },
       create: {
@@ -202,7 +229,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         dayPlans: {
           create: WEEKLY_SCHEDULE.map((ws) => ({
             userId,
-            dayOfWeek: dayNamesMap[ws.day],
+            dayOfWeek: dayNamesMap[ws.day] ?? 0,
             activity: ws.activity === "gym" ? "Тренажерний зал" : "Кардіо / Біг",
             mealSlots: {
               create: [
@@ -234,11 +261,11 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
 
     for (const day of weekPlan.dayPlans) {
       const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
-      const ws = WEEKLY_SCHEDULE.find(s => s.day === dayName);
+      const ws = WEEKLY_SCHEDULE.find(s => s.day === (dayName ?? ""));
       if (!ws) continue;
 
       for (const slot of day.mealSlots) {
-        let dishName = ws.defaults[slot.name];
+        let dishName = ws.defaults[slot.name as keyof typeof ws.defaults];
         
         // Special case: Friday Dinner is Fast Food
         if (dayName === "Пт" && slot.name === "Вечеря") {

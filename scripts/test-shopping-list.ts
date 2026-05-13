@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/prisma";
-import { aggregateShoppingList } from "../src/features/nutrition/logic/shopping-list";
+import { aggregateShoppingList, FullWeekPlan } from "../src/features/nutrition/logic/shopping-list";
 
 async function main() {
   const weekPlanId = process.argv[2];
@@ -42,8 +42,7 @@ async function main() {
     process.exit(1);
   }
 
-  // @ts-ignore - Simplified include for script
-  const shoppingList = aggregateShoppingList(weekPlan);
+  const shoppingList = aggregateShoppingList(weekPlan as unknown as FullWeekPlan);
 
   console.log(`\n--- Shopping List for: ${weekPlan.name} ---`);
   console.log(`Total Products: ${shoppingList.length}\n`);

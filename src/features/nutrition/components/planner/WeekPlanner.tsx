@@ -53,7 +53,7 @@ interface WeekPlannerProps {
           servings: number
           isShared: boolean
           fitScore: number | null
-          selectedAlternatives?: any
+          selectedAlternatives?: Record<string, string | null>
           ingredients?: {
             id: string
             productId: string

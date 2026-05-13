@@ -14,11 +14,11 @@ async function main() {
   const userId = user.id;
 
   // 1. Create Profiles
-  const vitalii = await prisma.nutritionPerson.upsert({
+  await prisma.nutritionPerson.upsert({
     where: { id: "vitalii-profile" },
     update: {
       targetKcal: 1700,
-      proteinPct: 45, // High protein as per plan
+      proteinPct: 45,
       fatPct: 30,
       carbsPct: 25,
       goal: "LOSE"
@@ -35,11 +35,11 @@ async function main() {
     }
   });
 
-  const gf = await prisma.nutritionPerson.upsert({
+  await prisma.nutritionPerson.upsert({
     where: { id: "gf-profile" },
     update: {
       targetKcal: 2300,
-      proteinPct: 15, // Approx for 80g protein at 2300kcal
+      proteinPct: 15,
       fatPct: 25,
       carbsPct: 60,
       goal: "GAIN"
@@ -67,7 +67,7 @@ async function main() {
     { name: "Йогурт густий", kcal: 60, p: 4, f: 3, c: 5, unit: "г", pkg: 300, cat: "Dairy" },
   ];
 
-  const products: Record<string, any> = {};
+  const products: Record<string, { id: string }> = {};
   for (const p of productsData) {
     products[p.name] = await prisma.foodProduct.upsert({
       where: { id: p.name.replace(/\s+/g, '-').toLowerCase() },
@@ -89,7 +89,7 @@ async function main() {
   }
 
   // 3. Dishes
-  const bagelDish = await prisma.dish.upsert({
+  await prisma.dish.upsert({
     where: { id: "bagel-visual-plan" },
     update: {},
     create: {
@@ -106,7 +106,7 @@ async function main() {
     }
   });
 
-  const kebabDish = await prisma.dish.upsert({
+  await prisma.dish.upsert({
     where: { id: "kebab-visual-plan" },
     update: {},
     create: {

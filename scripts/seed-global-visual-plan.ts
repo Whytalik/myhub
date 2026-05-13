@@ -3,6 +3,33 @@ import { prisma } from "../src/lib/prisma";
 import fs from "fs";
 import path from "path";
 import { WEEKLY_SCHEDULE } from "../src/features/nutrition/constants/meal-variants";
+import { FoodProduct, CookingMethod, DishType, Unit } from "../src/app/generated/prisma";
+
+interface JsonProduct {
+  name: string
+  caloriesPer100: number
+  proteinPer100: number
+  fatPer100: number
+  carbsPer100: number
+  fiberPer100: number
+  unit: string
+  standardPackageAmount: number
+  category: string
+  price?: number
+}
+
+interface JsonDish {
+  name: string
+  type: string
+  servings: number
+  description?: string
+  ingredients: {
+    productName: string
+    rawWeight: number
+    cookingMethod: string
+    alternatives?: string[]
+  }[]
+}
 
 async function main() {
   console.log("Starting exhaustive global visual plan seed...");
@@ -15,7 +42,7 @@ async function main() {
   const dishesData = JSON.parse(fs.readFileSync(dishesPath, "utf-8"));
 
   // 2. Fetch Cooking Methods for mapping
-  const cookingMethods = await prisma.cookingMethod.findMany();
+  const cookingMethods: CookingMethod[] = await prisma.cookingMethod.findMany();
   const getMethodId = (methodName: string, category: string) => {
     if (methodName === "RAW") return cookingMethods.find(m => m.name === "Сире")?.id;
     if (methodName === "BAKED") return cookingMethods.find(m => m.name === "Запікання")?.id;
@@ -31,9 +58,9 @@ async function main() {
 
   // 3. Seed Global Products (First Pass)
   console.log(`Seeding ${productsData.length} global products...`);
-  const globalProducts: Record<string, any> = {};
+  const globalProducts: Record<string, FoodProduct> = {};
 
-  for (const p of productsData) {
+  for (const p of productsData as JsonProduct[]) {
     const productId = `global-${p.name.replace(/\s+/g, '-').toLowerCase()}`;
     const product = await prisma.foodProduct.upsert({
       where: { id: productId },
@@ -43,7 +70,7 @@ async function main() {
         fatPer100: p.fatPer100,
         carbsPer100: p.carbsPer100,
         fiberPer100: p.fiberPer100,
-        unit: p.unit,
+        unit: p.unit as Unit,
         standardPackageAmount: p.standardPackageAmount,
         category: p.category,
         price: p.price || 0,
@@ -57,7 +84,7 @@ async function main() {
         fatPer100: p.fatPer100,
         carbsPer100: p.carbsPer100,
         fiberPer100: p.fiberPer100,
-        unit: p.unit,
+        unit: p.unit as Unit,
         standardPackageAmount: p.standardPackageAmount,
         category: p.category,
         price: p.price || 0,
@@ -73,7 +100,7 @@ async function main() {
 
   // 5. Create Global Products for MARINADES/SAUCES from dishes.json
   console.log("Creating global products for composite sauces/marinades...");
-  for (const d of dishesData) {
+  for (const d of dishesData as JsonDish[]) {
     if (["MARINADE", "SAUCE", "DRESSING"].includes(d.type)) {
       let totalKcal = 0, totalP = 0, totalF = 0, totalC = 0, totalFiber = 0, totalWeight = 0;
       
@@ -109,7 +136,7 @@ async function main() {
             fatPer100: (totalF / totalWeight) * 100,
             carbsPer100: (totalC / totalWeight) * 100,
             fiberPer100: (totalFiber / totalWeight) * 100,
-            unit: "GRAM",
+            unit: Unit.GRAM,
             standardPackageAmount: 100,
             category: "SAUCES"
           }
@@ -127,7 +154,7 @@ async function main() {
 
   for (const user of users) {
     // Seed Dishes
-    for (const d of dishesData) {
+    for (const d of dishesData as JsonDish[]) {
       const dishId = `${d.name.replace(/\s+/g, '-').toLowerCase()}-${user.id}`;
       await prisma.dishIngredient.deleteMany({ where: { dishId } });
       await prisma.dish.upsert({
@@ -136,9 +163,9 @@ async function main() {
           name: d.name,
           description: d.description,
           servings: d.servings,
-          type: d.type as any,
+          type: d.type as DishType,
           ingredients: {
-            create: d.ingredients.map((ing: any) => {
+            create: d.ingredients.map((ing) => {
               const product = globalProducts[ing.productName];
               if (!product) return null;
               return {
@@ -147,7 +174,7 @@ async function main() {
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
-            }).filter(Boolean)
+            }).filter((i): i is NonNullable<typeof i> => i !== null)
           }
         },
         create: {
@@ -156,9 +183,9 @@ async function main() {
           name: d.name,
           description: d.description,
           servings: d.servings,
-          type: d.type as any,
+          type: d.type as DishType,
           ingredients: {
-            create: d.ingredients.map((ing: any) => {
+            create: d.ingredients.map((ing) => {
               const product = globalProducts[ing.productName];
               if (!product) return null;
               return {
@@ -167,7 +194,7 @@ async function main() {
                 cookingMethodId: getMethodId(ing.cookingMethod, product.category),
                 alternatives: ing.alternatives || []
               };
-            }).filter(Boolean)
+            }).filter((i): i is NonNullable<typeof i> => i !== null)
           }
         }
       });
@@ -197,7 +224,7 @@ async function main() {
         dayPlans: {
           create: WEEKLY_SCHEDULE.map((ws) => ({
             userId: user.id,
-            dayOfWeek: dayNamesMap[ws.day],
+            dayOfWeek: dayNamesMap[ws.day] ?? 0,
             activity: ws.activity === "gym" ? "Тренажерний зал" : "Кардіо / Біг",
             mealSlots: {
               create: [
@@ -226,10 +253,10 @@ async function main() {
 
     for (const day of weekPlan.dayPlans) {
       const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
-      const ws = WEEKLY_SCHEDULE.find(s => s.day === dayName);
+      const ws = WEEKLY_SCHEDULE.find(s => s.day === (dayName ?? ""));
       if (!ws) continue;
       for (const slot of day.mealSlots) {
-        let dishName = ws.defaults[slot.name];
+        let dishName = ws.defaults[slot.name as keyof typeof ws.defaults];
         if (dayName === "Пт" && slot.name === "Вечеря") dishName = "Кебаб Класичний";
         if (!dishName) continue;
         const dish = findDish(dishName);

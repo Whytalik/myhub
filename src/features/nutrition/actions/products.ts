@@ -374,7 +374,7 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
     // Note: DishIngredient will still block if Dishes exist.
     // The user should delete dishes first.
     
-    const { count } = await prisma.foodProduct.deleteMany({
+    await prisma.foodProduct.deleteMany({
       where: { userId }
     })
     
