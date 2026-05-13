@@ -230,6 +230,7 @@ model MealSlotInstance {
   order            Int             @default(0)
   targetKcal       Float
   targetFiberGrams Float
+  locked           Boolean         @default(false)
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   dayPlan          DayPlan         @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)

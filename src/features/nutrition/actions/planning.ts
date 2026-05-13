@@ -88,6 +88,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
       order: number
       targetKcal: number
       targetFiberGrams: number
+      locked: boolean
       actualKcal: number
       actualProtein: number
       actualFat: number
@@ -252,6 +253,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           order: slot.order,
           targetKcal: slot.targetKcal,
           targetFiberGrams: slot.targetFiberGrams,
+          locked: slot.locked,
           actualKcal,
           actualProtein,
           actualFat,
@@ -839,6 +841,27 @@ export async function updateDayActivity(
     return { success: true, data: undefined }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update activity" }
+  }
+}
+
+export async function toggleSlotLock(slotId: string): Promise<ActionResult<{ locked: boolean }>> {
+  try {
+    const userId = await getRequiredUserId()
+    const slot = await prisma.mealSlotInstance.findUnique({
+      where: { id: slotId },
+      include: { dayPlan: { include: { weekPlan: true } } },
+    })
+    if (!slot) return { success: false, error: "Slot not found" }
+    if (slot.dayPlan.weekPlan?.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    const updated = await prisma.mealSlotInstance.update({
+      where: { id: slotId },
+      data: { locked: !slot.locked },
+    })
+    invalidateFoodCache(userId)
+    return { success: true, data: { locked: updated.locked } }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to toggle lock" }
   }
 }
 

@@ -44,23 +44,23 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
                   <td className="py-2 px-3 font-medium">{p.personName}</td>
                   <td className="py-2 px-3">
                     <div className="font-semibold">{p.avgKcalPerDay.toFixed(0)}</div>
-                    <div className="text-caption text-muted-foreground">Target: {p.targetKcal}</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetKcal.toFixed(0)}</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgProtein.toFixed(1)}g</div>
-                    <div className="text-caption text-muted-foreground">Target: {p.targetProtein}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetProtein.toFixed(1)}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgFat.toFixed(1)}g</div>
-                    <div className="text-caption text-muted-foreground">Target: {p.targetFat}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetFat.toFixed(1)}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgCarbs.toFixed(1)}g</div>
-                    <div className="text-caption text-muted-foreground">Target: {p.targetCarbs}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetCarbs.toFixed(1)}g</div>
                   </td>
                   <td className="py-2 px-3">
                     <div>{p.avgFiber.toFixed(1)}g</div>
-                    <div className="text-caption text-muted-foreground">Target: {p.targetFiber}g</div>
+                    <div className="text-caption text-muted-foreground">Target: {p.targetFiber.toFixed(1)}g</div>
                   </td>
                 </tr>
               ))}

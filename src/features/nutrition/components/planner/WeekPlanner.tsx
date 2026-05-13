@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useTransition, useMemo } from "react"
-import { Plus, Trash2, Search } from "lucide-react"
+import { Plus, Trash2, Search, Lock, Unlock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updatePortionWeight, updateDishServings, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, toggleSlotLock } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -40,6 +40,7 @@ interface WeekPlannerProps {
         order: number
         targetKcal: number
         targetFiberGrams: number
+        locked: boolean
         actualKcal: number
         actualProtein: number
         actualFat: number
@@ -251,6 +252,17 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
+  const handleToggleLock = (slotId: string) => {
+    startTransition(async () => {
+      const result = await toggleSlotLock(slotId)
+      if (result.success) {
+        toast.success(result.data.locked ? "Slot locked" : "Slot unlocked")
+      } else {
+        toast.error(result.error || "Failed to toggle lock")
+      }
+    })
+  }
+
   const currentDay = weekPlan.days.find(d => d.dayOfWeek === activeDay)
 
   return (
@@ -337,9 +349,9 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 warnings={[]}
                 data={{
                   kcal: { label: "Calories", actual: dayActual.kcal, target: person.targetKcal, unit: "kcal" },
-                  protein: { label: "Protein", actual: dayActual.protein, target: (person.targetKcal * person.proteinPct / 100) / 4, unit: "g" },
-                  fat: { label: "Fat", actual: dayActual.fat, target: (person.targetKcal * person.fatPct / 100) / 9, unit: "g" },
-                  carbs: { label: "Carbs", actual: dayActual.carbs, target: (person.targetKcal * person.carbsPct / 100) / 4, unit: "g" },
+                  protein: { label: "Protein", actual: dayActual.protein, target: Math.round((person.targetKcal * person.proteinPct / 100) / 4), unit: "g" },
+                  fat: { label: "Fat", actual: dayActual.fat, target: Math.round((person.targetKcal * person.fatPct / 100) / 9), unit: "g" },
+                  carbs: { label: "Carbs", actual: dayActual.carbs, target: Math.round((person.targetKcal * person.carbsPct / 100) / 4), unit: "g" },
                   fiber: { label: "Fiber", actual: dayActual.fiber, target: person.fiberGrams, unit: "g" },
                 }}
               />
@@ -370,13 +382,17 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                    "border-red-500/50 bg-red-50/50 dark:bg-red-900/10"
 
                 return (
-                  <div key={slot.id} className={`p-3 rounded-lg border ${colorClass}`}>
+                  <div key={slot.id} className={`p-3 rounded-lg border ${colorClass} ${slot.locked ? 'opacity-75' : ''}`}>
                     <div className="flex justify-between items-start mb-2">
-                      <div>
+                      <div className="flex items-center gap-2">
                         <div className="text-sm font-semibold">{slot.personName}</div>
-                        {slot.targetFiberGrams > 0 && (
-                          <div className="text-label text-muted-foreground">Fiber: {slot.targetFiberGrams.toFixed(0)}g</div>
-                        )}
+                        <button
+                          onClick={() => handleToggleLock(slot.id)}
+                          className={`p-0.5 rounded transition-colors ${slot.locked ? 'text-accent hover:text-accent/70' : 'text-muted-foreground/30 hover:text-muted-foreground'}`}
+                          title={slot.locked ? "Unlock slot" : "Lock slot"}
+                        >
+                          {slot.locked ? <Lock size={12} /> : <Unlock size={12} />}
+                        </button>
                       </div>
                       <div className="text-caption text-muted-foreground">
                         {slot.actualKcal.toFixed(0)} / {slot.targetKcal.toFixed(0)} kcal
@@ -493,7 +509,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                   size="icon"
                                   className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
                                   onClick={() => handleRemoveDish(entry.id)}
-                                  disabled={isPending}
+                                  disabled={isPending || slot.locked}
                                 >
                                   <Trash2 className="h-3 w-3" />
                                 </Button>
@@ -562,7 +578,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                             size="icon"
                             className="h-5 w-5 text-red-500 hover:text-red-600"
                             onClick={() => handleRemoveProduct(pe.id)}
-                            disabled={isPending}
+                            disabled={isPending || slot.locked}
                           >
                             <Trash2 className="h-3 w-3" />
                           </Button>
@@ -583,7 +599,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                               slotName: slot.name
                             })
                           }}
-                          disabled={isPending}
+                          disabled={isPending || slot.locked}
                         >
                           <Plus className="h-4 w-4 mr-1" />
                           <span className="text-caption">Страву</span>
@@ -592,7 +608,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                           variant="ghost"
                           className="h-8 px-3 border-dashed border-2 text-muted-foreground hover:text-green-500 hover:border-green-500/40"
                           onClick={() => setProductPickerSlotId(slot.id)}
-                          disabled={isPending}
+                          disabled={isPending || slot.locked}
                         >
                           <Plus className="h-3 w-3 mr-1" />
                           <span className="text-caption">Продукт</span>
