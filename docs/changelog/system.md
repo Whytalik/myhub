@@ -1,3 +1,16 @@
+## [2026-05-14] — Calm OS: Full-Width Landing Pages
+
+### Changed
+- **`SpaceLanding`**: Removed `max-w-7xl mx-auto` constraint, now uses `w-full` to match width of all other dashboard pages. Applies to all space and domain landing pages.
+- **`seed-visual-plan.ts`**: Fixed `@typescript-eslint/no-explicit-any` warnings by importing and using `Store` enum type instead of `as any` casts.
+
+### Verification Checklist:
+- [x] Logic implemented
+- [x] UI updated
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+- [x] Verified with `pnpm build`
+
 ## [2026-05-13] — Calm OS: Bento Hub Landing Pages
 
 ### Added
