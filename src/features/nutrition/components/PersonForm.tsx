@@ -67,7 +67,7 @@ function ProfileCard({
                   if (e.key === "Enter") handleNameSave();
                   if (e.key === "Escape") { setIsEditingName(false); setEditName(person.name || ""); }
                 }}
-                className="text-lg font-heading h-8"
+                className="text-lg font-heading h-8 border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
                 autoFocus
               />
               <button onClick={handleNameSave} className="p-1 text-accent hover:bg-accent/10 rounded">
@@ -103,7 +103,7 @@ function ProfileCard({
               type="number"
               defaultValue={totalCals}
               onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, person.fiberGrams || 30, parseFloat(e.target.value) || 2000)}
-              className="text-lg font-black text-accent h-9"
+              className="text-lg font-black text-accent h-9 border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
             />
             <span className="text-sm font-mono text-muted">kcal</span>
           </div>
@@ -120,7 +120,7 @@ function ProfileCard({
                 type="number"
                 defaultValue={currentPPct}
                 onBlur={(e) => onGoalUpdate(person.id, parseFloat(e.target.value) || 30, currentFPct, currentCPct, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg"
+                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
               <span className="text-sm font-mono text-muted">%</span>
             </div>
@@ -136,7 +136,7 @@ function ProfileCard({
                 type="number"
                 defaultValue={currentFPct}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, parseFloat(e.target.value) || 25, currentCPct, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg"
+                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
               <span className="text-sm font-mono text-muted">%</span>
             </div>
@@ -152,7 +152,7 @@ function ProfileCard({
                 type="number"
                 defaultValue={currentCPct}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, parseFloat(e.target.value) || 45, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg"
+                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
               <span className="text-sm font-mono text-muted">%</span>
             </div>
@@ -168,7 +168,7 @@ function ProfileCard({
                 type="number"
                 defaultValue={person.fiberGrams || 30}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, parseFloat(e.target.value) || 30, totalCals)}
-                className="font-mono text-lg"
+                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
               <span className="text-sm font-mono text-muted">g</span>
             </div>
@@ -315,6 +315,7 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+            className="border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
             autoFocus
           />
         </div>

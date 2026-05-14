@@ -96,7 +96,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
               placeholder="e.g. Week 20, Cutting Phase..."
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="font-mono"
+              className="font-mono border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               autoFocus
             />
           </div>
