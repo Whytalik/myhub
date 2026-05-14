@@ -5,9 +5,10 @@ Refined the WeekPlanner interface for faster data entry and cleaner layout.
 - **Inline Product Editing**: Added support for inline weight editing for standalone products (ProductEntry), matching the behavior of dish ingredients. Added `updateProductEntryWeight` server action.
 - **Unified Add Buttons**: Replaced person-specific "Add" buttons with unified "Додати страву" and "Додати продукт" buttons per meal group (e.g., Before-workout, Breakfast).
 - **Table Grouping**: Refactored product entry rendering to group items by product ID across all persons in a meal group, ensuring a consistent table layout.
+- **Visual Improvements**: Increased width of macro progress bars in `PersonMacroChip` (80px → 140px) and Day Summary (20px → 120px) for better readability. Added weight rounding to integers and automatic text selection on focus for inline editing fields.
 - **Verification**:
     - [x] Logic implemented (Action + UI state)
-    - [x] UI updated (Unified buttons, grouped product rows)
+    - [x] UI updated (Unified buttons, grouped product rows, wider progress bars, improved inline inputs)
     - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
 
 ---

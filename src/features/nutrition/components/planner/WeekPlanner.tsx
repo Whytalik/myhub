@@ -145,7 +145,7 @@ function PersonMacroChip({ name, kcal, protein, fat, carbs, fiber }: { name: str
     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface border border-border min-w-0">
       <span className="text-caption font-semibold text-text-primary shrink-0">{name}</span>
       <div className="flex items-center gap-1.5 min-w-0 flex-1">
-        <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden flex max-w-[80px]">
+        <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden flex max-w-[140px]">
           <div style={{ width: `${proteinPct}%` }} className="bg-accent h-full" />
           <div style={{ width: `${fatPct}%` }} className="bg-secondary h-full" />
           <div style={{ width: `${carbsPct}%` }} className="bg-text/40 h-full" />
@@ -418,7 +418,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                         return (
                           <div key={m.label} className="flex items-center gap-1">
                             <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
-                            <div className="w-20 h-px bg-raised rounded-full overflow-hidden shrink-0">
+                            <div className="w-32 h-px bg-raised rounded-full overflow-hidden shrink-0">
                               <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
                             </div>
                             <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
@@ -565,9 +565,10 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           <input
                                             type="text"
                                             inputMode="decimal"
-                                            className="w-12 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
+                                            className="w-16 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
                                             value={editingIngredient.weight}
                                             autoFocus
+                                            onFocus={(e) => e.target.select()}
                                             onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value.replace(/[^0-9.]/g, "") })}
                                             onKeyDown={(e) => {
                                               if (e.key === "Enter") {
@@ -583,7 +584,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                             }}
                                             onBlur={() => {
                                               const w = parseFloat(editingIngredient.weight)
-                                              if (w > 0 && w !== ing.weight) {
+                                              if (w > 0 && Math.round(w) !== Math.round(ing.weight)) {
                                                 startTransition(async () => {
                                                   const result = await updateDishEntryIngredient(person.entryId, idx, w)
                                                   if (result.success) setEditingIngredient(null)
@@ -598,7 +599,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                       ) : (
                                         <button
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
-                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: String(ing.weight) })}
+                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: String(Math.round(ing.weight)) })}
                                         >
                                           {ing.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
                                         </button>
@@ -678,9 +679,10 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           <input
                                             type="text"
                                             inputMode="decimal"
-                                            className="w-12 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
+                                            className="w-16 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
                                             value={editingProduct.weight}
                                             autoFocus
+                                            onFocus={(e) => e.target.select()}
                                             onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value.replace(/[^0-9.]/g, "") })}
                                             onKeyDown={(e) => {
                                               if (e.key === "Enter") {
@@ -696,7 +698,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                             }}
                                             onBlur={() => {
                                               const w = parseFloat(editingProduct.weight)
-                                              if (w > 0 && w !== person.weight) {
+                                              if (w > 0 && Math.round(w) !== Math.round(person.weight)) {
                                                 startTransition(async () => {
                                                   const result = await updateProductEntryWeight(person.entryId, w)
                                                   if (result.success) setEditingProduct(null)
@@ -711,7 +713,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                       ) : (
                                         <button
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
-                                          onClick={() => setEditingProduct({ id: person.entryId, weight: String(person.weight) })}
+                                          onClick={() => setEditingProduct({ id: person.entryId, weight: String(Math.round(person.weight)) })}
                                         >
                                           {person.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
                                         </button>
