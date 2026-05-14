@@ -398,7 +398,7 @@ const handleDeleteAll = () => {
             size="sm"
             className="rounded-xl text-red-500 hover:text-red-600 hover:bg-red-50"
             onClick={() => setShowDeleteAllDialog(true)}
-            disabled={isDeletingAll || isPending || products.filter(p => !!p.userId).length === 0}
+            disabled={isDeletingAll || isPending}
           >
             <Trash2 size={14} className="mr-1.5" /> Delete All
           </Button>
@@ -495,23 +495,14 @@ const handleDeleteAll = () => {
       ) : (
         /* Full library grid */
         <>
-          {/* Main group tabs */}
           <TabBar
-            tabs={groupTabs}
-            activeId={selectedGroup}
-            onTabChange={setSelectedGroup}
-            variant="primary"
+            groups={groupTabs}
+            activeGroup={selectedGroup}
+            onGroupChange={(id) => { setSelectedGroup(id); setSelectedSubTab(null); }}
+            subgroups={[{ id: "__all__", label: "ALL" }, ...subTabs]}
+            activeSubgroup={selectedSubTab || "__all__"}
+            onSubgroupChange={(id) => setSelectedSubTab(id === "__all__" ? null : id)}
           />
-
-          {/* Subcategory tabs */}
-          {subTabs.length > 1 && (
-            <TabBar
-              tabs={[{ id: "__all__", label: "ALL" }, ...subTabs]}
-              activeId={selectedSubTab || "__all__"}
-              onTabChange={(id) => setSelectedSubTab(id === "__all__" ? null : id)}
-              variant="sub"
-            />
-          )}
 
           {displayedCategories.length > 0 ? (
             <div className="space-y-8">
@@ -546,7 +537,7 @@ const handleDeleteAll = () => {
         isOpen={showFormModal}
         onClose={() => { setShowFormModal(false); setEditingProduct(null); }}
         title={editingProduct ? "Edit Product" : "Add Product"}
-        maxWidth="max-w-lg"
+        maxWidth="480px"
         footer={
           <>
             <Button variant="secondary" onClick={() => { setShowFormModal(false); setEditingProduct(null); }}>Cancel</Button>

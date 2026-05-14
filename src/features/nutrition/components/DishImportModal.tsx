@@ -93,7 +93,7 @@ export function DishImportModal({ isOpen, onClose, onImported }: DishImportModal
       isOpen={isOpen}
       onClose={handleClose}
       title="Import Dishes from JSON"
-      maxWidth="max-w-2xl"
+      maxWidth="560px"
       footer={
         <>
           <Button variant="secondary" onClick={handleClose}>Close</Button>

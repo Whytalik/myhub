@@ -5,7 +5,6 @@ import { Plus, Trash2, Search, ChevronDown, ChevronRight, Flame, UtensilsCrossed
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { DayNutritionSummary } from "./DayNutritionSummary"
 import { DishPicker } from "./DishPicker"
 import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
 import { toast } from "sonner"
@@ -380,35 +379,64 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         })}
       </div>
 
-      {/* Day nutrition summary */}
+      {/* Day nutrition summary - single row with both profiles */}
       {currentDay && (
-        <div className="grid md:grid-cols-2 gap-4">
-          {weekPlan.persons.map((person) => {
-            const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
+        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+          <div className="bg-raised/50 px-5 py-3 border-b border-border">
+            <h3 className="text-note font-semibold text-text-primary">Day Nutrition</h3>
+          </div>
+          <div className="p-4">
+            <div className="flex flex-col sm:flex-row gap-4">
+              {weekPlan.persons.map((person) => {
+                const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
+                const dayActual = personDaySlots.reduce((acc, s) => ({
+                  kcal: acc.kcal + s.actualKcal,
+                  protein: acc.protein + s.actualProtein,
+                  fat: acc.fat + s.actualFat,
+                  carbs: acc.carbs + s.actualCarbs,
+                  fiber: acc.fiber + s.actualFiber,
+                }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
 
-            const dayActual = personDaySlots.reduce((acc, s) => ({
-              kcal: acc.kcal + s.actualKcal,
-              protein: acc.protein + s.actualProtein,
-              fat: acc.fat + s.actualFat,
-              carbs: acc.carbs + s.actualCarbs,
-              fiber: acc.fiber + s.actualFiber,
-            }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
+                const targets = {
+                  kcal: person.targetKcal,
+                  protein: Math.round((person.targetKcal * person.proteinPct / 100) / 4),
+                  fat: Math.round((person.targetKcal * person.fatPct / 100) / 9),
+                  carbs: Math.round((person.targetKcal * person.carbsPct / 100) / 4),
+                  fiber: person.fiberGrams,
+                }
 
-            return (
-              <DayNutritionSummary
-                key={person.id}
-                personName={person.name ?? "Unknown"}
-                warnings={[]}
-                data={{
-                  kcal: { label: "Calories", actual: dayActual.kcal, target: person.targetKcal, unit: "kcal" },
-                  protein: { label: "Protein", actual: dayActual.protein, target: Math.round((person.targetKcal * person.proteinPct / 100) / 4), unit: "g" },
-                  fat: { label: "Fat", actual: dayActual.fat, target: Math.round((person.targetKcal * person.fatPct / 100) / 9), unit: "g" },
-                  carbs: { label: "Carbs", actual: dayActual.carbs, target: Math.round((person.targetKcal * person.carbsPct / 100) / 4), unit: "g" },
-                  fiber: { label: "Fiber", actual: dayActual.fiber, target: person.fiberGrams, unit: "g" },
-                }}
-              />
-            )
-          })}
+                const macros = [
+                  { label: "kcal", actual: dayActual.kcal, target: targets.kcal, color: "bg-accent" },
+                  { label: "Б", actual: dayActual.protein, target: targets.protein, color: "bg-accent" },
+                  { label: "Ж", actual: dayActual.fat, target: targets.fat, color: "bg-secondary" },
+                  { label: "В", actual: dayActual.carbs, target: targets.carbs, color: "bg-text/40" },
+                  { label: "К", actual: dayActual.fiber, target: targets.fiber, color: "bg-muted" },
+                ]
+
+                return (
+                  <div key={person.id} className="flex-1 space-y-2">
+                    <div className="text-note font-semibold text-text-primary">{person.name ?? "Unknown"}</div>
+                    <div className="space-y-1.5">
+                      {macros.map((m) => {
+                        const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
+                        return (
+                          <div key={m.label} className="flex items-center gap-2">
+                            <span className="text-caption font-mono text-text-muted w-4">{m.label}</span>
+                            <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden">
+                              <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
+                            </div>
+                            <span className="text-caption font-mono text-text-muted w-16 text-right">
+                              {m.actual.toFixed(0)}/{m.target}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
       )}
 

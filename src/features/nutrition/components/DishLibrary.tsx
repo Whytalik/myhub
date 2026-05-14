@@ -231,23 +231,15 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         </div>
       </div>
 
-      {/* Group tabs */}
+      {/* Group + subcategory tabs */}
       {!isSearchMode && (
         <TabBar
-          tabs={groupTabs}
-          activeId={selectedGroup}
-          onTabChange={(id) => { setSelectedGroup(id); setTypeFilter(null); }}
-          variant="primary"
-        />
-      )}
-
-      {/* Subcategory pills */}
-      {!isSearchMode && subTabs.length > 1 && (
-        <TabBar
-          tabs={[{ id: "__all__", label: "ALL" }, ...subTabs.map(t => ({ ...t, icon: <span>{t.emoji}</span> }))]}
-          activeId={typeFilter || "__all__"}
-          onTabChange={(id) => setTypeFilter(id === "__all__" ? null : id as DishType)}
-          variant="sub"
+          groups={groupTabs}
+          activeGroup={selectedGroup}
+          onGroupChange={(id) => { setSelectedGroup(id); setTypeFilter(null); }}
+          subgroups={[{ id: "__all__", label: "ALL" }, ...subTabs.map(t => ({ ...t, icon: <span>{t.emoji}</span> }))]}
+          activeSubgroup={typeFilter || "__all__"}
+          onSubgroupChange={(id) => setTypeFilter(id === "__all__" ? null : id as DishType)}
         />
       )}
 

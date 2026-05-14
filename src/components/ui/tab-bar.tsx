@@ -8,36 +8,33 @@ interface TabBarItem {
 }
 
 interface TabBarProps {
-  tabs: TabBarItem[];
-  activeId: string;
-  onTabChange: (id: string) => void;
-  variant?: "primary" | "sub";
+  groups: TabBarItem[];
+  activeGroup: string;
+  onGroupChange: (id: string) => void;
+  subgroups?: TabBarItem[];
+  activeSubgroup?: string;
+  onSubgroupChange?: (id: string) => void;
   className?: string;
 }
 
-export function TabBar({ tabs, activeId, onTabChange, variant = "primary", className = "" }: TabBarProps) {
-  if (tabs.length === 0) return null;
-
-  const isPrimary = variant === "primary";
+export function TabBar({ groups, activeGroup, onGroupChange, subgroups, activeSubgroup, onSubgroupChange, className = "" }: TabBarProps) {
+  if (groups.length === 0) return null;
 
   return (
-    <div className={`p-1.5 bg-surface border border-border/50 rounded-xl shadow-sm overflow-x-auto scrollbar-hide ${className}`}>
-      <div className="flex gap-1 min-w-fit">
-        {tabs.map((tab) => {
-          const isActive = activeId === tab.id;
+    <div className={`p-2 bg-surface border border-border/50 rounded-xl shadow-sm ${className}`}>
+      {/* Groups row */}
+      <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit">
+        {groups.map((tab) => {
+          const isActive = activeGroup === tab.id;
           return (
             <button
               key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => onGroupChange(tab.id)}
               className={`
-                relative flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-lg text-note font-medium transition-all duration-200
+                relative flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-lg text-note font-medium transition-all duration-200 shrink-0
                 ${isActive
-                  ? isPrimary
-                    ? "bg-accent text-bg font-semibold shadow-sm"
-                    : "bg-text text-bg font-semibold shadow-sm"
-                  : isPrimary
-                    ? "text-secondary hover:text-text hover:bg-raised"
-                    : "text-muted hover:text-text hover:bg-raised"
+                  ? "bg-accent text-[#0a0a0b] font-semibold shadow-sm"
+                  : "text-secondary hover:text-text hover:bg-raised"
                 }
               `}
             >
@@ -45,11 +42,7 @@ export function TabBar({ tabs, activeId, onTabChange, variant = "primary", class
               <span>{tab.label}</span>
               {tab.count !== undefined && (
                 <span className={`text-label px-1.5 py-0.5 rounded-md ${
-                  isActive
-                    ? isPrimary
-                      ? "bg-white/20"
-                      : "bg-white/20"
-                    : "bg-raised"
+                  isActive ? "bg-white/20" : "bg-raised"
                 }`}>
                   {tab.count}
                 </span>
@@ -58,6 +51,31 @@ export function TabBar({ tabs, activeId, onTabChange, variant = "primary", class
           );
         })}
       </div>
+
+      {/* Subgroups row */}
+      {subgroups && subgroups.length > 1 && onSubgroupChange && (
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit mt-1.5 pt-1.5 border-t border-border/30">
+          {subgroups.map((tab) => {
+            const isActive = activeSubgroup === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => onSubgroupChange(tab.id)}
+                className={`
+                  relative flex items-center gap-1.5 whitespace-nowrap px-3 py-1.5 rounded-lg text-caption font-mono transition-all duration-200 shrink-0
+                  ${isActive
+                    ? "bg-accent/20 text-accent font-medium"
+                    : "text-muted hover:text-text hover:bg-raised"
+                  }
+                `}
+              >
+                {tab.icon && <span className="shrink-0">{tab.icon}</span>}
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

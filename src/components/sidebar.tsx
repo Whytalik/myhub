@@ -306,7 +306,7 @@ export function Sidebar({
                       />
                       {item.subItems.map((sub) => {
                         const SubIcon = sub.icon;
-                        const isSubActive = pathname === sub.href;
+                        const isSubActive = pathname === sub.href || (sub.href === '/nutrition/plans' && pathname.startsWith('/nutrition/week'));
                         return (
                           <Link
                             key={sub.href}
