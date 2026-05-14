@@ -38,6 +38,7 @@ export async function generateShoppingCart(
                     ingredients: true,
                   },
                 },
+                productEntries: true,
               },
             },
           },
@@ -52,6 +53,7 @@ export async function generateShoppingCart(
 
     for (const day of weekPlan.dayPlans) {
       for (const slot of day.mealSlots) {
+        // 1. Process Dishes
         for (const entry of slot.dishEntries) {
           const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {}
 
@@ -70,6 +72,17 @@ export async function generateShoppingCart(
             existing.personIds.add(slot.personId)
             productRequirements.set(productId, existing)
           }
+        }
+
+        // 2. Process Standalone Products
+        for (const entry of slot.productEntries) {
+          const existing = productRequirements.get(entry.productId) ?? {
+            totalRaw: 0,
+            personIds: new Set<string>(),
+          }
+          existing.totalRaw += entry.portionWeight
+          existing.personIds.add(slot.personId)
+          productRequirements.set(entry.productId, existing)
         }
       }
     }
@@ -256,6 +269,7 @@ export async function getShoppingCart(
                         ingredients: true
                       },
                     },
+                    productEntries: true,
                   },
                 },
               },
@@ -274,6 +288,7 @@ export async function getShoppingCart(
     if (cart.weekPlan) {
       for (const day of cart.weekPlan.dayPlans) {
         for (const slot of day.mealSlots) {
+          // Dishes
           for (const entry of slot.dishEntries) {
             dishMap.set(entry.dishId, entry.dish.name)
             const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {}
@@ -288,6 +303,12 @@ export async function getShoppingCart(
               productToDishes.set(productId, dishesSet)
             }
           }
+          // Standalone Products
+          for (const entry of slot.productEntries) {
+            const dishesSet = productToDishes.get(entry.productId) ?? new Set<string>()
+            dishesSet.add("standalone") // Special marker
+            productToDishes.set(entry.productId, dishesSet)
+          }
         }
       }
     }
@@ -301,7 +322,7 @@ export async function getShoppingCart(
       
       const productDishes = Array.from(productToDishes.get(item.productId) || []).map(id => ({
         dishId: id,
-        dishName: dishMap.get(id) || "Unknown Dish"
+        dishName: id === "standalone" ? "Окремий продукт" : (dishMap.get(id) || "Unknown Dish")
       }))
 
       const mappedItem: CartItem = {
