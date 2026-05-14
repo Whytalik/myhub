@@ -1,3 +1,13 @@
+## [2026-05-14] — Fix: Shopping Cart Cost Calculation
+
+Fixed an issue where the shopping cart total cost was inflated because it didn't account for existing stock.
+
+- **Stock-Aware Calculation**: Updated `generateShoppingCart` server action to subtract `availableGrams` from the total required weight before calculating the number of packages to buy and the total cost.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] Verified with manual inspection of calculation logic
+    - [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] — Fix: Product Deletion & Cleanup
 
 Fixed an issue where products could not be deleted even after dishes were removed.

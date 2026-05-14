@@ -116,7 +116,9 @@ export async function generateShoppingCart(
       if (existing?.manualOverride) continue
 
       const packageSize = product.standardPackageAmount || 100
-      const packagesCount = Math.ceil(req.totalRaw / packageSize)
+      const neededRaw = Math.max(0, req.totalRaw - (existing?.availableGrams ?? 0))
+      
+      const packagesCount = Math.ceil(neededRaw / packageSize)
       const totalCost = packagesCount * (product.price ?? 0)
 
       upserts.push(
