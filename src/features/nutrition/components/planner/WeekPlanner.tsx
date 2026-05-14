@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useTransition, useMemo, useCallback } from "react"
-import { Plus, Trash2, Search, ChevronDown, ChevronRight, Flame, UtensilsCrossed, Clock, StickyNote, Check, X } from "lucide-react"
+import { Plus, Trash2, Search, Flame, UtensilsCrossed, Clock, StickyNote, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -178,22 +178,12 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [productSearch, setProductSearch] = useState("")
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [productWeight, setProductWeight] = useState("100")
-  const [expandedDishes, setExpandedDishes] = useState<Set<string>>(new Set())
   const [editingIngredient, setEditingIngredient] = useState<{ entryId: string; ingredientIndex: number; weight: string } | null>(null)
   const [notes, setNotes] = useState(weekPlan.notes || "")
   const [isEditingNotes, setIsEditingNotes] = useState(false)
   const [localNotes, setLocalNotes] = useState(weekPlan.notes || "")
   const [isEditingCooking, setIsEditingCooking] = useState(false)
   const [localCooking, setLocalCooking] = useState("")
-
-  const toggleDish = (key: string) => {
-    setExpandedDishes(prev => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
-  }
 
   const mealSlotNames = useMemo(() => {
     const day = weekPlan.days.find(d => d.dayOfWeek === activeDay)
@@ -520,9 +510,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 return (
                   <div className="space-y-4">
                     {Array.from(dishMap.entries()).map(([dishId, dish]) => {
-                      const dishKey = `meal-${dishId}`
-                      const isExpanded = expandedDishes.has(dishKey)
-
                       // Build ingredient rows: match by ingredientIndex
                       const allIndices = new Set<number>()
                       dish.persons.forEach(p => p.ingredients.forEach(i => allIndices.add(i.ingredientIndex)))
@@ -531,27 +518,21 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                       return (
                         <div key={dishId} className={`border border-border rounded-xl overflow-hidden ${color.bg}`}>
                           {/* Dish header row */}
-                          <div className={`flex items-center gap-3 px-4 py-2 border-b border-border/50 ${color.hover}`}>
-                            <button
-                              onClick={() => toggleDish(dishKey)}
-                              className="text-text-muted hover:text-text-primary p-0 shrink-0"
-                            >
-                              {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                            </button>
-                            <span className="text-note font-medium text-text-primary flex-1">{dish.dishName}</span>
-                            <span className={`text-label font-mono px-2 py-0.5 rounded-md ${color.badge}`}>{dish.nutrition.kcal.toFixed(0)}</span>
+                          <div className={`flex items-center gap-3 px-4 py-2.5 border-b ${color.border}`}>
+                            <span className="text-body font-semibold text-text-primary flex-1">{dish.dishName}</span>
+                            <span className={`text-note font-mono px-2.5 py-1 rounded-lg ${color.badge}`}>{dish.nutrition.kcal.toFixed(0)} kcal</span>
                             {dish.persons.length > 0 && (
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-5 w-5 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
                                 onClick={async () => {
                                   const result = await removeDishFromSlot(dish.persons[0].entryId)
                                   if (result.success) toast.success("Dish removed")
                                 }}
                                 disabled={isPending || dish.persons[0].slotLocked}
                               >
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-3.5 w-3.5" />
                               </Button>
                             )}
                           </div>
@@ -575,18 +556,19 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
-                                <div className="px-4 py-1.5 text-caption text-text-muted">{productName}</div>
+                                <div className="px-4 py-2 text-caption text-text-muted">{productName}</div>
                                 {personIngredients.map(({ person, ing }) => (
-                                  <div key={person.personId} className="px-4 py-1.5 border-l border-border/20">
+                                  <div key={person.personId} className="px-4 py-2 border-l border-border/20">
                                     {ing ? (
                                       isEditingAny && editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === idx ? (
                                         <div className="flex items-center gap-1">
                                           <input
-                                            type="number"
-                                            className="w-14 h-5 text-caption font-mono bg-background border border-border-strong rounded px-1"
+                                            type="text"
+                                            inputMode="decimal"
+                                            className="w-12 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
                                             value={editingIngredient.weight}
                                             autoFocus
-                                            onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
+                                            onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value.replace(/[^0-9.]/g, "") })}
                                             onKeyDown={(e) => {
                                               if (e.key === "Enter") {
                                                 const w = parseFloat(editingIngredient.weight)
@@ -599,15 +581,26 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               }
                                               if (e.key === "Escape") setEditingIngredient(null)
                                             }}
+                                            onBlur={() => {
+                                              const w = parseFloat(editingIngredient.weight)
+                                              if (w > 0 && w !== ing.weight) {
+                                                startTransition(async () => {
+                                                  const result = await updateDishEntryIngredient(person.entryId, idx, w)
+                                                  if (result.success) setEditingIngredient(null)
+                                                })
+                                              } else {
+                                                setEditingIngredient(null)
+                                              }
+                                            }}
                                           />
-                                          <span className="text-text-muted">г</span>
+                                          <span className="text-micro text-text-muted">г</span>
                                         </div>
                                       ) : (
                                         <button
-                                          className="text-caption font-mono text-text-muted hover:text-accent underline decoration-dotted"
+                                          className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
                                           onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: String(ing.weight) })}
                                         >
-                                          {ing.weight.toFixed(0)}г
+                                          {ing.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
                                         </button>
                                       )
                                     ) : (
