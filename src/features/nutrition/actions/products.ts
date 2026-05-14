@@ -122,10 +122,18 @@ export async function deleteProduct(id: string): Promise<ActionResult<void>> {
     if (!existing) return { success: false, error: "Product not found" }
     if (existing.userId && existing.userId !== userId) return { success: false, error: "Unauthorized" }
 
+    // Check if product is used in any dishes
     const inUse = await prisma.dishIngredient.count({ where: { productId: id } })
     if (inUse > 0) {
-      return { success: false, error: "Product is used in dishes and cannot be deleted" }
+      return { success: false, error: "Product is used in dishes and cannot be deleted. Delete dishes first." }
     }
+
+    // Delete dependent records first to avoid foreign key constraints
+    // These are transient records that can be safely removed when the product is deleted
+    await prisma.cartItem.deleteMany({ where: { productId: id } })
+    await prisma.shoppingListItem.deleteMany({ where: { productId: id } })
+    await prisma.productEntry.deleteMany({ where: { productId: id } })
+
     await prisma.foodProduct.delete({ where: { id } })
     invalidateFoodCache(userId)
     return { success: true, data: undefined }
@@ -360,7 +368,7 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
-    // Delete dependent records first
+    // Delete dependent records first to avoid foreign key constraints
     await prisma.cartItem.deleteMany({
       where: { product: { userId } }
     })
@@ -371,8 +379,14 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
       where: { product: { userId } }
     })
     
-    // Note: DishIngredient will still block if Dishes exist.
-    // The user should delete dishes first.
+    // Check if any products are still used in dishes
+    const inUse = await prisma.dishIngredient.count({
+      where: { product: { userId } }
+    })
+    
+    if (inUse > 0) {
+      return { success: false, error: "Some products are used in dishes and cannot be deleted. Delete dishes first." }
+    }
     
     await prisma.foodProduct.deleteMany({
       where: { userId }
@@ -381,6 +395,6 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
     invalidateFoodCache(userId)
     return { success: true, data: undefined }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : "Failed to delete all products. Ensure they are not used in any dishes first." }
+    return { success: false, error: error instanceof Error ? error.message : "Failed to delete all products" }
   }
 }

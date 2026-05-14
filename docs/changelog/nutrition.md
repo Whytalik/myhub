@@ -1,14 +1,22 @@
-## [2026-05-14] — Data: Corrected Product Prices & Package Sizes
+## [2026-05-14] — Fix: Product Deletion & Cleanup
 
-Updated the `products.json` dataset to fix incorrect prices and package sizes, aligning them with the current market info.
+Fixed an issue where products could not be deleted even after dishes were removed.
 
-- **Standardized Units**: All `standardPackageAmount` values are now in GRAMS or ML.
-- **Realistic Portions**: Set realistic purchase units (e.g., 1000g for bulk items like meat/grains, 50g for single eggs, 500g for bread loaves).
-- **Price Alignment**: Synchronized all `price` fields with the upper bound of the range in `product-info.ts` (e.g., Chicken Fillet at 230 грн/кг, Eggs at 12 грн/шт).
-- **Unit Normalization**: Converted all products to use `GRAM` or `ML` units for consistent weight-based calculations, including items previously marked as `PIECE` (Bread, Eggs, Iceberg, etc.).
+- **Robust Deletion**: Updated `deleteProduct` and `deleteAllUserProducts` server actions to explicitly clean up related transient records (`CartItem`, `ShoppingListItem`, `ProductEntry`) before deleting products. This prevents foreign key constraint violations from standalone items in the planner or cart.
+- **Verification Logic**: Added clear error messages informing users if a product is still blocked by remaining dishes.
 - **Verification**:
-    - [x] Logic implemented (JSON data updated)
-    - [x] UI updated (Library reflects corrected units and prices)
+    - [x] Logic implemented (Cleanup added to server actions)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+
+Fixed issues where users were unable to duplicate or delete week plans.
+
+- **Schema Fix**: Added `onDelete: Cascade` to `ShoppingList` and `DayPlan` relations with `WeekPlan`. This ensures that deleting a week plan also removes (or allows removal of) associated data without foreign key constraint violations.
+- **Robust Duplication**: Refactored the `duplicateWeekPlan` server action to use a single nested Prisma `create` call. This replaces the multiple sequential awaits and separate model creations, making the duplication process atomic, faster, and more reliable.
+- **Database Sync**: Synchronized the database schema with the new cascade rules.
+- **Verification**:
+    - [x] Logic refactored (nested create)
+    - [x] Schema updated (cascade delete)
     - [x] Verified with `pnpm tsc --noEmit`
 
 ## [2026-05-14] — UI: Rolled back aggressive input borders

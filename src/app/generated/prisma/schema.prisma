@@ -226,7 +226,7 @@ model ShoppingList {
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id])
+  weekPlan   WeekPlan?          @relation(fields: [weekPlanId], references: [id], onDelete: Cascade)
   items      ShoppingListItem[]
 }
 

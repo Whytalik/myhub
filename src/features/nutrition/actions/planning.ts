@@ -885,89 +885,61 @@ export async function duplicateWeekPlan(weekPlanId: string): Promise<ActionResul
     })
     if (!plan) return { success: false, error: "Week plan not found" }
 
-    const daysToCopy = plan.dayPlans
-    const newPlan = await prisma.$transaction(async (tx) => {
-      const created = await tx.weekPlan.create({
-        data: {
-          name: `${plan.name || "Week Plan"} (copy)`,
-          userId,
-        },
-      })
-
-      for (const day of daysToCopy) {
-        const dayPlan = await tx.dayPlan.create({
-          data: {
+    const newPlan = await prisma.weekPlan.create({
+      data: {
+        name: `${plan.name || "Week Plan"} (copy)`,
+        userId,
+        dayPlans: {
+          create: plan.dayPlans.map((day) => ({
             userId,
-            weekPlanId: created.id,
             dayOfWeek: day.dayOfWeek,
             activity: day.activity,
-          },
-        })
-
-        if (day.prepNote) {
-          await tx.dayPrepNote.create({
-            data: {
-              dayPlanId: dayPlan.id,
-              content: day.prepNote.content,
-              steps: day.prepNote.steps,
-            },
-          })
-        }
-
-        for (const slot of day.mealSlots) {
-          const mealSlot = await tx.mealSlotInstance.create({
-            data: {
-              dayPlanId: dayPlan.id,
-              personId: slot.personId,
-              name: slot.name,
-              timeWindow: slot.timeWindow,
-              order: slot.order,
-              targetKcal: slot.targetKcal,
-              targetFiberGrams: slot.targetFiberGrams,
-              locked: false,
-            },
-          })
-
-          for (const entry of slot.dishEntries) {
-            const dishEntry = await tx.dishEntry.create({
-              data: {
-                mealSlotId: mealSlot.id,
-                dishId: entry.dishId,
-                selectedAlternatives: (entry.selectedAlternatives as Prisma.InputJsonValue) ?? undefined,
-              },
-            })
-
-            if (entry.ingredients.length > 0) {
-              await tx.dishEntryIngredient.createMany({
-                data: entry.ingredients.map((ing) => ({
-                  dishEntryId: dishEntry.id,
-                  ingredientIndex: ing.ingredientIndex,
-                  weight: ing.weight,
-                  inputState: ing.inputState,
-                  unit: ing.unit,
-                })),
-              })
+            prepNote: day.prepNote ? {
+              create: {
+                content: day.prepNote.content,
+                steps: day.prepNote.steps,
+              }
+            } : undefined,
+            mealSlots: {
+              create: day.mealSlots.map((slot) => ({
+                personId: slot.personId,
+                name: slot.name,
+                timeWindow: slot.timeWindow,
+                order: slot.order,
+                targetKcal: slot.targetKcal,
+                targetFiberGrams: slot.targetFiberGrams,
+                locked: false,
+                dishEntries: {
+                  create: slot.dishEntries.map((entry) => ({
+                    dishId: entry.dishId,
+                    selectedAlternatives: (entry.selectedAlternatives as Prisma.InputJsonValue) ?? undefined,
+                    ingredients: {
+                      create: entry.ingredients.map((ing) => ({
+                        ingredientIndex: ing.ingredientIndex,
+                        weight: ing.weight,
+                        inputState: ing.inputState,
+                        unit: ing.unit,
+                      }))
+                    }
+                  }))
+                },
+                productEntries: {
+                  create: slot.productEntries.map((pe) => ({
+                    productId: pe.productId,
+                    portionWeight: pe.portionWeight,
+                  }))
+                }
+              }))
             }
-          }
-
-          for (const pe of slot.productEntries) {
-            await tx.productEntry.create({
-              data: {
-                mealSlotId: mealSlot.id,
-                productId: pe.productId,
-                portionWeight: pe.portionWeight,
-              },
-            })
-          }
+          }))
         }
       }
-
-      return created
     })
 
     invalidateFoodCache(userId)
     return { success: true, data: { weekPlanId: newPlan.id } }
   } catch (error) {
+    console.error("Duplicate error:", error)
     return { success: false, error: error instanceof Error ? error.message : "Failed to duplicate week plan" }
   }
 }
