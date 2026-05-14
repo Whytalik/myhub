@@ -481,187 +481,181 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               </div>
             </div>
 
-            {/* Meal body */}
-            <div className="p-4 space-y-4">
-              {slotGroup.map(slot => {
-                return (
-                  <div key={slot.id} className={`border-l-2 ${color.border} ${color.bg} rounded-r-xl pl-4 py-3 space-y-2`}>
-                    <div className="flex items-center justify-between">
-                      <div className="text-note font-semibold text-text-primary">{slot.personName}</div>
-                      <div className="text-caption font-mono text-text-muted">
-                        Target: {slot.targetKcal.toFixed(0)} ккал
-                      </div>
-                    </div>
+            {/* Meal body — table: dish | person1 grams | person2 grams */}
+            <div className="p-4">
+              {/* Collect all unique dishes across persons */}
+              {(() => {
+                const dishMap = new Map<string, { dishName: string; nutrition: { kcal: number; protein: number; fat: number; carbs: number }; persons: { personId: string; personName: string; entryId: string; slotId: string; slotLocked: boolean; totalWeight: number; ingredients: { ingredientIndex: number; productName: string; weight: number; inputState: string; rawWeight: number; cookedWeight: number; coefficient: number; cookingMethodName: string | null; unit: string | null; productId: string; alternatives: string[]; selectedAlternatives: Record<string, string | null> }[] }[] }>()
 
-                    {/* Dish entries */}
-                    {(slot.entries || []).map((entry) => {
-                      const dishKey = `${slot.id}-${entry.id}`
+                slotGroup.forEach(slot => {
+                  slot.entries.forEach(entry => {
+                    if (!dishMap.has(entry.dishId)) {
+                      dishMap.set(entry.dishId, {
+                        dishName: entry.dishName,
+                        nutrition: entry.nutrition,
+                        persons: [],
+                      })
+                    }
+                    const totalWeight = entry.ingredients.reduce((s, i) => s + i.weight, 0)
+                    dishMap.get(entry.dishId)!.persons.push({
+                      personId: slot.personId,
+                      personName: slot.personName || "",
+                      entryId: entry.id,
+                      slotId: slot.id,
+                      slotLocked: slot.locked,
+                      totalWeight,
+                      ingredients: entry.ingredients.map(ing => ({
+                        ...ing,
+                        selectedAlternatives: entry.selectedAlternatives,
+                      })),
+                    })
+                  })
+                })
+
+                return (
+                  <div className="space-y-3">
+                    {Array.from(dishMap.entries()).map(([dishId, dish]) => {
+                      const dishKey = `meal-${dishId}`
                       const isExpanded = expandedDishes.has(dishKey)
-                      const isEditingIng = editingIngredient?.entryId === entry.id
 
                       return (
-                        <div key={entry.id} className="space-y-1">
-                          <div className={`flex items-center gap-2 py-1.5 px-2 rounded-lg transition-colors group/entry ${color.hover}`}>
+                        <div key={dishId} className={`border border-border rounded-xl overflow-hidden ${color.bg}`}>
+                          {/* Dish row header */}
+                          <div className={`flex items-center gap-3 px-4 py-2.5 border-b border-border/50 ${color.hover}`}>
                             <button
                               onClick={() => toggleDish(dishKey)}
-                              className="text-text-muted hover:text-text-primary p-0"
+                              className="text-text-muted hover:text-text-primary p-0 shrink-0"
                             >
                               {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                             </button>
-                            <span className="text-note font-medium text-text-primary flex-1">{entry.dishName}</span>
-                            <span className={`text-label font-mono px-2 py-0.5 rounded-md ${color.badge}`}>{entry.nutrition.kcal.toFixed(0)}</span>
+                            <span className="text-note font-medium text-text-primary flex-1">{dish.dishName}</span>
+                            <span className={`text-label font-mono px-2 py-0.5 rounded-md ${color.badge}`}>{dish.nutrition.kcal.toFixed(0)}</span>
                             <span className="text-caption font-mono text-text-muted">
-                              Б:{entry.nutrition.protein.toFixed(0)} Ж:{entry.nutrition.fat.toFixed(0)} В:{entry.nutrition.carbs.toFixed(0)}
+                              Б:{dish.nutrition.protein.toFixed(0)} Ж:{dish.nutrition.fat.toFixed(0)} В:{dish.nutrition.carbs.toFixed(0)}
                             </span>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-5 w-5 opacity-0 group-hover/entry:opacity-100 text-red-500 hover:text-red-600 hover:bg-red-50"
-                              onClick={async () => {
-                                const result = await removeDishFromSlot(entry.id)
-                                if (result.success) toast.success("Dish removed")
-                              }}
-                              disabled={isPending || slot.locked}
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
+                            {/* Delete button (removes from first person's slot) */}
+                            {dish.persons.length > 0 && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-5 w-5 text-red-500 hover:text-red-600 hover:bg-red-50"
+                                onClick={async () => {
+                                  const result = await removeDishFromSlot(dish.persons[0].entryId)
+                                  if (result.success) toast.success("Dish removed")
+                                }}
+                                disabled={isPending || dish.persons[0].slotLocked}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            )}
                           </div>
 
-                          {/* Expandable ingredients */}
-                          {isExpanded && entry.ingredients.length > 0 && (
-                            <div className="ml-5 pl-3 border-l border-accent/10 space-y-1">
-                              {entry.ingredients.map((ing) => {
-                                const selectedAlts = entry.selectedAlternatives || {}
-                                const currentProductId = selectedAlts[String(ing.ingredientIndex)] || ing.productId
-                                const isAlternative = currentProductId !== ing.productId
+                          {/* Person columns */}
+                          <div className="grid grid-cols-2 divide-x divide-border/50">
+                            {dish.persons.map(person => (
+                              <div key={person.personId} className="p-3">
+                                <div className="text-caption font-semibold text-text-primary mb-2">{person.personName} — {person.totalWeight.toFixed(0)}г</div>
+                                <div className="space-y-1">
+                                  {person.ingredients.map(ing => {
+                                    const selectedAlts = ing.selectedAlternatives || {}
+                                    const currentProductId = selectedAlts[String(ing.ingredientIndex)] || ing.productId
+                                    const isAlternative = currentProductId !== ing.productId
+                                    const isEditingThis = editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === ing.ingredientIndex
 
-                                const allOptions = [
-                                  { id: ing.productId, name: ing.productName },
-                                  ...ing.alternatives.map(altName => {
-                                    const p = products.find(prod => prod.name.toLowerCase() === altName.toLowerCase())
-                                    return p ? { id: p.id, name: p.name } : null
-                                  }).filter(Boolean) as { id: string, name: string }[]
-                                ]
-
-                                const isEditingThis = isEditingIng && editingIngredient?.ingredientIndex === ing.ingredientIndex
-
-                                return (
-                                  <div key={ing.ingredientIndex} className="flex flex-wrap gap-1.5 items-center py-0.5">
-                                    <span className={`text-caption ${isAlternative ? 'text-accent/70' : 'text-text-muted'}`}>
-                                      {ing.productName}:
-                                    </span>
-                                    {isEditingThis ? (
-                                      <div className="flex items-center gap-1">
-                                        <input
-                                          type="number"
-                                          className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
-                                          value={editingIngredient.weight}
-                                          autoFocus
-                                          onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
-                                          onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                              const w = parseFloat(editingIngredient.weight)
-                                              if (w > 0) {
-                                                startTransition(async () => {
-                                                  const result = await updateDishEntryIngredient(entry.id, ing.ingredientIndex, w)
-                                                  if (result.success) { toast.success("Weight updated"); setEditingIngredient(null) }
-                                                })
-                                              }
-                                            }
-                                            if (e.key === "Escape") setEditingIngredient(null)
-                                          }}
-                                        />
-                                        <span className="text-caption text-text-muted">г</span>
-                                      </div>
-                                    ) : (
-                                      <button
-                                        className="text-caption font-mono text-text-muted hover:text-accent underline decoration-dotted"
-                                        onClick={() => setEditingIngredient({ entryId: entry.id, ingredientIndex: ing.ingredientIndex, weight: String(ing.weight) })}
-                                      >
-                                        {ing.weight.toFixed(0)}г
-                                        {ing.inputState === "COOKED" && <span className="text-[10px] text-accent/60 ml-0.5"> готове</span>}
-                                        {ing.coefficient !== 1 && <span className="text-[10px] text-text-muted/50 ml-0.5">≈{ing.rawWeight.toFixed(0)}г сире</span>}
-                                      </button>
-                                    )}
-                                    {ing.unit && <span className="text-[10px] text-text-muted">{ing.unit}</span>}
-                                    {ing.alternatives && ing.alternatives.length > 0 && (
-                                      <div className="flex flex-wrap gap-0.5">
-                                        {allOptions.map((opt) => (
+                                    return (
+                                      <div key={ing.ingredientIndex} className="flex items-center justify-between text-caption py-0.5">
+                                        <span className={`flex-1 truncate ${isAlternative ? 'text-accent/70' : 'text-text-muted'}`}>
+                                          {ing.productName}
+                                        </span>
+                                        {isEditingThis ? (
+                                          <div className="flex items-center gap-1 shrink-0 ml-2">
+                                            <input
+                                              type="number"
+                                              className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
+                                              value={editingIngredient.weight}
+                                              autoFocus
+                                              onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
+                                              onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                  const w = parseFloat(editingIngredient.weight)
+                                                  if (w > 0) {
+                                                    startTransition(async () => {
+                                                      const result = await updateDishEntryIngredient(person.entryId, ing.ingredientIndex, w)
+                                                      if (result.success) { toast.success("Weight updated"); setEditingIngredient(null) }
+                                                    })
+                                                  }
+                                                }
+                                                if (e.key === "Escape") setEditingIngredient(null)
+                                              }}
+                                            />
+                                            <span className="text-text-muted">г</span>
+                                          </div>
+                                        ) : (
                                           <button
-                                            key={opt.id}
-                                            onClick={async () => {
-                                              const result = await updateDishEntryAlternative(entry.id, ing.ingredientIndex, opt.id === ing.productId ? null : opt.id)
-                                              if (result.success) toast.success("Alternative updated")
-                                            }}
-                                            className={`text-[10px] px-1.5 py-0.5 rounded leading-none border ${
-                                              currentProductId === opt.id
-                                                ? "bg-accent/20 text-accent border-accent/40 font-bold"
-                                                : "bg-white/5 text-text-muted/50 border-border hover:bg-raised"
-                                            }`}
+                                            className="font-mono text-text-muted hover:text-accent underline decoration-dotted shrink-0 ml-2"
+                                            onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: ing.ingredientIndex, weight: String(ing.weight) })}
                                           >
-                                            {opt.name}
+                                            {ing.weight.toFixed(0)}г
+                                            {ing.inputState === "COOKED" && <span className="text-[10px] text-accent/60 ml-0.5">г</span>}
                                           </button>
-                                        ))}
+                                        )}
                                       </div>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                            </div>
-                          )}
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )
                     })}
 
                     {/* Product entries */}
-                    {(slot.productEntries || []).map((pe) => (
-                      <div key={pe.id} className={`flex justify-between items-center py-1.5 px-2 rounded-lg ${color.bg} border-l-2 border-green-500/40 group/prod`}>
-                        <div className="flex items-center gap-2">
-                          <span className="text-note font-medium text-text-primary">{pe.productName}</span>
-                          <span className="text-caption font-mono text-text-muted">{pe.portionWeight.toFixed(0)}г</span>
-                          <span className="text-label font-mono text-text-muted">{pe.kcal.toFixed(0)} ккал</span>
+                    {slotGroup.flatMap(slot =>
+                      slot.productEntries.map(pe => (
+                        <div key={pe.id} className={`flex justify-between items-center py-2 px-3 rounded-lg border border-border/50 ${color.bg}`}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-note font-medium text-text-primary">{pe.productName}</span>
+                            <span className="text-caption font-mono text-text-muted">{pe.portionWeight.toFixed(0)}г</span>
+                            <span className="text-label font-mono text-text-muted">{pe.kcal.toFixed(0)} ккал</span>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-5 w-5 text-red-500 hover:text-red-600"
+                            onClick={async () => {
+                              const result = await removeProductFromSlot(pe.id)
+                              if (result.success) toast.success("Product removed")
+                            }}
+                            disabled={isPending || slot.locked}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
                         </div>
+                      ))
+                    )}
+
+                    {/* Add buttons */}
+                    <div className="flex gap-2 pt-2">
+                      {slotGroup.map(slot => (
                         <Button
+                          key={slot.id}
                           variant="ghost"
-                          size="icon"
-                          className="h-5 w-5 opacity-0 group-hover/prod:opacity-100 text-red-500 hover:text-red-600"
-                          onClick={async () => {
-                            const result = await removeProductFromSlot(pe.id)
-                            if (result.success) toast.success("Product removed")
+                          className={`flex-1 h-8 border-dashed border border-border text-text-muted text-caption ${color.hover}`}
+                          onClick={() => {
+                            const person = weekPlan.persons.find((p) => p.id === slot.personId)
+                            if (!person) return
+                            setPickerConfig({ slotId: slot.id, person, slotName: slot.name })
                           }}
                           disabled={isPending || slot.locked}
                         >
-                          <Trash2 className="h-3 w-3" />
+                          <Plus className="h-3.5 w-3.5 mr-1.5" /> <UtensilsCrossed className="h-3 w-3 mr-1" /> {slot.personName}
                         </Button>
-                      </div>
-                    ))}
-
-                    {/* Add buttons */}
-                    <div className="flex gap-2 pt-1">
-                      <Button
-                        variant="ghost"
-                        className={`flex-1 h-8 border-dashed border border-border text-text-muted text-caption ${color.hover}`}
-                        onClick={() => {
-                          const person = weekPlan.persons.find((p) => p.id === slot.personId)
-                          if (!person) return
-                          setPickerConfig({ slotId: slot.id, person, slotName: slot.name })
-                        }}
-                        disabled={isPending || slot.locked}
-                      >
-                        <Plus className="h-3.5 w-3.5 mr-1.5" /> <UtensilsCrossed className="h-3 w-3 mr-1" /> Страву
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className={`h-8 px-3 border-dashed border border-border text-text-muted text-caption ${color.hover}`}
-                        onClick={() => setProductPickerSlotId(slot.id)}
-                        disabled={isPending || slot.locked}
-                      >
-                        <Plus className="h-3.5 w-3.5 mr-1.5" /> Продукт
-                      </Button>
+                      ))}
                     </div>
                   </div>
                 )
-              })}
+              })()}
             </div>
           </div>
         )
