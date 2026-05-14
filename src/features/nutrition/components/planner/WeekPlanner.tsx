@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -179,6 +179,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [productWeight, setProductWeight] = useState("100")
   const [editingIngredient, setEditingIngredient] = useState<{ entryId: string; ingredientIndex: number; weight: string } | null>(null)
+  const [editingProduct, setEditingProduct] = useState<{ id: string; weight: string } | null>(null)
   const [notes, setNotes] = useState(weekPlan.notes || "")
   const [isEditingNotes, setIsEditingNotes] = useState(false)
   const [localNotes, setLocalNotes] = useState(weekPlan.notes || "")
@@ -552,7 +553,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                               ing: p.ingredients.find(i => i.ingredientIndex === idx),
                             }))
                             const productName = personIngredients.find(p => p.ing)?.ing?.productName || ""
-                            const isEditingAny = personIngredients.some(p => p.ing && editingIngredient?.entryId === p.person.entryId && editingIngredient?.ingredientIndex === idx)
 
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
@@ -560,7 +560,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                 {personIngredients.map(({ person, ing }) => (
                                   <div key={person.personId} className="px-4 py-2 border-l border-border/20">
                                     {ing ? (
-                                      isEditingAny && editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === idx ? (
+                                      editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === idx ? (
                                         <div className="flex items-center gap-1">
                                           <input
                                             type="text"
@@ -615,48 +615,144 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                       )
                     })}
 
-                    {/* Product entries */}
-                    {slotGroup.flatMap(slot =>
-                      slot.productEntries.map(pe => (
-                        <div key={pe.id} className={`flex justify-between items-center py-2 px-3 rounded-lg border border-border/50 ${color.bg}`}>
-                          <div className="flex items-center gap-2">
-                            <span className="text-note font-medium text-text-primary">{pe.productName}</span>
-                            <span className="text-caption font-mono text-text-muted">{pe.portionWeight.toFixed(0)}г</span>
-                            <span className="text-label font-mono text-text-muted">{pe.kcal.toFixed(0)} ккал</span>
+                    {/* Product entries grouped by productId */}
+                    {(() => {
+                      const allProducts = new Map<string, { productName: string; kcal: number; persons: { personId: string; entryId: string; weight: number; slotLocked: boolean }[] }>()
+                      
+                      slotGroup.forEach(slot => {
+                        slot.productEntries.forEach(pe => {
+                          if (!allProducts.has(pe.productId)) {
+                            allProducts.set(pe.productId, {
+                              productName: pe.productName,
+                              kcal: pe.kcal,
+                              persons: []
+                            })
+                          }
+                          allProducts.get(pe.productId)!.persons.push({
+                            personId: slot.personId,
+                            entryId: pe.id,
+                            weight: pe.portionWeight,
+                            slotLocked: slot.locked
+                          })
+                        })
+                      })
+
+                      if (allProducts.size === 0) return null
+
+                      return (
+                        <div className={`border border-border rounded-xl overflow-hidden ${color.bg}`}>
+                          <div className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/30`}>
+                            <div className="px-4 py-1.5 text-caption font-mono text-text-muted uppercase">Продукт</div>
+                            {personNames.map(name => (
+                              <div key={name} className="px-4 py-1.5 text-caption font-semibold text-text-primary border-l border-border/30">{name}</div>
+                            ))}
                           </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-5 w-5 text-red-500 hover:text-red-600"
-                            onClick={async () => {
-                              const result = await removeProductFromSlot(pe.id)
-                              if (result.success) toast.success("Product removed")
-                            }}
-                            disabled={isPending || slot.locked}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
+                          {Array.from(allProducts.entries()).map(([productId, p]) => (
+                            <div key={productId} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
+                              <div className="px-4 py-2 flex items-center justify-between gap-2">
+                                <span className="text-caption text-text-muted truncate">{p.productName}</span>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-5 w-5 text-red-500/50 hover:text-red-500 hover:bg-red-50 shrink-0"
+                                  onClick={async () => {
+                                    startTransition(async () => {
+                                      for (const pers of p.persons) {
+                                        await removeProductFromSlot(pers.entryId)
+                                      }
+                                      toast.success("Product removed")
+                                    })
+                                  }}
+                                  disabled={isPending || p.persons.some(pers => pers.slotLocked)}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </div>
+                              {personNames.map(name => {
+                                const person = p.persons.find(pers => (slotGroup.find(s => s.personId === pers.personId)?.personName === name))
+                                return (
+                                  <div key={name} className="px-4 py-2 border-l border-border/20">
+                                    {person ? (
+                                      editingProduct?.id === person.entryId ? (
+                                        <div className="flex items-center gap-1">
+                                          <input
+                                            type="text"
+                                            inputMode="decimal"
+                                            className="w-12 h-6 text-caption font-mono bg-transparent text-text-primary border-b-2 border-accent px-0.5 focus:outline-none"
+                                            value={editingProduct.weight}
+                                            autoFocus
+                                            onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value.replace(/[^0-9.]/g, "") })}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter") {
+                                                const w = parseFloat(editingProduct.weight)
+                                                if (w > 0) {
+                                                  startTransition(async () => {
+                                                    const result = await updateProductEntryWeight(person.entryId, w)
+                                                    if (result.success) { toast.success("Weight updated"); setEditingProduct(null) }
+                                                  })
+                                                }
+                                              }
+                                              if (e.key === "Escape") setEditingProduct(null)
+                                            }}
+                                            onBlur={() => {
+                                              const w = parseFloat(editingProduct.weight)
+                                              if (w > 0 && w !== person.weight) {
+                                                startTransition(async () => {
+                                                  const result = await updateProductEntryWeight(person.entryId, w)
+                                                  if (result.success) setEditingProduct(null)
+                                                })
+                                              } else {
+                                                setEditingProduct(null)
+                                              }
+                                            }}
+                                          />
+                                          <span className="text-micro text-text-muted">г</span>
+                                        </div>
+                                      ) : (
+                                        <button
+                                          className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
+                                          onClick={() => setEditingProduct({ id: person.entryId, weight: String(person.weight) })}
+                                        >
+                                          {person.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
+                                        </button>
+                                      )
+                                    ) : (
+                                      <span className="text-caption text-text-muted/30">—</span>
+                                    )}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          ))}
                         </div>
-                      ))
-                    )}
+                      )
+                    })()}
 
                     {/* Add buttons */}
                     <div className="flex gap-2 pt-2">
-                      {slotGroup.map(slot => (
-                        <Button
-                          key={slot.id}
-                          variant="ghost"
-                          className={`flex-1 h-8 border-dashed border border-border text-text-muted text-caption ${color.hover}`}
-                          onClick={() => {
-                            const person = weekPlan.persons.find((p) => p.id === slot.personId)
-                            if (!person) return
-                            setPickerConfig({ slotId: slot.id, person, slotName: slot.name })
-                          }}
-                          disabled={isPending || slot.locked}
-                        >
-                          <Plus className="h-3.5 w-3.5 mr-1.5" /> <UtensilsCrossed className="h-3 w-3 mr-1" /> {slot.personName}
-                        </Button>
-                      ))}
+                      <Button
+                        variant="ghost"
+                        className={`flex-1 h-9 border-dashed border border-border text-text-muted text-note font-medium ${color.hover}`}
+                        onClick={() => {
+                          const slot = slotGroup[0]
+                          const person = weekPlan.persons.find((p) => p.id === slot.personId)
+                          if (!person) return
+                          setPickerConfig({ slotId: slot.id, person, slotName: slot.name })
+                        }}
+                        disabled={isPending || slotGroup.some(s => s.locked)}
+                      >
+                        <Plus className="h-4 w-4 mr-2" /> <UtensilsCrossed className="h-3.5 w-3.5 mr-2" /> Додати страву
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className={`flex-1 h-9 border-dashed border border-border text-text-muted text-note font-medium ${color.hover}`}
+                        onClick={() => {
+                          setProductPickerSlotId(slotGroup[0].id)
+                        }}
+                        disabled={isPending || slotGroup.some(s => s.locked)}
+                      >
+                        <Plus className="h-4 w-4 mr-2" /> <Search className="h-3.5 w-3.5 mr-2" /> Додати продукт
+                      </Button>
                     </div>
                   </div>
                 )

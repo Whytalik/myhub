@@ -24,7 +24,7 @@ function MiniBar({ label, actual, target, unit, color }: { label: string; actual
   return (
     <div className="flex items-center gap-1">
       <span className="text-micro font-mono text-text-muted w-3 shrink-0">{label}</span>
-      <div className="w-20 h-px bg-raised rounded-full overflow-hidden shrink-0">
+      <div className="w-32 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
       </div>
       <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">

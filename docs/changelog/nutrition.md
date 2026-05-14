@@ -1,3 +1,32 @@
+## [2026-05-14] WeekPlanner UI Refactor — Inline Product Editing & Unified Add Buttons
+
+Refined the WeekPlanner interface for faster data entry and cleaner layout.
+
+- **Inline Product Editing**: Added support for inline weight editing for standalone products (ProductEntry), matching the behavior of dish ingredients. Added `updateProductEntryWeight` server action.
+- **Unified Add Buttons**: Replaced person-specific "Add" buttons with unified "Додати страву" and "Додати продукт" buttons per meal group (e.g., Before-workout, Breakfast).
+- **Table Grouping**: Refactored product entry rendering to group items by product ID across all persons in a meal group, ensuring a consistent table layout.
+- **Verification**:
+    - [x] Logic implemented (Action + UI state)
+    - [x] UI updated (Unified buttons, grouped product rows)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
+## [2026-05-14] Nutrition Modal UI Enhancement — Space-Aware Frames & Glow
+
+Refined Nutrition space modals (and all system modals) with space-aware styling to reduce cognitive load and improve visual feedback.
+
+- **Dialog Styling**: Added a colored frame to modals using the space's accent color (`--color-accent`).
+  - **Calm State**: Subtle 1.5px frame with 20% opacity.
+  - **Active State**: Frame opacity increases to 40% and blurs into a soft glow (30% opacity, `blur-md`) when hovered or focused.
+  - **Calm OS**: Removed thick `border-2 border-border-strong` from modal content, favoring background separation and the new accent frame.
+- **Verification**:
+    - [x] Logic implemented (Global `Dialog` update)
+    - [x] UI updated (Space-aware borders and glow effects)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-13] Week Plan Redesign — Color-coded Meals, Visual Stats, Notes, Editable Cooking List
 
 Major redesign of the week plan page with color-coded meal slots, visual person macro chips, editable notes block, and editable cooking list per day.

@@ -747,6 +747,36 @@ export async function addProductToSlot(
   }
 }
 
+export async function updateProductEntryWeight(
+  productEntryId: string,
+  portionWeight: number
+): Promise<ActionResult<void>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const entry = await prisma.productEntry.findUnique({
+      where: { id: productEntryId },
+      include: { mealSlot: { include: { dayPlan: true } } },
+    })
+    if (!entry) return { success: false, error: "Product entry not found" }
+
+    if (entry.mealSlot.dayPlan.weekPlanId) {
+      const weekPlan = await prisma.weekPlan.findUnique({ where: { id: entry.mealSlot.dayPlan.weekPlanId } })
+      if (weekPlan && weekPlan.userId !== userId) return { success: false, error: "Unauthorized" }
+    }
+
+    await prisma.productEntry.update({
+      where: { id: productEntryId },
+      data: { portionWeight },
+    })
+
+    invalidateFoodCache(userId)
+    return { success: true, data: undefined }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to update product weight" }
+  }
+}
+
 export async function removeProductFromSlot(productEntryId: string): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
