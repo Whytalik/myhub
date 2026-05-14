@@ -377,7 +377,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
             <h3 className="text-note font-semibold text-text-primary">Day Nutrition</h3>
           </div>
           <div className="p-4">
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-8">
               {weekPlan.persons.map((person) => {
                 const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
                 const dayActual = personDaySlots.reduce((acc, s) => ({
@@ -397,11 +397,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 }
 
                 const macros = [
-                  { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "", color: "bg-accent" },
-                  { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g", color: "bg-blue-500" },
-                  { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g", color: "bg-amber-500" },
-                  { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g", color: "bg-purple-500" },
-                  { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g", color: "bg-green-500" },
+                  { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "" },
+                  { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g" },
+                  { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g" },
+                  { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g" },
+                  { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g" },
                 ]
 
                 return (
@@ -415,11 +415,17 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                     <div className="space-y-0.5">
                       {macros.map((m) => {
                         const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
+                        const color = m.target > 0 
+                          ? m.actual > m.target * 1.1 ? 'bg-red-500' 
+                          : m.actual < m.target * 0.9 ? 'bg-amber-500' 
+                          : 'bg-green-500'
+                          : 'bg-raised'
+
                         return (
-                          <div key={m.label} className="flex items-center gap-1">
+                          <div key={m.label} className="flex items-center gap-1 min-w-0">
                             <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
                             <div className="flex-1 h-1 bg-raised rounded-full overflow-hidden shrink-0">
-                              <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
+                              <div style={{ width: `${pct}%` }} className={`h-full ${color} transition-all`} />
                             </div>
                             <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
                               {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target.toFixed(0)}{m.unit}</span>

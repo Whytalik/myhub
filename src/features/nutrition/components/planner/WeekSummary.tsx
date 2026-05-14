@@ -18,11 +18,17 @@ interface WeekSummaryProps {
   summary: { persons: PersonSummary[] }
 }
 
-function MiniBar({ label, actual, target, unit, color }: { label: string; actual: number; target: number; unit: string; color: string }) {
+function MiniBar({ label, actual, target, unit }: { label: string; actual: number; target: number; unit: string }) {
   const pct = target > 0 ? Math.min((actual / target) * 100, 100) : 0
+  
+  const color = target > 0 
+    ? actual > target * 1.1 ? 'bg-red-500' 
+    : actual < target * 0.9 ? 'bg-amber-500' 
+    : 'bg-green-500'
+    : 'bg-raised'
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 min-w-0">
       <span className="text-micro font-mono text-text-muted w-3 shrink-0">{label}</span>
       <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
@@ -45,17 +51,17 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
         <h3 className="text-note font-semibold text-text-primary">Week Overview</h3>
       </div>
       <div className="p-4">
-        <div className="grid grid-cols-2 gap-6 divide-x divide-border/50">
+        <div className="grid grid-cols-2 gap-8 divide-x divide-border/50">
           {persons.map((p) => {
             const personMacros = [
-              { label: "К", actual: p.avgKcalPerDay, target: p.targetKcal, unit: "", color: "bg-accent" },
-              { label: "Б", actual: p.avgProtein, target: p.targetProtein, unit: "g", color: "bg-blue-500" },
-              { label: "Ж", actual: p.avgFat, target: p.targetFat, unit: "g", color: "bg-amber-500" },
-              { label: "В", actual: p.avgCarbs, target: p.targetCarbs, unit: "g", color: "bg-purple-500" },
-              { label: "Кл", actual: p.avgFiber, target: p.targetFiber, unit: "g", color: "bg-green-500" },
+              { label: "К", actual: p.avgKcalPerDay, target: p.targetKcal, unit: "" },
+              { label: "Б", actual: p.avgProtein, target: p.targetProtein, unit: "g" },
+              { label: "Ж", actual: p.avgFat, target: p.targetFat, unit: "g" },
+              { label: "В", actual: p.avgCarbs, target: p.targetCarbs, unit: "g" },
+              { label: "Кл", actual: p.avgFiber, target: p.targetFiber, unit: "g" },
             ]
             return (
-              <div key={p.personId} className="space-y-3">
+              <div key={p.personId} className="space-y-3 min-w-0 pl-4 first:pl-0">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                     <span className="text-accent text-caption font-bold">{(p.personName || "U").charAt(0).toUpperCase()}</span>
@@ -64,7 +70,7 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
                 </div>
                 <div className="space-y-1">
                   {personMacros.map((m) => (
-                    <MiniBar key={m.label} label={m.label} actual={m.actual} target={m.target} unit={m.unit} color={m.color} />
+                    <MiniBar key={m.label} label={m.label} actual={m.actual} target={m.target} unit={m.unit} />
                   ))}
                 </div>
                 {p.repeatedDishes.length > 0 && (

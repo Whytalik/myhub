@@ -10,7 +10,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const baseStyles = "flex rounded-lg bg-transparent text-body transition-all file:border-0 file:bg-transparent file:text-base placeholder:text-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-50";
 
     const variants = {
-      default: "h-10 w-full border border-border-strong bg-surface/50 px-3 py-2 hover:border-border-strong focus-visible:border-accent/60",
+      default: "h-10 w-full border border-border-strong bg-surface/50 px-3 py-2 hover:border-amber-500/50 focus-visible:border-amber-500",
       inline: "border-none px-1 h-auto py-0",
     };
 

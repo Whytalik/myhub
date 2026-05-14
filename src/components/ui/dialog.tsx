@@ -59,13 +59,7 @@ export function Dialog({
         className="relative w-full group animate-in slide-in-from-bottom-4 sm:zoom-in-95 fade-in duration-300"
         style={{ maxWidth: maxWidth ?? "380px" }}
       >
-        {/* Calm State: Space color border/padding */}
-        <div className="absolute -inset-[1.5px] bg-[var(--color-accent)] rounded-[calc(var(--radius-xl)+1.5px)] opacity-20 transition-all duration-500 group-hover:opacity-40 group-focus-within:opacity-40" />
-        
-        {/* Active State: Space color blur/glow */}
-        <div className="absolute -inset-[1.5px] bg-[var(--color-accent)] rounded-[calc(var(--radius-xl)+1.5px)] opacity-0 blur-md transition-all duration-500 group-hover:opacity-30 group-focus-within:opacity-30" />
-
-        <div className="relative w-full bg-elevated rounded-xl shadow-elevated overflow-hidden">
+        <div className="relative w-full bg-elevated rounded-xl shadow-elevated overflow-hidden border border-border-strong">
           <div className={`${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : bare ? "overflow-y-auto" : "overflow-y-auto max-h-[90dvh]"}`}>
             {!bare && (
               <div className="flex items-start justify-between mb-3">

@@ -1,3 +1,22 @@
+## [2026-05-14] Nutrition UI Polish — Status Colors, Overlap Fixes & Styling
+
+Refined nutrition summaries with status-based coloring, fixed layout collisions, and corrected modal input styling.
+
+- **Status Colors**: Implemented dynamic coloring for progress bars in `WeekSummary` and `WeekPlanner`:
+  - **Red**: Excess (>110% of target).
+  - **Amber**: Deficit (<90% of target).
+  - **Green**: Norm (within 90-110%).
+- **Overlap Fixes**: Added `min-w-0` to flex/grid containers and increased gaps (gap-6 -> gap-8) in `WeekSummary` and `WeekPlanner` to prevent content collision after bars were expanded to `flex-1`.
+- **UI Styling**: 
+  - **Input**: Added amber border highlighting (`hover:border-amber-500/50`, `focus:border-amber-500`) to the `Input` component for better interactivity.
+  - **Dialog**: Removed the experimental colored accent frames and glow from `Dialog`, restoring a clean `border-border-strong` look.
+- **Verification**:
+    - [x] Logic implemented (Status-based color logic)
+    - [x] UI updated (Corrected borders, dynamic bar colors, spaced layouts)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-14] Progress Bar Width Expansion — Reduced Unused Space
 
 Increased the width of macro progress bars in the Nutrition domain to utilize available screen space more effectively.
