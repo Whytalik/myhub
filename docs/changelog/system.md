@@ -1,3 +1,15 @@
+## [2026-05-14] — Nutrition Seeding Unified
+
+Unified the nutrition seeding process into a single action and provided a clear explanation of its components.
+
+- **Unified Action**: Created `seedFullNutritionSystemAction` in `seed-action.ts` which sequentially executes both the visual plan seeding and the cooking instruction seeding.
+- **UI Simplification**: Replaced the two separate "Seed" buttons in `SettingsModal` with a single "Seed Nutrition System" button.
+- **Improved Documentation**: Added a detailed description in the UI explaining the difference between structural seeding (Visual Plan) and instructional seeding (Cooking Lists).
+- **Verification**:
+    - [x] Logic implemented (Combined action created)
+    - [x] UI updated (Unified button + description)
+    - [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] — AI Module Decommissioned
 
 ### Removed

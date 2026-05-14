@@ -5,7 +5,6 @@ import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
 import { useSpace } from "./space-provider";
 import { updateUserNameAction, setPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { exportSystemAction, resetSystemAction, importSystemAction } from "@/features/system/actions/system-actions";
-import { seedVisualPlanAction, seedCookingLists } from "@/features/system/actions/seed-action";
 import { savePushSubscriptionAction, sendTestNotificationAction, getPushSubscriptionCountAction } from "@/features/system/actions/push-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -342,33 +341,23 @@ export function SettingsModal({
                           <button onClick={() => setIsResetConfirmOpen(true)} className="p-2.5 bg-danger/10 text-danger border border-danger/20 rounded-lg hover:bg-danger/20 transition-all"><Trash2 size={14} /></button>
                      </div>
                       <div className="p-4 border border-accent/10 bg-accent/5 rounded-lg flex items-center justify-between mt-2">
-                           <div><h5 className="text-note font-medium text-accent">Seed Visual Plan</h5><p className="text-micro text-accent/60">Populate with default data.</p></div>
+                           <div className="flex-1 pr-4">
+                             <h5 className="text-note font-medium text-accent">Seed Nutrition System</h5>
+                             <p className="text-micro text-accent/60 leading-relaxed mt-1">
+                               Встановлює повну структуру харчування (продукти, страви, КБЖВ-профілі) та генерує покрокові інструкції з приготування для всього плану.
+                             </p>
+                           </div>
                            <button
                              onClick={async () => {
                                startTransition(async () => {
-                                 const res = await seedVisualPlanAction();
-                                 if (res.success) toast.success("Visual Plan Seeded!");
+                                 const { seedFullNutritionSystemAction } = await import("@/features/system/actions/seed-action");
+                                 const res = await seedFullNutritionSystemAction();
+                                 if (res.success) toast.success("Nutrition System Seeded!");
                                  else toast.error(res.error || "Seed failed");
                                });
                              }}
                              disabled={isPending}
-                             className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-lg hover:bg-accent/20 transition-all disabled:opacity-50"
-                           >
-                             <Database size={14} />
-                           </button>
-                      </div>
-                      <div className="p-4 border border-accent/10 bg-accent/5 rounded-lg flex items-center justify-between mt-2">
-                           <div><h5 className="text-note font-medium text-accent">Seed Cooking Lists</h5><p className="text-micro text-accent/60">Generate optimized daily cooking steps.</p></div>
-                           <button
-                             onClick={async () => {
-                               startTransition(async () => {
-                                 const res = await seedCookingLists();
-                                 if (res.success) toast.success("Cooking Lists Seeded!");
-                                 else toast.error(res.error || "Seed failed");
-                               });
-                             }}
-                             disabled={isPending}
-                             className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-lg hover:bg-accent/20 transition-all disabled:opacity-50"
+                             className="p-2.5 bg-accent/10 text-accent border border-accent/20 rounded-lg hover:bg-accent/20 transition-all disabled:opacity-50 shrink-0"
                            >
                              <Database size={14} />
                            </button>

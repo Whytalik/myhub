@@ -550,16 +550,27 @@ const handleDeleteAll = () => {
         <div className="space-y-4">
           <div>
             <label className="text-caption font-mono text-secondary tracking-wider">Name</label>
-            <Input value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))} placeholder="Product name" />
+            <Input 
+              value={formData.name} 
+              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))} 
+              placeholder="Product name" 
+            />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Calories / 100g</label>
-              <Input type="number" value={formData.caloriesPer100} onChange={(e) => setFormData(prev => ({ ...prev, caloriesPer100: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.caloriesPer100} 
+                onChange={(e) => setFormData(prev => ({ ...prev, caloriesPer100: e.target.value }))} 
+              />
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Category</label>
-              <Select value={formData.category} onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}>
+              <Select 
+                value={formData.category} 
+                onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+              >
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </Select>
             </div>
@@ -567,25 +578,44 @@ const handleDeleteAll = () => {
           <div className="grid grid-cols-4 gap-3">
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Protein</label>
-              <Input type="number" value={formData.proteinPer100} onChange={(e) => setFormData(prev => ({ ...prev, proteinPer100: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.proteinPer100} 
+                onChange={(e) => setFormData(prev => ({ ...prev, proteinPer100: e.target.value }))} 
+              />
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Fat</label>
-              <Input type="number" value={formData.fatPer100} onChange={(e) => setFormData(prev => ({ ...prev, fatPer100: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.fatPer100} 
+                onChange={(e) => setFormData(prev => ({ ...prev, fatPer100: e.target.value }))} 
+              />
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Carbs</label>
-              <Input type="number" value={formData.carbsPer100} onChange={(e) => setFormData(prev => ({ ...prev, carbsPer100: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.carbsPer100} 
+                onChange={(e) => setFormData(prev => ({ ...prev, carbsPer100: e.target.value }))} 
+              />
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Fiber</label>
-              <Input type="number" value={formData.fiberPer100} onChange={(e) => setFormData(prev => ({ ...prev, fiberPer100: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.fiberPer100} 
+                onChange={(e) => setFormData(prev => ({ ...prev, fiberPer100: e.target.value }))} 
+              />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Unit</label>
-              <Select value={formData.unit} onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}>
+              <Select 
+                value={formData.unit} 
+                onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}
+              >
                 <option value="GRAM">g</option>
                 <option value="ML">ml</option>
                 <option value="PIECE">pcs</option>
@@ -593,11 +623,20 @@ const handleDeleteAll = () => {
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Package Amount</label>
-              <Input type="number" value={formData.standardPackageAmount} onChange={(e) => setFormData(prev => ({ ...prev, standardPackageAmount: e.target.value }))} />
+              <Input 
+                type="number" 
+                value={formData.standardPackageAmount} 
+                onChange={(e) => setFormData(prev => ({ ...prev, standardPackageAmount: e.target.value }))} 
+              />
             </div>
             <div>
               <label className="text-caption font-mono text-secondary tracking-wider">Price (₴)</label>
-              <Input type="number" value={formData.price} onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))} placeholder="0" />
+              <Input 
+                type="number" 
+                value={formData.price} 
+                onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))} 
+                placeholder="0" 
+              />
             </div>
           </div>
           <div>

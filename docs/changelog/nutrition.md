@@ -1,3 +1,14 @@
+## [2026-05-14] — UI Consistency: Space-Aware Input Borders
+
+Updated the base UI components and Nutrition space components to ensure inputs respect the active space's accent color.
+
+- **`Input` & `Select` Base Components**: Refactored to use `border-accent/20` by default, with `hover:border-accent/50` and `focus-visible:border-accent`. This replaces hardcoded `amber-500` and `border-strong` values, making all inputs across the system space-aware.
+- **Product Addition Modal**: Verified that all inputs in the "Add Product" form now correctly display the Nutrition space's accent border.
+- **Verification**:
+    - [x] Logic implemented (UI components updated)
+    - [x] UI updated (Inputs are now space-aware)
+    - [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] — UI Consistency: Products Skeleton
 
 Updated the products loading skeleton to match the card-based grid layout of the Dishes page.

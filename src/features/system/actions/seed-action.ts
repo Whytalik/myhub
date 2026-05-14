@@ -457,3 +457,17 @@ export async function seedCookingLists(): Promise<ActionResult<void>> {
     return { success: false, error: error instanceof Error ? error.message : "Failed" }
   }
 }
+
+/**
+ * Unified action to seed the entire nutrition system at once.
+ * 1. Seeds Visual Plan (Products, Dishes, Profiles, Week Plan)
+ * 2. Seeds Cooking Instructions (Step-by-step logic for the Plan)
+ */
+export async function seedFullNutritionSystemAction(): Promise<ActionResult<void>> {
+  const visualResult = await seedVisualPlanAction();
+  if (!visualResult.success) return visualResult;
+
+  const cookingResult = await seedCookingLists();
+  return cookingResult;
+}
+
