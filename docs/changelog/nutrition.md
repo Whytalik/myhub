@@ -1,3 +1,10 @@
+## [2026-05-14] — UI: Rolled back aggressive input borders
+
+Reverted the aggressive border opacity changes to restore the subtle, clean aesthetic preferred for Calm OS.
+
+- **`Input` & `Select`**: Reset resting border opacity to `20%`.
+- **Global Styles**: Restored the universal border-color override in `globals.css` to ensure visual consistency across the system.
+
 ## [2026-05-14] — UI Consistency: Space-Aware Input Borders
 
 Updated the base UI components and Nutrition space components to ensure inputs respect the active space's accent color.
@@ -8,6 +15,18 @@ Updated the base UI components and Nutrition space components to ensure inputs r
     - [x] Logic implemented (UI components updated)
     - [x] UI updated (Inputs are now space-aware)
     - [x] Verified with `pnpm tsc --noEmit`
+
+## [2026-05-14] — Nutrition Summary: 4-Card Grid Layout
+
+Refactored the nutrition summaries into a 4-card grid layout for better scannability and person-specific focus.
+
+- **Unified Callouts**: Refactored `MacroSummary` to include built-in card styling and titles, transforming them into standalone "callouts".
+- **4-Card Layout**: Split the previously combined "Week Overview" and "Day Nutrition" blocks into individual cards for each person. This creates 4 distinct callouts (2 for Week, 2 for Day).
+- **Grid Structure**: Implemented a responsive grid (`grid-cols-1 sm:grid-cols-2`) to display person cards side-by-side, improving layout balance.
+- **Verification**:
+    - [x] Logic implemented (Refactored MacroSummary & Grid layouts)
+    - [x] UI updated (4 separate summary cards with headers)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
 
 ## [2026-05-14] — Nutrition Summary Unification & Layout Polish
 

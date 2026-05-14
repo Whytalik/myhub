@@ -374,48 +374,42 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
       {/* Day nutrition summary - single row with both profiles */}
       {currentDay && (
-        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-          <div className="bg-raised/50 px-5 py-3 border-b border-border">
-            <h3 className="text-note font-semibold text-text-primary">Day Nutrition</h3>
-          </div>
-          <div className="p-4">
-            <div className="flex flex-col sm:flex-row gap-8">
-              {weekPlan.persons.map((person) => {
-                const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
-                const dayActual = personDaySlots.reduce((acc, s) => ({
-                  kcal: acc.kcal + s.actualKcal,
-                  protein: acc.protein + s.actualProtein,
-                  fat: acc.fat + s.actualFat,
-                  carbs: acc.carbs + s.actualCarbs,
-                  fiber: acc.fiber + s.actualFiber,
-                }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {weekPlan.persons.map((person) => {
+            const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
+            const dayActual = personDaySlots.reduce((acc, s) => ({
+              kcal: acc.kcal + s.actualKcal,
+              protein: acc.protein + s.actualProtein,
+              fat: acc.fat + s.actualFat,
+              carbs: acc.carbs + s.actualCarbs,
+              fiber: acc.fiber + s.actualFiber,
+            }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
 
-                const targets = {
-                  kcal: person.targetKcal,
-                  protein: Math.round((person.targetKcal * person.proteinPct / 100) / 4),
-                  fat: Math.round((person.targetKcal * person.fatPct / 100) / 9),
-                  carbs: Math.round((person.targetKcal * person.carbsPct / 100) / 4),
-                  fiber: person.fiberGrams,
-                }
+            const targets = {
+              kcal: person.targetKcal,
+              protein: Math.round((person.targetKcal * person.proteinPct / 100) / 4),
+              fat: Math.round((person.targetKcal * person.fatPct / 100) / 9),
+              carbs: Math.round((person.targetKcal * person.carbsPct / 100) / 4),
+              fiber: person.fiberGrams,
+            }
 
-                const macros = [
-                  { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "" },
-                  { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g" },
-                  { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g" },
-                  { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g" },
-                  { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g" },
-                ]
+            const macros = [
+              { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "" },
+              { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g" },
+              { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g" },
+              { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g" },
+              { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g" },
+            ]
 
-                return (
-                  <MacroSummary
-                    key={person.id}
-                    personName={person.name ?? "Unknown"}
-                    macros={macros}
-                  />
-                )
-              })}
-            </div>
-          </div>
+            return (
+              <MacroSummary
+                key={person.id}
+                title="Day Nutrition"
+                personName={person.name ?? "Unknown"}
+                macros={macros}
+              />
+            )
+          })}
         </div>
       )}
 
