@@ -8,8 +8,21 @@ import { invalidateFoodCache } from "@/lib/revalidate"
 
 import type { DishType } from "../constants/dish-types"
 import { z } from "zod"
+import dishesData from "../data/dishes.json"
 
-const dishesData: any[] = []
+interface JsonIngredient {
+  productName: string;
+  rawWeight: number;
+  cookingMethod: string;
+}
+
+interface JsonDish {
+  name: string;
+  type: string;
+  servings: number;
+  description: string;
+  ingredients: JsonIngredient[];
+}
 
 interface CreateDishData {
   name: string
@@ -151,7 +164,7 @@ export async function getDishes(): Promise<ActionResult<DishNutritionSummary[]>>
     })
 
     const dishJsonMap = new Map(
-      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+      (dishesData as unknown as JsonDish[]).map(d => [d.name, d])
     )
 
     const summaries: DishNutritionSummary[] = dishes.map((dish) => {
@@ -235,7 +248,7 @@ export async function getDishesForPicker(): Promise<ActionResult<{
     })
 
     const dishJsonMap = new Map(
-      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+      (dishesData as unknown as JsonDish[]).map(d => [d.name, d])
     )
 
     const result = dishes.map((dish) => {
@@ -445,7 +458,7 @@ export async function exportDishes(): Promise<ActionResult<string>> {
     })
 
     const dishJsonMap = new Map(
-      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+      (dishesData as unknown as JsonDish[]).map(d => [d.name, d])
     )
 
     const json = dishes.map(d => {

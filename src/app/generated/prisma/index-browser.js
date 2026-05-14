@@ -641,38 +641,6 @@ exports.Prisma.SprintReviewScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.AIChatScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  messages: 'messages',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AISuggestionScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  domain: 'domain',
-  action: 'action',
-  payload: 'payload',
-  status: 'status',
-  reason: 'reason',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AIUsageScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  date: 'date',
-  inputTokens: 'inputTokens',
-  outputTokens: 'outputTokens',
-  totalTokens: 'totalTokens',
-  requestCount: 'requestCount',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -680,10 +648,6 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
-exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -858,17 +822,6 @@ exports.TacticFrequency = exports.$Enums.TacticFrequency = {
   WEEKLY: 'WEEKLY'
 };
 
-exports.AIDomain = exports.$Enums.AIDomain = {
-  OPERATIONS: 'OPERATIONS',
-  HEALTH: 'HEALTH'
-};
-
-exports.SuggestionStatus = exports.$Enums.SuggestionStatus = {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  REJECTED: 'REJECTED'
-};
-
 exports.Prisma.ModelName = {
   User: 'User',
   PushSubscription: 'PushSubscription',
@@ -913,10 +866,7 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   Tactic: 'Tactic',
   TacticCompletion: 'TacticCompletion',
-  SprintReview: 'SprintReview',
-  AIChat: 'AIChat',
-  AISuggestion: 'AISuggestion',
-  AIUsage: 'AIUsage'
+  SprintReview: 'SprintReview'
 };
 
 /**

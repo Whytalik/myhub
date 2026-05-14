@@ -1,3 +1,12 @@
+## 2026-05-14
+
+### Fixed: Journal Service Type Error
+- Fixed type mismatch in `upsertEntry` where `DailyEntryUncheckedUpdateInput` was incorrectly being used as a source for `DailyEntryUncheckedCreateInput`, causing compatibility issues with update operation types.
+- Refactored `upsertEntry` to use a clean base payload and explicit casting for Prisma's create/update operations.
+- Verification:
+  - [x] Logic implemented
+  - [x] Verified with tsc / build
+
 ## 2026-05-13
 
 ### Enhanced: Global font size increase (+3px)

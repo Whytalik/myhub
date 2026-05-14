@@ -233,21 +233,6 @@ export type TacticCompletion = $Result.DefaultSelection<Prisma.$TacticCompletion
  * 
  */
 export type SprintReview = $Result.DefaultSelection<Prisma.$SprintReviewPayload>
-/**
- * Model AIChat
- * 
- */
-export type AIChat = $Result.DefaultSelection<Prisma.$AIChatPayload>
-/**
- * Model AISuggestion
- * 
- */
-export type AISuggestion = $Result.DefaultSelection<Prisma.$AISuggestionPayload>
-/**
- * Model AIUsage
- * 
- */
-export type AIUsage = $Result.DefaultSelection<Prisma.$AIUsagePayload>
 
 /**
  * Enums
@@ -470,23 +455,6 @@ export const CartItemStatus: {
 export type CartItemStatus = (typeof CartItemStatus)[keyof typeof CartItemStatus]
 
 
-export const SuggestionStatus: {
-  PENDING: 'PENDING',
-  ACCEPTED: 'ACCEPTED',
-  REJECTED: 'REJECTED'
-};
-
-export type SuggestionStatus = (typeof SuggestionStatus)[keyof typeof SuggestionStatus]
-
-
-export const AIDomain: {
-  OPERATIONS: 'OPERATIONS',
-  HEALTH: 'HEALTH'
-};
-
-export type AIDomain = (typeof AIDomain)[keyof typeof AIDomain]
-
-
 export const DishType: {
   MAIN: 'MAIN',
   SALAD: 'SALAD',
@@ -600,14 +568,6 @@ export const IngredientInputState: typeof $Enums.IngredientInputState
 export type CartItemStatus = $Enums.CartItemStatus
 
 export const CartItemStatus: typeof $Enums.CartItemStatus
-
-export type SuggestionStatus = $Enums.SuggestionStatus
-
-export const SuggestionStatus: typeof $Enums.SuggestionStatus
-
-export type AIDomain = $Enums.AIDomain
-
-export const AIDomain: typeof $Enums.AIDomain
 
 export type DishType = $Enums.DishType
 
@@ -1177,36 +1137,6 @@ export class PrismaClient<
     * ```
     */
   get sprintReview(): Prisma.SprintReviewDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.aIChat`: Exposes CRUD operations for the **AIChat** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more AIChats
-    * const aIChats = await prisma.aIChat.findMany()
-    * ```
-    */
-  get aIChat(): Prisma.AIChatDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.aISuggestion`: Exposes CRUD operations for the **AISuggestion** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more AISuggestions
-    * const aISuggestions = await prisma.aISuggestion.findMany()
-    * ```
-    */
-  get aISuggestion(): Prisma.AISuggestionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.aIUsage`: Exposes CRUD operations for the **AIUsage** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more AIUsages
-    * const aIUsages = await prisma.aIUsage.findMany()
-    * ```
-    */
-  get aIUsage(): Prisma.AIUsageDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1684,10 +1614,7 @@ export namespace Prisma {
     Project: 'Project',
     Tactic: 'Tactic',
     TacticCompletion: 'TacticCompletion',
-    SprintReview: 'SprintReview',
-    AIChat: 'AIChat',
-    AISuggestion: 'AISuggestion',
-    AIUsage: 'AIUsage'
+    SprintReview: 'SprintReview'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1703,7 +1630,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "aIChat" | "aISuggestion" | "aIUsage"
+      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4963,228 +4890,6 @@ export namespace Prisma {
           }
         }
       }
-      AIChat: {
-        payload: Prisma.$AIChatPayload<ExtArgs>
-        fields: Prisma.AIChatFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.AIChatFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.AIChatFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          findFirst: {
-            args: Prisma.AIChatFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.AIChatFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          findMany: {
-            args: Prisma.AIChatFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>[]
-          }
-          create: {
-            args: Prisma.AIChatCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          createMany: {
-            args: Prisma.AIChatCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.AIChatCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>[]
-          }
-          delete: {
-            args: Prisma.AIChatDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          update: {
-            args: Prisma.AIChatUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          deleteMany: {
-            args: Prisma.AIChatDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.AIChatUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.AIChatUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>[]
-          }
-          upsert: {
-            args: Prisma.AIChatUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIChatPayload>
-          }
-          aggregate: {
-            args: Prisma.AIChatAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAIChat>
-          }
-          groupBy: {
-            args: Prisma.AIChatGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AIChatGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.AIChatCountArgs<ExtArgs>
-            result: $Utils.Optional<AIChatCountAggregateOutputType> | number
-          }
-        }
-      }
-      AISuggestion: {
-        payload: Prisma.$AISuggestionPayload<ExtArgs>
-        fields: Prisma.AISuggestionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.AISuggestionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.AISuggestionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          findFirst: {
-            args: Prisma.AISuggestionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.AISuggestionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          findMany: {
-            args: Prisma.AISuggestionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>[]
-          }
-          create: {
-            args: Prisma.AISuggestionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          createMany: {
-            args: Prisma.AISuggestionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.AISuggestionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>[]
-          }
-          delete: {
-            args: Prisma.AISuggestionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          update: {
-            args: Prisma.AISuggestionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          deleteMany: {
-            args: Prisma.AISuggestionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.AISuggestionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.AISuggestionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>[]
-          }
-          upsert: {
-            args: Prisma.AISuggestionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AISuggestionPayload>
-          }
-          aggregate: {
-            args: Prisma.AISuggestionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAISuggestion>
-          }
-          groupBy: {
-            args: Prisma.AISuggestionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AISuggestionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.AISuggestionCountArgs<ExtArgs>
-            result: $Utils.Optional<AISuggestionCountAggregateOutputType> | number
-          }
-        }
-      }
-      AIUsage: {
-        payload: Prisma.$AIUsagePayload<ExtArgs>
-        fields: Prisma.AIUsageFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.AIUsageFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.AIUsageFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          findFirst: {
-            args: Prisma.AIUsageFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.AIUsageFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          findMany: {
-            args: Prisma.AIUsageFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>[]
-          }
-          create: {
-            args: Prisma.AIUsageCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          createMany: {
-            args: Prisma.AIUsageCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.AIUsageCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>[]
-          }
-          delete: {
-            args: Prisma.AIUsageDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          update: {
-            args: Prisma.AIUsageUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          deleteMany: {
-            args: Prisma.AIUsageDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.AIUsageUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.AIUsageUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>[]
-          }
-          upsert: {
-            args: Prisma.AIUsageUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AIUsagePayload>
-          }
-          aggregate: {
-            args: Prisma.AIUsageAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAIUsage>
-          }
-          groupBy: {
-            args: Prisma.AIUsageGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AIUsageGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.AIUsageCountArgs<ExtArgs>
-            result: $Utils.Optional<AIUsageCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -5337,9 +5042,6 @@ export namespace Prisma {
     tactic?: TacticOmit
     tacticCompletion?: TacticCompletionOmit
     sprintReview?: SprintReviewOmit
-    aIChat?: AIChatOmit
-    aISuggestion?: AISuggestionOmit
-    aIUsage?: AIUsageOmit
   }
 
   /* Types for Logging */
@@ -5440,9 +5142,6 @@ export namespace Prisma {
     visions: number
     weekPlans: number
     wishlistItems: number
-    aiChats: number
-    aiSuggestions: number
-    aiUsage: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5466,9 +5165,6 @@ export namespace Prisma {
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     weekPlans?: boolean | UserCountOutputTypeCountWeekPlansArgs
     wishlistItems?: boolean | UserCountOutputTypeCountWishlistItemsArgs
-    aiChats?: boolean | UserCountOutputTypeCountAiChatsArgs
-    aiSuggestions?: boolean | UserCountOutputTypeCountAiSuggestionsArgs
-    aiUsage?: boolean | UserCountOutputTypeCountAiUsageArgs
   }
 
   // Custom InputTypes
@@ -5620,27 +5316,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WishlistItemWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAiChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AIChatWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAiSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AISuggestionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAiUsageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AIUsageWhereInput
   }
 
 
@@ -6618,9 +6293,6 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
-    aiChats?: boolean | User$aiChatsArgs<ExtArgs>
-    aiSuggestions?: boolean | User$aiSuggestionsArgs<ExtArgs>
-    aiUsage?: boolean | User$aiUsageArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6685,9 +6357,6 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
-    aiChats?: boolean | User$aiChatsArgs<ExtArgs>
-    aiSuggestions?: boolean | User$aiSuggestionsArgs<ExtArgs>
-    aiUsage?: boolean | User$aiUsageArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6716,9 +6385,6 @@ export namespace Prisma {
       visions: Prisma.$VisionPayload<ExtArgs>[]
       weekPlans: Prisma.$WeekPlanPayload<ExtArgs>[]
       wishlistItems: Prisma.$WishlistItemPayload<ExtArgs>[]
-      aiChats: Prisma.$AIChatPayload<ExtArgs>[]
-      aiSuggestions: Prisma.$AISuggestionPayload<ExtArgs>[]
-      aiUsage: Prisma.$AIUsagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7145,9 +6811,6 @@ export namespace Prisma {
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weekPlans<T extends User$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     wishlistItems<T extends User$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    aiChats<T extends User$aiChatsArgs<ExtArgs> = {}>(args?: Subset<T, User$aiChatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    aiSuggestions<T extends User$aiSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, User$aiSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    aiUsage<T extends User$aiUsageArgs<ExtArgs> = {}>(args?: Subset<T, User$aiUsageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8057,78 +7720,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WishlistItemScalarFieldEnum | WishlistItemScalarFieldEnum[]
-  }
-
-  /**
-   * User.aiChats
-   */
-  export type User$aiChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    where?: AIChatWhereInput
-    orderBy?: AIChatOrderByWithRelationInput | AIChatOrderByWithRelationInput[]
-    cursor?: AIChatWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AIChatScalarFieldEnum | AIChatScalarFieldEnum[]
-  }
-
-  /**
-   * User.aiSuggestions
-   */
-  export type User$aiSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    where?: AISuggestionWhereInput
-    orderBy?: AISuggestionOrderByWithRelationInput | AISuggestionOrderByWithRelationInput[]
-    cursor?: AISuggestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AISuggestionScalarFieldEnum | AISuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * User.aiUsage
-   */
-  export type User$aiUsageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    where?: AIUsageWhereInput
-    orderBy?: AIUsageOrderByWithRelationInput | AIUsageOrderByWithRelationInput[]
-    cursor?: AIUsageWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AIUsageScalarFieldEnum | AIUsageScalarFieldEnum[]
   }
 
   /**
@@ -58217,3337 +57808,6 @@ export namespace Prisma {
 
 
   /**
-   * Model AIChat
-   */
-
-  export type AggregateAIChat = {
-    _count: AIChatCountAggregateOutputType | null
-    _min: AIChatMinAggregateOutputType | null
-    _max: AIChatMaxAggregateOutputType | null
-  }
-
-  export type AIChatMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AIChatMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AIChatCountAggregateOutputType = {
-    id: number
-    userId: number
-    messages: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type AIChatMinAggregateInputType = {
-    id?: true
-    userId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AIChatMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AIChatCountAggregateInputType = {
-    id?: true
-    userId?: true
-    messages?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type AIChatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AIChat to aggregate.
-     */
-    where?: AIChatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIChats to fetch.
-     */
-    orderBy?: AIChatOrderByWithRelationInput | AIChatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: AIChatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIChats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIChats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned AIChats
-    **/
-    _count?: true | AIChatCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AIChatMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AIChatMaxAggregateInputType
-  }
-
-  export type GetAIChatAggregateType<T extends AIChatAggregateArgs> = {
-        [P in keyof T & keyof AggregateAIChat]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAIChat[P]>
-      : GetScalarType<T[P], AggregateAIChat[P]>
-  }
-
-
-
-
-  export type AIChatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AIChatWhereInput
-    orderBy?: AIChatOrderByWithAggregationInput | AIChatOrderByWithAggregationInput[]
-    by: AIChatScalarFieldEnum[] | AIChatScalarFieldEnum
-    having?: AIChatScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AIChatCountAggregateInputType | true
-    _min?: AIChatMinAggregateInputType
-    _max?: AIChatMaxAggregateInputType
-  }
-
-  export type AIChatGroupByOutputType = {
-    id: string
-    userId: string
-    messages: JsonValue
-    createdAt: Date
-    updatedAt: Date
-    _count: AIChatCountAggregateOutputType | null
-    _min: AIChatMinAggregateOutputType | null
-    _max: AIChatMaxAggregateOutputType | null
-  }
-
-  type GetAIChatGroupByPayload<T extends AIChatGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AIChatGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AIChatGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AIChatGroupByOutputType[P]>
-            : GetScalarType<T[P], AIChatGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AIChatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    messages?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIChat"]>
-
-  export type AIChatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    messages?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIChat"]>
-
-  export type AIChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    messages?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIChat"]>
-
-  export type AIChatSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    messages?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type AIChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "messages" | "createdAt" | "updatedAt", ExtArgs["result"]["aIChat"]>
-  export type AIChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AIChatIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AIChatIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $AIChatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "AIChat"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      messages: Prisma.JsonValue
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["aIChat"]>
-    composites: {}
-  }
-
-  type AIChatGetPayload<S extends boolean | null | undefined | AIChatDefaultArgs> = $Result.GetResult<Prisma.$AIChatPayload, S>
-
-  type AIChatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AIChatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AIChatCountAggregateInputType | true
-    }
-
-  export interface AIChatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AIChat'], meta: { name: 'AIChat' } }
-    /**
-     * Find zero or one AIChat that matches the filter.
-     * @param {AIChatFindUniqueArgs} args - Arguments to find a AIChat
-     * @example
-     * // Get one AIChat
-     * const aIChat = await prisma.aIChat.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends AIChatFindUniqueArgs>(args: SelectSubset<T, AIChatFindUniqueArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one AIChat that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {AIChatFindUniqueOrThrowArgs} args - Arguments to find a AIChat
-     * @example
-     * // Get one AIChat
-     * const aIChat = await prisma.aIChat.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends AIChatFindUniqueOrThrowArgs>(args: SelectSubset<T, AIChatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AIChat that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatFindFirstArgs} args - Arguments to find a AIChat
-     * @example
-     * // Get one AIChat
-     * const aIChat = await prisma.aIChat.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends AIChatFindFirstArgs>(args?: SelectSubset<T, AIChatFindFirstArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AIChat that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatFindFirstOrThrowArgs} args - Arguments to find a AIChat
-     * @example
-     * // Get one AIChat
-     * const aIChat = await prisma.aIChat.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends AIChatFindFirstOrThrowArgs>(args?: SelectSubset<T, AIChatFindFirstOrThrowArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more AIChats that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all AIChats
-     * const aIChats = await prisma.aIChat.findMany()
-     * 
-     * // Get first 10 AIChats
-     * const aIChats = await prisma.aIChat.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const aIChatWithIdOnly = await prisma.aIChat.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends AIChatFindManyArgs>(args?: SelectSubset<T, AIChatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a AIChat.
-     * @param {AIChatCreateArgs} args - Arguments to create a AIChat.
-     * @example
-     * // Create one AIChat
-     * const AIChat = await prisma.aIChat.create({
-     *   data: {
-     *     // ... data to create a AIChat
-     *   }
-     * })
-     * 
-     */
-    create<T extends AIChatCreateArgs>(args: SelectSubset<T, AIChatCreateArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many AIChats.
-     * @param {AIChatCreateManyArgs} args - Arguments to create many AIChats.
-     * @example
-     * // Create many AIChats
-     * const aIChat = await prisma.aIChat.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends AIChatCreateManyArgs>(args?: SelectSubset<T, AIChatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many AIChats and returns the data saved in the database.
-     * @param {AIChatCreateManyAndReturnArgs} args - Arguments to create many AIChats.
-     * @example
-     * // Create many AIChats
-     * const aIChat = await prisma.aIChat.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many AIChats and only return the `id`
-     * const aIChatWithIdOnly = await prisma.aIChat.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends AIChatCreateManyAndReturnArgs>(args?: SelectSubset<T, AIChatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a AIChat.
-     * @param {AIChatDeleteArgs} args - Arguments to delete one AIChat.
-     * @example
-     * // Delete one AIChat
-     * const AIChat = await prisma.aIChat.delete({
-     *   where: {
-     *     // ... filter to delete one AIChat
-     *   }
-     * })
-     * 
-     */
-    delete<T extends AIChatDeleteArgs>(args: SelectSubset<T, AIChatDeleteArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one AIChat.
-     * @param {AIChatUpdateArgs} args - Arguments to update one AIChat.
-     * @example
-     * // Update one AIChat
-     * const aIChat = await prisma.aIChat.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends AIChatUpdateArgs>(args: SelectSubset<T, AIChatUpdateArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more AIChats.
-     * @param {AIChatDeleteManyArgs} args - Arguments to filter AIChats to delete.
-     * @example
-     * // Delete a few AIChats
-     * const { count } = await prisma.aIChat.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends AIChatDeleteManyArgs>(args?: SelectSubset<T, AIChatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AIChats.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many AIChats
-     * const aIChat = await prisma.aIChat.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends AIChatUpdateManyArgs>(args: SelectSubset<T, AIChatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AIChats and returns the data updated in the database.
-     * @param {AIChatUpdateManyAndReturnArgs} args - Arguments to update many AIChats.
-     * @example
-     * // Update many AIChats
-     * const aIChat = await prisma.aIChat.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more AIChats and only return the `id`
-     * const aIChatWithIdOnly = await prisma.aIChat.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends AIChatUpdateManyAndReturnArgs>(args: SelectSubset<T, AIChatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one AIChat.
-     * @param {AIChatUpsertArgs} args - Arguments to update or create a AIChat.
-     * @example
-     * // Update or create a AIChat
-     * const aIChat = await prisma.aIChat.upsert({
-     *   create: {
-     *     // ... data to create a AIChat
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the AIChat we want to update
-     *   }
-     * })
-     */
-    upsert<T extends AIChatUpsertArgs>(args: SelectSubset<T, AIChatUpsertArgs<ExtArgs>>): Prisma__AIChatClient<$Result.GetResult<Prisma.$AIChatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of AIChats.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatCountArgs} args - Arguments to filter AIChats to count.
-     * @example
-     * // Count the number of AIChats
-     * const count = await prisma.aIChat.count({
-     *   where: {
-     *     // ... the filter for the AIChats we want to count
-     *   }
-     * })
-    **/
-    count<T extends AIChatCountArgs>(
-      args?: Subset<T, AIChatCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AIChatCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a AIChat.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AIChatAggregateArgs>(args: Subset<T, AIChatAggregateArgs>): Prisma.PrismaPromise<GetAIChatAggregateType<T>>
-
-    /**
-     * Group by AIChat.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIChatGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AIChatGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AIChatGroupByArgs['orderBy'] }
-        : { orderBy?: AIChatGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AIChatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAIChatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the AIChat model
-   */
-  readonly fields: AIChatFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for AIChat.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__AIChatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the AIChat model
-   */
-  interface AIChatFieldRefs {
-    readonly id: FieldRef<"AIChat", 'String'>
-    readonly userId: FieldRef<"AIChat", 'String'>
-    readonly messages: FieldRef<"AIChat", 'Json'>
-    readonly createdAt: FieldRef<"AIChat", 'DateTime'>
-    readonly updatedAt: FieldRef<"AIChat", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * AIChat findUnique
-   */
-  export type AIChatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter, which AIChat to fetch.
-     */
-    where: AIChatWhereUniqueInput
-  }
-
-  /**
-   * AIChat findUniqueOrThrow
-   */
-  export type AIChatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter, which AIChat to fetch.
-     */
-    where: AIChatWhereUniqueInput
-  }
-
-  /**
-   * AIChat findFirst
-   */
-  export type AIChatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter, which AIChat to fetch.
-     */
-    where?: AIChatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIChats to fetch.
-     */
-    orderBy?: AIChatOrderByWithRelationInput | AIChatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AIChats.
-     */
-    cursor?: AIChatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIChats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIChats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIChats.
-     */
-    distinct?: AIChatScalarFieldEnum | AIChatScalarFieldEnum[]
-  }
-
-  /**
-   * AIChat findFirstOrThrow
-   */
-  export type AIChatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter, which AIChat to fetch.
-     */
-    where?: AIChatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIChats to fetch.
-     */
-    orderBy?: AIChatOrderByWithRelationInput | AIChatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AIChats.
-     */
-    cursor?: AIChatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIChats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIChats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIChats.
-     */
-    distinct?: AIChatScalarFieldEnum | AIChatScalarFieldEnum[]
-  }
-
-  /**
-   * AIChat findMany
-   */
-  export type AIChatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter, which AIChats to fetch.
-     */
-    where?: AIChatWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIChats to fetch.
-     */
-    orderBy?: AIChatOrderByWithRelationInput | AIChatOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing AIChats.
-     */
-    cursor?: AIChatWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIChats from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIChats.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIChats.
-     */
-    distinct?: AIChatScalarFieldEnum | AIChatScalarFieldEnum[]
-  }
-
-  /**
-   * AIChat create
-   */
-  export type AIChatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * The data needed to create a AIChat.
-     */
-    data: XOR<AIChatCreateInput, AIChatUncheckedCreateInput>
-  }
-
-  /**
-   * AIChat createMany
-   */
-  export type AIChatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many AIChats.
-     */
-    data: AIChatCreateManyInput | AIChatCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * AIChat createManyAndReturn
-   */
-  export type AIChatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * The data used to create many AIChats.
-     */
-    data: AIChatCreateManyInput | AIChatCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AIChat update
-   */
-  export type AIChatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * The data needed to update a AIChat.
-     */
-    data: XOR<AIChatUpdateInput, AIChatUncheckedUpdateInput>
-    /**
-     * Choose, which AIChat to update.
-     */
-    where: AIChatWhereUniqueInput
-  }
-
-  /**
-   * AIChat updateMany
-   */
-  export type AIChatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update AIChats.
-     */
-    data: XOR<AIChatUpdateManyMutationInput, AIChatUncheckedUpdateManyInput>
-    /**
-     * Filter which AIChats to update
-     */
-    where?: AIChatWhereInput
-    /**
-     * Limit how many AIChats to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * AIChat updateManyAndReturn
-   */
-  export type AIChatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * The data used to update AIChats.
-     */
-    data: XOR<AIChatUpdateManyMutationInput, AIChatUncheckedUpdateManyInput>
-    /**
-     * Filter which AIChats to update
-     */
-    where?: AIChatWhereInput
-    /**
-     * Limit how many AIChats to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AIChat upsert
-   */
-  export type AIChatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * The filter to search for the AIChat to update in case it exists.
-     */
-    where: AIChatWhereUniqueInput
-    /**
-     * In case the AIChat found by the `where` argument doesn't exist, create a new AIChat with this data.
-     */
-    create: XOR<AIChatCreateInput, AIChatUncheckedCreateInput>
-    /**
-     * In case the AIChat was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<AIChatUpdateInput, AIChatUncheckedUpdateInput>
-  }
-
-  /**
-   * AIChat delete
-   */
-  export type AIChatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-    /**
-     * Filter which AIChat to delete.
-     */
-    where: AIChatWhereUniqueInput
-  }
-
-  /**
-   * AIChat deleteMany
-   */
-  export type AIChatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AIChats to delete
-     */
-    where?: AIChatWhereInput
-    /**
-     * Limit how many AIChats to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * AIChat without action
-   */
-  export type AIChatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIChat
-     */
-    select?: AIChatSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIChat
-     */
-    omit?: AIChatOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIChatInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model AISuggestion
-   */
-
-  export type AggregateAISuggestion = {
-    _count: AISuggestionCountAggregateOutputType | null
-    _min: AISuggestionMinAggregateOutputType | null
-    _max: AISuggestionMaxAggregateOutputType | null
-  }
-
-  export type AISuggestionMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    domain: $Enums.AIDomain | null
-    action: string | null
-    status: $Enums.SuggestionStatus | null
-    reason: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AISuggestionMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    domain: $Enums.AIDomain | null
-    action: string | null
-    status: $Enums.SuggestionStatus | null
-    reason: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AISuggestionCountAggregateOutputType = {
-    id: number
-    userId: number
-    domain: number
-    action: number
-    payload: number
-    status: number
-    reason: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type AISuggestionMinAggregateInputType = {
-    id?: true
-    userId?: true
-    domain?: true
-    action?: true
-    status?: true
-    reason?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AISuggestionMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    domain?: true
-    action?: true
-    status?: true
-    reason?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AISuggestionCountAggregateInputType = {
-    id?: true
-    userId?: true
-    domain?: true
-    action?: true
-    payload?: true
-    status?: true
-    reason?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type AISuggestionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AISuggestion to aggregate.
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AISuggestions to fetch.
-     */
-    orderBy?: AISuggestionOrderByWithRelationInput | AISuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: AISuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AISuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AISuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned AISuggestions
-    **/
-    _count?: true | AISuggestionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AISuggestionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AISuggestionMaxAggregateInputType
-  }
-
-  export type GetAISuggestionAggregateType<T extends AISuggestionAggregateArgs> = {
-        [P in keyof T & keyof AggregateAISuggestion]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAISuggestion[P]>
-      : GetScalarType<T[P], AggregateAISuggestion[P]>
-  }
-
-
-
-
-  export type AISuggestionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AISuggestionWhereInput
-    orderBy?: AISuggestionOrderByWithAggregationInput | AISuggestionOrderByWithAggregationInput[]
-    by: AISuggestionScalarFieldEnum[] | AISuggestionScalarFieldEnum
-    having?: AISuggestionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AISuggestionCountAggregateInputType | true
-    _min?: AISuggestionMinAggregateInputType
-    _max?: AISuggestionMaxAggregateInputType
-  }
-
-  export type AISuggestionGroupByOutputType = {
-    id: string
-    userId: string
-    domain: $Enums.AIDomain
-    action: string
-    payload: JsonValue
-    status: $Enums.SuggestionStatus
-    reason: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: AISuggestionCountAggregateOutputType | null
-    _min: AISuggestionMinAggregateOutputType | null
-    _max: AISuggestionMaxAggregateOutputType | null
-  }
-
-  type GetAISuggestionGroupByPayload<T extends AISuggestionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AISuggestionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AISuggestionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AISuggestionGroupByOutputType[P]>
-            : GetScalarType<T[P], AISuggestionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AISuggestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    domain?: boolean
-    action?: boolean
-    payload?: boolean
-    status?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aISuggestion"]>
-
-  export type AISuggestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    domain?: boolean
-    action?: boolean
-    payload?: boolean
-    status?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aISuggestion"]>
-
-  export type AISuggestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    domain?: boolean
-    action?: boolean
-    payload?: boolean
-    status?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aISuggestion"]>
-
-  export type AISuggestionSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    domain?: boolean
-    action?: boolean
-    payload?: boolean
-    status?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type AISuggestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "action" | "payload" | "status" | "reason" | "createdAt" | "updatedAt", ExtArgs["result"]["aISuggestion"]>
-  export type AISuggestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AISuggestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AISuggestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $AISuggestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "AISuggestion"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      domain: $Enums.AIDomain
-      action: string
-      payload: Prisma.JsonValue
-      status: $Enums.SuggestionStatus
-      reason: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["aISuggestion"]>
-    composites: {}
-  }
-
-  type AISuggestionGetPayload<S extends boolean | null | undefined | AISuggestionDefaultArgs> = $Result.GetResult<Prisma.$AISuggestionPayload, S>
-
-  type AISuggestionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AISuggestionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AISuggestionCountAggregateInputType | true
-    }
-
-  export interface AISuggestionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AISuggestion'], meta: { name: 'AISuggestion' } }
-    /**
-     * Find zero or one AISuggestion that matches the filter.
-     * @param {AISuggestionFindUniqueArgs} args - Arguments to find a AISuggestion
-     * @example
-     * // Get one AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends AISuggestionFindUniqueArgs>(args: SelectSubset<T, AISuggestionFindUniqueArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one AISuggestion that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {AISuggestionFindUniqueOrThrowArgs} args - Arguments to find a AISuggestion
-     * @example
-     * // Get one AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends AISuggestionFindUniqueOrThrowArgs>(args: SelectSubset<T, AISuggestionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AISuggestion that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionFindFirstArgs} args - Arguments to find a AISuggestion
-     * @example
-     * // Get one AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends AISuggestionFindFirstArgs>(args?: SelectSubset<T, AISuggestionFindFirstArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AISuggestion that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionFindFirstOrThrowArgs} args - Arguments to find a AISuggestion
-     * @example
-     * // Get one AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends AISuggestionFindFirstOrThrowArgs>(args?: SelectSubset<T, AISuggestionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more AISuggestions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all AISuggestions
-     * const aISuggestions = await prisma.aISuggestion.findMany()
-     * 
-     * // Get first 10 AISuggestions
-     * const aISuggestions = await prisma.aISuggestion.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const aISuggestionWithIdOnly = await prisma.aISuggestion.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends AISuggestionFindManyArgs>(args?: SelectSubset<T, AISuggestionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a AISuggestion.
-     * @param {AISuggestionCreateArgs} args - Arguments to create a AISuggestion.
-     * @example
-     * // Create one AISuggestion
-     * const AISuggestion = await prisma.aISuggestion.create({
-     *   data: {
-     *     // ... data to create a AISuggestion
-     *   }
-     * })
-     * 
-     */
-    create<T extends AISuggestionCreateArgs>(args: SelectSubset<T, AISuggestionCreateArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many AISuggestions.
-     * @param {AISuggestionCreateManyArgs} args - Arguments to create many AISuggestions.
-     * @example
-     * // Create many AISuggestions
-     * const aISuggestion = await prisma.aISuggestion.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends AISuggestionCreateManyArgs>(args?: SelectSubset<T, AISuggestionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many AISuggestions and returns the data saved in the database.
-     * @param {AISuggestionCreateManyAndReturnArgs} args - Arguments to create many AISuggestions.
-     * @example
-     * // Create many AISuggestions
-     * const aISuggestion = await prisma.aISuggestion.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many AISuggestions and only return the `id`
-     * const aISuggestionWithIdOnly = await prisma.aISuggestion.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends AISuggestionCreateManyAndReturnArgs>(args?: SelectSubset<T, AISuggestionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a AISuggestion.
-     * @param {AISuggestionDeleteArgs} args - Arguments to delete one AISuggestion.
-     * @example
-     * // Delete one AISuggestion
-     * const AISuggestion = await prisma.aISuggestion.delete({
-     *   where: {
-     *     // ... filter to delete one AISuggestion
-     *   }
-     * })
-     * 
-     */
-    delete<T extends AISuggestionDeleteArgs>(args: SelectSubset<T, AISuggestionDeleteArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one AISuggestion.
-     * @param {AISuggestionUpdateArgs} args - Arguments to update one AISuggestion.
-     * @example
-     * // Update one AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends AISuggestionUpdateArgs>(args: SelectSubset<T, AISuggestionUpdateArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more AISuggestions.
-     * @param {AISuggestionDeleteManyArgs} args - Arguments to filter AISuggestions to delete.
-     * @example
-     * // Delete a few AISuggestions
-     * const { count } = await prisma.aISuggestion.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends AISuggestionDeleteManyArgs>(args?: SelectSubset<T, AISuggestionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AISuggestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many AISuggestions
-     * const aISuggestion = await prisma.aISuggestion.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends AISuggestionUpdateManyArgs>(args: SelectSubset<T, AISuggestionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AISuggestions and returns the data updated in the database.
-     * @param {AISuggestionUpdateManyAndReturnArgs} args - Arguments to update many AISuggestions.
-     * @example
-     * // Update many AISuggestions
-     * const aISuggestion = await prisma.aISuggestion.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more AISuggestions and only return the `id`
-     * const aISuggestionWithIdOnly = await prisma.aISuggestion.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends AISuggestionUpdateManyAndReturnArgs>(args: SelectSubset<T, AISuggestionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one AISuggestion.
-     * @param {AISuggestionUpsertArgs} args - Arguments to update or create a AISuggestion.
-     * @example
-     * // Update or create a AISuggestion
-     * const aISuggestion = await prisma.aISuggestion.upsert({
-     *   create: {
-     *     // ... data to create a AISuggestion
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the AISuggestion we want to update
-     *   }
-     * })
-     */
-    upsert<T extends AISuggestionUpsertArgs>(args: SelectSubset<T, AISuggestionUpsertArgs<ExtArgs>>): Prisma__AISuggestionClient<$Result.GetResult<Prisma.$AISuggestionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of AISuggestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionCountArgs} args - Arguments to filter AISuggestions to count.
-     * @example
-     * // Count the number of AISuggestions
-     * const count = await prisma.aISuggestion.count({
-     *   where: {
-     *     // ... the filter for the AISuggestions we want to count
-     *   }
-     * })
-    **/
-    count<T extends AISuggestionCountArgs>(
-      args?: Subset<T, AISuggestionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AISuggestionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a AISuggestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AISuggestionAggregateArgs>(args: Subset<T, AISuggestionAggregateArgs>): Prisma.PrismaPromise<GetAISuggestionAggregateType<T>>
-
-    /**
-     * Group by AISuggestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AISuggestionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AISuggestionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AISuggestionGroupByArgs['orderBy'] }
-        : { orderBy?: AISuggestionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AISuggestionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAISuggestionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the AISuggestion model
-   */
-  readonly fields: AISuggestionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for AISuggestion.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__AISuggestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the AISuggestion model
-   */
-  interface AISuggestionFieldRefs {
-    readonly id: FieldRef<"AISuggestion", 'String'>
-    readonly userId: FieldRef<"AISuggestion", 'String'>
-    readonly domain: FieldRef<"AISuggestion", 'AIDomain'>
-    readonly action: FieldRef<"AISuggestion", 'String'>
-    readonly payload: FieldRef<"AISuggestion", 'Json'>
-    readonly status: FieldRef<"AISuggestion", 'SuggestionStatus'>
-    readonly reason: FieldRef<"AISuggestion", 'String'>
-    readonly createdAt: FieldRef<"AISuggestion", 'DateTime'>
-    readonly updatedAt: FieldRef<"AISuggestion", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * AISuggestion findUnique
-   */
-  export type AISuggestionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which AISuggestion to fetch.
-     */
-    where: AISuggestionWhereUniqueInput
-  }
-
-  /**
-   * AISuggestion findUniqueOrThrow
-   */
-  export type AISuggestionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which AISuggestion to fetch.
-     */
-    where: AISuggestionWhereUniqueInput
-  }
-
-  /**
-   * AISuggestion findFirst
-   */
-  export type AISuggestionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which AISuggestion to fetch.
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AISuggestions to fetch.
-     */
-    orderBy?: AISuggestionOrderByWithRelationInput | AISuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AISuggestions.
-     */
-    cursor?: AISuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AISuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AISuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AISuggestions.
-     */
-    distinct?: AISuggestionScalarFieldEnum | AISuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * AISuggestion findFirstOrThrow
-   */
-  export type AISuggestionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which AISuggestion to fetch.
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AISuggestions to fetch.
-     */
-    orderBy?: AISuggestionOrderByWithRelationInput | AISuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AISuggestions.
-     */
-    cursor?: AISuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AISuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AISuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AISuggestions.
-     */
-    distinct?: AISuggestionScalarFieldEnum | AISuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * AISuggestion findMany
-   */
-  export type AISuggestionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which AISuggestions to fetch.
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AISuggestions to fetch.
-     */
-    orderBy?: AISuggestionOrderByWithRelationInput | AISuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing AISuggestions.
-     */
-    cursor?: AISuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AISuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AISuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AISuggestions.
-     */
-    distinct?: AISuggestionScalarFieldEnum | AISuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * AISuggestion create
-   */
-  export type AISuggestionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * The data needed to create a AISuggestion.
-     */
-    data: XOR<AISuggestionCreateInput, AISuggestionUncheckedCreateInput>
-  }
-
-  /**
-   * AISuggestion createMany
-   */
-  export type AISuggestionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many AISuggestions.
-     */
-    data: AISuggestionCreateManyInput | AISuggestionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * AISuggestion createManyAndReturn
-   */
-  export type AISuggestionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * The data used to create many AISuggestions.
-     */
-    data: AISuggestionCreateManyInput | AISuggestionCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AISuggestion update
-   */
-  export type AISuggestionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * The data needed to update a AISuggestion.
-     */
-    data: XOR<AISuggestionUpdateInput, AISuggestionUncheckedUpdateInput>
-    /**
-     * Choose, which AISuggestion to update.
-     */
-    where: AISuggestionWhereUniqueInput
-  }
-
-  /**
-   * AISuggestion updateMany
-   */
-  export type AISuggestionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update AISuggestions.
-     */
-    data: XOR<AISuggestionUpdateManyMutationInput, AISuggestionUncheckedUpdateManyInput>
-    /**
-     * Filter which AISuggestions to update
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * Limit how many AISuggestions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * AISuggestion updateManyAndReturn
-   */
-  export type AISuggestionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * The data used to update AISuggestions.
-     */
-    data: XOR<AISuggestionUpdateManyMutationInput, AISuggestionUncheckedUpdateManyInput>
-    /**
-     * Filter which AISuggestions to update
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * Limit how many AISuggestions to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AISuggestion upsert
-   */
-  export type AISuggestionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * The filter to search for the AISuggestion to update in case it exists.
-     */
-    where: AISuggestionWhereUniqueInput
-    /**
-     * In case the AISuggestion found by the `where` argument doesn't exist, create a new AISuggestion with this data.
-     */
-    create: XOR<AISuggestionCreateInput, AISuggestionUncheckedCreateInput>
-    /**
-     * In case the AISuggestion was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<AISuggestionUpdateInput, AISuggestionUncheckedUpdateInput>
-  }
-
-  /**
-   * AISuggestion delete
-   */
-  export type AISuggestionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-    /**
-     * Filter which AISuggestion to delete.
-     */
-    where: AISuggestionWhereUniqueInput
-  }
-
-  /**
-   * AISuggestion deleteMany
-   */
-  export type AISuggestionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AISuggestions to delete
-     */
-    where?: AISuggestionWhereInput
-    /**
-     * Limit how many AISuggestions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * AISuggestion without action
-   */
-  export type AISuggestionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AISuggestion
-     */
-    select?: AISuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AISuggestion
-     */
-    omit?: AISuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AISuggestionInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model AIUsage
-   */
-
-  export type AggregateAIUsage = {
-    _count: AIUsageCountAggregateOutputType | null
-    _avg: AIUsageAvgAggregateOutputType | null
-    _sum: AIUsageSumAggregateOutputType | null
-    _min: AIUsageMinAggregateOutputType | null
-    _max: AIUsageMaxAggregateOutputType | null
-  }
-
-  export type AIUsageAvgAggregateOutputType = {
-    inputTokens: number | null
-    outputTokens: number | null
-    totalTokens: number | null
-    requestCount: number | null
-  }
-
-  export type AIUsageSumAggregateOutputType = {
-    inputTokens: number | null
-    outputTokens: number | null
-    totalTokens: number | null
-    requestCount: number | null
-  }
-
-  export type AIUsageMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    date: Date | null
-    inputTokens: number | null
-    outputTokens: number | null
-    totalTokens: number | null
-    requestCount: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AIUsageMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    date: Date | null
-    inputTokens: number | null
-    outputTokens: number | null
-    totalTokens: number | null
-    requestCount: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type AIUsageCountAggregateOutputType = {
-    id: number
-    userId: number
-    date: number
-    inputTokens: number
-    outputTokens: number
-    totalTokens: number
-    requestCount: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type AIUsageAvgAggregateInputType = {
-    inputTokens?: true
-    outputTokens?: true
-    totalTokens?: true
-    requestCount?: true
-  }
-
-  export type AIUsageSumAggregateInputType = {
-    inputTokens?: true
-    outputTokens?: true
-    totalTokens?: true
-    requestCount?: true
-  }
-
-  export type AIUsageMinAggregateInputType = {
-    id?: true
-    userId?: true
-    date?: true
-    inputTokens?: true
-    outputTokens?: true
-    totalTokens?: true
-    requestCount?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AIUsageMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    date?: true
-    inputTokens?: true
-    outputTokens?: true
-    totalTokens?: true
-    requestCount?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type AIUsageCountAggregateInputType = {
-    id?: true
-    userId?: true
-    date?: true
-    inputTokens?: true
-    outputTokens?: true
-    totalTokens?: true
-    requestCount?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type AIUsageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AIUsage to aggregate.
-     */
-    where?: AIUsageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIUsages to fetch.
-     */
-    orderBy?: AIUsageOrderByWithRelationInput | AIUsageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: AIUsageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIUsages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIUsages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned AIUsages
-    **/
-    _count?: true | AIUsageCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AIUsageAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AIUsageSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AIUsageMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AIUsageMaxAggregateInputType
-  }
-
-  export type GetAIUsageAggregateType<T extends AIUsageAggregateArgs> = {
-        [P in keyof T & keyof AggregateAIUsage]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAIUsage[P]>
-      : GetScalarType<T[P], AggregateAIUsage[P]>
-  }
-
-
-
-
-  export type AIUsageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AIUsageWhereInput
-    orderBy?: AIUsageOrderByWithAggregationInput | AIUsageOrderByWithAggregationInput[]
-    by: AIUsageScalarFieldEnum[] | AIUsageScalarFieldEnum
-    having?: AIUsageScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AIUsageCountAggregateInputType | true
-    _avg?: AIUsageAvgAggregateInputType
-    _sum?: AIUsageSumAggregateInputType
-    _min?: AIUsageMinAggregateInputType
-    _max?: AIUsageMaxAggregateInputType
-  }
-
-  export type AIUsageGroupByOutputType = {
-    id: string
-    userId: string
-    date: Date
-    inputTokens: number
-    outputTokens: number
-    totalTokens: number
-    requestCount: number
-    createdAt: Date
-    updatedAt: Date
-    _count: AIUsageCountAggregateOutputType | null
-    _avg: AIUsageAvgAggregateOutputType | null
-    _sum: AIUsageSumAggregateOutputType | null
-    _min: AIUsageMinAggregateOutputType | null
-    _max: AIUsageMaxAggregateOutputType | null
-  }
-
-  type GetAIUsageGroupByPayload<T extends AIUsageGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AIUsageGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AIUsageGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AIUsageGroupByOutputType[P]>
-            : GetScalarType<T[P], AIUsageGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AIUsageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    date?: boolean
-    inputTokens?: boolean
-    outputTokens?: boolean
-    totalTokens?: boolean
-    requestCount?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIUsage"]>
-
-  export type AIUsageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    date?: boolean
-    inputTokens?: boolean
-    outputTokens?: boolean
-    totalTokens?: boolean
-    requestCount?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIUsage"]>
-
-  export type AIUsageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    date?: boolean
-    inputTokens?: boolean
-    outputTokens?: boolean
-    totalTokens?: boolean
-    requestCount?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["aIUsage"]>
-
-  export type AIUsageSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    date?: boolean
-    inputTokens?: boolean
-    outputTokens?: boolean
-    totalTokens?: boolean
-    requestCount?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type AIUsageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "inputTokens" | "outputTokens" | "totalTokens" | "requestCount" | "createdAt" | "updatedAt", ExtArgs["result"]["aIUsage"]>
-  export type AIUsageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AIUsageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type AIUsageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $AIUsagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "AIUsage"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      date: Date
-      inputTokens: number
-      outputTokens: number
-      totalTokens: number
-      requestCount: number
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["aIUsage"]>
-    composites: {}
-  }
-
-  type AIUsageGetPayload<S extends boolean | null | undefined | AIUsageDefaultArgs> = $Result.GetResult<Prisma.$AIUsagePayload, S>
-
-  type AIUsageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AIUsageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AIUsageCountAggregateInputType | true
-    }
-
-  export interface AIUsageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AIUsage'], meta: { name: 'AIUsage' } }
-    /**
-     * Find zero or one AIUsage that matches the filter.
-     * @param {AIUsageFindUniqueArgs} args - Arguments to find a AIUsage
-     * @example
-     * // Get one AIUsage
-     * const aIUsage = await prisma.aIUsage.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends AIUsageFindUniqueArgs>(args: SelectSubset<T, AIUsageFindUniqueArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one AIUsage that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {AIUsageFindUniqueOrThrowArgs} args - Arguments to find a AIUsage
-     * @example
-     * // Get one AIUsage
-     * const aIUsage = await prisma.aIUsage.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends AIUsageFindUniqueOrThrowArgs>(args: SelectSubset<T, AIUsageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AIUsage that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageFindFirstArgs} args - Arguments to find a AIUsage
-     * @example
-     * // Get one AIUsage
-     * const aIUsage = await prisma.aIUsage.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends AIUsageFindFirstArgs>(args?: SelectSubset<T, AIUsageFindFirstArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first AIUsage that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageFindFirstOrThrowArgs} args - Arguments to find a AIUsage
-     * @example
-     * // Get one AIUsage
-     * const aIUsage = await prisma.aIUsage.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends AIUsageFindFirstOrThrowArgs>(args?: SelectSubset<T, AIUsageFindFirstOrThrowArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more AIUsages that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all AIUsages
-     * const aIUsages = await prisma.aIUsage.findMany()
-     * 
-     * // Get first 10 AIUsages
-     * const aIUsages = await prisma.aIUsage.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const aIUsageWithIdOnly = await prisma.aIUsage.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends AIUsageFindManyArgs>(args?: SelectSubset<T, AIUsageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a AIUsage.
-     * @param {AIUsageCreateArgs} args - Arguments to create a AIUsage.
-     * @example
-     * // Create one AIUsage
-     * const AIUsage = await prisma.aIUsage.create({
-     *   data: {
-     *     // ... data to create a AIUsage
-     *   }
-     * })
-     * 
-     */
-    create<T extends AIUsageCreateArgs>(args: SelectSubset<T, AIUsageCreateArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many AIUsages.
-     * @param {AIUsageCreateManyArgs} args - Arguments to create many AIUsages.
-     * @example
-     * // Create many AIUsages
-     * const aIUsage = await prisma.aIUsage.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends AIUsageCreateManyArgs>(args?: SelectSubset<T, AIUsageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many AIUsages and returns the data saved in the database.
-     * @param {AIUsageCreateManyAndReturnArgs} args - Arguments to create many AIUsages.
-     * @example
-     * // Create many AIUsages
-     * const aIUsage = await prisma.aIUsage.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many AIUsages and only return the `id`
-     * const aIUsageWithIdOnly = await prisma.aIUsage.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends AIUsageCreateManyAndReturnArgs>(args?: SelectSubset<T, AIUsageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a AIUsage.
-     * @param {AIUsageDeleteArgs} args - Arguments to delete one AIUsage.
-     * @example
-     * // Delete one AIUsage
-     * const AIUsage = await prisma.aIUsage.delete({
-     *   where: {
-     *     // ... filter to delete one AIUsage
-     *   }
-     * })
-     * 
-     */
-    delete<T extends AIUsageDeleteArgs>(args: SelectSubset<T, AIUsageDeleteArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one AIUsage.
-     * @param {AIUsageUpdateArgs} args - Arguments to update one AIUsage.
-     * @example
-     * // Update one AIUsage
-     * const aIUsage = await prisma.aIUsage.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends AIUsageUpdateArgs>(args: SelectSubset<T, AIUsageUpdateArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more AIUsages.
-     * @param {AIUsageDeleteManyArgs} args - Arguments to filter AIUsages to delete.
-     * @example
-     * // Delete a few AIUsages
-     * const { count } = await prisma.aIUsage.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends AIUsageDeleteManyArgs>(args?: SelectSubset<T, AIUsageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AIUsages.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many AIUsages
-     * const aIUsage = await prisma.aIUsage.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends AIUsageUpdateManyArgs>(args: SelectSubset<T, AIUsageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more AIUsages and returns the data updated in the database.
-     * @param {AIUsageUpdateManyAndReturnArgs} args - Arguments to update many AIUsages.
-     * @example
-     * // Update many AIUsages
-     * const aIUsage = await prisma.aIUsage.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more AIUsages and only return the `id`
-     * const aIUsageWithIdOnly = await prisma.aIUsage.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends AIUsageUpdateManyAndReturnArgs>(args: SelectSubset<T, AIUsageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one AIUsage.
-     * @param {AIUsageUpsertArgs} args - Arguments to update or create a AIUsage.
-     * @example
-     * // Update or create a AIUsage
-     * const aIUsage = await prisma.aIUsage.upsert({
-     *   create: {
-     *     // ... data to create a AIUsage
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the AIUsage we want to update
-     *   }
-     * })
-     */
-    upsert<T extends AIUsageUpsertArgs>(args: SelectSubset<T, AIUsageUpsertArgs<ExtArgs>>): Prisma__AIUsageClient<$Result.GetResult<Prisma.$AIUsagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of AIUsages.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageCountArgs} args - Arguments to filter AIUsages to count.
-     * @example
-     * // Count the number of AIUsages
-     * const count = await prisma.aIUsage.count({
-     *   where: {
-     *     // ... the filter for the AIUsages we want to count
-     *   }
-     * })
-    **/
-    count<T extends AIUsageCountArgs>(
-      args?: Subset<T, AIUsageCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AIUsageCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a AIUsage.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AIUsageAggregateArgs>(args: Subset<T, AIUsageAggregateArgs>): Prisma.PrismaPromise<GetAIUsageAggregateType<T>>
-
-    /**
-     * Group by AIUsage.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AIUsageGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AIUsageGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AIUsageGroupByArgs['orderBy'] }
-        : { orderBy?: AIUsageGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AIUsageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAIUsageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the AIUsage model
-   */
-  readonly fields: AIUsageFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for AIUsage.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__AIUsageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the AIUsage model
-   */
-  interface AIUsageFieldRefs {
-    readonly id: FieldRef<"AIUsage", 'String'>
-    readonly userId: FieldRef<"AIUsage", 'String'>
-    readonly date: FieldRef<"AIUsage", 'DateTime'>
-    readonly inputTokens: FieldRef<"AIUsage", 'Int'>
-    readonly outputTokens: FieldRef<"AIUsage", 'Int'>
-    readonly totalTokens: FieldRef<"AIUsage", 'Int'>
-    readonly requestCount: FieldRef<"AIUsage", 'Int'>
-    readonly createdAt: FieldRef<"AIUsage", 'DateTime'>
-    readonly updatedAt: FieldRef<"AIUsage", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * AIUsage findUnique
-   */
-  export type AIUsageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter, which AIUsage to fetch.
-     */
-    where: AIUsageWhereUniqueInput
-  }
-
-  /**
-   * AIUsage findUniqueOrThrow
-   */
-  export type AIUsageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter, which AIUsage to fetch.
-     */
-    where: AIUsageWhereUniqueInput
-  }
-
-  /**
-   * AIUsage findFirst
-   */
-  export type AIUsageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter, which AIUsage to fetch.
-     */
-    where?: AIUsageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIUsages to fetch.
-     */
-    orderBy?: AIUsageOrderByWithRelationInput | AIUsageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AIUsages.
-     */
-    cursor?: AIUsageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIUsages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIUsages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIUsages.
-     */
-    distinct?: AIUsageScalarFieldEnum | AIUsageScalarFieldEnum[]
-  }
-
-  /**
-   * AIUsage findFirstOrThrow
-   */
-  export type AIUsageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter, which AIUsage to fetch.
-     */
-    where?: AIUsageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIUsages to fetch.
-     */
-    orderBy?: AIUsageOrderByWithRelationInput | AIUsageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for AIUsages.
-     */
-    cursor?: AIUsageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIUsages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIUsages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIUsages.
-     */
-    distinct?: AIUsageScalarFieldEnum | AIUsageScalarFieldEnum[]
-  }
-
-  /**
-   * AIUsage findMany
-   */
-  export type AIUsageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter, which AIUsages to fetch.
-     */
-    where?: AIUsageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of AIUsages to fetch.
-     */
-    orderBy?: AIUsageOrderByWithRelationInput | AIUsageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing AIUsages.
-     */
-    cursor?: AIUsageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` AIUsages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` AIUsages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of AIUsages.
-     */
-    distinct?: AIUsageScalarFieldEnum | AIUsageScalarFieldEnum[]
-  }
-
-  /**
-   * AIUsage create
-   */
-  export type AIUsageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * The data needed to create a AIUsage.
-     */
-    data: XOR<AIUsageCreateInput, AIUsageUncheckedCreateInput>
-  }
-
-  /**
-   * AIUsage createMany
-   */
-  export type AIUsageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many AIUsages.
-     */
-    data: AIUsageCreateManyInput | AIUsageCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * AIUsage createManyAndReturn
-   */
-  export type AIUsageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * The data used to create many AIUsages.
-     */
-    data: AIUsageCreateManyInput | AIUsageCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AIUsage update
-   */
-  export type AIUsageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * The data needed to update a AIUsage.
-     */
-    data: XOR<AIUsageUpdateInput, AIUsageUncheckedUpdateInput>
-    /**
-     * Choose, which AIUsage to update.
-     */
-    where: AIUsageWhereUniqueInput
-  }
-
-  /**
-   * AIUsage updateMany
-   */
-  export type AIUsageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update AIUsages.
-     */
-    data: XOR<AIUsageUpdateManyMutationInput, AIUsageUncheckedUpdateManyInput>
-    /**
-     * Filter which AIUsages to update
-     */
-    where?: AIUsageWhereInput
-    /**
-     * Limit how many AIUsages to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * AIUsage updateManyAndReturn
-   */
-  export type AIUsageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * The data used to update AIUsages.
-     */
-    data: XOR<AIUsageUpdateManyMutationInput, AIUsageUncheckedUpdateManyInput>
-    /**
-     * Filter which AIUsages to update
-     */
-    where?: AIUsageWhereInput
-    /**
-     * Limit how many AIUsages to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * AIUsage upsert
-   */
-  export type AIUsageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * The filter to search for the AIUsage to update in case it exists.
-     */
-    where: AIUsageWhereUniqueInput
-    /**
-     * In case the AIUsage found by the `where` argument doesn't exist, create a new AIUsage with this data.
-     */
-    create: XOR<AIUsageCreateInput, AIUsageUncheckedCreateInput>
-    /**
-     * In case the AIUsage was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<AIUsageUpdateInput, AIUsageUncheckedUpdateInput>
-  }
-
-  /**
-   * AIUsage delete
-   */
-  export type AIUsageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-    /**
-     * Filter which AIUsage to delete.
-     */
-    where: AIUsageWhereUniqueInput
-  }
-
-  /**
-   * AIUsage deleteMany
-   */
-  export type AIUsageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which AIUsages to delete
-     */
-    where?: AIUsageWhereInput
-    /**
-     * Limit how many AIUsages to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * AIUsage without action
-   */
-  export type AIUsageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AIUsage
-     */
-    select?: AIUsageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AIUsage
-     */
-    omit?: AIUsageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AIUsageInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -62214,47 +58474,6 @@ export namespace Prisma {
   export type SprintReviewScalarFieldEnum = (typeof SprintReviewScalarFieldEnum)[keyof typeof SprintReviewScalarFieldEnum]
 
 
-  export const AIChatScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    messages: 'messages',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type AIChatScalarFieldEnum = (typeof AIChatScalarFieldEnum)[keyof typeof AIChatScalarFieldEnum]
-
-
-  export const AISuggestionScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    domain: 'domain',
-    action: 'action',
-    payload: 'payload',
-    status: 'status',
-    reason: 'reason',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type AISuggestionScalarFieldEnum = (typeof AISuggestionScalarFieldEnum)[keyof typeof AISuggestionScalarFieldEnum]
-
-
-  export const AIUsageScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    date: 'date',
-    inputTokens: 'inputTokens',
-    outputTokens: 'outputTokens',
-    totalTokens: 'totalTokens',
-    requestCount: 'requestCount',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type AIUsageScalarFieldEnum = (typeof AIUsageScalarFieldEnum)[keyof typeof AIUsageScalarFieldEnum]
-
-
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -62269,13 +58488,6 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -62663,34 +58875,6 @@ export namespace Prisma {
    */
   export type ListEnumTacticFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TacticFrequency[]'>
     
-
-
-  /**
-   * Reference to a field of type 'AIDomain'
-   */
-  export type EnumAIDomainFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIDomain'>
-    
-
-
-  /**
-   * Reference to a field of type 'AIDomain[]'
-   */
-  export type ListEnumAIDomainFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AIDomain[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'SuggestionStatus'
-   */
-  export type EnumSuggestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SuggestionStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'SuggestionStatus[]'
-   */
-  export type ListEnumSuggestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SuggestionStatus[]'>
-    
   /**
    * Deep Input Types
    */
@@ -62730,9 +58914,6 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
-    aiChats?: AIChatListRelationFilter
-    aiSuggestions?: AISuggestionListRelationFilter
-    aiUsage?: AIUsageListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -62766,9 +58947,6 @@ export namespace Prisma {
     visions?: VisionOrderByRelationAggregateInput
     weekPlans?: WeekPlanOrderByRelationAggregateInput
     wishlistItems?: WishlistItemOrderByRelationAggregateInput
-    aiChats?: AIChatOrderByRelationAggregateInput
-    aiSuggestions?: AISuggestionOrderByRelationAggregateInput
-    aiUsage?: AIUsageOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -62805,9 +58983,6 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
-    aiChats?: AIChatListRelationFilter
-    aiSuggestions?: AISuggestionListRelationFilter
-    aiUsage?: AIUsageListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -66238,214 +62413,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"SprintReview"> | Date | string
   }
 
-  export type AIChatWhereInput = {
-    AND?: AIChatWhereInput | AIChatWhereInput[]
-    OR?: AIChatWhereInput[]
-    NOT?: AIChatWhereInput | AIChatWhereInput[]
-    id?: StringFilter<"AIChat"> | string
-    userId?: StringFilter<"AIChat"> | string
-    messages?: JsonFilter<"AIChat">
-    createdAt?: DateTimeFilter<"AIChat"> | Date | string
-    updatedAt?: DateTimeFilter<"AIChat"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type AIChatOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    messages?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type AIChatWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: AIChatWhereInput | AIChatWhereInput[]
-    OR?: AIChatWhereInput[]
-    NOT?: AIChatWhereInput | AIChatWhereInput[]
-    userId?: StringFilter<"AIChat"> | string
-    messages?: JsonFilter<"AIChat">
-    createdAt?: DateTimeFilter<"AIChat"> | Date | string
-    updatedAt?: DateTimeFilter<"AIChat"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type AIChatOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    messages?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: AIChatCountOrderByAggregateInput
-    _max?: AIChatMaxOrderByAggregateInput
-    _min?: AIChatMinOrderByAggregateInput
-  }
-
-  export type AIChatScalarWhereWithAggregatesInput = {
-    AND?: AIChatScalarWhereWithAggregatesInput | AIChatScalarWhereWithAggregatesInput[]
-    OR?: AIChatScalarWhereWithAggregatesInput[]
-    NOT?: AIChatScalarWhereWithAggregatesInput | AIChatScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"AIChat"> | string
-    userId?: StringWithAggregatesFilter<"AIChat"> | string
-    messages?: JsonWithAggregatesFilter<"AIChat">
-    createdAt?: DateTimeWithAggregatesFilter<"AIChat"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"AIChat"> | Date | string
-  }
-
-  export type AISuggestionWhereInput = {
-    AND?: AISuggestionWhereInput | AISuggestionWhereInput[]
-    OR?: AISuggestionWhereInput[]
-    NOT?: AISuggestionWhereInput | AISuggestionWhereInput[]
-    id?: StringFilter<"AISuggestion"> | string
-    userId?: StringFilter<"AISuggestion"> | string
-    domain?: EnumAIDomainFilter<"AISuggestion"> | $Enums.AIDomain
-    action?: StringFilter<"AISuggestion"> | string
-    payload?: JsonFilter<"AISuggestion">
-    status?: EnumSuggestionStatusFilter<"AISuggestion"> | $Enums.SuggestionStatus
-    reason?: StringNullableFilter<"AISuggestion"> | string | null
-    createdAt?: DateTimeFilter<"AISuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"AISuggestion"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type AISuggestionOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    domain?: SortOrder
-    action?: SortOrder
-    payload?: SortOrder
-    status?: SortOrder
-    reason?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type AISuggestionWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: AISuggestionWhereInput | AISuggestionWhereInput[]
-    OR?: AISuggestionWhereInput[]
-    NOT?: AISuggestionWhereInput | AISuggestionWhereInput[]
-    userId?: StringFilter<"AISuggestion"> | string
-    domain?: EnumAIDomainFilter<"AISuggestion"> | $Enums.AIDomain
-    action?: StringFilter<"AISuggestion"> | string
-    payload?: JsonFilter<"AISuggestion">
-    status?: EnumSuggestionStatusFilter<"AISuggestion"> | $Enums.SuggestionStatus
-    reason?: StringNullableFilter<"AISuggestion"> | string | null
-    createdAt?: DateTimeFilter<"AISuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"AISuggestion"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type AISuggestionOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    domain?: SortOrder
-    action?: SortOrder
-    payload?: SortOrder
-    status?: SortOrder
-    reason?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: AISuggestionCountOrderByAggregateInput
-    _max?: AISuggestionMaxOrderByAggregateInput
-    _min?: AISuggestionMinOrderByAggregateInput
-  }
-
-  export type AISuggestionScalarWhereWithAggregatesInput = {
-    AND?: AISuggestionScalarWhereWithAggregatesInput | AISuggestionScalarWhereWithAggregatesInput[]
-    OR?: AISuggestionScalarWhereWithAggregatesInput[]
-    NOT?: AISuggestionScalarWhereWithAggregatesInput | AISuggestionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"AISuggestion"> | string
-    userId?: StringWithAggregatesFilter<"AISuggestion"> | string
-    domain?: EnumAIDomainWithAggregatesFilter<"AISuggestion"> | $Enums.AIDomain
-    action?: StringWithAggregatesFilter<"AISuggestion"> | string
-    payload?: JsonWithAggregatesFilter<"AISuggestion">
-    status?: EnumSuggestionStatusWithAggregatesFilter<"AISuggestion"> | $Enums.SuggestionStatus
-    reason?: StringNullableWithAggregatesFilter<"AISuggestion"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"AISuggestion"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"AISuggestion"> | Date | string
-  }
-
-  export type AIUsageWhereInput = {
-    AND?: AIUsageWhereInput | AIUsageWhereInput[]
-    OR?: AIUsageWhereInput[]
-    NOT?: AIUsageWhereInput | AIUsageWhereInput[]
-    id?: StringFilter<"AIUsage"> | string
-    userId?: StringFilter<"AIUsage"> | string
-    date?: DateTimeFilter<"AIUsage"> | Date | string
-    inputTokens?: IntFilter<"AIUsage"> | number
-    outputTokens?: IntFilter<"AIUsage"> | number
-    totalTokens?: IntFilter<"AIUsage"> | number
-    requestCount?: IntFilter<"AIUsage"> | number
-    createdAt?: DateTimeFilter<"AIUsage"> | Date | string
-    updatedAt?: DateTimeFilter<"AIUsage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type AIUsageOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    date?: SortOrder
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type AIUsageWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    userId_date?: AIUsageUserIdDateCompoundUniqueInput
-    AND?: AIUsageWhereInput | AIUsageWhereInput[]
-    OR?: AIUsageWhereInput[]
-    NOT?: AIUsageWhereInput | AIUsageWhereInput[]
-    userId?: StringFilter<"AIUsage"> | string
-    date?: DateTimeFilter<"AIUsage"> | Date | string
-    inputTokens?: IntFilter<"AIUsage"> | number
-    outputTokens?: IntFilter<"AIUsage"> | number
-    totalTokens?: IntFilter<"AIUsage"> | number
-    requestCount?: IntFilter<"AIUsage"> | number
-    createdAt?: DateTimeFilter<"AIUsage"> | Date | string
-    updatedAt?: DateTimeFilter<"AIUsage"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "userId_date">
-
-  export type AIUsageOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    date?: SortOrder
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: AIUsageCountOrderByAggregateInput
-    _avg?: AIUsageAvgOrderByAggregateInput
-    _max?: AIUsageMaxOrderByAggregateInput
-    _min?: AIUsageMinOrderByAggregateInput
-    _sum?: AIUsageSumOrderByAggregateInput
-  }
-
-  export type AIUsageScalarWhereWithAggregatesInput = {
-    AND?: AIUsageScalarWhereWithAggregatesInput | AIUsageScalarWhereWithAggregatesInput[]
-    OR?: AIUsageScalarWhereWithAggregatesInput[]
-    NOT?: AIUsageScalarWhereWithAggregatesInput | AIUsageScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"AIUsage"> | string
-    userId?: StringWithAggregatesFilter<"AIUsage"> | string
-    date?: DateTimeWithAggregatesFilter<"AIUsage"> | Date | string
-    inputTokens?: IntWithAggregatesFilter<"AIUsage"> | number
-    outputTokens?: IntWithAggregatesFilter<"AIUsage"> | number
-    totalTokens?: IntWithAggregatesFilter<"AIUsage"> | number
-    requestCount?: IntWithAggregatesFilter<"AIUsage"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"AIUsage"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"AIUsage"> | Date | string
-  }
-
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -66477,9 +62444,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -66513,9 +62477,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -66549,9 +62510,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -66585,9 +62543,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -70273,227 +66228,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AIChatCreateInput = {
-    id?: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutAiChatsInput
-  }
-
-  export type AIChatUncheckedCreateInput = {
-    id?: string
-    userId: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIChatUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAiChatsNestedInput
-  }
-
-  export type AIChatUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIChatCreateManyInput = {
-    id?: string
-    userId: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIChatUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIChatUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionCreateInput = {
-    id?: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutAiSuggestionsInput
-  }
-
-  export type AISuggestionUncheckedCreateInput = {
-    id?: string
-    userId: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AISuggestionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAiSuggestionsNestedInput
-  }
-
-  export type AISuggestionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionCreateManyInput = {
-    id?: string
-    userId: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AISuggestionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageCreateInput = {
-    id?: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutAiUsageInput
-  }
-
-  export type AIUsageUncheckedCreateInput = {
-    id?: string
-    userId: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIUsageUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAiUsageNestedInput
-  }
-
-  export type AIUsageUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageCreateManyInput = {
-    id?: string
-    userId: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIUsageUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -70673,24 +66407,6 @@ export namespace Prisma {
     none?: WishlistItemWhereInput
   }
 
-  export type AIChatListRelationFilter = {
-    every?: AIChatWhereInput
-    some?: AIChatWhereInput
-    none?: AIChatWhereInput
-  }
-
-  export type AISuggestionListRelationFilter = {
-    every?: AISuggestionWhereInput
-    some?: AISuggestionWhereInput
-    none?: AISuggestionWhereInput
-  }
-
-  export type AIUsageListRelationFilter = {
-    every?: AIUsageWhereInput
-    some?: AIUsageWhereInput
-    none?: AIUsageWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -70773,18 +66489,6 @@ export namespace Prisma {
   }
 
   export type WishlistItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AIChatOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AISuggestionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AIUsageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -73572,200 +69276,6 @@ export namespace Prisma {
     weekNumber?: SortOrder
     score?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type AIChatCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    messages?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AIChatMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AIChatMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
-  }
-
-  export type EnumAIDomainFilter<$PrismaModel = never> = {
-    equals?: $Enums.AIDomain | EnumAIDomainFieldRefInput<$PrismaModel>
-    in?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    not?: NestedEnumAIDomainFilter<$PrismaModel> | $Enums.AIDomain
-  }
-
-  export type EnumSuggestionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SuggestionStatus | EnumSuggestionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSuggestionStatusFilter<$PrismaModel> | $Enums.SuggestionStatus
-  }
-
-  export type AISuggestionCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    domain?: SortOrder
-    action?: SortOrder
-    payload?: SortOrder
-    status?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AISuggestionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    domain?: SortOrder
-    action?: SortOrder
-    status?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AISuggestionMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    domain?: SortOrder
-    action?: SortOrder
-    status?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type EnumAIDomainWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AIDomain | EnumAIDomainFieldRefInput<$PrismaModel>
-    in?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    not?: NestedEnumAIDomainWithAggregatesFilter<$PrismaModel> | $Enums.AIDomain
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAIDomainFilter<$PrismaModel>
-    _max?: NestedEnumAIDomainFilter<$PrismaModel>
-  }
-
-  export type EnumSuggestionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SuggestionStatus | EnumSuggestionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSuggestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SuggestionStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSuggestionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSuggestionStatusFilter<$PrismaModel>
-  }
-
-  export type AIUsageUserIdDateCompoundUniqueInput = {
-    userId: string
-    date: Date | string
-  }
-
-  export type AIUsageCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    date?: SortOrder
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AIUsageAvgOrderByAggregateInput = {
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-  }
-
-  export type AIUsageMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    date?: SortOrder
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AIUsageMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    date?: SortOrder
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type AIUsageSumOrderByAggregateInput = {
-    inputTokens?: SortOrder
-    outputTokens?: SortOrder
-    totalTokens?: SortOrder
-    requestCount?: SortOrder
-  }
 
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
@@ -73907,27 +69417,6 @@ export namespace Prisma {
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
   }
 
-  export type AIChatCreateNestedManyWithoutUserInput = {
-    create?: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput> | AIChatCreateWithoutUserInput[] | AIChatUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIChatCreateOrConnectWithoutUserInput | AIChatCreateOrConnectWithoutUserInput[]
-    createMany?: AIChatCreateManyUserInputEnvelope
-    connect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-  }
-
-  export type AISuggestionCreateNestedManyWithoutUserInput = {
-    create?: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput> | AISuggestionCreateWithoutUserInput[] | AISuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AISuggestionCreateOrConnectWithoutUserInput | AISuggestionCreateOrConnectWithoutUserInput[]
-    createMany?: AISuggestionCreateManyUserInputEnvelope
-    connect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-  }
-
-  export type AIUsageCreateNestedManyWithoutUserInput = {
-    create?: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput> | AIUsageCreateWithoutUserInput[] | AIUsageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIUsageCreateOrConnectWithoutUserInput | AIUsageCreateOrConnectWithoutUserInput[]
-    createMany?: AIUsageCreateManyUserInputEnvelope
-    connect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-  }
-
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -74066,27 +69555,6 @@ export namespace Prisma {
     connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
     createMany?: WishlistItemCreateManyUserInputEnvelope
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
-  }
-
-  export type AIChatUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput> | AIChatCreateWithoutUserInput[] | AIChatUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIChatCreateOrConnectWithoutUserInput | AIChatCreateOrConnectWithoutUserInput[]
-    createMany?: AIChatCreateManyUserInputEnvelope
-    connect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-  }
-
-  export type AISuggestionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput> | AISuggestionCreateWithoutUserInput[] | AISuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AISuggestionCreateOrConnectWithoutUserInput | AISuggestionCreateOrConnectWithoutUserInput[]
-    createMany?: AISuggestionCreateManyUserInputEnvelope
-    connect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-  }
-
-  export type AIUsageUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput> | AIUsageCreateWithoutUserInput[] | AIUsageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIUsageCreateOrConnectWithoutUserInput | AIUsageCreateOrConnectWithoutUserInput[]
-    createMany?: AIUsageCreateManyUserInputEnvelope
-    connect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -74389,48 +69857,6 @@ export namespace Prisma {
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
   }
 
-  export type AIChatUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput> | AIChatCreateWithoutUserInput[] | AIChatUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIChatCreateOrConnectWithoutUserInput | AIChatCreateOrConnectWithoutUserInput[]
-    upsert?: AIChatUpsertWithWhereUniqueWithoutUserInput | AIChatUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AIChatCreateManyUserInputEnvelope
-    set?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    disconnect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    delete?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    connect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    update?: AIChatUpdateWithWhereUniqueWithoutUserInput | AIChatUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AIChatUpdateManyWithWhereWithoutUserInput | AIChatUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AIChatScalarWhereInput | AIChatScalarWhereInput[]
-  }
-
-  export type AISuggestionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput> | AISuggestionCreateWithoutUserInput[] | AISuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AISuggestionCreateOrConnectWithoutUserInput | AISuggestionCreateOrConnectWithoutUserInput[]
-    upsert?: AISuggestionUpsertWithWhereUniqueWithoutUserInput | AISuggestionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AISuggestionCreateManyUserInputEnvelope
-    set?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    disconnect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    delete?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    connect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    update?: AISuggestionUpdateWithWhereUniqueWithoutUserInput | AISuggestionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AISuggestionUpdateManyWithWhereWithoutUserInput | AISuggestionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AISuggestionScalarWhereInput | AISuggestionScalarWhereInput[]
-  }
-
-  export type AIUsageUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput> | AIUsageCreateWithoutUserInput[] | AIUsageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIUsageCreateOrConnectWithoutUserInput | AIUsageCreateOrConnectWithoutUserInput[]
-    upsert?: AIUsageUpsertWithWhereUniqueWithoutUserInput | AIUsageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AIUsageCreateManyUserInputEnvelope
-    set?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    disconnect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    delete?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    connect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    update?: AIUsageUpdateWithWhereUniqueWithoutUserInput | AIUsageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AIUsageUpdateManyWithWhereWithoutUserInput | AIUsageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AIUsageScalarWhereInput | AIUsageScalarWhereInput[]
-  }
-
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -74709,48 +70135,6 @@ export namespace Prisma {
     update?: WishlistItemUpdateWithWhereUniqueWithoutUserInput | WishlistItemUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WishlistItemUpdateManyWithWhereWithoutUserInput | WishlistItemUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
-  }
-
-  export type AIChatUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput> | AIChatCreateWithoutUserInput[] | AIChatUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIChatCreateOrConnectWithoutUserInput | AIChatCreateOrConnectWithoutUserInput[]
-    upsert?: AIChatUpsertWithWhereUniqueWithoutUserInput | AIChatUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AIChatCreateManyUserInputEnvelope
-    set?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    disconnect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    delete?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    connect?: AIChatWhereUniqueInput | AIChatWhereUniqueInput[]
-    update?: AIChatUpdateWithWhereUniqueWithoutUserInput | AIChatUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AIChatUpdateManyWithWhereWithoutUserInput | AIChatUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AIChatScalarWhereInput | AIChatScalarWhereInput[]
-  }
-
-  export type AISuggestionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput> | AISuggestionCreateWithoutUserInput[] | AISuggestionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AISuggestionCreateOrConnectWithoutUserInput | AISuggestionCreateOrConnectWithoutUserInput[]
-    upsert?: AISuggestionUpsertWithWhereUniqueWithoutUserInput | AISuggestionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AISuggestionCreateManyUserInputEnvelope
-    set?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    disconnect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    delete?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    connect?: AISuggestionWhereUniqueInput | AISuggestionWhereUniqueInput[]
-    update?: AISuggestionUpdateWithWhereUniqueWithoutUserInput | AISuggestionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AISuggestionUpdateManyWithWhereWithoutUserInput | AISuggestionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AISuggestionScalarWhereInput | AISuggestionScalarWhereInput[]
-  }
-
-  export type AIUsageUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput> | AIUsageCreateWithoutUserInput[] | AIUsageUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AIUsageCreateOrConnectWithoutUserInput | AIUsageCreateOrConnectWithoutUserInput[]
-    upsert?: AIUsageUpsertWithWhereUniqueWithoutUserInput | AIUsageUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AIUsageCreateManyUserInputEnvelope
-    set?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    disconnect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    delete?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    connect?: AIUsageWhereUniqueInput | AIUsageWhereUniqueInput[]
-    update?: AIUsageUpdateWithWhereUniqueWithoutUserInput | AIUsageUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AIUsageUpdateManyWithWhereWithoutUserInput | AIUsageUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AIUsageScalarWhereInput | AIUsageScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
@@ -77201,56 +72585,6 @@ export namespace Prisma {
     update?: XOR<XOR<SprintUpdateToOneWithWhereWithoutReviewsInput, SprintUpdateWithoutReviewsInput>, SprintUncheckedUpdateWithoutReviewsInput>
   }
 
-  export type UserCreateNestedOneWithoutAiChatsInput = {
-    create?: XOR<UserCreateWithoutAiChatsInput, UserUncheckedCreateWithoutAiChatsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiChatsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutAiChatsNestedInput = {
-    create?: XOR<UserCreateWithoutAiChatsInput, UserUncheckedCreateWithoutAiChatsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiChatsInput
-    upsert?: UserUpsertWithoutAiChatsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAiChatsInput, UserUpdateWithoutAiChatsInput>, UserUncheckedUpdateWithoutAiChatsInput>
-  }
-
-  export type UserCreateNestedOneWithoutAiSuggestionsInput = {
-    create?: XOR<UserCreateWithoutAiSuggestionsInput, UserUncheckedCreateWithoutAiSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiSuggestionsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type EnumAIDomainFieldUpdateOperationsInput = {
-    set?: $Enums.AIDomain
-  }
-
-  export type EnumSuggestionStatusFieldUpdateOperationsInput = {
-    set?: $Enums.SuggestionStatus
-  }
-
-  export type UserUpdateOneRequiredWithoutAiSuggestionsNestedInput = {
-    create?: XOR<UserCreateWithoutAiSuggestionsInput, UserUncheckedCreateWithoutAiSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiSuggestionsInput
-    upsert?: UserUpsertWithoutAiSuggestionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAiSuggestionsInput, UserUpdateWithoutAiSuggestionsInput>, UserUncheckedUpdateWithoutAiSuggestionsInput>
-  }
-
-  export type UserCreateNestedOneWithoutAiUsageInput = {
-    create?: XOR<UserCreateWithoutAiUsageInput, UserUncheckedCreateWithoutAiUsageInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiUsageInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutAiUsageNestedInput = {
-    create?: XOR<UserCreateWithoutAiUsageInput, UserUncheckedCreateWithoutAiUsageInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAiUsageInput
-    upsert?: UserUpsertWithoutAiUsageInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAiUsageInput, UserUpdateWithoutAiUsageInput>, UserUncheckedUpdateWithoutAiUsageInput>
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -77862,63 +73196,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTacticFrequencyFilter<$PrismaModel>
     _max?: NestedEnumTacticFrequencyFilter<$PrismaModel>
-  }
-  export type NestedJsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedEnumAIDomainFilter<$PrismaModel = never> = {
-    equals?: $Enums.AIDomain | EnumAIDomainFieldRefInput<$PrismaModel>
-    in?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    not?: NestedEnumAIDomainFilter<$PrismaModel> | $Enums.AIDomain
-  }
-
-  export type NestedEnumSuggestionStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.SuggestionStatus | EnumSuggestionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSuggestionStatusFilter<$PrismaModel> | $Enums.SuggestionStatus
-  }
-
-  export type NestedEnumAIDomainWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.AIDomain | EnumAIDomainFieldRefInput<$PrismaModel>
-    in?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AIDomain[] | ListEnumAIDomainFieldRefInput<$PrismaModel>
-    not?: NestedEnumAIDomainWithAggregatesFilter<$PrismaModel> | $Enums.AIDomain
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumAIDomainFilter<$PrismaModel>
-    _max?: NestedEnumAIDomainFilter<$PrismaModel>
-  }
-
-  export type NestedEnumSuggestionStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SuggestionStatus | EnumSuggestionStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SuggestionStatus[] | ListEnumSuggestionStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSuggestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SuggestionStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSuggestionStatusFilter<$PrismaModel>
-    _max?: NestedEnumSuggestionStatusFilter<$PrismaModel>
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -78689,94 +73966,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AIChatCreateWithoutUserInput = {
-    id?: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIChatUncheckedCreateWithoutUserInput = {
-    id?: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIChatCreateOrConnectWithoutUserInput = {
-    where: AIChatWhereUniqueInput
-    create: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput>
-  }
-
-  export type AIChatCreateManyUserInputEnvelope = {
-    data: AIChatCreateManyUserInput | AIChatCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AISuggestionCreateWithoutUserInput = {
-    id?: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AISuggestionUncheckedCreateWithoutUserInput = {
-    id?: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AISuggestionCreateOrConnectWithoutUserInput = {
-    where: AISuggestionWhereUniqueInput
-    create: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput>
-  }
-
-  export type AISuggestionCreateManyUserInputEnvelope = {
-    data: AISuggestionCreateManyUserInput | AISuggestionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AIUsageCreateWithoutUserInput = {
-    id?: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIUsageUncheckedCreateWithoutUserInput = {
-    id?: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIUsageCreateOrConnectWithoutUserInput = {
-    where: AIUsageWhereUniqueInput
-    create: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput>
-  }
-
-  export type AIUsageCreateManyUserInputEnvelope = {
-    data: AIUsageCreateManyUserInput | AIUsageCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -79436,95 +74625,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
   }
 
-  export type AIChatUpsertWithWhereUniqueWithoutUserInput = {
-    where: AIChatWhereUniqueInput
-    update: XOR<AIChatUpdateWithoutUserInput, AIChatUncheckedUpdateWithoutUserInput>
-    create: XOR<AIChatCreateWithoutUserInput, AIChatUncheckedCreateWithoutUserInput>
-  }
-
-  export type AIChatUpdateWithWhereUniqueWithoutUserInput = {
-    where: AIChatWhereUniqueInput
-    data: XOR<AIChatUpdateWithoutUserInput, AIChatUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AIChatUpdateManyWithWhereWithoutUserInput = {
-    where: AIChatScalarWhereInput
-    data: XOR<AIChatUpdateManyMutationInput, AIChatUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AIChatScalarWhereInput = {
-    AND?: AIChatScalarWhereInput | AIChatScalarWhereInput[]
-    OR?: AIChatScalarWhereInput[]
-    NOT?: AIChatScalarWhereInput | AIChatScalarWhereInput[]
-    id?: StringFilter<"AIChat"> | string
-    userId?: StringFilter<"AIChat"> | string
-    messages?: JsonFilter<"AIChat">
-    createdAt?: DateTimeFilter<"AIChat"> | Date | string
-    updatedAt?: DateTimeFilter<"AIChat"> | Date | string
-  }
-
-  export type AISuggestionUpsertWithWhereUniqueWithoutUserInput = {
-    where: AISuggestionWhereUniqueInput
-    update: XOR<AISuggestionUpdateWithoutUserInput, AISuggestionUncheckedUpdateWithoutUserInput>
-    create: XOR<AISuggestionCreateWithoutUserInput, AISuggestionUncheckedCreateWithoutUserInput>
-  }
-
-  export type AISuggestionUpdateWithWhereUniqueWithoutUserInput = {
-    where: AISuggestionWhereUniqueInput
-    data: XOR<AISuggestionUpdateWithoutUserInput, AISuggestionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AISuggestionUpdateManyWithWhereWithoutUserInput = {
-    where: AISuggestionScalarWhereInput
-    data: XOR<AISuggestionUpdateManyMutationInput, AISuggestionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AISuggestionScalarWhereInput = {
-    AND?: AISuggestionScalarWhereInput | AISuggestionScalarWhereInput[]
-    OR?: AISuggestionScalarWhereInput[]
-    NOT?: AISuggestionScalarWhereInput | AISuggestionScalarWhereInput[]
-    id?: StringFilter<"AISuggestion"> | string
-    userId?: StringFilter<"AISuggestion"> | string
-    domain?: EnumAIDomainFilter<"AISuggestion"> | $Enums.AIDomain
-    action?: StringFilter<"AISuggestion"> | string
-    payload?: JsonFilter<"AISuggestion">
-    status?: EnumSuggestionStatusFilter<"AISuggestion"> | $Enums.SuggestionStatus
-    reason?: StringNullableFilter<"AISuggestion"> | string | null
-    createdAt?: DateTimeFilter<"AISuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"AISuggestion"> | Date | string
-  }
-
-  export type AIUsageUpsertWithWhereUniqueWithoutUserInput = {
-    where: AIUsageWhereUniqueInput
-    update: XOR<AIUsageUpdateWithoutUserInput, AIUsageUncheckedUpdateWithoutUserInput>
-    create: XOR<AIUsageCreateWithoutUserInput, AIUsageUncheckedCreateWithoutUserInput>
-  }
-
-  export type AIUsageUpdateWithWhereUniqueWithoutUserInput = {
-    where: AIUsageWhereUniqueInput
-    data: XOR<AIUsageUpdateWithoutUserInput, AIUsageUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AIUsageUpdateManyWithWhereWithoutUserInput = {
-    where: AIUsageScalarWhereInput
-    data: XOR<AIUsageUpdateManyMutationInput, AIUsageUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AIUsageScalarWhereInput = {
-    AND?: AIUsageScalarWhereInput | AIUsageScalarWhereInput[]
-    OR?: AIUsageScalarWhereInput[]
-    NOT?: AIUsageScalarWhereInput | AIUsageScalarWhereInput[]
-    id?: StringFilter<"AIUsage"> | string
-    userId?: StringFilter<"AIUsage"> | string
-    date?: DateTimeFilter<"AIUsage"> | Date | string
-    inputTokens?: IntFilter<"AIUsage"> | number
-    outputTokens?: IntFilter<"AIUsage"> | number
-    totalTokens?: IntFilter<"AIUsage"> | number
-    requestCount?: IntFilter<"AIUsage"> | number
-    createdAt?: DateTimeFilter<"AIUsage"> | Date | string
-    updatedAt?: DateTimeFilter<"AIUsage"> | Date | string
-  }
-
   export type UserCreateWithoutPushSubscriptionsInput = {
     id?: string
     name?: string | null
@@ -79555,9 +74655,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -79590,9 +74687,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -79641,9 +74735,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -79676,9 +74767,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -79711,9 +74799,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -79746,9 +74831,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -79797,9 +74879,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -79832,9 +74911,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -79867,9 +74943,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -79902,9 +74975,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -79953,9 +75023,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -79988,9 +75055,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNutritionPersonsInput = {
@@ -80023,9 +75087,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNutritionPersonsInput = {
@@ -80058,9 +75119,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNutritionPersonsInput = {
@@ -80149,9 +75207,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNutritionPersonsInput = {
@@ -80184,9 +75239,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MealSlotInstanceUpsertWithWhereUniqueWithoutPersonInput = {
@@ -80252,9 +75304,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFoodProductsInput = {
@@ -80287,9 +75336,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFoodProductsInput = {
@@ -80450,9 +75496,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFoodProductsInput = {
@@ -80485,9 +75528,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutProductInput = {
@@ -80676,9 +75716,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDishesInput = {
@@ -80711,9 +75748,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDishesInput = {
@@ -80814,9 +75848,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDishesInput = {
@@ -80849,9 +75880,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutDishInput = {
@@ -81212,9 +76240,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekPlansInput = {
@@ -81247,9 +76272,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekPlansInput = {
@@ -81377,9 +76399,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekPlansInput = {
@@ -81412,9 +76431,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DayPlanUpsertWithWhereUniqueWithoutWeekPlanInput = {
@@ -81504,9 +76520,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDayPlansInput = {
@@ -81539,9 +76552,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDayPlansInput = {
@@ -81678,9 +76688,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDayPlansInput = {
@@ -81713,9 +76720,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutDayPlansInput = {
@@ -81884,9 +76888,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutShoppingListsInput = {
@@ -81919,9 +76920,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutShoppingListsInput = {
@@ -82023,9 +77021,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutShoppingListsInput = {
@@ -82058,9 +77053,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutShoppingListsInput = {
@@ -83226,9 +78218,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -83261,9 +78250,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -83456,9 +78442,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -83491,9 +78474,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -83769,9 +78749,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -83804,9 +78781,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -84008,9 +78982,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -84043,9 +79014,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -84078,9 +79046,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -84113,9 +79078,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -84164,9 +79126,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -84199,9 +79158,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -84267,9 +79223,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -84302,9 +79255,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -84414,9 +79364,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -84449,9 +79396,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -84586,9 +79530,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLibraryItemsInput = {
@@ -84621,9 +79562,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLibraryItemsInput = {
@@ -84672,9 +79610,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLibraryItemsInput = {
@@ -84707,9 +79642,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWishlistItemsInput = {
@@ -84742,9 +79674,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWishlistItemsInput = {
@@ -84777,9 +79706,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWishlistItemsInput = {
@@ -84828,9 +79754,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWishlistItemsInput = {
@@ -84863,9 +79786,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserLanguageCreateWithoutLanguageInput = {
@@ -85057,9 +79977,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserLanguagesInput = {
@@ -85092,9 +80009,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserLanguagesInput = {
@@ -85297,9 +80211,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserLanguagesInput = {
@@ -85332,9 +80243,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VocabularyItemUpsertWithWhereUniqueWithoutUserLanguageInput = {
@@ -85673,9 +80581,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -85708,9 +80613,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -85759,9 +80661,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -85794,9 +80693,6 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -85829,9 +80725,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -85864,9 +80757,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -85915,9 +80805,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -85950,9 +80837,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -86018,9 +80902,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -86053,9 +80934,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -86143,9 +81021,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -86178,9 +81053,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -86247,9 +81119,6 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -86282,9 +81151,6 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -86383,9 +81249,6 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -86418,9 +81281,6 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -87222,474 +82082,6 @@ export namespace Prisma {
     objectives?: ObjectiveUncheckedUpdateManyWithoutSprintNestedInput
   }
 
-  export type UserCreateWithoutAiChatsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dishes?: DishCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
-    milestones?: MilestoneCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
-    sprints?: SprintCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
-    visions?: VisionCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAiChatsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
-    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAiChatsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAiChatsInput, UserUncheckedCreateWithoutAiChatsInput>
-  }
-
-  export type UserUpsertWithoutAiChatsInput = {
-    update: XOR<UserUpdateWithoutAiChatsInput, UserUncheckedUpdateWithoutAiChatsInput>
-    create: XOR<UserCreateWithoutAiChatsInput, UserUncheckedCreateWithoutAiChatsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAiChatsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAiChatsInput, UserUncheckedUpdateWithoutAiChatsInput>
-  }
-
-  export type UserUpdateWithoutAiChatsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dishes?: DishUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
-    sprints?: SprintUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
-    visions?: VisionUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAiChatsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutAiSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dishes?: DishCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
-    milestones?: MilestoneCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
-    sprints?: SprintCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
-    visions?: VisionCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAiSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
-    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiUsage?: AIUsageUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAiSuggestionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAiSuggestionsInput, UserUncheckedCreateWithoutAiSuggestionsInput>
-  }
-
-  export type UserUpsertWithoutAiSuggestionsInput = {
-    update: XOR<UserUpdateWithoutAiSuggestionsInput, UserUncheckedUpdateWithoutAiSuggestionsInput>
-    create: XOR<UserCreateWithoutAiSuggestionsInput, UserUncheckedCreateWithoutAiSuggestionsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAiSuggestionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAiSuggestionsInput, UserUncheckedUpdateWithoutAiSuggestionsInput>
-  }
-
-  export type UserUpdateWithoutAiSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dishes?: DishUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
-    sprints?: SprintUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
-    visions?: VisionUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAiSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiUsage?: AIUsageUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutAiUsageInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
-    dishes?: DishCreateNestedManyWithoutUserInput
-    habits?: HabitCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
-    milestones?: MilestoneCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
-    sprints?: SprintCreateNestedManyWithoutUserInput
-    tasks?: TaskCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
-    visions?: VisionCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    aiChats?: AIChatCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutAiUsageInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    passwordHash?: string | null
-    privateTaskPasswordHash?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    systemStatus?: $Enums.SystemStatus
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
-    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
-    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
-    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
-    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
-    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
-    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
-    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
-    foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
-    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
-    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
-    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
-    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
-    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
-    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
-    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    aiChats?: AIChatUncheckedCreateNestedManyWithoutUserInput
-    aiSuggestions?: AISuggestionUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAiUsageInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAiUsageInput, UserUncheckedCreateWithoutAiUsageInput>
-  }
-
-  export type UserUpsertWithoutAiUsageInput = {
-    update: XOR<UserUpdateWithoutAiUsageInput, UserUncheckedUpdateWithoutAiUsageInput>
-    create: XOR<UserCreateWithoutAiUsageInput, UserUncheckedCreateWithoutAiUsageInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAiUsageInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAiUsageInput, UserUncheckedUpdateWithoutAiUsageInput>
-  }
-
-  export type UserUpdateWithoutAiUsageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
-    dishes?: DishUpdateManyWithoutUserNestedInput
-    habits?: HabitUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
-    sprints?: SprintUpdateManyWithoutUserNestedInput
-    tasks?: TaskUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
-    visions?: VisionUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAiUsageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
-    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
-    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
-    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
-    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
-    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
-    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
-    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
-    foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
-    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
-    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
-    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
-    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
-    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
-    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
-    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    aiChats?: AIChatUncheckedUpdateManyWithoutUserNestedInput
-    aiSuggestions?: AISuggestionUncheckedUpdateManyWithoutUserNestedInput
-  }
-
   export type AccountCreateManyUserInput = {
     id?: string
     type: string
@@ -87945,35 +82337,6 @@ export namespace Prisma {
     tags?: WishlistItemCreatetagsInput | string[]
     necessity?: number | null
     store?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIChatCreateManyUserInput = {
-    id?: string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AISuggestionCreateManyUserInput = {
-    id?: string
-    domain?: $Enums.AIDomain
-    action: string
-    payload: JsonNullValueInput | InputJsonValue
-    status?: $Enums.SuggestionStatus
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type AIUsageCreateManyUserInput = {
-    id?: string
-    date: Date | string
-    inputTokens?: number
-    outputTokens?: number
-    totalTokens?: number
-    requestCount?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -88801,93 +83164,6 @@ export namespace Prisma {
     tags?: WishlistItemUpdatetagsInput | string[]
     necessity?: NullableIntFieldUpdateOperationsInput | number | null
     store?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIChatUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIChatUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIChatUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    messages?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AISuggestionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: EnumAIDomainFieldUpdateOperationsInput | $Enums.AIDomain
-    action?: StringFieldUpdateOperationsInput | string
-    payload?: JsonNullValueInput | InputJsonValue
-    status?: EnumSuggestionStatusFieldUpdateOperationsInput | $Enums.SuggestionStatus
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AIUsageUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    inputTokens?: IntFieldUpdateOperationsInput | number
-    outputTokens?: IntFieldUpdateOperationsInput | number
-    totalTokens?: IntFieldUpdateOperationsInput | number
-    requestCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

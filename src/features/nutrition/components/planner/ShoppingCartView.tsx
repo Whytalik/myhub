@@ -10,42 +10,25 @@ import {
   Home, 
   Copy,
   ChevronDown,
-  Info
+  Store as StoreIcon
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import { updateCartItemStatus, updateCartItemQuantity, generateShoppingCart } from "../../actions/shopping"
-import { CartItemStatus } from "@/app/generated/prisma"
-
-interface CartItem {
-  id: string
-  productId: string
-  requiredRawGrams: number
-  availableGrams: number | null
-  packagesCount: number | null
-  totalCost: number | null
-  status: string
-  product: {
-    name: string
-    price: number | null
-    standardPackageAmount: number | null
-    pantryStock: number | null
-    category: string | null
-  }
-  dishes: { dishName: string; dishId: string }[]
-}
+import { CartItemStatus, Store } from "@/app/generated/prisma"
+import { STORE_META } from "../../constants/stores"
+import { CartItem } from "../../types"
 
 interface ShoppingCartViewProps {
   itemsByCategory: Record<string, CartItem[]>
   weekPlanId: string
   totalCost: number
-  personCosts: Record<string, { name: string; cost: number }>
   varietyWarnings: { dishName: string; count: number; days: number[] }[]
 }
 
-export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, personCosts, varietyWarnings }: ShoppingCartViewProps) {
+export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varietyWarnings }: ShoppingCartViewProps) {
   const [items, setItems] = useState<CartItem[]>(Object.values(itemsByCategory).flat())
   const [isPending, startTransition] = useTransition()
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -54,7 +37,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
   const [showRegenConfirm, setShowRegenConfirm] = useState(false)
 
   const missingItemsCount = useMemo(() => items.filter(item => {
-    const available = item.availableGrams ?? item.product.pantryStock ?? 0
+    const available = item.availableGrams ?? 0
     return item.status === CartItemStatus.TO_BUY && available < item.requiredRawGrams
   }).length, [items])
 
@@ -118,15 +101,25 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
     setExpandedItems(next)
   }
 
-  const groupedItems = items.reduce((acc, item) => {
-    const cat = item.product.category || "Other"
-    if (!acc[cat]) acc[cat] = []
-    acc[cat].push(item)
-    return acc
-  }, {} as Record<string, CartItem[]>)
+  const groupedItems = useMemo(() => {
+    return items.reduce((acc, item) => {
+      const stores = item.product.stores
+      if (!stores || stores.length === 0) {
+        const key = "No Store"
+        if (!acc[key]) acc[key] = []
+        acc[key].push(item)
+      } else {
+        // Group by the first store for simplicity and to avoid duplicates
+        const primaryStore = stores[0]
+        if (!acc[primaryStore]) acc[primaryStore] = []
+        acc[primaryStore].push(item)
+      }
+      return acc
+    }, {} as Record<string, CartItem[]>)
+  }, [items])
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto pb-20">
+    <div className="space-y-6 w-full pb-20">
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-3">
@@ -177,144 +170,148 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
         </div>
       )}
 
-      {/* Categories List */}
+      {/* Stores List */}
       <div className="space-y-8">
-        {Object.entries(groupedItems).map(([category, catItems]) => (
-          <div key={category} className="space-y-3">
-            <div className="flex items-center gap-3 px-1">
-              <h3 className="text-caption font-bold text-text-muted uppercase tracking-widest">{category}</h3>
-              <div className="h-px flex-1 bg-border-dim" />
-            </div>
-            
-            <div className="bg-surface border border-border rounded-2xl divide-y divide-border/50 overflow-hidden">
-              {catItems.map((item) => {
-                const isBought = item.status === CartItemStatus.BOUGHT
-                const isHave = item.status === CartItemStatus.HAVE
-                const isExpanded = expandedItems.has(item.id)
-                
-                const qtyStr = item.requiredRawGrams >= 1000 
-                  ? `${(item.requiredRawGrams / 1000).toFixed(2)}kg` 
-                  : `${Math.round(item.requiredRawGrams)}g`
+        {Object.entries(groupedItems).map(([storeKey, storeItems]) => {
+          const storeMeta = STORE_META[storeKey as Store]
+          const label = storeMeta?.label || storeKey
+          const color = storeMeta?.color || "inherit"
 
-                return (
-                  <div key={item.id} className={`transition-colors ${isBought ? "bg-raised/30" : ""}`}>
-                    <div className="flex items-center px-4 py-3 gap-3">
-                      {/* Status Checkbox */}
-                      <button 
-                        onClick={() => handleStatusChange(
-                          item.id, 
-                          isBought ? CartItemStatus.TO_BUY : CartItemStatus.BOUGHT
-                        )}
-                        className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 ${
-                          isBought 
-                            ? "bg-green-500 border-green-500 text-white" 
-                            : isHave 
-                              ? "bg-accent/10 border-accent text-accent" 
-                              : "border-border hover:border-text-muted"
-                        }`}
-                      >
-                        {isBought ? <Check size={14} strokeWidth={3} /> : isHave ? <Home size={12} /> : null}
-                      </button>
+          return (
+            <div key={storeKey} className="space-y-3">
+              <div className="flex items-center gap-3 px-1">
+                <div className="flex items-center gap-2">
+                  <StoreIcon size={14} style={{ color }} />
+                  <h3 className="text-caption font-bold uppercase tracking-widest" style={{ color }}>
+                    {label}
+                  </h3>
+                </div>
+                <div className="h-px flex-1 bg-border-dim" />
+                <span className="text-micro font-mono text-text-muted">{storeItems.length} items</span>
+              </div>
+              
+              <div className="bg-surface border border-border rounded-2xl divide-y divide-border/50 overflow-hidden">
+                {storeItems.map((item) => {
+                  const isBought = item.status === CartItemStatus.BOUGHT
+                  const isHave = item.status === CartItemStatus.HAVE
+                  const isExpanded = expandedItems.has(item.id)
+                  
+                  const qtyStr = item.requiredRawGrams >= 1000 
+                    ? `${(item.requiredRawGrams / 1000).toFixed(2)}kg` 
+                    : `${Math.round(item.requiredRawGrams)}g`
 
-                      {/* Product Info */}
-                      <div className="flex-1 min-w-0" onClick={() => toggleExpand(item.id)}>
-                        <div className={`text-body font-medium transition-all truncate ${isBought ? "text-text-muted line-through" : "text-text-primary"}`}>
-                          {item.product.name}
-                        </div>
-                        <div className="flex items-center gap-2 text-micro font-mono text-text-secondary">
-                          <span className={isBought ? "text-text-muted" : "text-accent font-bold"}>{qtyStr}</span>
-                          {item.totalCost && item.totalCost > 0 && (
-                            <span className="text-text-muted">· {Math.round(item.totalCost)}₴</span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => handleStatusChange(item.id, isHave ? CartItemStatus.TO_BUY : CartItemStatus.HAVE)}
-                          className={`h-8 w-8 p-0 rounded-lg ${isHave ? "text-accent bg-accent/10" : "text-text-muted"}`}
-                        >
-                          <Home size={14} />
-                        </Button>
+                  return (
+                    <div key={item.id} className={`transition-colors ${isBought ? "bg-raised/30" : ""}`}>
+                      <div className="flex items-center px-4 py-3 gap-3">
+                        {/* Status Checkbox */}
                         <button 
-                          onClick={() => toggleExpand(item.id)}
-                          className={`h-8 w-8 flex items-center justify-center text-text-muted transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                          onClick={() => handleStatusChange(
+                            item.id, 
+                            isBought ? CartItemStatus.TO_BUY : CartItemStatus.BOUGHT
+                          )}
+                          className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 ${
+                            isBought 
+                              ? "bg-green-500 border-green-500 text-white" 
+                              : isHave 
+                                ? "bg-accent/10 border-accent text-accent" 
+                                : "border-border hover:border-text-muted"
+                          }`}
                         >
-                          <ChevronDown size={16} />
+                          {isBought ? <Check size={14} strokeWidth={3} /> : isHave ? <Home size={12} /> : null}
                         </button>
-                      </div>
-                    </div>
 
-                    {/* Expandable Context */}
-                    {isExpanded && (
-                      <div className="px-4 pb-4 pt-1 border-t border-border/30 bg-raised/10">
-                        <div className="space-y-3">
-                          <div className="flex flex-wrap gap-1">
-                            {item.dishes.map((d, i) => (
-                              <div key={i} className="text-micro font-mono bg-surface border border-border/50 px-2 py-0.5 rounded-md text-text-secondary">
-                                {d.dishName}
-                              </div>
-                            ))}
+                        {/* Product Info */}
+                        <div className="flex-1 min-w-0" onClick={() => toggleExpand(item.id)}>
+                          <div className={`text-body font-medium transition-all truncate ${isBought ? "text-text-muted line-through" : "text-text-primary"}`}>
+                            {item.product.name}
                           </div>
-                          
-                          <div className="flex items-center justify-between text-micro font-mono pt-2 border-t border-border/20">
-                            <div className="text-text-muted">
-                              Pkg size: {item.product.standardPackageAmount || "—"}g
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {editingId === item.id ? (
-                                <div className="flex gap-1 items-center">
-                                  <Input 
-                                    type="number" 
-                                    value={editValue} 
-                                    onChange={e => setEditValue(e.target.value)} 
-                                    className="h-7 w-16 text-micro py-0 px-2 border-accent"
-                                    autoFocus
-                                  />
-                                  <Button size="sm" className="h-7 px-2" onClick={() => handleQuantityUpdate(item.id)}>Save</Button>
+                          <div className="flex items-center gap-2 text-micro font-mono text-text-secondary">
+                            <span className={isBought ? "text-text-muted" : "text-accent font-bold"}>{qtyStr}</span>
+                            {item.totalCost && item.totalCost > 0 && (
+                              <span className="text-text-muted">· {Math.round(item.totalCost)}₴</span>
+                            )}
+                            <span className="text-text-muted px-1.5 py-0.5 bg-raised/50 rounded border border-border/30">
+                              {item.product.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleStatusChange(item.id, isHave ? CartItemStatus.TO_BUY : CartItemStatus.HAVE)}
+                            className={`h-8 w-8 p-0 rounded-lg ${isHave ? "text-accent bg-accent/10" : "text-text-muted"}`}
+                          >
+                            <Home size={14} />
+                          </Button>
+                          <button 
+                            onClick={() => toggleExpand(item.id)}
+                            className={`h-8 w-8 flex items-center justify-center text-text-muted transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                          >
+                            <ChevronDown size={16} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Expandable Context */}
+                      {isExpanded && (
+                        <div className="px-4 pb-4 pt-1 border-t border-border/30 bg-raised/10">
+                          <div className="space-y-3">
+                            <div className="flex flex-wrap gap-1">
+                              {item.dishes.map((d, i) => (
+                                <div key={i} className="text-micro font-mono bg-surface border border-border/50 px-2 py-0.5 rounded-md text-text-secondary">
+                                  {d.dishName}
                                 </div>
-                              ) : (
-                                <button 
-                                  onClick={() => {
-                                    setEditingId(item.id)
-                                    setEditValue(String(item.packagesCount || 1))
-                                  }}
-                                  className="flex items-center gap-1 text-accent hover:underline"
-                                >
-                                  <Edit2 size={10} />
-                                  {item.packagesCount || Math.ceil(item.requiredRawGrams / (item.product.standardPackageAmount || 1))} pkgs
-                                </button>
-                              )}
+                              ))}
+                            </div>
+                            
+                            <div className="flex items-center justify-between text-micro font-mono pt-2 border-t border-border/20">
+                              <div className="text-text-muted">
+                                Pkg size: {item.product.standardPackageAmount || "—"}g
+                                {item.product.stores.length > 1 && (
+                                  <span className="ml-2">
+                                    Available in: {item.product.stores.map(s => STORE_META[s]?.label || s).join(", ")}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {editingId === item.id ? (
+                                  <div className="flex gap-1 items-center">
+                                    <Input 
+                                      type="number" 
+                                      value={editValue} 
+                                      onChange={e => setEditValue(e.target.value)} 
+                                      className="h-7 w-16 text-micro py-0 px-2 border-accent"
+                                      autoFocus
+                                    />
+                                    <Button size="sm" className="h-7 px-2" onClick={() => handleQuantityUpdate(item.id)}>Save</Button>
+                                  </div>
+                                ) : (
+                                  <button 
+                                    onClick={() => {
+                                      setEditingId(item.id)
+                                      setEditValue(String(item.packagesCount || 1))
+                                    }}
+                                    className="flex items-center gap-1 text-accent hover:underline"
+                                  >
+                                    <Edit2 size={10} />
+                                    {item.packagesCount || Math.ceil(item.requiredRawGrams / (item.product.standardPackageAmount || 1))} pkgs
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Person Breakdown */}
-      <div className="p-6 bg-surface border border-border rounded-3xl space-y-4">
-        <h4 className="text-note font-bold text-text-primary flex items-center gap-2">
-          <Info size={14} className="text-accent" />
-          Budget Distribution
-        </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {Object.entries(personCosts).map(([id, pc]) => (
-            <div key={id} className="flex items-center justify-between p-3 bg-raised/30 rounded-2xl border border-border/50">
-              <span className="text-note font-medium text-text-secondary">{pc.name}</span>
-              <span className="text-note font-mono font-bold text-text-primary">{pc.cost.toFixed(0)}₴</span>
-            </div>
-          ))}
-        </div>
+          )
+        })}
       </div>
 
       <Dialog

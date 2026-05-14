@@ -2,8 +2,9 @@
 
 import { prisma } from "@/lib/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
-import { CartItem, CartItemStatus, FoodProduct, IngredientInputState } from "@/app/generated/prisma"
+import { CartItem as PrismaCartItem, CartItemStatus, IngredientInputState, Store } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
+import { CartItem } from "../types"
 
 function toRawWeight(weight: number, inputState: IngredientInputState, coefficient: number): number {
   return inputState === IngredientInputState.COOKED ? weight / coefficient : weight
@@ -92,7 +93,7 @@ export async function generateShoppingCart(
     })
     const productMap = new Map(products.map((p) => [p.id, p]))
 
-    const upserts: Promise<CartItem>[] = []
+    const upserts: Promise<PrismaCartItem>[] = []
 
     for (const [productId, req] of productRequirements) {
       const product = productMap.get(productId)
@@ -147,7 +148,7 @@ export async function updateCartItemStatus(
   cartItemId: string,
   status: CartItemStatus,
   availableGrams?: number
-): Promise<ActionResult<CartItem>> {
+): Promise<ActionResult<PrismaCartItem>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -183,7 +184,7 @@ export async function updateCartItemQuantity(
   cartItemId: string,
   packagesCount: number,
   manualRawGrams?: number
-): Promise<ActionResult<CartItem>> {
+): Promise<ActionResult<PrismaCartItem>> {
   try {
     const userId = await getRequiredUserId()
 
@@ -223,7 +224,7 @@ export async function getShoppingCart(
   weekPlanId: string
 ): Promise<ActionResult<{
   cartId: string
-  itemsByCategory: Record<string, (CartItem & { product: FoodProduct })[]>
+  itemsByCategory: Record<string, CartItem[]>
   totalCost: number
   personCosts: Record<string, { name: string; cost: number }>
   varietyWarnings: { dishName: string; count: number; days: number[] }[]
@@ -246,7 +247,14 @@ export async function getShoppingCart(
                   include: {
                     person: true,
                     dishEntries: {
-                      include: { dish: true },
+                      include: { 
+                        dish: {
+                          include: {
+                            ingredients: true
+                          }
+                        },
+                        ingredients: true
+                      },
                     },
                   },
                 },
@@ -259,13 +267,62 @@ export async function getShoppingCart(
 
     if (!cart) return { success: false, error: "Cart not found" }
 
-    const itemsByCategory: Record<string, (CartItem & { product: FoodProduct })[]> = {}
+    // Build product-to-dishes map
+    const productToDishes = new Map<string, Set<string>>()
+    const dishMap = new Map<string, string>()
+
+    if (cart.weekPlan) {
+      for (const day of cart.weekPlan.dayPlans) {
+        for (const slot of day.mealSlots) {
+          for (const entry of slot.dishEntries) {
+            dishMap.set(entry.dishId, entry.dish.name)
+            const selectedAlts = (entry.selectedAlternatives as Record<string, string>) || {}
+            
+            for (const ing of entry.ingredients) {
+              const dishIng = entry.dish.ingredients[ing.ingredientIndex]
+              if (!dishIng) continue
+              const productId = selectedAlts[String(ing.ingredientIndex)] || dishIng.productId
+              
+              const dishesSet = productToDishes.get(productId) ?? new Set<string>()
+              dishesSet.add(entry.dishId)
+              productToDishes.set(productId, dishesSet)
+            }
+          }
+        }
+      }
+    }
+
+    const itemsByCategory: Record<string, CartItem[]> = {}
     let totalCost = 0
 
     for (const item of cart.items) {
       const cat = item.product.category || "Other"
       if (!itemsByCategory[cat]) itemsByCategory[cat] = []
-      itemsByCategory[cat].push(item as CartItem & { product: FoodProduct })
+      
+      const productDishes = Array.from(productToDishes.get(item.productId) || []).map(id => ({
+        dishId: id,
+        dishName: dishMap.get(id) || "Unknown Dish"
+      }))
+
+      const mappedItem: CartItem = {
+        id: item.id,
+        productId: item.productId,
+        requiredRawGrams: item.requiredRawGrams,
+        availableGrams: item.availableGrams,
+        packagesCount: item.packagesCount,
+        totalCost: item.totalCost,
+        status: item.status as string,
+        product: {
+          name: item.product.name,
+          price: item.product.price,
+          standardPackageAmount: item.product.standardPackageAmount,
+          category: item.product.category,
+          stores: item.product.stores as Store[],
+        },
+        dishes: productDishes
+      }
+
+      itemsByCategory[cat].push(mappedItem)
 
       if (item.status === CartItemStatus.TO_BUY) {
         totalCost += item.totalCost ?? 0

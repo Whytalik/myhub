@@ -13,7 +13,21 @@ import { createDish, updateDish } from "../actions/dishes";
 import type { CreateDishInput, DishIngredientInput, DishType } from "../types";
 import { DishWithIngredients } from "../logic/recalculator";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
-const dishesData: any[] = [];
+import dishesData from "../data/dishes.json";
+
+interface JsonIngredient {
+  productName: string;
+  rawWeight: number;
+  cookingMethod: string;
+}
+
+interface JsonDish {
+  name: string;
+  type: string;
+  servings: number;
+  description: string;
+  ingredients: JsonIngredient[];
+}
 
 interface DishBuilderProps {
   products: FoodProduct[];
@@ -160,7 +174,7 @@ export function DishBuilder({
   );
   const dishJsonMap = useMemo(() => {
     return new Map(
-      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+      (dishesData as unknown as JsonDish[]).map(d => [d.name, d])
     )
   }, [])
 

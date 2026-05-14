@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCachedDailyEntry, getCachedAllEntries } from "@/lib/cache";
 import type { UpsertDailyEntryInput } from "../types";
+import { Prisma } from "@/app/generated/prisma";
 
 function todayDate(): Date {
   const now = new Date();
@@ -17,15 +18,21 @@ export async function getEntryByDate(userId: string, date: Date) {
 
 export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {
   const date = new Date(input.date);
-  const { date: _date, ...data } = input;
+  const { date: _date, emotions, morningRoutine, eveningRoutine, ...data } = input;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const payload: any = { ...data, userId };
+  // We explicitly map the fields to satisfy Prisma's types without 'any' or 'unknown'
+  const basePayload = {
+    ...data,
+    userId,
+    emotions: emotions ?? Prisma.DbNull,
+    morningRoutine: (morningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
+    eveningRoutine: (eveningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
+  };
 
   return prisma.dailyEntry.upsert({
     where: { userId_date: { userId, date } },
-    create: { date, ...payload },
-    update: payload,
+    create: { ...basePayload, date } as Prisma.DailyEntryUncheckedCreateInput,
+    update: basePayload as Prisma.DailyEntryUncheckedUpdateInput,
   });
 }
 

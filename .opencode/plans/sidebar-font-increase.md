@@ -68,4 +68,4 @@ In the `@theme` block, after existing `--text-*` variables, add:
 
 - `sidebar-provider.tsx` and `space-provider.tsx` have no UI/font styling, only logic — no changes needed.
 - All values are +1px from original sizes.
-- Using CSS custom properties via `@theme` so Tailwind can resolve them with `text-[var(...)]` syntax.
+- Using CSS custom properties via `@theme` so Tailwind can resolve them with `text-[var(- - text-settings-heading)]` syntax (spaces added to avoid parsing).

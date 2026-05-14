@@ -61,10 +61,8 @@ export default async function ShoppingPage() {
       <div className="mt-6">
         <ShoppingCartView
           weekPlanId={weekPlanId}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          itemsByCategory={itemsByCategory as any}
+          itemsByCategory={itemsByCategory}
           totalCost={cartData.totalCost}
-          personCosts={cartData.personCosts}
           varietyWarnings={cartData.varietyWarnings}
         />
       </div>

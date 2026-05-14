@@ -1,3 +1,48 @@
+## [2026-05-14] — AI Module Decommissioned
+
+### Removed
+- **AI Feature Module**: Completely removed `src/features/ai` and `src/lib/ai`.
+- **Database Models**: Removed `AIChat`, `AISuggestion`, and `AIUsage` from `schema.prisma`.
+- **Dependencies**: Uninstalled `ai`, `@ai-sdk/google`, and `@ai-sdk/openai`.
+- **UI Components**: Removed `AIChatWidget` and all related AI UI elements from `DashboardUIWrapper`.
+
+### Why
+- Simplified system architecture to focus on core domain stability (Calm OS).
+- Eliminated maintenance overhead and type stability issues related to evolving AI SDKs.
+- Reduced bundle size and improved build performance.
+
+### Verification Checklist:
+- [x] Logic implemented (Directories deleted)
+- [x] UI updated (Widget removed)
+- [x] Database synchronized (`prisma db push`)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+
+## [2026-05-14] — AI Tools Type Refinement
+
+### Fixed
+- **`ai-tools.ts` Type Errors**: Fixed multiple TypeScript errors related to the `tool()` function from the `ai` package.
+  - Removed the broken `AiTool` type alias based on `ReturnType<typeof tool>` which caused generic inference to collapse to `never`.
+  - Added explicit types for `execute` parameters to resolve `implicit any` errors.
+  - Used `as any` for status mapping in `findMany` to bypass temporary Prisma/Zod enum mismatch.
+
+### Verification Checklist:
+- [x] Logic implemented
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm build`
+
+## [2026-05-14] — Settings Optimization
+
+### Changed
+- **`SettingsModal` Cleanup**: Removed "Domains" and "Spaces" tabs from settings to simplify the configuration interface.
+- **Code Optimization**: Eliminated unused DnD-kit dependencies, Lucide icons, and helper components (SortableItem, IconPicker, ColorPicker) within the settings module.
+
+### Verification Checklist:
+- [x] Logic implemented
+- [x] UI updated (Settings menu simplified)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+
 ## [2026-05-14] — Calm OS: Landing Skeleton Synchronization
 
 ### Added
@@ -70,7 +115,7 @@
 ## [2026-05-13] - Tailwind v4 Token Refactoring
 
 ### Changed
-- Replaced `rounded-[var(--radius-*)]` with native Tailwind v4 utilities (`rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-t-xl`) across 7 component files (38 occurrences).
+- Replaced `rounded-[var(--radius-x)]` with native Tailwind v4 utilities (`rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-t-xl`) across 7 component files (38 occurrences).
 - Tailwind v4 `@theme` automatically generates utilities for all defined tokens — no need for arbitrary value syntax.
 
 ### Verification Checklist:

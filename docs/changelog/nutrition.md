@@ -1,3 +1,26 @@
+## [2026-05-14] — UI Consistency: Products Skeleton
+
+Updated the products loading skeleton to match the card-based grid layout of the Dishes page.
+
+- **`ProductsLoading`**: Refactored from a list/table structure to a card-based grid layout, synchronizing it with the actual `ProductLibrary` component and ensuring visual consistency with the Dishes page.
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated (Skeleton synchronized with UI)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+## [2026-05-14] Shopping List Layout & Grouping
+
+Improved the shopping list usability by expanding it to full width and adding grouping by stores.
+
+- **Full-Width Layout**: Removed max-width constraints from `ShoppingCartView` to utilize the entire screen width, improving readability for long product names.
+- **Store Grouping**: Replaced category-based grouping with store-based grouping. Items are now organized by their primary store (ATB, Silpo, etc.) using `STORE_META` for visual differentiation (labels and colors).
+- **Multi-Store Visibility**: Added a notice in the expanded item view showing all available stores for a product if it's sold in multiple locations.
+- **Unified Budget**: Removed the per-person budget distribution to show one clear total cost for the entire list.
+- **Verification**:
+    - [x] Logic implemented (Store-based grouping & unified cost)
+    - [x] UI updated (Full-width layout, store-themed headers, removed breakdown)
+    - [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] Nutrition Space Skeleton Adaptation
 
 Adapted loading skeletons for all pages in the Nutrition Space (excluding landing) to accurately mirror their actual content structure and ensure visual consistency during data fetching.

@@ -38,9 +38,6 @@ model User {
   visions                 Vision[]
   weekPlans               WeekPlan[]
   wishlistItems           WishlistItem[]
-  aiChats                 AIChat[]
-  aiSuggestions           AISuggestion[]
-  aiUsage                 AIUsage[]
 }
 
 model PushSubscription {
@@ -673,49 +670,6 @@ model SprintReview {
   sprint      Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 }
 
-model AIChat {
-  id        String   @id @default(cuid())
-  userId    String
-  messages  Json     @default("[]")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-model AISuggestion {
-  id        String           @id @default(cuid())
-  userId    String
-  domain    AIDomain         @default(HEALTH)
-  action    String
-  payload   Json
-  status    SuggestionStatus @default(PENDING)
-  reason    String?
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([userId, status])
-}
-
-model AIUsage {
-  id           String   @id @default(cuid())
-  userId       String
-  date         DateTime @db.Date
-  inputTokens  Int      @default(0)
-  outputTokens Int      @default(0)
-  totalTokens  Int      @default(0)
-  requestCount Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, date])
-  @@index([userId])
-}
-
 enum SystemStatus {
   STABLE
   CRISIS_SURVIVAL
@@ -868,17 +822,6 @@ enum CartItemStatus {
   BOUGHT
   HAVE
   SKIPPED
-}
-
-enum SuggestionStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
-enum AIDomain {
-  OPERATIONS
-  HEALTH
 }
 
 enum DishType {

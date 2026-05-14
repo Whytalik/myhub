@@ -80,17 +80,17 @@ export const getCachedSpheres = unstable_cache(
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 
 const TASK_INCLUDE = {
-  sphere: { select: { id: true, name: true, color: true, icon: true } },
+  sphere: true,
   project: { select: { id: true, title: true } },
   parent: { select: { id: true, title: true, icon: true } },
   children: {
     include: {
-      sphere: { select: { id: true, name: true, color: true, icon: true } },
+      sphere: true,
       project: { select: { id: true, title: true } },
       parent: { select: { id: true, title: true, icon: true } },
       children: {
         include: {
-          sphere: { select: { id: true, name: true, color: true, icon: true } },
+          sphere: true,
           project: { select: { id: true, title: true } },
           parent: { select: { id: true, title: true, icon: true } },
         },

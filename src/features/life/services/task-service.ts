@@ -39,8 +39,9 @@ function mapSphere(
   return { ...sphere, taskCount: 0 };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapTask(task: any): TaskData {
+type TaskWithRelations = Prisma.TaskGetPayload<{ include: typeof TASK_INCLUDE }>;
+
+function mapTask(task: TaskWithRelations): TaskData {
   return {
     id: task.id,
     title: task.title,
@@ -65,7 +66,7 @@ function mapTask(task: any): TaskData {
     sphere: mapSphere(task.sphere),
     projectId: task.projectId,
     project: task.project,
-    children: (task.children ?? []).map(mapTask),
+    children: (task.children as unknown as TaskWithRelations[] ?? []).map(mapTask),
     completedAt: task.completedAt,
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,

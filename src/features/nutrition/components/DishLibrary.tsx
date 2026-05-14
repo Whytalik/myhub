@@ -14,7 +14,21 @@ import { deleteDish, exportDishes, deleteAllUserDishes } from "../actions/dishes
 import { DishImportModal } from "./DishImportModal";
 import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
-const dishesData: any[] = [];
+import dishesData from "../data/dishes.json";
+
+interface JsonIngredient {
+  productName: string;
+  rawWeight: number;
+  cookingMethod: string;
+}
+
+interface JsonDish {
+  name: string;
+  type: string;
+  servings: number;
+  description: string;
+  ingredients: JsonIngredient[];
+}
 
 const DISH_GROUPS: Record<string, DishType[]> = {
   ALL: DISH_TYPE_ORDER,
@@ -160,7 +174,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
 
   const dishJsonMap = useMemo(() => {
     return new Map(
-      (dishesData as { name: string; ingredients: { productName: string; rawWeight: number }[] }[]).map(d => [d.name, d])
+      (dishesData as unknown as JsonDish[]).map(d => [d.name, d])
     )
   }, [])
 

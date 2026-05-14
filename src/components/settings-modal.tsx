@@ -9,20 +9,10 @@ import { seedVisualPlanAction, seedCookingLists } from "@/features/system/action
 import { savePushSubscriptionAction, sendTestNotificationAction, getPushSubscriptionCountAction } from "@/features/system/actions/push-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ICON_LIBRARY, IconName } from "@/lib/constants/icons";
-import { SYSTEM_COLORS } from "@/lib/constants/colors";
-import { SPACE_THEMES } from "@/lib/spaces";
 import {
   User,
   Palette,
-  Layout,
-  GripVertical,
   Database,
-  Briefcase,
-  Shield,
-  Brain,
-  Package,
-  LucideIcon,
   Download,
   Upload,
   Sun,
@@ -30,92 +20,11 @@ import {
   Trash2,
   Check,
   Loader2,
-  ChevronDown,
   Lock,
   Bell,
   Smartphone,
   X
 } from "lucide-react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  useSortable
-} from '@dnd-kit/sortable';
-import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
-
-type Domain = {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-};
-
-type Space = {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  domainId: string;
-};
-
-const DEFAULT_DOMAINS: Domain[] = [
-  { id: "operations", label: "Operations", icon: Briefcase },
-  { id: "health",     label: "Health",     icon: Shield },
-  { id: "mind",       label: "Mind",       icon: Brain },
-  { id: "wealth",     label: "Wealth",     icon: Database },
-  { id: "vault",      label: "Vault",      icon: Package },
-];
-
-const DEFAULT_SPACES: Space[] = [
-  { id: "planning",  label: "Planning Space",  icon: ICON_LIBRARY.Planning, domainId: "operations" },
-  { id: "life",      label: "Life Space",      icon: ICON_LIBRARY.Life,     domainId: "operations" },
-  { id: "nutrition", label: "Nutrition Space", icon: ICON_LIBRARY.Food,     domainId: "health" },
-  { id: "fitness",   label: "Fitness Space",   icon: ICON_LIBRARY.Fitness,  domainId: "health" },
-  { id: "languages", label: "Language Space",  icon: ICON_LIBRARY.Languages, domainId: "mind" },
-  { id: "library",   label: "Library Space",   icon: ICON_LIBRARY.Library,   domainId: "mind" },
-  { id: "trading",   label: "Trading Space",   icon: ICON_LIBRARY.Trading,   domainId: "wealth" },
-  { id: "other",     label: "Misc / Other",    icon: ICON_LIBRARY.Vault,     domainId: "vault" },
-];
-
-function IconPicker({ currentIcon, onSelect, color }: { currentIcon: string, onSelect: (name: string) => void, color: string }) {
-  return (
-    <div className="grid grid-cols-8 gap-1 p-2 max-h-32 overflow-y-auto scrollbar-hide bg-bg/30 rounded-lg border border-border/20 mt-2">
-      {Object.entries(ICON_LIBRARY).map(([name, Icon]) => (
-        <button
-          key={name}
-          onClick={(e) => { e.stopPropagation(); onSelect(name); }}
-          className={`p-1.5 rounded-md transition-all hover:bg-surface-hover flex items-center justify-center ${currentIcon === name ? "bg-accent/20 ring-1 ring-accent/30" : ""}`}
-        >
-          <Icon size={12} style={{ color: currentIcon === name ? color : undefined }} />
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function ColorPicker({ currentColor, onSelect }: { currentColor: string, onSelect: (hex: string) => void }) {
-  return (
-    <div className="flex flex-wrap gap-1 p-2 bg-bg/30 rounded-lg border border-border/20 mt-2">
-      {SYSTEM_COLORS.map((c) => (
-        <button
-          key={c.hex}
-          onClick={(e) => { e.stopPropagation(); onSelect(c.hex); }}
-          className={`w-4 h-4 rounded-full transition-transform hover:scale-125 ${currentColor.toLowerCase() === c.hex.toLowerCase() ? "ring-1 ring-text ring-offset-1 ring-offset-bg" : ""}`}
-          style={{ backgroundColor: c.hex }}
-        />
-      ))}
-    </div>
-  );
-}
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -128,81 +37,6 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-function SortableItem({
-  id,
-  label,
-  icon: Icon,
-  color,
-  isSelected,
-  onSelect,
-  onUpdate,
-  currentIconName
-}: {
-  id: string,
-  label: string,
-  icon: LucideIcon,
-  color: string,
-  isSelected: boolean,
-  onSelect: () => void,
-  onUpdate: (key: 'icon' | 'color', val: string) => void,
-  currentIconName: string
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
-
-  const style = {
-    transform: transform ? `translate3d(0px, ${Math.round(transform.y)}px, 0px)` : undefined,
-    transition,
-    zIndex: isDragging ? 50 : 1,
-    position: 'relative' as const,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      onClick={onSelect}
-      className={`flex flex-col border rounded-lg transition-all cursor-pointer overflow-hidden ${
-        isDragging
-          ? "bg-accent text-bg border-accent shadow-elevated z-50 ring-4 ring-accent/20 scale-[1.02]"
-          : isSelected
-            ? "bg-surface-hover border-accent/30"
-            : "bg-surface/50 border-border/30 hover:border-accent/20"
-      }`}
-    >
-      <div className="flex items-center gap-3 p-2.5">
-        <div
-          {...attributes}
-          {...listeners}
-          className={`p-1 touch-none transition-colors ${isDragging ? "text-bg" : "text-muted hover:text-accent"}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <GripVertical size={14} />
-        </div>
-        <div className={`p-1.5 rounded-lg border transition-colors ${isDragging ? "bg-bg/20 border-bg/20" : "bg-bg border-border/60"}`}>
-          <Icon size={14} className={isDragging ? "text-bg" : "text-secondary"} style={{ color: isDragging ? undefined : color }} strokeWidth={2.5} />
-        </div>
-        <span className={`flex-1 text-note font-medium truncate ${isSelected ? "text-accent" : ""}`}>{label}</span>
-        <ChevronDown size={14} className={`text-muted transition-transform duration-300 ${isSelected ? "rotate-180 text-accent" : ""}`} />
-      </div>
-
-      {isSelected && !isDragging && (
-        <div className="px-3 pb-3 pt-1 border-t border-border/20 animate-in slide-in-from-top-2 duration-300">
-           <div className="space-y-3">
-              <div>
-                <span className="text-label font-mono uppercase tracking-wider text-muted">Icon Library</span>
-                <IconPicker currentIcon={currentIconName} onSelect={(icon) => onUpdate('icon', icon)} color={color} />
-              </div>
-              <div>
-                <span className="text-label font-mono uppercase tracking-wider text-muted">Accent Color</span>
-                <ColorPicker currentColor={color} onSelect={(c) => onUpdate('color', c)} />
-              </div>
-           </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function SettingsModal({
   isOpen,
   onClose,
@@ -213,7 +47,7 @@ export function SettingsModal({
   userName?: string;
 }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"general" | "appearance" | "domains" | "spaces" | "data" | "notifications">("general");
+  const [activeTab, setActiveTab] = useState<"general" | "appearance" | "notifications" | "data">("general");
   const { theme, setTheme } = useSpace();
   const [isPending, startTransition] = useTransition();
   const [displayName, setDisplayName] = useState(userName || "");
@@ -246,8 +80,6 @@ export function SettingsModal({
 
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const [isNotificationSupported, setIsNotificationSupported] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -326,79 +158,6 @@ export function SettingsModal({
     }
   };
 
-  const loadCustomizations = useCallback(() => {
-    if (typeof window === 'undefined') return {};
-    const saved = localStorage.getItem("system-customizations");
-    return saved ? JSON.parse(saved) : {};
-  }, []);
-  const [customizations, setCustomizations] = useState<Record<string, { icon?: string; color?: string }>>(loadCustomizations());
-
-  useEffect(() => {
-    const handler = () => {
-      startTransition(() => {
-        setCustomizations(loadCustomizations());
-      });
-    };    window.addEventListener("system-customizations-updated", handler);
-    return () => window.removeEventListener("system-customizations-updated", handler);
-  }, [loadCustomizations]);
-
-  const [domains, setDomains] = useState<Domain[]>(DEFAULT_DOMAINS);
-  const [spaces, setSpaces] = useState<Space[]>(DEFAULT_SPACES);
-  const [isSaved, setIsSaved] = useState(false);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
-
-  const handleDragEndDomains = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setDomains((items) => {
-        const oldIndex = items.findIndex((i) => i.id === active.id);
-        const newIndex = items.findIndex((i) => i.id === over.id);
-        const newOrder = arrayMove(items, oldIndex, newIndex);
-        saveDomainOrder(newOrder);
-        return newOrder;
-      });
-    }
-  };
-
-  const handleDragEndSpaces = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setSpaces((items) => {
-        const oldIndex = items.findIndex((i) => i.id === active.id);
-        const newIndex = items.findIndex((i) => i.id === over.id);
-        const newOrder = arrayMove(items, oldIndex, newIndex);
-        saveSpaceOrder(newOrder);
-        return newOrder;
-      });
-    }
-  };
-
-  const saveDomainOrder = (newDomains: Domain[]) => {
-    const orderIds = newDomains.map(d => d.id);
-    localStorage.setItem("sidebar-domains-order", JSON.stringify(orderIds));
-    window.dispatchEvent(new Event("sidebar-order-updated"));
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 1000);
-  };
-
-  const saveSpaceOrder = (newSpaces: Space[]) => {
-    localStorage.setItem("sidebar-spaces-order", JSON.stringify(newSpaces.map(s => s.id)));
-    window.dispatchEvent(new Event("sidebar-order-updated"));
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 1000);
-  };
-
-  const updateCustomization = (id: string, key: 'icon' | 'color', value: string) => {
-    const next = { ...customizations, [id]: { ...customizations[id], [key]: value } };
-    setCustomizations(next);
-    localStorage.setItem("system-customizations", JSON.stringify(next));
-    window.dispatchEvent(new Event("system-customizations-updated"));
-  };
-
   const handleExport = async () => {
     const result = await exportSystemAction();
     if (result.success && result.data) {
@@ -441,8 +200,6 @@ export function SettingsModal({
   const tabs = [
     { id: "general", label: "General", icon: User },
     { id: "appearance", label: "Appearance", icon: Palette },
-    {id: "domains", label: "Domains", icon: Briefcase },
-    { id: "spaces", label: "Spaces", icon: Layout },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "data", label: "Data", icon: Database },
   ] as const;
@@ -472,7 +229,7 @@ export function SettingsModal({
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
+                onClick={() => { setActiveTab(tab.id); }}
                 className={`flex flex-col items-center justify-center gap-1.5 px-6 py-3 text-caption font-medium whitespace-nowrap transition-all shrink-0 border-b-2 min-w-[80px] active:bg-accent/5 ${
                   activeTab === tab.id
                     ? "border-accent text-accent bg-accent/5"
@@ -492,7 +249,7 @@ export function SettingsModal({
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => { setActiveTab(tab.id); setSelectedId(null); }}
+                  onClick={() => { setActiveTab(tab.id); }}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-note font-medium transition-all ${
                     activeTab === tab.id ? "bg-accent text-bg" : "text-text-secondary hover:text-text-primary hover:bg-surface"
                   }`}
@@ -562,76 +319,6 @@ export function SettingsModal({
                        </button>
                     </div>
                   </section>
-                </div>
-              )}
-
-              {activeTab === "domains" && (
-                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
-                  <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-micro font-medium uppercase tracking-wider text-accent">Domains</h4>
-                    {isSaved && <span className="text-micro font-medium text-success uppercase animate-pulse tracking-wider">Saved</span>}
-                  </div>
-                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndDomains} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
-                    <SortableContext items={domains.map(d => d.id)} strategy={verticalListSortingStrategy}>
-                      <div className="flex flex-col gap-2 pb-2">
-                        {domains.map((domain) => {
-                          const custom = customizations[domain.id];
-                          const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[domain.id]?.accent || "#fbbf24";
-                          const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || domain.icon) : domain.icon;
-
-                          return (
-                            <SortableItem
-                              key={domain.id}
-                              id={domain.id}
-                              label={domain.label}
-                              icon={ActiveIcon}
-                              currentIconName={custom?.icon || ""}
-                              color={activeColor}
-                              isSelected={selectedId === domain.id}
-                              onSelect={() => setSelectedId(selectedId === domain.id ? null : domain.id)}
-                              onUpdate={(k, v) => updateCustomization(domain.id, k, v)}
-                            />
-                          );
-                        })}
-                      </div>
-                    </SortableContext>
-                  </DndContext>
-                  <p className="text-micro text-text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
-                </div>
-              )}
-
-              {activeTab === "spaces" && (
-                <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
-                  <div className="flex justify-between items-center mb-1">
-                    <h4 className="text-micro font-medium uppercase tracking-wider text-accent">Spaces</h4>
-                    {isSaved && <span className="text-micro font-medium text-success uppercase animate-pulse tracking-wider">Saved</span>}
-                  </div>
-                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndSpaces} modifiers={[restrictToVerticalAxis, restrictToParentElement]}>
-                    <SortableContext items={spaces.map(s => s.id)} strategy={verticalListSortingStrategy}>
-                      <div className="flex flex-col gap-2 pb-2">
-                        {spaces.map((space) => {
-                          const custom = customizations[space.id];
-                          const activeColor = custom?.color || (SPACE_THEMES as Record<string, { accent?: string }>)[space.id]?.accent || "#fbbf24";
-                          const ActiveIcon = custom?.icon ? (ICON_LIBRARY[custom.icon as IconName] || space.icon) : space.icon;
-
-                          return (
-                            <SortableItem
-                              key={space.id}
-                              id={space.id}
-                              label={space.label}
-                              icon={ActiveIcon}
-                              currentIconName={custom?.icon || ""}
-                              color={activeColor}
-                              isSelected={selectedId === space.id}
-                              onSelect={() => setSelectedId(selectedId === space.id ? null : space.id)}
-                              onUpdate={(k, v) => updateCustomization(space.id, k, v)}
-                            />
-                          );
-                        })}
-                      </div>
-                    </SortableContext>
-                  </DndContext>
-                  <p className="text-micro text-text-muted pt-2 text-center italic opacity-60">Click to customize, drag to reorder.</p>
                 </div>
               )}
 
