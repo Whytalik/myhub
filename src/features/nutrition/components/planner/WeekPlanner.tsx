@@ -418,11 +418,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                         return (
                           <div key={m.label} className="flex items-center gap-1">
                             <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
-                            <div className="w-32 h-px bg-raised rounded-full overflow-hidden shrink-0">
+                            <div className="flex-1 h-1 bg-raised rounded-full overflow-hidden shrink-0">
                               <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
                             </div>
                             <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
-                              {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target}{m.unit}</span>
+                              {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target.toFixed(0)}{m.unit}</span>
                             </span>
                           </div>
                         )

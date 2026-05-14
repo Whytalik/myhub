@@ -24,7 +24,7 @@ function MiniBar({ label, actual, target, unit, color }: { label: string; actual
   return (
     <div className="flex items-center gap-1">
       <span className="text-micro font-mono text-text-muted w-3 shrink-0">{label}</span>
-      <div className="w-32 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">
+      <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
       </div>
       <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
@@ -38,14 +38,6 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
   const persons = summary.persons
 
   if (persons.length === 0) return null
-
-  const macros = [
-    { label: "К", actual: persons[0]?.avgKcalPerDay ?? 0, target: persons[0]?.targetKcal ?? 0, unit: "", color: "bg-accent" },
-    { label: "Б", actual: persons[0]?.avgProtein ?? 0, target: persons[0]?.targetProtein ?? 0, unit: "g", color: "bg-blue-500" },
-    { label: "Ж", actual: persons[0]?.avgFat ?? 0, target: persons[0]?.targetFat ?? 0, unit: "g", color: "bg-amber-500" },
-    { label: "В", actual: persons[0]?.avgCarbs ?? 0, target: persons[0]?.targetCarbs ?? 0, unit: "g", color: "bg-purple-500" },
-    { label: "Кл", actual: persons[0]?.avgFiber ?? 0, target: persons[0]?.targetFiber ?? 0, unit: "g", color: "bg-green-500" },
-  ]
 
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden">

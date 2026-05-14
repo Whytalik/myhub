@@ -1,3 +1,16 @@
+## [2026-05-14] Progress Bar Width Expansion — Reduced Unused Space
+
+Increased the width of macro progress bars in the Nutrition domain to utilize available screen space more effectively.
+
+- **WeekSummary**: Replaced fixed `w-32` width with `flex-1` in `MiniBar`, allowing progress bars to expand between labels and values. Removed unused `macros` variable.
+- **WeekPlanner**: Replaced fixed `w-32` width with `flex-1` and increased bar height from `h-px` (1px) to `h-1` (4px) for better visibility in the Day Nutrition summary.
+- **Verification**:
+    - [x] Logic implemented (Flexbox layout)
+    - [x] UI updated (Wider and more visible progress bars)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-14] WeekPlanner UI Refactor — Inline Product Editing & Unified Add Buttons
 
 Refined the WeekPlanner interface for faster data entry and cleaner layout.
