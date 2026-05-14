@@ -17,7 +17,7 @@ interface SpaceLandingProps {
 
 export function SpaceLanding({ header, children, intelligence, className }: SpaceLandingProps) {
   return (
-    <div className={`pb-16 w-full ${className || ""}`}>
+    <div className={`pb-16 max-w-7xl mx-auto ${className || ""}`}>
       <SpaceHeader
         label={header.label}
         title={header.title}

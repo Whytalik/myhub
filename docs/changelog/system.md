@@ -1,7 +1,7 @@
-## [2026-05-14] — Calm OS: Full-Width Landing Pages
+## [2026-05-14] — Calm OS: Landing Page Width Reverted
 
 ### Changed
-- **`SpaceLanding`**: Removed `max-w-7xl mx-auto` constraint, now uses `w-full` to match width of all other dashboard pages. Applies to all space and domain landing pages.
+- **`SpaceLanding`**: Reverted width change, restored `max-w-7xl mx-auto` constraint to keep landing pages narrow while other pages remain wide (consistent with prior design).
 - **`seed-visual-plan.ts`**: Fixed `@typescript-eslint/no-explicit-any` warnings by importing and using `Store` enum type instead of `as any` casts.
 
 ### Verification Checklist:
