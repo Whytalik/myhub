@@ -406,27 +406,32 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 }
 
                 const macros = [
-                  { label: "kcal", actual: dayActual.kcal, target: targets.kcal, color: "bg-accent" },
-                  { label: "Б", actual: dayActual.protein, target: targets.protein, color: "bg-accent" },
-                  { label: "Ж", actual: dayActual.fat, target: targets.fat, color: "bg-secondary" },
-                  { label: "В", actual: dayActual.carbs, target: targets.carbs, color: "bg-text/40" },
-                  { label: "К", actual: dayActual.fiber, target: targets.fiber, color: "bg-muted" },
+                  { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "", color: "bg-accent" },
+                  { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g", color: "bg-blue-500" },
+                  { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g", color: "bg-amber-500" },
+                  { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g", color: "bg-purple-500" },
+                  { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g", color: "bg-green-500" },
                 ]
 
                 return (
-                  <div key={person.id} className="flex-1 space-y-2">
-                    <div className="text-note font-semibold text-text-primary">{person.name ?? "Unknown"}</div>
-                    <div className="space-y-1.5">
+                  <div key={person.id} className="flex-1 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
+                        <span className="text-accent text-micro font-bold">{(person.name || "U").charAt(0).toUpperCase()}</span>
+                      </div>
+                      <span className="text-caption font-semibold text-text-primary">{person.name ?? "Unknown"}</span>
+                    </div>
+                    <div className="space-y-1">
                       {macros.map((m) => {
                         const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
                         return (
-                          <div key={m.label} className="flex items-center gap-2">
-                            <span className="text-caption font-mono text-text-muted w-4">{m.label}</span>
-                            <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden">
+                          <div key={m.label} className="flex items-center gap-1.5">
+                            <span className="text-micro font-mono text-text-muted w-4 shrink-0">{m.label}</span>
+                            <div className="flex-1 h-1 bg-raised rounded-full overflow-hidden">
                               <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
                             </div>
-                            <span className="text-caption font-mono text-text-muted w-16 text-right">
-                              {m.actual.toFixed(0)}/{m.target}
+                            <span className="text-micro font-mono text-text-secondary w-16 text-right shrink-0">
+                              {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target}{m.unit}</span>
                             </span>
                           </div>
                         )

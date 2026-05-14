@@ -22,12 +22,12 @@ function MiniBar({ label, actual, target, unit, color }: { label: string; actual
   const pct = target > 0 ? Math.min((actual / target) * 100, 100) : 0
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-caption font-mono text-text-muted w-3 shrink-0">{label}</span>
-      <div className="flex-1 h-1 bg-bg rounded-full overflow-hidden">
+    <div className="flex items-center gap-1.5">
+      <span className="text-micro font-mono text-text-muted w-3 shrink-0">{label}</span>
+      <div className="flex-1 h-0.5 bg-raised rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-caption font-mono text-text-secondary w-20 text-right shrink-0">
+      <span className="text-micro font-mono text-text-secondary w-16 text-right shrink-0">
         {actual.toFixed(0)}{unit}<span className="text-text-muted">/{target.toFixed(0)}{unit}</span>
       </span>
     </div>
@@ -70,7 +70,7 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
                   </div>
                   <span className="text-note font-semibold text-text-primary">{p.personName || "Unknown"}</span>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   {personMacros.map((m) => (
                     <MiniBar key={m.label} label={m.label} actual={m.actual} target={m.target} unit={m.unit} color={m.color} />
                   ))}
