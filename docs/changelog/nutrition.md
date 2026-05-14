@@ -1,11 +1,12 @@
-## [2026-05-14] — Fix: Shopping Cart Cost Calculation
+## [2026-05-14] — Fix: Shopping Cart Cost Calculation (Net Cost)
 
-Fixed an issue where the shopping cart total cost was inflated because it didn't account for existing stock.
+Changed the shopping cart budget calculation from "Gross Cost" (rounding to full packages) to "Net Cost" (exact weight-based cost).
 
-- **Stock-Aware Calculation**: Updated `generateShoppingCart` server action to subtract `availableGrams` from the total required weight before calculating the number of packages to buy and the total cost.
+- **Net Cost Logic**: Updated `generateShoppingCart` server action to calculate `totalCost` based on exact required weight: `(neededWeight * price) / packageSize`.
+- **UI Consistency**: `packagesCount` remains rounded up to full units to reflect physical shopping requirements, while the total cost reflects actual consumption.
 - **Verification**:
     - [x] Logic implemented
-    - [x] Verified with manual inspection of calculation logic
+    - [x] Verified with manual inspection (Cheese 62g now costs 31₴ instead of 500₴)
     - [x] Verified with `pnpm tsc --noEmit`
 
 ## [2026-05-14] — Fix: Product Deletion & Cleanup

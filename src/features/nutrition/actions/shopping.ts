@@ -119,7 +119,8 @@ export async function generateShoppingCart(
       const neededRaw = Math.max(0, req.totalRaw - (existing?.availableGrams ?? 0))
       
       const packagesCount = Math.ceil(neededRaw / packageSize)
-      const totalCost = packagesCount * (product.price ?? 0)
+      // Calculate exact cost based on weight (Net Cost)
+      const totalCost = (neededRaw * (product.price ?? 0)) / packageSize
 
       upserts.push(
         prisma.cartItem.upsert({
