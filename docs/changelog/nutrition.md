@@ -1,4 +1,21 @@
-## [2026-05-14] Nutrition Seed Data & Price Synchronization
+## [2026-05-14] Nutrition Space Skeleton Adaptation
+
+Adapted loading skeletons for all pages in the Nutrition Space (excluding landing) to accurately mirror their actual content structure and ensure visual consistency during data fetching.
+
+- **Header Skeleton**: Standardized the top-level navigation skeleton (Breadcrumbs + Heading + Description) across all sub-pages.
+- **Page-Specific Skeletons**:
+    - **Dishes**: Mirrored the `DishLibrary` grid layout with card placeholders.
+    - **Plans**: Mirrored the `PlanList` with `CreatePlanForm` skeleton and multi-person macro summaries.
+    - **Products**: Mirrored the `ProductLibrary` table with grouped category headers and product rows.
+    - **Shopping**: Mirrored the `ShoppingCartView` with category-grouped item lists and the cost breakdown sidebar.
+    - **Profiles**: Created new skeleton for `PersonForm` mirroring profile cards with macro distribution bars.
+    - **Week**: Created detailed skeleton for `WeekPlanner` including day selector, `WeekSummary` bars, and meal slot tables.
+- **Layout Consistency**: Removed inconsistent hardcoded paddings from `loading.tsx` files to rely on the global `DashboardUIWrapper` container padding.
+- **Verification**:
+    - [x] Logic implemented (Adapted skeletons for 6 sub-pages)
+    - [x] UI updated (Visual consistency during navigation)
+    - [x] Verified with `pnpm tsc --noEmit`
+
 
 Updated nutrition seed data to reflect actual May 2026 market prices and consolidated seeding logic into a single server action.
 

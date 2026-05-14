@@ -1,3 +1,22 @@
+## [2026-05-14] — Calm OS: Landing Skeleton Synchronization
+
+### Added
+- **`SpaceSkeleton` Prop: `hasDescription`**: New property to conditionally show/hide the "Thesis" block in the loading state.
+
+### Changed
+- **`SpaceSkeleton` Refinement**: Fully synchronized skeleton layout with `SpaceLanding`, `SpaceHeader`, `SpaceDescription`, and `SpaceIntelligence`.
+  - Header: Corrected breadcrumb/title/description order and spacing.
+  - Thesis Block: Matches high-fidelity layout and refined labeling.
+  - Navigation Section: Added support for grid section headers and fixed `md:col-span-2` logic for primary tiles.
+  - Intelligence: Added telemetry title decoration and refined item spacing.
+- **Domain Skeletons**: Updated `health`, `mind`, `wealth`, and `vault` domain loading pages to accurately reflect 4-tile bento grids and telemetry sections.
+- **Space Skeletons**: Synchronized `nutrition`, `fishing`, `life-system`, `other`, and `profile` loading states with the unified component architecture.
+
+### Verification Checklist:
+- [x] Logic implemented (Skeleton component overhaul)
+- [x] UI updated (Unified loading states across 10+ pages)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] — Calm OS: Landing Page Width Reverted
 
 ### Changed
