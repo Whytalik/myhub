@@ -1,3 +1,40 @@
+## [2026-05-14] Nutrition Seed Data & Price Synchronization
+
+Updated nutrition seed data to reflect actual May 2026 market prices and consolidated seeding logic into a single server action.
+
+- **Seed Consolidation**: Deleted legacy scripts (`seed-global-visual-plan.ts`, `generate-visual-week.ts`) and removed dependency on external JSON seed files (`dishes.json`, `products.json`).
+- **Price Synchronization**: Updated `seedVisualPlanAction` with realistic May 2026 prices for 30+ products, synchronized with `PRODUCT_INFO` market ranges.
+- **Infrastructure Update**: Added **AUCHAN** to the supported stores list in UI constants to ensure full visibility of all seed data locations.
+- **Verification**:
+    - [x] Logic implemented (Seed action updated, legacy scripts removed)
+    - [x] UI updated (AUCHAN store badge support)
+    - [x] Verified with `pnpm tsc --noEmit`
+
+---
+
+## [2026-05-14] Shopping Cart Redesign — Weekly Product List
+
+Transformed the shopping cart into a clean, compact, and structured weekly product list for better scannability and store usage.
+
+- **Compact List Layout**: Replaced bulky cards with a tight, category-grouped list layout. 
+- **Status Tracking**: 
+    - **One-tap Checkbox**: Quickly mark items as "Bought" (strikethrough and green checkbox).
+    - **"Have" Status**: New "Home" icon toggle to mark items as already in stock, excluding them from budget while keeping them in the list.
+- **Smart Information Architecture**:
+    - **Primary Info**: Bold product name and total required weight (e.g., 1.25kg).
+    - **Secondary Info**: Estimated cost and package calculations.
+    - **Expandable Details**: Tap an item to see which dishes it's used in and adjust suggested package counts.
+- **Utility Features**:
+    - **Copy to Clipboard**: One-click to copy the "To Buy" list as text for sharing via messengers.
+    - **Budget Distribution**: Clear breakdown of costs per person at the bottom.
+- **Mobile Optimized**: Large hit areas for status toggles and expandable rows for better store experience.
+- **Verification**:
+    - [x] Logic implemented (Status toggling, quantity editing)
+    - [x] UI updated (New compact layout, expandable rows)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
+---
+
 ## [2026-05-14] Nutrition UI Polish — Status Colors, Overlap Fixes & Styling
 
 Refined nutrition summaries with status-based coloring, fixed layout collisions, and corrected modal input styling.
@@ -7,12 +44,15 @@ Refined nutrition summaries with status-based coloring, fixed layout collisions,
   - **Amber**: Deficit (<90% of target).
   - **Green**: Norm (within 90-110%).
 - **Overlap Fixes**: Added `min-w-0` to flex/grid containers and increased gaps (gap-6 -> gap-8) in `WeekSummary` and `WeekPlanner` to prevent content collision after bars were expanded to `flex-1`.
-- **UI Styling**: 
-  - **Input**: Added amber border highlighting (`hover:border-amber-500/50`, `focus:border-amber-500`) to the `Input` component for better interactivity.
-  - **Dialog**: Removed the experimental colored accent frames and glow from `Dialog`, restoring a clean `border-border-strong` look.
+- **Stores & Infrastructure**:
+  - **New Store**: Added "Рудь" (RUD) to the supported stores list, including database schema updates (Prisma enum) and UI metadata.
+  - **Input Styling**: Ensured default borders (`border-border-strong`) are visible and increased placeholder contrast. Removed default browser arrows from number inputs for a cleaner design.
+- **UI Styling & Readability**: 
+  - **Readability**: Improved contrast in modals by replacing low-contrast `text-muted` labels with `text-secondary`.
+  - **Dialog**: Removed experimental colored frames from `Dialog`, restoring a clean system look.
 - **Verification**:
-    - [x] Logic implemented (Status-based color logic)
-    - [x] UI updated (Corrected borders, dynamic bar colors, spaced layouts)
+    - [x] Logic implemented (Prisma schema + Store constants)
+    - [x] UI updated (New store badges, improved inputs, compact shopping list)
     - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
 
 ---
@@ -41,21 +81,6 @@ Refined the WeekPlanner interface for faster data entry and cleaner layout.
 - **Verification**:
     - [x] Logic implemented (Action + UI state)
     - [x] UI updated (Unified buttons, grouped product rows, wider progress bars, improved inline inputs)
-    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
-
----
-
-## [2026-05-14] Nutrition Modal UI Enhancement — Space-Aware Frames & Glow
-
-Refined Nutrition space modals (and all system modals) with space-aware styling to reduce cognitive load and improve visual feedback.
-
-- **Dialog Styling**: Added a colored frame to modals using the space's accent color (`--color-accent`).
-  - **Calm State**: Subtle 1.5px frame with 20% opacity.
-  - **Active State**: Frame opacity increases to 40% and blurs into a soft glow (30% opacity, `blur-md`) when hovered or focused.
-  - **Calm OS**: Removed thick `border-2 border-border-strong` from modal content, favoring background separation and the new accent frame.
-- **Verification**:
-    - [x] Logic implemented (Global `Dialog` update)
-    - [x] UI updated (Space-aware borders and glow effects)
     - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
 
 ---

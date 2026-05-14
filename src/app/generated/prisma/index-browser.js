@@ -740,7 +740,9 @@ exports.Store = exports.$Enums.Store = {
   SILPO: 'SILPO',
   POLISSYA: 'POLISSYA',
   METRO: 'METRO',
-  FORA: 'FORA'
+  FORA: 'FORA',
+  RUD: 'RUD',
+  AUCHAN: 'AUCHAN'
 };
 
 exports.DishType = exports.$Enums.DishType = {

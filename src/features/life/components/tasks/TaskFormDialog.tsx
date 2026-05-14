@@ -584,7 +584,7 @@ function TaskDetail({
             <button
               onClick={() => {}}
               className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-label font-mono font-bold uppercase tracking-wider border transition-all"
-              style={{ backgroundColor: sphere ? `${sphere.color}15` : "transparent", borderColor: sphere ? `${sphere.color}40` : "var(--border)", color: sphere?.color || "var(--muted)" }}
+              style={{ backgroundColor: sphere ? `${sphere.color}15` : "transparent", borderColor: sphere ? `${sphere.color}40` : "var(--color-border)", color: sphere?.color || "var(--color-text-muted)" }}
             >
               {sphere && ALL_ICONS[sphere.icon] && (() => { const I = ALL_ICONS[sphere.icon]; return <I size={9} strokeWidth={3} />; })()}
               {sphere?.name || "Sphere"}

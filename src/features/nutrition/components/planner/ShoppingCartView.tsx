@@ -1,7 +1,17 @@
-﻿"use client"
+"use client"
 
-import { useState, useTransition } from "react"
-import { Check, Edit2, RefreshCw, AlertCircle, ShoppingBag, Home } from "lucide-react"
+import { useState, useTransition, useMemo } from "react"
+import { 
+  Check, 
+  Edit2, 
+  RefreshCw, 
+  AlertCircle, 
+  ShoppingBag, 
+  Home, 
+  Copy,
+  ChevronDown,
+  Info
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog } from "@/components/ui/dialog"
@@ -20,7 +30,7 @@ interface CartItem {
   product: {
     name: string
     price: number | null
-    packageWeight: number | null
+    standardPackageAmount: number | null
     pantryStock: number | null
     category: string | null
   }
@@ -40,21 +50,20 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
   const [isPending, startTransition] = useTransition()
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editValue, setEditValue] = useState("")
-  const [availableEditId, setAvailableEditId] = useState<string | null>(null)
-  const [availableValue, setAvailableValue] = useState("")
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
   const [showRegenConfirm, setShowRegenConfirm] = useState(false)
 
-  const missingItems = items.filter(item => {
+  const missingItemsCount = useMemo(() => items.filter(item => {
     const available = item.availableGrams ?? item.product.pantryStock ?? 0
-    return available < item.requiredRawGrams
-  })
+    return item.status === CartItemStatus.TO_BUY && available < item.requiredRawGrams
+  }).length, [items])
 
   const handleStatusChange = (itemId: string, newStatus: CartItemStatus) => {
     startTransition(async () => {
       const result = await updateCartItemStatus(itemId, newStatus)
       if (result.success) {
         setItems(prev => prev.map(item => item.id === itemId ? { ...item, status: newStatus } : item))
-        toast.success("Status updated")
+        toast.success(newStatus === CartItemStatus.BOUGHT ? "Marked as Bought" : "Status updated")
       } else {
         toast.error(result.error || "Failed to update status")
       }
@@ -75,30 +84,38 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
     })
   }
 
-  const handleAvailableUpdate = (itemId: string) => {
-    const availableGrams = parseFloat(availableValue) || 0
-    startTransition(async () => {
-      const result = await updateCartItemStatus(itemId, CartItemStatus.HAVE, availableGrams)
-      if (result.success) {
-        setItems(prev => prev.map(item => item.id === itemId ? { ...item, availableGrams, status: CartItemStatus.HAVE } : item))
-        setAvailableEditId(null)
-        toast.success("Available amount updated")
-      } else {
-        toast.error(result.error || "Failed to update")
-      }
-    })
-  }
-
   const handleRegenerate = () => {
     startTransition(async () => {
       const result = await generateShoppingCart(weekPlanId)
       if (result.success) {
         toast.success("Shopping cart regenerated")
-        setShowRegenConfirm(false)
+        window.location.reload()
       } else {
         toast.error(result.error || "Failed to regenerate")
       }
     })
+  }
+
+  const copyToClipboard = () => {
+    const list = items
+      .filter(i => i.status === CartItemStatus.TO_BUY)
+      .map(i => {
+        const qty = i.requiredRawGrams >= 1000 
+          ? `${(i.requiredRawGrams / 1000).toFixed(1)}kg` 
+          : `${Math.round(i.requiredRawGrams)}g`
+        return `- ${i.product.name}: ${qty}`
+      })
+      .join("\n")
+    
+    navigator.clipboard.writeText(`Shopping List for the Week:\n${list}`)
+    toast.success("Copied to clipboard")
+  }
+
+  const toggleExpand = (id: string) => {
+    const next = new Set(expandedItems)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setExpandedItems(next)
   }
 
   const groupedItems = items.reduce((acc, item) => {
@@ -109,206 +126,214 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, perso
   }, {} as Record<string, CartItem[]>)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl mx-auto pb-20">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
             <ShoppingBag size={18} className="text-accent" />
           </div>
           <div>
-            <h2 className="text-body font-semibold text-text-primary">Shopping Cart</h2>
-            <p className="text-note text-text-muted">{items.length} items</p>
+            <h2 className="text-body font-semibold text-text-primary">Weekly Shopping</h2>
+            <p className="text-note text-text-muted">{items.length} items total</p>
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={() => setShowRegenConfirm(true)} disabled={isPending}>
-          <RefreshCw size={14} className="mr-1.5" />
-          Regenerate
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="ghost" size="sm" onClick={copyToClipboard} className="h-9 w-9 p-0">
+            <Copy size={16} />
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setShowRegenConfirm(true)} disabled={isPending} className="h-9">
+            <RefreshCw size={14} className={isPending ? "animate-spin" : ""} />
+          </Button>
+        </div>
       </div>
 
-      {/* Warnings */}
-      {varietyWarnings.length > 0 && (
-        <div className="p-4 bg-warning/5 border border-warning/20 rounded-xl">
-          <div className="flex items-start gap-3">
-            <AlertCircle size={16} className="text-warning mt-0.5 shrink-0" />
-            <div>
-              <h3 className="text-note font-medium text-warning mb-2">Variety Warnings</h3>
-              <div className="flex flex-wrap gap-2">
-                {varietyWarnings.map((w, i) => (
-                  <span key={i} className="text-micro font-mono bg-warning/10 text-warning px-2 py-1 rounded-lg">
-                    {w.dishName}: {w.count} times
-                  </span>
-                ))}
+      {/* Stats Summary */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-surface border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+          <span className="text-micro font-mono text-text-muted uppercase tracking-wider mb-1">Cost</span>
+          <span className="text-body font-bold text-text-primary">{totalCost.toFixed(0)}₴</span>
+        </div>
+        <div className="bg-surface border border-border rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+          <span className="text-micro font-mono text-text-muted uppercase tracking-wider mb-1">To Buy</span>
+          <span className={`text-body font-bold ${missingItemsCount > 0 ? "text-amber-500" : "text-green-500"}`}>
+            {missingItemsCount} items
+          </span>
+        </div>
+      </div>
+
+      {/* Warnings & Alerts */}
+      {(varietyWarnings.length > 0 || missingItemsCount > 0) && (
+        <div className="space-y-2">
+          {varietyWarnings.length > 0 && (
+            <div className="p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl flex gap-3">
+              <AlertCircle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+              <div className="text-micro text-amber-600 dark:text-amber-400">
+                <span className="font-semibold uppercase mr-1">Variety:</span>
+                {varietyWarnings.map(w => w.dishName).join(", ")} repeated 3+ times.
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
-      {missingItems.length > 0 && (
-        <div className="p-4 bg-danger/5 border border-danger/20 rounded-xl">
-          <div className="flex items-start gap-3">
-            <AlertCircle size={16} className="text-danger mt-0.5 shrink-0" />
-            <div>
-              <h3 className="text-note font-medium text-danger">Missing Items</h3>
-              <p className="text-micro text-text-secondary mt-1">
-                {missingItems.length} item(s) need to be purchased or restocked.
-              </p>
+      {/* Categories List */}
+      <div className="space-y-8">
+        {Object.entries(groupedItems).map(([category, catItems]) => (
+          <div key={category} className="space-y-3">
+            <div className="flex items-center gap-3 px-1">
+              <h3 className="text-caption font-bold text-text-muted uppercase tracking-widest">{category}</h3>
+              <div className="h-px flex-1 bg-border-dim" />
             </div>
-          </div>
-        </div>
-      )}
+            
+            <div className="bg-surface border border-border rounded-2xl divide-y divide-border/50 overflow-hidden">
+              {catItems.map((item) => {
+                const isBought = item.status === CartItemStatus.BOUGHT
+                const isHave = item.status === CartItemStatus.HAVE
+                const isExpanded = expandedItems.has(item.id)
+                
+                const qtyStr = item.requiredRawGrams >= 1000 
+                  ? `${(item.requiredRawGrams / 1000).toFixed(2)}kg` 
+                  : `${Math.round(item.requiredRawGrams)}g`
 
-      {/* Categories */}
-      {Object.entries(groupedItems).map(([category, catItems]) => (
-        <div key={category} className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="h-px flex-1 bg-border-dim" />
-            <h3 className="text-note font-bold font-mono text-text-muted tracking-widest uppercase">{category}</h3>
-            <div className="h-px flex-1 bg-border-dim" />
-          </div>
-          <div className="space-y-2">
-            {catItems.map((item) => {
-              const available = item.availableGrams ?? item.product.pantryStock ?? 0
-              const deficit = Math.max(0, item.requiredRawGrams - available)
-              const packageWeight = item.product.packageWeight || 100
-              const packagesCount = item.packagesCount ?? Math.ceil(item.requiredRawGrams / packageWeight)
-              const isComplete = item.status === "BOUGHT" || item.status === "HAVE"
-
-              return (
-                <div key={item.id} className={`p-4 border rounded-xl transition-all ${isComplete ? "bg-success/5 border-success/20" : "bg-surface border-border hover:border-border-strong"}`}>
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-body font-medium text-text-primary">{item.product.name}</span>
-                        {deficit > 0 && !isComplete && (
-                          <span className="text-micro font-mono bg-danger/10 text-danger px-1.5 py-0.5 rounded">
-                            -{deficit.toFixed(0)}g
-                          </span>
+                return (
+                  <div key={item.id} className={`transition-colors ${isBought ? "bg-raised/30" : ""}`}>
+                    <div className="flex items-center px-4 py-3 gap-3">
+                      {/* Status Checkbox */}
+                      <button 
+                        onClick={() => handleStatusChange(
+                          item.id, 
+                          isBought ? CartItemStatus.TO_BUY : CartItemStatus.BOUGHT
                         )}
-                      </div>
-                      <div className="text-note font-mono text-text-secondary">
-                        Need: {item.requiredRawGrams.toFixed(0)}g · Available: {available.toFixed(0)}g · ~{packagesCount} pkg{packagesCount !== 1 ? "s" : ""} ({packageWeight}g)
-                        {item.totalCost != null && item.totalCost > 0 && ` · ${item.totalCost.toFixed(1)}₴`}
-                      </div>
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {item.dishes.map((d, i) => (
-                          <span key={i} className="text-micro font-mono bg-bg/50 border border-border/50 text-text-secondary px-1.5 py-0.5 rounded">
-                            {d.dishName}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 ml-4 shrink-0">
-                      {availableEditId === item.id ? (
-                        <div className="flex gap-1">
-                          <Input
-                            type="number"
-                            value={availableValue}
-                            onChange={(e) => setAvailableValue(e.target.value)}
-                            className="w-20 h-8 text-note"
-                            placeholder="grams"
-                          />
-                          <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleAvailableUpdate(item.id)}>
-                            <Check size={14} />
-                          </Button>
-                        </div>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-8 px-2 text-micro font-mono"
-                          onClick={() => {
-                            setAvailableEditId(item.id)
-                            setAvailableValue(String(available))
-                          }}
-                        >
-                          Have: {available.toFixed(0)}g
-                        </Button>
-                      )}
-
-                      {editingId === item.id ? (
-                        <div className="flex gap-1">
-                          <Input
-                            type="number"
-                            value={editValue}
-                            onChange={(e) => setEditValue(e.target.value)}
-                            className="w-20 h-8 text-note"
-                            placeholder="pkgs"
-                          />
-                          <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => handleQuantityUpdate(item.id)}>
-                            <Check size={14} />
-                          </Button>
-                        </div>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-8 w-8 p-0"
-                          onClick={() => {
-                            setEditingId(item.id)
-                            setEditValue(String(packagesCount))
-                          }}
-                        >
-                          <Edit2 size={14} />
-                        </Button>
-                      )}
-
-                      <Button
-                        size="sm"
-                        variant={isComplete ? "primary" : "outline"}
-                        className="h-8"
-                        onClick={() => handleStatusChange(item.id, isComplete ? CartItemStatus.TO_BUY : CartItemStatus.BOUGHT)}
+                        className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 ${
+                          isBought 
+                            ? "bg-green-500 border-green-500 text-white" 
+                            : isHave 
+                              ? "bg-accent/10 border-accent text-accent" 
+                              : "border-border hover:border-text-muted"
+                        }`}
                       >
-                        {isComplete ? <Check size={14} /> : <Home size={14} />}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      ))}
+                        {isBought ? <Check size={14} strokeWidth={3} /> : isHave ? <Home size={12} /> : null}
+                      </button>
 
-      {/* Total Cost */}
-      <div className="p-5 bg-surface border border-border rounded-xl space-y-3">
-        <div className="flex justify-between items-center">
-          <span className="text-body font-medium text-text-primary">Total Estimated Cost</span>
-          <span className="text-heading font-bold text-text-primary">{totalCost.toFixed(1)}₴</span>
-        </div>
-        {Object.keys(personCosts).length > 0 && (
-          <div className="pt-3 border-t border-border/50">
-            <div className="text-caption font-mono text-text-muted tracking-wider mb-2">Cost by Person</div>
-            <div className="flex flex-wrap gap-3">
-              {Object.entries(personCosts).map(([id, pc]) => (
-                <div key={id} className="flex items-center gap-1 text-note font-mono">
-                  <span className="text-text-secondary">{pc.name}:</span>
-                  <span className="font-bold text-text-primary">{pc.cost.toFixed(1)}₴</span>
-                </div>
-              ))}
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0" onClick={() => toggleExpand(item.id)}>
+                        <div className={`text-body font-medium transition-all truncate ${isBought ? "text-text-muted line-through" : "text-text-primary"}`}>
+                          {item.product.name}
+                        </div>
+                        <div className="flex items-center gap-2 text-micro font-mono text-text-secondary">
+                          <span className={isBought ? "text-text-muted" : "text-accent font-bold"}>{qtyStr}</span>
+                          {item.totalCost && item.totalCost > 0 && (
+                            <span className="text-text-muted">· {Math.round(item.totalCost)}₴</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-1">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleStatusChange(item.id, isHave ? CartItemStatus.TO_BUY : CartItemStatus.HAVE)}
+                          className={`h-8 w-8 p-0 rounded-lg ${isHave ? "text-accent bg-accent/10" : "text-text-muted"}`}
+                        >
+                          <Home size={14} />
+                        </Button>
+                        <button 
+                          onClick={() => toggleExpand(item.id)}
+                          className={`h-8 w-8 flex items-center justify-center text-text-muted transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                        >
+                          <ChevronDown size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Expandable Context */}
+                    {isExpanded && (
+                      <div className="px-4 pb-4 pt-1 border-t border-border/30 bg-raised/10">
+                        <div className="space-y-3">
+                          <div className="flex flex-wrap gap-1">
+                            {item.dishes.map((d, i) => (
+                              <div key={i} className="text-micro font-mono bg-surface border border-border/50 px-2 py-0.5 rounded-md text-text-secondary">
+                                {d.dishName}
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-micro font-mono pt-2 border-t border-border/20">
+                            <div className="text-text-muted">
+                              Pkg size: {item.product.standardPackageAmount || "—"}g
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {editingId === item.id ? (
+                                <div className="flex gap-1 items-center">
+                                  <Input 
+                                    type="number" 
+                                    value={editValue} 
+                                    onChange={e => setEditValue(e.target.value)} 
+                                    className="h-7 w-16 text-micro py-0 px-2 border-accent"
+                                    autoFocus
+                                  />
+                                  <Button size="sm" className="h-7 px-2" onClick={() => handleQuantityUpdate(item.id)}>Save</Button>
+                                </div>
+                              ) : (
+                                <button 
+                                  onClick={() => {
+                                    setEditingId(item.id)
+                                    setEditValue(String(item.packagesCount || 1))
+                                  }}
+                                  className="flex items-center gap-1 text-accent hover:underline"
+                                >
+                                  <Edit2 size={10} />
+                                  {item.packagesCount || Math.ceil(item.requiredRawGrams / (item.product.standardPackageAmount || 1))} pkgs
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
-        )}
+        ))}
+      </div>
+
+      {/* Person Breakdown */}
+      <div className="p-6 bg-surface border border-border rounded-3xl space-y-4">
+        <h4 className="text-note font-bold text-text-primary flex items-center gap-2">
+          <Info size={14} className="text-accent" />
+          Budget Distribution
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {Object.entries(personCosts).map(([id, pc]) => (
+            <div key={id} className="flex items-center justify-between p-3 bg-raised/30 rounded-2xl border border-border/50">
+              <span className="text-note font-medium text-text-secondary">{pc.name}</span>
+              <span className="text-note font-mono font-bold text-text-primary">{pc.cost.toFixed(0)}₴</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <Dialog
         isOpen={showRegenConfirm}
         onClose={() => setShowRegenConfirm(false)}
-        title="Regenerate Shopping Cart?"
-        description="This will recalculate all items based on current week plan"
+        title="Refresh List?"
+        description="Recalculate quantities based on the current week plan"
         footer={
           <>
             <Button variant="secondary" onClick={() => setShowRegenConfirm(false)}>Cancel</Button>
             <Button variant="primary" onClick={handleRegenerate} disabled={isPending}>
-              {isPending ? "Regenerating..." : "Regenerate"}
+              {isPending ? "Refreshing..." : "Refresh Now"}
             </Button>
           </>
         }
       >
-        <p>Current cart data will be replaced with newly calculated items.</p>
+        <p className="text-body text-text-secondary">
+          Manual overrides and &quot;Bought&quot; statuses might be reset during regeneration.
+        </p>
       </Dialog>
     </div>
   )

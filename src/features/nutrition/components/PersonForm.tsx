@@ -73,7 +73,7 @@ function ProfileCard({
               <button onClick={handleNameSave} className="p-1 text-accent hover:bg-accent/10 rounded">
                 <Check size={14} />
               </button>
-              <button onClick={() => { setIsEditingName(false); setEditName(person.name || ""); }} className="p-1 text-muted hover:bg-white/5 rounded">
+              <button onClick={() => { setIsEditingName(false); setEditName(person.name || ""); }} className="p-1 text-secondary hover:bg-white/5 rounded">
                 <X size={14} />
               </button>
             </div>
@@ -82,13 +82,13 @@ function ProfileCard({
               <h4 className="text-lg font-heading text-text tracking-tight">{person.name}</h4>
               <button
                 onClick={() => { setIsEditingName(true); setEditName(person.name || ""); }}
-                className="p-0.5 text-muted opacity-0 group-hover/name:opacity-100 hover:text-accent transition-all"
+                className="p-0.5 text-secondary opacity-0 group-hover/name:opacity-100 hover:text-accent transition-all"
               >
                 <Pencil size={12} />
               </button>
             </div>
           )}
-          <p className="text-caption font-mono text-muted tracking-wider mt-0.5">Custom Nutrition Split</p>
+          <p className="text-caption font-mono text-secondary tracking-wider mt-0.5">Custom Nutrition Split</p>
         </div>
         <Button variant="danger" size="sm" className="rounded-xl" onClick={onDelete}>
           <Trash2 size={14} className="mr-1.5" /> Delete
@@ -97,7 +97,7 @@ function ProfileCard({
 
       <div className="p-6 space-y-6">
         <div className="max-w-[200px] space-y-2">
-          <label className="text-caption font-mono text-muted tracking-widest pl-1">Daily Calories</label>
+          <label className="text-caption font-mono text-secondary tracking-widest pl-1">Daily Calories</label>
           <div className="flex items-center gap-3">
             <Input
               type="number"
@@ -105,7 +105,7 @@ function ProfileCard({
               onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, person.fiberGrams || 30, parseFloat(e.target.value) || 2000)}
               className="text-lg font-black text-accent h-9 border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
             />
-            <span className="text-sm font-mono text-muted">kcal</span>
+            <span className="text-sm font-mono text-secondary">kcal</span>
           </div>
         </div>
 
@@ -113,7 +113,7 @@ function ProfileCard({
           <div className="space-y-3">
             <div className="flex justify-between items-end">
               <label className="text-caption font-mono text-accent tracking-widest font-bold">Protein</label>
-              <span className="text-caption font-mono text-muted">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
+              <span className="text-caption font-mono text-secondary">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
@@ -122,14 +122,14 @@ function ProfileCard({
                 onBlur={(e) => onGoalUpdate(person.id, parseFloat(e.target.value) || 30, currentFPct, currentCPct, person.fiberGrams || 30, totalCals)}
                 className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
-              <span className="text-sm font-mono text-muted">%</span>
+              <span className="text-sm font-mono text-secondary">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
               <label className="text-caption font-mono text-secondary tracking-widest font-bold">Fat</label>
-              <span className="text-caption font-mono text-muted">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
+              <span className="text-caption font-mono text-secondary">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
@@ -138,14 +138,14 @@ function ProfileCard({
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, parseFloat(e.target.value) || 25, currentCPct, person.fiberGrams || 30, totalCals)}
                 className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
-              <span className="text-sm font-mono text-muted">%</span>
+              <span className="text-sm font-mono text-secondary">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
               <label className="text-caption font-mono text-text tracking-widest font-bold">Carbs</label>
-              <span className="text-caption font-mono text-muted">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
+              <span className="text-caption font-mono text-secondary">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
@@ -154,14 +154,14 @@ function ProfileCard({
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, parseFloat(e.target.value) || 45, person.fiberGrams || 30, totalCals)}
                 className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
-              <span className="text-sm font-mono text-muted">%</span>
+              <span className="text-sm font-mono text-secondary">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="text-caption font-mono text-muted tracking-widest font-bold">Fiber</label>
-              <span className="text-caption font-mono text-muted">Goal</span>
+              <label className="text-caption font-mono text-secondary tracking-widest font-bold">Fiber</label>
+              <span className="text-caption font-mono text-secondary">Goal</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
@@ -170,7 +170,7 @@ function ProfileCard({
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, parseFloat(e.target.value) || 30, totalCals)}
                 className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
               />
-              <span className="text-sm font-mono text-muted">g</span>
+              <span className="text-sm font-mono text-secondary">g</span>
             </div>
           </div>
         </div>
@@ -263,7 +263,7 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <p className="text-caption font-mono text-muted tracking-wider">{persons.length} profile{persons.length !== 1 ? "s" : ""}</p>
+        <p className="text-caption font-mono text-secondary tracking-wider">{persons.length} profile{persons.length !== 1 ? "s" : ""}</p>
         <Button variant="primary" size="sm" className="rounded-xl" onClick={() => setShowCreateModal(true)}>
           <UserPlus size={14} className="mr-1.5" /> Add Profile
         </Button>
@@ -309,7 +309,7 @@ export function PersonForm({ persons: initialPersons }: PersonFormProps) {
         }
       >
         <div className="space-y-3">
-          <label className="text-caption font-mono text-muted tracking-wider">Profile Name</label>
+          <label className="text-caption font-mono text-secondary tracking-wider">Profile Name</label>
           <Input
             placeholder="e.g. John, Kids, etc."
             value={newName}

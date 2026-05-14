@@ -6,6 +6,8 @@ export type Store =
   | "POLISSYA"
   | "METRO"
   | "FORA"
+  | "RUD"
+  | "AUCHAN"
 
 export type StoreMeta = {
   label: string
@@ -21,8 +23,10 @@ export const STORE_META: Record<Store, StoreMeta> = {
   POLISSYA:    { label: "Полісся",   color: "#2d5a27", bg: "bg-[#2d5a27]/10" },
   METRO:       { label: "Метро",     color: "#003f8a", bg: "bg-[#003f8a]/10" },
   FORA:        { label: "Фора",      color: "#d4002b", bg: "bg-[#d4002b]/10" },
+  RUD:         { label: "Рудь",      color: "#005696", bg: "bg-[#005696]/10" },
+  AUCHAN:      { label: "Ашан",      color: "#f20d0d", bg: "bg-[#f20d0d]/10" },
 }
 
 export const ALL_STORES: Store[] = [
-  "NASHA_RYABA", "BAZAR", "ATB", "SILPO", "POLISSYA", "METRO", "FORA",
+  "NASHA_RYABA", "BAZAR", "ATB", "SILPO", "POLISSYA", "METRO", "FORA", "RUD", "AUCHAN",
 ]

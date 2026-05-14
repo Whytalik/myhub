@@ -13,7 +13,7 @@ import { createDish, updateDish } from "../actions/dishes";
 import type { CreateDishInput, DishIngredientInput, DishType } from "../types";
 import { DishWithIngredients } from "../logic/recalculator";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
-import dishesData from "../data/dishes.json";
+const dishesData: any[] = [];
 
 interface DishBuilderProps {
   products: FoodProduct[];

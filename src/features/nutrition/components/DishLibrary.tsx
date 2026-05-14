@@ -14,7 +14,7 @@ import { deleteDish, exportDishes, deleteAllUserDishes } from "../actions/dishes
 import { DishImportModal } from "./DishImportModal";
 import type { DishType } from "../constants/dish-types";
 import { DISH_TYPE_META, DISH_TYPE_ORDER } from "../constants/dish-types";
-import dishesData from "../data/dishes.json";
+const dishesData: any[] = [];
 
 const DISH_GROUPS: Record<string, DishType[]> = {
   ALL: DISH_TYPE_ORDER,

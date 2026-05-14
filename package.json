@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "prisma generate && prisma db push --accept-data-loss && next build",
     "db:push": "prisma db push",
-    "db:seed:all-products": "tsx prisma/seed-all-products.ts",
     "db:migrate": "prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",

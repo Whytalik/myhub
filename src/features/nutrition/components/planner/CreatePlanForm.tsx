@@ -53,7 +53,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
     return (
       <div className="flex flex-col items-center py-16 bg-surface border border-border rounded-2xl">
         <div className="w-16 h-16 rounded-3xl bg-bg/50 flex items-center justify-center border border-border mb-4">
-          <Users size={32} className="text-text-muted/40" />
+          <Users size={32} className="text-text-secondary/40" />
         </div>
         <p className="text-body font-semibold text-text-primary mb-1">No profiles yet</p>
         <p className="text-note text-text-secondary mb-4">Create a person profile first to start planning.</p>
@@ -91,7 +91,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
       >
         <div className="space-y-5">
           <div className="space-y-2">
-            <label className="text-caption font-mono text-text-muted tracking-widest pl-1">Plan Name</label>
+            <label className="text-caption font-mono text-text-secondary tracking-widest pl-1">Plan Name</label>
             <Input
               placeholder="e.g. Week 20, Cutting Phase..."
               value={name}
@@ -102,7 +102,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-caption font-mono text-text-muted tracking-widest pl-1">Include Persons</label>
+            <label className="text-caption font-mono text-text-secondary tracking-widest pl-1">Include Persons</label>
             <div className="flex flex-wrap gap-2">
               {persons.map((person) => {
                 const isSelected = selectedPersons.includes(person.id)
@@ -114,7 +114,7 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-note font-mono border transition-all ${
                       isSelected
                         ? "bg-accent/10 border-accent/30 text-accent"
-                        : "border-border text-text-muted hover:text-text-primary hover:bg-surface-hover"
+                        : "border-border text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                     }`}
                   >
                     <Users size={12} />

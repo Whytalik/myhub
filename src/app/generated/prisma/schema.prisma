@@ -900,4 +900,6 @@ enum Store {
   POLISSYA
   METRO
   FORA
+  RUD
+  AUCHAN
 }

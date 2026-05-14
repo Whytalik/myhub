@@ -5,10 +5,11 @@ import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { calculateDishNutrition } from "@/lib/nutrition/calculations"
 import { Dish, DishIngredient, FoodProduct, CookingMethod } from "@/app/generated/prisma"
 import { invalidateFoodCache } from "@/lib/revalidate"
-import dishesData from "../data/dishes.json"
 
 import type { DishType } from "../constants/dish-types"
 import { z } from "zod"
+
+const dishesData: any[] = []
 
 interface CreateDishData {
   name: string

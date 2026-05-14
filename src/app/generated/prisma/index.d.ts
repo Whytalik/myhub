@@ -508,7 +508,9 @@ export const Store: {
   SILPO: 'SILPO',
   POLISSYA: 'POLISSYA',
   METRO: 'METRO',
-  FORA: 'FORA'
+  FORA: 'FORA',
+  RUD: 'RUD',
+  AUCHAN: 'AUCHAN'
 };
 
 export type Store = (typeof Store)[keyof typeof Store]

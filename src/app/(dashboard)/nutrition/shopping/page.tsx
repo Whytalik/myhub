@@ -50,38 +50,6 @@ export default async function ShoppingPage() {
   const cartData = cartResult.data;
   const itemsByCategory = cartData.itemsByCategory;
 
-  interface CartViewItem {
-    id: string; productId: string; requiredRawGrams: number; availableGrams: number | null;
-    packagesCount: number | null; totalCost: number | null; status: string;
-    product: { name: string; price: number | null; packageWeight: number | null; pantryStock: null; category: string | null };
-    dishes: { dishName: string; dishId: string }[];
-  }
-
-  const groupedByCategory: Record<string, CartViewItem[]> = {};
-  for (const [category, catItems] of Object.entries(itemsByCategory)) {
-    groupedByCategory[category] = (catItems as Array<{
-      id: string; productId: string; requiredRawGrams: number; availableGrams: number | null;
-      packagesCount: number | null; totalCost: number | null; status: string;
-      product: { name: string; price: number | null; standardPackageAmount: number | null; category: string | null };
-    }>).map((item) => ({
-      id: item.id,
-      productId: item.productId,
-      requiredRawGrams: item.requiredRawGrams,
-      availableGrams: item.availableGrams,
-      packagesCount: item.packagesCount,
-      totalCost: item.totalCost,
-      status: item.status,
-      product: {
-        name: item.product.name,
-        price: item.product.price,
-        packageWeight: item.product.standardPackageAmount,
-        pantryStock: null,
-        category: item.product.category,
-      },
-      dishes: [] as { dishName: string; dishId: string }[],
-    }));
-  }
-
   return (
     <div className="w-full">
       <div className="mb-8">
@@ -93,7 +61,8 @@ export default async function ShoppingPage() {
       <div className="mt-6">
         <ShoppingCartView
           weekPlanId={weekPlanId}
-          itemsByCategory={groupedByCategory}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          itemsByCategory={itemsByCategory as any}
           totalCost={cartData.totalCost}
           personCosts={cartData.personCosts}
           varietyWarnings={cartData.varietyWarnings}

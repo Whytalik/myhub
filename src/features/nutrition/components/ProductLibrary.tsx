@@ -359,7 +359,7 @@ const handleDeleteAll = () => {
                 <span
                   key={s}
                   className="text-label font-mono px-1.5 py-0.5 rounded"
-                  style={{ backgroundColor: STORE_META[s].color + "1a", color: STORE_META[s].color }}
+                  style={{ backgroundColor: STORE_META[s].color + "22", color: STORE_META[s].color }}
                 >
                   {STORE_META[s].label}
                 </span>
@@ -549,16 +549,16 @@ const handleDeleteAll = () => {
       >
         <div className="space-y-4">
           <div>
-            <label className="text-caption font-mono text-muted tracking-wider">Name</label>
+            <label className="text-caption font-mono text-secondary tracking-wider">Name</label>
             <Input value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))} placeholder="Product name" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Calories / 100g</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Calories / 100g</label>
               <Input type="number" value={formData.caloriesPer100} onChange={(e) => setFormData(prev => ({ ...prev, caloriesPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Category</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Category</label>
               <Select value={formData.category} onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}>
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </Select>
@@ -566,25 +566,25 @@ const handleDeleteAll = () => {
           </div>
           <div className="grid grid-cols-4 gap-3">
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Protein</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Protein</label>
               <Input type="number" value={formData.proteinPer100} onChange={(e) => setFormData(prev => ({ ...prev, proteinPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Fat</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Fat</label>
               <Input type="number" value={formData.fatPer100} onChange={(e) => setFormData(prev => ({ ...prev, fatPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Carbs</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Carbs</label>
               <Input type="number" value={formData.carbsPer100} onChange={(e) => setFormData(prev => ({ ...prev, carbsPer100: e.target.value }))} />
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Fiber</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Fiber</label>
               <Input type="number" value={formData.fiberPer100} onChange={(e) => setFormData(prev => ({ ...prev, fiberPer100: e.target.value }))} />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Unit</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Unit</label>
               <Select value={formData.unit} onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}>
                 <option value="GRAM">g</option>
                 <option value="ML">ml</option>
@@ -592,16 +592,16 @@ const handleDeleteAll = () => {
               </Select>
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Package Amount</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Package Amount</label>
               <Input type="number" value={formData.standardPackageAmount} onChange={(e) => setFormData(prev => ({ ...prev, standardPackageAmount: e.target.value }))} />
             </div>
             <div>
-              <label className="text-caption font-mono text-muted tracking-wider">Price (₴)</label>
+              <label className="text-caption font-mono text-secondary tracking-wider">Price (₴)</label>
               <Input type="number" value={formData.price} onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))} placeholder="0" />
             </div>
           </div>
           <div>
-            <label className="text-caption font-mono text-muted tracking-wider block mb-2">Де купувати</label>
+            <label className="text-caption font-mono text-secondary tracking-wider block mb-2">Де купувати</label>
             <div className="flex flex-wrap gap-2">
               {ALL_STORES.map((s) => {
                 const active = formData.stores.includes(s);
@@ -617,8 +617,8 @@ const handleDeleteAll = () => {
                     }))}
                     className="text-label font-mono px-2.5 py-1 rounded-lg border transition-all"
                     style={active
-                      ? { backgroundColor: STORE_META[s].color + "1a", color: STORE_META[s].color, borderColor: STORE_META[s].color + "55" }
-                      : { borderColor: "var(--border)", color: "var(--muted)" }
+                      ? { backgroundColor: STORE_META[s].color + "22", color: STORE_META[s].color, borderColor: STORE_META[s].color + "66" }
+                      : { borderColor: "var(--color-border)", color: "var(--color-text-muted)" }
                     }
                   >
                     {STORE_META[s].label}
