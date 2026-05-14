@@ -9,6 +9,19 @@ Updated the base UI components and Nutrition space components to ensure inputs r
     - [x] UI updated (Inputs are now space-aware)
     - [x] Verified with `pnpm tsc --noEmit`
 
+## [2026-05-14] — Nutrition Summary Unification & Layout Polish
+
+Unified the "Week Overview" and "Day Nutrition" components into a single shared component for consistency and improved the layout with better spacing.
+
+- **Unified `MacroSummary`**: Extracted the inline nutrition summary from `WeekPlanner` into a shared `MacroSummary` component.
+- **Consistency**: Refactored `WeekSummary` and `WeekPlanner` to use the same `MacroSummary` component, ensuring identical visual style across the application.
+- **Layout Polish**: Added a 20px gap (`gap-x-5`) between macro labels (К, Б, Ж, В, Кл) and their respective progress bars for better readability.
+- **Cleanup**: Deleted the unused `DayNutritionSummary.tsx` component.
+- **Verification**:
+    - [x] Logic implemented (Shared component + Refactoring)
+    - [x] UI updated (Unified style, 20px indent added)
+    - [x] Verified with `pnpm tsc --noEmit && pnpm lint`
+
 ## [2026-05-14] — UI Consistency: Products Skeleton
 
 Updated the products loading skeleton to match the card-based grid layout of the Dishes page.

@@ -11,6 +11,8 @@ import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
 
+import { MacroSummary } from "./MacroSummary"
+
 const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
 const MEAL_COLORS: Record<string, { bg: string; border: string; icon: string; badge: string; hover: string }> = {
@@ -405,36 +407,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 ]
 
                 return (
-                  <div key={person.id} className="flex-1 min-w-0 space-y-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
-                        <span className="text-accent text-micro font-bold">{(person.name || "U").charAt(0).toUpperCase()}</span>
-                      </div>
-                      <span className="text-caption font-semibold text-text-primary truncate">{person.name ?? "Unknown"}</span>
-                    </div>
-                    <div className="space-y-0.5">
-                      {macros.map((m) => {
-                        const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
-                        const color = m.target > 0 
-                          ? m.actual > m.target * 1.1 ? 'bg-red-500' 
-                          : m.actual < m.target * 0.9 ? 'bg-amber-500' 
-                          : 'bg-green-500'
-                          : 'bg-raised'
-
-                        return (
-                          <div key={m.label} className="flex items-center gap-1 min-w-0">
-                            <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
-                            <div className="flex-1 h-1 bg-raised rounded-full overflow-hidden shrink-0">
-                              <div style={{ width: `${pct}%` }} className={`h-full ${color} transition-all`} />
-                            </div>
-                            <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
-                              {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target.toFixed(0)}{m.unit}</span>
-                            </span>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
+                  <MacroSummary
+                    key={person.id}
+                    personName={person.name ?? "Unknown"}
+                    macros={macros}
+                  />
                 )
               })}
             </div>
