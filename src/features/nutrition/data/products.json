@@ -7,9 +7,9 @@
     "carbsPer100": 23,
     "fiberPer100": 2.6,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 102,
+    "price": 85,
     "stores": []
   },
   {
@@ -20,9 +20,9 @@
     "carbsPer100": 14,
     "fiberPer100": 2.4,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 75,
+    "price": 65,
     "stores": []
   },
   {
@@ -33,7 +33,7 @@
     "carbsPer100": 75,
     "fiberPer100": 6.7,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
     "price": 450,
     "stores": []
@@ -46,7 +46,7 @@
     "carbsPer100": 15,
     "fiberPer100": 3.1,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
     "price": 95,
     "stores": []
@@ -59,9 +59,9 @@
     "carbsPer100": 12,
     "fiberPer100": 1.6,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 220,
+    "price": 190,
     "stores": []
   },
   {
@@ -72,9 +72,9 @@
     "carbsPer100": 14,
     "fiberPer100": 2.4,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 315,
+    "price": 300,
     "stores": []
   },
   {
@@ -85,9 +85,9 @@
     "carbsPer100": 13,
     "fiberPer100": 1.4,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 475,
+    "price": 180,
     "stores": []
   },
   {
@@ -98,9 +98,9 @@
     "carbsPer100": 3,
     "fiberPer100": 2.8,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FRUITS",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -113,7 +113,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 100,
     "category": "BAKERY",
-    "price": 117,
+    "price": 100,
     "stores": []
   },
   {
@@ -123,10 +123,10 @@
     "fatPer100": 3,
     "carbsPer100": 53,
     "fiberPer100": 2.3,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 500,
     "category": "BAKERY",
-    "price": 70,
+    "price": 55,
     "stores": []
   },
   {
@@ -136,10 +136,10 @@
     "fatPer100": 3,
     "carbsPer100": 48,
     "fiberPer100": 7,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 500,
     "category": "BAKERY",
-    "price": 107,
+    "price": 95,
     "stores": []
   },
   {
@@ -149,10 +149,10 @@
     "fatPer100": 1,
     "carbsPer100": 57,
     "fiberPer100": 2.4,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 200,
     "category": "BAKERY",
-    "price": 80,
+    "price": 75,
     "stores": []
   },
   {
@@ -162,10 +162,10 @@
     "fatPer100": 4,
     "carbsPer100": 72,
     "fiberPer100": 2.1,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 100,
     "category": "SNACKS",
-    "price": 57,
+    "price": 55,
     "stores": []
   },
   {
@@ -176,9 +176,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 355,
+    "price": 230,
     "stores": []
   },
   {
@@ -189,9 +189,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 275,
+    "price": 145,
     "stores": []
   },
   {
@@ -202,9 +202,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 250,
+    "price": 180,
     "stores": []
   },
   {
@@ -215,9 +215,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 280,
+    "price": 220,
     "stores": []
   },
   {
@@ -228,9 +228,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 500,
+    "price": 380,
     "stores": []
   },
   {
@@ -241,9 +241,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 530,
+    "price": 450,
     "stores": []
   },
   {
@@ -256,7 +256,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 185,
     "category": "FISH",
-    "price": 135,
+    "price": 100,
     "stores": []
   },
   {
@@ -267,9 +267,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FISH",
-    "price": 255,
+    "price": 230,
     "stores": []
   },
   {
@@ -280,9 +280,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FISH",
-    "price": 285,
+    "price": 250,
     "stores": []
   },
   {
@@ -293,9 +293,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FISH",
-    "price": 215,
+    "price": 200,
     "stores": []
   },
   {
@@ -306,9 +306,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "FISH",
-    "price": 800,
+    "price": 700,
     "stores": []
   },
   {
@@ -319,9 +319,9 @@
     "carbsPer100": 1.5,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 650,
+    "price": 550,
     "stores": []
   },
   {
@@ -332,9 +332,9 @@
     "carbsPer100": 3,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 200,
+    "standardPackageAmount": 250,
     "category": "DAIRY",
-    "price": 150,
+    "price": 85,
     "stores": []
   },
   {
@@ -344,10 +344,10 @@
     "fatPer100": 10,
     "carbsPer100": 1,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "DAIRY",
-    "price": 15,
+    "price": 12,
     "stores": []
   },
   {
@@ -357,10 +357,10 @@
     "fatPer100": 11,
     "carbsPer100": 1,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "DAIRY",
-    "price": 15,
+    "price": 12,
     "stores": []
   },
   {
@@ -370,10 +370,10 @@
     "fatPer100": 11,
     "carbsPer100": 1,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "DAIRY",
-    "price": 15,
+    "price": 12,
     "stores": []
   },
   {
@@ -383,10 +383,10 @@
     "fatPer100": 0.2,
     "carbsPer100": 0.7,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 35,
     "category": "DAIRY",
-    "price": 8,
+    "price": 7,
     "stores": []
   },
   {
@@ -397,9 +397,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "DAIRY",
-    "price": 550,
+    "price": 500,
     "stores": []
   },
   {
@@ -425,7 +425,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 100,
     "category": "DAIRY",
-    "price": 135,
+    "price": 130,
     "stores": []
   },
   {
@@ -436,7 +436,7 @@
     "carbsPer100": 1.3,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "DAIRY",
     "price": 700,
     "stores": []
@@ -464,7 +464,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 300,
     "category": "SAUCES",
-    "price": 150,
+    "price": 160,
     "stores": []
   },
   {
@@ -475,9 +475,9 @@
     "carbsPer100": 4.7,
     "fiberPer100": 0,
     "unit": "ML",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "DAIRY",
-    "price": 92,
+    "price": 85,
     "stores": []
   },
   {
@@ -488,7 +488,7 @@
     "carbsPer100": 4.7,
     "fiberPer100": 0,
     "unit": "ML",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "DAIRY",
     "price": 80,
     "stores": []
@@ -501,7 +501,7 @@
     "carbsPer100": 3.9,
     "fiberPer100": 1.2,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 200,
     "stores": []
@@ -514,9 +514,9 @@
     "carbsPer100": 7,
     "fiberPer100": 2.5,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 230,
+    "price": 220,
     "stores": []
   },
   {
@@ -527,9 +527,9 @@
     "carbsPer100": 3,
     "fiberPer100": 0.5,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 170,
+    "price": 160,
     "stores": []
   },
   {
@@ -542,7 +542,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 700,
     "category": "VEGETABLES",
-    "price": 200,
+    "price": 180,
     "stores": []
   },
   {
@@ -552,10 +552,10 @@
     "fatPer100": 0.2,
     "carbsPer100": 7,
     "fiberPer100": 2.6,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 100,
     "category": "VEGETABLES",
-    "price": 107,
+    "price": 95,
     "stores": []
   },
   {
@@ -565,10 +565,10 @@
     "fatPer100": 0.1,
     "carbsPer100": 3,
     "fiberPer100": 1.2,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 500,
     "category": "VEGETABLES",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -579,9 +579,9 @@
     "carbsPer100": 9,
     "fiberPer100": 1.7,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 95,
+    "price": 100,
     "stores": []
   },
   {
@@ -592,7 +592,7 @@
     "carbsPer100": 9,
     "fiberPer100": 1.7,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 65,
     "stores": []
@@ -605,7 +605,7 @@
     "carbsPer100": 10,
     "fiberPer100": 2.8,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 75,
     "stores": []
@@ -618,9 +618,9 @@
     "carbsPer100": 15,
     "fiberPer100": 2.5,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 150,
+    "price": 160,
     "stores": []
   },
   {
@@ -631,7 +631,7 @@
     "carbsPer100": 17,
     "fiberPer100": 2.2,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 65,
     "stores": []
@@ -644,9 +644,9 @@
     "carbsPer100": 3.1,
     "fiberPer100": 1,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 115,
+    "price": 120,
     "stores": []
   },
   {
@@ -657,9 +657,9 @@
     "carbsPer100": 6,
     "fiberPer100": 2.1,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 265,
+    "price": 280,
     "stores": []
   },
   {
@@ -670,7 +670,7 @@
     "carbsPer100": 5.8,
     "fiberPer100": 2.5,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 50,
     "stores": []
@@ -683,7 +683,7 @@
     "carbsPer100": 2.9,
     "fiberPer100": 1.2,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 100,
     "stores": []
@@ -698,7 +698,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 500,
     "category": "VEGETABLES",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -711,7 +711,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 400,
     "category": "VEGETABLES",
-    "price": 200,
+    "price": 180,
     "stores": []
   },
   {
@@ -724,7 +724,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 400,
     "category": "VEGETABLES",
-    "price": 192,
+    "price": 170,
     "stores": []
   },
   {
@@ -735,9 +735,9 @@
     "carbsPer100": 3.3,
     "fiberPer100": 1,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "VEGETABLES",
-    "price": 230,
+    "price": 220,
     "stores": []
   },
   {
@@ -748,9 +748,9 @@
     "carbsPer100": 72,
     "fiberPer100": 10,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 147,
+    "price": 110,
     "stores": []
   },
   {
@@ -761,9 +761,9 @@
     "carbsPer100": 79,
     "fiberPer100": 1.3,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 112,
+    "price": 100,
     "stores": []
   },
   {
@@ -774,9 +774,9 @@
     "carbsPer100": 79,
     "fiberPer100": 1.3,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -787,9 +787,9 @@
     "carbsPer100": 76,
     "fiberPer100": 12,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 145,
+    "price": 130,
     "stores": []
   },
   {
@@ -802,7 +802,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 400,
     "category": "GRAINS",
-    "price": 155,
+    "price": 120,
     "stores": []
   },
   {
@@ -813,9 +813,9 @@
     "carbsPer100": 71,
     "fiberPer100": 10.7,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 120,
+    "price": 100,
     "stores": []
   },
   {
@@ -826,9 +826,9 @@
     "carbsPer100": 76,
     "fiberPer100": 2.7,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 95,
+    "price": 70,
     "stores": []
   },
   {
@@ -839,9 +839,9 @@
     "carbsPer100": 76,
     "fiberPer100": 2.4,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -852,9 +852,9 @@
     "carbsPer100": 60,
     "fiberPer100": 10.8,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 185,
+    "price": 160,
     "stores": []
   },
   {
@@ -865,9 +865,9 @@
     "carbsPer100": 61,
     "fiberPer100": 15,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "GRAINS",
-    "price": 170,
+    "price": 150,
     "stores": []
   },
   {
@@ -880,7 +880,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 400,
     "category": "GRAINS",
-    "price": 115,
+    "price": 110,
     "stores": []
   },
   {
@@ -906,7 +906,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 50,
     "category": "SPICES",
-    "price": 112,
+    "price": 110,
     "stores": []
   },
   {
@@ -916,8 +916,8 @@
     "fatPer100": 0.1,
     "carbsPer100": 72,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 2,
     "category": "SPICES",
     "price": 50,
     "stores": []
@@ -932,7 +932,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 500,
     "category": "NUTS",
-    "price": 150,
+    "price": 140,
     "stores": []
   },
   {
@@ -945,7 +945,7 @@
     "unit": "ML",
     "standardPackageAmount": 250,
     "category": "SAUCES",
-    "price": 155,
+    "price": 150,
     "stores": []
   },
   {
@@ -956,7 +956,7 @@
     "carbsPer100": 33,
     "fiberPer100": 2.1,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "SPICES",
     "price": 350,
     "stores": []
@@ -969,9 +969,9 @@
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "ML",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "OILS",
-    "price": 195,
+    "price": 180,
     "stores": []
   },
   {
@@ -984,7 +984,7 @@
     "unit": "ML",
     "standardPackageAmount": 500,
     "category": "OILS",
-    "price": 600,
+    "price": 550,
     "stores": []
   },
   {
@@ -997,7 +997,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 500,
     "category": "NUTS",
-    "price": 285,
+    "price": 260,
     "stores": []
   },
   {
@@ -1010,7 +1010,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 200,
     "category": "SAUCES",
-    "price": 87,
+    "price": 85,
     "stores": []
   },
   {
@@ -1023,7 +1023,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 100,
     "category": "SPICES",
-    "price": 115,
+    "price": 110,
     "stores": []
   },
   {
@@ -1036,7 +1036,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 20,
     "category": "SPICES",
-    "price": 92,
+    "price": 95,
     "stores": []
   },
   {
@@ -1046,10 +1046,10 @@
     "fatPer100": 0.6,
     "carbsPer100": 2.7,
     "fiberPer100": 1.6,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "SPICES",
-    "price": 92,
+    "price": 85,
     "stores": []
   },
   {
@@ -1062,7 +1062,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 100,
     "category": "SPICES",
-    "price": 145,
+    "price": 140,
     "stores": []
   },
   {
@@ -1085,8 +1085,8 @@
     "fatPer100": 0.8,
     "carbsPer100": 6,
     "fiberPer100": 3.3,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "SPICES",
     "price": 65,
     "stores": []
@@ -1098,8 +1098,8 @@
     "fatPer100": 1.1,
     "carbsPer100": 7,
     "fiberPer100": 2.1,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "SPICES",
     "price": 65,
     "stores": []
@@ -1114,7 +1114,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 170,
     "category": "SAUCES",
-    "price": 100,
+    "price": 95,
     "stores": []
   },
   {
@@ -1127,7 +1127,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 350,
     "category": "SAUCES",
-    "price": 160,
+    "price": 150,
     "stores": []
   },
   {
@@ -1137,10 +1137,10 @@
     "fatPer100": 0.7,
     "carbsPer100": 5,
     "fiberPer100": 0.3,
-    "unit": "PIECE",
-    "standardPackageAmount": 10,
+    "unit": "GRAM",
+    "standardPackageAmount": 25,
     "category": "SPICES",
-    "price": 265,
+    "price": 280,
     "stores": []
   },
   {
@@ -1153,7 +1153,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 350,
     "category": "SAUCES",
-    "price": 145,
+    "price": 140,
     "stores": []
   },
   {
@@ -1166,7 +1166,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 350,
     "category": "SAUCES",
-    "price": 160,
+    "price": 150,
     "stores": []
   },
   {
@@ -1179,7 +1179,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 350,
     "category": "SAUCES",
-    "price": 145,
+    "price": 140,
     "stores": []
   },
   {
@@ -1192,7 +1192,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 190,
     "category": "SAUCES",
-    "price": 315,
+    "price": 300,
     "stores": []
   },
   {
@@ -1203,9 +1203,9 @@
     "carbsPer100": 100,
     "fiberPer100": 0,
     "unit": "GRAM",
-    "standardPackageAmount": 100,
+    "standardPackageAmount": 1000,
     "category": "SNACKS",
-    "price": 107,
+    "price": 100,
     "stores": []
   },
   {
@@ -1231,7 +1231,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 200,
     "category": "NUTS",
-    "price": 315,
+    "price": 220,
     "stores": []
   },
   {
@@ -1244,7 +1244,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 300,
     "category": "SAUCES",
-    "price": 145,
+    "price": 140,
     "stores": []
   },
   {
@@ -1257,7 +1257,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 200,
     "category": "SAUCES",
-    "price": 160,
+    "price": 150,
     "stores": []
   },
   {
@@ -1270,7 +1270,7 @@
     "unit": "ML",
     "standardPackageAmount": 250,
     "category": "BEVERAGES",
-    "price": 107,
+    "price": 100,
     "stores": []
   },
   {
@@ -1296,7 +1296,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 50,
     "category": "SPICES",
-    "price": 87,
+    "price": 85,
     "stores": []
   },
   {
@@ -1306,8 +1306,8 @@
     "fatPer100": 0.4,
     "carbsPer100": 9,
     "fiberPer100": 1.5,
-    "unit": "PIECE",
-    "standardPackageAmount": 1,
+    "unit": "GRAM",
+    "standardPackageAmount": 50,
     "category": "SPICES",
     "price": 65,
     "stores": []
@@ -1322,7 +1322,7 @@
     "unit": "GRAM",
     "standardPackageAmount": 300,
     "category": "SAUCES",
-    "price": 315,
+    "price": 300,
     "stores": []
   },
   {
@@ -1332,10 +1332,10 @@
     "fatPer100": 0,
     "carbsPer100": 0.1,
     "fiberPer100": 0,
-    "unit": "PIECE",
-    "standardPackageAmount": 100,
+    "unit": "GRAM",
+    "standardPackageAmount": 200,
     "category": "BEVERAGES",
-    "price": 170,
+    "price": 160,
     "stores": []
   }
 ]

@@ -1,3 +1,16 @@
+## [2026-05-14] — Data: Corrected Product Prices & Package Sizes
+
+Updated the `products.json` dataset to fix incorrect prices and package sizes, aligning them with the current market info.
+
+- **Standardized Units**: All `standardPackageAmount` values are now in GRAMS or ML.
+- **Realistic Portions**: Set realistic purchase units (e.g., 1000g for bulk items like meat/grains, 50g for single eggs, 500g for bread loaves).
+- **Price Alignment**: Synchronized all `price` fields with the upper bound of the range in `product-info.ts` (e.g., Chicken Fillet at 230 грн/кг, Eggs at 12 грн/шт).
+- **Unit Normalization**: Converted all products to use `GRAM` or `ML` units for consistent weight-based calculations, including items previously marked as `PIECE` (Bread, Eggs, Iceberg, etc.).
+- **Verification**:
+    - [x] Logic implemented (JSON data updated)
+    - [x] UI updated (Library reflects corrected units and prices)
+    - [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-14] — UI: Rolled back aggressive input borders
 
 Reverted the aggressive border opacity changes to restore the subtle, clean aesthetic preferred for Calm OS.
