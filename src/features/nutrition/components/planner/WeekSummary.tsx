@@ -22,12 +22,12 @@ function MiniBar({ label, actual, target, unit, color }: { label: string; actual
   const pct = target > 0 ? Math.min((actual / target) * 100, 100) : 0
 
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1">
       <span className="text-micro font-mono text-text-muted w-3 shrink-0">{label}</span>
-      <div className="flex-1 h-0.5 bg-raised rounded-full overflow-hidden">
+      <div className="w-20 h-px bg-raised rounded-full overflow-hidden shrink-0">
         <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-micro font-mono text-text-secondary w-16 text-right shrink-0">
+      <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
         {actual.toFixed(0)}{unit}<span className="text-text-muted">/{target.toFixed(0)}{unit}</span>
       </span>
     </div>

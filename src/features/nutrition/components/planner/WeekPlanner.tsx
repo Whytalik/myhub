@@ -404,23 +404,23 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 ]
 
                 return (
-                  <div key={person.id} className="flex-1 space-y-1.5">
+                  <div key={person.id} className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
                         <span className="text-accent text-micro font-bold">{(person.name || "U").charAt(0).toUpperCase()}</span>
                       </div>
-                      <span className="text-caption font-semibold text-text-primary">{person.name ?? "Unknown"}</span>
+                      <span className="text-caption font-semibold text-text-primary truncate">{person.name ?? "Unknown"}</span>
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                       {macros.map((m) => {
                         const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
                         return (
-                          <div key={m.label} className="flex items-center gap-1.5">
-                            <span className="text-micro font-mono text-text-muted w-4 shrink-0">{m.label}</span>
-                            <div className="flex-1 h-1 bg-raised rounded-full overflow-hidden">
+                          <div key={m.label} className="flex items-center gap-1">
+                            <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
+                            <div className="w-20 h-px bg-raised rounded-full overflow-hidden shrink-0">
                               <div style={{ width: `${pct}%` }} className={`h-full ${m.color} transition-all`} />
                             </div>
-                            <span className="text-micro font-mono text-text-secondary w-16 text-right shrink-0">
+                            <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
                               {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target}{m.unit}</span>
                             </span>
                           </div>
