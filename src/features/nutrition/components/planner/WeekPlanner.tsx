@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateDishEntryAlternative, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
@@ -688,7 +688,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 <textarea
                   value={localCooking}
                   onChange={(e) => setLocalCooking(e.target.value)}
-                  className="w-full min-h-[160px] bg-background border border-border rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50 font-mono leading-relaxed"
+                  className="w-full min-h-[160px] bg-background border border-border-strong rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50 font-mono leading-relaxed"
                   placeholder={"1. Зварити рис — 200г\n2. Запекти курку — 500г, 180°C, 40хв\n3. Нарізати овочі для салату\n4. Змішати соус..."}
                   autoFocus
                 />
@@ -749,7 +749,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               <textarea
                 value={localNotes}
                 onChange={(e) => setLocalNotes(e.target.value)}
-                className="w-full min-h-[120px] bg-background border border-border rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50"
+                className="w-full min-h-[120px] bg-background border border-border-strong rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50"
                 placeholder="Write your notes for this week plan..."
                 autoFocus
               />

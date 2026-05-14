@@ -128,7 +128,7 @@ export function JsonImportModal({ isOpen, onClose, onImported }: JsonImportModal
 
         <div className="relative">
           <textarea
-            className="w-full h-64 bg-surface border border-border rounded-xl p-3 font-mono text-sm text-text resize-none focus:outline-none focus:border-accent"
+            className="w-full h-64 bg-surface border border-border-strong rounded-xl p-3 font-mono text-sm text-text resize-none focus:outline-none focus:border-accent"
             placeholder='[{"name": "Product", "caloriesPer100": 100, ...}]'
             value={jsonInput}
             onChange={(e) => setJsonInput(e.target.value)}

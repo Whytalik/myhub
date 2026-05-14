@@ -127,7 +127,7 @@ export function DishImportModal({ isOpen, onClose, onImported }: DishImportModal
 
         <div className="relative">
           <textarea
-            className="w-full h-64 bg-surface border border-border rounded-xl p-3 font-mono text-xs text-text resize-none focus:outline-none focus:border-accent"
+            className="w-full h-64 bg-surface border border-border-strong rounded-xl p-3 font-mono text-xs text-text resize-none focus:outline-none focus:border-accent"
             placeholder='[{"name": "Dish", "type": "MAIN", "ingredients": [...]}]'
             value={jsonInput}
             onChange={(e) => setJsonInput(e.target.value)}

@@ -10,7 +10,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const baseStyles = "flex h-8 w-full rounded-md bg-transparent px-3 py-1 text-note font-mono uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer text-inherit";
 
     const variants = {
-      default: "border border-border bg-surface/50",
+      default: "border border-border-strong bg-surface/50 hover:border-border-strong",
       inline: "border border-border/50 bg-raised h-auto py-0.5 px-2",
     };
 
