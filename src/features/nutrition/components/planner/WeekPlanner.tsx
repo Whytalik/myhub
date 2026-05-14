@@ -481,10 +481,10 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               </div>
             </div>
 
-            {/* Meal body — table: dish | person1 grams | person2 grams */}
+            {/* Meal body — table: Страва | Віталій | Олеся */}
             <div className="p-4">
-              {/* Collect all unique dishes across persons */}
               {(() => {
+                const personNames = slotGroup.map(s => s.personName || "")
                 const dishMap = new Map<string, { dishName: string; nutrition: { kcal: number; protein: number; fat: number; carbs: number }; persons: { personId: string; personName: string; entryId: string; slotId: string; slotLocked: boolean; totalWeight: number; ingredients: { ingredientIndex: number; productName: string; weight: number; inputState: string; rawWeight: number; cookedWeight: number; coefficient: number; cookingMethodName: string | null; unit: string | null; productId: string; alternatives: string[]; selectedAlternatives: Record<string, string | null> }[] }[] }>()
 
                 slotGroup.forEach(slot => {
@@ -513,15 +513,20 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 })
 
                 return (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {Array.from(dishMap.entries()).map(([dishId, dish]) => {
                       const dishKey = `meal-${dishId}`
                       const isExpanded = expandedDishes.has(dishKey)
 
+                      // Build ingredient rows: match by ingredientIndex
+                      const allIndices = new Set<number>()
+                      dish.persons.forEach(p => p.ingredients.forEach(i => allIndices.add(i.ingredientIndex)))
+                      const sortedIndices = [...allIndices].sort((a, b) => a - b)
+
                       return (
                         <div key={dishId} className={`border border-border rounded-xl overflow-hidden ${color.bg}`}>
-                          {/* Dish row header */}
-                          <div className={`flex items-center gap-3 px-4 py-2.5 border-b border-border/50 ${color.hover}`}>
+                          {/* Dish header row */}
+                          <div className={`flex items-center gap-3 px-4 py-2 border-b border-border/50 ${color.hover}`}>
                             <button
                               onClick={() => toggleDish(dishKey)}
                               className="text-text-muted hover:text-text-primary p-0 shrink-0"
@@ -530,10 +535,6 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                             </button>
                             <span className="text-note font-medium text-text-primary flex-1">{dish.dishName}</span>
                             <span className={`text-label font-mono px-2 py-0.5 rounded-md ${color.badge}`}>{dish.nutrition.kcal.toFixed(0)}</span>
-                            <span className="text-caption font-mono text-text-muted">
-                              Б:{dish.nutrition.protein.toFixed(0)} Ж:{dish.nutrition.fat.toFixed(0)} В:{dish.nutrition.carbs.toFixed(0)}
-                            </span>
-                            {/* Delete button (removes from first person's slot) */}
                             {dish.persons.length > 0 && (
                               <Button
                                 variant="ghost"
@@ -550,62 +551,68 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                             )}
                           </div>
 
-                          {/* Person columns */}
-                          <div className="grid grid-cols-2 divide-x divide-border/50">
-                            {dish.persons.map(person => (
-                              <div key={person.personId} className="p-3">
-                                <div className="text-caption font-semibold text-text-primary mb-2">{person.personName} — {person.totalWeight.toFixed(0)}г</div>
-                                <div className="space-y-1">
-                                  {person.ingredients.map(ing => {
-                                    const selectedAlts = ing.selectedAlternatives || {}
-                                    const currentProductId = selectedAlts[String(ing.ingredientIndex)] || ing.productId
-                                    const isAlternative = currentProductId !== ing.productId
-                                    const isEditingThis = editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === ing.ingredientIndex
-
-                                    return (
-                                      <div key={ing.ingredientIndex} className="flex items-center justify-between text-caption py-0.5">
-                                        <span className={`flex-1 truncate ${isAlternative ? 'text-accent/70' : 'text-text-muted'}`}>
-                                          {ing.productName}
-                                        </span>
-                                        {isEditingThis ? (
-                                          <div className="flex items-center gap-1 shrink-0 ml-2">
-                                            <input
-                                              type="number"
-                                              className="w-14 h-5 text-caption font-mono bg-background border rounded px-1"
-                                              value={editingIngredient.weight}
-                                              autoFocus
-                                              onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
-                                              onKeyDown={(e) => {
-                                                if (e.key === "Enter") {
-                                                  const w = parseFloat(editingIngredient.weight)
-                                                  if (w > 0) {
-                                                    startTransition(async () => {
-                                                      const result = await updateDishEntryIngredient(person.entryId, ing.ingredientIndex, w)
-                                                      if (result.success) { toast.success("Weight updated"); setEditingIngredient(null) }
-                                                    })
-                                                  }
-                                                }
-                                                if (e.key === "Escape") setEditingIngredient(null)
-                                              }}
-                                            />
-                                            <span className="text-text-muted">г</span>
-                                          </div>
-                                        ) : (
-                                          <button
-                                            className="font-mono text-text-muted hover:text-accent underline decoration-dotted shrink-0 ml-2"
-                                            onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: ing.ingredientIndex, weight: String(ing.weight) })}
-                                          >
-                                            {ing.weight.toFixed(0)}г
-                                            {ing.inputState === "COOKED" && <span className="text-[10px] text-accent/60 ml-0.5">г</span>}
-                                          </button>
-                                        )}
-                                      </div>
-                                    )
-                                  })}
-                                </div>
-                              </div>
+                          {/* Table header */}
+                          <div className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/30`}>
+                            <div className="px-4 py-1.5 text-caption font-mono text-text-muted uppercase">Продукт</div>
+                            {personNames.map(name => (
+                              <div key={name} className="px-4 py-1.5 text-caption font-semibold text-text-primary border-l border-border/30">{name}</div>
                             ))}
                           </div>
+
+                          {/* Ingredient rows */}
+                          {sortedIndices.map(idx => {
+                            const personIngredients = dish.persons.map(p => ({
+                              person: p,
+                              ing: p.ingredients.find(i => i.ingredientIndex === idx),
+                            }))
+                            const productName = personIngredients.find(p => p.ing)?.ing?.productName || ""
+                            const isEditingAny = personIngredients.some(p => p.ing && editingIngredient?.entryId === p.person.entryId && editingIngredient?.ingredientIndex === idx)
+
+                            return (
+                              <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
+                                <div className="px-4 py-1.5 text-caption text-text-muted">{productName}</div>
+                                {personIngredients.map(({ person, ing }) => (
+                                  <div key={person.personId} className="px-4 py-1.5 border-l border-border/20">
+                                    {ing ? (
+                                      isEditingAny && editingIngredient?.entryId === person.entryId && editingIngredient?.ingredientIndex === idx ? (
+                                        <div className="flex items-center gap-1">
+                                          <input
+                                            type="number"
+                                            className="w-14 h-5 text-caption font-mono bg-background border border-border-strong rounded px-1"
+                                            value={editingIngredient.weight}
+                                            autoFocus
+                                            onChange={(e) => setEditingIngredient({ ...editingIngredient, weight: e.target.value })}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter") {
+                                                const w = parseFloat(editingIngredient.weight)
+                                                if (w > 0) {
+                                                  startTransition(async () => {
+                                                    const result = await updateDishEntryIngredient(person.entryId, idx, w)
+                                                    if (result.success) { toast.success("Weight updated"); setEditingIngredient(null) }
+                                                  })
+                                                }
+                                              }
+                                              if (e.key === "Escape") setEditingIngredient(null)
+                                            }}
+                                          />
+                                          <span className="text-text-muted">г</span>
+                                        </div>
+                                      ) : (
+                                        <button
+                                          className="text-caption font-mono text-text-muted hover:text-accent underline decoration-dotted"
+                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: String(ing.weight) })}
+                                        >
+                                          {ing.weight.toFixed(0)}г
+                                        </button>
+                                      )
+                                    ) : (
+                                      <span className="text-caption text-text-muted/30">—</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )
+                          })}
                         </div>
                       )
                     })}
