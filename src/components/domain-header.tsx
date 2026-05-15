@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSpace } from "./space-provider";
 import { useSidebar } from "./sidebar-provider";
 import {
@@ -11,9 +12,14 @@ import {
   Menu,
   X,
   Sparkles,
-  Lock
+  Lock,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { getSpaceFromPath } from "@/lib/spaces";
+import { GUIDE_DATA } from "@/lib/guide-data";
+import { GuideDrawer } from "@/components/guide-drawer";
 
 const DOMAIN_STATUS: Record<string, "active" | "locked"> = {
   operations: "active",
@@ -34,6 +40,9 @@ const DOMAINS_CONFIG = [
 export function DomainHeader() {
   const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
+  const pathname = usePathname();
+  const [guideOpen, setGuideOpen] = useState(false);
+  const hasGuide = !!GUIDE_DATA[getSpaceFromPath(pathname)];
 
   const visibleDomains = DOMAINS_CONFIG;
 
@@ -99,8 +108,18 @@ export function DomainHeader() {
       </div>
 
       <div className="hidden lg:flex items-center gap-3">
-        {/* Desktop actions placeholder */}
+        {hasGuide && (
+          <button
+            onClick={() => setGuideOpen(true)}
+            className="inline-flex items-center gap-2 h-8 px-4 rounded-lg text-note font-medium border border-border text-text-secondary hover:text-text-primary hover:bg-surface-hover hover:border-border-strong transition-all duration-200"
+          >
+            <BookOpen size={13} />
+            Guide
+          </button>
+        )}
       </div>
+
+      <GuideDrawer isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </header>
   );
 }
