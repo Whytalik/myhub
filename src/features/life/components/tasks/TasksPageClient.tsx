@@ -7,7 +7,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { instantDuplicateTaskAction, instantAddSubtaskAction } from "@/features/life/actions/task-actions";
+import { instantDuplicateTaskAction } from "@/features/life/actions/task-actions";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { TaskTree } from "./TaskTree";
 import { SphereGrid } from "./SphereGrid";
@@ -74,14 +74,11 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
   const handleAddChild = (parent: TaskData) => {
     checkPrivate(parent, () => {
-      startActionTransition(async () => {
-        const result = await instantAddSubtaskAction(parent.id, parent.sphereId);
-        if (result.success) {
-          toast.success("Subtask added instantly");
-        } else {
-          toast.error(result.error || "Failed to add subtask");
-        }
-      });
+      setEditingTask(null);
+      setParentTask(parent);
+      setIsDuplicate(false);
+      setDialogVersion(v => v + 1);
+      setTaskFormOpen(true);
     }, 'addChild');
   };
 
@@ -328,14 +325,11 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                       }
                     });
                   } else if (type === 'addChild') {
-                    startActionTransition(async () => {
-                      const result = await instantAddSubtaskAction(task.id, task.sphereId);
-                      if (result.success) {
-                        toast.success("Subtask added instantly");
-                      } else {
-                        toast.error(result.error || "Failed to add subtask");
-                      }
-                    });
+                    setEditingTask(null);
+                    setParentTask(task);
+                    setIsDuplicate(false);
+                    setDialogVersion(v => v + 1);
+                    setTaskFormOpen(true);
                   }
                 } else {
                   setPasswordError(true);
