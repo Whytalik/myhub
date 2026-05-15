@@ -2,53 +2,38 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/page-header";
-import { getSchedulesForWeek } from "@/features/life/services/schedule-service";
+import { getAllTemplates } from "@/features/life/services/schedule-service";
 import { WeekScheduleClient } from "@/features/life/components/WeekScheduleClient";
 import type { DayScheduleData, DayType } from "@/features/life/types";
 
 export const metadata: Metadata = {
-  title: "Week Schedule",
+  title: "Week Template",
 };
-
-function getMonday(date: Date): Date {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
 
 export default async function WeekSchedulePage() {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) redirect("/login");
 
-  const weekStart = getMonday(new Date());
-  const raw = await getSchedulesForWeek(userId, weekStart);
+  const raw = await getAllTemplates(userId);
 
-  const schedules: DayScheduleData[] = raw.map((s) => ({
-    id: s.id,
-    date: s.date,
-    dayType: s.dayType as DayType,
-    createdAt: s.createdAt,
-    updatedAt: s.updatedAt,
+  const templates: DayScheduleData[] = raw.map((t) => ({
+    id: t.id,
+    dayOfWeek: t.dayOfWeek,
+    dayType: t.dayType as DayType,
+    createdAt: t.createdAt,
+    updatedAt: t.updatedAt,
   }));
-
-  const weekStartStr = weekStart.toISOString();
 
   return (
     <div className="px-8 py-8 flex flex-col gap-6">
       <PageHeader
-        breadcrumb={[{ label: "life space", href: "/life" }, { label: "week schedule" }]}
-        title="Week Schedule"
-        description="Plan your week — routines auto-load in the Journal."
+        breadcrumb={[{ label: "life space", href: "/life" }, { label: "week template" }]}
+        title="Week Template"
+        description="Set your default day types — auto-loaded in the Journal each day."
       />
 
-      <WeekScheduleClient
-        initialSchedules={schedules}
-        initialWeekStart={weekStartStr}
-      />
+      <WeekScheduleClient initialTemplates={templates} />
     </div>
   );
 }

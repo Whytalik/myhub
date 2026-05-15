@@ -186,19 +186,19 @@ export interface HabitCompletionData {
   habitId: string;
 }
 
-// --- Day Schedule ---
+// --- Week Template ---
 export type DayType = "regular" | "train_am" | "train_pm" | "fun";
 
 export interface DayScheduleData {
   id: string;
-  date: Date;
+  dayOfWeek: number; // 0=Mon..6=Sun
   dayType: DayType;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface UpsertDayScheduleInput {
-  date: string; // "YYYY-MM-DD"
+  dayOfWeek: number; // 0=Mon..6=Sun
   dayType: DayType;
 }
 

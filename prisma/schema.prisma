@@ -38,19 +38,19 @@ model User {
   visions                 Vision[]
   weekPlans               WeekPlan[]
   wishlistItems           WishlistItem[]
-  daySchedules            DaySchedule[]
+  weekTemplates           WeekTemplate[]
 }
 
-model DaySchedule {
+model WeekTemplate {
   id        String   @id @default(cuid())
   userId    String
-  date      DateTime @db.Date
+  dayOfWeek Int      // 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun
   dayType   String   @default("regular")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, date])
+  @@unique([userId, dayOfWeek])
   @@index([userId])
 }
 

@@ -15,10 +15,10 @@ export async function upsertDayScheduleAction(
   });
 }
 
-export async function getSchedulesForWeekAction(
-  weekStart: string
-): Promise<ActionResult<Awaited<ReturnType<typeof scheduleService.getSchedulesForWeek>>>> {
+export async function getAllTemplatesAction(): Promise<
+  ActionResult<Awaited<ReturnType<typeof scheduleService.getAllTemplates>>>
+> {
   return withAction(async (userId) => {
-    return scheduleService.getSchedulesForWeek(userId, new Date(weekStart));
+    return scheduleService.getAllTemplates(userId);
   });
 }

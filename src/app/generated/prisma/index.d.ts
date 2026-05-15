@@ -19,10 +19,10 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model DaySchedule
+ * Model WeekTemplate
  * 
  */
-export type DaySchedule = $Result.DefaultSelection<Prisma.$DaySchedulePayload>
+export type WeekTemplate = $Result.DefaultSelection<Prisma.$WeekTemplatePayload>
 /**
  * Model PushSubscription
  * 
@@ -714,14 +714,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.daySchedule`: Exposes CRUD operations for the **DaySchedule** model.
+   * `prisma.weekTemplate`: Exposes CRUD operations for the **WeekTemplate** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more DaySchedules
-    * const daySchedules = await prisma.daySchedule.findMany()
+    * // Fetch zero or more WeekTemplates
+    * const weekTemplates = await prisma.weekTemplate.findMany()
     * ```
     */
-  get daySchedule(): Prisma.DayScheduleDelegate<ExtArgs, ClientOptions>;
+  get weekTemplate(): Prisma.WeekTemplateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.pushSubscription`: Exposes CRUD operations for the **PushSubscription** model.
@@ -1587,7 +1587,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    DaySchedule: 'DaySchedule',
+    WeekTemplate: 'WeekTemplate',
     PushSubscription: 'PushSubscription',
     Account: 'Account',
     Session: 'Session',
@@ -1646,7 +1646,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "daySchedule" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1724,77 +1724,77 @@ export namespace Prisma {
           }
         }
       }
-      DaySchedule: {
-        payload: Prisma.$DaySchedulePayload<ExtArgs>
-        fields: Prisma.DayScheduleFieldRefs
+      WeekTemplate: {
+        payload: Prisma.$WeekTemplatePayload<ExtArgs>
+        fields: Prisma.WeekTemplateFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.DayScheduleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload> | null
+            args: Prisma.WeekTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.DayScheduleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           findFirst: {
-            args: Prisma.DayScheduleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload> | null
+            args: Prisma.WeekTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.DayScheduleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           findMany: {
-            args: Prisma.DayScheduleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+            args: Prisma.WeekTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>[]
           }
           create: {
-            args: Prisma.DayScheduleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           createMany: {
-            args: Prisma.DayScheduleCreateManyArgs<ExtArgs>
+            args: Prisma.WeekTemplateCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.DayScheduleCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+            args: Prisma.WeekTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>[]
           }
           delete: {
-            args: Prisma.DayScheduleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           update: {
-            args: Prisma.DayScheduleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           deleteMany: {
-            args: Prisma.DayScheduleDeleteManyArgs<ExtArgs>
+            args: Prisma.WeekTemplateDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.DayScheduleUpdateManyArgs<ExtArgs>
+            args: Prisma.WeekTemplateUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.DayScheduleUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+            args: Prisma.WeekTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>[]
           }
           upsert: {
-            args: Prisma.DayScheduleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+            args: Prisma.WeekTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WeekTemplatePayload>
           }
           aggregate: {
-            args: Prisma.DayScheduleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDaySchedule>
+            args: Prisma.WeekTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWeekTemplate>
           }
           groupBy: {
-            args: Prisma.DayScheduleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DayScheduleGroupByOutputType>[]
+            args: Prisma.WeekTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WeekTemplateGroupByOutputType>[]
           }
           count: {
-            args: Prisma.DayScheduleCountArgs<ExtArgs>
-            result: $Utils.Optional<DayScheduleCountAggregateOutputType> | number
+            args: Prisma.WeekTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<WeekTemplateCountAggregateOutputType> | number
           }
         }
       }
@@ -5089,7 +5089,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    daySchedule?: DayScheduleOmit
+    weekTemplate?: WeekTemplateOmit
     pushSubscription?: PushSubscriptionOmit
     account?: AccountOmit
     session?: SessionOmit
@@ -5233,7 +5233,7 @@ export namespace Prisma {
     visions: number
     weekPlans: number
     wishlistItems: number
-    daySchedules: number
+    weekTemplates: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5257,7 +5257,7 @@ export namespace Prisma {
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     weekPlans?: boolean | UserCountOutputTypeCountWeekPlansArgs
     wishlistItems?: boolean | UserCountOutputTypeCountWishlistItemsArgs
-    daySchedules?: boolean | UserCountOutputTypeCountDaySchedulesArgs
+    weekTemplates?: boolean | UserCountOutputTypeCountWeekTemplatesArgs
   }
 
   // Custom InputTypes
@@ -5414,8 +5414,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountDaySchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayScheduleWhereInput
+  export type UserCountOutputTypeCountWeekTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeekTemplateWhereInput
   }
 
 
@@ -6393,7 +6393,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
-    daySchedules?: boolean | User$daySchedulesArgs<ExtArgs>
+    weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6458,7 +6458,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
-    daySchedules?: boolean | User$daySchedulesArgs<ExtArgs>
+    weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6487,7 +6487,7 @@ export namespace Prisma {
       visions: Prisma.$VisionPayload<ExtArgs>[]
       weekPlans: Prisma.$WeekPlanPayload<ExtArgs>[]
       wishlistItems: Prisma.$WishlistItemPayload<ExtArgs>[]
-      daySchedules: Prisma.$DaySchedulePayload<ExtArgs>[]
+      weekTemplates: Prisma.$WeekTemplatePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6914,7 +6914,7 @@ export namespace Prisma {
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weekPlans<T extends User$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     wishlistItems<T extends User$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    daySchedules<T extends User$daySchedulesArgs<ExtArgs> = {}>(args?: Subset<T, User$daySchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    weekTemplates<T extends User$weekTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$weekTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7827,27 +7827,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.daySchedules
+   * User.weekTemplates
    */
-  export type User$daySchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$weekTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
-    where?: DayScheduleWhereInput
-    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
-    cursor?: DayScheduleWhereUniqueInput
+    include?: WeekTemplateInclude<ExtArgs> | null
+    where?: WeekTemplateWhereInput
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
+    cursor?: WeekTemplateWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+    distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
   }
 
   /**
@@ -7870,37 +7870,47 @@ export namespace Prisma {
 
 
   /**
-   * Model DaySchedule
+   * Model WeekTemplate
    */
 
-  export type AggregateDaySchedule = {
-    _count: DayScheduleCountAggregateOutputType | null
-    _min: DayScheduleMinAggregateOutputType | null
-    _max: DayScheduleMaxAggregateOutputType | null
+  export type AggregateWeekTemplate = {
+    _count: WeekTemplateCountAggregateOutputType | null
+    _avg: WeekTemplateAvgAggregateOutputType | null
+    _sum: WeekTemplateSumAggregateOutputType | null
+    _min: WeekTemplateMinAggregateOutputType | null
+    _max: WeekTemplateMaxAggregateOutputType | null
   }
 
-  export type DayScheduleMinAggregateOutputType = {
+  export type WeekTemplateAvgAggregateOutputType = {
+    dayOfWeek: number | null
+  }
+
+  export type WeekTemplateSumAggregateOutputType = {
+    dayOfWeek: number | null
+  }
+
+  export type WeekTemplateMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    date: Date | null
+    dayOfWeek: number | null
     dayType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type DayScheduleMaxAggregateOutputType = {
+  export type WeekTemplateMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    date: Date | null
+    dayOfWeek: number | null
     dayType: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type DayScheduleCountAggregateOutputType = {
+  export type WeekTemplateCountAggregateOutputType = {
     id: number
     userId: number
-    date: number
+    dayOfWeek: number
     dayType: number
     createdAt: number
     updatedAt: number
@@ -7908,324 +7918,348 @@ export namespace Prisma {
   }
 
 
-  export type DayScheduleMinAggregateInputType = {
+  export type WeekTemplateAvgAggregateInputType = {
+    dayOfWeek?: true
+  }
+
+  export type WeekTemplateSumAggregateInputType = {
+    dayOfWeek?: true
+  }
+
+  export type WeekTemplateMinAggregateInputType = {
     id?: true
     userId?: true
-    date?: true
+    dayOfWeek?: true
     dayType?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type DayScheduleMaxAggregateInputType = {
+  export type WeekTemplateMaxAggregateInputType = {
     id?: true
     userId?: true
-    date?: true
+    dayOfWeek?: true
     dayType?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type DayScheduleCountAggregateInputType = {
+  export type WeekTemplateCountAggregateInputType = {
     id?: true
     userId?: true
-    date?: true
+    dayOfWeek?: true
     dayType?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type DayScheduleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which DaySchedule to aggregate.
+     * Filter which WeekTemplate to aggregate.
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DaySchedules to fetch.
+     * Determine the order of WeekTemplates to fetch.
      */
-    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: DayScheduleWhereUniqueInput
+    cursor?: WeekTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DaySchedules from the position of the cursor.
+     * Take `±n` WeekTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DaySchedules.
+     * Skip the first `n` WeekTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned DaySchedules
+     * Count returned WeekTemplates
     **/
-    _count?: true | DayScheduleCountAggregateInputType
+    _count?: true | WeekTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WeekTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WeekTemplateSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: DayScheduleMinAggregateInputType
+    _min?: WeekTemplateMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: DayScheduleMaxAggregateInputType
+    _max?: WeekTemplateMaxAggregateInputType
   }
 
-  export type GetDayScheduleAggregateType<T extends DayScheduleAggregateArgs> = {
-        [P in keyof T & keyof AggregateDaySchedule]: P extends '_count' | 'count'
+  export type GetWeekTemplateAggregateType<T extends WeekTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateWeekTemplate]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateDaySchedule[P]>
-      : GetScalarType<T[P], AggregateDaySchedule[P]>
+        : GetScalarType<T[P], AggregateWeekTemplate[P]>
+      : GetScalarType<T[P], AggregateWeekTemplate[P]>
   }
 
 
 
 
-  export type DayScheduleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DayScheduleWhereInput
-    orderBy?: DayScheduleOrderByWithAggregationInput | DayScheduleOrderByWithAggregationInput[]
-    by: DayScheduleScalarFieldEnum[] | DayScheduleScalarFieldEnum
-    having?: DayScheduleScalarWhereWithAggregatesInput
+  export type WeekTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeekTemplateWhereInput
+    orderBy?: WeekTemplateOrderByWithAggregationInput | WeekTemplateOrderByWithAggregationInput[]
+    by: WeekTemplateScalarFieldEnum[] | WeekTemplateScalarFieldEnum
+    having?: WeekTemplateScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: DayScheduleCountAggregateInputType | true
-    _min?: DayScheduleMinAggregateInputType
-    _max?: DayScheduleMaxAggregateInputType
+    _count?: WeekTemplateCountAggregateInputType | true
+    _avg?: WeekTemplateAvgAggregateInputType
+    _sum?: WeekTemplateSumAggregateInputType
+    _min?: WeekTemplateMinAggregateInputType
+    _max?: WeekTemplateMaxAggregateInputType
   }
 
-  export type DayScheduleGroupByOutputType = {
+  export type WeekTemplateGroupByOutputType = {
     id: string
     userId: string
-    date: Date
+    dayOfWeek: number
     dayType: string
     createdAt: Date
     updatedAt: Date
-    _count: DayScheduleCountAggregateOutputType | null
-    _min: DayScheduleMinAggregateOutputType | null
-    _max: DayScheduleMaxAggregateOutputType | null
+    _count: WeekTemplateCountAggregateOutputType | null
+    _avg: WeekTemplateAvgAggregateOutputType | null
+    _sum: WeekTemplateSumAggregateOutputType | null
+    _min: WeekTemplateMinAggregateOutputType | null
+    _max: WeekTemplateMaxAggregateOutputType | null
   }
 
-  type GetDayScheduleGroupByPayload<T extends DayScheduleGroupByArgs> = Prisma.PrismaPromise<
+  type GetWeekTemplateGroupByPayload<T extends WeekTemplateGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<DayScheduleGroupByOutputType, T['by']> &
+      PickEnumerable<WeekTemplateGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof DayScheduleGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof WeekTemplateGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], DayScheduleGroupByOutputType[P]>
-            : GetScalarType<T[P], DayScheduleGroupByOutputType[P]>
+              : GetScalarType<T[P], WeekTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], WeekTemplateGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type DayScheduleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WeekTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    date?: boolean
+    dayOfWeek?: boolean
     dayType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["daySchedule"]>
+  }, ExtArgs["result"]["weekTemplate"]>
 
-  export type DayScheduleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WeekTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    date?: boolean
+    dayOfWeek?: boolean
     dayType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["daySchedule"]>
+  }, ExtArgs["result"]["weekTemplate"]>
 
-  export type DayScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WeekTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    date?: boolean
+    dayOfWeek?: boolean
     dayType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["daySchedule"]>
+  }, ExtArgs["result"]["weekTemplate"]>
 
-  export type DayScheduleSelectScalar = {
+  export type WeekTemplateSelectScalar = {
     id?: boolean
     userId?: boolean
-    date?: boolean
+    dayOfWeek?: boolean
     dayType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DayScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "dayType" | "createdAt" | "updatedAt", ExtArgs["result"]["daySchedule"]>
-  export type DayScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "dayType" | "createdAt" | "updatedAt", ExtArgs["result"]["weekTemplate"]>
+  export type WeekTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type DayScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
-  export type DayScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
-  export type $DaySchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DaySchedule"
+  export type $WeekTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WeekTemplate"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      date: Date
+      dayOfWeek: number
       dayType: string
       createdAt: Date
       updatedAt: Date
-    }, ExtArgs["result"]["daySchedule"]>
+    }, ExtArgs["result"]["weekTemplate"]>
     composites: {}
   }
 
-  type DayScheduleGetPayload<S extends boolean | null | undefined | DayScheduleDefaultArgs> = $Result.GetResult<Prisma.$DaySchedulePayload, S>
+  type WeekTemplateGetPayload<S extends boolean | null | undefined | WeekTemplateDefaultArgs> = $Result.GetResult<Prisma.$WeekTemplatePayload, S>
 
-  type DayScheduleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DayScheduleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DayScheduleCountAggregateInputType | true
+  type WeekTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WeekTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WeekTemplateCountAggregateInputType | true
     }
 
-  export interface DayScheduleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DaySchedule'], meta: { name: 'DaySchedule' } }
+  export interface WeekTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WeekTemplate'], meta: { name: 'WeekTemplate' } }
     /**
-     * Find zero or one DaySchedule that matches the filter.
-     * @param {DayScheduleFindUniqueArgs} args - Arguments to find a DaySchedule
+     * Find zero or one WeekTemplate that matches the filter.
+     * @param {WeekTemplateFindUniqueArgs} args - Arguments to find a WeekTemplate
      * @example
-     * // Get one DaySchedule
-     * const daySchedule = await prisma.daySchedule.findUnique({
+     * // Get one WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends DayScheduleFindUniqueArgs>(args: SelectSubset<T, DayScheduleFindUniqueArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends WeekTemplateFindUniqueArgs>(args: SelectSubset<T, WeekTemplateFindUniqueArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one DaySchedule that matches the filter or throw an error with `error.code='P2025'`
+     * Find one WeekTemplate that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {DayScheduleFindUniqueOrThrowArgs} args - Arguments to find a DaySchedule
+     * @param {WeekTemplateFindUniqueOrThrowArgs} args - Arguments to find a WeekTemplate
      * @example
-     * // Get one DaySchedule
-     * const daySchedule = await prisma.daySchedule.findUniqueOrThrow({
+     * // Get one WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends DayScheduleFindUniqueOrThrowArgs>(args: SelectSubset<T, DayScheduleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends WeekTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, WeekTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first DaySchedule that matches the filter.
+     * Find the first WeekTemplate that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleFindFirstArgs} args - Arguments to find a DaySchedule
+     * @param {WeekTemplateFindFirstArgs} args - Arguments to find a WeekTemplate
      * @example
-     * // Get one DaySchedule
-     * const daySchedule = await prisma.daySchedule.findFirst({
+     * // Get one WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends DayScheduleFindFirstArgs>(args?: SelectSubset<T, DayScheduleFindFirstArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends WeekTemplateFindFirstArgs>(args?: SelectSubset<T, WeekTemplateFindFirstArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first DaySchedule that matches the filter or
+     * Find the first WeekTemplate that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleFindFirstOrThrowArgs} args - Arguments to find a DaySchedule
+     * @param {WeekTemplateFindFirstOrThrowArgs} args - Arguments to find a WeekTemplate
      * @example
-     * // Get one DaySchedule
-     * const daySchedule = await prisma.daySchedule.findFirstOrThrow({
+     * // Get one WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends DayScheduleFindFirstOrThrowArgs>(args?: SelectSubset<T, DayScheduleFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends WeekTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, WeekTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more DaySchedules that matches the filter.
+     * Find zero or more WeekTemplates that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {WeekTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all DaySchedules
-     * const daySchedules = await prisma.daySchedule.findMany()
+     * // Get all WeekTemplates
+     * const weekTemplates = await prisma.weekTemplate.findMany()
      * 
-     * // Get first 10 DaySchedules
-     * const daySchedules = await prisma.daySchedule.findMany({ take: 10 })
+     * // Get first 10 WeekTemplates
+     * const weekTemplates = await prisma.weekTemplate.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const dayScheduleWithIdOnly = await prisma.daySchedule.findMany({ select: { id: true } })
+     * const weekTemplateWithIdOnly = await prisma.weekTemplate.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends DayScheduleFindManyArgs>(args?: SelectSubset<T, DayScheduleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends WeekTemplateFindManyArgs>(args?: SelectSubset<T, WeekTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a DaySchedule.
-     * @param {DayScheduleCreateArgs} args - Arguments to create a DaySchedule.
+     * Create a WeekTemplate.
+     * @param {WeekTemplateCreateArgs} args - Arguments to create a WeekTemplate.
      * @example
-     * // Create one DaySchedule
-     * const DaySchedule = await prisma.daySchedule.create({
+     * // Create one WeekTemplate
+     * const WeekTemplate = await prisma.weekTemplate.create({
      *   data: {
-     *     // ... data to create a DaySchedule
+     *     // ... data to create a WeekTemplate
      *   }
      * })
      * 
      */
-    create<T extends DayScheduleCreateArgs>(args: SelectSubset<T, DayScheduleCreateArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends WeekTemplateCreateArgs>(args: SelectSubset<T, WeekTemplateCreateArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many DaySchedules.
-     * @param {DayScheduleCreateManyArgs} args - Arguments to create many DaySchedules.
+     * Create many WeekTemplates.
+     * @param {WeekTemplateCreateManyArgs} args - Arguments to create many WeekTemplates.
      * @example
-     * // Create many DaySchedules
-     * const daySchedule = await prisma.daySchedule.createMany({
+     * // Create many WeekTemplates
+     * const weekTemplate = await prisma.weekTemplate.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends DayScheduleCreateManyArgs>(args?: SelectSubset<T, DayScheduleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends WeekTemplateCreateManyArgs>(args?: SelectSubset<T, WeekTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many DaySchedules and returns the data saved in the database.
-     * @param {DayScheduleCreateManyAndReturnArgs} args - Arguments to create many DaySchedules.
+     * Create many WeekTemplates and returns the data saved in the database.
+     * @param {WeekTemplateCreateManyAndReturnArgs} args - Arguments to create many WeekTemplates.
      * @example
-     * // Create many DaySchedules
-     * const daySchedule = await prisma.daySchedule.createManyAndReturn({
+     * // Create many WeekTemplates
+     * const weekTemplate = await prisma.weekTemplate.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many DaySchedules and only return the `id`
-     * const dayScheduleWithIdOnly = await prisma.daySchedule.createManyAndReturn({
+     * // Create many WeekTemplates and only return the `id`
+     * const weekTemplateWithIdOnly = await prisma.weekTemplate.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -8235,28 +8269,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends DayScheduleCreateManyAndReturnArgs>(args?: SelectSubset<T, DayScheduleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends WeekTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, WeekTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a DaySchedule.
-     * @param {DayScheduleDeleteArgs} args - Arguments to delete one DaySchedule.
+     * Delete a WeekTemplate.
+     * @param {WeekTemplateDeleteArgs} args - Arguments to delete one WeekTemplate.
      * @example
-     * // Delete one DaySchedule
-     * const DaySchedule = await prisma.daySchedule.delete({
+     * // Delete one WeekTemplate
+     * const WeekTemplate = await prisma.weekTemplate.delete({
      *   where: {
-     *     // ... filter to delete one DaySchedule
+     *     // ... filter to delete one WeekTemplate
      *   }
      * })
      * 
      */
-    delete<T extends DayScheduleDeleteArgs>(args: SelectSubset<T, DayScheduleDeleteArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends WeekTemplateDeleteArgs>(args: SelectSubset<T, WeekTemplateDeleteArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one DaySchedule.
-     * @param {DayScheduleUpdateArgs} args - Arguments to update one DaySchedule.
+     * Update one WeekTemplate.
+     * @param {WeekTemplateUpdateArgs} args - Arguments to update one WeekTemplate.
      * @example
-     * // Update one DaySchedule
-     * const daySchedule = await prisma.daySchedule.update({
+     * // Update one WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8266,30 +8300,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends DayScheduleUpdateArgs>(args: SelectSubset<T, DayScheduleUpdateArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends WeekTemplateUpdateArgs>(args: SelectSubset<T, WeekTemplateUpdateArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more DaySchedules.
-     * @param {DayScheduleDeleteManyArgs} args - Arguments to filter DaySchedules to delete.
+     * Delete zero or more WeekTemplates.
+     * @param {WeekTemplateDeleteManyArgs} args - Arguments to filter WeekTemplates to delete.
      * @example
-     * // Delete a few DaySchedules
-     * const { count } = await prisma.daySchedule.deleteMany({
+     * // Delete a few WeekTemplates
+     * const { count } = await prisma.weekTemplate.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends DayScheduleDeleteManyArgs>(args?: SelectSubset<T, DayScheduleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends WeekTemplateDeleteManyArgs>(args?: SelectSubset<T, WeekTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more DaySchedules.
+     * Update zero or more WeekTemplates.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {WeekTemplateUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many DaySchedules
-     * const daySchedule = await prisma.daySchedule.updateMany({
+     * // Update many WeekTemplates
+     * const weekTemplate = await prisma.weekTemplate.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8299,14 +8333,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends DayScheduleUpdateManyArgs>(args: SelectSubset<T, DayScheduleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends WeekTemplateUpdateManyArgs>(args: SelectSubset<T, WeekTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more DaySchedules and returns the data updated in the database.
-     * @param {DayScheduleUpdateManyAndReturnArgs} args - Arguments to update many DaySchedules.
+     * Update zero or more WeekTemplates and returns the data updated in the database.
+     * @param {WeekTemplateUpdateManyAndReturnArgs} args - Arguments to update many WeekTemplates.
      * @example
-     * // Update many DaySchedules
-     * const daySchedule = await prisma.daySchedule.updateManyAndReturn({
+     * // Update many WeekTemplates
+     * const weekTemplate = await prisma.weekTemplate.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -8315,8 +8349,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more DaySchedules and only return the `id`
-     * const dayScheduleWithIdOnly = await prisma.daySchedule.updateManyAndReturn({
+     * // Update zero or more WeekTemplates and only return the `id`
+     * const weekTemplateWithIdOnly = await prisma.weekTemplate.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -8329,56 +8363,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends DayScheduleUpdateManyAndReturnArgs>(args: SelectSubset<T, DayScheduleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends WeekTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, WeekTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one DaySchedule.
-     * @param {DayScheduleUpsertArgs} args - Arguments to update or create a DaySchedule.
+     * Create or update one WeekTemplate.
+     * @param {WeekTemplateUpsertArgs} args - Arguments to update or create a WeekTemplate.
      * @example
-     * // Update or create a DaySchedule
-     * const daySchedule = await prisma.daySchedule.upsert({
+     * // Update or create a WeekTemplate
+     * const weekTemplate = await prisma.weekTemplate.upsert({
      *   create: {
-     *     // ... data to create a DaySchedule
+     *     // ... data to create a WeekTemplate
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the DaySchedule we want to update
+     *     // ... the filter for the WeekTemplate we want to update
      *   }
      * })
      */
-    upsert<T extends DayScheduleUpsertArgs>(args: SelectSubset<T, DayScheduleUpsertArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends WeekTemplateUpsertArgs>(args: SelectSubset<T, WeekTemplateUpsertArgs<ExtArgs>>): Prisma__WeekTemplateClient<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of DaySchedules.
+     * Count the number of WeekTemplates.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleCountArgs} args - Arguments to filter DaySchedules to count.
+     * @param {WeekTemplateCountArgs} args - Arguments to filter WeekTemplates to count.
      * @example
-     * // Count the number of DaySchedules
-     * const count = await prisma.daySchedule.count({
+     * // Count the number of WeekTemplates
+     * const count = await prisma.weekTemplate.count({
      *   where: {
-     *     // ... the filter for the DaySchedules we want to count
+     *     // ... the filter for the WeekTemplates we want to count
      *   }
      * })
     **/
-    count<T extends DayScheduleCountArgs>(
-      args?: Subset<T, DayScheduleCountArgs>,
+    count<T extends WeekTemplateCountArgs>(
+      args?: Subset<T, WeekTemplateCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], DayScheduleCountAggregateOutputType>
+          : GetScalarType<T['select'], WeekTemplateCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a DaySchedule.
+     * Allows you to perform aggregations operations on a WeekTemplate.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {WeekTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -8398,13 +8432,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends DayScheduleAggregateArgs>(args: Subset<T, DayScheduleAggregateArgs>): Prisma.PrismaPromise<GetDayScheduleAggregateType<T>>
+    aggregate<T extends WeekTemplateAggregateArgs>(args: Subset<T, WeekTemplateAggregateArgs>): Prisma.PrismaPromise<GetWeekTemplateAggregateType<T>>
 
     /**
-     * Group by DaySchedule.
+     * Group by WeekTemplate.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DayScheduleGroupByArgs} args - Group by arguments.
+     * @param {WeekTemplateGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -8419,14 +8453,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends DayScheduleGroupByArgs,
+      T extends WeekTemplateGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DayScheduleGroupByArgs['orderBy'] }
-        : { orderBy?: DayScheduleGroupByArgs['orderBy'] },
+        ? { orderBy: WeekTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: WeekTemplateGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8475,20 +8509,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, DayScheduleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayScheduleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, WeekTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWeekTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the DaySchedule model
+   * Fields of the WeekTemplate model
    */
-  readonly fields: DayScheduleFieldRefs;
+  readonly fields: WeekTemplateFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for DaySchedule.
+   * The delegate class that acts as a "Promise-like" for WeekTemplate.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__DayScheduleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__WeekTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -8517,431 +8551,431 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the DaySchedule model
+   * Fields of the WeekTemplate model
    */
-  interface DayScheduleFieldRefs {
-    readonly id: FieldRef<"DaySchedule", 'String'>
-    readonly userId: FieldRef<"DaySchedule", 'String'>
-    readonly date: FieldRef<"DaySchedule", 'DateTime'>
-    readonly dayType: FieldRef<"DaySchedule", 'String'>
-    readonly createdAt: FieldRef<"DaySchedule", 'DateTime'>
-    readonly updatedAt: FieldRef<"DaySchedule", 'DateTime'>
+  interface WeekTemplateFieldRefs {
+    readonly id: FieldRef<"WeekTemplate", 'String'>
+    readonly userId: FieldRef<"WeekTemplate", 'String'>
+    readonly dayOfWeek: FieldRef<"WeekTemplate", 'Int'>
+    readonly dayType: FieldRef<"WeekTemplate", 'String'>
+    readonly createdAt: FieldRef<"WeekTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"WeekTemplate", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * DaySchedule findUnique
+   * WeekTemplate findUnique
    */
-  export type DayScheduleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter, which DaySchedule to fetch.
+     * Filter, which WeekTemplate to fetch.
      */
-    where: DayScheduleWhereUniqueInput
+    where: WeekTemplateWhereUniqueInput
   }
 
   /**
-   * DaySchedule findUniqueOrThrow
+   * WeekTemplate findUniqueOrThrow
    */
-  export type DayScheduleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter, which DaySchedule to fetch.
+     * Filter, which WeekTemplate to fetch.
      */
-    where: DayScheduleWhereUniqueInput
+    where: WeekTemplateWhereUniqueInput
   }
 
   /**
-   * DaySchedule findFirst
+   * WeekTemplate findFirst
    */
-  export type DayScheduleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter, which DaySchedule to fetch.
+     * Filter, which WeekTemplate to fetch.
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DaySchedules to fetch.
+     * Determine the order of WeekTemplates to fetch.
      */
-    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for DaySchedules.
+     * Sets the position for searching for WeekTemplates.
      */
-    cursor?: DayScheduleWhereUniqueInput
+    cursor?: WeekTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DaySchedules from the position of the cursor.
+     * Take `±n` WeekTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DaySchedules.
+     * Skip the first `n` WeekTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of DaySchedules.
+     * Filter by unique combinations of WeekTemplates.
      */
-    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+    distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
   }
 
   /**
-   * DaySchedule findFirstOrThrow
+   * WeekTemplate findFirstOrThrow
    */
-  export type DayScheduleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter, which DaySchedule to fetch.
+     * Filter, which WeekTemplate to fetch.
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DaySchedules to fetch.
+     * Determine the order of WeekTemplates to fetch.
      */
-    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for DaySchedules.
+     * Sets the position for searching for WeekTemplates.
      */
-    cursor?: DayScheduleWhereUniqueInput
+    cursor?: WeekTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DaySchedules from the position of the cursor.
+     * Take `±n` WeekTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DaySchedules.
+     * Skip the first `n` WeekTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of DaySchedules.
+     * Filter by unique combinations of WeekTemplates.
      */
-    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+    distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
   }
 
   /**
-   * DaySchedule findMany
+   * WeekTemplate findMany
    */
-  export type DayScheduleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter, which DaySchedules to fetch.
+     * Filter, which WeekTemplates to fetch.
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DaySchedules to fetch.
+     * Determine the order of WeekTemplates to fetch.
      */
-    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing DaySchedules.
+     * Sets the position for listing WeekTemplates.
      */
-    cursor?: DayScheduleWhereUniqueInput
+    cursor?: WeekTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DaySchedules from the position of the cursor.
+     * Take `±n` WeekTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DaySchedules.
+     * Skip the first `n` WeekTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of DaySchedules.
+     * Filter by unique combinations of WeekTemplates.
      */
-    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+    distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
   }
 
   /**
-   * DaySchedule create
+   * WeekTemplate create
    */
-  export type DayScheduleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * The data needed to create a DaySchedule.
+     * The data needed to create a WeekTemplate.
      */
-    data: XOR<DayScheduleCreateInput, DayScheduleUncheckedCreateInput>
+    data: XOR<WeekTemplateCreateInput, WeekTemplateUncheckedCreateInput>
   }
 
   /**
-   * DaySchedule createMany
+   * WeekTemplate createMany
    */
-  export type DayScheduleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many DaySchedules.
+     * The data used to create many WeekTemplates.
      */
-    data: DayScheduleCreateManyInput | DayScheduleCreateManyInput[]
+    data: WeekTemplateCreateManyInput | WeekTemplateCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * DaySchedule createManyAndReturn
+   * WeekTemplate createManyAndReturn
    */
-  export type DayScheduleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelectCreateManyAndReturn<ExtArgs> | null
+    select?: WeekTemplateSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
-     * The data used to create many DaySchedules.
+     * The data used to create many WeekTemplates.
      */
-    data: DayScheduleCreateManyInput | DayScheduleCreateManyInput[]
+    data: WeekTemplateCreateManyInput | WeekTemplateCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: WeekTemplateIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * DaySchedule update
+   * WeekTemplate update
    */
-  export type DayScheduleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * The data needed to update a DaySchedule.
+     * The data needed to update a WeekTemplate.
      */
-    data: XOR<DayScheduleUpdateInput, DayScheduleUncheckedUpdateInput>
+    data: XOR<WeekTemplateUpdateInput, WeekTemplateUncheckedUpdateInput>
     /**
-     * Choose, which DaySchedule to update.
+     * Choose, which WeekTemplate to update.
      */
-    where: DayScheduleWhereUniqueInput
+    where: WeekTemplateWhereUniqueInput
   }
 
   /**
-   * DaySchedule updateMany
+   * WeekTemplate updateMany
    */
-  export type DayScheduleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update DaySchedules.
+     * The data used to update WeekTemplates.
      */
-    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyInput>
+    data: XOR<WeekTemplateUpdateManyMutationInput, WeekTemplateUncheckedUpdateManyInput>
     /**
-     * Filter which DaySchedules to update
+     * Filter which WeekTemplates to update
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
-     * Limit how many DaySchedules to update.
+     * Limit how many WeekTemplates to update.
      */
     limit?: number
   }
 
   /**
-   * DaySchedule updateManyAndReturn
+   * WeekTemplate updateManyAndReturn
    */
-  export type DayScheduleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: WeekTemplateSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
-     * The data used to update DaySchedules.
+     * The data used to update WeekTemplates.
      */
-    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyInput>
+    data: XOR<WeekTemplateUpdateManyMutationInput, WeekTemplateUncheckedUpdateManyInput>
     /**
-     * Filter which DaySchedules to update
+     * Filter which WeekTemplates to update
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
-     * Limit how many DaySchedules to update.
+     * Limit how many WeekTemplates to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: WeekTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * DaySchedule upsert
+   * WeekTemplate upsert
    */
-  export type DayScheduleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * The filter to search for the DaySchedule to update in case it exists.
+     * The filter to search for the WeekTemplate to update in case it exists.
      */
-    where: DayScheduleWhereUniqueInput
+    where: WeekTemplateWhereUniqueInput
     /**
-     * In case the DaySchedule found by the `where` argument doesn't exist, create a new DaySchedule with this data.
+     * In case the WeekTemplate found by the `where` argument doesn't exist, create a new WeekTemplate with this data.
      */
-    create: XOR<DayScheduleCreateInput, DayScheduleUncheckedCreateInput>
+    create: XOR<WeekTemplateCreateInput, WeekTemplateUncheckedCreateInput>
     /**
-     * In case the DaySchedule was found with the provided `where` argument, update it with this data.
+     * In case the WeekTemplate was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<DayScheduleUpdateInput, DayScheduleUncheckedUpdateInput>
+    update: XOR<WeekTemplateUpdateInput, WeekTemplateUncheckedUpdateInput>
   }
 
   /**
-   * DaySchedule delete
+   * WeekTemplate delete
    */
-  export type DayScheduleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
     /**
-     * Filter which DaySchedule to delete.
+     * Filter which WeekTemplate to delete.
      */
-    where: DayScheduleWhereUniqueInput
+    where: WeekTemplateWhereUniqueInput
   }
 
   /**
-   * DaySchedule deleteMany
+   * WeekTemplate deleteMany
    */
-  export type DayScheduleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which DaySchedules to delete
+     * Filter which WeekTemplates to delete
      */
-    where?: DayScheduleWhereInput
+    where?: WeekTemplateWhereInput
     /**
-     * Limit how many DaySchedules to delete.
+     * Limit how many WeekTemplates to delete.
      */
     limit?: number
   }
 
   /**
-   * DaySchedule without action
+   * WeekTemplate without action
    */
-  export type DayScheduleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WeekTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DaySchedule
+     * Select specific fields to fetch from the WeekTemplate
      */
-    select?: DayScheduleSelect<ExtArgs> | null
+    select?: WeekTemplateSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DaySchedule
+     * Omit specific fields from the WeekTemplate
      */
-    omit?: DayScheduleOmit<ExtArgs> | null
+    omit?: WeekTemplateOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: DayScheduleInclude<ExtArgs> | null
+    include?: WeekTemplateInclude<ExtArgs> | null
   }
 
 
@@ -59041,16 +59075,16 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const DayScheduleScalarFieldEnum: {
+  export const WeekTemplateScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    date: 'date',
+    dayOfWeek: 'dayOfWeek',
     dayType: 'dayType',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type DayScheduleScalarFieldEnum = (typeof DayScheduleScalarFieldEnum)[keyof typeof DayScheduleScalarFieldEnum]
+  export type WeekTemplateScalarFieldEnum = (typeof WeekTemplateScalarFieldEnum)[keyof typeof WeekTemplateScalarFieldEnum]
 
 
   export const PushSubscriptionScalarFieldEnum: {
@@ -60130,7 +60164,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
-    daySchedules?: DayScheduleListRelationFilter
+    weekTemplates?: WeekTemplateListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -60164,7 +60198,7 @@ export namespace Prisma {
     visions?: VisionOrderByRelationAggregateInput
     weekPlans?: WeekPlanOrderByRelationAggregateInput
     wishlistItems?: WishlistItemOrderByRelationAggregateInput
-    daySchedules?: DayScheduleOrderByRelationAggregateInput
+    weekTemplates?: WeekTemplateOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -60201,7 +60235,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
-    daySchedules?: DayScheduleListRelationFilter
+    weekTemplates?: WeekTemplateListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -60236,65 +60270,67 @@ export namespace Prisma {
     systemStatus?: EnumSystemStatusWithAggregatesFilter<"User"> | $Enums.SystemStatus
   }
 
-  export type DayScheduleWhereInput = {
-    AND?: DayScheduleWhereInput | DayScheduleWhereInput[]
-    OR?: DayScheduleWhereInput[]
-    NOT?: DayScheduleWhereInput | DayScheduleWhereInput[]
-    id?: StringFilter<"DaySchedule"> | string
-    userId?: StringFilter<"DaySchedule"> | string
-    date?: DateTimeFilter<"DaySchedule"> | Date | string
-    dayType?: StringFilter<"DaySchedule"> | string
-    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
-    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+  export type WeekTemplateWhereInput = {
+    AND?: WeekTemplateWhereInput | WeekTemplateWhereInput[]
+    OR?: WeekTemplateWhereInput[]
+    NOT?: WeekTemplateWhereInput | WeekTemplateWhereInput[]
+    id?: StringFilter<"WeekTemplate"> | string
+    userId?: StringFilter<"WeekTemplate"> | string
+    dayOfWeek?: IntFilter<"WeekTemplate"> | number
+    dayType?: StringFilter<"WeekTemplate"> | string
+    createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type DayScheduleOrderByWithRelationInput = {
+  export type WeekTemplateOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    date?: SortOrder
+    dayOfWeek?: SortOrder
     dayType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
   }
 
-  export type DayScheduleWhereUniqueInput = Prisma.AtLeast<{
+  export type WeekTemplateWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    userId_date?: DayScheduleUserIdDateCompoundUniqueInput
-    AND?: DayScheduleWhereInput | DayScheduleWhereInput[]
-    OR?: DayScheduleWhereInput[]
-    NOT?: DayScheduleWhereInput | DayScheduleWhereInput[]
-    userId?: StringFilter<"DaySchedule"> | string
-    date?: DateTimeFilter<"DaySchedule"> | Date | string
-    dayType?: StringFilter<"DaySchedule"> | string
-    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
-    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    userId_dayOfWeek?: WeekTemplateUserIdDayOfWeekCompoundUniqueInput
+    AND?: WeekTemplateWhereInput | WeekTemplateWhereInput[]
+    OR?: WeekTemplateWhereInput[]
+    NOT?: WeekTemplateWhereInput | WeekTemplateWhereInput[]
+    userId?: StringFilter<"WeekTemplate"> | string
+    dayOfWeek?: IntFilter<"WeekTemplate"> | number
+    dayType?: StringFilter<"WeekTemplate"> | string
+    createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "userId_date">
+  }, "id" | "userId_dayOfWeek">
 
-  export type DayScheduleOrderByWithAggregationInput = {
+  export type WeekTemplateOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    date?: SortOrder
+    dayOfWeek?: SortOrder
     dayType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: DayScheduleCountOrderByAggregateInput
-    _max?: DayScheduleMaxOrderByAggregateInput
-    _min?: DayScheduleMinOrderByAggregateInput
+    _count?: WeekTemplateCountOrderByAggregateInput
+    _avg?: WeekTemplateAvgOrderByAggregateInput
+    _max?: WeekTemplateMaxOrderByAggregateInput
+    _min?: WeekTemplateMinOrderByAggregateInput
+    _sum?: WeekTemplateSumOrderByAggregateInput
   }
 
-  export type DayScheduleScalarWhereWithAggregatesInput = {
-    AND?: DayScheduleScalarWhereWithAggregatesInput | DayScheduleScalarWhereWithAggregatesInput[]
-    OR?: DayScheduleScalarWhereWithAggregatesInput[]
-    NOT?: DayScheduleScalarWhereWithAggregatesInput | DayScheduleScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"DaySchedule"> | string
-    userId?: StringWithAggregatesFilter<"DaySchedule"> | string
-    date?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
-    dayType?: StringWithAggregatesFilter<"DaySchedule"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
+  export type WeekTemplateScalarWhereWithAggregatesInput = {
+    AND?: WeekTemplateScalarWhereWithAggregatesInput | WeekTemplateScalarWhereWithAggregatesInput[]
+    OR?: WeekTemplateScalarWhereWithAggregatesInput[]
+    NOT?: WeekTemplateScalarWhereWithAggregatesInput | WeekTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WeekTemplate"> | string
+    userId?: StringWithAggregatesFilter<"WeekTemplate"> | string
+    dayOfWeek?: IntWithAggregatesFilter<"WeekTemplate"> | number
+    dayType?: StringWithAggregatesFilter<"WeekTemplate"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
   }
 
   export type PushSubscriptionWhereInput = {
@@ -63724,7 +63760,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -63758,7 +63794,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -63792,7 +63828,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -63826,7 +63862,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -63868,63 +63904,63 @@ export namespace Prisma {
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
   }
 
-  export type DayScheduleCreateInput = {
+  export type WeekTemplateCreateInput = {
     id?: string
-    date: Date | string
+    dayOfWeek: number
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutDaySchedulesInput
+    user: UserCreateNestedOneWithoutWeekTemplatesInput
   }
 
-  export type DayScheduleUncheckedCreateInput = {
-    id?: string
-    userId: string
-    date: Date | string
-    dayType?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type DayScheduleUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayType?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutDaySchedulesNestedInput
-  }
-
-  export type DayScheduleUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    dayType?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DayScheduleCreateManyInput = {
+  export type WeekTemplateUncheckedCreateInput = {
     id?: string
     userId: string
-    date: Date | string
+    dayOfWeek: number
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type DayScheduleUpdateManyMutationInput = {
+  export type WeekTemplateUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWeekTemplatesNestedInput
+  }
+
+  export type WeekTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayScheduleUncheckedUpdateManyInput = {
+  export type WeekTemplateCreateManyInput = {
+    id?: string
+    userId: string
+    dayOfWeek: number
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WeekTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeekTemplateUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67753,10 +67789,10 @@ export namespace Prisma {
     none?: WishlistItemWhereInput
   }
 
-  export type DayScheduleListRelationFilter = {
-    every?: DayScheduleWhereInput
-    some?: DayScheduleWhereInput
-    none?: DayScheduleWhereInput
+  export type WeekTemplateListRelationFilter = {
+    every?: WeekTemplateWhereInput
+    some?: WeekTemplateWhereInput
+    none?: WeekTemplateWhereInput
   }
 
   export type SortOrderInput = {
@@ -67844,7 +67880,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type DayScheduleOrderByRelationAggregateInput = {
+  export type WeekTemplateOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -67961,41 +67997,76 @@ export namespace Prisma {
     _max?: NestedEnumSystemStatusFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
   }
 
-  export type DayScheduleUserIdDateCompoundUniqueInput = {
+  export type WeekTemplateUserIdDayOfWeekCompoundUniqueInput = {
     userId: string
-    date: Date | string
+    dayOfWeek: number
   }
 
-  export type DayScheduleCountOrderByAggregateInput = {
+  export type WeekTemplateCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    date?: SortOrder
+    dayOfWeek?: SortOrder
     dayType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type DayScheduleMaxOrderByAggregateInput = {
+  export type WeekTemplateAvgOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
+  }
+
+  export type WeekTemplateMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    date?: SortOrder
+    dayOfWeek?: SortOrder
     dayType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type DayScheduleMinOrderByAggregateInput = {
+  export type WeekTemplateMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    date?: SortOrder
+    dayOfWeek?: SortOrder
     dayType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type WeekTemplateSumOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type PushSubscriptionCountOrderByAggregateInput = {
@@ -68519,17 +68590,6 @@ export namespace Prisma {
     coefficient?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type EnumDishTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.DishType | EnumDishTypeFieldRefInput<$PrismaModel>
     in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
@@ -68586,22 +68646,6 @@ export namespace Prisma {
 
   export type DishSumOrderByAggregateInput = {
     servings?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumDishTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -70805,11 +70849,11 @@ export namespace Prisma {
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
   }
 
-  export type DayScheduleCreateNestedManyWithoutUserInput = {
-    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
-    createMany?: DayScheduleCreateManyUserInputEnvelope
-    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+  export type WeekTemplateCreateNestedManyWithoutUserInput = {
+    create?: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput> | WeekTemplateCreateWithoutUserInput[] | WeekTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutUserInput | WeekTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: WeekTemplateCreateManyUserInputEnvelope
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -70952,11 +70996,11 @@ export namespace Prisma {
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
   }
 
-  export type DayScheduleUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
-    createMany?: DayScheduleCreateManyUserInputEnvelope
-    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+  export type WeekTemplateUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput> | WeekTemplateCreateWithoutUserInput[] | WeekTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutUserInput | WeekTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: WeekTemplateCreateManyUserInputEnvelope
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -71259,18 +71303,18 @@ export namespace Prisma {
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
   }
 
-  export type DayScheduleUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
-    upsert?: DayScheduleUpsertWithWhereUniqueWithoutUserInput | DayScheduleUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DayScheduleCreateManyUserInputEnvelope
-    set?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    disconnect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    delete?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    update?: DayScheduleUpdateWithWhereUniqueWithoutUserInput | DayScheduleUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DayScheduleUpdateManyWithWhereWithoutUserInput | DayScheduleUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+  export type WeekTemplateUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput> | WeekTemplateCreateWithoutUserInput[] | WeekTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutUserInput | WeekTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: WeekTemplateUpsertWithWhereUniqueWithoutUserInput | WeekTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WeekTemplateCreateManyUserInputEnvelope
+    set?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    disconnect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    delete?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    update?: WeekTemplateUpdateWithWhereUniqueWithoutUserInput | WeekTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WeekTemplateUpdateManyWithWhereWithoutUserInput | WeekTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -71553,32 +71597,40 @@ export namespace Prisma {
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
   }
 
-  export type DayScheduleUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
-    upsert?: DayScheduleUpsertWithWhereUniqueWithoutUserInput | DayScheduleUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: DayScheduleCreateManyUserInputEnvelope
-    set?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    disconnect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    delete?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
-    update?: DayScheduleUpdateWithWhereUniqueWithoutUserInput | DayScheduleUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: DayScheduleUpdateManyWithWhereWithoutUserInput | DayScheduleUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+  export type WeekTemplateUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput> | WeekTemplateCreateWithoutUserInput[] | WeekTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutUserInput | WeekTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: WeekTemplateUpsertWithWhereUniqueWithoutUserInput | WeekTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WeekTemplateCreateManyUserInputEnvelope
+    set?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    disconnect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    delete?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    update?: WeekTemplateUpdateWithWhereUniqueWithoutUserInput | WeekTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WeekTemplateUpdateManyWithWhereWithoutUserInput | WeekTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutDaySchedulesInput = {
-    create?: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDaySchedulesInput
+  export type UserCreateNestedOneWithoutWeekTemplatesInput = {
+    create?: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWeekTemplatesInput
     connect?: UserWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutDaySchedulesNestedInput = {
-    create?: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDaySchedulesInput
-    upsert?: UserUpsertWithoutDaySchedulesInput
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutWeekTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWeekTemplatesInput
+    upsert?: UserUpsertWithoutWeekTemplatesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDaySchedulesInput, UserUpdateWithoutDaySchedulesInput>, UserUncheckedUpdateWithoutDaySchedulesInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWeekTemplatesInput, UserUpdateWithoutWeekTemplatesInput>, UserUncheckedUpdateWithoutWeekTemplatesInput>
   }
 
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
@@ -71988,14 +72040,6 @@ export namespace Prisma {
     connectOrCreate?: DishEntryCreateOrConnectWithoutDishInput | DishEntryCreateOrConnectWithoutDishInput[]
     createMany?: DishEntryCreateManyDishInputEnvelope
     connect?: DishEntryWhereUniqueInput | DishEntryWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type EnumDishTypeFieldUpdateOperationsInput = {
@@ -74180,6 +74224,33 @@ export namespace Prisma {
     _max?: NestedEnumSystemStatusFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -74238,17 +74309,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumPriceSourceFilter<$PrismaModel = never> = {
@@ -74323,22 +74383,6 @@ export namespace Prisma {
     in?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.DishType[] | ListEnumDishTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumDishTypeFilter<$PrismaModel> | $Enums.DishType
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedEnumDishTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -75410,29 +75454,29 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type DayScheduleCreateWithoutUserInput = {
+  export type WeekTemplateCreateWithoutUserInput = {
     id?: string
-    date: Date | string
+    dayOfWeek: number
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type DayScheduleUncheckedCreateWithoutUserInput = {
+  export type WeekTemplateUncheckedCreateWithoutUserInput = {
     id?: string
-    date: Date | string
+    dayOfWeek: number
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type DayScheduleCreateOrConnectWithoutUserInput = {
-    where: DayScheduleWhereUniqueInput
-    create: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput>
+  export type WeekTemplateCreateOrConnectWithoutUserInput = {
+    where: WeekTemplateWhereUniqueInput
+    create: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput>
   }
 
-  export type DayScheduleCreateManyUserInputEnvelope = {
-    data: DayScheduleCreateManyUserInput | DayScheduleCreateManyUserInput[]
+  export type WeekTemplateCreateManyUserInputEnvelope = {
+    data: WeekTemplateCreateManyUserInput | WeekTemplateCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -76095,35 +76139,35 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
   }
 
-  export type DayScheduleUpsertWithWhereUniqueWithoutUserInput = {
-    where: DayScheduleWhereUniqueInput
-    update: XOR<DayScheduleUpdateWithoutUserInput, DayScheduleUncheckedUpdateWithoutUserInput>
-    create: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput>
+  export type WeekTemplateUpsertWithWhereUniqueWithoutUserInput = {
+    where: WeekTemplateWhereUniqueInput
+    update: XOR<WeekTemplateUpdateWithoutUserInput, WeekTemplateUncheckedUpdateWithoutUserInput>
+    create: XOR<WeekTemplateCreateWithoutUserInput, WeekTemplateUncheckedCreateWithoutUserInput>
   }
 
-  export type DayScheduleUpdateWithWhereUniqueWithoutUserInput = {
-    where: DayScheduleWhereUniqueInput
-    data: XOR<DayScheduleUpdateWithoutUserInput, DayScheduleUncheckedUpdateWithoutUserInput>
+  export type WeekTemplateUpdateWithWhereUniqueWithoutUserInput = {
+    where: WeekTemplateWhereUniqueInput
+    data: XOR<WeekTemplateUpdateWithoutUserInput, WeekTemplateUncheckedUpdateWithoutUserInput>
   }
 
-  export type DayScheduleUpdateManyWithWhereWithoutUserInput = {
-    where: DayScheduleScalarWhereInput
-    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyWithoutUserInput>
+  export type WeekTemplateUpdateManyWithWhereWithoutUserInput = {
+    where: WeekTemplateScalarWhereInput
+    data: XOR<WeekTemplateUpdateManyMutationInput, WeekTemplateUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type DayScheduleScalarWhereInput = {
-    AND?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
-    OR?: DayScheduleScalarWhereInput[]
-    NOT?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
-    id?: StringFilter<"DaySchedule"> | string
-    userId?: StringFilter<"DaySchedule"> | string
-    date?: DateTimeFilter<"DaySchedule"> | Date | string
-    dayType?: StringFilter<"DaySchedule"> | string
-    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
-    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+  export type WeekTemplateScalarWhereInput = {
+    AND?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
+    OR?: WeekTemplateScalarWhereInput[]
+    NOT?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
+    id?: StringFilter<"WeekTemplate"> | string
+    userId?: StringFilter<"WeekTemplate"> | string
+    dayOfWeek?: IntFilter<"WeekTemplate"> | number
+    dayType?: StringFilter<"WeekTemplate"> | string
+    createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
   }
 
-  export type UserCreateWithoutDaySchedulesInput = {
+  export type UserCreateWithoutWeekTemplatesInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -76156,7 +76200,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutDaySchedulesInput = {
+  export type UserUncheckedCreateWithoutWeekTemplatesInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -76189,23 +76233,23 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutDaySchedulesInput = {
+  export type UserCreateOrConnectWithoutWeekTemplatesInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+    create: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
   }
 
-  export type UserUpsertWithoutDaySchedulesInput = {
-    update: XOR<UserUpdateWithoutDaySchedulesInput, UserUncheckedUpdateWithoutDaySchedulesInput>
-    create: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+  export type UserUpsertWithoutWeekTemplatesInput = {
+    update: XOR<UserUpdateWithoutWeekTemplatesInput, UserUncheckedUpdateWithoutWeekTemplatesInput>
+    create: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutDaySchedulesInput = {
+  export type UserUpdateToOneWithWhereWithoutWeekTemplatesInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDaySchedulesInput, UserUncheckedUpdateWithoutDaySchedulesInput>
+    data: XOR<UserUpdateWithoutWeekTemplatesInput, UserUncheckedUpdateWithoutWeekTemplatesInput>
   }
 
-  export type UserUpdateWithoutDaySchedulesInput = {
+  export type UserUpdateWithoutWeekTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76238,7 +76282,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutDaySchedulesInput = {
+  export type UserUncheckedUpdateWithoutWeekTemplatesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76301,7 +76345,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -76334,7 +76378,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -76383,7 +76427,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -76416,7 +76460,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -76449,7 +76493,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -76482,7 +76526,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -76531,7 +76575,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -76564,7 +76608,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -76597,7 +76641,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -76630,7 +76674,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -76679,7 +76723,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -76712,7 +76756,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNutritionPersonsInput = {
@@ -76745,7 +76789,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNutritionPersonsInput = {
@@ -76778,7 +76822,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNutritionPersonsInput = {
@@ -76867,7 +76911,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNutritionPersonsInput = {
@@ -76900,7 +76944,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MealSlotInstanceUpsertWithWhereUniqueWithoutPersonInput = {
@@ -76966,7 +77010,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFoodProductsInput = {
@@ -76999,7 +77043,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFoodProductsInput = {
@@ -77160,7 +77204,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFoodProductsInput = {
@@ -77193,7 +77237,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutProductInput = {
@@ -77382,7 +77426,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDishesInput = {
@@ -77415,7 +77459,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDishesInput = {
@@ -77516,7 +77560,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDishesInput = {
@@ -77549,7 +77593,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutDishInput = {
@@ -77910,7 +77954,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekPlansInput = {
@@ -77943,7 +77987,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekPlansInput = {
@@ -78071,7 +78115,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekPlansInput = {
@@ -78104,7 +78148,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DayPlanUpsertWithWhereUniqueWithoutWeekPlanInput = {
@@ -78194,7 +78238,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDayPlansInput = {
@@ -78227,7 +78271,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDayPlansInput = {
@@ -78364,7 +78408,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDayPlansInput = {
@@ -78397,7 +78441,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutDayPlansInput = {
@@ -78566,7 +78610,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutShoppingListsInput = {
@@ -78599,7 +78643,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutShoppingListsInput = {
@@ -78701,7 +78745,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutShoppingListsInput = {
@@ -78734,7 +78778,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutShoppingListsInput = {
@@ -79900,7 +79944,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -79933,7 +79977,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -80126,7 +80170,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -80159,7 +80203,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -80435,7 +80479,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -80468,7 +80512,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -80670,7 +80714,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -80703,7 +80747,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -80736,7 +80780,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -80769,7 +80813,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -80818,7 +80862,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -80851,7 +80895,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -80917,7 +80961,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -80950,7 +80994,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -81060,7 +81104,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -81093,7 +81137,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -81228,7 +81272,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLibraryItemsInput = {
@@ -81261,7 +81305,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLibraryItemsInput = {
@@ -81310,7 +81354,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLibraryItemsInput = {
@@ -81343,7 +81387,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWishlistItemsInput = {
@@ -81376,7 +81420,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWishlistItemsInput = {
@@ -81409,7 +81453,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWishlistItemsInput = {
@@ -81458,7 +81502,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWishlistItemsInput = {
@@ -81491,7 +81535,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserLanguageCreateWithoutLanguageInput = {
@@ -81683,7 +81727,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserLanguagesInput = {
@@ -81716,7 +81760,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserLanguagesInput = {
@@ -81919,7 +81963,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserLanguagesInput = {
@@ -81952,7 +81996,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VocabularyItemUpsertWithWhereUniqueWithoutUserLanguageInput = {
@@ -82291,7 +82335,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -82324,7 +82368,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -82373,7 +82417,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -82406,7 +82450,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -82439,7 +82483,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -82472,7 +82516,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -82521,7 +82565,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -82554,7 +82598,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -82620,7 +82664,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -82653,7 +82697,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -82741,7 +82785,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -82774,7 +82818,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -82841,7 +82885,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -82874,7 +82918,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
-    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -82973,7 +83017,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -83006,7 +83050,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
-    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -84067,9 +84111,9 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type DayScheduleCreateManyUserInput = {
+  export type WeekTemplateCreateManyUserInput = {
     id?: string
-    date: Date | string
+    dayOfWeek: number
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -84902,25 +84946,25 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayScheduleUpdateWithoutUserInput = {
+  export type WeekTemplateUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayScheduleUncheckedUpdateWithoutUserInput = {
+  export type WeekTemplateUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DayScheduleUncheckedUpdateManyWithoutUserInput = {
+  export type WeekTemplateUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -1,34 +1,29 @@
 import { prisma } from "@/lib/prisma";
 import type { UpsertDayScheduleInput } from "../types";
 
-function toDateOnly(dateStr: string): Date {
-  return new Date(dateStr);
+// JS getDay(): 0=Sun, 1=Mon..6=Sat → convert to Mon=0..Sun=6
+function toDayOfWeek(date: Date): number {
+  return (date.getDay() + 6) % 7;
 }
 
 export async function getScheduleByDate(userId: string, date: Date) {
-  return prisma.daySchedule.findUnique({
-    where: { userId_date: { userId, date } },
+  const dayOfWeek = toDayOfWeek(date);
+  return prisma.weekTemplate.findUnique({
+    where: { userId_dayOfWeek: { userId, dayOfWeek } },
   });
 }
 
-export async function getSchedulesForWeek(userId: string, weekStart: Date) {
-  const weekEnd = new Date(weekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
-
-  return prisma.daySchedule.findMany({
-    where: {
-      userId,
-      date: { gte: weekStart, lte: weekEnd },
-    },
-    orderBy: { date: "asc" },
+export async function getAllTemplates(userId: string) {
+  return prisma.weekTemplate.findMany({
+    where: { userId },
+    orderBy: { dayOfWeek: "asc" },
   });
 }
 
 export async function upsertSchedule(userId: string, input: UpsertDayScheduleInput) {
-  const date = toDateOnly(input.date);
-  return prisma.daySchedule.upsert({
-    where: { userId_date: { userId, date } },
-    create: { userId, date, dayType: input.dayType },
+  return prisma.weekTemplate.upsert({
+    where: { userId_dayOfWeek: { userId, dayOfWeek: input.dayOfWeek } },
+    create: { userId, dayOfWeek: input.dayOfWeek, dayType: input.dayType },
     update: { dayType: input.dayType },
   });
 }

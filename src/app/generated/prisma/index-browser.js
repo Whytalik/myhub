@@ -133,10 +133,10 @@ exports.Prisma.UserScalarFieldEnum = {
   systemStatus: 'systemStatus'
 };
 
-exports.Prisma.DayScheduleScalarFieldEnum = {
+exports.Prisma.WeekTemplateScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  date: 'date',
+  dayOfWeek: 'dayOfWeek',
   dayType: 'dayType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -833,7 +833,7 @@ exports.TacticFrequency = exports.$Enums.TacticFrequency = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  DaySchedule: 'DaySchedule',
+  WeekTemplate: 'WeekTemplate',
   PushSubscription: 'PushSubscription',
   Account: 'Account',
   Session: 'Session',
