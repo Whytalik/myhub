@@ -15,7 +15,6 @@ export default async function NutritionSpacePage() {
 
   return (
     <SpaceLanding
-      className="px-8"
       header={{
         label: "nutrition space",
         title: "Nutrition Space",

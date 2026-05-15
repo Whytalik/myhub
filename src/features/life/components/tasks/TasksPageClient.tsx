@@ -117,7 +117,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
           <div className="flex flex-col gap-1">
             <Heading title="Tasks" />
-            <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
+            <p className="text-body text-text-secondary leading-relaxed pl-3 border-l-2 border-border-strong">
               Organize your goals, projects, and daily work.
             </p>
           </div>

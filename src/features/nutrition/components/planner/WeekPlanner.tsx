@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition, useMemo, useCallback } from "react"
+import { useState, useTransition, useCallback } from "react"
 import { Plus, Trash2, Search, Flame, UtensilsCrossed, Clock, StickyNote, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
@@ -167,7 +167,6 @@ function PersonMacroChip({ name, kcal, protein, fat, carbs, fiber }: { name: str
 export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
-  const [activeDay, setActiveDay] = useState(0)
   const [isEditingName, setIsEditingName] = useState(false)
   const [newName, setNewName] = useState(weekPlan.name || "")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -185,12 +184,10 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [notes, setNotes] = useState(weekPlan.notes || "")
   const [isEditingNotes, setIsEditingNotes] = useState(false)
   const [localNotes, setLocalNotes] = useState(weekPlan.notes || "")
-  const [isEditingCooking, setIsEditingCooking] = useState(false)
+  const [editingCookingDayId, setEditingCookingDayId] = useState<string | null>(null)
   const [localCooking, setLocalCooking] = useState("")
 
-  const mealSlotNames = useMemo(() => {
-    const day = weekPlan.days.find(d => d.dayOfWeek === activeDay)
-    if (!day) return []
+  function getMealSlotNames(day: typeof weekPlan.days[number]) {
     const names = new Set<string>()
     day.slots.forEach(s => names.add(s.name))
     return [...names].sort((a, b) => {
@@ -198,15 +195,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
       const slotB = day.slots.find(s => s.name === b)
       return (slotA?.order ?? 0) - (slotB?.order ?? 0)
     })
-  }, [weekPlan.days, activeDay])
-
-  const dayHasContent = useMemo(() => {
-    const map: Record<number, boolean> = {}
-    weekPlan.days.forEach(d => {
-      map[d.dayOfWeek] = d.slots.some(s => s.entries.length > 0 || s.productEntries.length > 0)
-    })
-    return map
-  }, [weekPlan.days])
+  }
 
   const handleAddDish = (dishId: string, weights: { ingredientIndex: number; weight: number; inputState?: "RAW" | "COOKED"; unit?: string | null }[]) => {
     if (!pickerConfig) return
@@ -288,13 +277,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }, [weekPlan.id, localNotes])
 
-  const currentDay = weekPlan.days.find(d => d.dayOfWeek === activeDay)
-
   const handleSaveCooking = useCallback((dayPlanId: string) => {
     startTransition(async () => {
       const result = await updateDayPrepNote(dayPlanId, localCooking, [])
       if (result.success) {
-        setIsEditingCooking(false)
+        setEditingCookingDayId(null)
         toast.success("Cooking list saved")
       } else {
         toast.error(result.error || "Failed to save")
@@ -348,77 +335,62 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         </Button>
       </div>
 
-      {/* Day selector */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        {weekPlan.days.map((day) => {
-          const hasContent = dayHasContent[day.dayOfWeek]
-          const isActive = activeDay === day.dayOfWeek
-          return (
-            <button
-              key={day.dayOfWeek}
-              onClick={() => setActiveDay(day.dayOfWeek)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-mono uppercase transition-all whitespace-nowrap ${
-                isActive
-                  ? "border-accent bg-accent/10 text-accent shadow-sm"
-                  : "border-border text-muted hover:bg-raised"
-              }`}
-            >
-              <span>{DAY_NAMES[day.dayOfWeek]}</span>
-              {hasContent && (
-                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-accent" : "bg-accent/50"}`} />
-              )}
-            </button>
-          )
-        })}
-      </div>
+      {/* All days */}
+      {weekPlan.days.map((day) => {
+        const mealSlotNames = getMealSlotNames(day)
+        return (
+        <div key={day.dayOfWeek} className="space-y-4">
+          {/* Day header */}
+          <div className="flex items-center gap-3">
+            <span className="text-body font-bold font-mono uppercase text-text-primary">{DAY_NAMES[day.dayOfWeek]}</span>
+            <div className="flex-1 h-px bg-border-dim" />
+          </div>
 
-      {/* Day nutrition summary - single row with both profiles */}
-      {currentDay && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {weekPlan.persons.map((person) => {
-            const personDaySlots = currentDay.slots.filter((s) => s.personId === person.id)
-            const dayActual = personDaySlots.reduce((acc, s) => ({
-              kcal: acc.kcal + s.actualKcal,
-              protein: acc.protein + s.actualProtein,
-              fat: acc.fat + s.actualFat,
-              carbs: acc.carbs + s.actualCarbs,
-              fiber: acc.fiber + s.actualFiber,
-            }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
+          {/* Day nutrition summary */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {weekPlan.persons.map((person) => {
+              const personDaySlots = day.slots.filter((s) => s.personId === person.id)
+              const dayActual = personDaySlots.reduce((acc, s) => ({
+                kcal: acc.kcal + s.actualKcal,
+                protein: acc.protein + s.actualProtein,
+                fat: acc.fat + s.actualFat,
+                carbs: acc.carbs + s.actualCarbs,
+                fiber: acc.fiber + s.actualFiber,
+              }), { kcal: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 })
 
-            const targets = {
-              kcal: person.targetKcal,
-              protein: Math.round((person.targetKcal * person.proteinPct / 100) / 4),
-              fat: Math.round((person.targetKcal * person.fatPct / 100) / 9),
-              carbs: Math.round((person.targetKcal * person.carbsPct / 100) / 4),
-              fiber: person.fiberGrams,
-            }
+              const targets = {
+                kcal: person.targetKcal,
+                protein: Math.round((person.targetKcal * person.proteinPct / 100) / 4),
+                fat: Math.round((person.targetKcal * person.fatPct / 100) / 9),
+                carbs: Math.round((person.targetKcal * person.carbsPct / 100) / 4),
+                fiber: person.fiberGrams,
+              }
 
-            const macros = [
-              { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "" },
-              { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g" },
-              { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g" },
-              { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g" },
-              { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g" },
-            ]
+              const macros = [
+                { label: "К", actual: dayActual.kcal, target: targets.kcal, unit: "" },
+                { label: "Б", actual: dayActual.protein, target: targets.protein, unit: "g" },
+                { label: "Ж", actual: dayActual.fat, target: targets.fat, unit: "g" },
+                { label: "В", actual: dayActual.carbs, target: targets.carbs, unit: "g" },
+                { label: "Кл", actual: dayActual.fiber, target: targets.fiber, unit: "g" },
+              ]
 
-            return (
-              <MacroSummary
-                key={person.id}
-                title="Day Nutrition"
-                personName={person.name ?? "Unknown"}
-                macros={macros}
-              />
-            )
-          })}
-        </div>
-      )}
+              return (
+                <MacroSummary
+                  key={person.id}
+                  title="Day Nutrition"
+                  personName={person.name ?? "Unknown"}
+                  macros={macros}
+                />
+              )
+            })}
+          </div>
 
-      {/* Meal slots */}
-      {currentDay && mealSlotNames.map((slotName) => {
-        const slotGroup = currentDay.slots.filter(s => s.name === slotName)
-        const timeWindow = slotGroup[0]?.timeWindow
-        const totalEntries = slotGroup.reduce((sum, s) => sum + s.entries.length + s.productEntries.length, 0)
-        const color = getMealColor(slotName)
+          {/* Meal slots */}
+          {mealSlotNames.map((slotName) => {
+            const slotGroup = day.slots.filter(s => s.name === slotName)
+            const timeWindow = slotGroup[0]?.timeWindow
+            const totalEntries = slotGroup.reduce((sum, s) => sum + s.entries.length + s.productEntries.length, 0)
+            const color = getMealColor(slotName)
 
         return (
           <div key={slotName} className={`bg-surface border ${color.border} rounded-2xl overflow-hidden`}>
@@ -741,67 +713,68 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         )
       })}
 
-      {/* Cooking list for the day */}
-      {currentDay && (
-        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-          <div className="bg-raised/50 px-5 py-3 border-b border-border flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                <UtensilsCrossed size={16} className="text-accent" />
-              </div>
-              <h3 className="text-body font-semibold text-text-primary">Список приготування</h3>
-            </div>
-            {!isEditingCooking && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-text-muted hover:text-accent"
-                onClick={() => { setLocalCooking(currentDay?.prepNote?.content || ""); setIsEditingCooking(true) }}
-              >
-                Edit
-              </Button>
-            )}
-          </div>
-          <div className="p-5">
-            {isEditingCooking ? (
-              <div className="space-y-3">
-                <textarea
-                  value={localCooking}
-                  onChange={(e) => setLocalCooking(e.target.value)}
-                  className="w-full min-h-[160px] bg-background border border-border-strong rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50 font-mono leading-relaxed"
-                  placeholder={"1. Зварити рис — 200г\n2. Запекти курку — 500г, 180°C, 40хв\n3. Нарізати овочі для салату\n4. Змішати соус..."}
-                  autoFocus
-                />
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => { setIsEditingCooking(false); setLocalCooking(currentDay?.prepNote?.content || "") }}
-                  >
-                    <X size={14} className="mr-1" /> Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleSaveCooking(currentDay.dayPlanId)}
-                    disabled={isPending}
-                  >
-                    <Check size={14} className="mr-1" /> {isPending ? "Saving..." : "Save"}
-                  </Button>
+          {/* Cooking list for this day */}
+          <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+            <div className="bg-raised/50 px-5 py-3 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                  <UtensilsCrossed size={16} className="text-accent" />
                 </div>
+                <h3 className="text-body font-semibold text-text-primary">Список приготування</h3>
               </div>
-            ) : (
-              <div className="min-h-[60px] text-note text-text-muted font-mono leading-relaxed">
-                {currentDay?.prepNote?.content ? (
-                  <p className="whitespace-pre-wrap">{currentDay.prepNote.content}</p>
-                ) : (
-                  <p className="italic">No cooking list yet. Click Edit to add your cooking steps for this day.</p>
-                )}
-              </div>
-            )}
+              {editingCookingDayId !== day.dayPlanId && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-text-muted hover:text-accent"
+                  onClick={() => { setLocalCooking(day.prepNote?.content || ""); setEditingCookingDayId(day.dayPlanId) }}
+                >
+                  Edit
+                </Button>
+              )}
+            </div>
+            <div className="p-5">
+              {editingCookingDayId === day.dayPlanId ? (
+                <div className="space-y-3">
+                  <textarea
+                    value={localCooking}
+                    onChange={(e) => setLocalCooking(e.target.value)}
+                    className="w-full min-h-[160px] bg-background border border-border-strong rounded-xl p-3 text-note text-text-primary placeholder:text-text-muted resize-y focus:outline-none focus:border-accent/50 font-mono leading-relaxed"
+                    placeholder={"1. Зварити рис — 200г\n2. Запекти курку — 500г, 180°C, 40хв\n3. Нарізати овочі для салату\n4. Змішати соус..."}
+                    autoFocus
+                  />
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => { setEditingCookingDayId(null); setLocalCooking(day.prepNote?.content || "") }}
+                    >
+                      <X size={14} className="mr-1" /> Cancel
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => handleSaveCooking(day.dayPlanId)}
+                      disabled={isPending}
+                    >
+                      <Check size={14} className="mr-1" /> {isPending ? "Saving..." : "Save"}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="min-h-[60px] text-note text-text-muted font-mono leading-relaxed">
+                  {day.prepNote?.content ? (
+                    <p className="whitespace-pre-wrap">{day.prepNote.content}</p>
+                  ) : (
+                    <p className="italic">No cooking list yet. Click Edit to add your cooking steps for this day.</p>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      )}
+        )
+      })}
 
       {/* Notes block */}
       <div className="bg-surface border border-border rounded-2xl overflow-hidden">
