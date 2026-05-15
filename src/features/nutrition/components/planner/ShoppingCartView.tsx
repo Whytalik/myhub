@@ -79,13 +79,22 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
     })
   }
 
+  function formatAmount(grams: number, unit: string, stdPkg: number | null): string {
+    const NON_GRAM = new Set(["PIECE", "TBSP", "TSP"])
+    const unitLabel: Record<string, string> = { PIECE: "шт", TBSP: "ст.л.", TSP: "ч.л." }
+    if (NON_GRAM.has(unit) && stdPkg) {
+      const count = Math.ceil(grams / stdPkg)
+      return `${count} ${unitLabel[unit]}`
+    }
+    if (unit === "ML") return grams >= 1000 ? `${(grams / 1000).toFixed(1)} л` : `${Math.round(grams)} мл`
+    return grams >= 1000 ? `${(grams / 1000).toFixed(1)} кг` : `${Math.round(grams)} г`
+  }
+
   const copyToClipboard = () => {
     const list = items
       .filter(i => i.status === CartItemStatus.TO_BUY)
       .map(i => {
-        const qty = i.requiredRawGrams >= 1000 
-          ? `${(i.requiredRawGrams / 1000).toFixed(1)}kg` 
-          : `${Math.round(i.requiredRawGrams)}g`
+        const qty = formatAmount(i.requiredRawGrams, i.product.unit, i.product.standardPackageAmount)
         return `- ${i.product.name}: ${qty}`
       })
       .join("\n")
@@ -196,9 +205,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
                   const isHave = item.status === CartItemStatus.HAVE
                   const isExpanded = expandedItems.has(item.id)
                   
-                  const qtyStr = item.requiredRawGrams >= 1000 
-                    ? `${(item.requiredRawGrams / 1000).toFixed(2)}kg` 
-                    : `${Math.round(item.requiredRawGrams)}g`
+                  const qtyStr = formatAmount(item.requiredRawGrams, item.product.unit, item.product.standardPackageAmount)
 
                   return (
                     <div key={item.id} className={`transition-colors ${isBought ? "bg-raised/30" : ""}`}>

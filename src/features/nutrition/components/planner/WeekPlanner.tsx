@@ -12,6 +12,7 @@ import type { DishType } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
 
 import { MacroSummary } from "./MacroSummary"
+import { Tabs } from "@/components/ui/tabs"
 
 const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
@@ -134,6 +135,8 @@ interface WeekPlannerProps {
     fatPer100: number
     carbsPer100: number
     fiberPer100: number
+    unit: string
+    standardPackageAmount: number
   }[]
 }
 
@@ -180,7 +183,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [productWeight, setProductWeight] = useState("100")
   const [editingIngredient, setEditingIngredient] = useState<{ entryId: string; ingredientIndex: number; weight: string } | null>(null)
-  const [editingProduct, setEditingProduct] = useState<{ id: string; weight: string } | null>(null)
+  const [editingProduct, setEditingProduct] = useState<{ id: string; productId: string; weight: string } | null>(null)
   const [notes, setNotes] = useState(weekPlan.notes || "")
   const [isEditingNotes, setIsEditingNotes] = useState(false)
   const [localNotes, setLocalNotes] = useState(weekPlan.notes || "")
@@ -220,19 +223,37 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }
 
+  const UNIT_LABELS: Record<string, string> = { GRAM: "г", ML: "мл", PIECE: "шт", TBSP: "ст.л.", TSP: "ч.л." }
+  const NON_GRAM_UNITS = new Set(["PIECE", "TBSP", "TSP"])
+
+  const selectedProduct = products.find(p => p.id === selectedProductId)
+  const selectedUnit = selectedProduct?.unit ?? "GRAM"
+  const selectedUnitLabel = UNIT_LABELS[selectedUnit] ?? selectedUnit
+  const portionMultiplier = NON_GRAM_UNITS.has(selectedUnit) ? (selectedProduct?.standardPackageAmount ?? 1) : 1
+
+  function getProductUnitLabel(unit: string) { return UNIT_LABELS[unit] ?? unit }
+  function toDisplayAmount(grams: number, unit: string, stdPkg: number): string {
+    if (!NON_GRAM_UNITS.has(unit)) return grams.toFixed(0)
+    return Math.round(grams / stdPkg).toString()
+  }
+  function toGrams(displayAmount: number, unit: string, stdPkg: number): number {
+    return NON_GRAM_UNITS.has(unit) ? displayAmount * stdPkg : displayAmount
+  }
+
   const handleAddProduct = () => {
     if (!productPickerSlotId || !selectedProductId) return
-    const weight = parseFloat(productWeight)
-    if (!weight || weight <= 0) { toast.error("Enter valid weight"); return }
+    const amount = parseFloat(productWeight)
+    if (!amount || amount <= 0) { toast.error("Enter valid amount"); return }
+    const portionWeight = toGrams(amount, selectedUnit, portionMultiplier)
 
     startTransition(async () => {
-      const result = await addProductToSlot(productPickerSlotId, selectedProductId, weight)
+      const result = await addProductToSlot(productPickerSlotId, selectedProductId, portionWeight)
       if (result.success) {
         toast.success("Product added")
         setProductPickerSlotId(null)
         setSelectedProductId(null)
         setProductSearch("")
-        setProductWeight("100")
+        setProductWeight("1")
       } else {
         toast.error(result.error || "Failed to add product")
       }
@@ -335,18 +356,17 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         </Button>
       </div>
 
-      {/* All days */}
-      {weekPlan.days.map((day) => {
-        const mealSlotNames = getMealSlotNames(day)
-        return (
-        <div key={day.dayOfWeek} className="space-y-4">
-          {/* Day header */}
-          <div className="flex items-center gap-3">
-            <span className="text-body font-bold font-mono uppercase text-text-primary">{DAY_NAMES[day.dayOfWeek]}</span>
-            <div className="flex-1 h-px bg-border-dim" />
-          </div>
-
-          {/* Day nutrition summary */}
+      {/* All days as tabs */}
+      <Tabs
+        layoutId="weekPlannerDay"
+        tabs={weekPlan.days.map((day) => {
+          const mealSlotNames = getMealSlotNames(day)
+          return {
+            id: String(day.dayOfWeek),
+            label: DAY_NAMES[day.dayOfWeek],
+            content: (
+              <div className="space-y-4">
+                {/* Day nutrition summary */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {weekPlan.persons.map((person) => {
               const personDaySlots = day.slots.filter((s) => s.personId === person.id)
@@ -597,7 +617,12 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                               <div key={name} className="px-4 py-1.5 text-caption font-semibold text-text-primary border-l border-border/30">{name}</div>
                             ))}
                           </div>
-                          {Array.from(allProducts.entries()).map(([productId, p]) => (
+                          {Array.from(allProducts.entries()).map(([productId, p]) => {
+                            const prodInfo = products.find(pr => pr.id === productId)
+                            const pUnit = prodInfo?.unit ?? "GRAM"
+                            const pStdPkg = prodInfo?.standardPackageAmount ?? 1
+                            const pUnitLabel = getProductUnitLabel(pUnit)
+                            return (
                             <div key={productId} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
                               <div className="px-4 py-2 flex items-center justify-between gap-2">
                                 <span className="text-caption text-text-muted truncate">{p.productName}</span>
@@ -635,10 +660,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                             onChange={(e) => setEditingProduct({ ...editingProduct, weight: e.target.value.replace(/[^0-9.]/g, "") })}
                                             onKeyDown={(e) => {
                                               if (e.key === "Enter") {
-                                                const w = parseFloat(editingProduct.weight)
-                                                if (w > 0) {
+                                                const displayW = parseFloat(editingProduct.weight)
+                                                if (displayW > 0) {
                                                   startTransition(async () => {
-                                                    const result = await updateProductEntryWeight(person.entryId, w)
+                                                    const grams = toGrams(displayW, pUnit, pStdPkg)
+                                                    const result = await updateProductEntryWeight(person.entryId, grams)
                                                     if (result.success) { toast.success("Weight updated"); setEditingProduct(null) }
                                                   })
                                                 }
@@ -646,10 +672,12 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               if (e.key === "Escape") setEditingProduct(null)
                                             }}
                                             onBlur={() => {
-                                              const w = parseFloat(editingProduct.weight)
-                                              if (w > 0 && Math.round(w) !== Math.round(person.weight)) {
+                                              const displayW = parseFloat(editingProduct.weight)
+                                              const currentDisplay = parseFloat(toDisplayAmount(person.weight, pUnit, pStdPkg))
+                                              if (displayW > 0 && Math.round(displayW) !== Math.round(currentDisplay)) {
                                                 startTransition(async () => {
-                                                  const result = await updateProductEntryWeight(person.entryId, w)
+                                                  const grams = toGrams(displayW, pUnit, pStdPkg)
+                                                  const result = await updateProductEntryWeight(person.entryId, grams)
                                                   if (result.success) setEditingProduct(null)
                                                 })
                                               } else {
@@ -657,14 +685,14 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               }
                                             }}
                                           />
-                                          <span className="text-micro text-text-muted">г</span>
+                                          <span className="text-micro text-text-muted">{pUnitLabel}</span>
                                         </div>
                                       ) : (
                                         <button
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
-                                          onClick={() => setEditingProduct({ id: person.entryId, weight: String(Math.round(person.weight)) })}
+                                          onClick={() => setEditingProduct({ id: person.entryId, productId, weight: toDisplayAmount(person.weight, pUnit, pStdPkg) })}
                                         >
-                                          {person.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
+                                          {toDisplayAmount(person.weight, pUnit, pStdPkg)}<span className="text-micro text-text-muted">{pUnitLabel}</span>
                                         </button>
                                       )
                                     ) : (
@@ -674,7 +702,8 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                 )
                               })}
                             </div>
-                          ))}
+                            )
+                          })}
                         </div>
                       )
                     })()}
@@ -772,9 +801,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               )}
             </div>
           </div>
-        </div>
-        )
-      })}
+          </div>
+            ),
+          }
+        })}
+      />
 
       {/* Notes block */}
       <div className="bg-surface border border-border rounded-2xl overflow-hidden">
@@ -878,7 +909,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               .map(p => (
                 <button
                   key={p.id}
-                  onClick={() => setSelectedProductId(p.id)}
+                  onClick={() => { setSelectedProductId(p.id); setProductWeight(NON_GRAM_UNITS.has(p.unit) ? "1" : "100") }}
                   className={`w-full text-left p-2.5 rounded-lg border text-base transition-colors ${
                     selectedProductId === p.id ? "border-accent bg-accent/5" : "border-border hover:bg-raised"
                   }`}
@@ -899,7 +930,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 onChange={(e) => setProductWeight(e.target.value)}
                 className="w-24 font-mono text-center"
               />
-              <span className="text-base text-muted-foreground">грам</span>
+              <span className="text-base text-muted-foreground">{selectedUnitLabel}</span>
             </div>
           )}
         </div>

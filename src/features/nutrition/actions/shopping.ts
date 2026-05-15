@@ -339,6 +339,7 @@ export async function getShoppingCart(
         product: {
           name: item.product.name,
           price: item.product.price,
+          unit: item.product.unit,
           standardPackageAmount: item.product.standardPackageAmount,
           category: item.product.category,
           stores: item.product.stores as Store[],

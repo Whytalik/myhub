@@ -29,6 +29,7 @@ export interface CartItem {
   product: {
     name: string;
     price: number | null;
+    unit: string;
     standardPackageAmount: number | null;
     category: string | null;
     stores: Store[];

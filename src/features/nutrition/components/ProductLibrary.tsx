@@ -616,9 +616,11 @@ const handleDeleteAll = () => {
                 value={formData.unit} 
                 onChange={(e) => setFormData(prev => ({ ...prev, unit: e.target.value }))}
               >
-                <option value="GRAM">g</option>
-                <option value="ML">ml</option>
-                <option value="PIECE">pcs</option>
+                <option value="GRAM">г</option>
+                <option value="ML">мл</option>
+                <option value="PIECE">шт</option>
+                <option value="TBSP">ст.л.</option>
+                <option value="TSP">ч.л.</option>
               </Select>
             </div>
             <div>
