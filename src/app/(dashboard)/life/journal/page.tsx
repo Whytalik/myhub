@@ -50,7 +50,7 @@ export default async function JournalPage() {
     : null;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div>
       <div className="relative">
         <PageHeader
           breadcrumb={[{ label: "life space", href: "/life" }, { label: "daily journal" }]}
