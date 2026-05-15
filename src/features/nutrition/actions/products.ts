@@ -368,13 +368,7 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
-    const inUse = await prisma.dishIngredient.count({
-      where: { product: { userId } }
-    })
-    if (inUse > 0) {
-      return { success: false, error: "Деякі продукти використовуються в стравах. Спочатку видаліть страви." }
-    }
-
+    await prisma.dishIngredient.deleteMany({ where: { product: { userId } } })
     await prisma.cartItem.deleteMany({ where: { product: { userId } } })
     await prisma.shoppingListItem.deleteMany({ where: { product: { userId } } })
     await prisma.productEntry.deleteMany({ where: { product: { userId } } })

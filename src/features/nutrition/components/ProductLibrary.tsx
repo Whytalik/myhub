@@ -705,7 +705,7 @@ const handleDeleteAll = () => {
         }
       >
         <p>
-          You are about to delete <strong>ALL</strong> your custom products. This action will fail if any products are currently used in dishes.
+          You are about to delete <strong>ALL</strong> your custom products. Products will also be removed from any dishes that use them.
         </p>
       </Dialog>
 
