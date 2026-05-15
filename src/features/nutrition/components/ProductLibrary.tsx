@@ -83,6 +83,10 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [selectedSubTab, setSelectedSubTab] = useState<string | null>(null);
   const [showImportModal, setShowImportModal] = useState(false);
 
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   // Debounced unified search
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -251,7 +255,6 @@ const handleDeleteAll = () => {
     try {
       const result = await deleteAllUserProducts();
       if (result.success) {
-        setProducts((prev) => prev.filter(p => !p.userId)); // Keep global products
         toast.success("All personal products deleted");
         setShowDeleteAllDialog(false);
       } else {
