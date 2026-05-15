@@ -103,73 +103,153 @@ export function RoutineSection({ type, routine, scheduledDayType, onChange }: Pr
       {type === "morning" && (() => {
         const planned = scheduledDayType ? dayTypeToRoutine(scheduledDayType).isTrainingDay : null;
         const isOverridden = planned !== null && isTrainingDay !== planned;
-        return (
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={toggleTraining}
-              className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all h-9 ${
-                isTrainingDay
-                  ? "bg-accent/10 border-accent/40 text-accent"
-                  : "bg-raised/30 border-border text-secondary hover:border-border-hover"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
-                <span className="text-base font-bold">Training Today</span>
-              </div>
-              <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
-                <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />
-              </div>
-            </button>
-            {planned !== null && (
-              <div className="flex items-center gap-1.5 px-1">
-                <CalendarDays size={10} className={isOverridden ? "text-amber-500/70" : "text-muted/60"} />
-                <span className={`text-label font-mono uppercase tracking-wider ${isOverridden ? "text-amber-500/70" : "text-muted/60"}`}>
-                  plan: {planned ? "training" : "rest"}{isOverridden ? " · overridden" : ""}
+        if (planned !== null) {
+          return (
+            <div className={`flex items-center justify-between px-4 py-2.5 rounded-xl border transition-all ${
+              isOverridden
+                ? "border-amber-500/30 bg-amber-500/[0.04]"
+                : isTrainingDay
+                ? "border-accent/25 bg-accent/[0.04]"
+                : "border-border bg-raised/20"
+            }`}>
+              <div className="flex items-center gap-2.5">
+                <div className={`p-1 rounded-md transition-colors ${
+                  isOverridden ? "bg-amber-500/15" : isTrainingDay ? "bg-accent/15" : "bg-raised border border-border/50"
+                }`}>
+                  <Dumbbell size={12} className={isOverridden ? "text-amber-500" : isTrainingDay ? "text-accent" : "text-muted"} />
+                </div>
+                <span className={`text-base font-bold transition-colors ${
+                  isOverridden ? "text-amber-500" : isTrainingDay ? "text-text" : "text-secondary"
+                }`}>
+                  {isTrainingDay ? "Training Day" : "Rest Day"}
                 </span>
+                {isOverridden ? (
+                  <span className="text-label font-mono text-amber-500/60 uppercase tracking-wider">
+                    · was {planned ? "training" : "rest"}
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 text-label font-mono text-muted/50 uppercase tracking-wider">
+                    <CalendarDays size={10} />plan
+                  </span>
+                )}
               </div>
-            )}
-          </div>
+              <button onClick={toggleTraining} className="flex items-center gap-1.5 group">
+                <span className="text-label font-mono text-muted/40 group-hover:text-muted/70 uppercase tracking-wider transition-colors">
+                  {isOverridden ? "reset" : "override"}
+                </span>
+                <div className={`w-6 h-3 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent/70" : "bg-border"}`}>
+                  <div className={`w-2 h-2 bg-white rounded-full shadow-sm transition-transform duration-200 ${isTrainingDay ? "translate-x-3" : "translate-x-0"}`} />
+                </div>
+              </button>
+            </div>
+          );
+        }
+        return (
+          <button
+            onClick={toggleTraining}
+            className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all h-9 ${
+              isTrainingDay
+                ? "bg-accent/10 border-accent/40 text-accent"
+                : "bg-raised/30 border-border text-secondary hover:border-border-hover"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
+              <span className="text-base font-bold">Training Today</span>
+            </div>
+            <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
+              <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />
+            </div>
+          </button>
         );
       })()}
 
       {type === "evening" && (() => {
         const plannedMode = scheduledDayType ? dayTypeToRoutine(scheduledDayType).eveningMode : null;
         const isOverridden = plannedMode !== null && eveningMode !== plannedMode;
-        return (
-          <div className="flex flex-col gap-1">
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: "normal", icon: User, label: "Normal" },
-                { id: "gym",    icon: Dumbbell, label: "Gym" },
-                { id: "fun",    icon: Gamepad2, label: "Fun" }
-              ].map((mode) => {
-                const active = eveningMode === mode.id;
-                const Icon = mode.icon;
-                return (
-                  <button
-                    key={mode.id}
-                    onClick={() => setEveningMode(mode.id)}
-                    className={`flex flex-col items-center justify-center py-2 rounded-xl border transition-all ${
-                      active
-                        ? "bg-accent/10 border-accent/40 text-accent shadow-sm"
-                        : "bg-raised/30 border-border text-muted hover:border-border-hover hover:text-secondary"
-                    }`}
-                  >
-                    <Icon size={14} className={active ? "mb-0.5" : "mb-1"} />
-                    <span className="text-caption font-bold leading-none">{mode.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-            {plannedMode !== null && (
-              <div className="flex items-center gap-1.5 px-1">
-                <CalendarDays size={10} className={isOverridden ? "text-amber-500/70" : "text-muted/60"} />
-                <span className={`text-label font-mono uppercase tracking-wider ${isOverridden ? "text-amber-500/70" : "text-muted/60"}`}>
-                  plan: {plannedMode}{isOverridden ? " · overridden" : ""}
-                </span>
+        const EVENING_MODES = [
+          { id: "normal", icon: User,     label: "Normal" },
+          { id: "gym",    icon: Dumbbell, label: "Gym" },
+          { id: "fun",    icon: Gamepad2, label: "Fun" },
+        ] as const;
+        if (plannedMode !== null) {
+          const PlannedIcon = EVENING_MODES.find(m => m.id === plannedMode)?.icon ?? User;
+          return (
+            <div className="flex flex-col gap-2">
+              <div className={`flex items-center justify-between px-4 py-2.5 rounded-xl border transition-all ${
+                isOverridden
+                  ? "border-amber-500/30 bg-amber-500/[0.04]"
+                  : plannedMode !== "normal"
+                  ? "border-accent/25 bg-accent/[0.04]"
+                  : "border-border bg-raised/20"
+              }`}>
+                <div className="flex items-center gap-2.5">
+                  <div className={`p-1 rounded-md transition-colors ${
+                    isOverridden ? "bg-amber-500/15" : plannedMode !== "normal" ? "bg-accent/15" : "bg-raised border border-border/50"
+                  }`}>
+                    <PlannedIcon size={12} className={isOverridden ? "text-amber-500" : plannedMode !== "normal" ? "text-accent" : "text-muted"} />
+                  </div>
+                  <span className={`text-base font-bold capitalize transition-colors ${
+                    isOverridden ? "text-amber-500" : plannedMode !== "normal" ? "text-text" : "text-secondary"
+                  }`}>
+                    {eveningMode} evening
+                  </span>
+                  {isOverridden ? (
+                    <span className="text-label font-mono text-amber-500/60 uppercase tracking-wider">
+                      · was {plannedMode}
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-label font-mono text-muted/50 uppercase tracking-wider">
+                      <CalendarDays size={10} />plan
+                    </span>
+                  )}
+                </div>
               </div>
-            )}
+              <div className="flex gap-1.5">
+                {EVENING_MODES.map(({ id, icon: Icon, label }) => {
+                  const active = eveningMode === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => setEveningMode(id)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-note font-bold transition-all ${
+                        active
+                          ? "bg-accent/10 border-accent/30 text-accent"
+                          : "bg-raised/20 border-border text-muted/70 hover:border-border-hover hover:text-secondary"
+                      }`}
+                    >
+                      <Icon size={11} />
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
+        return (
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: "normal", icon: User,     label: "Normal" },
+              { id: "gym",    icon: Dumbbell, label: "Gym" },
+              { id: "fun",    icon: Gamepad2, label: "Fun" },
+            ].map(({ id, icon: Icon, label }) => {
+              const active = eveningMode === id;
+              return (
+                <button
+                  key={id}
+                  onClick={() => setEveningMode(id)}
+                  className={`flex flex-col items-center justify-center py-2 rounded-xl border transition-all ${
+                    active
+                      ? "bg-accent/10 border-accent/40 text-accent shadow-sm"
+                      : "bg-raised/30 border-border text-muted hover:border-border-hover hover:text-secondary"
+                  }`}
+                >
+                  <Icon size={14} className="mb-0.5" />
+                  <span className="text-caption font-bold leading-none">{label}</span>
+                </button>
+              );
+            })}
           </div>
         );
       })()}
