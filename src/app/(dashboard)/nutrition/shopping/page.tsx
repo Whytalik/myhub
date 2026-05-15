@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getLatestWeekPlan } from "@/features/nutrition/actions/planning"
 import { getShoppingCart, generateShoppingCart } from "@/features/nutrition/actions/shopping"
 import { ShoppingCartView } from "@/features/nutrition/components/planner/ShoppingCartView"
@@ -19,12 +18,11 @@ export default async function ShoppingPage() {
   if (!latestPlanResult.success || !latestPlanResult.data) {
     return (
       <div className="px-8 py-8">
-        <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-          <Heading title="Shopping Cart" />
-          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-          <p className="text-body text-text-secondary mt-4">Create a week plan first to generate a shopping cart.</p>
-        </div>
+        <PageHeader
+          breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]}
+          title="Shopping Cart"
+          description="Create a week plan first to generate a shopping cart."
+        />
       </div>
     );
     }
@@ -37,12 +35,11 @@ export default async function ShoppingPage() {
     if (!cartResult.success || !cartResult.data) {
       return (
         <div className="px-8 py-8">
-          <div className="mb-8">
-            <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-            <Heading title="Shopping Cart" />
-            <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-            <p className="text-body text-text-secondary mt-4">No shopping cart found for this week plan.</p>
-          </div>
+          <PageHeader
+            breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]}
+            title="Shopping Cart"
+            description="No shopping cart found for this week plan."
+          />
         </div>
       );
     }
@@ -52,12 +49,11 @@ export default async function ShoppingPage() {
 
     return (
       <div className="px-8 py-8">
-        <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-          <Heading title="Shopping Cart" />
-          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-          <p className="text-body text-text-secondary">Aggregated ingredients for the week.</p>
-        </div>
+        <PageHeader
+          breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]}
+          title="Shopping Cart"
+          description="Aggregated ingredients for the week."
+        />
         <div className="mt-6">
           <ShoppingCartView
             weekPlanId={weekPlanId}

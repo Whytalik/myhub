@@ -1,8 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getWeekPlans } from "@/features/nutrition/actions/planning";
 import { getPersons } from "@/features/nutrition/actions/persons";
 import { CreatePlanForm } from "@/features/nutrition/components/planner/CreatePlanForm";
@@ -24,12 +23,11 @@ export default async function PlansPage() {
 
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans" }]} />
-        <Heading title="Plans" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Weekly meal planning overview.</p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans" }]}
+        title="Plans"
+        description="Weekly meal planning overview."
+      />
 
       <CreatePlanForm persons={persons} />
       <div className="mt-8 animate-in fade-in duration-500">

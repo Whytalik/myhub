@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { PageHeader } from "@/components/ui/page-header";
 import { SprintManager } from "@/features/operations/components/SprintManager";
 import { auth } from "@/auth";
 import * as sprintService from "@/features/operations/services/sprint-service";
@@ -16,11 +16,14 @@ export default async function SprintsPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[
-        { label: "planning space", href: "/planning" },
-        { label: "12-week sprints" }
-      ]} />
-      
+      <PageHeader
+        breadcrumb={[
+          { label: "planning space", href: "/planning" },
+          { label: "12-week sprints" }
+        ]}
+        title="12-Week Sprints"
+      />
+
       <div className="mt-8">
         <SprintManager initialSprint={initialSprint} />
       </div>

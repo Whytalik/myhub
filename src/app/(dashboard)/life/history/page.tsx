@@ -1,8 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getAllEntries } from "@/features/life/services/journal-service";
 import { JournalHistoryView } from "@/features/life/components/JournalHistoryView";
 
@@ -20,20 +19,14 @@ export default async function JournalHistoryPage() {
 
   return (
     <div className="px-8 py-8">
-      <Breadcrumb
-        items={[
+      <PageHeader
+        breadcrumb={[
           { label: "life space", href: "/life" },
           { label: "journal", href: "/life/journal" },
           { label: "history" },
         ]}
+        title="History"
       />
-
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-        <Heading title="History" />
-        <span className="text-note font-mono text-muted uppercase tracking-wider">
-          {entries.length} entries
-        </span>
-      </div>
 
       {entries.length === 0 ? (
         <div className="bg-surface border border-border rounded-xl p-20 text-center text-muted text-body italic">

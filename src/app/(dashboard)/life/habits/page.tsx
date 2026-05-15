@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { PageHeader } from "@/components/ui/page-header";
 import { HabitsPageClient } from "@/features/life/components/habits/HabitsPageClient";
 import * as habitService from "@/features/life/services/habit-service";
 import type { HabitData } from "@/features/life/types";
@@ -22,8 +22,11 @@ export default async function HabitsPage() {
 
   return (
     <div className="px-8 py-8">
-      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "habits" }]} />
-      <HabitsPageClient 
+      <PageHeader
+        breadcrumb={[{ label: "life space", href: "/life" }, { label: "habits" }]}
+        title="Habit Tracker"
+      />
+      <HabitsPageClient
         initialHabits={habits as unknown as HabitData[]} 
       />
     </div>

@@ -34,7 +34,7 @@ export function SpaceHeader({ label, title, description }: SpaceHeaderProps) {
       <div className="flex flex-col gap-2 relative z-10">
         <Heading title={title} className="text-hero tracking-tight" />
         {description && (
-          <p className="text-body text-text-secondary leading-relaxed pl-3 border-l-2 border-border-strong">
+          <p className="text-subtitle text-text-secondary leading-relaxed pl-3 border-l-2 border-border-strong">
             {description}
           </p>
         )}

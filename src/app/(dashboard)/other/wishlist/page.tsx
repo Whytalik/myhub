@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { WishlistPageClient } from "./WishlistPageClient";
 import { wishlistService } from "@/features/other/wishlist/services/wishlist-service";
 
@@ -20,22 +19,14 @@ export default async function WishlistPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb 
-        items={[
+      <PageHeader
+        breadcrumb={[
           { label: "misc / other", href: "/other" },
           { label: "wishlist" }
-        ]} 
+        ]}
+        title="Wishlist"
+        description="Manage your desires and planned purchases. Track prices, priorities, and transform your wishes into reality."
       />
-      
-      <div className="flex justify-between items-end mb-16">
-        <div className="flex flex-col">
-          <Heading title="Wishlist" />
-          <p className="text-secondary max-w-2xl leading-relaxed">
-            Manage your desires and planned purchases. Track prices, priorities, 
-            and transform your wishes into reality.
-          </p>
-        </div>
-      </div>
       
       <WishlistPageClient items={items} />
     </div>

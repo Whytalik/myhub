@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getSchedulesForWeek } from "@/features/life/services/schedule-service";
 import { WeekScheduleClient } from "@/features/life/components/WeekScheduleClient";
 import type { DayScheduleData, DayType } from "@/features/life/types";
@@ -39,12 +39,11 @@ export default async function WeekSchedulePage() {
 
   return (
     <div className="px-8 py-8 flex flex-col gap-6">
-      <div className="flex flex-col gap-1">
-        <Heading title="Week Schedule" />
-        <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
-          Plan your week — routines auto-load in the Journal.
-        </p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "life space", href: "/life" }, { label: "week schedule" }]}
+        title="Week Schedule"
+        description="Plan your week — routines auto-load in the Journal."
+      />
 
       <WeekScheduleClient
         initialSchedules={schedules}

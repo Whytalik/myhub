@@ -1,8 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { PersonForm } from "@/features/nutrition/components/PersonForm";
 import { getPersons } from "@/features/nutrition/actions/persons";
 
@@ -19,12 +18,11 @@ export default async function ProfilesPage() {
 
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "profiles" }]} />
-        <Heading title="Profiles" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Nutrition goals and macro targets per person.</p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "profiles" }]}
+        title="Profiles"
+        description="Nutrition goals and macro targets per person."
+      />
 
       <div className="animate-in fade-in duration-500">
         <PersonForm persons={persons} />

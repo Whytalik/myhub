@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getWeekPlan, getLatestWeekPlan, getWeekSummary } from "@/features/nutrition/actions/planning"
 import { getDishesForPicker } from "@/features/nutrition/actions/dishes"
 import { getProducts } from "@/features/nutrition/actions/products"
@@ -56,12 +55,11 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
   if (!activePlanId) {
     return (
       <div className="px-8 py-8">
-        <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
-          <Heading title="Week Plan" />
-          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-          <p className="text-body text-text-secondary mt-4">No week plans found. Create one from the Plans page.</p>
-        </div>
+        <PageHeader
+          breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]}
+          title="Week Plan"
+          description="No week plans found. Create one from the Plans page."
+        />
       </div>
     );
   }
@@ -81,12 +79,11 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
   if (!weekPlan) {
     return (
       <div className="px-8 py-8">
-        <div className="mb-8">
-          <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
-          <Heading title="Week Plan" />
-          <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-          <p className="text-body text-text-secondary mt-4">Failed to load week plan.</p>
-        </div>
+        <PageHeader
+          breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]}
+          title="Week Plan"
+          description="Failed to load week plan."
+        />
       </div>
     );
   }
@@ -95,12 +92,11 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
 
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: planName }]} />
-        <Heading title={planName} />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Weekly meal schedule and nutrition tracking.</p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: planName }]}
+        title={planName}
+        description="Weekly meal schedule and nutrition tracking."
+      />
       {summary && (
         <div className="mb-6">
           <WeekSummary summary={summary} />

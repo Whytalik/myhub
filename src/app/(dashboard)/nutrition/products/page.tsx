@@ -1,8 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { ProductLibrary } from "@/features/nutrition/components/ProductLibrary";
 import { getProducts } from "@/features/nutrition/actions/products";
 
@@ -19,12 +18,11 @@ export default async function ProductsPage() {
 
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "products" }]} />
-        <Heading title="Products" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Personal product database with macros and pricing.</p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "products" }]}
+        title="Products"
+        description="Personal product database with macros and pricing."
+      />
 
       <div className="animate-in fade-in duration-500">
         <ProductLibrary initialProducts={products} />

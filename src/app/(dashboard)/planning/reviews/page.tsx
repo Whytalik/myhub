@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { PageHeader } from "@/components/ui/page-header";
 import { getActiveSprintAction } from "@/features/operations/actions/sprint-actions";
 import { SprintReviewView } from "@/features/operations/components/SprintReviewView";
 import { auth } from "@/auth";
@@ -17,11 +17,14 @@ export default async function ReviewsPage() {
 
   return (
     <div className="px-6 md:px-14 py-8 md:py-10">
-      <Breadcrumb items={[
-        { label: "planning space", href: "/planning" },
-        { label: "review center" }
-      ]} />
-      
+      <PageHeader
+        breadcrumb={[
+          { label: "planning space", href: "/planning" },
+          { label: "review center" }
+        ]}
+        title="Review Center"
+      />
+
       <div className="mt-8">
         {sprint ? (
           <SprintReviewView sprint={sprint} />

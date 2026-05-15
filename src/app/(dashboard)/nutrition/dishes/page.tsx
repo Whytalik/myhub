@@ -1,8 +1,7 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { DishLibrary } from "@/features/nutrition/components/DishLibrary";
 import { DishBuilder } from "@/features/nutrition/components/DishBuilder";
 import { getCookingMethods } from "@/features/nutrition/actions/dishes";
@@ -67,12 +66,11 @@ export default async function DishesPage({
 
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "dishes" }]} />
-        <Heading title={isCreating ? "New Dish" : "Dishes"} />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Recipe repository with automated macro scaling.</p>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "dishes" }]}
+        title={isCreating ? "New Dish" : "Dishes"}
+        description="Recipe repository with automated macro scaling."
+      />
 
       <div className="animate-in fade-in duration-500">
         {isCreating || editId ? (
