@@ -15,6 +15,7 @@ export default async function LifeSpacePage() {
 
   return (
     <SpaceLanding
+      className="px-8"
       header={{
         label: "life space",
         title: "Life Space",

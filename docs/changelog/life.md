@@ -1,5 +1,12 @@
 ## 2026-05-15
 
+### Fixed: Padding inconsistency in Life Space
+- Added `px-8` padding to `SpaceLanding` component in `LifeSpacePage` to ensure consistency with other domain hubs.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ### Fixed: Tab navigation consistency
 - Split the 'Calendar' view into two distinct primary tabs: 'Calendar' (Grid view) and 'Timeline' (Hourly day view) to prevent state conflicts and UI glitches.
 - Verification:
