@@ -38,7 +38,7 @@ export function IconPickerDialog({
     >
       <div className="flex flex-col gap-6">
         {/* Search */}
-        <div className="flex items-center gap-3 px-4 h-11 bg-surface border border-border rounded-2xl focus-within:ring-2 focus-within:ring-accent/30 focus-within:border-accent transition-all">
+        <div className="flex items-center gap-3 px-4 h-11 bg-surface border border-border rounded-xl focus-within:ring-2 focus-within:ring-accent/30 focus-within:border-accent transition-all">
           <Search size={18} className="text-muted" />
           <input 
             value={search}
@@ -105,7 +105,7 @@ export function IconPickerDialog({
         </div>
 
         {filteredIcons.length === 0 && (
-          <div className="py-12 text-center border border-dashed border-border rounded-2xl bg-raised/10">
+          <div className="py-12 text-center border border-dashed border-border rounded-xl bg-raised/10">
              <p className="text-base text-muted font-medium italic">No matching icons found.</p>
           </div>
         )}

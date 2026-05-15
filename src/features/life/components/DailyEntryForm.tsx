@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
 import Link from "next/link";
@@ -201,7 +201,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         </div>
       )}
       {/* Header Controls */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-xl shadow-sm">
         <div className="flex flex-wrap items-center gap-4 md:gap-6">
           <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text uppercase tracking-wider bg-raised px-4 py-2 rounded-lg border border-border/50 shrink-0">
             <Clock size={14} className="text-accent" />
@@ -254,7 +254,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                       </div>
 
                       {/* Body Metrics */}
-                      <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-2xl px-5 py-4">
+                      <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-xl px-5 py-4">
                         <span className="text-note font-mono uppercase tracking-widest text-muted mr-2">Body</span>
                         <div className="flex items-center gap-2">
                           <Weight size={12} className="text-muted" />
@@ -272,7 +272,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
 
                       {/* Row 2: Routine */}
                       <div className="grid grid-cols-1 gap-6">
-                        <Suspense fallback={<div className="bg-surface border rounded-2xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
+                        <Suspense fallback={<div className="bg-surface border rounded-xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
                           <RoutineSection
                             type="morning"
                             routine={data.morningRoutine ?? null}
@@ -289,8 +289,8 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                   content: (
                     <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
                       {habits.length === 0 ? (
-                        <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4">
-                          <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
+                        <div className="bg-surface/30 border border-dashed border-border/40 rounded-xl p-16 flex flex-col items-center justify-center text-center gap-4">
+                          <div className="w-16 h-16 rounded-xl bg-raised flex items-center justify-center border border-border">
                             <SparklesIcon size={32} className="text-muted/40" />
                           </div>
                           <p className="text-base font-bold text-text">No habits defined</p>
@@ -369,7 +369,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                           note={data.nutritionNote ?? null}
                           onChange={patch}
                         />
-                        <Suspense fallback={<div className="bg-surface border rounded-2xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
+                        <Suspense fallback={<div className="bg-surface border rounded-xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
                           <RoutineSection
                             type="evening"
                             routine={data.eveningRoutine ?? null}
@@ -379,7 +379,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                       </div>
 
                       {/* Evening Energy */}
-                      <div className={`bg-surface border rounded-2xl p-6 flex flex-col gap-4 transition-all ${
+                      <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-4 transition-all ${
                         data.eveningEnergy !== null ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
                       }`}>
                         <div className="flex items-center justify-between">
@@ -425,14 +425,14 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                         </div>
                         <Link
                           href="/life/tasks?view=calendar"
-                          className="flex items-center justify-between bg-surface border border-border rounded-2xl px-6 py-4 hover:border-accent/40 hover:bg-raised transition-all group"
+                          className="flex items-center justify-between bg-surface border border-border rounded-xl px-6 py-4 hover:border-accent/40 hover:bg-raised transition-all group"
                         >
                           <div className="flex items-center gap-3">
                             <CalendarDays size={16} className="text-accent" />
                             <span className="text-body font-medium text-text">Plan your tasks</span>
                             <span className="text-note font-mono text-muted">Open calendar view</span>
                           </div>
-                          <span className="text-muted group-hover:text-accent transition-colors">→</span>
+                          <span className="text-muted group-hover:text-accent transition-colors">?</span>
                         </Link>
                       </div>
 

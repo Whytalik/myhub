@@ -114,7 +114,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
         {isOpen && coords && typeof document !== "undefined" && createPortal(
           <div 
             ref={contentRef as React.RefObject<HTMLDivElement>}
-            className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
+            className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-elevated animate-in fade-in zoom-in-95 duration-200 ${
               coords.align === 'top' ? 'origin-bottom' : 'origin-top'
             }`}
             style={{ 
@@ -171,7 +171,7 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
       {isOpen && coords && typeof document !== "undefined" && createPortal(
         <div 
           ref={contentRef as React.RefObject<HTMLDivElement>}
-          className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
+          className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-elevated animate-in fade-in zoom-in-95 duration-200 ${
             coords.align === 'top' ? 'origin-bottom' : 'origin-top'
           }`}
           style={{ 

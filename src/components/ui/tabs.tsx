@@ -18,6 +18,7 @@ interface TabsProps {
   contentClassName?: string;
   variant?: string;
   size?: string;
+  layoutId?: string;
 }
 
 export function Tabs({
@@ -26,7 +27,8 @@ export function Tabs({
   onTabChange,
   className,
   contentClassName,
-  size = "text-note md:text-body"
+  size = "text-note md:text-body",
+  layoutId = "activeTab"
 }: TabsProps) {
   const [internalActiveTab, setInternalActiveTab] = React.useState(tabs[0]?.id);
   const activeTab = controlledActiveTab ?? internalActiveTab;
@@ -72,7 +74,7 @@ export function Tabs({
               >
                 {isActive && (
                   <motion.div
-                    layoutId="activeTab"
+                    layoutId={layoutId}
                     className="absolute inset-0 bg-accent rounded-lg shadow-sm"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />

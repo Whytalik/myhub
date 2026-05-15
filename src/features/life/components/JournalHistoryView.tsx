@@ -116,20 +116,20 @@ export function JournalHistoryView({ entries }: Props) {
         />
       </div>
 
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-12">
         {displayedKeys.map(key => (
-          <div key={key} className="flex flex-col gap-4">
+          <div key={key} className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="h-px flex-1 bg-border/40" />
+              <div className="h-px flex-1 bg-border-dim" />
               <span className="text-note font-mono text-muted uppercase tracking-wider px-4">{key}</span>
-              <div className="h-px flex-1 bg-border/40" />
+              <div className="h-px flex-1 bg-border-dim" />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
               {groupedEntries[key].map((e) => {
                 const dateStr = e.date.toISOString().slice(0, 10);
                 const label = new Date(e.date).toLocaleDateString("en-US", {
-                  weekday: "short",
+                  weekday: "long",
                   day: "numeric",
                   month: "long",
                 });

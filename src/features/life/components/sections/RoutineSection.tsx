@@ -74,7 +74,7 @@ export function RoutineSection({ type, routine, onChange }: Props) {
   };
 
   return (
-    <div className={`bg-surface border rounded-2xl p-5 flex flex-col gap-4 h-full transition-all duration-500 ${
+    <div className={`bg-surface border rounded-xl p-5 flex flex-col gap-4 h-full transition-all duration-500 ${
       isComplete 
         ? "border-accent/40 shadow-[0_0_25px_rgba(192,132,252,0.08)] bg-accent/[0.02]" 
         : hasValue 

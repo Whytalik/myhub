@@ -36,7 +36,7 @@ export function TaskCardBase({
   allTasks = [], 
   variant = "default",
   isDragging = false,
-  className = "",
+  className = "••••••••",
   style,
   listeners,
   attributes,
@@ -94,7 +94,7 @@ export function TaskCardBase({
     new Date(task.dueDate) < new Date();
 
   const formatText = (text: string) => {
-    if (!text) return "";
+    if (!text) return "••••••••";
     const escaped = text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")

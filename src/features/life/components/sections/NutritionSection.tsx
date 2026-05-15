@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Utensils, CheckCircle2, AlertTriangle, XCircle, FileText } from "lucide-react";
 
@@ -19,7 +19,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
   const showNote = nutrition === 1 || nutrition === 3;
 
   return (
-    <div className={`bg-surface border rounded-2xl p-6 flex flex-col gap-6 transition-all ${
+    <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
       hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
     }`}>
       <div className="flex items-center justify-between">

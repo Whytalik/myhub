@@ -46,7 +46,7 @@ export function ReflectionSection({ winToday, improveTomorrow, gratitude, brainD
   const values = { winToday, improveTomorrow, gratitude, brainDump };
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-5">
+    <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-5">
       <div className="flex items-center gap-2.5">
         <div className="h-px flex-1 bg-border/40" />
         <span className="text-note font-mono text-muted uppercase tracking-[0.3em]">Reflection</span>

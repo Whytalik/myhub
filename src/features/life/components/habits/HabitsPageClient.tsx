@@ -52,7 +52,7 @@ export function HabitsPageClient({
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <Heading title="Habit tracker" />
@@ -97,8 +97,8 @@ export function HabitsPageClient({
         </div>
 
         {activeHabits.length === 0 && !showArchived ? (
-          <div className="bg-surface/30 border border-dashed border-border/40 rounded-3xl p-16 flex flex-col items-center justify-center text-center gap-4">
-            <div className="w-16 h-16 rounded-3xl bg-raised flex items-center justify-center border border-border">
+          <div className="bg-surface/30 border border-dashed border-border/40 rounded-xl p-16 flex flex-col items-center justify-center text-center gap-4">
+            <div className="w-16 h-16 rounded-xl bg-raised flex items-center justify-center border border-border">
               <Sparkles size={32} className="text-muted/40" />
             </div>
             <div className="flex flex-col gap-1">

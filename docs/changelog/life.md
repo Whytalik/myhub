@@ -1,3 +1,22 @@
+## 2026-05-15
+
+### Redesigned: Life Space to Calm OS Design System
+- Updated all pages and components within the Life Space (Journal, Tasks, Habits, History) to align with the new Calm OS design system.
+- Replaced outdated styling (heavy shadows like `shadow-2xl`, hardcoded colors like `bg-[#0f0d0a]`, and large `rounded-2xl`/`rounded-3xl` radii) with the new semantic tokens (`bg-surface`, `bg-bg`, `shadow-elevated`, `shadow-card`, `rounded-xl`).
+- Simplified layout gaps and visual hierarchy to reduce cognitive load and improve readability.
+- Fixed text encoding for private task masking and password placeholders (`••••••••`).
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
+### Fixed: Journal History Date Format
+- Updated journal history view to display the full day name and date (e.g., 'Friday, May 15') for better readability.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc
+
 ## 2026-05-14
 
 ### Fixed: Journal Service Type Error

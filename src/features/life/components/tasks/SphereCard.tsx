@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import { Pencil, Trash2 } from "lucide-react";
@@ -31,7 +31,7 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
 
   return (
     <div
-      className="group bg-surface border border-border rounded-2xl p-5 flex flex-col gap-3 transition-all hover:border-border/80"
+      className="group bg-surface border border-border rounded-xl p-5 flex flex-col gap-3 transition-all hover:border-border/80"
       style={{ borderLeftColor: sphere.color, borderLeftWidth: "4px" }}
     >
       {/* Header */}

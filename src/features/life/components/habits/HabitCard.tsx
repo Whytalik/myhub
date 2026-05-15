@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useTransition } from "react";
 import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/features/life/actions/habit-actions";
@@ -45,7 +45,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   };
 
   return (
-    <div className={`group bg-surface border rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-accent/40"}`}>
+    <div className={`group bg-surface border rounded-xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-accent/40"}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex flex-col gap-1">
           <h3 className={`text-base font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
@@ -137,10 +137,10 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
       <button
         onClick={handleToggle}
         disabled={isPending}
-        className={`w-full py-3.5 rounded-xl border flex items-center justify-center gap-3 transition-all font-mono text-note font-bold tracking-[0.1em] ${
+        className={`w-full py-3.5 rounded-lg flex items-center justify-center gap-3 transition-all font-mono text-note font-bold tracking-[0.1em] ${
           isCompletedOnDate 
-            ? "bg-emerald-500 border-emerald-600 text-white shadow-lg shadow-emerald-500/20" 
-            : "bg-surface border-border text-muted hover:border-accent hover:text-accent hover:bg-accent/5"
+            ? "bg-emerald-500 text-white shadow-sm" 
+            : "bg-surface border border-border text-muted hover:border-accent hover:text-accent hover:bg-accent/5"
         }`}
       >
         {isCompletedOnDate ? (

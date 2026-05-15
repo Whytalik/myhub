@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, lazy, Suspense, useMemo, useTransition } from "react";
 import { Layers, Plus, Loader2, CheckCircle2 } from "lucide-react";
@@ -190,7 +190,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
       {isActionPending && (
         <div className="fixed inset-0 z-[9999] bg-bg/20 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
-          <div className="bg-surface border border-border p-4 rounded-2xl shadow-2xl flex items-center gap-3">
+          <div className="bg-surface border border-border p-4 rounded-xl shadow-elevated flex items-center gap-3">
             <Loader2 size={20} className="text-accent animate-spin" />
             <span className="text-note font-mono uppercase tracking-widest text-muted">Updating...</span>
           </div>
@@ -267,7 +267,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             type="password"
             value={passwordInput}
             onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
-            placeholder="••••••••"
+            placeholder="��������"
             onKeyDown={(e) => { if (e.key === 'Enter') document.getElementById('unlock-btn')?.click(); }}
           />
           {passwordError && <p className="text-caption font-bold text-rose-500">Invalid password</p>}

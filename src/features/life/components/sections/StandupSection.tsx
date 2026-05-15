@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Target, ShieldAlert, Zap } from "lucide-react";
 
@@ -13,7 +13,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Yesterday */}
-      <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-4">
+      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
             <Target size={14} />
@@ -29,7 +29,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
       </div>
 
       {/* Today */}
-      <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-4">
+      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-accent/10 text-accent">
             <Zap size={14} />
@@ -45,7 +45,7 @@ export function StandupSection({ done, plan, blockers, onChange }: Props) {
       </div>
 
       {/* Blockers */}
-      <div className="bg-surface border border-border rounded-2xl p-6 flex flex-col gap-4">
+      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2.5">
           <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-500">
             <ShieldAlert size={14} />

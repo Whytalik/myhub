@@ -1,4 +1,4 @@
-ï»¿import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
 import { Tabs } from "@/components/ui/tabs";
@@ -30,9 +30,9 @@ function getWeekLabel(date: Date) {
   const startMonth = start.toLocaleDateString("en-US", { month: "short" });
   const endMonth = end.toLocaleDateString("en-US", { month: "short" });
   if (startMonth === endMonth) {
-    return `${startMonth} ${start.getDate()}â€“${end.getDate()}, ${start.getFullYear()}`;
+    return `${startMonth} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
   }
-  return `${startMonth} ${start.getDate()} â€“ ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
+  return `${startMonth} ${start.getDate()} – ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
 }
 
 const PRIMARY_TABS = [
@@ -263,7 +263,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       {hasMore && (
         <button 
           onClick={() => setVisibleGroups(prev => prev + 5)}
-          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-2xl text-note font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
+          className="mx-auto flex items-center gap-2 px-8 py-3 bg-raised border border-border rounded-xl text-note font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all shadow-md group"
         >
           <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
           Show More Groups

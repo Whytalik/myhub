@@ -173,7 +173,7 @@ function UnifiedTaskForm({
               <div className="flex items-center gap-4">
                 <div 
                   onClick={() => setIconPickerOpen(true)}
-                  className="w-12 h-12 rounded-2xl bg-accent/10 border-2 border-dashed border-accent/30 flex items-center justify-center cursor-pointer hover:bg-accent/20 transition-all"
+                  className="w-12 h-12 rounded-xl bg-accent/10 border-2 border-dashed border-accent/30 flex items-center justify-center cursor-pointer hover:bg-accent/20 transition-all"
                 >
                   {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={24} className="text-accent" />; })() : <Plus size={20} className="text-accent/40" />}
                 </div>
@@ -236,7 +236,7 @@ function UnifiedTaskForm({
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl border border-border/30 bg-surface/30">
+            <div className="p-5 rounded-xl border border-border/30 bg-surface/30">
               <label className="text-caption font-mono uppercase tracking-wider text-muted mb-3 block">Preview</label>
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: sphere ? `${sphere.color}25` : "transparent" }}>

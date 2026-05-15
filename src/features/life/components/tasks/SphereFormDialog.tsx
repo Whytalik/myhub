@@ -148,7 +148,7 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
         <div className="flex flex-col gap-2">
           <label className="text-caption font-mono uppercase tracking-wider text-muted px-1 text-center">Preview</label>
           <div
-            className="flex items-center gap-4 p-5 rounded-2xl border transition-all"
+            className="flex items-center gap-4 p-5 rounded-xl border transition-all"
             style={{ borderColor: `${color}40`, backgroundColor: `${color}08` }}
           >
             <div

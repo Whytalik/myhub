@@ -865,7 +865,7 @@ export function TaskCalendar({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col bg-[#0f0d0a] border border-[#2e2e2e] rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
+      <div className="flex flex-col bg-surface border border-border rounded-xl md:rounded-xl overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
         {/* Header Controls */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 md:p-6 lg:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 lg:gap-6">
           <div className="flex items-center justify-between lg:justify-start gap-4 lg:gap-8">
@@ -921,7 +921,7 @@ export function TaskCalendar({
             </div>
 
             {/* View switcher */}
-            <div className="flex p-1 bg-surface border border-border/50 rounded-2xl shadow-sm w-fit relative overflow-hidden shrink-0">
+            <div className="flex p-1 bg-surface border border-border/50 rounded-xl shadow-sm w-fit relative overflow-hidden shrink-0">
               {["month", "week", "day"].map((id) => {
                 const isActive = mode === id;
                 return (
@@ -960,7 +960,7 @@ export function TaskCalendar({
                   className="relative min-h-full" 
                   style={{ width: TOTAL_WIDTH }}
                 >
-                  <div className="sticky top-0 z-20 flex h-8 border-b border-white/[0.03] bg-[#0f0d0a]/80 backdrop-blur-md">
+                  <div className="sticky top-0 z-20 flex h-8 border-b border-white/[0.03] bg-surface/80 backdrop-blur-md">
                     {hours.map((hour, i) => (
                       <div 
                         key={i} 
@@ -998,7 +998,7 @@ export function TaskCalendar({
                           className="absolute top-0 bottom-0 z-10 w-[2px] bg-accent pointer-events-none"
                           style={{ left: `${((nowMin - dayStartMin) / 60) * HOUR_WIDTH}px` }}
                         >
-                          <div className="absolute -left-[5px] top-8 w-3 h-3 bg-accent rounded-full border-2 border-[#0f0d0a]" />
+                          <div className="absolute -left-[5px] top-8 w-3 h-3 bg-accent rounded-full border-2 border-bg" />
                         </div>
                       );
                     }
@@ -1070,9 +1070,9 @@ export function TaskCalendar({
                                   </div>
                                 )}
                                 <div
-                                  className={`flex flex-col gap-1.5 rounded-2xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing min-h-[100px] ${
+                                  className={`flex flex-col gap-1.5 rounded-xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing min-h-[100px] ${
                                     isDraggingThis || isResizingThis
-                                      ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a]'
+                                      ? 'shadow-elevated ring-2 ring-accent border-accent bg-elevated'
                                       : 'shadow-md border-accent/20 bg-surface/95 backdrop-blur-sm hover:border-accent/40'
                                   }`}
                                   onClick={() => {

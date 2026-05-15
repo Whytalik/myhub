@@ -15,7 +15,7 @@ interface TaskGridProps {
 export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, onDelete, allTasks = [] }: TaskGridProps) {
   if (tasks.length === 0) {
     return (
-      <div className="bg-surface border border-border border-dashed rounded-3xl p-12 text-center">
+      <div className="bg-surface border border-border border-dashed rounded-xl p-12 text-center">
         <p className="text-muted text-base italic">No tasks found.</p>
       </div>
     );
