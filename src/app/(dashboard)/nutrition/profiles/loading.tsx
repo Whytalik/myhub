@@ -3,15 +3,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function ProfilesLoading() {
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-4" />
-          <Skeleton className="h-4 w-16" />
+      {/* PageHeader */}
+      <div className="flex flex-col mb-8">
+        <Skeleton className="h-3 w-44 mb-4" />
+        <Skeleton className="h-9 w-44 mb-1" />
+        <div className="pl-3 border-l-2 border-border/30">
+          <Skeleton className="h-4 w-64" />
         </div>
-        <Skeleton className="h-10 w-48 mb-4" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <Skeleton className="h-4 w-80" />
+        <div className="h-px w-full bg-gradient-to-r from-border-dim via-border to-transparent mt-6 mb-2 opacity-50" />
       </div>
 
       <div className="space-y-6">
@@ -21,7 +20,7 @@ export default function ProfilesLoading() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {[1, 2].map((i) => (
+          {Array.from({ length: 2 }).map((_, i) => (
             <div key={i} className="bg-surface border border-border rounded-2xl overflow-hidden">
               <div className="bg-raised/50 px-6 py-4 border-b border-border flex justify-between items-center">
                 <div className="space-y-1">
@@ -36,7 +35,7 @@ export default function ProfilesLoading() {
                   <Skeleton className="h-9 w-full" />
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                  {[1, 2, 3, 4].map((j) => (
+                  {Array.from({ length: 4 }).map((_, j) => (
                     <div key={j} className="space-y-3">
                       <Skeleton className="h-3 w-16" />
                       <Skeleton className="h-9 w-full" />

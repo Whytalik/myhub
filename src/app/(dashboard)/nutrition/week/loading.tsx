@@ -3,115 +3,76 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function WeekLoading() {
   return (
     <div className="px-8 py-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-4 w-4" />
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-4 w-4" />
-          <Skeleton className="h-4 w-20" />
+      {/* PageHeader */}
+      <div className="flex flex-col mb-8">
+        <Skeleton className="h-3 w-56 mb-4" />
+        <Skeleton className="h-9 w-48 mb-1" />
+        <div className="pl-3 border-l-2 border-border/30">
+          <Skeleton className="h-4 w-72" />
         </div>
-        <Skeleton className="h-10 w-64 mb-4" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <Skeleton className="h-4 w-80" />
+        <div className="h-px w-full bg-gradient-to-r from-border-dim via-border to-transparent mt-6 mb-2 opacity-50" />
       </div>
 
-      <div className="mb-6">
-        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-          <div className="bg-raised/50 px-5 py-3 border-b border-border">
-            <Skeleton className="h-5 w-32" />
+      {/* WeekSummary */}
+      <div className="mb-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-surface border border-border rounded-xl px-4 py-3 flex flex-col gap-1.5">
+            <Skeleton className="h-3 w-16" />
+            <Skeleton className="h-6 w-20" />
+            <Skeleton className="h-1.5 w-full rounded-full" />
           </div>
-          <div className="p-4">
-            <div className="grid grid-cols-2 gap-8 divide-x divide-border/50">
-              {[1, 2].map((i) => (
-                <div key={i} className="space-y-3 min-w-0 pl-4 first:pl-0">
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="w-6 h-6 rounded-lg" />
-                    <Skeleton className="h-5 w-24" />
-                  </div>
-                  <div className="space-y-1.5">
-                    {[1, 2, 3, 4, 5].map((j) => (
-                      <div key={j} className="flex items-center gap-2">
-                        <Skeleton className="h-3 w-4" />
-                        <Skeleton className="flex-1 h-1.5 rounded-full" />
-                        <Skeleton className="h-3 w-16" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between gap-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-9 w-32 rounded-xl" />
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <Skeleton key={i} className="h-10 w-16 rounded-xl shrink-0" />
+      {/* WeekPlanner — day columns */}
+      <div className="space-y-4">
+        {/* Day selector tabs */}
+        <div className="flex gap-1.5 overflow-x-auto pb-1">
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+            <Skeleton key={d} className="h-9 w-14 rounded-xl shrink-0" />
           ))}
         </div>
 
+        {/* Day plan */}
         <div className="bg-surface border border-border rounded-2xl overflow-hidden">
-          <div className="bg-raised/50 px-5 py-3 border-b border-border">
-            <Skeleton className="h-5 w-32" />
+          {/* Day header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-raised/30">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-7 w-7 rounded-lg" />
+              <Skeleton className="h-5 w-28" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-24 rounded-xl" />
+              <Skeleton className="h-8 w-24 rounded-xl" />
+            </div>
           </div>
-          <div className="p-4">
-            <div className="flex flex-col sm:flex-row gap-8">
-              {[1, 2].map((i) => (
-                <div key={i} className="flex-1 space-y-2">
+
+          {/* Meal slots */}
+          <div className="divide-y divide-border/40">
+            {["Breakfast", "Lunch", "Dinner", "Snack"].map((meal) => (
+              <div key={meal} className="px-5 py-4">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Skeleton className="w-5 h-5 rounded-md" />
+                    <Skeleton className="h-5 w-5 rounded-md" />
                     <Skeleton className="h-4 w-20" />
                   </div>
-                  <div className="space-y-1">
-                    {[1, 2, 3, 4].map((j) => (
-                      <Skeleton key={j} className="h-1 w-full" />
-                    ))}
-                  </div>
+                  <Skeleton className="h-7 w-7 rounded-lg" />
                 </div>
-              ))}
-            </div>
+                <div className="space-y-2 pl-7">
+                  {Array.from({ length: meal === "Dinner" ? 3 : 2 }).map((_, j) => (
+                    <div key={j} className="flex items-center justify-between py-1.5 border-b border-border/20 last:border-0">
+                      <Skeleton className={`h-4 ${j === 0 ? "w-40" : "w-32"}`} />
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-3.5 w-12" />
+                        <Skeleton className="h-3.5 w-12" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {[1, 2].map((i) => (
-          <div key={i} className="bg-surface border border-border rounded-2xl overflow-hidden">
-            <div className="px-5 py-3 border-b border-border flex justify-between items-center bg-raised/10">
-              <div className="flex items-center gap-3">
-                <Skeleton className="w-8 h-8 rounded-lg" />
-                <div className="space-y-1">
-                  <Skeleton className="h-5 w-24" />
-                  <Skeleton className="h-3 w-16" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-8 w-32 rounded-xl" />
-                <Skeleton className="h-8 w-32 rounded-xl" />
-              </div>
-            </div>
-            <div className="p-4 space-y-4">
-              <div className="border border-border rounded-xl overflow-hidden">
-                <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border">
-                  <Skeleton className="h-5 flex-1" />
-                  <Skeleton className="h-6 w-20 rounded-lg" />
-                </div>
-                {[1, 2, 3].map((j) => (
-                  <div key={j} className="grid grid-cols-[1fr_1fr_1fr] border-b border-border/20 last:border-b-0">
-                    <div className="px-4 py-2"><Skeleton className="h-4 w-24" /></div>
-                    <div className="px-4 py-2 border-l border-border/20"><Skeleton className="h-4 w-12" /></div>
-                    <div className="px-4 py-2 border-l border-border/20"><Skeleton className="h-4 w-12" /></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
