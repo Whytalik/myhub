@@ -10,11 +10,12 @@ interface TimePickerProps {
   onChange: (value: string) => void;
   className?: string;
   disabled?: boolean;
+  presets?: { label: string; value: string }[];
 }
 
-export function TimePicker({ value, onChange, className = "", disabled }: TimePickerProps) {
+export function TimePicker({ value, onChange, className = "", disabled, presets }: TimePickerProps) {
   const { isOpen, coords, triggerRef, contentRef, open, close } =
-    useDynamicPositioning<HTMLDivElement, HTMLDivElement>({ contentHeight: 220, contentWidth: 180 });
+    useDynamicPositioning<HTMLDivElement, HTMLDivElement>({ contentHeight: presets ? 300 : 220, contentWidth: 180 });
 
   const [hours, minutes] = React.useMemo(() => {
     if (!value) return [12, 0];
@@ -118,6 +119,24 @@ export function TimePicker({ value, onChange, className = "", disabled }: TimePi
               <span className="text-label font-mono uppercase tracking-widest text-muted mt-1">Min</span>
             </div>
           </div>
+
+          {presets && presets.length > 0 && (
+            <div className="mt-4 pt-3 border-t border-border/40 grid grid-cols-2 gap-2">
+              {presets.map((preset) => (
+                <button
+                  key={preset.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(preset.value);
+                    close();
+                  }}
+                  className="text-caption font-mono uppercase tracking-widest text-text-secondary hover:text-accent hover:bg-raised p-2 rounded-lg transition-all border border-border/40"
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="mt-4 pt-3 border-t border-border/40 flex justify-center">
             <button

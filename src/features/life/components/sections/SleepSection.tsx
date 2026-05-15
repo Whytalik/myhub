@@ -179,6 +179,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
             <TimePicker 
               value={getTimeValue(bedtime)} 
               onChange={(val) => handleTimeChange('sleepBedtime', val)}
+              presets={[{ label: "22:00", value: "22:00" }]}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -189,6 +190,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
             <TimePicker 
               value={getTimeValue(wakeup)} 
               onChange={(val) => handleTimeChange('sleepWakeup', val)}
+              presets={[{ label: "08:00", value: "08:00" }]}
             />
           </div>
         </div>

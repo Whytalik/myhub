@@ -1,5 +1,27 @@
 ## 2026-05-15
 
+### Fixed: Tab navigation consistency
+- Split the 'Calendar' view into two distinct primary tabs: 'Calendar' (Grid view) and 'Timeline' (Hourly day view) to prevent state conflicts and UI glitches.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
+### Added: Quick presets for TimePicker
+- Added optional `presets` prop to `TimePicker` component to allow quick value selection.
+- Added "22:00" preset to Bedtime selector and "08:00" preset to Wakeup selector in SleepSection.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
+### Fixed: Layout discrepancy in Life Space
+- Removed redundant `src/app/(dashboard)/life/layout.tsx` that was causing inconsistent margins compared to other domain hubs. Life Space now correctly uses the standard `DashboardLayout`.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ### Fixed: Journal Form Layout & Encoding
 - Fixed layout issue in the Daily Entry form where the save status and time would take up a full row instead of aligning to the right of the date header by moving the `Tabs` container outside of the header wrapper.
 - Moved the `Body` metrics block (Weight) directly under the `Sleep` and `Energy` row in the Morning tab for better logical grouping.

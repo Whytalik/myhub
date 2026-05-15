@@ -141,6 +141,14 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 Calendar
               </Button>
               <Button
+                variant={view === "timeline" ? "primary" : "ghost"}
+                size="sm"
+                onClick={() => setView("timeline")}
+                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
+              >
+                Timeline
+              </Button>
+              <Button
                 variant={view === "graph" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("graph")}
@@ -215,6 +223,19 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
               tasks={calendarTasks}
               allTasks={initialTasks}
               spheres={spheres}
+              defaultMode="week"
+              onDuplicate={handleDuplicate}
+              onDelete={handleTaskDeleted}
+            />
+          </Suspense>
+        )}
+        {view === "timeline" && (
+          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+            <TaskCalendar
+              tasks={calendarTasks}
+              allTasks={initialTasks}
+              spheres={spheres}
+              defaultMode="day"
               onDuplicate={handleDuplicate}
               onDelete={handleTaskDeleted}
             />
