@@ -30,8 +30,8 @@ export function GuideModal({ isOpen, onClose }: GuideModalProps) {
   const activeSection = guide.sections.find((s) => s.id === activeSectionId);
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose} maxWidth="1000px" bare>
-      <div className="flex flex-col w-full sm:w-[1000px] min-h-[600px] sm:min-h-[650px] text-text">
+    <Dialog isOpen={isOpen} onClose={onClose} maxWidth="1200px" bare noScroll>
+      <div className="flex flex-col w-full sm:w-[1200px] h-[82vh] text-text">
 
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-3 border-b border-border bg-surface-hover shrink-0">
@@ -68,7 +68,7 @@ export function GuideModal({ isOpen, onClose }: GuideModalProps) {
         {/* Desktop: sidebar + content */}
         <div className="hidden sm:flex flex-1 overflow-hidden">
           {/* Sidebar */}
-          <div className="w-48 border-r border-border bg-surface-hover p-2 flex flex-col gap-1 shrink-0 overflow-y-auto scrollbar-hide">
+          <div className="w-56 border-r border-border bg-surface-hover p-2 flex flex-col gap-1 shrink-0 overflow-y-auto scrollbar-hide">
             {guide.sections.map((section) => {
               const Icon = section.icon;
               const isActive = activeSectionId === section.id;
