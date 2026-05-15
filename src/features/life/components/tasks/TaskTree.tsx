@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+ï»¿import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
 import { Tabs } from "@/components/ui/tabs";
@@ -30,9 +30,9 @@ function getWeekLabel(date: Date) {
   const startMonth = start.toLocaleDateString("en-US", { month: "short" });
   const endMonth = end.toLocaleDateString("en-US", { month: "short" });
   if (startMonth === endMonth) {
-    return `${startMonth} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+    return `${startMonth} ${start.getDate()}ï¿½${end.getDate()}, ${start.getFullYear()}`;
   }
-  return `${startMonth} ${start.getDate()} – ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
+  return `${startMonth} ${start.getDate()} ï¿½ ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
 }
 
 const PRIMARY_TABS = [
