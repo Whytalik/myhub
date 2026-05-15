@@ -276,7 +276,9 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
                             
                             <div className="flex items-center justify-between text-micro font-mono pt-2 border-t border-border/20">
                               <div className="text-text-muted">
-                                Pkg size: {item.product.standardPackageAmount || "—"}g
+                                {item.product.standardPackageAmount
+                                  ? `1 ${({ PIECE: "шт", TBSP: "ст.л.", TSP: "ч.л.", ML: "мл", GRAM: "г" }[item.product.unit] ?? item.product.unit)} = ${item.product.standardPackageAmount}${["GRAM","PIECE","TBSP","TSP"].includes(item.product.unit) ? "г" : "мл"}`
+                                  : "—"}
                                 {item.product.stores.length > 1 && (
                                   <span className="ml-2">
                                     Available in: {item.product.stores.map(s => STORE_META[s]?.label || s).join(", ")}
@@ -286,17 +288,17 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
                               <div className="flex items-center gap-2">
                                 {editingId === item.id ? (
                                   <div className="flex gap-1 items-center">
-                                    <Input 
-                                      type="number" 
-                                      value={editValue} 
-                                      onChange={e => setEditValue(e.target.value)} 
+                                    <Input
+                                      type="number"
+                                      value={editValue}
+                                      onChange={e => setEditValue(e.target.value)}
                                       className="h-7 w-16 text-micro py-0 px-2 border-accent"
                                       autoFocus
                                     />
                                     <Button size="sm" className="h-7 px-2" onClick={() => handleQuantityUpdate(item.id)}>Save</Button>
                                   </div>
                                 ) : (
-                                  <button 
+                                  <button
                                     onClick={() => {
                                       setEditingId(item.id)
                                       setEditValue(String(item.packagesCount || 1))
@@ -304,7 +306,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
                                     className="flex items-center gap-1 text-accent hover:underline"
                                   >
                                     <Edit2 size={10} />
-                                    {item.packagesCount || Math.ceil(item.requiredRawGrams / (item.product.standardPackageAmount || 1))} pkgs
+                                    {formatAmount(item.requiredRawGrams, item.product.unit, item.product.standardPackageAmount)}
                                   </button>
                                 )}
                               </div>

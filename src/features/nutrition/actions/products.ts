@@ -368,30 +368,18 @@ export async function deleteAllUserProducts(): Promise<ActionResult<void>> {
   try {
     const userId = await getRequiredUserId()
 
-    // Delete dependent records first to avoid foreign key constraints
-    await prisma.cartItem.deleteMany({
-      where: { product: { userId } }
-    })
-    await prisma.shoppingListItem.deleteMany({
-      where: { product: { userId } }
-    })
-    await prisma.productEntry.deleteMany({
-      where: { product: { userId } }
-    })
-    
-    // Check if any products are still used in dishes
     const inUse = await prisma.dishIngredient.count({
       where: { product: { userId } }
     })
-    
     if (inUse > 0) {
-      return { success: false, error: "Some products are used in dishes and cannot be deleted. Delete dishes first." }
+      return { success: false, error: "Деякі продукти використовуються в стравах. Спочатку видаліть страви." }
     }
-    
-    await prisma.foodProduct.deleteMany({
-      where: { userId }
-    })
-    
+
+    await prisma.cartItem.deleteMany({ where: { product: { userId } } })
+    await prisma.shoppingListItem.deleteMany({ where: { product: { userId } } })
+    await prisma.productEntry.deleteMany({ where: { product: { userId } } })
+    await prisma.foodProduct.deleteMany({ where: { userId } })
+
     invalidateFoodCache(userId)
     return { success: true, data: undefined }
   } catch (error) {
