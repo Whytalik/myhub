@@ -1,14 +1,16 @@
 "use client";
 
-import { CheckCircle2, Circle, Sun, Moon, Dumbbell, User, Gamepad2, AlarmClock, Droplets, Brain, Move, ClipboardCheck, Zap, Briefcase, Footprints, ThermometerSnowflake, LogOut, GraduationCap, Utensils, Sparkles, ShowerHead, ListTodo, Car } from "lucide-react";
-import { 
-  MORNING_ROUTINE_TRAIN, 
-  MORNING_ROUTINE_NO_TRAIN, 
+import { CheckCircle2, Circle, Sun, Moon, Dumbbell, User, Gamepad2, AlarmClock, Droplets, Brain, Move, ClipboardCheck, Zap, Briefcase, Footprints, ThermometerSnowflake, LogOut, GraduationCap, Utensils, Sparkles, ShowerHead, ListTodo, Car, CalendarDays } from "lucide-react";
+import {
+  MORNING_ROUTINE_TRAIN,
+  MORNING_ROUTINE_NO_TRAIN,
   EVENING_ROUTINE_NO_TRAIN,
   EVENING_ROUTINE_TRAIN,
   EVENING_ROUTINE_FUN,
-  type RoutineMap 
+  type RoutineMap
 } from "@/lib/routine-items";
+import type { DayType } from "@/features/life/types";
+import { dayTypeToRoutine } from "@/features/life/types";
 
 const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   AlarmClock,
@@ -39,10 +41,11 @@ const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; classNa
 interface Props {
   type: "morning" | "evening";
   routine: RoutineMap | null;
+  scheduledDayType?: DayType;
   onChange: (patch: { morningRoutine?: RoutineMap | null; eveningRoutine?: RoutineMap | null }) => void;
 }
 
-export function RoutineSection({ type, routine, onChange }: Props) {
+export function RoutineSection({ type, routine, scheduledDayType, onChange }: Props) {
   const map: RoutineMap = routine ?? ({} as RoutineMap);
   
   const isTrainingDay = type === "morning" ? (map["_isTrainingDay"] ?? false) : false;
@@ -97,51 +100,79 @@ export function RoutineSection({ type, routine, onChange }: Props) {
         </span>
       </div>
 
-      {type === "morning" && (
-        <button
-          onClick={toggleTraining}
-          className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all h-9 ${
-            isTrainingDay 
-              ? "bg-accent/10 border-accent/40 text-accent" 
-              : "bg-raised/30 border-border text-secondary hover:border-border-hover"
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
-            <span className="text-base font-bold">Training Today</span>
+      {type === "morning" && (() => {
+        const planned = scheduledDayType ? dayTypeToRoutine(scheduledDayType).isTrainingDay : null;
+        const isOverridden = planned !== null && isTrainingDay !== planned;
+        return (
+          <div className="flex flex-col gap-1">
+            <button
+              onClick={toggleTraining}
+              className={`flex items-center justify-between px-4 py-2 rounded-xl border transition-all h-9 ${
+                isTrainingDay
+                  ? "bg-accent/10 border-accent/40 text-accent"
+                  : "bg-raised/30 border-border text-secondary hover:border-border-hover"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Dumbbell size={14} className={isTrainingDay ? "text-accent" : "text-muted"} />
+                <span className="text-base font-bold">Training Today</span>
+              </div>
+              <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
+                <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />
+              </div>
+            </button>
+            {planned !== null && (
+              <div className="flex items-center gap-1.5 px-1">
+                <CalendarDays size={10} className={isOverridden ? "text-amber-500/70" : "text-muted/60"} />
+                <span className={`text-label font-mono uppercase tracking-wider ${isOverridden ? "text-amber-500/70" : "text-muted/60"}`}>
+                  plan: {planned ? "training" : "rest"}{isOverridden ? " · overridden" : ""}
+                </span>
+              </div>
+            )}
           </div>
-          <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${isTrainingDay ? "bg-accent" : "bg-border"}`}>
-            <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${isTrainingDay ? "translate-x-4" : "translate-x-0"}`} />
-          </div>
-        </button>
-      )}
+        );
+      })()}
 
-      {type === "evening" && (
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { id: "normal", icon: User, label: "Normal", labelUk: "Normal" },
-            { id: "gym",    icon: Dumbbell, label: "Gym", labelUk: "Gym" },
-            { id: "fun",    icon: Gamepad2, label: "Fun", labelUk: "Fun" }
-          ].map((mode) => {
-            const active = eveningMode === mode.id;
-            const Icon = mode.icon;
-            return (
-              <button
-                key={mode.id}
-                onClick={() => setEveningMode(mode.id)}
-                className={`flex flex-col items-center justify-center py-2 rounded-xl border transition-all ${
-                  active 
-                    ? "bg-accent/10 border-accent/40 text-accent shadow-sm" 
-                    : "bg-raised/30 border-border text-muted hover:border-border-hover hover:text-secondary"
-                }`}
-              >
-                <Icon size={14} className={active ? "mb-0.5" : "mb-1"} />
-                <span className="text-caption font-bold leading-none">{mode.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
+      {type === "evening" && (() => {
+        const plannedMode = scheduledDayType ? dayTypeToRoutine(scheduledDayType).eveningMode : null;
+        const isOverridden = plannedMode !== null && eveningMode !== plannedMode;
+        return (
+          <div className="flex flex-col gap-1">
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: "normal", icon: User, label: "Normal" },
+                { id: "gym",    icon: Dumbbell, label: "Gym" },
+                { id: "fun",    icon: Gamepad2, label: "Fun" }
+              ].map((mode) => {
+                const active = eveningMode === mode.id;
+                const Icon = mode.icon;
+                return (
+                  <button
+                    key={mode.id}
+                    onClick={() => setEveningMode(mode.id)}
+                    className={`flex flex-col items-center justify-center py-2 rounded-xl border transition-all ${
+                      active
+                        ? "bg-accent/10 border-accent/40 text-accent shadow-sm"
+                        : "bg-raised/30 border-border text-muted hover:border-border-hover hover:text-secondary"
+                    }`}
+                  >
+                    <Icon size={14} className={active ? "mb-0.5" : "mb-1"} />
+                    <span className="text-caption font-bold leading-none">{mode.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {plannedMode !== null && (
+              <div className="flex items-center gap-1.5 px-1">
+                <CalendarDays size={10} className={isOverridden ? "text-amber-500/70" : "text-muted/60"} />
+                <span className={`text-label font-mono uppercase tracking-wider ${isOverridden ? "text-amber-500/70" : "text-muted/60"}`}>
+                  plan: {plannedMode}{isOverridden ? " · overridden" : ""}
+                </span>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {items.map((item) => {

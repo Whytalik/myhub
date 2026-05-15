@@ -280,6 +280,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
                           <RoutineSection
                             type="morning"
                             routine={data.morningRoutine ?? null}
+                            scheduledDayType={scheduledDayType}
                             onChange={patch}
                           />
                         </Suspense>
@@ -378,6 +379,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
                           <RoutineSection
                             type="evening"
                             routine={data.eveningRoutine ?? null}
+                            scheduledDayType={scheduledDayType}
                             onChange={patch}
                           />
                         </Suspense>
