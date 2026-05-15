@@ -1,6 +1,13 @@
 ## 2026-05-15
 
 ### Fixed: Padding inconsistency in Life Space
+- Standardized padding across all Life Space pages (`/journal`, `/habits`, `/tasks`) by setting `px-8` to match the `DashboardUIWrapper` container, replacing inconsistent `px-6 md:px-14` values.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
+### Fixed: Padding inconsistency in Life Space
 - Added `px-8` padding to `SpaceLanding` component in `LifeSpacePage` to ensure consistency with other domain hubs.
 - Verification:
   - [x] Logic implemented

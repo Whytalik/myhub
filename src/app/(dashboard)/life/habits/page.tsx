@@ -21,7 +21,7 @@ export default async function HabitsPage() {
   const habits = await habitService.getActiveHabits(userId);
 
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
+    <div className="px-8 py-8">
       <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "habits" }]} />
       <HabitsPageClient 
         initialHabits={habits as unknown as HabitData[]} 

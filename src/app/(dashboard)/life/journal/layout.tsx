@@ -6,10 +6,10 @@ export default function JournalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
+    <div className="px-8 py-8">
       <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "daily journal" }]} />
 
-      <div className="flex-1">
+      <div className="flex-1 mt-4">
         {children}
       </div>
     </div>
