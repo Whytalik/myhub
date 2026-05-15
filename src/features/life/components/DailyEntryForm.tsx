@@ -26,12 +26,13 @@ interface Props {
   initialEntry: DailyEntryData | null;
   todayStr: string; // "YYYY-MM-DD"
   tasks: TaskData[];
+  allTasks: TaskData[];
   spheres: LifeSphereData[];
   habits: HabitData[];
   scheduledDayType?: DayType;
 }
 
-export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits, scheduledDayType }: Props) {
+export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, spheres, habits, scheduledDayType }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
   const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
@@ -429,8 +430,8 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
 
                       <Suspense fallback={<div className="bg-surface border border-border rounded-xl h-[300px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
                         <TaskCalendar
-                          tasks={tasks}
-                          allTasks={tasks}
+                          tasks={allTasks.filter(t => t.status !== 'DONE')}
+                          allTasks={allTasks}
                           spheres={spheres}
                           defaultMode="week"
                           hideModeSwitch

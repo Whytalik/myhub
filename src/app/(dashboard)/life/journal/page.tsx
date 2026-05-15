@@ -33,9 +33,10 @@ export default async function JournalPage() {
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
-  const [raw, tasks, spheres, habits, schedule] = await Promise.all([
+  const [raw, tasks, allTasks, spheres, habits, schedule] = await Promise.all([
     getEntryByDate(userId, date),
     taskService.getTasksByDate(userId, date),
+    taskService.getAllTasks(userId),
     taskService.getAllSpheres(userId),
     habitService.getActiveHabits(userId),
     getScheduleByDate(userId, date),
@@ -71,6 +72,7 @@ export default async function JournalPage() {
         initialEntry={entry}
         todayStr={dateStr}
         tasks={tasks}
+        allTasks={allTasks}
         spheres={spheres}
         habits={habits as unknown as HabitData[]}
         scheduledDayType={schedule ? (schedule.dayType as DayType) : undefined}
