@@ -18,7 +18,7 @@ export default async function ProductsPage() {
   const products = productsResult.success ? productsResult.data : [];
 
   return (
-    <div className="w-full">
+    <div className="w-full px-[60px]">
       <div className="mb-8">
         <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "products" }]} />
         <Heading title="Products" />
