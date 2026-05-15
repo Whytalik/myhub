@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function JournalLoading() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="px-8 py-8 flex flex-col gap-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <Skeleton className="h-8 w-40" />

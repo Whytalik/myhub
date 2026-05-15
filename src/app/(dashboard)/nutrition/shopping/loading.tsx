@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ShoppingLoading() {
   return (
-    <div className="w-full">
+    <div className="px-8 py-8">
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
           <Skeleton className="h-4 w-24" />

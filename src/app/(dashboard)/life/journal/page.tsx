@@ -48,7 +48,7 @@ export default async function JournalPage() {
     : null;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="px-8 py-8 flex flex-col gap-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
           <Heading title="Daily Journal" />

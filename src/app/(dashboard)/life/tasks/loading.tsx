@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TasksLoading() {
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
+    <div className="px-8 py-8">
       <Skeleton className="h-4 w-48 mb-8" />
       
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">

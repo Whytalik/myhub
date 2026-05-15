@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HabitsLoading() {
   return (
-    <div className="px-6 md:px-14 py-8 md:py-10">
+    <div className="px-8 py-8">
       <Skeleton className="h-4 w-24 mb-6" />
       <div className="flex justify-between items-start mb-8">
         <Skeleton className="h-10 w-48" />
