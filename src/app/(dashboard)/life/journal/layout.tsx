@@ -1,5 +1,3 @@
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-
 export default function JournalLayout({
   children,
 }: {
@@ -7,11 +5,7 @@ export default function JournalLayout({
 }) {
   return (
     <div className="px-8 py-8">
-      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "daily journal" }]} />
-
-      <div className="flex-1 mt-4">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }

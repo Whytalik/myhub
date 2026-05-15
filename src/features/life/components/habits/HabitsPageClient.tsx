@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/dialog";
-import { Heading } from "@/components/ui/heading";
 import { deleteHabitAction } from "@/features/life/actions/habit-actions";
 import type { HabitData } from "@/features/life/types";
 import { ListChecks, Plus, Sparkles } from "lucide-react";
@@ -53,14 +52,7 @@ export function HabitsPageClient({
 
   return (
     <div className="flex flex-col gap-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex flex-col gap-1">
-          <Heading title="Habit tracker" />
-          <p className="text-caption font-mono text-muted tracking-widest pl-1 italic">
-            Small disciplines compound into extraordinary results.
-          </p>
-        </div>
-
+      <div className="flex justify-end">
         <div className="flex items-center gap-4">
           <Button
             variant="primary"

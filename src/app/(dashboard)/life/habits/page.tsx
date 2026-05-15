@@ -25,6 +25,7 @@ export default async function HabitsPage() {
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "habits" }]}
         title="Habit Tracker"
+        description="Small disciplines compound into extraordinary results."
       />
       <HabitsPageClient
         initialHabits={habits as unknown as HabitData[]} 

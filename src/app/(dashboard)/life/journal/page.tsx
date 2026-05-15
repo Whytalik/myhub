@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Heading } from "@/components/ui/heading";
+import { PageHeader } from "@/components/ui/page-header";
 import { getEntryByDate } from "@/features/life/services/journal-service";
 import * as taskService from "@/features/life/services/task-service";
 import * as habitService from "@/features/life/services/habit-service";
@@ -51,16 +51,15 @@ export default async function JournalPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="flex flex-col gap-1">
-          <Heading title="Daily Journal" />
-          <p className="text-note font-mono text-muted tracking-widest pl-1 italic">
-            Daily reflection, tracking, and intention.
-          </p>
-        </div>
+      <div className="relative">
+        <PageHeader
+          breadcrumb={[{ label: "life space", href: "/life" }, { label: "daily journal" }]}
+          title="Daily Journal"
+          description="Daily reflection, tracking, and intention."
+        />
         <Link
           href="/life/history"
-          className="inline-flex items-center gap-2 h-8 px-5 rounded-xl text-note font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
+          className="absolute top-0 right-0 inline-flex items-center gap-2 h-8 px-5 rounded-xl text-note font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
         >
           <History size={14} />
           History
