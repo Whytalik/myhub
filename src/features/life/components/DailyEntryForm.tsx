@@ -201,15 +201,23 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         </div>
       )}
       {/* Header Controls */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-xl shadow-sm">
-        <div className="flex flex-wrap items-center gap-4 md:gap-6">
-          <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text uppercase tracking-wider bg-raised px-4 py-2 rounded-lg border border-border/50 shrink-0">
-            <Clock size={14} className="text-accent" />
-            <span>{dateLabel}</span>
-          </div>
-          
-            <div className="w-full overflow-hidden">
-            <Tabs 
+      <div className="flex flex-row items-center justify-between gap-4 bg-surface border border-border p-3 md:p-4 rounded-xl shadow-sm">
+        <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text uppercase tracking-wider bg-raised px-4 py-2 rounded-lg border border-border/50 shrink-0">
+          <Clock size={14} className="text-accent" />
+          <span>{dateLabel}</span>
+        </div>
+
+        <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text px-2 md:px-0 shrink-0">
+          {isPending ? (
+            <><Loader2 size={12} className="animate-spin" /> Saving...</>
+          ) : savedAt ? (
+            <><CheckCircle2 size={12} className="text-accent" /> Saved at {savedAt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false })}</>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="w-full overflow-hidden">
+        <Tabs 
               tabs={[
                 { 
                   id: "morning", 
@@ -234,6 +242,23 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                         />
                       </div>
 
+                      {/* Body Metrics */}
+                      <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-xl px-5 py-4">
+                        <span className="text-note font-mono uppercase tracking-widest text-muted mr-2">Body</span>
+                        <div className="flex items-center gap-2">
+                          <Weight size={12} className="text-muted" />
+                          <span className="text-note font-mono uppercase tracking-wider text-muted">Weight</span>
+                          <Input
+                            type="number"
+                            step="0.1"
+                            value={data.weight ?? ""}
+                            onChange={(e) => patch({ weight: e.target.value ? parseFloat(e.target.value) : null })}
+                            placeholder="0.0 kg"
+                            className="h-7 text-base rounded-lg px-3 w-24"
+                          />
+                        </div>
+                      </div>
+
                       <EmotionsSection
                         emotions={data.emotions ?? null}
                         onChange={patch}
@@ -251,23 +276,6 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                           blockers={data.standupBlockers ?? null}
                           onChange={patch}
                         />
-                      </div>
-
-                      {/* Body Metrics */}
-                      <div className="flex flex-wrap items-center gap-4 bg-surface border border-border rounded-xl px-5 py-4">
-                        <span className="text-note font-mono uppercase tracking-widest text-muted mr-2">Body</span>
-                        <div className="flex items-center gap-2">
-                          <Weight size={12} className="text-muted" />
-                          <span className="text-note font-mono uppercase tracking-wider text-muted">Weight</span>
-                          <Input
-                            type="number"
-                            step="0.1"
-                            value={data.weight ?? ""}
-                            onChange={(e) => patch({ weight: e.target.value ? parseFloat(e.target.value) : null })}
-                            placeholder="0.0 kg"
-                            className="h-7 text-base rounded-lg px-3 w-24"
-                          />
-                        </div>
                       </div>
 
                       {/* Row 2: Routine */}
@@ -453,16 +461,6 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
               size="text-caption"
             />
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 text-body md:text-subtitle font-mono text-text px-2 md:px-0 shrink-0">
-          {isPending ? (
-            <><Loader2 size={12} className="animate-spin" /> Saving...</>
-          ) : savedAt ? (
-            <><CheckCircle2 size={12} className="text-accent" /> Saved at {savedAt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false })}</>
-          ) : null}
-        </div>
-      </div>
 
       <TaskFormDialog
         key={`task-form-${editingTask?.id ?? 'new'}`}

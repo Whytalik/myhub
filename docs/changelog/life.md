@@ -1,5 +1,14 @@
 ## 2026-05-15
 
+### Fixed: Journal Form Layout & Encoding
+- Fixed layout issue in the Daily Entry form where the save status and time would take up a full row instead of aligning to the right of the date header by moving the `Tabs` container outside of the header wrapper.
+- Moved the `Body` metrics block (Weight) directly under the `Sleep` and `Energy` row in the Morning tab for better logical grouping.
+- Fixed text encoding issues in `EmotionsSection` where cyrillic text for mental, emotional, and physical states was corrupted and displayed as question marks.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ### Redesigned: Life Space to Calm OS Design System
 - Updated all pages and components within the Life Space (Journal, Tasks, Habits, History) to align with the new Calm OS design system.
 - Replaced outdated styling (heavy shadows like `shadow-2xl`, hardcoded colors like `bg-[#0f0d0a]`, and large `rounded-2xl`/`rounded-3xl` radii) with the new semantic tokens (`bg-surface`, `bg-bg`, `shadow-elevated`, `shadow-card`, `rounded-xl`).

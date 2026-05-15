@@ -8,44 +8,44 @@ interface Props {
 }
 
 const MENTAL_STATES = [
-  { label: "????? ?????", positive: true },
-  { label: "??????????", positive: true },
-  { label: "????????????", positive: true },
-  { label: "? ??????", positive: true },
-  { label: "????????????", positive: true },
-  { label: "??????????????", positive: false },
-  { label: "??????", positive: false },
-  { label: "????????????", positive: false },
-  { label: "????? ? ??????", positive: false },
+  { label: "Ясний розум", positive: true },
+  { label: "Креативний", positive: true },
+  { label: "Зосереджений", positive: true },
+  { label: "В потоці", positive: true },
+  { label: "Продуктивний", positive: true },
+  { label: "Прокрастинація", positive: false },
+  { label: "Нудьга", positive: false },
+  { label: "Відволікання", positive: false },
+  { label: "Туман в голові", positive: false },
 ];
 
 const EMOTIONAL_STATES = [
-  { label: "????????", positive: true },
-  { label: "???????", positive: true },
-  { label: "??????????", positive: true },
-  { label: "?????????", positive: true },
-  { label: "???????????", positive: true },
-  { label: "??????????", positive: true },
-  { label: "?????????????", positive: true },
-  { label: "?????????????", positive: false },
-  { label: "??????", positive: false },
-  { label: "????????", positive: false },
-  { label: "????", positive: false },
-  { label: "?????????", positive: false },
-  { label: "???????????", positive: false },
+  { label: "Радісний", positive: true },
+  { label: "Вдячний", positive: true },
+  { label: "Натхненний", positive: true },
+  { label: "Впевнений", positive: true },
+  { label: "Задоволений", positive: true },
+  { label: "Захоплений", positive: true },
+  { label: "Оптимістичний", positive: true },
+  { label: "Роздратований", positive: false },
+  { label: "Сумний", positive: false },
+  { label: "Самотній", positive: false },
+  { label: "Злий", positive: false },
+  { label: "Винуватий", positive: false },
+  { label: "Невпевнений", positive: false },
 ];
 
 const PHYSICAL_STATES = [
-  { label: "?????????", positive: true },
-  { label: "????????????", positive: true },
-  { label: "?????????????", positive: true },
-  { label: "??????????", positive: true },
-  { label: "?????", positive: false },
-  { label: "?????????", positive: false },
-  { label: "?????????", positive: false },
-  { label: "??????????????", positive: false },
-  { label: "?????????", positive: false },
-  { label: "???????????", positive: false },
+  { label: "Спокійний", positive: true },
+  { label: "Розслаблений", positive: true },
+  { label: "Збалансований", positive: true },
+  { label: "Енергійний", positive: true },
+  { label: "Стрес", positive: false },
+  { label: "Тривожний", positive: false },
+  { label: "Втомлений", positive: false },
+  { label: "Перевантажений", positive: false },
+  { label: "Вигорання", positive: false },
+  { label: "Неспокійний", positive: false },
 ];
 
 interface EmotionColumnProps {
@@ -103,20 +103,20 @@ export function EmotionsSection({ emotions, onChange }: Props) {
         <div className="flex items-center gap-2.5 px-1">
           <Brain size={14} className="text-accent" />
           <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>
-            ?????? ?? ?????
+            Емоції та стани
           </h3>
         </div>
         
         <div className="flex flex-col md:flex-row gap-8 relative">
-          <EmotionColumn title="?????????? ????" items={MENTAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
+          <EmotionColumn title="Ментальний стан" items={MENTAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
           
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
           
-          <EmotionColumn title="????????? ????" items={EMOTIONAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
+          <EmotionColumn title="Емоційний стан" items={EMOTIONAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
           
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
           
-          <EmotionColumn title="????? ?? ???????" items={PHYSICAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
+          <EmotionColumn title="Стрес та енергія" items={PHYSICAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
         </div>
       </div>
     </div>
