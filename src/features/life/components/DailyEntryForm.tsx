@@ -85,8 +85,8 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       defaultWakeup.setHours(8, 0, 0, 0);
 
       return {
-        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : defaultBedtime.toISOString(),
-        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : defaultWakeup.toISOString(),
+        sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
+        sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
         sleepHours:      initialEntry?.sleepHours ?? null,
         sleepQuality:    initialEntry?.sleepQuality ?? null,
         sleepNote:       initialEntry?.sleepNote ?? null,
@@ -111,15 +111,9 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       };
     }
 
-    // Fallback default times for existing entries with missing values
-    const defaultBedtime = new Date(todayStr);
-    defaultBedtime.setHours(22, 0, 0, 0);
-    const defaultWakeup = new Date(todayStr);
-    defaultWakeup.setHours(8, 0, 0, 0);
-
     return {
-      sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : defaultBedtime.toISOString(),
-      sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : defaultWakeup.toISOString(),
+      sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
+      sleepWakeup:     initialEntry?.sleepWakeup ? new Date(initialEntry.sleepWakeup).toISOString() : null,
       sleepHours:      initialEntry?.sleepHours ?? null,
       sleepQuality:    initialEntry?.sleepQuality ?? null,
       sleepNote:       initialEntry?.sleepNote ?? null,

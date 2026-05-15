@@ -66,7 +66,7 @@ export default async function DishesPage({
   const cookingMethods = methodsResult.success ? methodsResult.data : [];
 
   return (
-    <div className="w-full">
+    <div className="px-8 py-8">
       <div className="mb-8">
         <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "dishes" }]} />
         <Heading title={isCreating ? "New Dish" : "Dishes"} />

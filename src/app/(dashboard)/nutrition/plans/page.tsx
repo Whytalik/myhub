@@ -23,7 +23,7 @@ export default async function PlansPage() {
   const persons = personsResult.success ? personsResult.data : [];
 
   return (
-    <div className="w-full">
+    <div className="px-8 py-8">
       <div className="mb-8">
         <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans" }]} />
         <Heading title="Plans" />

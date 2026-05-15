@@ -1,5 +1,12 @@
 ## 2026-05-15
 
+### Changed: Removed default sleep times
+- Removed default 22:00 bedtime and 08:00 wakeup in DailyEntryForm to prevent pre-selected values.
+- Verification:
+  - [x] Logic implemented
+  - [x] UI updated
+  - [x] Verified with tsc / lint
+
 ### Fixed: Padding inconsistency in Life Space
 - Standardized padding across all Life Space pages (`/journal`, `/habits`, `/tasks`) by setting `px-8` to match the `DashboardUIWrapper` container, replacing inconsistent `px-6 md:px-14` values.
 - Verification:

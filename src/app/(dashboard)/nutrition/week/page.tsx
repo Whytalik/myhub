@@ -55,7 +55,7 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
 
   if (!activePlanId) {
     return (
-      <div className="w-full">
+      <div className="px-8 py-8">
         <div className="mb-8">
           <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
           <Heading title="Week Plan" />
@@ -80,7 +80,7 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
 
   if (!weekPlan) {
     return (
-      <div className="w-full">
+      <div className="px-8 py-8">
         <div className="mb-8">
           <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "week" }]} />
           <Heading title="Week Plan" />
@@ -94,7 +94,7 @@ export default async function WeekPage({ searchParams }: WeekPageProps) {
   const planName = weekPlan.name || "Week Plan";
 
   return (
-    <div className="w-full">
+    <div className="px-8 py-8">
       <div className="mb-8">
         <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: planName }]} />
         <Heading title={planName} />

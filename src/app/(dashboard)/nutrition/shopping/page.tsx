@@ -18,7 +18,7 @@ export default async function ShoppingPage() {
   const latestPlanResult = await getLatestWeekPlan();
   if (!latestPlanResult.success || !latestPlanResult.data) {
     return (
-      <div className="w-full">
+      <div className="px-8 py-8">
         <div className="mb-8">
           <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
           <Heading title="Shopping Cart" />
@@ -27,45 +27,45 @@ export default async function ShoppingPage() {
         </div>
       </div>
     );
-  }
+    }
 
-  const weekPlanId = latestPlanResult.data.id;
+    const weekPlanId = latestPlanResult.data.id;
 
-  await generateShoppingCart(weekPlanId);
+    await generateShoppingCart(weekPlanId);
 
-  const cartResult = await getShoppingCart(weekPlanId);
-  if (!cartResult.success || !cartResult.data) {
+    const cartResult = await getShoppingCart(weekPlanId);
+    if (!cartResult.success || !cartResult.data) {
+      return (
+        <div className="px-8 py-8">
+          <div className="mb-8">
+            <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
+            <Heading title="Shopping Cart" />
+            <div className="h-px w-full bg-border-dim mt-4 mb-3" />
+            <p className="text-body text-text-secondary mt-4">No shopping cart found for this week plan.</p>
+          </div>
+        </div>
+      );
+    }
+
+    const cartData = cartResult.data;
+    const itemsByCategory = cartData.itemsByCategory;
+
     return (
-      <div className="w-full">
+      <div className="px-8 py-8">
         <div className="mb-8">
           <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
           <Heading title="Shopping Cart" />
           <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-          <p className="text-body text-text-secondary mt-4">No shopping cart found for this week plan.</p>
+          <p className="text-body text-text-secondary">Aggregated ingredients for the week.</p>
+        </div>
+        <div className="mt-6">
+          <ShoppingCartView
+            weekPlanId={weekPlanId}
+            itemsByCategory={itemsByCategory}
+            totalCost={cartData.totalCost}
+            varietyWarnings={cartData.varietyWarnings}
+          />
         </div>
       </div>
     );
-  }
-
-  const cartData = cartResult.data;
-  const itemsByCategory = cartData.itemsByCategory;
-
-  return (
-    <div className="w-full">
-      <div className="mb-8">
-        <Breadcrumb items={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]} />
-        <Heading title="Shopping Cart" />
-        <div className="h-px w-full bg-border-dim mt-4 mb-3" />
-        <p className="text-body text-text-secondary">Aggregated ingredients for the week.</p>
-      </div>
-      <div className="mt-6">
-        <ShoppingCartView
-          weekPlanId={weekPlanId}
-          itemsByCategory={itemsByCategory}
-          totalCost={cartData.totalCost}
-          varietyWarnings={cartData.varietyWarnings}
-        />
-      </div>
-    </div>
-  );
-}
+    }
