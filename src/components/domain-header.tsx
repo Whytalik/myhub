@@ -19,7 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getSpaceFromPath } from "@/lib/spaces";
 import { GUIDE_DATA } from "@/lib/guide-data";
-import { GuideDrawer } from "@/components/guide-drawer";
+import { GuideModal } from "@/components/guide-drawer";
 
 const DOMAIN_STATUS: Record<string, "active" | "locked"> = {
   operations: "active",
@@ -119,7 +119,7 @@ export function DomainHeader() {
         )}
       </div>
 
-      <GuideDrawer isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
+      <GuideModal isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </header>
   );
 }

@@ -7,12 +7,12 @@ import { usePathname } from "next/navigation";
 import { getSpaceFromPath } from "@/lib/spaces";
 import { GUIDE_DATA } from "@/lib/guide-data";
 
-interface GuideDrawerProps {
+interface GuideModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function GuideDrawer({ isOpen, onClose }: GuideDrawerProps) {
+export function GuideModal({ isOpen, onClose }: GuideModalProps) {
   const pathname = usePathname();
   const space = getSpaceFromPath(pathname);
   const guide = GUIDE_DATA[space];
@@ -56,16 +56,16 @@ export function GuideDrawer({ isOpen, onClose }: GuideDrawerProps) {
   const SectionIcon = activeSection?.icon;
 
   return createPortal(
-    <div className="fixed inset-0 z-[8000] flex items-stretch justify-end">
+    <div className="fixed inset-0 z-[8000] flex items-center justify-center p-6">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-bg/70 backdrop-blur-xl animate-in fade-in duration-300"
         onClick={onClose}
       />
 
-      {/* Drawer */}
-      <div className="relative flex h-full w-full max-w-3xl animate-in slide-in-from-right duration-300 shadow-2xl">
-        <div className="flex w-full h-full bg-elevated border-l border-border-strong overflow-hidden">
+      {/* Modal */}
+      <div className="relative flex w-full max-w-4xl h-[85vh] animate-in zoom-in-95 fade-in duration-300 shadow-2xl rounded-2xl overflow-hidden">
+        <div className="flex w-full h-full bg-elevated border border-border-strong overflow-hidden rounded-2xl">
 
           {/* Left sidebar */}
           <div className="w-56 shrink-0 border-r border-border bg-surface/60 flex flex-col overflow-y-auto scrollbar-hide">
