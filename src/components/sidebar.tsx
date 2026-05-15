@@ -66,6 +66,7 @@ const lifeSpaceNav = [
   { href: "/life/journal", label: "Journal", icon: BookText },
   { href: "/life/habits", label: "Habits", icon: Zap },
   { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
+  { href: "/life/week", label: "Week", icon: CalendarDays },
 ];
 
 const planningNav = [
