@@ -355,6 +355,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
                           activeTab={taskView} 
                           onTabChange={(id) => setTaskView(id as "grid" | "timeline")}
                           className="bg-raised/50"
+                          layoutId="taskView"
                         />
                       </div>
                     </div>
