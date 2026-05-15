@@ -1,30 +1,39 @@
 "use client";
 
-import { useState, lazy, Suspense, useMemo, useTransition } from "react";
-import { Layers, Plus, Loader2, CheckCircle2 } from "lucide-react";
-import { Heading } from "@/components/ui/heading";
-import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
+import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import { instantDuplicateTaskAction } from "@/features/life/actions/task-actions";
+import type { LifeSphereData, TaskData } from "@/features/life/types";
 import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
-import { TaskTree } from "./TaskTree";
+import { CheckCircle2, Layers, Loader2, Plus } from "lucide-react";
+import { lazy, Suspense, useMemo, useState, useTransition } from "react";
+import { toast } from "sonner";
 import { SphereGrid } from "./SphereGrid";
 import { TaskFormDialog } from "./TaskFormDialog";
-import type { TaskData, LifeSphereData } from "@/features/life/types";
+import { TaskTree } from "./TaskTree";
 
-const TaskCalendar = lazy(() => import("./TaskCalendar").then(m => ({ default: m.TaskCalendar })));
-const TaskGraph = lazy(() => import("./TaskGraph").then(m => ({ default: m.TaskGraph })));
+const TaskCalendar = lazy(() =>
+  import("./TaskCalendar").then((m) => ({ default: m.TaskCalendar })),
+);
+const TaskGraph = lazy(() =>
+  import("./TaskGraph").then((m) => ({ default: m.TaskGraph })),
+);
 
 interface TasksPageClientProps {
-  initialTasks:  TaskData[];
+  initialTasks: TaskData[];
   calendarTasks: TaskData[];
-  spheres:       LifeSphereData[];
-  initialView?:  string;
+  spheres: LifeSphereData[];
+  initialView?: string;
 }
 
-export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialView }: TasksPageClientProps) {
+export function TasksPageClient({
+  initialTasks,
+  calendarTasks,
+  spheres,
+  initialView,
+}: TasksPageClientProps) {
   const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "gallery");
@@ -32,15 +41,22 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [pendingTaskAction, setPendingTaskAction] = useState<{ type: 'edit' | 'duplicate' | 'addChild', task: TaskData } | null>(null);
+  const [pendingTaskAction, setPendingTaskAction] = useState<{
+    type: "edit" | "duplicate" | "addChild";
+    task: TaskData;
+  } | null>(null);
   const [isActionPending, startActionTransition] = useTransition();
 
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
-  const [parentTask, setParentTask]   = useState<TaskData | null>(null);
+  const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [dialogVersion, setDialogVersion] = useState(0);
 
-  const checkPrivate = (task: TaskData, action: () => void, type: 'edit' | 'duplicate' | 'addChild') => {
+  const checkPrivate = (
+    task: TaskData,
+    action: () => void,
+    type: "edit" | "duplicate" | "addChild",
+  ) => {
     if (task.isPrivate) {
       setPendingTaskAction({ type, task });
       setPasswordDialogOpen(true);
@@ -50,48 +66,60 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   };
 
   const handleEdit = (task: TaskData) => {
-    checkPrivate(task, () => {
-      setEditingTask(task);
-      setParentTask(null);
-      setIsDuplicate(false);
-      setDialogVersion(v => v + 1);
-      setTaskFormOpen(true);
-    }, 'edit');
+    checkPrivate(
+      task,
+      () => {
+        setEditingTask(task);
+        setParentTask(null);
+        setIsDuplicate(false);
+        setDialogVersion((v) => v + 1);
+        setTaskFormOpen(true);
+      },
+      "edit",
+    );
   };
 
   const handleDuplicate = (task: TaskData) => {
-    checkPrivate(task, () => {
-      startActionTransition(async () => {
-        const result = await instantDuplicateTaskAction(task);
-        if (result.success) {
-          toast.success("Task duplicated instantly");
-        } else {
-          toast.error(result.error || "Failed to duplicate task");
-        }
-      });
-    }, 'duplicate');
+    checkPrivate(
+      task,
+      () => {
+        startActionTransition(async () => {
+          const result = await instantDuplicateTaskAction(task);
+          if (result.success) {
+            toast.success("Task duplicated instantly");
+          } else {
+            toast.error(result.error || "Failed to duplicate task");
+          }
+        });
+      },
+      "duplicate",
+    );
   };
 
   const handleAddChild = (parent: TaskData) => {
-    checkPrivate(parent, () => {
-      setEditingTask(null);
-      setParentTask(parent);
-      setIsDuplicate(false);
-      setDialogVersion(v => v + 1);
-      setTaskFormOpen(true);
-    }, 'addChild');
+    checkPrivate(
+      parent,
+      () => {
+        setEditingTask(null);
+        setParentTask(parent);
+        setIsDuplicate(false);
+        setDialogVersion((v) => v + 1);
+        setTaskFormOpen(true);
+      },
+      "addChild",
+    );
   };
 
   const handleAddNew = () => {
     setEditingTask(null);
     setParentTask(null);
     setIsDuplicate(false);
-    setDialogVersion(v => v + 1);
+    setDialogVersion((v) => v + 1);
     setTaskFormOpen(true);
   };
 
   const handleTaskDeleted = () => {
-    setDialogVersion(v => v + 1);
+    setDialogVersion((v) => v + 1);
     setTaskFormOpen(false);
     setEditingTask(null);
     setParentTask(null);
@@ -103,7 +131,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
   const filteredTasks = useMemo(() => {
     let result = tasks;
     if (hideDoneSubtasks) {
-      result = result.filter(t => !(t.parentId && t.status === 'DONE'));
+      result = result.filter((t) => !(t.parentId && t.status === "DONE"));
     }
     return result;
   }, [tasks, hideDoneSubtasks]);
@@ -118,7 +146,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
               Organize your goals, projects, and daily work.
             </p>
           </div>
-          
+
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1.5 p-1 bg-surface border border-border rounded-xl w-full sm:w-auto">
               <Button
@@ -136,14 +164,6 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                 className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
               >
                 Calendar
-              </Button>
-              <Button
-                variant={view === "timeline" ? "primary" : "ghost"}
-                size="sm"
-                onClick={() => setView("timeline")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
-              >
-                Timeline
               </Button>
               <Button
                 variant={view === "graph" ? "primary" : "ghost"}
@@ -164,25 +184,28 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                   className="rounded-xl px-4 h-10 sm:h-9 text-note font-bold transition-all"
                   title="Toggle completed subtasks"
                 >
-                  <CheckCircle2 size={14} className={hideDoneSubtasks ? "mr-2" : "mr-2 text-muted/50"} />
+                  <CheckCircle2
+                    size={14}
+                    className={hideDoneSubtasks ? "mr-2" : "mr-2 text-muted/50"}
+                  />
                   {hideDoneSubtasks ? "Showing Active" : "Hide Done"}
                 </Button>
               )}
 
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setSpheresOpen(true)} 
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSpheresOpen(true)}
                 className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-note font-bold"
               >
                 <Layers size={14} className="mr-2" />
                 Life Spheres
               </Button>
 
-              <Button 
-                variant="primary" 
-                size="sm" 
-                onClick={handleAddNew} 
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleAddNew}
                 className="flex-1 sm:flex-none rounded-xl px-6 h-10 sm:h-9 text-note font-bold"
               >
                 <Plus size={16} className="mr-2" />
@@ -197,25 +220,33 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
         <div className="fixed inset-0 z-[9999] bg-bg/20 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
           <div className="bg-surface border border-border p-4 rounded-xl shadow-elevated flex items-center gap-3">
             <Loader2 size={20} className="text-accent animate-spin" />
-            <span className="text-note font-mono uppercase tracking-widest text-muted">Updating...</span>
+            <span className="text-note font-mono uppercase tracking-widest text-muted">
+              Updating...
+            </span>
           </div>
         </div>
       )}
 
       <div className="animate-in fade-in duration-500">
         {view === "gallery" && (
-          <TaskTree 
-            tasks={tasks} 
-            spheres={spheres} 
-            onEdit={handleEdit} 
+          <TaskTree
+            tasks={tasks}
+            spheres={spheres}
+            onEdit={handleEdit}
             onDuplicate={handleDuplicate}
             onAddChild={handleAddChild}
             onDelete={handleTaskDeleted}
-            hideHeader 
+            hideHeader
           />
         )}
         {view === "calendar" && (
-          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-20">
+                <Loader2 size={24} className="text-accent animate-spin" />
+              </div>
+            }
+          >
             <TaskCalendar
               tasks={calendarTasks}
               allTasks={initialTasks}
@@ -226,20 +257,14 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             />
           </Suspense>
         )}
-        {view === "timeline" && (
-          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
-            <TaskCalendar
-              tasks={calendarTasks}
-              allTasks={initialTasks}
-              spheres={spheres}
-              defaultMode="day"
-              onDuplicate={handleDuplicate}
-              onDelete={handleTaskDeleted}
-            />
-          </Suspense>
-        )}
         {view === "graph" && (
-          <Suspense fallback={<div className="flex items-center justify-center py-20"><Loader2 size={24} className="text-accent animate-spin" /></div>}>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-20">
+                <Loader2 size={24} className="text-accent animate-spin" />
+              </div>
+            }
+          >
             <TaskGraph
               tasks={filteredTasks}
               spheres={spheres}
@@ -262,7 +287,7 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
       </Dialog>
 
       <TaskFormDialog
-        key={`task-form-${dialogVersion}-${editingTask?.id ?? 'new'}`}
+        key={`task-form-${dialogVersion}-${editingTask?.id ?? "new"}`}
         isOpen={taskFormOpen}
         onClose={() => setTaskFormOpen(false)}
         task={editingTask}
@@ -275,7 +300,12 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
 
       <Dialog
         isOpen={passwordDialogOpen}
-        onClose={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); setPendingTaskAction(null); }}
+        onClose={() => {
+          setPasswordDialogOpen(false);
+          setPasswordInput("");
+          setPasswordError(false);
+          setPendingTaskAction(null);
+        }}
         title="Verification Required"
         description="Enter password to access private entry"
       >
@@ -284,15 +314,30 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
             autoFocus
             type="password"
             value={passwordInput}
-            onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
+            onChange={(e) => {
+              setPasswordInput(e.target.value);
+              setPasswordError(false);
+            }}
             placeholder="��������"
-            onKeyDown={(e) => { if (e.key === 'Enter') document.getElementById('unlock-btn')?.click(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter")
+                document.getElementById("unlock-btn")?.click();
+            }}
           />
-          {passwordError && <p className="text-caption font-bold text-rose-500">Invalid password</p>}
+          {passwordError && (
+            <p className="text-caption font-bold text-rose-500">
+              Invalid password
+            </p>
+          )}
           <div className="flex gap-2">
             <Button
               variant="ghost"
-              onClick={() => { setPasswordDialogOpen(false); setPasswordInput(""); setPasswordError(false); setPendingTaskAction(null); }}
+              onClick={() => {
+                setPasswordDialogOpen(false);
+                setPasswordInput("");
+                setPasswordError(false);
+                setPendingTaskAction(null);
+              }}
               className="flex-1"
             >
               Cancel
@@ -301,21 +346,22 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
               id="unlock-btn"
               variant="primary"
               onClick={async () => {
-                const result = await verifyPrivateTaskPasswordAction(passwordInput);
+                const result =
+                  await verifyPrivateTaskPasswordAction(passwordInput);
                 if (result.success) {
                   const { type, task } = pendingTaskAction!;
                   setPasswordDialogOpen(false);
                   setPasswordInput("");
                   setPendingTaskAction(null);
-                  
+
                   // Execute the actual action
-                  if (type === 'edit') {
+                  if (type === "edit") {
                     setEditingTask(task);
                     setParentTask(null);
                     setIsDuplicate(false);
-                    setDialogVersion(v => v + 1);
+                    setDialogVersion((v) => v + 1);
                     setTaskFormOpen(true);
-                  } else if (type === 'duplicate') {
+                  } else if (type === "duplicate") {
                     startActionTransition(async () => {
                       const result = await instantDuplicateTaskAction(task);
                       if (result.success) {
@@ -324,11 +370,11 @@ export function TasksPageClient({ initialTasks, calendarTasks, spheres, initialV
                         toast.error(result.error || "Failed to duplicate task");
                       }
                     });
-                  } else if (type === 'addChild') {
+                  } else if (type === "addChild") {
                     setEditingTask(null);
                     setParentTask(task);
                     setIsDuplicate(false);
-                    setDialogVersion(v => v + 1);
+                    setDialogVersion((v) => v + 1);
                     setTaskFormOpen(true);
                   }
                 } else {
