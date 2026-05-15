@@ -1,8 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
-import Link from "next/link";
-import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, CalendarDays, Zap } from "lucide-react";
+import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
@@ -348,6 +347,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
                                     allTasks={tasks}
                                     spheres={spheres}
                                     defaultMode="day"
+                                    hideControls
                                     onDuplicate={handleDuplicate}
                                     onDelete={() => {}}
                                   />
@@ -370,11 +370,53 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
                   content: (
                     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <NutritionSection
-                          nutrition={data.nutrition ?? null}
-                          note={data.nutritionNote ?? null}
-                          onChange={patch}
-                        />
+                        {/* Column 1: Nutrition + Evening Energy */}
+                        <div className="flex flex-col gap-6">
+                          <NutritionSection
+                            nutrition={data.nutrition ?? null}
+                            note={data.nutritionNote ?? null}
+                            onChange={patch}
+                          />
+                          <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-4 transition-all ${
+                            data.eveningEnergy !== null ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
+                          }`}>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2.5">
+                                <div className={`p-1.5 rounded-lg transition-colors ${data.eveningEnergy !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
+                                  <Zap size={14} />
+                                </div>
+                                <h3 className={`text-body font-medium transition-colors ${data.eveningEnergy !== null ? "text-accent" : "text-text"}`}>
+                                  Evening Energy
+                                </h3>
+                              </div>
+                              {data.eveningEnergy !== null && (
+                                <span className="text-note font-mono text-muted uppercase tracking-wider">
+                                  {["","Drained","Tired","Okay","Low","Meh","Fine","Good","Solid","Peak","Ultra"][data.eveningEnergy!]}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex gap-1 h-9">
+                              {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+                                <button
+                                  key={value}
+                                  type="button"
+                                  onClick={() => patch({ eveningEnergy: data.eveningEnergy === value ? null : value })}
+                                  className={`flex-1 rounded-lg border text-caption font-mono transition-all ${
+                                    data.eveningEnergy === value
+                                      ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
+                                      : data.eveningEnergy != null && value <= data.eveningEnergy
+                                      ? "bg-accent-muted/40 border-accent/20 text-accent/60"
+                                      : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
+                                  }`}
+                                >
+                                  {value}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Column 2: Evening Routine */}
                         <Suspense fallback={<div className="bg-surface border rounded-xl p-5 h-[200px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
                           <RoutineSection
                             type="evening"
@@ -385,63 +427,17 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits,
                         </Suspense>
                       </div>
 
-                      {/* Evening Energy */}
-                      <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-4 transition-all ${
-                        data.eveningEnergy !== null ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-                      }`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`p-1.5 rounded-lg transition-colors ${data.eveningEnergy !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
-                              <Zap size={14} />
-                            </div>
-                            <h3 className={`text-body font-medium transition-colors ${data.eveningEnergy !== null ? "text-accent" : "text-text"}`}>
-                              Evening Energy
-                            </h3>
-                          </div>
-                          {data.eveningEnergy !== null && (
-                            <span className="text-note font-mono text-muted uppercase tracking-wider">
-                              {["","Drained","Tired","Okay","Low","Meh","Fine","Good","Solid","Peak","Ultra"][data.eveningEnergy!]}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex gap-1 h-9">
-                          {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
-                            <button
-                              key={value}
-                              type="button"
-                              onClick={() => patch({ eveningEnergy: data.eveningEnergy === value ? null : value })}
-                              className={`flex-1 rounded-lg border text-caption font-mono transition-all ${
-                                data.eveningEnergy === value
-                                  ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                                  : data.eveningEnergy != null && value <= data.eveningEnergy
-                                  ? "bg-accent-muted/40 border-accent/20 text-accent/60"
-                                  : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
-                              }`}
-                            >
-                              {value}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-3 px-2">
-                          <div className="h-px flex-1 bg-border/40" />
-                          <span className="text-note font-mono text-muted uppercase tracking-[0.4em] whitespace-nowrap">Task Planning</span>
-                          <div className="h-px flex-1 bg-border/40" />
-                        </div>
-                        <Link
-                          href="/life/tasks?view=calendar"
-                          className="flex items-center justify-between bg-surface border border-border rounded-xl px-6 py-4 hover:border-accent/40 hover:bg-raised transition-all group"
-                        >
-                          <div className="flex items-center gap-3">
-                            <CalendarDays size={16} className="text-accent" />
-                            <span className="text-body font-medium text-text">Plan your tasks</span>
-                            <span className="text-note font-mono text-muted">Open calendar view</span>
-                          </div>
-                          <span className="text-muted group-hover:text-accent transition-colors">?</span>
-                        </Link>
-                      </div>
+                      <Suspense fallback={<div className="bg-surface border border-border rounded-xl h-[300px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
+                        <TaskCalendar
+                          tasks={tasks}
+                          allTasks={tasks}
+                          spheres={spheres}
+                          defaultMode="week"
+                          hideModeSwitch
+                          onDuplicate={handleDuplicate}
+                          onDelete={() => {}}
+                        />
+                      </Suspense>
 
                       <ReflectionSection
                         winToday={data.winToday ?? null}

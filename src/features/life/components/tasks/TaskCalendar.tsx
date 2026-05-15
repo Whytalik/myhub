@@ -58,6 +58,8 @@ interface TaskCalendarProps {
   allTasks?: TaskData[];
   spheres: LifeSphereData[];
   defaultMode?: "month" | "week" | "day";
+  hideControls?: boolean;
+  hideModeSwitch?: boolean;
   onDuplicate?: (task: TaskData) => void;
   onDelete?: () => void;
 }
@@ -321,9 +323,11 @@ function CalendarDayCell({
 
 export function TaskCalendar({ 
   tasks: initialTasks, 
-  allTasks, 
-  spheres, 
-  defaultMode = "week", 
+  allTasks,
+  spheres,
+  defaultMode = "week",
+  hideControls = false,
+  hideModeSwitch = false,
   onDuplicate,
   onDelete
 }: TaskCalendarProps) {
@@ -867,7 +871,7 @@ export function TaskCalendar({
     >
       <div className="flex flex-col bg-surface border border-border rounded-xl md:rounded-xl overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
         {/* Header Controls */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 md:p-6 lg:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 lg:gap-6">
+        {!hideControls && <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 md:p-6 lg:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 lg:gap-6">
           <div className="flex items-center justify-between lg:justify-start gap-4 lg:gap-8">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-accent/10 rounded-xl shrink-0">
@@ -921,32 +925,34 @@ export function TaskCalendar({
             </div>
 
             {/* View switcher */}
-            <div className="flex p-1 bg-surface border border-border/50 rounded-xl shadow-sm w-fit relative overflow-hidden shrink-0">
-              {["month", "week", "day"].map((id) => {
-                const isActive = mode === id;
-                return (
-                  <button
-                    key={id}
-                    onClick={() => setMode(id as "month" | "week" | "day")}
-                    className={`
-                      relative flex items-center gap-2 whitespace-nowrap px-3 md:px-5 lg:px-6 py-1.5 md:py-2 rounded-xl text-[10px] md:text-caption font-mono font-bold uppercase tracking-widest transition-all duration-200 z-10
-                      ${isActive ? "text-bg" : "text-secondary hover:text-text"}
-                    `}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeViewTab"
-                        className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-                    <span className="relative z-10">{id}</span>
-                  </button>
-                );
-              })}
-            </div>
+            {!hideModeSwitch && (
+              <div className="flex p-1 bg-surface border border-border/50 rounded-xl shadow-sm w-fit relative overflow-hidden shrink-0">
+                {["month", "week", "day"].map((id) => {
+                  const isActive = mode === id;
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => setMode(id as "month" | "week" | "day")}
+                      className={`
+                        relative flex items-center gap-2 whitespace-nowrap px-3 md:px-5 lg:px-6 py-1.5 md:py-2 rounded-xl text-[10px] md:text-caption font-mono font-bold uppercase tracking-widest transition-all duration-200 z-10
+                        ${isActive ? "text-bg" : "text-secondary hover:text-text"}
+                      `}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeViewTab"
+                          className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10">{id}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </div>
+        </div>}
 
         {/* Content Body */}
         <div className="flex-1">
