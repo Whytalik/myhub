@@ -6,8 +6,9 @@ import { Heading } from "@/components/ui/heading";
 import { getEntryByDate } from "@/features/life/services/journal-service";
 import * as taskService from "@/features/life/services/task-service";
 import * as habitService from "@/features/life/services/habit-service";
+import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
-import type { DailyEntryData, HabitData } from "@/features/life/types";
+import type { DailyEntryData, HabitData, DayType } from "@/features/life/types";
 import type { RoutineMap } from "@/lib/routine-items";
 import { History } from "lucide-react";
 
@@ -32,11 +33,12 @@ export default async function JournalPage() {
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
-  const [raw, tasks, spheres, habits] = await Promise.all([
+  const [raw, tasks, spheres, habits, schedule] = await Promise.all([
     getEntryByDate(userId, date),
     taskService.getTasksByDate(userId, date),
     taskService.getAllSpheres(userId),
     habitService.getActiveHabits(userId),
+    getScheduleByDate(userId, date),
   ]);
 
   const entry: DailyEntryData | null = raw
@@ -72,6 +74,7 @@ export default async function JournalPage() {
         tasks={tasks}
         spheres={spheres}
         habits={habits as unknown as HabitData[]}
+        scheduledDayType={schedule ? (schedule.dayType as DayType) : undefined}
       />
     </div>
   );

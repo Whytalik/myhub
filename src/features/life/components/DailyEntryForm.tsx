@@ -14,7 +14,8 @@ import { upsertEntryAction } from "../actions/journal-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
 import { TaskFormDialog } from "./tasks/TaskFormDialog";
 import { HabitCard } from "./habits/HabitCard";
-import type { DailyEntryData, UpsertDailyEntryInput, TaskData, LifeSphereData, HabitData } from "../types";
+import type { DailyEntryData, UpsertDailyEntryInput, TaskData, LifeSphereData, HabitData, DayType } from "../types";
+import { dayTypeToRoutine } from "../types";
 import type { RoutineMap } from "@/lib/routine-items";
 import { Tabs } from "@/components/ui/tabs";
 import { Sparkles as SparklesIcon } from "lucide-react";
@@ -28,9 +29,10 @@ interface Props {
   tasks: TaskData[];
   spheres: LifeSphereData[];
   habits: HabitData[];
+  scheduledDayType?: DayType;
 }
 
-export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits }: Props) {
+export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits, scheduledDayType }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
   const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
@@ -41,11 +43,12 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const computeInitialData = useCallback(() => {
+    const scheduled = scheduledDayType ? dayTypeToRoutine(scheduledDayType) : null;
+
     let morningRoutine = (initialEntry?.morningRoutine as RoutineMap | null) ?? null;
-    
+
     if (morningRoutine && morningRoutine["_isTrainingDay"] === undefined) {
-      const day = new Date(todayStr).getDay();
-      const isTrainDay = [1, 3, 5].includes(day);
+      const isTrainDay = scheduled ? scheduled.isTrainingDay : [1, 3, 5].includes(new Date(todayStr).getDay());
       morningRoutine = { ...morningRoutine, _isTrainingDay: isTrainDay };
       return {
         sleepBedtime:    initialEntry?.sleepBedtime ? new Date(initialEntry.sleepBedtime).toISOString() : null,
@@ -75,8 +78,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
     }
     
     if (!morningRoutine) {
-      const day = new Date(todayStr).getDay();
-      const isTrainDay = [1, 3, 5].includes(day);
+      const isTrainDay = scheduled ? scheduled.isTrainingDay : [1, 3, 5].includes(new Date(todayStr).getDay());
 
       // Default times: 22:00 and 08:00
       const defaultBedtime = new Date(todayStr);
@@ -99,7 +101,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
         nutrition:       initialEntry?.nutrition ?? null,
         nutritionNote:   initialEntry?.nutritionNote ?? null,
         morningRoutine:  { _isTrainingDay: isTrainDay },
-        eveningRoutine:  (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
+        eveningRoutine:  (initialEntry?.eveningRoutine as RoutineMap | null) ?? (scheduled ? { _eveningMode: scheduled.eveningMode } as unknown as RoutineMap : null),
         routineNote:     initialEntry?.routineNote ?? null,
         winToday:        initialEntry?.winToday ?? null,
         improveTomorrow: initialEntry?.improveTomorrow ?? null,
@@ -135,7 +137,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, spheres, habits 
       standupPlan:     initialEntry?.standupPlan ?? null,
       standupBlockers: initialEntry?.standupBlockers ?? null,
     };
-  }, [initialEntry, todayStr]);
+  }, [initialEntry, todayStr, scheduledDayType]);
 
   const [savedAt, setSavedAt] = useState<Date | null>(
     initialEntry ? new Date(initialEntry.updatedAt ?? new Date()) : null

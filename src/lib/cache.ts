@@ -26,6 +26,7 @@ export const cacheTags = {
   wishlist: (userId: string) => `wishlist:${userId}`,
   languages: (userId: string) => `languages:${userId}`,
   library: (userId: string) => `library:${userId}`,
+  daySchedules: (userId: string) => `day-schedules:${userId}`,
 };
 
 // ─── User / Profile ───────────────────────────────────────────────────────────

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { SpaceLanding, SpaceDescription, SpaceNav } from "@/components/space-landing";
-import { BookText, CheckCircle2, Zap } from "lucide-react";
+import { BookText, CheckCircle2, Zap, CalendarDays } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Life Space",
@@ -46,6 +46,12 @@ export default async function LifeSpacePage() {
             description: "Daily discipline tracker",
             href: "/life/habits",
             icon: Zap,
+          },
+          {
+            title: "Week",
+            description: "Plan day types for the week",
+            href: "/life/week",
+            icon: CalendarDays,
           },
         ]}
       />

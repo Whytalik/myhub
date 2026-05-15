@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model DaySchedule
+ * 
+ */
+export type DaySchedule = $Result.DefaultSelection<Prisma.$DaySchedulePayload>
+/**
  * Model PushSubscription
  * 
  */
@@ -707,6 +712,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.daySchedule`: Exposes CRUD operations for the **DaySchedule** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DaySchedules
+    * const daySchedules = await prisma.daySchedule.findMany()
+    * ```
+    */
+  get daySchedule(): Prisma.DayScheduleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.pushSubscription`: Exposes CRUD operations for the **PushSubscription** model.
@@ -1572,6 +1587,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    DaySchedule: 'DaySchedule',
     PushSubscription: 'PushSubscription',
     Account: 'Account',
     Session: 'Session',
@@ -1630,7 +1646,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
+      modelProps: "user" | "daySchedule" | "pushSubscription" | "account" | "session" | "verificationToken" | "nutritionPerson" | "foodProduct" | "cookingMethod" | "dish" | "dishIngredient" | "dishEntryIngredient" | "weekPlan" | "dayPlan" | "dayPrepNote" | "shoppingList" | "shoppingListItem" | "mealSlotInstance" | "productEntry" | "dishEntry" | "shoppingCart" | "cartItem" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "libraryItem" | "wishlistItem" | "language" | "userLanguage" | "languageSphereProgress" | "vocabularyItem" | "immersionLog" | "languageResource" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1705,6 +1721,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      DaySchedule: {
+        payload: Prisma.$DaySchedulePayload<ExtArgs>
+        fields: Prisma.DayScheduleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DayScheduleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DayScheduleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          findFirst: {
+            args: Prisma.DayScheduleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DayScheduleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          findMany: {
+            args: Prisma.DayScheduleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+          }
+          create: {
+            args: Prisma.DayScheduleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          createMany: {
+            args: Prisma.DayScheduleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DayScheduleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+          }
+          delete: {
+            args: Prisma.DayScheduleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          update: {
+            args: Prisma.DayScheduleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          deleteMany: {
+            args: Prisma.DayScheduleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DayScheduleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DayScheduleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>[]
+          }
+          upsert: {
+            args: Prisma.DayScheduleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DaySchedulePayload>
+          }
+          aggregate: {
+            args: Prisma.DayScheduleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDaySchedule>
+          }
+          groupBy: {
+            args: Prisma.DayScheduleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DayScheduleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DayScheduleCountArgs<ExtArgs>
+            result: $Utils.Optional<DayScheduleCountAggregateOutputType> | number
           }
         }
       }
@@ -4999,6 +5089,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    daySchedule?: DayScheduleOmit
     pushSubscription?: PushSubscriptionOmit
     account?: AccountOmit
     session?: SessionOmit
@@ -5142,6 +5233,7 @@ export namespace Prisma {
     visions: number
     weekPlans: number
     wishlistItems: number
+    daySchedules: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5165,6 +5257,7 @@ export namespace Prisma {
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     weekPlans?: boolean | UserCountOutputTypeCountWeekPlansArgs
     wishlistItems?: boolean | UserCountOutputTypeCountWishlistItemsArgs
+    daySchedules?: boolean | UserCountOutputTypeCountDaySchedulesArgs
   }
 
   // Custom InputTypes
@@ -5316,6 +5409,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWishlistItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WishlistItemWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDaySchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DayScheduleWhereInput
   }
 
 
@@ -6293,6 +6393,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
+    daySchedules?: boolean | User$daySchedulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6357,6 +6458,7 @@ export namespace Prisma {
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekPlans?: boolean | User$weekPlansArgs<ExtArgs>
     wishlistItems?: boolean | User$wishlistItemsArgs<ExtArgs>
+    daySchedules?: boolean | User$daySchedulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6385,6 +6487,7 @@ export namespace Prisma {
       visions: Prisma.$VisionPayload<ExtArgs>[]
       weekPlans: Prisma.$WeekPlanPayload<ExtArgs>[]
       wishlistItems: Prisma.$WishlistItemPayload<ExtArgs>[]
+      daySchedules: Prisma.$DaySchedulePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6811,6 +6914,7 @@ export namespace Prisma {
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weekPlans<T extends User$weekPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$weekPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     wishlistItems<T extends User$wishlistItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$wishlistItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WishlistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    daySchedules<T extends User$daySchedulesArgs<ExtArgs> = {}>(args?: Subset<T, User$daySchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7723,6 +7827,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.daySchedules
+   */
+  export type User$daySchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    where?: DayScheduleWhereInput
+    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    cursor?: DayScheduleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7738,6 +7866,1082 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DaySchedule
+   */
+
+  export type AggregateDaySchedule = {
+    _count: DayScheduleCountAggregateOutputType | null
+    _min: DayScheduleMinAggregateOutputType | null
+    _max: DayScheduleMaxAggregateOutputType | null
+  }
+
+  export type DayScheduleMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    dayType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DayScheduleMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    dayType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DayScheduleCountAggregateOutputType = {
+    id: number
+    userId: number
+    date: number
+    dayType: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DayScheduleMinAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    dayType?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DayScheduleMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    dayType?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DayScheduleCountAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    dayType?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DayScheduleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DaySchedule to aggregate.
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DaySchedules to fetch.
+     */
+    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DayScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DaySchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DaySchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DaySchedules
+    **/
+    _count?: true | DayScheduleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DayScheduleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DayScheduleMaxAggregateInputType
+  }
+
+  export type GetDayScheduleAggregateType<T extends DayScheduleAggregateArgs> = {
+        [P in keyof T & keyof AggregateDaySchedule]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDaySchedule[P]>
+      : GetScalarType<T[P], AggregateDaySchedule[P]>
+  }
+
+
+
+
+  export type DayScheduleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DayScheduleWhereInput
+    orderBy?: DayScheduleOrderByWithAggregationInput | DayScheduleOrderByWithAggregationInput[]
+    by: DayScheduleScalarFieldEnum[] | DayScheduleScalarFieldEnum
+    having?: DayScheduleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DayScheduleCountAggregateInputType | true
+    _min?: DayScheduleMinAggregateInputType
+    _max?: DayScheduleMaxAggregateInputType
+  }
+
+  export type DayScheduleGroupByOutputType = {
+    id: string
+    userId: string
+    date: Date
+    dayType: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DayScheduleCountAggregateOutputType | null
+    _min: DayScheduleMinAggregateOutputType | null
+    _max: DayScheduleMaxAggregateOutputType | null
+  }
+
+  type GetDayScheduleGroupByPayload<T extends DayScheduleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DayScheduleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DayScheduleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DayScheduleGroupByOutputType[P]>
+            : GetScalarType<T[P], DayScheduleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DayScheduleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    dayType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["daySchedule"]>
+
+  export type DayScheduleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    dayType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["daySchedule"]>
+
+  export type DayScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    dayType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["daySchedule"]>
+
+  export type DayScheduleSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    dayType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DayScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "dayType" | "createdAt" | "updatedAt", ExtArgs["result"]["daySchedule"]>
+  export type DayScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DayScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DayScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DaySchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DaySchedule"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      date: Date
+      dayType: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["daySchedule"]>
+    composites: {}
+  }
+
+  type DayScheduleGetPayload<S extends boolean | null | undefined | DayScheduleDefaultArgs> = $Result.GetResult<Prisma.$DaySchedulePayload, S>
+
+  type DayScheduleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DayScheduleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DayScheduleCountAggregateInputType | true
+    }
+
+  export interface DayScheduleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DaySchedule'], meta: { name: 'DaySchedule' } }
+    /**
+     * Find zero or one DaySchedule that matches the filter.
+     * @param {DayScheduleFindUniqueArgs} args - Arguments to find a DaySchedule
+     * @example
+     * // Get one DaySchedule
+     * const daySchedule = await prisma.daySchedule.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DayScheduleFindUniqueArgs>(args: SelectSubset<T, DayScheduleFindUniqueArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DaySchedule that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DayScheduleFindUniqueOrThrowArgs} args - Arguments to find a DaySchedule
+     * @example
+     * // Get one DaySchedule
+     * const daySchedule = await prisma.daySchedule.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DayScheduleFindUniqueOrThrowArgs>(args: SelectSubset<T, DayScheduleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DaySchedule that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleFindFirstArgs} args - Arguments to find a DaySchedule
+     * @example
+     * // Get one DaySchedule
+     * const daySchedule = await prisma.daySchedule.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DayScheduleFindFirstArgs>(args?: SelectSubset<T, DayScheduleFindFirstArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DaySchedule that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleFindFirstOrThrowArgs} args - Arguments to find a DaySchedule
+     * @example
+     * // Get one DaySchedule
+     * const daySchedule = await prisma.daySchedule.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DayScheduleFindFirstOrThrowArgs>(args?: SelectSubset<T, DayScheduleFindFirstOrThrowArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DaySchedules that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DaySchedules
+     * const daySchedules = await prisma.daySchedule.findMany()
+     * 
+     * // Get first 10 DaySchedules
+     * const daySchedules = await prisma.daySchedule.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dayScheduleWithIdOnly = await prisma.daySchedule.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DayScheduleFindManyArgs>(args?: SelectSubset<T, DayScheduleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DaySchedule.
+     * @param {DayScheduleCreateArgs} args - Arguments to create a DaySchedule.
+     * @example
+     * // Create one DaySchedule
+     * const DaySchedule = await prisma.daySchedule.create({
+     *   data: {
+     *     // ... data to create a DaySchedule
+     *   }
+     * })
+     * 
+     */
+    create<T extends DayScheduleCreateArgs>(args: SelectSubset<T, DayScheduleCreateArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DaySchedules.
+     * @param {DayScheduleCreateManyArgs} args - Arguments to create many DaySchedules.
+     * @example
+     * // Create many DaySchedules
+     * const daySchedule = await prisma.daySchedule.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DayScheduleCreateManyArgs>(args?: SelectSubset<T, DayScheduleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DaySchedules and returns the data saved in the database.
+     * @param {DayScheduleCreateManyAndReturnArgs} args - Arguments to create many DaySchedules.
+     * @example
+     * // Create many DaySchedules
+     * const daySchedule = await prisma.daySchedule.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DaySchedules and only return the `id`
+     * const dayScheduleWithIdOnly = await prisma.daySchedule.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DayScheduleCreateManyAndReturnArgs>(args?: SelectSubset<T, DayScheduleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DaySchedule.
+     * @param {DayScheduleDeleteArgs} args - Arguments to delete one DaySchedule.
+     * @example
+     * // Delete one DaySchedule
+     * const DaySchedule = await prisma.daySchedule.delete({
+     *   where: {
+     *     // ... filter to delete one DaySchedule
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DayScheduleDeleteArgs>(args: SelectSubset<T, DayScheduleDeleteArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DaySchedule.
+     * @param {DayScheduleUpdateArgs} args - Arguments to update one DaySchedule.
+     * @example
+     * // Update one DaySchedule
+     * const daySchedule = await prisma.daySchedule.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DayScheduleUpdateArgs>(args: SelectSubset<T, DayScheduleUpdateArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DaySchedules.
+     * @param {DayScheduleDeleteManyArgs} args - Arguments to filter DaySchedules to delete.
+     * @example
+     * // Delete a few DaySchedules
+     * const { count } = await prisma.daySchedule.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DayScheduleDeleteManyArgs>(args?: SelectSubset<T, DayScheduleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DaySchedules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DaySchedules
+     * const daySchedule = await prisma.daySchedule.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DayScheduleUpdateManyArgs>(args: SelectSubset<T, DayScheduleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DaySchedules and returns the data updated in the database.
+     * @param {DayScheduleUpdateManyAndReturnArgs} args - Arguments to update many DaySchedules.
+     * @example
+     * // Update many DaySchedules
+     * const daySchedule = await prisma.daySchedule.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DaySchedules and only return the `id`
+     * const dayScheduleWithIdOnly = await prisma.daySchedule.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DayScheduleUpdateManyAndReturnArgs>(args: SelectSubset<T, DayScheduleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DaySchedule.
+     * @param {DayScheduleUpsertArgs} args - Arguments to update or create a DaySchedule.
+     * @example
+     * // Update or create a DaySchedule
+     * const daySchedule = await prisma.daySchedule.upsert({
+     *   create: {
+     *     // ... data to create a DaySchedule
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DaySchedule we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DayScheduleUpsertArgs>(args: SelectSubset<T, DayScheduleUpsertArgs<ExtArgs>>): Prisma__DayScheduleClient<$Result.GetResult<Prisma.$DaySchedulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DaySchedules.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleCountArgs} args - Arguments to filter DaySchedules to count.
+     * @example
+     * // Count the number of DaySchedules
+     * const count = await prisma.daySchedule.count({
+     *   where: {
+     *     // ... the filter for the DaySchedules we want to count
+     *   }
+     * })
+    **/
+    count<T extends DayScheduleCountArgs>(
+      args?: Subset<T, DayScheduleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DayScheduleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DaySchedule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DayScheduleAggregateArgs>(args: Subset<T, DayScheduleAggregateArgs>): Prisma.PrismaPromise<GetDayScheduleAggregateType<T>>
+
+    /**
+     * Group by DaySchedule.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DayScheduleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DayScheduleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DayScheduleGroupByArgs['orderBy'] }
+        : { orderBy?: DayScheduleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DayScheduleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDayScheduleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DaySchedule model
+   */
+  readonly fields: DayScheduleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DaySchedule.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DayScheduleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DaySchedule model
+   */
+  interface DayScheduleFieldRefs {
+    readonly id: FieldRef<"DaySchedule", 'String'>
+    readonly userId: FieldRef<"DaySchedule", 'String'>
+    readonly date: FieldRef<"DaySchedule", 'DateTime'>
+    readonly dayType: FieldRef<"DaySchedule", 'String'>
+    readonly createdAt: FieldRef<"DaySchedule", 'DateTime'>
+    readonly updatedAt: FieldRef<"DaySchedule", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DaySchedule findUnique
+   */
+  export type DayScheduleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which DaySchedule to fetch.
+     */
+    where: DayScheduleWhereUniqueInput
+  }
+
+  /**
+   * DaySchedule findUniqueOrThrow
+   */
+  export type DayScheduleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which DaySchedule to fetch.
+     */
+    where: DayScheduleWhereUniqueInput
+  }
+
+  /**
+   * DaySchedule findFirst
+   */
+  export type DayScheduleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which DaySchedule to fetch.
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DaySchedules to fetch.
+     */
+    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DaySchedules.
+     */
+    cursor?: DayScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DaySchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DaySchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DaySchedules.
+     */
+    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * DaySchedule findFirstOrThrow
+   */
+  export type DayScheduleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which DaySchedule to fetch.
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DaySchedules to fetch.
+     */
+    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DaySchedules.
+     */
+    cursor?: DayScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DaySchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DaySchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DaySchedules.
+     */
+    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * DaySchedule findMany
+   */
+  export type DayScheduleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter, which DaySchedules to fetch.
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DaySchedules to fetch.
+     */
+    orderBy?: DayScheduleOrderByWithRelationInput | DayScheduleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DaySchedules.
+     */
+    cursor?: DayScheduleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DaySchedules from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DaySchedules.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DaySchedules.
+     */
+    distinct?: DayScheduleScalarFieldEnum | DayScheduleScalarFieldEnum[]
+  }
+
+  /**
+   * DaySchedule create
+   */
+  export type DayScheduleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DaySchedule.
+     */
+    data: XOR<DayScheduleCreateInput, DayScheduleUncheckedCreateInput>
+  }
+
+  /**
+   * DaySchedule createMany
+   */
+  export type DayScheduleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DaySchedules.
+     */
+    data: DayScheduleCreateManyInput | DayScheduleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DaySchedule createManyAndReturn
+   */
+  export type DayScheduleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to create many DaySchedules.
+     */
+    data: DayScheduleCreateManyInput | DayScheduleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DaySchedule update
+   */
+  export type DayScheduleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DaySchedule.
+     */
+    data: XOR<DayScheduleUpdateInput, DayScheduleUncheckedUpdateInput>
+    /**
+     * Choose, which DaySchedule to update.
+     */
+    where: DayScheduleWhereUniqueInput
+  }
+
+  /**
+   * DaySchedule updateMany
+   */
+  export type DayScheduleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DaySchedules.
+     */
+    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which DaySchedules to update
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * Limit how many DaySchedules to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DaySchedule updateManyAndReturn
+   */
+  export type DayScheduleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * The data used to update DaySchedules.
+     */
+    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyInput>
+    /**
+     * Filter which DaySchedules to update
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * Limit how many DaySchedules to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DaySchedule upsert
+   */
+  export type DayScheduleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DaySchedule to update in case it exists.
+     */
+    where: DayScheduleWhereUniqueInput
+    /**
+     * In case the DaySchedule found by the `where` argument doesn't exist, create a new DaySchedule with this data.
+     */
+    create: XOR<DayScheduleCreateInput, DayScheduleUncheckedCreateInput>
+    /**
+     * In case the DaySchedule was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DayScheduleUpdateInput, DayScheduleUncheckedUpdateInput>
+  }
+
+  /**
+   * DaySchedule delete
+   */
+  export type DayScheduleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
+    /**
+     * Filter which DaySchedule to delete.
+     */
+    where: DayScheduleWhereUniqueInput
+  }
+
+  /**
+   * DaySchedule deleteMany
+   */
+  export type DayScheduleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DaySchedules to delete
+     */
+    where?: DayScheduleWhereInput
+    /**
+     * Limit how many DaySchedules to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DaySchedule without action
+   */
+  export type DayScheduleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DaySchedule
+     */
+    select?: DayScheduleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DaySchedule
+     */
+    omit?: DayScheduleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DayScheduleInclude<ExtArgs> | null
   }
 
 
@@ -57837,6 +59041,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const DayScheduleScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    date: 'date',
+    dayType: 'dayType',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DayScheduleScalarFieldEnum = (typeof DayScheduleScalarFieldEnum)[keyof typeof DayScheduleScalarFieldEnum]
+
+
   export const PushSubscriptionScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -58914,6 +60130,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
+    daySchedules?: DayScheduleListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -58947,6 +60164,7 @@ export namespace Prisma {
     visions?: VisionOrderByRelationAggregateInput
     weekPlans?: WeekPlanOrderByRelationAggregateInput
     wishlistItems?: WishlistItemOrderByRelationAggregateInput
+    daySchedules?: DayScheduleOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -58983,6 +60201,7 @@ export namespace Prisma {
     visions?: VisionListRelationFilter
     weekPlans?: WeekPlanListRelationFilter
     wishlistItems?: WishlistItemListRelationFilter
+    daySchedules?: DayScheduleListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -59015,6 +60234,67 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     systemStatus?: EnumSystemStatusWithAggregatesFilter<"User"> | $Enums.SystemStatus
+  }
+
+  export type DayScheduleWhereInput = {
+    AND?: DayScheduleWhereInput | DayScheduleWhereInput[]
+    OR?: DayScheduleWhereInput[]
+    NOT?: DayScheduleWhereInput | DayScheduleWhereInput[]
+    id?: StringFilter<"DaySchedule"> | string
+    userId?: StringFilter<"DaySchedule"> | string
+    date?: DateTimeFilter<"DaySchedule"> | Date | string
+    dayType?: StringFilter<"DaySchedule"> | string
+    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type DayScheduleOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    dayType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type DayScheduleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_date?: DayScheduleUserIdDateCompoundUniqueInput
+    AND?: DayScheduleWhereInput | DayScheduleWhereInput[]
+    OR?: DayScheduleWhereInput[]
+    NOT?: DayScheduleWhereInput | DayScheduleWhereInput[]
+    userId?: StringFilter<"DaySchedule"> | string
+    date?: DateTimeFilter<"DaySchedule"> | Date | string
+    dayType?: StringFilter<"DaySchedule"> | string
+    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_date">
+
+  export type DayScheduleOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    dayType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DayScheduleCountOrderByAggregateInput
+    _max?: DayScheduleMaxOrderByAggregateInput
+    _min?: DayScheduleMinOrderByAggregateInput
+  }
+
+  export type DayScheduleScalarWhereWithAggregatesInput = {
+    AND?: DayScheduleScalarWhereWithAggregatesInput | DayScheduleScalarWhereWithAggregatesInput[]
+    OR?: DayScheduleScalarWhereWithAggregatesInput[]
+    NOT?: DayScheduleScalarWhereWithAggregatesInput | DayScheduleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DaySchedule"> | string
+    userId?: StringWithAggregatesFilter<"DaySchedule"> | string
+    date?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
+    dayType?: StringWithAggregatesFilter<"DaySchedule"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DaySchedule"> | Date | string
   }
 
   export type PushSubscriptionWhereInput = {
@@ -62444,6 +63724,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -62477,6 +63758,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -62510,6 +63792,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -62543,6 +63826,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -62582,6 +63866,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+  }
+
+  export type DayScheduleCreateInput = {
+    id?: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDaySchedulesInput
+  }
+
+  export type DayScheduleUncheckedCreateInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayScheduleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDaySchedulesNestedInput
+  }
+
+  export type DayScheduleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayScheduleCreateManyInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayScheduleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayScheduleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PushSubscriptionCreateInput = {
@@ -66407,6 +67753,12 @@ export namespace Prisma {
     none?: WishlistItemWhereInput
   }
 
+  export type DayScheduleListRelationFilter = {
+    every?: DayScheduleWhereInput
+    some?: DayScheduleWhereInput
+    none?: DayScheduleWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -66489,6 +67841,10 @@ export namespace Prisma {
   }
 
   export type WishlistItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DayScheduleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -66608,6 +67964,38 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type DayScheduleUserIdDateCompoundUniqueInput = {
+    userId: string
+    date: Date | string
+  }
+
+  export type DayScheduleCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    dayType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DayScheduleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    dayType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DayScheduleMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    dayType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PushSubscriptionCountOrderByAggregateInput = {
@@ -69417,6 +70805,13 @@ export namespace Prisma {
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
   }
 
+  export type DayScheduleCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
+    createMany?: DayScheduleCreateManyUserInputEnvelope
+    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -69555,6 +70950,13 @@ export namespace Prisma {
     connectOrCreate?: WishlistItemCreateOrConnectWithoutUserInput | WishlistItemCreateOrConnectWithoutUserInput[]
     createMany?: WishlistItemCreateManyUserInputEnvelope
     connect?: WishlistItemWhereUniqueInput | WishlistItemWhereUniqueInput[]
+  }
+
+  export type DayScheduleUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
+    createMany?: DayScheduleCreateManyUserInputEnvelope
+    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -69857,6 +71259,20 @@ export namespace Prisma {
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
   }
 
+  export type DayScheduleUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
+    upsert?: DayScheduleUpsertWithWhereUniqueWithoutUserInput | DayScheduleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayScheduleCreateManyUserInputEnvelope
+    set?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    disconnect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    delete?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    update?: DayScheduleUpdateWithWhereUniqueWithoutUserInput | DayScheduleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayScheduleUpdateManyWithWhereWithoutUserInput | DayScheduleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -70135,6 +71551,34 @@ export namespace Prisma {
     update?: WishlistItemUpdateWithWhereUniqueWithoutUserInput | WishlistItemUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WishlistItemUpdateManyWithWhereWithoutUserInput | WishlistItemUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WishlistItemScalarWhereInput | WishlistItemScalarWhereInput[]
+  }
+
+  export type DayScheduleUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput> | DayScheduleCreateWithoutUserInput[] | DayScheduleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DayScheduleCreateOrConnectWithoutUserInput | DayScheduleCreateOrConnectWithoutUserInput[]
+    upsert?: DayScheduleUpsertWithWhereUniqueWithoutUserInput | DayScheduleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DayScheduleCreateManyUserInputEnvelope
+    set?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    disconnect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    delete?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    connect?: DayScheduleWhereUniqueInput | DayScheduleWhereUniqueInput[]
+    update?: DayScheduleUpdateWithWhereUniqueWithoutUserInput | DayScheduleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DayScheduleUpdateManyWithWhereWithoutUserInput | DayScheduleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutDaySchedulesInput = {
+    create?: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDaySchedulesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutDaySchedulesNestedInput = {
+    create?: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDaySchedulesInput
+    upsert?: UserUpsertWithoutDaySchedulesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDaySchedulesInput, UserUpdateWithoutDaySchedulesInput>, UserUncheckedUpdateWithoutDaySchedulesInput>
   }
 
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
@@ -73966,6 +75410,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DayScheduleCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayScheduleUncheckedCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DayScheduleCreateOrConnectWithoutUserInput = {
+    where: DayScheduleWhereUniqueInput
+    create: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayScheduleCreateManyUserInputEnvelope = {
+    data: DayScheduleCreateManyUserInput | DayScheduleCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -74625,6 +76095,182 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WishlistItem"> | Date | string
   }
 
+  export type DayScheduleUpsertWithWhereUniqueWithoutUserInput = {
+    where: DayScheduleWhereUniqueInput
+    update: XOR<DayScheduleUpdateWithoutUserInput, DayScheduleUncheckedUpdateWithoutUserInput>
+    create: XOR<DayScheduleCreateWithoutUserInput, DayScheduleUncheckedCreateWithoutUserInput>
+  }
+
+  export type DayScheduleUpdateWithWhereUniqueWithoutUserInput = {
+    where: DayScheduleWhereUniqueInput
+    data: XOR<DayScheduleUpdateWithoutUserInput, DayScheduleUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DayScheduleUpdateManyWithWhereWithoutUserInput = {
+    where: DayScheduleScalarWhereInput
+    data: XOR<DayScheduleUpdateManyMutationInput, DayScheduleUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DayScheduleScalarWhereInput = {
+    AND?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+    OR?: DayScheduleScalarWhereInput[]
+    NOT?: DayScheduleScalarWhereInput | DayScheduleScalarWhereInput[]
+    id?: StringFilter<"DaySchedule"> | string
+    userId?: StringFilter<"DaySchedule"> | string
+    date?: DateTimeFilter<"DaySchedule"> | Date | string
+    dayType?: StringFilter<"DaySchedule"> | string
+    createdAt?: DateTimeFilter<"DaySchedule"> | Date | string
+    updatedAt?: DateTimeFilter<"DaySchedule"> | Date | string
+  }
+
+  export type UserCreateWithoutDaySchedulesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanCreateNestedManyWithoutUserInput
+    dishes?: DishCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    foodProducts?: FoodProductCreateNestedManyWithoutUserInput
+    nutritionPersons?: NutritionPersonCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDaySchedulesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    dayPlans?: DayPlanUncheckedCreateNestedManyWithoutUserInput
+    dishes?: DishUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    libraryItems?: LibraryItemUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    foodProducts?: FoodProductUncheckedCreateNestedManyWithoutUserInput
+    nutritionPersons?: NutritionPersonUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    shoppingLists?: ShoppingListUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDaySchedulesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+  }
+
+  export type UserUpsertWithoutDaySchedulesInput = {
+    update: XOR<UserUpdateWithoutDaySchedulesInput, UserUncheckedUpdateWithoutDaySchedulesInput>
+    create: XOR<UserCreateWithoutDaySchedulesInput, UserUncheckedCreateWithoutDaySchedulesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDaySchedulesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDaySchedulesInput, UserUncheckedUpdateWithoutDaySchedulesInput>
+  }
+
+  export type UserUpdateWithoutDaySchedulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUpdateManyWithoutUserNestedInput
+    dishes?: DishUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    foodProducts?: FoodProductUpdateManyWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDaySchedulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    dayPlans?: DayPlanUncheckedUpdateManyWithoutUserNestedInput
+    dishes?: DishUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    libraryItems?: LibraryItemUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    foodProducts?: FoodProductUncheckedUpdateManyWithoutUserNestedInput
+    nutritionPersons?: NutritionPersonUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    shoppingLists?: ShoppingListUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutPushSubscriptionsInput = {
     id?: string
     name?: string | null
@@ -74655,6 +76301,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -74687,6 +76334,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -74735,6 +76383,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -74767,6 +76416,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -74799,6 +76449,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -74831,6 +76482,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -74879,6 +76531,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -74911,6 +76564,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -74943,6 +76597,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -74975,6 +76630,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -75023,6 +76679,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -75055,6 +76712,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNutritionPersonsInput = {
@@ -75087,6 +76745,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNutritionPersonsInput = {
@@ -75119,6 +76778,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNutritionPersonsInput = {
@@ -75207,6 +76867,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNutritionPersonsInput = {
@@ -75239,6 +76900,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MealSlotInstanceUpsertWithWhereUniqueWithoutPersonInput = {
@@ -75304,6 +76966,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFoodProductsInput = {
@@ -75336,6 +76999,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFoodProductsInput = {
@@ -75496,6 +77160,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFoodProductsInput = {
@@ -75528,6 +77193,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutProductInput = {
@@ -75716,6 +77382,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDishesInput = {
@@ -75748,6 +77415,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDishesInput = {
@@ -75848,6 +77516,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDishesInput = {
@@ -75880,6 +77549,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DishIngredientUpsertWithWhereUniqueWithoutDishInput = {
@@ -76240,6 +77910,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekPlansInput = {
@@ -76272,6 +77943,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekPlansInput = {
@@ -76399,6 +78071,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekPlansInput = {
@@ -76431,6 +78104,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DayPlanUpsertWithWhereUniqueWithoutWeekPlanInput = {
@@ -76520,6 +78194,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDayPlansInput = {
@@ -76552,6 +78227,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDayPlansInput = {
@@ -76688,6 +78364,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDayPlansInput = {
@@ -76720,6 +78397,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutDayPlansInput = {
@@ -76888,6 +78566,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutShoppingListsInput = {
@@ -76920,6 +78599,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutShoppingListsInput = {
@@ -77021,6 +78701,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutShoppingListsInput = {
@@ -77053,6 +78734,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WeekPlanUpsertWithoutShoppingListsInput = {
@@ -78218,6 +79900,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -78250,6 +79933,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -78442,6 +80126,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -78474,6 +80159,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -78749,6 +80435,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -78781,6 +80468,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -78982,6 +80670,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -79014,6 +80703,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -79046,6 +80736,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -79078,6 +80769,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -79126,6 +80818,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -79158,6 +80851,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -79223,6 +80917,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -79255,6 +80950,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -79364,6 +81060,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -79396,6 +81093,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -79530,6 +81228,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLibraryItemsInput = {
@@ -79562,6 +81261,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLibraryItemsInput = {
@@ -79610,6 +81310,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLibraryItemsInput = {
@@ -79642,6 +81343,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWishlistItemsInput = {
@@ -79674,6 +81376,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWishlistItemsInput = {
@@ -79706,6 +81409,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWishlistItemsInput = {
@@ -79754,6 +81458,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWishlistItemsInput = {
@@ -79786,6 +81491,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserLanguageCreateWithoutLanguageInput = {
@@ -79977,6 +81683,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserLanguagesInput = {
@@ -80009,6 +81716,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserLanguagesInput = {
@@ -80211,6 +81919,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserLanguagesInput = {
@@ -80243,6 +81952,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type VocabularyItemUpsertWithWhereUniqueWithoutUserLanguageInput = {
@@ -80581,6 +82291,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -80613,6 +82324,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -80661,6 +82373,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -80693,6 +82406,7 @@ export namespace Prisma {
     userLanguages?: UserLanguageUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -80725,6 +82439,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -80757,6 +82472,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -80805,6 +82521,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -80837,6 +82554,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -80902,6 +82620,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -80934,6 +82653,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -81021,6 +82741,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -81053,6 +82774,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -81119,6 +82841,7 @@ export namespace Prisma {
     visions?: VisionCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -81151,6 +82874,7 @@ export namespace Prisma {
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekPlans?: WeekPlanUncheckedCreateNestedManyWithoutUserInput
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutUserInput
+    daySchedules?: DayScheduleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -81249,6 +82973,7 @@ export namespace Prisma {
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -81281,6 +83006,7 @@ export namespace Prisma {
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekPlans?: WeekPlanUncheckedUpdateManyWithoutUserNestedInput
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutUserNestedInput
+    daySchedules?: DayScheduleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -82341,6 +84067,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type DayScheduleCreateManyUserInput = {
+    id?: string
+    date: Date | string
+    dayType?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AccountUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
@@ -83164,6 +84898,30 @@ export namespace Prisma {
     tags?: WishlistItemUpdatetagsInput | string[]
     necessity?: NullableIntFieldUpdateOperationsInput | number | null
     store?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayScheduleUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayScheduleUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DayScheduleUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

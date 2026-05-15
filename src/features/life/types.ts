@@ -186,6 +186,34 @@ export interface HabitCompletionData {
   habitId: string;
 }
 
+// --- Day Schedule ---
+export type DayType = "regular" | "train_am" | "train_pm" | "fun";
+
+export interface DayScheduleData {
+  id: string;
+  date: Date;
+  dayType: DayType;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UpsertDayScheduleInput {
+  date: string; // "YYYY-MM-DD"
+  dayType: DayType;
+}
+
+export function dayTypeToRoutine(dayType: DayType): { isTrainingDay: boolean; eveningMode: "normal" | "gym" | "fun" } {
+  switch (dayType) {
+    case "train_am": return { isTrainingDay: true, eveningMode: "normal" };
+    case "train_pm": return { isTrainingDay: false, eveningMode: "gym" };
+    case "fun":      return { isTrainingDay: false, eveningMode: "fun" };
+    default:         return { isTrainingDay: false, eveningMode: "normal" };
+  }
+}
+
+//
+// --- Habit ---
+//
 export interface UpsertHabitInput {
   id?: string;
   name: string;

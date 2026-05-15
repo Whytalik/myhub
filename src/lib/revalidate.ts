@@ -98,3 +98,8 @@ export function invalidateLibraryCache(userId: string) {
   revalidateTag(cacheTags.library(userId), INVALIDATE_PROFILE);
   revalidateTag("library", INVALIDATE_PROFILE);
 }
+
+export function invalidateScheduleCache(userId: string) {
+  revalidateTag(cacheTags.daySchedules(userId), INVALIDATE_PROFILE);
+  revalidateTag("day-schedules", INVALIDATE_PROFILE);
+}
