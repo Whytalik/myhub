@@ -3,33 +3,28 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function JournalLoading() {
   return (
     <div className="px-8 py-8 flex flex-col gap-6">
+      {/* Header Area */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col gap-1">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-3 w-56" />
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-4 w-64" />
         </div>
         <Skeleton className="h-8 w-24 rounded-xl" />
       </div>
 
-      <div className="bg-surface border border-border rounded-2xl p-8">
-        <div className="space-y-8">
-          <div>
-            <Skeleton className="h-3 w-32 mb-4" />
-            <Skeleton className="h-24 w-full rounded-xl" />
+      {/* Main Journal Form Area */}
+      <div className="bg-surface border border-border rounded-2xl p-8 space-y-12">
+          {/* Sleep/Energy Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Skeleton className="h-48 w-full rounded-xl" />
+            <Skeleton className="h-48 w-full rounded-xl" />
           </div>
-          <div>
-            <Skeleton className="h-3 w-24 mb-4" />
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-10 w-full rounded-lg" />
-              ))}
-            </div>
+          
+          {/* Emotions/Routine/Reflection */}
+          <div className="space-y-8">
+             <Skeleton className="h-20 w-full rounded-xl" />
+             <Skeleton className="h-32 w-full rounded-xl" />
           </div>
-          <div>
-            <Skeleton className="h-3 w-28 mb-4" />
-            <Skeleton className="h-20 w-full rounded-xl" />
-          </div>
-        </div>
       </div>
     </div>
   );
