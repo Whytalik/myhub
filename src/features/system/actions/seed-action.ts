@@ -76,59 +76,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       globalProducts[p.name] = product;
     }
 
-    // 2. Handle specific product name mismatches
-    if (globalProducts["Ткемалі готовий"]) {
-      globalProducts["Ткемалі"] = globalProducts["Ткемалі готовий"];
-    }
-
-    // 3. Create Global Products for MARINADES/SAUCES/DRESSINGS from dishes.json
-    for (const d of dishesData as unknown as JsonDish[]) {
-      if (["MARINADE", "SAUCE", "DRESSING"].includes(d.type)) {
-        let totalKcal = 0, totalP = 0, totalF = 0, totalC = 0, totalFiber = 0, totalWeight = 0;
-        
-        for (const ing of d.ingredients) {
-          const prod = globalProducts[ing.productName];
-          if (prod) {
-            totalWeight += ing.rawWeight;
-            totalKcal += (ing.rawWeight * prod.caloriesPer100) / 100;
-            totalP += (ing.rawWeight * prod.proteinPer100) / 100;
-            totalF += (ing.rawWeight * prod.fatPer100) / 100;
-            totalC += (ing.rawWeight * prod.carbsPer100) / 100;
-            totalFiber += (ing.rawWeight * prod.fiberPer100) / 100;
-          }
-        }
-
-        if (totalWeight > 0) {
-          const productId = `global-${d.name.replace(/\s+/g, '-').toLowerCase()}`;
-          const product = await prisma.foodProduct.upsert({
-            where: { id: productId },
-            update: {
-              caloriesPer100: (totalKcal / totalWeight) * 100,
-              proteinPer100: (totalP / totalWeight) * 100,
-              fatPer100: (totalF / totalWeight) * 100,
-              carbsPer100: (totalC / totalWeight) * 100,
-              fiberPer100: (totalFiber / totalWeight) * 100,
-            },
-            create: {
-              id: productId,
-              userId: null,
-              name: d.name,
-              caloriesPer100: (totalKcal / totalWeight) * 100,
-              proteinPer100: (totalP / totalWeight) * 100,
-              fatPer100: (totalF / totalWeight) * 100,
-              carbsPer100: (totalC / totalWeight) * 100,
-              fiberPer100: (totalFiber / totalWeight) * 100,
-              unit: Unit.GRAM,
-              standardPackageAmount: 100,
-              category: "SAUCES"
-            }
-          });
-          globalProducts[d.name] = product;
-        }
-      }
-    }
-
-    // 4. COOKING METHODS MAPPING
+    // 2. COOKING METHODS MAPPING
     const cookingMethods: CookingMethod[] = await prisma.cookingMethod.findMany();
     const getMethodId = (methodName: string, category: string) => {
       if (methodName === "RAW") return cookingMethods.find(m => m.name === "Сире")?.id;
@@ -383,7 +331,7 @@ const COOKING_LISTS: Record<number, string> = {
 4. Поки запікається: збити яйця (50г) + куряче філе (100г) для омлету, обсмажити — ~8хв
 5. Нарізати помідори для омлету, підсмажити ЦЗ хліб (30г + 60г)
 6. Дістати картоплю і хек з духовки
-7. Подати Печену тарілку: картопля + хек + морква по-корейськи (80г + 150г) + ткемалі
+7. Подати Печену тарілку: картопля + хек + морква по-корейськи (80г + 150г) + гірчиця діжонська
 8. Вечеря — Кебаб Класичний: замовити / купити готовий, не готувати
 9. Передтрен: рисові хлібці (7г + 14г) + мед (7г + 14г) — готове`,
 

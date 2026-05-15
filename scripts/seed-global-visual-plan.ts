@@ -93,10 +93,7 @@ async function main() {
     globalProducts[p.name] = product;
   }
 
-  // 4. Handle "Ткемалі" mismatch
-  if (globalProducts["Ткемалі готовий"]) {
-    globalProducts["Ткемалі"] = globalProducts["Ткемалі готовий"];
-  }
+
 
   // 5. Create Global Products for MARINADES/SAUCES from dishes.json
   console.log("Creating global products for composite sauces/marinades...");

@@ -208,16 +208,16 @@
     "stores": []
   },
   {
-    "name": "Смажений курячий фарш",
-    "caloriesPer100": 210,
-    "proteinPer100": 22,
-    "fatPer100": 15,
+    "name": "Курячий фарш",
+    "caloriesPer100": 143,
+    "proteinPer100": 17,
+    "fatPer100": 8,
     "carbsPer100": 0,
     "fiberPer100": 0,
     "unit": "GRAM",
     "standardPackageAmount": 1000,
     "category": "MEAT",
-    "price": 220,
+    "price": 200,
     "stores": []
   },
   {
@@ -351,32 +351,6 @@
     "stores": []
   },
   {
-    "name": "Яйце варене",
-    "caloriesPer100": 155,
-    "proteinPer100": 13,
-    "fatPer100": 11,
-    "carbsPer100": 1,
-    "fiberPer100": 0,
-    "unit": "GRAM",
-    "standardPackageAmount": 50,
-    "category": "DAIRY",
-    "price": 12,
-    "stores": []
-  },
-  {
-    "name": "Яйце-скрембл",
-    "caloriesPer100": 148,
-    "proteinPer100": 10,
-    "fatPer100": 11,
-    "carbsPer100": 1,
-    "fiberPer100": 0,
-    "unit": "GRAM",
-    "standardPackageAmount": 50,
-    "category": "DAIRY",
-    "price": 12,
-    "stores": []
-  },
-  {
     "name": "Яєчні білки",
     "caloriesPer100": 52,
     "proteinPer100": 11,
@@ -452,19 +426,6 @@
     "standardPackageAmount": 250,
     "category": "DAIRY",
     "price": 550,
-    "stores": []
-  },
-  {
-    "name": "Бешамель",
-    "caloriesPer100": 120,
-    "proteinPer100": 4,
-    "fatPer100": 8,
-    "carbsPer100": 10,
-    "fiberPer100": 0,
-    "unit": "GRAM",
-    "standardPackageAmount": 300,
-    "category": "SAUCES",
-    "price": 160,
     "stores": []
   },
   {
@@ -608,19 +569,6 @@
     "standardPackageAmount": 1000,
     "category": "VEGETABLES",
     "price": 75,
-    "stores": []
-  },
-  {
-    "name": "Морква по-корейськи",
-    "caloriesPer100": 112,
-    "proteinPer100": 2,
-    "fatPer100": 5,
-    "carbsPer100": 15,
-    "fiberPer100": 2.5,
-    "unit": "GRAM",
-    "standardPackageAmount": 1000,
-    "category": "VEGETABLES",
-    "price": 160,
     "stores": []
   },
   {
@@ -1118,19 +1066,6 @@
     "stores": []
   },
   {
-    "name": "Ткемалі готовий",
-    "caloriesPer100": 57,
-    "proteinPer100": 0.5,
-    "fatPer100": 0.2,
-    "carbsPer100": 14,
-    "fiberPer100": 1,
-    "unit": "GRAM",
-    "standardPackageAmount": 350,
-    "category": "SAUCES",
-    "price": 150,
-    "stores": []
-  },
-  {
     "name": "Норі",
     "caloriesPer100": 35,
     "proteinPer100": 6,
@@ -1154,45 +1089,6 @@
     "standardPackageAmount": 350,
     "category": "SAUCES",
     "price": 140,
-    "stores": []
-  },
-  {
-    "name": "Напівгострий соус",
-    "caloriesPer100": 85,
-    "proteinPer100": 1,
-    "fatPer100": 0.5,
-    "carbsPer100": 20,
-    "fiberPer100": 1,
-    "unit": "GRAM",
-    "standardPackageAmount": 350,
-    "category": "SAUCES",
-    "price": 150,
-    "stores": []
-  },
-  {
-    "name": "Томатний соус",
-    "caloriesPer100": 60,
-    "proteinPer100": 2.5,
-    "fatPer100": 1,
-    "carbsPer100": 12,
-    "fiberPer100": 1.5,
-    "unit": "GRAM",
-    "standardPackageAmount": 350,
-    "category": "SAUCES",
-    "price": 140,
-    "stores": []
-  },
-  {
-    "name": "Соус Песто",
-    "caloriesPer100": 280,
-    "proteinPer100": 5,
-    "fatPer100": 26,
-    "carbsPer100": 9,
-    "fiberPer100": 1,
-    "unit": "GRAM",
-    "standardPackageAmount": 190,
-    "category": "SAUCES",
-    "price": 300,
     "stores": []
   },
   {
@@ -1323,19 +1219,6 @@
     "standardPackageAmount": 300,
     "category": "SAUCES",
     "price": 300,
-    "stores": []
-  },
-  {
-    "name": "Теплий чай",
-    "caloriesPer100": 1,
-    "proteinPer100": 0,
-    "fatPer100": 0,
-    "carbsPer100": 0.1,
-    "fiberPer100": 0,
-    "unit": "GRAM",
-    "standardPackageAmount": 200,
-    "category": "BEVERAGES",
-    "price": 160,
     "stores": []
   }
 ]

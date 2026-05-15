@@ -64,7 +64,9 @@
       { "productName": "Помідор", "alternatives": ["Мікс овочей"], "rawWeight": 200, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
-      { "productName": "Соєво-часниковий", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Соєвий соус", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -75,7 +77,7 @@
     "ingredients": [
       { "productName": "Тунець у вл. соку", "rawWeight": 137, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
-      { "productName": "Яйце варене", "rawWeight": 75, "cookingMethod": "RAW" },
+      { "productName": "Яйця", "rawWeight": 75, "cookingMethod": "BOILED" },
       { "productName": "Огірок", "alternatives": ["Зелена цибуля"], "rawWeight": 100, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" }
@@ -89,7 +91,7 @@
     "ingredients": [
       { "productName": "Лаваш тонкий", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },
-      { "productName": "Яйце-скрембл", "rawWeight": 75, "cookingMethod": "RAW" },
+      { "productName": "Яйця", "rawWeight": 75, "cookingMethod": "FRIED" },
       { "productName": "Айсберг", "alternatives": ["Огірок"], "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 75, "cookingMethod": "RAW" },
@@ -104,13 +106,15 @@
     "description": "Комплексний боул з гречкою, куркою та свіжими овочами",
     "ingredients": [
       { "productName": "Гречка", "alternatives": ["Рис", "Булгур"], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Куряче філе", "alternatives": ["Смажений курячий фарш", "Курячі серця"], "rawWeight": 125, "cookingMethod": "FRIED" },
+      { "productName": "Куряче філе", "alternatives": ["Курячий фарш", "Курячі серця"], "rawWeight": 125, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Огірок", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яблуко", "alternatives": ["Груша"], "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 7, "cookingMethod": "RAW" },
-      { "productName": "Соєво-медовий", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Соєвий соус", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Мед", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -120,12 +124,14 @@
     "description": "Паста з куркою в томатному соусі з сиром",
     "ingredients": [
       { "productName": "Макарони ТЗ", "rawWeight": 150, "cookingMethod": "BOILED" },
-      { "productName": "Куряче філе", "alternatives": ["Яловичий фарш"], "rawWeight": 125, "cookingMethod": "FRIED" },
+      { "productName": "Куряче філе", "alternatives": ["Яловичий фарш", "Курячий фарш"], "rawWeight": 125, "cookingMethod": "FRIED" },
       { "productName": "Томатна пасата", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 65, "cookingMethod": "FRIED" },
       { "productName": "Твердий сир", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Орегано + Базилік", "rawWeight": 3, "cookingMethod": "RAW" }
+      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Базилік", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -152,9 +158,14 @@
     "ingredients": [
       { "productName": "Картопля", "rawWeight": 300, "cookingMethod": "BAKED" },
       { "productName": "Хек", "alternatives": ["Тилапія", "Куряче стегно"], "rawWeight": 150, "cookingMethod": "BAKED" },
-      { "productName": "Морква по-корейськи", "alternatives": ["Капуста"], "rawWeight": 115, "cookingMethod": "RAW" },
-      { "productName": "Лимонно-трав'яний", "rawWeight": 5, "cookingMethod": "RAW" },
-      { "productName": "Ткемалі", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Морква", "alternatives": ["Капуста"], "rawWeight": 105, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 6, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 2, "cookingMethod": "RAW" },
+      { "productName": "Цукор", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Паприка", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Лимонний сік", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Гірчиця діжонська", "rawWeight": 5, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -195,7 +206,9 @@
       { "productName": "Хек", "alternatives": ["Тилапія", "Мінтай"], "rawWeight": 150, "cookingMethod": "BAKED" },
       { "productName": "Гречка", "alternatives": ["Рис"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Броколі зам.", "alternatives": ["Цвітна капуста зам."], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Олія + Кріп + Часник", "rawWeight": 5, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Кріп", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Грецький йогурт", "rawWeight": 22, "cookingMethod": "RAW" }
     ]
   },
@@ -209,7 +222,9 @@
       { "productName": "Айсберг", "alternatives": ["Пекінська капуста"], "rawWeight": 250, "cookingMethod": "RAW" },
       { "productName": "Огірок", "alternatives": ["Помідор"], "rawWeight": 150, "cookingMethod": "RAW" },
       { "productName": "Рис", "alternatives": ["Гречка"], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Йогурт з кропом", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Грецький йогурт", "rawWeight": 4, "cookingMethod": "RAW" },
+      { "productName": "Кріп", "rawWeight": 0.5, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 0.5, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -355,6 +370,66 @@
     ]
   },
   {
+    "name": "Морква по-корейськи",
+    "type": "SALAD",
+    "servings": 1,
+    "description": "Традиційна гостра морква",
+    "ingredients": [
+      { "productName": "Морква", "rawWeight": 100, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 5, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 2, "cookingMethod": "RAW" },
+      { "productName": "Цукор", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Паприка", "rawWeight": 1, "cookingMethod": "RAW" }
+    ]
+  },
+  {
+    "name": "Бешамель",
+    "type": "SAUCE",
+    "servings": 1,
+    "description": "Класичний білий соус",
+    "ingredients": [
+      { "productName": "Молоко", "rawWeight": 100, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 10, "cookingMethod": "RAW" },
+      { "productName": "Звичайне борошно", "rawWeight": 10, "cookingMethod": "RAW" }
+    ]
+  },
+  {
+    "name": "Соус Песто",
+    "type": "SAUCE",
+    "servings": 1,
+    "description": "Базиліковий соус з горіхами та сиром",
+    "ingredients": [
+      { "productName": "Базилік", "rawWeight": 50, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 30, "cookingMethod": "RAW" },
+      { "productName": "Твердий сир", "rawWeight": 15, "cookingMethod": "RAW" },
+      { "productName": "Арахіс смажений", "rawWeight": 15, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 2, "cookingMethod": "RAW" }
+    ]
+  },
+  {
+    "name": "Томатний соус",
+    "type": "SAUCE",
+    "servings": 1,
+    "description": "Базовий томатний соус зі спеціями",
+    "ingredients": [
+      { "productName": "Томатна пасата", "rawWeight": 100, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 5, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 2, "cookingMethod": "RAW" },
+      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" }
+    ]
+  },
+  {
+    "name": "Напівгострий соус",
+    "type": "SAUCE",
+    "servings": 1,
+    "description": "Соус на основі кетчупу та гірчиці",
+    "ingredients": [
+      { "productName": "Кетчуп", "rawWeight": 20, "cookingMethod": "RAW" },
+      { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" },
+      { "productName": "Паприка", "rawWeight": 1, "cookingMethod": "RAW" }
+    ]
+  },
+  {
     "name": "Суші / Роли",
     "type": "MAIN",
     "servings": 1,
@@ -443,7 +518,9 @@
       { "productName": "Помідор", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Айсберг", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Напівгострий соус", "rawWeight": 25, "cookingMethod": "RAW" },
+      { "productName": "Кетчуп", "rawWeight": 18, "cookingMethod": "RAW" },
+      { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" },
+      { "productName": "Паприка", "rawWeight": 2, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 40, "cookingMethod": "RAW" },
       { "productName": "Звичайне борошно", "rawWeight": 40, "cookingMethod": "RAW" },
       { "productName": "Олія оливкова", "rawWeight": 5, "cookingMethod": "RAW" },
@@ -476,10 +553,19 @@
       { "productName": "Куряче філе", "rawWeight": 90, "cookingMethod": "FRIED" },
       { "productName": "Бекон", "rawWeight": 15, "cookingMethod": "FRIED" },
       { "productName": "Моцарела", "rawWeight": 35, "cookingMethod": "RAW" },
-      { "productName": "Бешамель", "rawWeight": 35, "cookingMethod": "RAW" },
+      { "productName": "Молоко", "rawWeight": 29, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Звичайне борошно", "rawWeight": 3, "cookingMethod": "RAW" },
       { "productName": "Печериці", "rawWeight": 30, "cookingMethod": "FRIED" },
-      { "productName": "Томатний соус", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Соус Песто", "rawWeight": 12, "cookingMethod": "RAW" },
+      { "productName": "Томатна пасата", "rawWeight": 18, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 0.5, "cookingMethod": "RAW" },
+      { "productName": "Орегано", "rawWeight": 0.5, "cookingMethod": "RAW" },
+      { "productName": "Базилік", "rawWeight": 5.5, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Твердий сир", "rawWeight": 1.5, "cookingMethod": "RAW" },
+      { "productName": "Арахіс смажений", "rawWeight": 1.5, "cookingMethod": "RAW" },
+      { "productName": "Часник", "rawWeight": 0.5, "cookingMethod": "RAW" },
       { "productName": "Борошно 00", "rawWeight": 60, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 25, "cookingMethod": "RAW" },
       { "productName": "Дріжджі сухі", "rawWeight": 1, "cookingMethod": "RAW" },
@@ -496,7 +582,9 @@
       { "productName": "Бекон", "rawWeight": 15, "cookingMethod": "FRIED" },
       { "productName": "Моцарела", "rawWeight": 35, "cookingMethod": "RAW" },
       { "productName": "Чеддер", "rawWeight": 25, "cookingMethod": "RAW" },
-      { "productName": "Бешамель", "rawWeight": 35, "cookingMethod": "RAW" },
+      { "productName": "Молоко", "rawWeight": 29, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Звичайне борошно", "rawWeight": 3, "cookingMethod": "RAW" },
       { "productName": "Ананас", "rawWeight": 35, "cookingMethod": "RAW" },
       { "productName": "Борошно 00", "rawWeight": 60, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 25, "cookingMethod": "RAW" },

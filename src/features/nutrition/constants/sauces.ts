@@ -103,12 +103,6 @@ export const SAUCES: Record<string, SauceDef> = {
       { name: "Часник", grams: 5 },
     ],
   },
-  "Ткемалі": {
-    type: "sauce",
-    ingredients: [
-      { name: "Ткемалі готовий", grams: 20 },
-    ],
-  },
   "Йогурт з кропом": {
     type: "sauce",
     ingredients: [
