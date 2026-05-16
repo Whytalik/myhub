@@ -773,6 +773,19 @@ export function TaskCalendar({
     return heights;
   }, [allTasksWithLevels, maxTaskHeight, mode, days.length]);
 
+  const deadlinesByDayIndex = useMemo(() => {
+    const map: Record<number, TaskData[]> = {};
+    projectTasks.forEach(task => {
+      if (!task.dueDate) return;
+      const idx = days.findIndex(d => isSameDay(d, new Date(task.dueDate!)));
+      if (idx >= 0) {
+        if (!map[idx]) map[idx] = [];
+        map[idx].push(task);
+      }
+    });
+    return map;
+  }, [projectTasks, days]);
+
   const tasksByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
     calendarTasks.forEach(task => {
@@ -823,6 +836,44 @@ export function TaskCalendar({
               </div>
 
               <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
+                {/* Deadline markers for project tasks */}
+                {days.slice(weekIdx * 7, weekIdx * 7 + 7).map((_, dayOffset) => {
+                  const globalIdx = weekIdx * 7 + dayOffset;
+                  const deadlines = deadlinesByDayIndex[globalIdx];
+                  if (!deadlines?.length) return null;
+                  return deadlines.map((task, di) => {
+                    const isOverdue = isBefore(new Date(task.dueDate!), new Date()) && task.status !== 'DONE';
+                    const Icon = task.icon ? ALL_ICONS[task.icon] : null;
+                    return (
+                      <button
+                        key={`deadline-${task.id}`}
+                        onClick={() => handleEdit(task)}
+                        className="absolute pointer-events-auto flex items-center gap-1 px-1.5 rounded border transition-all hover:opacity-80"
+                        style={{
+                          gridColumnStart: dayOffset + 1,
+                          gridColumnEnd: dayOffset + 2,
+                          bottom: `${4 + di * 22}px`,
+                          left: '4px',
+                          right: '4px',
+                          height: '18px',
+                          backgroundColor: isOverdue ? 'rgba(239,68,68,0.12)' : task.sphere ? `${task.sphere.color}18` : 'rgba(251,191,36,0.12)',
+                          borderColor: isOverdue ? 'rgba(239,68,68,0.35)' : task.sphere ? `${task.sphere.color}50` : 'rgba(251,191,36,0.35)',
+                          zIndex: 40,
+                        }}
+                      >
+                        <Flag size={8} className={isOverdue ? 'text-red-400 shrink-0' : 'text-rose-400/70 shrink-0'} />
+                        {Icon && <Icon size={8} className="shrink-0 opacity-60" style={{ color: isOverdue ? '#f87171' : task.sphere?.color }} />}
+                        <span
+                          className="text-[9px] font-mono font-bold uppercase tracking-tight truncate"
+                          style={{ color: isOverdue ? '#f87171' : task.sphere?.color || '#fbbf24' }}
+                        >
+                          {task.isPrivate ? 'Private' : task.title}
+                        </span>
+                      </button>
+                    );
+                  });
+                })}
+
                 {allTasksWithLevels
                   .filter(seg => seg.rowIdx === weekIdx)
                   .map((seg) => (
