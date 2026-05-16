@@ -88,6 +88,20 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
     };
   }, [isOpen, updateCoords]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        triggerRef.current?.contains(target) ||
+        contentRef.current?.contains(target)
+      ) return;
+      setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return {
     isOpen,
     coords,

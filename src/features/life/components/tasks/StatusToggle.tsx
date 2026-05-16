@@ -133,15 +133,15 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
                   <button
                     key={s}
                     onClick={() => handleStatusSelect(s)}
-                    className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-caption font-bold uppercase tracking-wider transition-colors ${
+                    className={`flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-label font-bold uppercase tracking-wider transition-colors ${
                       active ? "bg-accent/10 text-accent" : "text-secondary hover:bg-raised hover:text-text"
                     }`}
                   >
-                    <div 
-                      className="p-1 rounded-md" 
+                    <div
+                      className="p-0.5 rounded-md"
                       style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}
                     >
-                      <SIcon size={10} strokeWidth={3} />
+                      <SIcon size={9} strokeWidth={3} />
                     </div>
                     {cfg.label}
                   </button>
@@ -190,15 +190,15 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
                 <button
                   key={s}
                   onClick={() => handleStatusSelect(s)}
-                  className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-caption font-bold uppercase tracking-wider transition-colors ${
+                  className={`flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-label font-bold uppercase tracking-wider transition-colors ${
                     active ? "bg-accent/10 text-accent" : "text-secondary hover:bg-raised hover:text-text"
                   }`}
                 >
-                  <div 
-                    className="p-1 rounded-md" 
+                  <div
+                    className="p-0.5 rounded-md"
                     style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}
                   >
-                    <SIcon size={10} strokeWidth={3} />
+                    <SIcon size={9} strokeWidth={3} />
                   </div>
                   {cfg.label}
                 </button>
