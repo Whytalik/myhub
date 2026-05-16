@@ -481,28 +481,10 @@ export function TaskCalendar({
   const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime), [tasksForDay]);
 
   const timelineRows = useMemo(() => {
-    const sorted = [...scheduledTasks].sort((a, b) => {
-      const startA = new Date(a.plannedDate!).getTime();
-      const startB = new Date(b.plannedDate!).getTime();
-      return startA - startB;
-    });
-
-    const rows: TaskData[][] = [];
-    sorted.forEach(task => {
-      let placed = false;
-      for (const row of rows) {
-        const lastTask = row[row.length - 1];
-        const lastEnd = lastTask.plannedEndDate ? new Date(lastTask.plannedEndDate).getTime() : new Date(lastTask.plannedDate!).getTime() + 3600000;
-        const currentStart = new Date(task.plannedDate!).getTime();
-        if (currentStart >= lastEnd) {
-          row.push(task);
-          placed = true;
-          break;
-        }
-      }
-      if (!placed) rows.push([task]);
-    });
-    return rows;
+    const sorted = [...scheduledTasks].sort((a, b) =>
+      new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime()
+    );
+    return sorted.map(task => [task]);
   }, [scheduledTasks]);
 
   const handleTimelineDragStart = (event: DragStartEvent) => {
@@ -1171,16 +1153,6 @@ export function TaskCalendar({
                                   zIndex: isResizingThis || isDraggingThis ? 50 : 10,
                                 }}
                               >
-                                {(isResizingThis || isDraggingThis) && (
-                                  <div className="absolute -top-6 left-0 right-0 flex justify-between px-1 pointer-events-none animate-in fade-in slide-in-from-bottom-1">
-                                    <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
-                                      {format(start, "HH:mm")}
-                                    </div>
-                                    <div className="bg-accent text-bg text-label font-mono font-black px-1.5 py-0.5 rounded shadow-lg shadow-accent/20">
-                                      {format(end, "HH:mm")}
-                                    </div>
-                                  </div>
-                                )}
                                 <div
                                   className={`flex flex-col gap-1.5 rounded-xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing h-full ${
                                     isDraggingThis || isResizingThis
