@@ -672,7 +672,21 @@ function TaskDetail({
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                       <Flag size={13} className="text-rose-400/30" />
-                      {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                      {useDeadline ? (
+                        <>
+                          <DatePicker value={dueDate} onChange={setDueDate} />
+                          <button
+                            type="button"
+                            onClick={() => { setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false); }}
+                            className="p-1 rounded-md text-muted/30 hover:text-red-400 hover:bg-red-400/10 transition-all shrink-0"
+                            title="Clear deadline"
+                          >
+                            <X size={11} />
+                          </button>
+                        </>
+                      ) : (
+                        <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>
+                      )}
                     </div>
                     {useDeadline && (
                       <>
@@ -689,14 +703,31 @@ function TaskDetail({
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2">
                         <CalendarClock size={13} className="text-accent/30" />
-                        <DateRangePicker 
-                          startDate={plannedDate} 
-                          endDate={plannedEndDate} 
+                        <DateRangePicker
+                          startDate={plannedDate}
+                          endDate={plannedEndDate}
                           onChange={(start, end) => {
                             setPlannedDate(start);
                             setPlannedEndDate(end);
-                          }} 
+                          }}
                         />
+                        {plannedDate && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPlannedDate("");
+                              setPlannedEndDate(null);
+                              setPlannedTime("");
+                              setPlannedEndTime("");
+                              setHasPlannedTime(false);
+                              setHasPlannedEndTime(false);
+                            }}
+                            className="p-1 rounded-md text-muted/30 hover:text-red-400 hover:bg-red-400/10 transition-all shrink-0"
+                            title="Clear date"
+                          >
+                            <X size={11} />
+                          </button>
+                        )}
                       </div>
                       <div className="flex flex-col gap-2 ml-5">
                         <label className="flex items-center gap-2 text-label font-mono text-muted/60 cursor-pointer hover:text-text transition-colors">
@@ -715,7 +746,21 @@ function TaskDetail({
                     <div className="flex flex-col gap-2 mt-1 border-t border-border/10 pt-2.5">
                       <div className="flex items-center gap-2">
                         <Flag size={13} className="text-rose-400/30" />
-                        {useDeadline ? <DatePicker value={dueDate} onChange={setDueDate} /> : <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>}
+                        {useDeadline ? (
+                          <>
+                            <DatePicker value={dueDate} onChange={setDueDate} />
+                            <button
+                              type="button"
+                              onClick={() => { setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false); }}
+                              className="p-1 rounded-md text-muted/30 hover:text-red-400 hover:bg-red-400/10 transition-all shrink-0"
+                              title="Clear deadline"
+                            >
+                              <X size={11} />
+                            </button>
+                          </>
+                        ) : (
+                          <button onClick={() => setUseDeadline(true)} className="text-label text-muted/50 italic hover:text-rose-400 transition-colors">Set deadline...</button>
+                        )}
                       </div>
                       {useDeadline && (
                         <>
@@ -738,7 +783,7 @@ function TaskDetail({
                 <label className="text-[10px] font-mono uppercase tracking-widest text-life/60 font-bold ml-0.5">Organization</label>
                 <div className="flex flex-col gap-2.5">
                   <div className="flex flex-col gap-1">
-                    <label className="text-[7px] font-mono uppercase text-muted/30 ml-1">Parent Task</label>
+                    <label className="text-micro font-mono uppercase tracking-widest text-muted/50 ml-1">Parent Task</label>
                     <CustomSelect
                       value={parentId || "none"}
                       onChange={(val) => setParentId(val === "none" ? null : val)}
@@ -897,7 +942,7 @@ export function TaskFormDialog({
       isOpen={isOpen} onClose={handleClose}
       title={isEditing ? "" : isDuplicate ? "Duplicate Task" : "New Life Task"}
       description={isEditing ? "" : "Define your next objective"}
-      maxWidth={isEditing ? "900px" : "850px"}
+      maxWidth={isEditing ? "1060px" : "960px"}
       bare={isEditing}
     >
       {isEditing && task ? (

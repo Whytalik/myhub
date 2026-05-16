@@ -467,8 +467,11 @@ export function TaskCalendar({
     return localTasks.filter(t => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate));
   }, [localTasks, currentDate]);
 
+  const scheduledTasks = useMemo(() => tasksForDay.filter(t => t.hasPlannedTime), [tasksForDay]);
+  const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime), [tasksForDay]);
+
   const timelineRows = useMemo(() => {
-    const sorted = [...tasksForDay].sort((a, b) => {
+    const sorted = [...scheduledTasks].sort((a, b) => {
       const startA = new Date(a.plannedDate!).getTime();
       const startB = new Date(b.plannedDate!).getTime();
       return startA - startB;
@@ -481,19 +484,16 @@ export function TaskCalendar({
         const lastTask = row[row.length - 1];
         const lastEnd = lastTask.plannedEndDate ? new Date(lastTask.plannedEndDate).getTime() : new Date(lastTask.plannedDate!).getTime() + 3600000;
         const currentStart = new Date(task.plannedDate!).getTime();
-        
         if (currentStart >= lastEnd) {
           row.push(task);
           placed = true;
           break;
         }
       }
-      if (!placed) {
-        rows.push([task]);
-      }
+      if (!placed) rows.push([task]);
     });
     return rows;
-  }, [tasksForDay]);
+  }, [scheduledTasks]);
 
   const handleTimelineDragStart = (event: DragStartEvent) => {
     setIsDraggingAny(true);
@@ -616,27 +616,8 @@ export function TaskCalendar({
         else return [];
       }
 
-      // 3. Find a consistent level for the entire task span across all rows
-      let level = 0;
-      // Re-implementing stable level logic
       const rows = [];
       for (let r = Math.floor(startIdxTotal / 7); r <= Math.floor(endIdxTotal / 7); r++) rows.push(r);
-
-      while (true) {
-        let collision = false;
-        for (const r of rows) {
-          const rowStart = r * 7;
-          const rowEnd = rowStart + 6;
-          const s = Math.max(startIdxTotal, rowStart);
-          const e = Math.min(endIdxTotal, rowEnd);
-          if (levelsByRow[r]?.some(l => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
-            collision = true;
-            break;
-          }
-        }
-        if (!collision) break;
-        level++;
-      }
 
       const segments = [];
       for (const r of rows) {
@@ -645,6 +626,13 @@ export function TaskCalendar({
         const s = Math.max(startIdxTotal, rowStart);
         const e = Math.min(endIdxTotal, rowEnd);
         if (!levelsByRow[r]) levelsByRow[r] = [];
+
+        // Find minimum available level independently per row
+        let level = 0;
+        while (levelsByRow[r].some(l => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
+          level++;
+        }
+
         levelsByRow[r].push({ taskId: task.id, startIdx: s, endIdx: e, level });
         segments.push({ task, startIdx: s, endIdx: e, level, rowIdx: r });
       }
@@ -958,7 +946,23 @@ export function TaskCalendar({
         <div className="flex-1">
           {mode === 'day' ? (
             <div className="flex flex-col h-[600px]">
-              <div 
+              {unscheduledTasks.length > 0 && (
+                <div className="flex flex-wrap gap-2 px-4 py-2.5 border-b border-white/[0.03] bg-surface/50 shrink-0">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-muted/40 self-center mr-1">Unscheduled</span>
+                  {unscheduledTasks.map(task => (
+                    <button
+                      key={task.id}
+                      onClick={() => handleEdit(task)}
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/40 bg-raised/20 hover:bg-raised/60 hover:border-accent/30 transition-all text-left"
+                    >
+                      {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-accent/50 shrink-0" })}
+                      <span className="text-label font-bold text-text/80 truncate max-w-[160px]">{task.isPrivate ? "Private" : task.title}</span>
+                      {task.sphere && <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: task.sphere.color }} />}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div
                 ref={timelineContainerRef}
                 className="relative flex-1 overflow-auto border border-white/[0.03] rounded-none bg-bg/30 scrollbar-show"
               >
@@ -1019,7 +1023,7 @@ export function TaskCalendar({
                   >
                     <div className="relative py-2 flex flex-col gap-2 min-h-[300px]">
                       {timelineRows.map((rowTasks, rowIdx) => (
-                        <div key={rowIdx} className="relative h-10 w-full">
+                        <div key={rowIdx} className="relative h-[120px] w-full">
                           {rowTasks.map(task => {
                             const isResizingThis = resizingTimeline?.id === task.id;
                             const isDraggingThis = draggingTimeline?.id === task.id;
@@ -1178,7 +1182,7 @@ export function TaskCalendar({
                         </div>
                       ))}
                       
-                      {timelineRows.length === 0 && (
+                      {timelineRows.length === 0 && unscheduledTasks.length === 0 && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-muted/20">
                           <Clock size={48} strokeWidth={1} />
                           <p className="text-caption font-mono uppercase tracking-[0.2em] mt-4">No tasks scheduled for this day</p>
