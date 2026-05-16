@@ -469,7 +469,7 @@ export function TaskCalendar({
   );
 
   const calendarTasks = useMemo(() =>
-    localTasks.filter(t => t.parentId || t.children.length === 0),
+    localTasks.filter(t => t.children.length === 0),
     [localTasks]
   );
 
@@ -1125,7 +1125,7 @@ export function TaskCalendar({
                   >
                     <div className="relative py-2 flex flex-col gap-2 min-h-[300px]">
                       {timelineRows.map((rowTasks, rowIdx) => (
-                        <div key={rowIdx} className="relative h-[120px] w-full">
+                        <div key={rowIdx} className="relative h-[120px] w-full" style={{ paddingTop: `${rowIdx * 16}px` }}>
                           {rowTasks.map(task => {
                             const isResizingThis = resizingTimeline?.id === task.id;
                             const isDraggingThis = draggingTimeline?.id === task.id;
