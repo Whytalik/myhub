@@ -83,9 +83,10 @@ function TaskCalendarCard({
   onResizeEnd,
   style,
   onHeightChange,
-}: { 
-  task: TaskData, 
-  onEdit: (t: TaskData) => void, 
+  fixedHeight,
+}: {
+  task: TaskData,
+  onEdit: (t: TaskData) => void,
   onDuplicate?: (t: TaskData) => void,
   onAddChild?: (t: TaskData) => void,
   onDelete?: () => void,
@@ -104,6 +105,7 @@ function TaskCalendarCard({
   onResizeEnd?: () => void,
   style?: React.CSSProperties,
   onHeightChange?: (id: string, height: number) => void,
+  fixedHeight?: number,
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ 
     id: task.id, 
@@ -119,13 +121,16 @@ function TaskCalendarCard({
     }
   }, [isOverlay, task.id, task.title, task.description, task.status, task.plannedDate, task.plannedEndDate, onHeightChange]);
 
-  const dragStyle: React.CSSProperties = isDraggable ? {
-    transform: CSS.Translate.toString(transform ?? null),
-    zIndex: isDragging ? 1000 : isOverlay ? 30 : undefined,
-    position: 'relative' as const,
-    transition: isDragging ? 'none' : 'transform 200ms cubic-bezier(0.2, 0, 0, 1)',
-    willChange: isDragging ? 'transform' : 'auto',
-  } : {};
+  const dragStyle: React.CSSProperties = {
+    ...(isDraggable ? {
+      transform: CSS.Translate.toString(transform ?? null),
+      zIndex: isDragging ? 1000 : isOverlay ? 30 : undefined,
+      position: 'relative' as const,
+      transition: isDragging ? 'none' : 'transform 200ms cubic-bezier(0.2, 0, 0, 1)',
+      willChange: isDragging ? 'transform' : 'auto',
+    } : {}),
+    ...(fixedHeight ? { minHeight: `${fixedHeight}px` } : {}),
+  };
 
   const overlayStyle: React.CSSProperties = isOverlay ? {
     gridRowStart: 1,
@@ -359,19 +364,15 @@ export function TaskCalendar({
     });
   };
 
-  const calculateTop = (rowIdx: number, level: number, segments: { rowIdx: number; level: number; task: TaskData }[]) => {
+  const maxTaskHeight = useMemo(() => {
+    const values = Object.values(taskHeights);
+    return values.length > 0 ? Math.max(...values) : 80;
+  }, [taskHeights]);
+
+  const calculateTop = (level: number) => {
     const baseTop = mode === 'month' ? 64 : 74;
     const padding = 8;
-    let offset = 0;
-    
-    for (let l = 0; l < level; l++) {
-      // Find the tallest task at this level in this row
-      const levelTasks = segments.filter(s => s.rowIdx === rowIdx && s.level === l);
-      const maxHeight = levelTasks.reduce((max, s) => Math.max(max, taskHeights[s.task.id] || 80), 80);
-      offset += maxHeight + padding;
-    }
-    
-    return baseTop + offset;
+    return baseTop + level * (maxTaskHeight + padding);
   };
 
   const handleEdit = (t: TaskData) => {
@@ -661,12 +662,14 @@ export function TaskCalendar({
     setIsDraggingAny(false);
     document.body.style.cursor = 'auto';
 
-    if (over && active.id !== over.id) {
+    if (over) {
       const taskId = active.id as string;
       const newDateStr = over.id as string;
-      
+
       const task = localTasks.find(t => t.id === taskId);
       if (!task) return;
+
+      if (task.plannedDate && format(new Date(task.plannedDate), 'yyyy-MM-dd') === newDateStr) return;
       
       const newStartDate = new Date(newDateStr);
       if (task.plannedDate) {
@@ -764,17 +767,13 @@ export function TaskCalendar({
       const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map(s => s.level)) : -1;
       
       if (maxLevel >= 0) {
-        for (let l = 0; l <= maxLevel; l++) {
-          const levelTasks = rowSegments.filter(s => s.level === l);
-          const maxHeight = levelTasks.reduce((max, s) => Math.max(max, taskHeights[s.task.id] || 80), 80);
-          total += maxHeight + padding;
-        }
+        total += (maxLevel + 1) * (maxTaskHeight + padding);
       }
       heights[r] = Math.max(minCellHeight, total);
     }
-    
+
     return heights;
-  }, [allTasksWithLevels, taskHeights, mode, days.length]);
+  }, [allTasksWithLevels, maxTaskHeight, mode, days.length]);
 
   const tasksByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
@@ -850,8 +849,9 @@ export function TaskCalendar({
                       isOverlay
                       isDraggable
                       onHeightChange={handleHeightChange}
+                      fixedHeight={maxTaskHeight}
                       style={{
-                        top: `${calculateTop(seg.rowIdx, seg.level, allTasksWithLevels)}px`,
+                        top: `${calculateTop(seg.level)}px`,
                       }}
                     />
                   ))}

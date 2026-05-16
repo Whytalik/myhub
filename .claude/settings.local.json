@@ -30,7 +30,8 @@
       "Bash(xargs grep -l \"zustand\\\\|createContext\\\\|useContext\")",
       "WebFetch(domain:world.openfoodfacts.org)",
       "WebFetch(domain:klopotenko.com)",
-      "WebFetch(domain:espreso.tv)"
+      "WebFetch(domain:espreso.tv)",
+      "Bash(npx eslint *)"
     ]
   }
 }
