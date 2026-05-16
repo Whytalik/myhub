@@ -22,14 +22,16 @@ import {
   setHours,
   parseISO,
   isToday,
-  differenceInMinutes
+  differenceInMinutes,
+  isBefore
 } from "date-fns";
 import {
   Calendar as CalendarIcon,
   Plus,
   Clock,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Flag,
 } from "lucide-react";
 import { 
   DndContext, 
@@ -217,27 +219,25 @@ function DayTimelineCardWrapper({
   style?: React.CSSProperties,
   isResizing?: boolean,
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ 
-    id: task.id, 
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: task.id,
     data: task,
     disabled: isResizing
   });
 
   const dragStyle: React.CSSProperties = {
     ...style,
-    // Strictly disable transform during resizing to prevent any leftward movement or jitter
-    transform: (isResizing || !transform) ? 'none' : CSS.Translate.toString(transform),
+    transform: 'none',
     zIndex: (isDragging || isResizing) ? 1000 : style?.zIndex,
-    // Disable transitions in Day view to avoid jitter and unwanted "snapping" animations
     transition: 'none',
     top: 0,
-    willChange: isResizing ? 'width' : (isDragging ? 'transform' : 'auto'),
+    willChange: isResizing ? 'width' : 'auto',
   };
 
   return (
     <div
       ref={setNodeRef}
-      className="group/day absolute pointer-events-auto box-border"
+      className="group/day absolute pointer-events-auto box-border h-full"
       style={dragStyle}
       {...attributes}
       {...listeners}
@@ -463,9 +463,19 @@ export function TaskCalendar({
     }
   }, [mode, currentDate]);
 
+  const projectTasks = useMemo(() =>
+    localTasks.filter(t => !t.parentId && t.children.length > 0),
+    [localTasks]
+  );
+
+  const calendarTasks = useMemo(() =>
+    localTasks.filter(t => t.parentId || t.children.length === 0),
+    [localTasks]
+  );
+
   const tasksForDay = useMemo(() => {
-    return localTasks.filter(t => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate));
-  }, [localTasks, currentDate]);
+    return calendarTasks.filter(t => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate));
+  }, [calendarTasks, currentDate]);
 
   const scheduledTasks = useMemo(() => tasksForDay.filter(t => t.hasPlannedTime), [tasksForDay]);
   const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime), [tasksForDay]);
@@ -582,8 +592,8 @@ export function TaskCalendar({
   const allTasksWithLevels = useMemo(() => {
     const levelsByRow: Record<number, { taskId: string, startIdx: number, endIdx: number, level: number }[]> = {};
     
-    // 1. Get unique tasks that actually have a planned date
-    const tasksWithDates = localTasks.filter(t => t.plannedDate);
+    // 1. Get unique tasks that actually have a planned date (exclude project-level tasks)
+    const tasksWithDates = calendarTasks.filter(t => t.plannedDate);
     
     // 2. Sort tasks by start date, then title for stability
     const sortedTasks = [...tasksWithDates].sort((a, b) => {
@@ -638,7 +648,7 @@ export function TaskCalendar({
       }
       return segments;
     });
-  }, [localTasks, days]);
+  }, [calendarTasks, days]);
 
   const handleDragStart = () => {
     setIsDraggingAny(true);
@@ -765,7 +775,7 @@ export function TaskCalendar({
 
   const tasksByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
-    localTasks.forEach(task => {
+    calendarTasks.forEach(task => {
       if (!task.plannedDate) return;
       const taskDate = new Date(task.plannedDate);
       const idx = days.findIndex(d => isSameDay(d, taskDate));
@@ -775,7 +785,7 @@ export function TaskCalendar({
       }
     });
     return map;
-  }, [localTasks, days]);
+  }, [calendarTasks, days]);
 
   const renderGridBody = () => (
     <div className="overflow-x-auto scrollbar-hide">
@@ -942,6 +952,47 @@ export function TaskCalendar({
           </div>
         </div>}
 
+        {/* Active Projects Panel */}
+        {projectTasks.length > 0 && (
+          <div className="border-t border-white/[0.03] bg-surface/30 px-4 md:px-6 py-2.5 flex items-center gap-3 overflow-x-auto scrollbar-hide">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-muted/40 shrink-0">Projects</span>
+            <div className="flex items-center gap-2">
+              {projectTasks.map(task => {
+                const completed = task.children.filter(c => c.status === 'DONE').length;
+                const total = task.children.length;
+                const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+                const isOverdue = task.dueDate && isBefore(new Date(task.dueDate), new Date()) && task.status !== 'DONE';
+                const Icon = task.icon ? ALL_ICONS[task.icon] : null;
+                return (
+                  <button
+                    key={task.id}
+                    onClick={() => handleEdit(task)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/40 bg-raised/20 hover:bg-raised/60 hover:border-accent/30 transition-all shrink-0 group/proj"
+                  >
+                    {task.sphere && (
+                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: task.sphere.color }} />
+                    )}
+                    {Icon && <Icon size={11} className="text-muted/50 shrink-0" />}
+                    <span className="text-label font-bold text-text/80 max-w-[140px] truncate">{task.isPrivate ? "Private" : task.title}</span>
+                    <div className="flex items-center gap-1.5 ml-1">
+                      <div className="w-12 h-1 rounded-full bg-border/40 overflow-hidden">
+                        <div className="h-full rounded-full bg-accent/60 transition-all" style={{ width: `${progress}%` }} />
+                      </div>
+                      <span className="text-[9px] font-mono text-muted/40">{completed}/{total}</span>
+                    </div>
+                    {task.dueDate && (
+                      <div className={`flex items-center gap-0.5 ml-0.5 ${isOverdue ? 'text-red-400' : 'text-muted/40'}`}>
+                        <Flag size={9} />
+                        <span className="text-[9px] font-mono">{format(new Date(task.dueDate), 'MMM d')}</span>
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Content Body */}
         <div className="flex-1">
           {mode === 'day' ? (
@@ -1080,7 +1131,7 @@ export function TaskCalendar({
                                   </div>
                                 )}
                                 <div
-                                  className={`flex flex-col gap-1.5 rounded-xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing min-h-[100px] ${
+                                  className={`flex flex-col gap-1.5 rounded-xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing h-full ${
                                     isDraggingThis || isResizingThis
                                       ? 'shadow-elevated ring-2 ring-accent border-accent bg-elevated'
                                       : 'shadow-md border-accent/20 bg-surface/95 backdrop-blur-sm hover:border-accent/40'

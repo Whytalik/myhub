@@ -885,9 +885,9 @@ export function TaskFormDialog({
   const saveInBackground = () => {
     if (!title.trim() || !sphereId) return;
 
-    const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
-    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00` : null;
-    const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
+    const finalPlannedDate = plannedDate ? new Date(`${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`).toISOString() : null;
+    const finalPlannedEndDate = plannedEndDate ? new Date(`${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`).toISOString() : null;
+    const finalDueDate = (useDeadline && dueDate) ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString() : null;
 
     upsertTaskAction({
       id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
@@ -918,9 +918,9 @@ export function TaskFormDialog({
       return;
     }
 
-    const finalPlannedDate = plannedDate ? `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00` : null;
-    const finalPlannedEndDate = plannedEndDate ? `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00` : null;
-    const finalDueDate = (useDeadline && dueDate) ? `${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00` : null;
+    const finalPlannedDate = plannedDate ? new Date(`${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`).toISOString() : null;
+    const finalPlannedEndDate = plannedEndDate ? new Date(`${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`).toISOString() : null;
+    const finalDueDate = (useDeadline && dueDate) ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString() : null;
 
     startTransition(async () => {
       const result = await upsertTaskAction({
