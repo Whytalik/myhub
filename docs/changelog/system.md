@@ -10,6 +10,23 @@ Unified the nutrition seeding process into a single action and provided a clear 
     - [x] UI updated (Unified button + description)
     - [x] Verified with `pnpm tsc --noEmit`
 
+## [2026-05-17] — Architectural Governance & Schema Evolution
+
+### Added
+- **CLAUDE.md**: Created a comprehensive project manual covering Domain-Driven architecture, Server Action patterns (`withAction`), cache invalidation protocols, and domain-specific methodologies (Tiny Habits, Recursive Tasks).
+- **Database Schema**: Expanded `Habit`, `Task`, and `LifeSphere` models to support avoidance logic, effort tiers, and strategic activation.
+- **Prisma Adapter**: Switched to `@prisma/adapter-pg` in documentation/overview for better performance and driver compatibility.
+
+### Changed
+- **Engineering Standards**: Formalized the "Research -> Strategy -> Execution" workflow and the mandatory changelog update requirement.
+- **Package Management**: Standardized on `pnpm` across all commands and documentation.
+
+### Verification Checklist:
+- [x] Documentation updated (CLAUDE.md created)
+- [x] Database synchronized (Prisma schema evolved)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+
 ## [2026-05-14] — AI Module Decommissioned
 
 ### Removed

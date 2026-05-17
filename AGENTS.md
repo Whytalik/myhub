@@ -1,5 +1,10 @@
 # AGENTS.md — Hub (Personal OS)
 
+## Context Sources (Priority Order)
+1. **`docs/FEATURES.md`**: Current system capabilities (Always check first).
+2. **`CLAUDE.md` / `GEMINI.md`**: Tech standards and workflows.
+3. **`docs/changelog/`**: Historical context and recent changes.
+
 ## Quick Start
 
 ```bash

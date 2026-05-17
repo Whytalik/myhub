@@ -8,6 +8,7 @@ A Next.js application designed to manage personal data, modeled as a modular "Pe
 - **Language:** TypeScript.
 - **Styling:** Tailwind CSS v4 (using `@theme` tokens in `src/app/globals.css`).
 - **Architecture:** Domain-Driven Modular Monolith.
+- **Functional Index:** See `docs/FEATURES.md` for a concise list of all implemented features.
 - **Database:** PostgreSQL via Prisma 7.
 - **Authentication:** NextAuth v5 (Beta) with Session-DB sync.
 - **PowerShell**
