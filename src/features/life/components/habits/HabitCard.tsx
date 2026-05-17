@@ -2,10 +2,10 @@
 
 import { useTransition } from "react";
 import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/features/life/actions/habit-actions";
-import { calculateStreak } from "@/features/life/logic/habit-utils";
+import { calculateStreak, getThisWeekCount } from "@/features/life/logic/habit-utils";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell, ShieldCheck, Shield, TrendingUp } from "lucide-react";
+import { Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell, ShieldCheck, Shield, TrendingUp, CalendarDays } from "lucide-react";
 import type { SphereLevel } from "@/features/life/types";
 
 const SPHERE_LEVEL_CONFIG: Record<SphereLevel, { label: string; classes: string }> = {
@@ -28,12 +28,15 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   activeDate.setHours(0, 0, 0, 0);
 
   const isAvoidance = habit.type === "avoidance";
+  const isWeekly = habit.targetDaysPerWeek < 7;
 
   const isCompletedOnDate = habit.completions.some(
     (c) => new Date(c.date).getTime() === activeDate.getTime()
   );
 
-  const streak = calculateStreak(habit.completions);
+  const streak = calculateStreak(habit.completions, habit.targetDaysPerWeek);
+  const thisWeekCount = isWeekly ? getThisWeekCount(habit.completions) : 0;
+  const isWeeklyTargetMet = isWeekly && thisWeekCount >= habit.targetDaysPerWeek;
 
   const handleToggle = () => {
     startTransition(async () => {
@@ -61,11 +64,13 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   const activeLabel = isAvoidance ? "text-amber-600" : "text-emerald-600";
   const completedButton = isAvoidance ? "bg-amber-500 text-white shadow-sm" : "bg-emerald-500 text-white shadow-sm";
 
+  const cardCompleted = isWeekly ? isWeeklyTargetMet : isCompletedOnDate;
+
   return (
-    <div className={`group bg-surface border rounded-xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? completedBorder : "border-border hover:border-accent/40"}`}>
+    <div className={`group bg-surface border rounded-xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${cardCompleted ? completedBorder : "border-border hover:border-accent/40"}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex flex-col gap-1">
-          <h3 className={`text-base font-bold transition-all ${isCompletedOnDate ? `${completedText} line-through opacity-70` : "text-text"}`}>
+          <h3 className={`text-base font-bold transition-all ${cardCompleted ? `${completedText} line-through opacity-70` : "text-text"}`}>
             {habit.name}
           </h3>
           <div className="flex items-center gap-3 flex-wrap">
@@ -75,10 +80,25 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
                 {habit.archived ? "Archived" : isAvoidance ? "Avoidance" : "Active habit"}
               </span>
             </div>
+
+            {/* Weekly frequency badge */}
+            {isWeekly && (
+              <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full border ${
+                isWeeklyTargetMet
+                  ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600"
+                  : "bg-blue-500/10 border-blue-500/20 text-blue-600"
+              }`}>
+                <CalendarDays size={10} />
+                <span className="text-caption font-bold font-mono">{thisWeekCount}/{habit.targetDaysPerWeek} цього тижня</span>
+              </div>
+            )}
+
             {streak > 0 && (
               <div className="flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
                 <Flame size={10} className="text-amber-500 fill-amber-500" />
-                <span className="text-caption font-bold text-amber-600 font-mono">{streak} day streak</span>
+                <span className="text-caption font-bold text-amber-600 font-mono">
+                  {streak} {isWeekly ? "тиж." : "day"} streak
+                </span>
               </div>
             )}
             {habit.reminderTime && (
@@ -91,6 +111,11 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
               <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full border ${SPHERE_LEVEL_CONFIG[habit.sphereLevel].classes}`}>
                 <TrendingUp size={10} />
                 <span className="text-caption font-bold font-mono">{SPHERE_LEVEL_CONFIG[habit.sphereLevel].label}</span>
+              </div>
+            )}
+            {habit.subcategory && (
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full border border-border bg-raised">
+                <span className="text-caption font-bold font-mono text-muted">{habit.subcategory}</span>
               </div>
             )}
           </div>
@@ -189,12 +214,12 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
         {isCompletedOnDate ? (
           <>
             <ShieldCheck size={18} strokeWidth={2.5} />
-            {isAvoidance ? "Resisted" : "Completed"}
+            {isAvoidance ? "Resisted" : isWeekly ? `Відмічено сьогодні` : "Completed"}
           </>
         ) : (
           <>
             <Circle size={18} strokeWidth={2} />
-            {isAvoidance ? "Resisted today" : "Mark complete"}
+            {isAvoidance ? "Resisted today" : isWeekly ? "Відмітити сьогодні" : "Mark complete"}
           </>
         )}
       </button>

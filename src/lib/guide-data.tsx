@@ -1,5 +1,4 @@
 import {
-  BookText,
   CheckCircle2,
   Zap,
   CalendarDays,
@@ -264,7 +263,7 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
             <Block title="Рекомендація">
               <p>
                 Заповнюй рефлексію ввечері, не раніше 21:00. Win Today — конкретна дія або результат,
-                не абстрактне "добре попрацював".
+                не абстрактне &quot;добре попрацював&quot;.
               </p>
             </Block>
           </div>

@@ -183,8 +183,10 @@ export interface HabitData {
   reminderTime?: string | null;
   archived: boolean;
   order: number;
+  targetDaysPerWeek: number;
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
+  subcategory?: string | null;
   completions: HabitCompletionData[];
   createdAt: Date;
   updatedAt: Date;
@@ -236,6 +238,8 @@ export interface UpsertHabitInput {
   reminderTime?: string | null;
   order?: number;
   archived?: boolean;
+  targetDaysPerWeek?: number;
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
+  subcategory?: string | null;
 }

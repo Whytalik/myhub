@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { getSpaceFromPath } from "@/lib/spaces";
@@ -17,13 +17,13 @@ export function GuideModal({ isOpen, onClose }: GuideModalProps) {
   const space = getSpaceFromPath(pathname);
   const guide = GUIDE_DATA[space];
 
-  const [activeSectionId, setActiveSectionId] = useState<string>("");
+  const [activeSectionId, setActiveSectionId] = useState<string>(guide?.sections[0]?.id ?? "");
+  const [prevSpace, setPrevSpace] = useState(space);
 
-  useEffect(() => {
-    if (guide && guide.sections.length > 0) {
-      setActiveSectionId(guide.sections[0].id);
-    }
-  }, [guide, space]);
+  if (prevSpace !== space) {
+    setPrevSpace(space);
+    setActiveSectionId(guide?.sections[0]?.id ?? "");
+  }
 
   if (!guide) return null;
 

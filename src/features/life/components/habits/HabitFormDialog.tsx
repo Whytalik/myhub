@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
 
-  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<HabitFormData>({
+  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<HabitFormData>({
     resolver: zodResolver(habitSchema),
     defaultValues: {
       name: habit?.name ?? "",
@@ -41,15 +41,17 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
       celebration: habit?.celebration ?? "",
       reminderTime: habit?.reminderTime ?? "",
       archived: habit?.archived ?? false,
+      targetDaysPerWeek: habit?.targetDaysPerWeek ?? 7,
       sphereId: habit?.sphereId ?? null,
       sphereLevel: (habit?.sphereLevel as SphereLevel) ?? null,
+      subcategory: habit?.subcategory ?? "",
     },
   });
 
-  const reminderTime = watch("reminderTime");
-  const habitType = watch("type");
-  const selectedSphereId = watch("sphereId");
-  const selectedLevel = watch("sphereLevel");
+  const reminderTime = useWatch({ control, name: "reminderTime" });
+  const habitType = useWatch({ control, name: "type" });
+  const selectedSphereId = useWatch({ control, name: "sphereId" });
+  const selectedLevel = useWatch({ control, name: "sphereLevel" });
   const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
@@ -63,8 +65,10 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
         celebration: data.celebration?.trim() || null,
         reminderTime: data.reminderTime || null,
         archived: data.archived ?? false,
+        targetDaysPerWeek: data.targetDaysPerWeek ?? 7,
         sphereId: data.sphereId ?? null,
         sphereLevel: (data.sphereLevel as SphereLevel) ?? null,
+        subcategory: data.subcategory?.trim() || null,
       });
       if (result.success) {
         toast.success(isEditing ? "Habit updated" : "Habit created");
@@ -200,6 +204,46 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
             )}
           />
         )}
+
+        {/* Subcategory */}
+        <FormField label="Subcategory (optional)" hint="e.g. body, mind, deep work">
+          <Input
+            {...register("subcategory")}
+            placeholder="e.g. body, mind, reading..."
+          />
+        </FormField>
+
+        {/* Frequency selector */}
+        <Controller
+          name="targetDaysPerWeek"
+          control={control}
+          render={({ field }) => (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">Частота</label>
+                <span className="text-note font-mono text-muted">
+                  {field.value === 7 ? "Щодня" : `${field.value}× на тиждень`}
+                </span>
+              </div>
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => field.onChange(n)}
+                    className={`flex-1 h-9 rounded-lg border text-note font-mono transition-all ${
+                      field.value === n
+                        ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
+                        : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
+                    }`}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        />
 
         {isEditing && (
           <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">

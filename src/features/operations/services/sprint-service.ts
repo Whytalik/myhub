@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getCachedAllSprints, getCachedActiveSprint, getCachedAlignmentData, getCachedVision, getCachedAnnualCompass, getCachedActiveHabits } from "@/lib/cache";
+import { getCachedAllSprints, getCachedActiveSprint, getCachedAlignmentData, getCachedAnnualCompass, getCachedActiveHabits } from "@/lib/cache";
 import { TacticFrequency, TaskStatus, ObjectiveStatus, SprintStatus, TaskPriority } from "@/app/generated/prisma";
 import type { 
   SprintData, 
