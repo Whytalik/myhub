@@ -357,6 +357,7 @@ model LifeSphere {
   color      String
   icon       String
   order      Int         @default(0)
+  isActive   Boolean     @default(true)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   habits     Habit[]
@@ -445,6 +446,7 @@ model Habit {
   id           String            @id @default(cuid())
   userId       String
   name         String
+  type         String            @default("positive")
   anchor       String
   action       String
   celebration  String?

@@ -280,6 +280,7 @@ export async function getAlignmentData(userId: string) {
       color: s.color,
       icon: s.icon,
       order: s.order,
+      isActive: s.isActive,
       taskCount: s._count.tasks,
       createdAt: s.createdAt,
       updatedAt: s.updatedAt,
@@ -289,13 +290,12 @@ export async function getAlignmentData(userId: string) {
 }
 
 export async function upsertVision(userId: string, title: string, content: string) {
-  const existing = await getCachedVision(userId);
-  
-  return prisma.vision.upsert({
-    where: { id: existing?.id || "" },
-    create: { userId, title, content },
-    update: { title, content }
-  });
+  const existing = await prisma.vision.findFirst({ where: { userId } });
+
+  if (existing) {
+    return prisma.vision.update({ where: { id: existing.id }, data: { title, content } });
+  }
+  return prisma.vision.create({ data: { userId, title, content } });
 }
 
 // ─── Sprint Reviews ───────────────────────────────────────────────────────────

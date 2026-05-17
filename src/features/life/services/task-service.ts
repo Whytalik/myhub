@@ -33,7 +33,7 @@ const TASK_INCLUDE = {
 } as const satisfies Prisma.TaskInclude;
 
 function mapSphere(
-  sphere: { id: string; name: string; color: string; icon: string; order: number; createdAt: Date; updatedAt: Date } | null,
+  sphere: { id: string; name: string; color: string; icon: string; order: number; isActive: boolean; createdAt: Date; updatedAt: Date } | null,
 ): LifeSphereData | null {
   if (!sphere) return null;
   return { ...sphere, taskCount: 0 };
@@ -285,6 +285,7 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
     color: s.color,
     icon: s.icon,
     order: s.order,
+    isActive: s.isActive,
     taskCount: s._count.tasks,
     createdAt: s.createdAt,
     updatedAt: s.updatedAt,
@@ -305,10 +306,15 @@ export async function upsertSphere(userId: string, input: UpsertSphereInput): Pr
     color: sphere.color,
     icon: sphere.icon,
     order: sphere.order,
+    isActive: sphere.isActive,
     taskCount: sphere._count.tasks,
     createdAt: sphere.createdAt,
     updatedAt: sphere.updatedAt,
   };
+}
+
+export async function toggleSphereActive(userId: string, id: string, isActive: boolean): Promise<void> {
+  await prisma.lifeSphere.update({ where: { id, userId }, data: { isActive } });
 }
 
 export async function deleteSphere(userId: string, id: string): Promise<void> {

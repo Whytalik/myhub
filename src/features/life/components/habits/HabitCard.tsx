@@ -5,7 +5,7 @@ import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/featur
 import { calculateStreak } from "@/features/life/logic/habit-utils";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell } from "lucide-react";
+import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell, ShieldCheck, Shield } from "lucide-react";
 
 interface HabitCardProps {
   habit: HabitData;
@@ -19,7 +19,9 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
 
   const activeDate = date ? new Date(date) : new Date();
   activeDate.setHours(0, 0, 0, 0);
-  
+
+  const isAvoidance = habit.type === "avoidance";
+
   const isCompletedOnDate = habit.completions.some(
     (c) => new Date(c.date).getTime() === activeDate.getTime()
   );
@@ -30,7 +32,9 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
     startTransition(async () => {
       const result = await toggleHabitCompletionAction(habit.id, activeDate);
       if (result.success) {
-        if (!isCompletedOnDate) toast.success("Great job! Keep the streak alive.");
+        if (!isCompletedOnDate) {
+          toast.success(isAvoidance ? "Still clean. Keep going." : "Great job! Keep the streak alive.");
+        }
       } else {
         toast.error(result.error || "Failed to update habit");
       }
@@ -44,18 +48,24 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
     });
   };
 
+  const completedBorder = isAvoidance ? "border-amber-500/30 bg-amber-500/5" : "border-emerald-500/30 bg-emerald-500/5";
+  const completedText = isAvoidance ? "text-amber-500" : "text-emerald-500";
+  const activeDot = isAvoidance ? "bg-amber-500" : "bg-emerald-500 animate-pulse";
+  const activeLabel = isAvoidance ? "text-amber-600" : "text-emerald-600";
+  const completedButton = isAvoidance ? "bg-amber-500 text-white shadow-sm" : "bg-emerald-500 text-white shadow-sm";
+
   return (
-    <div className={`group bg-surface border rounded-xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? "border-emerald-500/30 bg-emerald-500/5" : "border-border hover:border-accent/40"}`}>
+    <div className={`group bg-surface border rounded-xl p-6 transition-all duration-300 shadow-sm hover:shadow-md ${isCompletedOnDate ? completedBorder : "border-border hover:border-accent/40"}`}>
       <div className="flex justify-between items-start mb-6">
         <div className="flex flex-col gap-1">
-          <h3 className={`text-base font-bold transition-all ${isCompletedOnDate ? "text-emerald-500 line-through opacity-70" : "text-text"}`}>
+          <h3 className={`text-base font-bold transition-all ${isCompletedOnDate ? `${completedText} line-through opacity-70` : "text-text"}`}>
             {habit.name}
           </h3>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
-              <div className={`w-2 h-2 rounded-full ${habit.archived ? "bg-muted" : "bg-emerald-500 animate-pulse"}`} />
-              <span className={`text-caption font-mono tracking-widest font-bold ${habit.archived ? "text-muted" : "text-emerald-600"}`}>
-                {habit.archived ? "Archived" : "Active habit"}
+              <div className={`w-2 h-2 rounded-full ${habit.archived ? "bg-muted" : activeDot}`} />
+              <span className={`text-caption font-mono tracking-widest font-bold ${habit.archived ? "text-muted" : activeLabel}`}>
+                {habit.archived ? "Archived" : isAvoidance ? "Avoidance" : "Active habit"}
               </span>
             </div>
             {streak > 0 && (
@@ -72,9 +82,9 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             )}
           </div>
         </div>
-        
+
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button 
+          <button
             onClick={handleArchive}
             title={habit.archived ? "Restore" : "Archive"}
             className="p-2 rounded-lg text-muted hover:text-amber-500 hover:bg-amber-500/10 transition-colors"
@@ -82,7 +92,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             <Archive size={14} />
           </button>
           {onEdit && (
-            <button 
+            <button
               onClick={() => onEdit(habit)}
               className="p-2 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors"
             >
@@ -90,7 +100,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             </button>
           )}
           {onDelete && (
-            <button 
+            <button
               onClick={() => onDelete(habit.id)}
               className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
             >
@@ -101,25 +111,45 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
       </div>
 
       <div className="space-y-4 mb-8">
-        <div className="flex items-start gap-3">
-          <div className="mt-1 p-1.5 rounded-lg bg-accent/10 border border-accent/20">
-            <Anchor size={14} className="text-accent" />
+        {habit.anchor && (
+          <div className="flex items-start gap-3">
+            <div className="mt-1 p-1.5 rounded-lg bg-accent/10 border border-accent/20">
+              <Anchor size={14} className="text-accent" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-label font-mono tracking-widest text-muted">
+                {isAvoidance ? "Trigger" : "Anchor"}
+              </span>
+              <p className="text-base text-secondary italic">&quot;{habit.anchor}&quot;</p>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-label font-mono tracking-widest text-muted">Anchor</span>
-            <p className="text-base text-secondary italic">&quot;{habit.anchor}&quot;</p>
-          </div>
-        </div>
+        )}
 
-        <div className="flex items-start gap-3">
-          <div className="mt-1 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
-            <Zap size={14} className="text-amber-500" />
+        {habit.action && (
+          <div className="flex items-start gap-3">
+            <div className="mt-1 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+              <Zap size={14} className="text-amber-500" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-label font-mono tracking-widest text-muted">
+                {isAvoidance ? "Replacement" : "Action"}
+              </span>
+              <p className="text-base font-medium text-text">&quot;{habit.action}&quot;</p>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-label font-mono tracking-widest text-muted">Action</span>
-            <p className="text-base font-medium text-text">&quot;{habit.action}&quot;</p>
+        )}
+
+        {!habit.anchor && !habit.action && isAvoidance && (
+          <div className="flex items-start gap-3">
+            <div className="mt-1 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+              <Shield size={14} className="text-amber-500" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-label font-mono tracking-widest text-muted">Strategy</span>
+              <p className="text-base text-secondary italic">Avoid and log daily resistance</p>
+            </div>
           </div>
-        </div>
+        )}
 
         {habit.celebration && (
           <div className="flex items-start gap-3">
@@ -138,20 +168,20 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
         onClick={handleToggle}
         disabled={isPending}
         className={`w-full py-3.5 rounded-lg flex items-center justify-center gap-3 transition-all font-mono text-note font-bold tracking-[0.1em] ${
-          isCompletedOnDate 
-            ? "bg-emerald-500 text-white shadow-sm" 
+          isCompletedOnDate
+            ? completedButton
             : "bg-surface border border-border text-muted hover:border-accent hover:text-accent hover:bg-accent/5"
         }`}
       >
         {isCompletedOnDate ? (
           <>
-            <CheckCircle2 size={18} strokeWidth={2.5} />
-            Completed
+            <ShieldCheck size={18} strokeWidth={2.5} />
+            {isAvoidance ? "Resisted" : "Completed"}
           </>
         ) : (
           <>
             <Circle size={18} strokeWidth={2} />
-            Mark complete
+            {isAvoidance ? "Resisted today" : "Mark complete"}
           </>
         )}
       </button>

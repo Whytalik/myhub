@@ -31938,6 +31938,7 @@ export namespace Prisma {
     color: string | null
     icon: string | null
     order: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -31949,6 +31950,7 @@ export namespace Prisma {
     color: string | null
     icon: string | null
     order: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -31960,6 +31962,7 @@ export namespace Prisma {
     color: number
     icon: number
     order: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -31981,6 +31984,7 @@ export namespace Prisma {
     color?: true
     icon?: true
     order?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -31992,6 +31996,7 @@ export namespace Prisma {
     color?: true
     icon?: true
     order?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -32003,6 +32008,7 @@ export namespace Prisma {
     color?: true
     icon?: true
     order?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -32101,6 +32107,7 @@ export namespace Prisma {
     color: string
     icon: string
     order: number
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: LifeSphereCountAggregateOutputType | null
@@ -32131,6 +32138,7 @@ export namespace Prisma {
     color?: boolean
     icon?: boolean
     order?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     habits?: boolean | LifeSphere$habitsArgs<ExtArgs>
@@ -32148,6 +32156,7 @@ export namespace Prisma {
     color?: boolean
     icon?: boolean
     order?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -32160,6 +32169,7 @@ export namespace Prisma {
     color?: boolean
     icon?: boolean
     order?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -32172,11 +32182,12 @@ export namespace Prisma {
     color?: boolean
     icon?: boolean
     order?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LifeSphereOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "color" | "icon" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["lifeSphere"]>
+  export type LifeSphereOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "color" | "icon" | "order" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["lifeSphere"]>
   export type LifeSphereInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     habits?: boolean | LifeSphere$habitsArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -32208,6 +32219,7 @@ export namespace Prisma {
       color: string
       icon: string
       order: number
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["lifeSphere"]>
@@ -32644,6 +32656,7 @@ export namespace Prisma {
     readonly color: FieldRef<"LifeSphere", 'String'>
     readonly icon: FieldRef<"LifeSphere", 'String'>
     readonly order: FieldRef<"LifeSphere", 'Int'>
+    readonly isActive: FieldRef<"LifeSphere", 'Boolean'>
     readonly createdAt: FieldRef<"LifeSphere", 'DateTime'>
     readonly updatedAt: FieldRef<"LifeSphere", 'DateTime'>
   }
@@ -36065,6 +36078,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
+    type: string | null
     anchor: string | null
     action: string | null
     celebration: string | null
@@ -36080,6 +36094,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     name: string | null
+    type: string | null
     anchor: string | null
     action: string | null
     celebration: string | null
@@ -36095,6 +36110,7 @@ export namespace Prisma {
     id: number
     userId: number
     name: number
+    type: number
     anchor: number
     action: number
     celebration: number
@@ -36120,6 +36136,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    type?: true
     anchor?: true
     action?: true
     celebration?: true
@@ -36135,6 +36152,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    type?: true
     anchor?: true
     action?: true
     celebration?: true
@@ -36150,6 +36168,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     name?: true
+    type?: true
     anchor?: true
     action?: true
     celebration?: true
@@ -36252,6 +36271,7 @@ export namespace Prisma {
     id: string
     userId: string
     name: string
+    type: string
     anchor: string
     action: string
     celebration: string | null
@@ -36286,6 +36306,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    type?: boolean
     anchor?: boolean
     action?: boolean
     celebration?: boolean
@@ -36305,6 +36326,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    type?: boolean
     anchor?: boolean
     action?: boolean
     celebration?: boolean
@@ -36322,6 +36344,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    type?: boolean
     anchor?: boolean
     action?: boolean
     celebration?: boolean
@@ -36339,6 +36362,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     name?: boolean
+    type?: boolean
     anchor?: boolean
     action?: boolean
     celebration?: boolean
@@ -36350,7 +36374,7 @@ export namespace Prisma {
     sphereId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -36377,6 +36401,7 @@ export namespace Prisma {
       id: string
       userId: string
       name: string
+      type: string
       anchor: string
       action: string
       celebration: string | null
@@ -36815,6 +36840,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Habit", 'String'>
     readonly userId: FieldRef<"Habit", 'String'>
     readonly name: FieldRef<"Habit", 'String'>
+    readonly type: FieldRef<"Habit", 'String'>
     readonly anchor: FieldRef<"Habit", 'String'>
     readonly action: FieldRef<"Habit", 'String'>
     readonly celebration: FieldRef<"Habit", 'String'>
@@ -59364,6 +59390,7 @@ export namespace Prisma {
     color: 'color',
     icon: 'icon',
     order: 'order',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -59440,6 +59467,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     name: 'name',
+    type: 'type',
     anchor: 'anchor',
     action: 'action',
     celebration: 'celebration',
@@ -61796,6 +61824,7 @@ export namespace Prisma {
     color?: StringFilter<"LifeSphere"> | string
     icon?: StringFilter<"LifeSphere"> | string
     order?: IntFilter<"LifeSphere"> | number
+    isActive?: BoolFilter<"LifeSphere"> | boolean
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
     habits?: HabitListRelationFilter
@@ -61812,6 +61841,7 @@ export namespace Prisma {
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     habits?: HabitOrderByRelationAggregateInput
@@ -61831,6 +61861,7 @@ export namespace Prisma {
     color?: StringFilter<"LifeSphere"> | string
     icon?: StringFilter<"LifeSphere"> | string
     order?: IntFilter<"LifeSphere"> | number
+    isActive?: BoolFilter<"LifeSphere"> | boolean
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
     habits?: HabitListRelationFilter
@@ -61847,6 +61878,7 @@ export namespace Prisma {
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LifeSphereCountOrderByAggregateInput
@@ -61866,6 +61898,7 @@ export namespace Prisma {
     color?: StringWithAggregatesFilter<"LifeSphere"> | string
     icon?: StringWithAggregatesFilter<"LifeSphere"> | string
     order?: IntWithAggregatesFilter<"LifeSphere"> | number
+    isActive?: BoolWithAggregatesFilter<"LifeSphere"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LifeSphere"> | Date | string
   }
@@ -62219,6 +62252,7 @@ export namespace Prisma {
     id?: StringFilter<"Habit"> | string
     userId?: StringFilter<"Habit"> | string
     name?: StringFilter<"Habit"> | string
+    type?: StringFilter<"Habit"> | string
     anchor?: StringFilter<"Habit"> | string
     action?: StringFilter<"Habit"> | string
     celebration?: StringNullableFilter<"Habit"> | string | null
@@ -62237,6 +62271,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    type?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
     celebration?: SortOrderInput | SortOrder
@@ -62258,6 +62293,7 @@ export namespace Prisma {
     NOT?: HabitWhereInput | HabitWhereInput[]
     userId?: StringFilter<"Habit"> | string
     name?: StringFilter<"Habit"> | string
+    type?: StringFilter<"Habit"> | string
     anchor?: StringFilter<"Habit"> | string
     action?: StringFilter<"Habit"> | string
     celebration?: StringNullableFilter<"Habit"> | string | null
@@ -62276,6 +62312,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    type?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
     celebration?: SortOrderInput | SortOrder
@@ -62299,6 +62336,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Habit"> | string
     userId?: StringWithAggregatesFilter<"Habit"> | string
     name?: StringWithAggregatesFilter<"Habit"> | string
+    type?: StringWithAggregatesFilter<"Habit"> | string
     anchor?: StringWithAggregatesFilter<"Habit"> | string
     action?: StringWithAggregatesFilter<"Habit"> | string
     celebration?: StringNullableWithAggregatesFilter<"Habit"> | string | null
@@ -65487,6 +65525,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitCreateNestedManyWithoutSphereInput
@@ -65503,6 +65542,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
@@ -65517,6 +65557,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUpdateManyWithoutSphereNestedInput
@@ -65533,6 +65574,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
@@ -65548,6 +65590,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65558,6 +65601,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65569,6 +65613,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65988,6 +66033,7 @@ export namespace Prisma {
   export type HabitCreateInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -66005,6 +66051,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -66020,6 +66067,7 @@ export namespace Prisma {
   export type HabitUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66037,6 +66085,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66053,6 +66102,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -66067,6 +66117,7 @@ export namespace Prisma {
   export type HabitUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66081,6 +66132,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69295,6 +69347,7 @@ export namespace Prisma {
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69310,6 +69363,7 @@ export namespace Prisma {
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69321,6 +69375,7 @@ export namespace Prisma {
     color?: SortOrder
     icon?: SortOrder
     order?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69598,6 +69653,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    type?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
     celebration?: SortOrder
@@ -69617,6 +69673,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    type?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
     celebration?: SortOrder
@@ -69632,6 +69689,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
+    type?: SortOrder
     anchor?: SortOrder
     action?: SortOrder
     celebration?: SortOrder
@@ -74897,6 +74955,7 @@ export namespace Prisma {
   export type HabitCreateWithoutUserInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -74912,6 +74971,7 @@ export namespace Prisma {
   export type HabitUncheckedCreateWithoutUserInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -74976,6 +75036,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitCreateNestedManyWithoutSphereInput
@@ -74990,6 +75051,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
@@ -75678,6 +75740,7 @@ export namespace Prisma {
     id?: StringFilter<"Habit"> | string
     userId?: StringFilter<"Habit"> | string
     name?: StringFilter<"Habit"> | string
+    type?: StringFilter<"Habit"> | string
     anchor?: StringFilter<"Habit"> | string
     action?: StringFilter<"Habit"> | string
     celebration?: StringNullableFilter<"Habit"> | string | null
@@ -75748,6 +75811,7 @@ export namespace Prisma {
     color?: StringFilter<"LifeSphere"> | string
     icon?: StringFilter<"LifeSphere"> | string
     order?: IntFilter<"LifeSphere"> | number
+    isActive?: BoolFilter<"LifeSphere"> | boolean
     createdAt?: DateTimeFilter<"LifeSphere"> | Date | string
     updatedAt?: DateTimeFilter<"LifeSphere"> | Date | string
   }
@@ -79877,6 +79941,7 @@ export namespace Prisma {
   export type HabitCreateWithoutSphereInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -79893,6 +79958,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -80422,6 +80488,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitCreateNestedManyWithoutSphereInput
@@ -80437,6 +80504,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
@@ -80651,6 +80719,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUpdateManyWithoutSphereNestedInput
@@ -80666,6 +80735,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
@@ -80904,6 +80974,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutLifeSpheresInput
@@ -80919,6 +80990,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
@@ -81041,6 +81113,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
@@ -81056,6 +81129,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
@@ -81169,6 +81243,7 @@ export namespace Prisma {
   export type HabitCreateWithoutCompletionsInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -81185,6 +81260,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -81215,6 +81291,7 @@ export namespace Prisma {
   export type HabitUpdateWithoutCompletionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81231,6 +81308,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82607,6 +82685,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitCreateNestedManyWithoutSphereInput
@@ -82622,6 +82701,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
@@ -82722,6 +82802,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUpdateManyWithoutSphereNestedInput
@@ -82737,6 +82818,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
@@ -83123,6 +83205,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitCreateNestedManyWithoutSphereInput
@@ -83138,6 +83221,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
@@ -83262,6 +83346,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUpdateManyWithoutSphereNestedInput
@@ -83277,6 +83362,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
@@ -83930,6 +84016,7 @@ export namespace Prisma {
   export type HabitCreateManyUserInput = {
     id?: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -83960,6 +84047,7 @@ export namespace Prisma {
     color: string
     icon: string
     order?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -84355,6 +84443,7 @@ export namespace Prisma {
   export type HabitUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84370,6 +84459,7 @@ export namespace Prisma {
   export type HabitUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84385,6 +84475,7 @@ export namespace Prisma {
   export type HabitUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84441,6 +84532,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUpdateManyWithoutSphereNestedInput
@@ -84455,6 +84547,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
@@ -84469,6 +84562,7 @@ export namespace Prisma {
     color?: StringFieldUpdateOperationsInput | string
     icon?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -85576,6 +85670,7 @@ export namespace Prisma {
     id?: string
     userId: string
     name: string
+    type?: string
     anchor: string
     action: string
     celebration?: string | null
@@ -85635,6 +85730,7 @@ export namespace Prisma {
   export type HabitUpdateWithoutSphereInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85651,6 +85747,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85666,6 +85763,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     anchor?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
     celebration?: NullableStringFieldUpdateOperationsInput | string | null

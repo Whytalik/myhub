@@ -11,7 +11,7 @@ import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { Anchor, Zap, PartyPopper, Bell, X } from "lucide-react";
+import { Anchor, Zap, PartyPopper, Bell, X, Sprout, ShieldOff } from "lucide-react";
 import { TimePicker } from "@/components/ui/time-picker";
 
 interface HabitFormDialogProps {
@@ -28,6 +28,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
     resolver: zodResolver(habitSchema),
     defaultValues: {
       name: habit?.name ?? "",
+      type: (habit?.type as "positive" | "avoidance") ?? "positive",
       anchor: habit?.anchor ?? "",
       action: habit?.action ?? "",
       celebration: habit?.celebration ?? "",
@@ -38,14 +39,17 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const reminderTime = watch("reminderTime");
+  const habitType = watch("type");
+  const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
     startTransition(async () => {
       const result = await upsertHabitAction({
         id: habit?.id,
         name: data.name.trim(),
-        anchor: data.anchor.trim(),
-        action: data.action.trim(),
+        type: data.type,
+        anchor: data.anchor?.trim() || "",
+        action: data.action?.trim() || "",
         celebration: data.celebration?.trim() || null,
         reminderTime: data.reminderTime || null,
         archived: data.archived ?? false,
@@ -64,7 +68,11 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
       isOpen={isOpen}
       onClose={onClose}
       title={isEditing ? "Edit Habit" : "New Habit"}
-      description="Define your habit using the Tiny Habits methodology: After I [Anchor], I will [Action]."
+      description={
+        isAvoidance
+          ? "Define what you want to avoid. Track daily resistance to build the streak."
+          : "Define your habit using the Tiny Habits methodology: After I [Anchor], I will [Action]."
+      }
       footer={
         <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
@@ -77,10 +85,40 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
       }
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        {/* Type toggle */}
+        {!isEditing && (
+          <div className="grid grid-cols-2 gap-2 p-1 bg-raised rounded-xl border border-border">
+            <button
+              type="button"
+              onClick={() => setValue("type", "positive")}
+              className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-note font-mono font-bold tracking-wide transition-all ${
+                !isAvoidance
+                  ? "bg-surface border border-emerald-500/30 text-emerald-600 shadow-sm"
+                  : "text-muted hover:text-text"
+              }`}
+            >
+              <Sprout size={14} />
+              Build
+            </button>
+            <button
+              type="button"
+              onClick={() => setValue("type", "avoidance")}
+              className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-note font-mono font-bold tracking-wide transition-all ${
+                isAvoidance
+                  ? "bg-surface border border-amber-500/30 text-amber-600 shadow-sm"
+                  : "text-muted hover:text-text"
+              }`}
+            >
+              <ShieldOff size={14} />
+              Break
+            </button>
+          </div>
+        )}
+
         <FormField label="Habit name" error={errors.name?.message} required>
           <Input
             {...register("name")}
-            placeholder="e.g. Morning pushups"
+            placeholder={isAvoidance ? "e.g. No liquid calories" : "e.g. Morning pushups"}
             autoFocus
           />
         </FormField>
@@ -100,33 +138,67 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
         )}
 
         <div className="grid grid-cols-1 gap-4">
-          <FormField
-            label="The Anchor (Trigger)"
-            error={errors.anchor?.message}
-            required
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <Anchor size={14} className="text-accent" />
-            </div>
-            <Input
-              {...register("anchor")}
-              placeholder="After I [wash my face]..."
-            />
-          </FormField>
+          {isAvoidance ? (
+            <>
+              <FormField
+                label="Trigger (optional)"
+                hint="When do you usually slip?"
+                error={errors.anchor?.message}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Anchor size={14} className="text-accent" />
+                </div>
+                <Input
+                  {...register("anchor")}
+                  placeholder="e.g. After lunch when I'm tired..."
+                />
+              </FormField>
 
-          <FormField
-            label="The Action (New habit)"
-            error={errors.action?.message}
-            required
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <Zap size={14} className="text-amber-500" />
-            </div>
-            <Input
-              {...register("action")}
-              placeholder="I will [do 5 pushups]..."
-            />
-          </FormField>
+              <FormField
+                label="Replacement (optional)"
+                hint="What will you do instead?"
+                error={errors.action?.message}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Zap size={14} className="text-amber-500" />
+                </div>
+                <Input
+                  {...register("action")}
+                  placeholder="e.g. I will drink sparkling water..."
+                />
+              </FormField>
+            </>
+          ) : (
+            <>
+              <FormField
+                label="The Anchor (Trigger)"
+                error={errors.anchor?.message}
+                required
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Anchor size={14} className="text-accent" />
+                </div>
+                <Input
+                  {...register("anchor")}
+                  placeholder="After I [wash my face]..."
+                />
+              </FormField>
+
+              <FormField
+                label="The Action (New habit)"
+                error={errors.action?.message}
+                required
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Zap size={14} className="text-amber-500" />
+                </div>
+                <Input
+                  {...register("action")}
+                  placeholder="I will [do 5 pushups]..."
+                />
+              </FormField>
+            </>
+          )}
 
           <FormField label="Celebration" hint="Optional — what reward follows?">
             <div className="flex items-center gap-2 mb-1">
@@ -134,7 +206,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
             </div>
             <Input
               {...register("celebration")}
-              placeholder="And then I will [say 'Good job!']"
+              placeholder={isAvoidance ? "And then I will [say 'Still clean!']" : "And then I will [say 'Good job!']"}
             />
           </FormField>
 

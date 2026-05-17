@@ -57,6 +57,13 @@ export async function deleteSphereAction(id: string): Promise<ActionResult<void>
   });
 }
 
+export async function toggleSphereActiveAction(id: string, isActive: boolean): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await taskService.toggleSphereActive(userId, id, isActive);
+    invalidateTaskCache(userId);
+  });
+}
+
 export async function getAllSpheresAction(): Promise<ActionResult<Awaited<ReturnType<typeof taskService.getAllSpheres>>>> {
   return withAction(async (userId) => taskService.getAllSpheres(userId));
 }

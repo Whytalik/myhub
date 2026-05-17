@@ -359,6 +359,7 @@ exports.Prisma.LifeSphereScalarFieldEnum = {
   color: 'color',
   icon: 'icon',
   order: 'order',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -426,6 +427,7 @@ exports.Prisma.HabitScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   name: 'name',
+  type: 'type',
   anchor: 'anchor',
   action: 'action',
   celebration: 'celebration',

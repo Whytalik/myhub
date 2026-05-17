@@ -22,6 +22,7 @@ export interface LifeSphereData {
   color: string;
   icon: string;
   order: number;
+  isActive: boolean;
   taskCount: number;
   createdAt: Date;
   updatedAt: Date;
@@ -167,6 +168,7 @@ export interface UpsertDailyEntryInput {
 export interface HabitData {
   id: string;
   name: string;
+  type: string;
   icon: string;
   color: string;
   anchor?: string | null;
@@ -217,6 +219,7 @@ export function dayTypeToRoutine(dayType: DayType): { isTrainingDay: boolean; ev
 export interface UpsertHabitInput {
   id?: string;
   name: string;
+  type?: string;
   icon?: string;
   color?: string;
   anchor?: string;
