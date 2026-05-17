@@ -392,6 +392,8 @@ model Task {
   sphereId          String?
   projectId         String?
   completedAt       DateTime?
+  carriedFromDate   DateTime?
+  carryOverReason   String?
   isBlocked         Boolean      @default(false)
   parent            Task?        @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
   children          Task[]       @relation("TaskChildren")

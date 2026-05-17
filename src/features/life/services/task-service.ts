@@ -68,6 +68,8 @@ function mapTask(task: TaskWithRelations): TaskData {
     project: task.project,
     children: (task.children as unknown as TaskWithRelations[] ?? []).map(mapTask),
     completedAt: task.completedAt,
+    carriedFromDate: task.carriedFromDate,
+    carryOverReason: task.carryOverReason,
     createdAt: task.createdAt,
     updatedAt: task.updatedAt,
   };
@@ -161,11 +163,14 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     parentId,
     sphereId,
     projectId,
+    carriedFromDate,
+    carryOverReason,
   } = input;
 
   const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
   const parsedPlannedEndDate = plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
   const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
+  const parsedCarriedFromDate = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
 
   // Auto-set completedAt
   let completedAt: Date | null | undefined = undefined;
@@ -194,6 +199,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         dueDate:     parsedDueDate !== undefined ? parsedDueDate : undefined,
         hasDueTime:  hasDueTime ?? undefined,
         completedAt,
+        carriedFromDate: parsedCarriedFromDate !== undefined ? parsedCarriedFromDate : undefined,
+        carryOverReason: carryOverReason !== undefined ? (carryOverReason ?? null) : undefined,
         parent: parentId !== undefined ? (parentId ? { connect: { id: parentId } } : { disconnect: true }) : undefined,
         sphere: sphereId !== undefined ? (sphereId ? { connect: { id: sphereId } } : { disconnect: true }) : undefined,
         project: projectId !== undefined ? (projectId ? { connect: { id: projectId } } : { disconnect: true }) : undefined,
@@ -225,6 +232,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         hasDueTime: hasDueTime ?? false,
         depth,
         completedAt: status === 'DONE' ? new Date() : null,
+        carriedFromDate: (parsedCarriedFromDate as Date | null) ?? null,
+        carryOverReason: carryOverReason ?? null,
         parentId: parentId ?? null,
         sphereId: sphereId ?? null,
         projectId: projectId ?? null,

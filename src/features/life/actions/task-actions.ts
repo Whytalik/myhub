@@ -70,7 +70,7 @@ export async function getAllSpheresAction(): Promise<ActionResult<Awaited<Return
 
 export async function instantDuplicateTaskAction(task: TaskData): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
-    const { id: _id, children: _children, ...rest } = task;
+    const { id: _id, children: _children, carriedFromDate: _cfd, carryOverReason: _cor, ...rest } = task;
     const newTask = await taskService.upsertTask(userId, {
       ...rest,
       title: `${task.title} (Copy)`,
@@ -113,6 +113,25 @@ export async function updateTaskTimeRangeAction(id: string, plannedDate: string 
       plannedEndDate,
       hasPlannedTime: true,
       hasPlannedEndTime: true,
+    });
+    invalidateTaskCache(userId);
+    return task;
+  });
+}
+
+export async function carryOverTaskAction(
+  taskId: string,
+  reason: string | null,
+  newDateISO: string,
+): Promise<ActionResult<TaskData>> {
+  return withAction(async (userId) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const task = await taskService.upsertTask(userId, {
+      id: taskId,
+      plannedDate: newDateISO,
+      carriedFromDate: today.toISOString(),
+      carryOverReason: reason,
     });
     invalidateTaskCache(userId);
     return task;

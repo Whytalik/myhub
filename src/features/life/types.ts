@@ -65,6 +65,8 @@ export interface TaskData {
   project?: { id: string; title: string } | null;
   children: TaskData[];
   completedAt: Date | null;
+  carriedFromDate: Date | null;
+  carryOverReason: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -87,6 +89,8 @@ export interface UpsertTaskInput {
   parentId?: string | null;
   sphereId?: string | null;
   projectId?: string | null;
+  carriedFromDate?: string | null;
+  carryOverReason?: string | null;
 }
 
 //

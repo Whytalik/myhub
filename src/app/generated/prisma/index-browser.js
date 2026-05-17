@@ -387,6 +387,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   sphereId: 'sphereId',
   projectId: 'projectId',
   completedAt: 'completedAt',
+  carriedFromDate: 'carriedFromDate',
+  carryOverReason: 'carryOverReason',
   isBlocked: 'isBlocked'
 };
 

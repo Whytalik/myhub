@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useCallback } from "react";
-import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy } from "lucide-react";
+import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw } from "lucide-react";
 import { deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
@@ -271,12 +271,24 @@ className={`
             )}
 
             {dueLabel && (
-              <div 
-                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`} 
+              <div
+                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`}
                 title="Deadline"
               >
                 <Flag size={isCompact ? 8 : 11} className={`${isOverdue ? "text-rose-500 fill-rose-500/10 animate-pulse" : "text-rose-500/60"} shrink-0`} />
                 <span className={`${isOverdue ? "text-rose-500" : "text-rose-400"} leading-none font-black`}>{dueLabel}</span>
+              </div>
+            )}
+
+            {task.carriedFromDate && (
+              <div
+                className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`}
+                title={`Перенесено з ${new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}`}
+              >
+                <RefreshCw size={isCompact ? 8 : 11} className="text-accent/40" />
+                <span className="text-accent/60 font-black leading-none">
+                  від {new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}
+                </span>
               </div>
             )}
         </div>

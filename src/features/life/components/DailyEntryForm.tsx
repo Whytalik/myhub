@@ -8,6 +8,7 @@ import { EnergySection } from "./sections/EnergySection";
 import { EmotionsSection } from "./sections/EmotionsSection";
 import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
+import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
 import { upsertEntryAction } from "../actions/journal-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
@@ -427,6 +428,8 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, sphere
                           />
                         </Suspense>
                       </div>
+
+                      <TaskReviewSection tasks={tasks} date={todayStr} />
 
                       <Suspense fallback={<div className="bg-surface border border-border rounded-xl h-[300px] flex items-center justify-center"><Loader2 size={20} className="text-accent animate-spin" /></div>}>
                         <TaskCalendar

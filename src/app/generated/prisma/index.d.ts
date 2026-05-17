@@ -33232,6 +33232,8 @@ export namespace Prisma {
     sphereId: string | null
     projectId: string | null
     completedAt: Date | null
+    carriedFromDate: Date | null
+    carryOverReason: string | null
     isBlocked: boolean | null
   }
 
@@ -33258,6 +33260,8 @@ export namespace Prisma {
     sphereId: string | null
     projectId: string | null
     completedAt: Date | null
+    carriedFromDate: Date | null
+    carryOverReason: string | null
     isBlocked: boolean | null
   }
 
@@ -33284,6 +33288,8 @@ export namespace Prisma {
     sphereId: number
     projectId: number
     completedAt: number
+    carriedFromDate: number
+    carryOverReason: number
     isBlocked: number
     _all: number
   }
@@ -33322,6 +33328,8 @@ export namespace Prisma {
     sphereId?: true
     projectId?: true
     completedAt?: true
+    carriedFromDate?: true
+    carryOverReason?: true
     isBlocked?: true
   }
 
@@ -33348,6 +33356,8 @@ export namespace Prisma {
     sphereId?: true
     projectId?: true
     completedAt?: true
+    carriedFromDate?: true
+    carryOverReason?: true
     isBlocked?: true
   }
 
@@ -33374,6 +33384,8 @@ export namespace Prisma {
     sphereId?: true
     projectId?: true
     completedAt?: true
+    carriedFromDate?: true
+    carryOverReason?: true
     isBlocked?: true
     _all?: true
   }
@@ -33487,6 +33499,8 @@ export namespace Prisma {
     sphereId: string | null
     projectId: string | null
     completedAt: Date | null
+    carriedFromDate: Date | null
+    carryOverReason: string | null
     isBlocked: boolean
     _count: TaskCountAggregateOutputType | null
     _avg: TaskAvgAggregateOutputType | null
@@ -33532,6 +33546,8 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
+    carriedFromDate?: boolean
+    carryOverReason?: boolean
     isBlocked?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
@@ -33564,6 +33580,8 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
+    carriedFromDate?: boolean
+    carryOverReason?: boolean
     isBlocked?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -33594,6 +33612,8 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
+    carriedFromDate?: boolean
+    carryOverReason?: boolean
     isBlocked?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -33624,10 +33644,12 @@ export namespace Prisma {
     sphereId?: boolean
     projectId?: boolean
     completedAt?: boolean
+    carriedFromDate?: boolean
+    carryOverReason?: boolean
     isBlocked?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "isBlocked", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "carriedFromDate" | "carryOverReason" | "isBlocked", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
@@ -33681,6 +33703,8 @@ export namespace Prisma {
       sphereId: string | null
       projectId: string | null
       completedAt: Date | null
+      carriedFromDate: Date | null
+      carryOverReason: string | null
       isBlocked: boolean
     }, ExtArgs["result"]["task"]>
     composites: {}
@@ -34132,6 +34156,8 @@ export namespace Prisma {
     readonly sphereId: FieldRef<"Task", 'String'>
     readonly projectId: FieldRef<"Task", 'String'>
     readonly completedAt: FieldRef<"Task", 'DateTime'>
+    readonly carriedFromDate: FieldRef<"Task", 'DateTime'>
+    readonly carryOverReason: FieldRef<"Task", 'String'>
     readonly isBlocked: FieldRef<"Task", 'Boolean'>
   }
     
@@ -59447,6 +59473,8 @@ export namespace Prisma {
     sphereId: 'sphereId',
     projectId: 'projectId',
     completedAt: 'completedAt',
+    carriedFromDate: 'carriedFromDate',
+    carryOverReason: 'carryOverReason',
     isBlocked: 'isBlocked'
   };
 
@@ -61970,6 +61998,8 @@ export namespace Prisma {
     sphereId?: StringNullableFilter<"Task"> | string | null
     projectId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
@@ -62001,6 +62031,8 @@ export namespace Prisma {
     sphereId?: SortOrderInput | SortOrder
     projectId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    carriedFromDate?: SortOrderInput | SortOrder
+    carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
     parent?: TaskOrderByWithRelationInput
     children?: TaskOrderByRelationAggregateInput
@@ -62035,6 +62067,8 @@ export namespace Prisma {
     sphereId?: StringNullableFilter<"Task"> | string | null
     projectId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
@@ -62066,6 +62100,8 @@ export namespace Prisma {
     sphereId?: SortOrderInput | SortOrder
     projectId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    carriedFromDate?: SortOrderInput | SortOrder
+    carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
     _count?: TaskCountOrderByAggregateInput
     _avg?: TaskAvgOrderByAggregateInput
@@ -62100,6 +62136,8 @@ export namespace Prisma {
     sphereId?: StringNullableWithAggregatesFilter<"Task"> | string | null
     projectId?: StringNullableWithAggregatesFilter<"Task"> | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    carriedFromDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    carryOverReason?: StringNullableWithAggregatesFilter<"Task"> | string | null
     isBlocked?: BoolWithAggregatesFilter<"Task"> | boolean
   }
 
@@ -65683,6 +65721,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
@@ -65714,6 +65754,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
@@ -65737,6 +65779,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
@@ -65768,6 +65812,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -65795,6 +65841,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -65817,6 +65865,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -65843,6 +65893,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -69489,6 +69541,8 @@ export namespace Prisma {
     sphereId?: SortOrder
     projectId?: SortOrder
     completedAt?: SortOrder
+    carriedFromDate?: SortOrder
+    carryOverReason?: SortOrder
     isBlocked?: SortOrder
   }
 
@@ -69520,6 +69574,8 @@ export namespace Prisma {
     sphereId?: SortOrder
     projectId?: SortOrder
     completedAt?: SortOrder
+    carriedFromDate?: SortOrder
+    carryOverReason?: SortOrder
     isBlocked?: SortOrder
   }
 
@@ -69546,6 +69602,8 @@ export namespace Prisma {
     sphereId?: SortOrder
     projectId?: SortOrder
     completedAt?: SortOrder
+    carriedFromDate?: SortOrder
+    carryOverReason?: SortOrder
     isBlocked?: SortOrder
   }
 
@@ -75429,6 +75487,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
@@ -75458,6 +75518,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
@@ -76174,6 +76236,8 @@ export namespace Prisma {
     sphereId?: StringNullableFilter<"Task"> | string | null
     projectId?: StringNullableFilter<"Task"> | string | null
     completedAt?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
   }
 
@@ -80235,6 +80299,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
@@ -80264,6 +80330,8 @@ export namespace Prisma {
     parentId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
@@ -80452,6 +80520,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -80482,6 +80552,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -80509,6 +80581,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -80538,6 +80612,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
@@ -80717,6 +80793,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -80747,6 +80825,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -83712,6 +83792,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
@@ -83741,6 +83823,8 @@ export namespace Prisma {
     parentId?: string | null
     sphereId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
@@ -84257,6 +84341,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -84946,6 +85032,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
@@ -84975,6 +85063,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -85001,6 +85091,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -85832,6 +85924,8 @@ export namespace Prisma {
     parentId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -85971,6 +86065,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
@@ -86000,6 +86096,8 @@ export namespace Prisma {
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -86026,6 +86124,8 @@ export namespace Prisma {
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -86051,6 +86151,8 @@ export namespace Prisma {
     sphereId?: string | null
     projectId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -86073,6 +86175,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -86102,6 +86206,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -86128,6 +86234,8 @@ export namespace Prisma {
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -86603,6 +86711,8 @@ export namespace Prisma {
     parentId?: string | null
     sphereId?: string | null
     completedAt?: Date | string | null
+    carriedFromDate?: Date | string | null
+    carryOverReason?: string | null
     isBlocked?: boolean
   }
 
@@ -86625,6 +86735,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
@@ -86654,6 +86766,8 @@ export namespace Prisma {
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
@@ -86680,6 +86794,8 @@ export namespace Prisma {
     parentId?: NullableStringFieldUpdateOperationsInput | string | null
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
