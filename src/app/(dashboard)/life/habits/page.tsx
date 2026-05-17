@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/page-header";
 import { HabitsPageClient } from "@/features/life/components/habits/HabitsPageClient";
 import * as habitService from "@/features/life/services/habit-service";
+import * as taskService from "@/features/life/services/task-service";
 import type { HabitData } from "@/features/life/types";
 
 export const metadata: Metadata = {
@@ -18,7 +19,10 @@ export default async function HabitsPage() {
     redirect("/login");
   }
 
-  const habits = await habitService.getActiveHabits(userId);
+  const [habits, spheres] = await Promise.all([
+    habitService.getActiveHabits(userId),
+    taskService.getAllSpheres(userId),
+  ]);
 
   return (
     <div className="px-8 py-8">
@@ -28,7 +32,8 @@ export default async function HabitsPage() {
         description="Small disciplines compound into extraordinary results."
       />
       <HabitsPageClient
-        initialHabits={habits as unknown as HabitData[]} 
+        initialHabits={habits as unknown as HabitData[]}
+        spheres={spheres}
       />
     </div>
   );

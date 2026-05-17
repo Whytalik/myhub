@@ -442,6 +442,12 @@ model DailyEntry {
   @@unique([userId, date])
 }
 
+enum SphereLevel {
+  MINIMUM
+  MEDIUM
+  DESIRED
+}
+
 model Habit {
   id           String            @id @default(cuid())
   userId       String
@@ -453,6 +459,7 @@ model Habit {
   reminderTime String?
   order        Int               @default(0)
   archived     Boolean           @default(false)
+  sphereLevel  SphereLevel?
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   sphereId     String?

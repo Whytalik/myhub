@@ -434,6 +434,7 @@ exports.Prisma.HabitScalarFieldEnum = {
   reminderTime: 'reminderTime',
   order: 'order',
   archived: 'archived',
+  sphereLevel: 'sphereLevel',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sphereId: 'sphereId'
@@ -765,6 +766,12 @@ exports.TaskPriority = exports.$Enums.TaskPriority = {
   MEDIUM: 'MEDIUM',
   HIGH: 'HIGH',
   URGENT: 'URGENT'
+};
+
+exports.SphereLevel = exports.$Enums.SphereLevel = {
+  MINIMUM: 'MINIMUM',
+  MEDIUM: 'MEDIUM',
+  DESIRED: 'DESIRED'
 };
 
 exports.LibraryItemType = exports.$Enums.LibraryItemType = {

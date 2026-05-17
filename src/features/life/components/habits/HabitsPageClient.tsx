@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { deleteHabitAction } from "@/features/life/actions/habit-actions";
-import type { HabitData } from "@/features/life/types";
+import type { HabitData, LifeSphereData } from "@/features/life/types";
 import { ListChecks, Plus, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -12,11 +12,10 @@ import { HabitFormDialog } from "./HabitFormDialog";
 
 interface HabitsPageClientProps {
   initialHabits: HabitData[];
+  spheres: LifeSphereData[];
 }
 
-export function HabitsPageClient({
-  initialHabits,
-}: HabitsPageClientProps) {
+export function HabitsPageClient({ initialHabits, spheres }: HabitsPageClientProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<HabitData | null>(null);
   const [showArchived, setShowArchived] = useState(false);
@@ -150,6 +149,7 @@ export function HabitsPageClient({
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         habit={selectedHabit}
+        spheres={spheres}
       />
     </div>
   );

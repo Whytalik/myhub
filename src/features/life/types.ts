@@ -165,6 +165,8 @@ export interface UpsertDailyEntryInput {
 //
 // --- Habit ---
 //
+export type SphereLevel = 'MINIMUM' | 'MEDIUM' | 'DESIRED';
+
 export interface HabitData {
   id: string;
   name: string;
@@ -177,6 +179,8 @@ export interface HabitData {
   reminderTime?: string | null;
   archived: boolean;
   order: number;
+  sphereId?: string | null;
+  sphereLevel?: SphereLevel | null;
   completions: HabitCompletionData[];
   createdAt: Date;
   updatedAt: Date;
@@ -228,4 +232,6 @@ export interface UpsertHabitInput {
   reminderTime?: string | null;
   order?: number;
   archived?: boolean;
+  sphereId?: string | null;
+  sphereLevel?: SphereLevel | null;
 }

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getCachedAllSprints, getCachedActiveSprint, getCachedAlignmentData, getCachedVision, getCachedAnnualCompass } from "@/lib/cache";
+import { getCachedAllSprints, getCachedActiveSprint, getCachedAlignmentData, getCachedVision, getCachedAnnualCompass, getCachedActiveHabits } from "@/lib/cache";
 import { TacticFrequency, TaskStatus, ObjectiveStatus, SprintStatus, TaskPriority } from "@/app/generated/prisma";
 import type { 
   SprintData, 
@@ -270,7 +270,19 @@ export async function deleteProject(userId: string, id: string): Promise<void> {
 // ─── Alignment ────────────────────────────────────────────────────────────────
 
 export async function getAlignmentData(userId: string) {
-  const { vision, spheres, activeSprint } = await getCachedAlignmentData(userId);
+  const [{ vision, spheres, activeSprint }, allHabits] = await Promise.all([
+    getCachedAlignmentData(userId),
+    getCachedActiveHabits(userId),
+  ]);
+
+  const sphereLevelHabits = allHabits
+    .filter(h => h.sphereLevel !== null && !h.archived)
+    .map(h => ({
+      id: h.id,
+      name: h.name,
+      sphereId: h.sphereId ?? null,
+      sphereLevel: h.sphereLevel as 'MINIMUM' | 'MEDIUM' | 'DESIRED',
+    }));
 
   return {
     vision,
@@ -285,7 +297,8 @@ export async function getAlignmentData(userId: string) {
       createdAt: s.createdAt,
       updatedAt: s.updatedAt,
     })),
-    activeObjectives: activeSprint?.objectives.map(mapObjective) || []
+    activeObjectives: activeSprint?.objectives.map(mapObjective) || [],
+    sphereLevelHabits,
   };
 }
 

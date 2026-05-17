@@ -243,7 +243,16 @@ export type SprintReview = $Result.DefaultSelection<Prisma.$SprintReviewPayload>
  * Enums
  */
 export namespace $Enums {
-  export const SystemStatus: {
+  export const SphereLevel: {
+  MINIMUM: 'MINIMUM',
+  MEDIUM: 'MEDIUM',
+  DESIRED: 'DESIRED'
+};
+
+export type SphereLevel = (typeof SphereLevel)[keyof typeof SphereLevel]
+
+
+export const SystemStatus: {
   STABLE: 'STABLE',
   CRISIS_SURVIVAL: 'CRISIS_SURVIVAL',
   CRISIS_STABILIZATION: 'CRISIS_STABILIZATION',
@@ -489,6 +498,10 @@ export const Store: {
 export type Store = (typeof Store)[keyof typeof Store]
 
 }
+
+export type SphereLevel = $Enums.SphereLevel
+
+export const SphereLevel: typeof $Enums.SphereLevel
 
 export type SystemStatus = $Enums.SystemStatus
 
@@ -36085,6 +36098,7 @@ export namespace Prisma {
     reminderTime: string | null
     order: number | null
     archived: boolean | null
+    sphereLevel: $Enums.SphereLevel | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
@@ -36101,6 +36115,7 @@ export namespace Prisma {
     reminderTime: string | null
     order: number | null
     archived: boolean | null
+    sphereLevel: $Enums.SphereLevel | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
@@ -36117,6 +36132,7 @@ export namespace Prisma {
     reminderTime: number
     order: number
     archived: number
+    sphereLevel: number
     createdAt: number
     updatedAt: number
     sphereId: number
@@ -36143,6 +36159,7 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
+    sphereLevel?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36159,6 +36176,7 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
+    sphereLevel?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36175,6 +36193,7 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
+    sphereLevel?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36278,6 +36297,7 @@ export namespace Prisma {
     reminderTime: string | null
     order: number
     archived: boolean
+    sphereLevel: $Enums.SphereLevel | null
     createdAt: Date
     updatedAt: Date
     sphereId: string | null
@@ -36313,6 +36333,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
+    sphereLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36333,6 +36354,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
+    sphereLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36351,6 +36373,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
+    sphereLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36369,12 +36392,13 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
+    sphereLevel?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "sphereLevel" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -36408,6 +36432,7 @@ export namespace Prisma {
       reminderTime: string | null
       order: number
       archived: boolean
+      sphereLevel: $Enums.SphereLevel | null
       createdAt: Date
       updatedAt: Date
       sphereId: string | null
@@ -36847,6 +36872,7 @@ export namespace Prisma {
     readonly reminderTime: FieldRef<"Habit", 'String'>
     readonly order: FieldRef<"Habit", 'Int'>
     readonly archived: FieldRef<"Habit", 'Boolean'>
+    readonly sphereLevel: FieldRef<"Habit", 'SphereLevel'>
     readonly createdAt: FieldRef<"Habit", 'DateTime'>
     readonly updatedAt: FieldRef<"Habit", 'DateTime'>
     readonly sphereId: FieldRef<"Habit", 'String'>
@@ -59474,6 +59500,7 @@ export namespace Prisma {
     reminderTime: 'reminderTime',
     order: 'order',
     archived: 'archived',
+    sphereLevel: 'sphereLevel',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sphereId: 'sphereId'
@@ -60040,6 +60067,20 @@ export namespace Prisma {
    * Reference to a field of type 'TaskPriority[]'
    */
   export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SphereLevel'
+   */
+  export type EnumSphereLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SphereLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'SphereLevel[]'
+   */
+  export type ListEnumSphereLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SphereLevel[]'>
     
 
 
@@ -62259,6 +62300,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
+    sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -62278,6 +62320,7 @@ export namespace Prisma {
     reminderTime?: SortOrderInput | SortOrder
     order?: SortOrder
     archived?: SortOrder
+    sphereLevel?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
@@ -62300,6 +62343,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
+    sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -62319,6 +62363,7 @@ export namespace Prisma {
     reminderTime?: SortOrderInput | SortOrder
     order?: SortOrder
     archived?: SortOrder
+    sphereLevel?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
@@ -62343,6 +62388,7 @@ export namespace Prisma {
     reminderTime?: StringNullableWithAggregatesFilter<"Habit"> | string | null
     order?: IntWithAggregatesFilter<"Habit"> | number
     archived?: BoolWithAggregatesFilter<"Habit"> | boolean
+    sphereLevel?: EnumSphereLevelNullableWithAggregatesFilter<"Habit"> | $Enums.SphereLevel | null
     createdAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     sphereId?: StringNullableWithAggregatesFilter<"Habit"> | string | null
@@ -66040,6 +66086,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -66058,6 +66105,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -66074,6 +66122,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -66092,6 +66141,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66109,6 +66159,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -66124,6 +66175,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -66139,6 +66191,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69639,6 +69692,13 @@ export namespace Prisma {
     recoveryScore?: SortOrder
   }
 
+  export type EnumSphereLevelNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SphereLevel | EnumSphereLevelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSphereLevelNullableFilter<$PrismaModel> | $Enums.SphereLevel | null
+  }
+
   export type HabitCompletionListRelationFilter = {
     every?: HabitCompletionWhereInput
     some?: HabitCompletionWhereInput
@@ -69660,6 +69720,7 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
+    sphereLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -69680,6 +69741,7 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
+    sphereLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -69696,6 +69758,7 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
+    sphereLevel?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -69703,6 +69766,16 @@ export namespace Prisma {
 
   export type HabitSumOrderByAggregateInput = {
     order?: SortOrder
+  }
+
+  export type EnumSphereLevelNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SphereLevel | EnumSphereLevelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSphereLevelNullableWithAggregatesFilter<$PrismaModel> | $Enums.SphereLevel | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
+    _max?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
   }
 
   export type HabitScalarRelationFilter = {
@@ -73236,6 +73309,10 @@ export namespace Prisma {
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
   }
 
+  export type NullableEnumSphereLevelFieldUpdateOperationsInput = {
+    set?: $Enums.SphereLevel | null
+  }
+
   export type LifeSphereUpdateOneWithoutHabitsNestedInput = {
     create?: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
     connectOrCreate?: LifeSphereCreateOrConnectWithoutHabitsInput
@@ -74574,6 +74651,23 @@ export namespace Prisma {
     _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
   }
 
+  export type NestedEnumSphereLevelNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SphereLevel | EnumSphereLevelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSphereLevelNullableFilter<$PrismaModel> | $Enums.SphereLevel | null
+  }
+
+  export type NestedEnumSphereLevelNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SphereLevel | EnumSphereLevelFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSphereLevelNullableWithAggregatesFilter<$PrismaModel> | $Enums.SphereLevel | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
+    _max?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumLibraryItemTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.LibraryItemType | EnumLibraryItemTypeFieldRefInput<$PrismaModel>
     in?: $Enums.LibraryItemType[] | ListEnumLibraryItemTypeFieldRefInput<$PrismaModel>
@@ -74962,6 +75056,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -74978,6 +75073,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -75747,6 +75843,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
+    sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -79948,6 +80045,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutHabitsInput
@@ -79965,6 +80063,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
@@ -81250,6 +81349,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -81267,6 +81367,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -81298,6 +81399,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -81315,6 +81417,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84023,6 +84126,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -84450,6 +84554,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -84466,6 +84571,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84482,6 +84588,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85677,6 +85784,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
+    sphereLevel?: $Enums.SphereLevel | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85737,6 +85845,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
@@ -85754,6 +85863,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
@@ -85770,6 +85880,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

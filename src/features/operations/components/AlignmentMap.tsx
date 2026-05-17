@@ -9,13 +9,27 @@ import { toggleSphereActiveAction } from "@/features/life/actions/task-actions";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { ObjectiveData } from "../types";
-import type { LifeSphereData } from "@/features/life/types";
+import type { LifeSphereData, SphereLevel } from "@/features/life/types";
+
+const LEVEL_CONFIG: Record<SphereLevel, { label: string; color: string; dot: string }> = {
+  MINIMUM:  { label: "Min",     color: "text-rose-500",   dot: "bg-rose-500" },
+  MEDIUM:   { label: "Medium",  color: "text-amber-500",  dot: "bg-amber-500" },
+  DESIRED:  { label: "Desired", color: "text-emerald-500", dot: "bg-emerald-500" },
+};
+
+interface SphereLevelHabit {
+  id: string;
+  name: string;
+  sphereId: string | null;
+  sphereLevel: SphereLevel;
+}
 
 interface AlignmentMapProps {
   initialData: {
     vision: { title: string; content: string | null } | null;
     spheres: LifeSphereData[];
     activeObjectives: ObjectiveData[];
+    sphereLevelHabits: SphereLevelHabit[];
   };
 }
 
@@ -121,7 +135,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
         </div>
       </section>
 
-      {/* Level 02: Strategic Pillars & Level 04: Objectives */}
+      {/* Level 02: Strategic Pillars */}
       <section className="space-y-10">
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-caption font-mono text-muted uppercase tracking-[0.4em] mb-4">Level 02: Strategic Pillars</h2>
@@ -136,9 +150,12 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {activeSpheres.map((sphere) => {
               const sphereObjectives = initialData.activeObjectives.filter(obj => obj.sphereId === sphere.id);
+              const sphereHabits = initialData.sphereLevelHabits.filter(h => h.sphereId === sphere.id);
+              const hasStandards = sphereHabits.length > 0;
 
               return (
                 <div key={sphere.id} className="flex flex-col space-y-6">
+                  {/* Pillar Card */}
                   <div className="p-6 bg-surface border border-border rounded-[2rem] relative overflow-hidden hover:border-accent/40 transition-all">
                     <div className="flex items-center gap-4 mb-4">
                       <div
@@ -153,10 +170,7 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
                       </div>
                     </div>
                     <div className="w-full h-1 bg-border/40 rounded-full overflow-hidden">
-                      <div
-                        className="h-full opacity-20"
-                        style={{ width: "100%", backgroundColor: sphere.color }}
-                      />
+                      <div className="h-full opacity-20" style={{ width: "100%", backgroundColor: sphere.color }} />
                     </div>
                   </div>
 
@@ -164,6 +178,38 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
                     <div className="w-px bg-gradient-to-b from-border to-transparent" />
                   </div>
 
+                  {/* Sphere Standards */}
+                  {hasStandards && (
+                    <>
+                      <div className="space-y-2">
+                        <h5 className="text-label font-mono text-muted uppercase tracking-widest text-center mb-3">Standards</h5>
+                        {(["MINIMUM", "MEDIUM", "DESIRED"] as SphereLevel[]).map(level => {
+                          const habits = sphereHabits.filter(h => h.sphereLevel === level);
+                          if (habits.length === 0) return null;
+                          const cfg = LEVEL_CONFIG[level];
+                          return (
+                            <div key={level} className="flex items-start gap-2">
+                              <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${cfg.dot}`} />
+                              <div className="flex-1 min-w-0">
+                                <span className={`text-[9px] font-mono font-bold uppercase tracking-widest ${cfg.color}`}>{cfg.label}</span>
+                                <div className="space-y-0.5 mt-0.5">
+                                  {habits.map(h => (
+                                    <p key={h.id} className="text-label text-secondary leading-tight truncate">{h.name}</p>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      <div className="flex justify-center h-8">
+                        <div className="w-px bg-gradient-to-b from-border to-transparent" />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Sprint OKRs */}
                   <div className="space-y-3">
                     <h5 className="text-label font-mono text-muted uppercase tracking-widest text-center mb-4">Current Sprint OKRs</h5>
                     {sphereObjectives.length === 0 ? (
@@ -223,7 +269,6 @@ export function AlignmentMap({ initialData }: AlignmentMapProps) {
               placeholder="e.g. The Sovereign Architect"
             />
           </div>
-
           <div className="space-y-2">
             <label className="text-caption font-mono uppercase text-muted tracking-widest">Description — Who will I be in 5 years?</label>
             <textarea

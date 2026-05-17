@@ -5,7 +5,14 @@ import { toggleHabitCompletionAction, toggleHabitArchivedAction } from "@/featur
 import { calculateStreak } from "@/features/life/logic/habit-utils";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
-import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell, ShieldCheck, Shield } from "lucide-react";
+import { CheckCircle2, Circle, Edit2, Trash2, Anchor, Zap, PartyPopper, Flame, Archive, Bell, ShieldCheck, Shield, TrendingUp } from "lucide-react";
+import type { SphereLevel } from "@/features/life/types";
+
+const SPHERE_LEVEL_CONFIG: Record<SphereLevel, { label: string; classes: string }> = {
+  MINIMUM:  { label: "Min",     classes: "bg-rose-500/10 border-rose-500/20 text-rose-600" },
+  MEDIUM:   { label: "Medium",  classes: "bg-amber-500/10 border-amber-500/20 text-amber-600" },
+  DESIRED:  { label: "Desired", classes: "bg-emerald-500/10 border-emerald-500/20 text-emerald-600" },
+};
 
 interface HabitCardProps {
   habit: HabitData;
@@ -78,6 +85,12 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
               <div className="flex items-center gap-1 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
                 <Bell size={10} className="text-blue-500" />
                 <span className="text-caption font-bold text-blue-600 font-mono">{habit.reminderTime}</span>
+              </div>
+            )}
+            {habit.sphereLevel && (
+              <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full border ${SPHERE_LEVEL_CONFIG[habit.sphereLevel].classes}`}>
+                <TrendingUp size={10} />
+                <span className="text-caption font-bold font-mono">{SPHERE_LEVEL_CONFIG[habit.sphereLevel].label}</span>
               </div>
             )}
           </div>

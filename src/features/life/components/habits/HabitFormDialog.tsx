@@ -9,18 +9,25 @@ import { Input } from "@/components/ui/input";
 import { FormField } from "@/components/ui/form-field";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
-import type { HabitData } from "@/features/life/types";
+import type { HabitData, LifeSphereData, SphereLevel } from "@/features/life/types";
 import { toast } from "sonner";
 import { Anchor, Zap, PartyPopper, Bell, X, Sprout, ShieldOff } from "lucide-react";
 import { TimePicker } from "@/components/ui/time-picker";
+
+const LEVEL_OPTIONS: { value: SphereLevel; label: string; description: string; color: string; border: string }[] = [
+  { value: "MINIMUM",  label: "Min",     description: "Floor — never skip",     color: "text-rose-500",    border: "border-rose-500/40 bg-rose-500/5" },
+  { value: "MEDIUM",   label: "Medium",  description: "Baseline steady rhythm", color: "text-amber-500",   border: "border-amber-500/40 bg-amber-500/5" },
+  { value: "DESIRED",  label: "Desired", description: "Optimal, full effort",   color: "text-emerald-500", border: "border-emerald-500/40 bg-emerald-500/5" },
+];
 
 interface HabitFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
   habit?: HabitData | null;
+  spheres?: LifeSphereData[];
 }
 
-export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps) {
+export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitFormDialogProps) {
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
 
@@ -34,12 +41,15 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
       celebration: habit?.celebration ?? "",
       reminderTime: habit?.reminderTime ?? "",
       archived: habit?.archived ?? false,
+      sphereId: habit?.sphereId ?? null,
+      sphereLevel: (habit?.sphereLevel as SphereLevel) ?? null,
     },
   });
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const reminderTime = watch("reminderTime");
   const habitType = watch("type");
+  const selectedSphereId = watch("sphereId");
+  const selectedLevel = watch("sphereLevel");
   const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
@@ -53,6 +63,8 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
         celebration: data.celebration?.trim() || null,
         reminderTime: data.reminderTime || null,
         archived: data.archived ?? false,
+        sphereId: data.sphereId ?? null,
+        sphereLevel: (data.sphereLevel as SphereLevel) ?? null,
       });
       if (result.success) {
         toast.success(isEditing ? "Habit updated" : "Habit created");
@@ -123,6 +135,72 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
           />
         </FormField>
 
+        {/* Sphere selector */}
+        {spheres.length > 0 && (
+          <Controller
+            name="sphereId"
+            control={control}
+            render={({ field }) => (
+              <div className="space-y-2">
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">Life Sphere (optional)</label>
+                <div className="flex flex-wrap gap-2">
+                  {spheres.map(s => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => {
+                        const next = field.value === s.id ? null : s.id;
+                        field.onChange(next);
+                        if (!next) setValue("sphereLevel", null);
+                      }}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                        field.value === s.id
+                          ? "border-transparent text-white"
+                          : "border-border text-muted bg-surface hover:opacity-80"
+                      }`}
+                      style={field.value === s.id ? { backgroundColor: s.color } : {}}
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          />
+        )}
+
+        {/* Sphere level selector — only when sphere is selected */}
+        {selectedSphereId && (
+          <Controller
+            name="sphereLevel"
+            control={control}
+            render={({ field }) => (
+              <div className="space-y-2">
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">Sphere Standard Level</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {LEVEL_OPTIONS.map(opt => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => field.onChange(field.value === opt.value ? null : opt.value)}
+                      className={`flex flex-col items-center gap-1 p-3 rounded-xl border text-center transition-all ${
+                        selectedLevel === opt.value
+                          ? opt.border
+                          : "border-border bg-surface hover:bg-raised"
+                      }`}
+                    >
+                      <span className={`text-note font-bold font-mono ${selectedLevel === opt.value ? opt.color : "text-text"}`}>
+                        {opt.label}
+                      </span>
+                      <span className="text-[10px] text-muted leading-tight">{opt.description}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          />
+        )}
+
         {isEditing && (
           <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">
             <input
@@ -140,62 +218,34 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
         <div className="grid grid-cols-1 gap-4">
           {isAvoidance ? (
             <>
-              <FormField
-                label="Trigger (optional)"
-                hint="When do you usually slip?"
-                error={errors.anchor?.message}
-              >
+              <FormField label="Trigger (optional)" hint="When do you usually slip?" error={errors.anchor?.message}>
                 <div className="flex items-center gap-2 mb-1">
                   <Anchor size={14} className="text-accent" />
                 </div>
-                <Input
-                  {...register("anchor")}
-                  placeholder="e.g. After lunch when I'm tired..."
-                />
+                <Input {...register("anchor")} placeholder="e.g. After lunch when I'm tired..." />
               </FormField>
 
-              <FormField
-                label="Replacement (optional)"
-                hint="What will you do instead?"
-                error={errors.action?.message}
-              >
+              <FormField label="Replacement (optional)" hint="What will you do instead?" error={errors.action?.message}>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-amber-500" />
                 </div>
-                <Input
-                  {...register("action")}
-                  placeholder="e.g. I will drink sparkling water..."
-                />
+                <Input {...register("action")} placeholder="e.g. I will drink sparkling water..." />
               </FormField>
             </>
           ) : (
             <>
-              <FormField
-                label="The Anchor (Trigger)"
-                error={errors.anchor?.message}
-                required
-              >
+              <FormField label="The Anchor (Trigger)" error={errors.anchor?.message} required>
                 <div className="flex items-center gap-2 mb-1">
                   <Anchor size={14} className="text-accent" />
                 </div>
-                <Input
-                  {...register("anchor")}
-                  placeholder="After I [wash my face]..."
-                />
+                <Input {...register("anchor")} placeholder="After I [wash my face]..." />
               </FormField>
 
-              <FormField
-                label="The Action (New habit)"
-                error={errors.action?.message}
-                required
-              >
+              <FormField label="The Action (New habit)" error={errors.action?.message} required>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-amber-500" />
                 </div>
-                <Input
-                  {...register("action")}
-                  placeholder="I will [do 5 pushups]..."
-                />
+                <Input {...register("action")} placeholder="I will [do 5 pushups]..." />
               </FormField>
             </>
           )}
@@ -228,11 +278,7 @@ export function HabitFormDialog({ isOpen, onClose, habit }: HabitFormDialogProps
                 name="reminderTime"
                 control={control}
                 render={({ field }) => (
-                  <TimePicker
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-                    className="w-full"
-                  />
+                  <TimePicker value={field.value ?? ""} onChange={field.onChange} className="w-full" />
                 )}
               />
               {!reminderTime && (

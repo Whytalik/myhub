@@ -8,6 +8,8 @@ export const habitSchema = z.object({
   celebration: z.string().optional(),
   reminderTime: z.string().optional(),
   archived: z.boolean().optional(),
+  sphereId: z.string().nullable().optional(),
+  sphereLevel: z.enum(["MINIMUM", "MEDIUM", "DESIRED"]).nullable().optional(),
 }).superRefine((data, ctx) => {
   if (data.type === "positive") {
     if (!data.anchor || data.anchor.trim().length === 0) {
