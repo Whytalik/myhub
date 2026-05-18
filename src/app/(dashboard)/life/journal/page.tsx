@@ -21,7 +21,15 @@ function currentTodayStr(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
 
-export default async function JournalPage() {
+function isValidDateStr(s: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(Date.parse(s));
+}
+
+export default async function JournalPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string }>;
+}) {
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -29,7 +37,10 @@ export default async function JournalPage() {
     redirect("/login");
   }
 
-  const dateStr = currentTodayStr();
+  const { date: dateParam } = await searchParams;
+  const todayStr = currentTodayStr();
+  const dateStr = dateParam && isValidDateStr(dateParam) ? dateParam : todayStr;
+  const isPast = dateStr !== todayStr;
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
@@ -54,9 +65,13 @@ export default async function JournalPage() {
     <div>
       <div className="relative">
         <PageHeader
-          breadcrumb={[{ label: "life space", href: "/life" }, { label: "daily journal" }]}
-          title="Daily Journal"
-          description="Daily reflection, tracking, and intention."
+          breadcrumb={[
+            { label: "life space", href: "/life" },
+            ...(isPast ? [{ label: "daily journal", href: "/life/journal" }] : [{ label: "daily journal" }]),
+            ...(isPast ? [{ label: dateStr }] : []),
+          ]}
+          title={isPast ? new Date(dateStr).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : "Daily Journal"}
+          description={isPast ? undefined : "Daily reflection, tracking, and intention."}
         />
         <Link
           href="/life/history"
