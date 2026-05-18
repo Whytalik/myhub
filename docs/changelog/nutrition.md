@@ -1,3 +1,13 @@
+## [2026-05-18] — Fix: Dish ingredient units now display correctly in WeekPlanner
+
+Ingredient rows in the WeekPlanner were showing all amounts with a hardcoded "г" (gram) label regardless of the product's actual unit (PIECE, TBSP, ML, etc.). Fixed display to convert stored gram values through `toDisplayAmount` using the product's unit and `standardPackageAmount`. Inline editing now shows the correct unit label and converts display amounts back to grams before saving. Also fixed `updateDishEntryIngredient` not to reset the stored `unit` to `null` when no unit argument is passed.
+
+- **Files Updated**: `src/features/nutrition/components/planner/WeekPlanner.tsx`, `src/features/nutrition/actions/planning.ts`
+- **Verification**:
+    - [x] Logic implemented
+    - [x] UI updated
+    - [x] Verified with `pnpm tsc --noEmit`, `pnpm lint`
+
 ## [2026-05-18] — Fix: WeekPlanner mutations now refresh UI after server action
 
 All mutation handlers in `WeekPlanner` (add dish, add product, remove dish, remove product, update ingredient weight, update product weight) now call `router.refresh()` on success. Previously the server action updated the DB but the client-side SSR snapshot never re-fetched, so newly added/removed items were invisible until a manual page reload. Also fixed a minor bug where `productWeight` was reset to `"1"` after adding a product (now resets to `"100"`).

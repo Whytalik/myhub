@@ -459,7 +459,7 @@ export async function updateDishEntryIngredient(
       update: {
         weight,
         inputState: inputState ?? undefined,
-        unit: unit ?? null,
+        ...(unit !== undefined ? { unit } : {}),
       },
     })
 

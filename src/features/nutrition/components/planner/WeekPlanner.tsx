@@ -524,6 +524,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                               ing: p.ingredients.find(i => i.ingredientIndex === idx),
                             }))
                             const productName = personIngredients.find(p => p.ing)?.ing?.productName || ""
+                            const ingProductId = personIngredients.find(p => p.ing)?.ing?.productId
+                            const ingProdInfo = products.find(pr => pr.id === ingProductId)
+                            const ingUnit = personIngredients.find(p => p.ing)?.ing?.unit ?? ingProdInfo?.unit ?? "GRAM"
+                            const ingStdPkg = ingProdInfo?.standardPackageAmount ?? 1
+                            const ingUnitLabel = getProductUnitLabel(ingUnit)
 
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
@@ -546,7 +551,8 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                                 const w = parseFloat(editingIngredient.weight)
                                                 if (w > 0) {
                                                   startTransition(async () => {
-                                                    const result = await updateDishEntryIngredient(person.entryId, idx, w)
+                                                    const grams = toGrams(w, ingUnit, ingStdPkg)
+                                                    const result = await updateDishEntryIngredient(person.entryId, idx, grams, undefined, ingUnit)
                                                     if (result.success) { toast.success("Weight updated"); setEditingIngredient(null); router.refresh() }
                                                   })
                                                 }
@@ -555,9 +561,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                             }}
                                             onBlur={() => {
                                               const w = parseFloat(editingIngredient.weight)
-                                              if (w > 0 && Math.round(w) !== Math.round(ing.weight)) {
+                                              const currentDisplay = parseFloat(toDisplayAmount(ing.weight, ingUnit, ingStdPkg))
+                                              if (w > 0 && Math.round(w) !== Math.round(currentDisplay)) {
                                                 startTransition(async () => {
-                                                  const result = await updateDishEntryIngredient(person.entryId, idx, w)
+                                                  const grams = toGrams(w, ingUnit, ingStdPkg)
+                                                  const result = await updateDishEntryIngredient(person.entryId, idx, grams, undefined, ingUnit)
                                                   if (result.success) { setEditingIngredient(null); router.refresh() }
                                                 })
                                               } else {
@@ -565,14 +573,14 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               }
                                             }}
                                           />
-                                          <span className="text-micro text-text-muted">г</span>
+                                          <span className="text-micro text-text-muted">{ingUnitLabel}</span>
                                         </div>
                                       ) : (
                                         <button
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
-                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: String(Math.round(ing.weight)) })}
+                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: toDisplayAmount(ing.weight, ingUnit, ingStdPkg) })}
                                         >
-                                          {ing.weight.toFixed(0)}<span className="text-micro text-text-muted">г</span>
+                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted">{ingUnitLabel}</span>
                                         </button>
                                       )
                                     ) : (
