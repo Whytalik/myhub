@@ -403,6 +403,10 @@ export function TaskCalendar({
     setDialogOpen(true);
   };
 
+  const handleTaskStatusChange = (taskId: string, newStatus: TaskData['status']) => {
+    setLocalTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t));
+  };
+
   const handleTaskDeleted = () => {
     setDialogVersion(v => v + 1);
     setDialogOpen(false);
@@ -477,8 +481,8 @@ export function TaskCalendar({
     return calendarTasks.filter(t => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate));
   }, [calendarTasks, currentDate]);
 
-  const scheduledTasks = useMemo(() => tasksForDay.filter(t => t.hasPlannedTime), [tasksForDay]);
-  const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime), [tasksForDay]);
+  const scheduledTasks = useMemo(() => tasksForDay.filter(t => t.hasPlannedTime && t.status !== 'DONE'), [tasksForDay]);
+  const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime && t.status !== 'DONE'), [tasksForDay]);
 
   const timelineRows = useMemo(() => {
     const sorted = [...scheduledTasks].sort((a, b) =>
@@ -1176,11 +1180,12 @@ export function TaskCalendar({
 
                                   <div className="flex items-center gap-2 mt-auto pt-1.5 border-t border-white/[0.03]">
                                     <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                                      <StatusToggle 
-                                        taskId={task.id} 
-                                        status={task.status} 
-                                        variant="badge" 
-                                        size="sm" 
+                                      <StatusToggle
+                                        taskId={task.id}
+                                        status={task.status}
+                                        variant="badge"
+                                        size="sm"
+                                        onStatusChange={handleTaskStatusChange}
                                       />
                                     </div>
 

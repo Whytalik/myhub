@@ -1,5 +1,14 @@
 # Operations Domain Changelog
 
+## [2026-05-18] — Completed Tasks Hidden from Day Timeline
+
+Completed (DONE) tasks are now automatically excluded from the day-view timeline in TaskCalendar. Marking a task done via the StatusToggle inside a timeline card immediately removes it from the timeline without requiring a page reload.
+
+### Verification Checklist:
+- [x] Logic implemented (`scheduledTasks`/`unscheduledTasks` filter DONE; `StatusToggle` propagates status changes via `onStatusChange`)
+- [x] UI updated (task disappears immediately on completion)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-17] — Habits Evolution & Strategic Pillars
 
 ### Added

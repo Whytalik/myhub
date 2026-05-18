@@ -57,12 +57,13 @@ interface StatusToggleProps {
   status: TaskStatus;
   variant?: "icon" | "badge";
   size?: "sm" | "default";
+  onStatusChange?: (taskId: string, newStatus: TaskStatus) => void;
 }
 
-export function StatusToggle({ taskId, status: initialStatus, variant = "icon", size = "default" }: StatusToggleProps) {
+export function StatusToggle({ taskId, status: initialStatus, variant = "icon", size = "default", onStatusChange }: StatusToggleProps) {
   const [currentStatus, setCurrentStatus] = useState<TaskStatus>(initialStatus);
   const [isPending, startTransition] = useTransition();
-  
+
   const { isOpen, coords, triggerRef, contentRef, close, toggle } = useDynamicPositioning<HTMLButtonElement>({
     contentWidth: 160,
     offset: 8
@@ -73,14 +74,16 @@ export function StatusToggle({ taskId, status: initialStatus, variant = "icon", 
       close();
       return;
     }
-    
+
     setCurrentStatus(newStatus);
     close();
-    
+    onStatusChange?.(taskId, newStatus);
+
     startTransition(async () => {
       const result = await updateTaskStatusAction(taskId, newStatus);
       if (!result.success) {
         setCurrentStatus(initialStatus);
+        onStatusChange?.(taskId, initialStatus);
         toast.error(result.error || "Failed to update status");
       }
     });
