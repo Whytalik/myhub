@@ -1,3 +1,11 @@
+## [2026-05-18] — Fix: hide parent task in daily grid until subtasks are done
+
+Батьківська задача (з сабтасками) більше не відображається в гріді дня, якщо сабтаски ще не завершені. Показується лише якщо: всі сабтаски мають статус DONE або CANCELLED, або сьогодні є днем дедлайну (`dueDate`).
+
+**Verification:**
+- [x] Logic implemented (`filterDailyTasks` в `task-service.ts`)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-18] — Fix: History button — journal date navigation
 
 Сторінка журналу тепер читає `?date=YYYY-MM-DD` query param. Переходи з History view на конкретну дату тепер завантажують правильний запис. При перегляді минулої дати breadcrumb і заголовок відображають вибрану дату, при поверненні без параметра — показується сьогоднішній запис.

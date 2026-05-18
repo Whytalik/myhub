@@ -143,9 +143,23 @@ export async function getCalendarTasks(userId: string): Promise<TaskData[]> {
   return sortTasks(tasks.map(mapTask));
 }
 
+function filterDailyTasks(tasks: TaskData[], date: Date): TaskData[] {
+  const dateStr = date.toISOString().slice(0, 10);
+  return tasks.filter(task => {
+    if (task.children.length === 0) return true;
+    const allSubtasksDone = task.children.every(
+      c => c.status === 'DONE' || c.status === 'CANCELLED'
+    );
+    const isDueToday = task.dueDate
+      ? new Date(task.dueDate).toISOString().slice(0, 10) === dateStr
+      : false;
+    return allSubtasksDone || isDueToday;
+  });
+}
+
 export async function getTasksByDate(userId: string, date: Date): Promise<TaskData[]> {
   const tasks = await getCachedTasksByDate(userId, date.toISOString());
-  return sortTasks(tasks.map(mapTask));
+  return filterDailyTasks(sortTasks(tasks.map(mapTask)), date);
 }
 
 export async function upsertTask(userId: string, input: UpsertTaskInput): Promise<TaskData> {
