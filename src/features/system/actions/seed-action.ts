@@ -206,6 +206,65 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     const findDish = (name: string) => allDishes.find(d => d.name === name);
     const findDishJson = (name: string) => (dishesData as unknown as JsonDish[]).find(d => d.name === name);
 
+    // Макро-цілі кожної людини (% від kcal)
+    const personMacroTargets: Record<string, { proteinPct: number; fatPct: number; carbsPct: number }> = {
+      [vitaliiId]: { proteinPct: 45, fatPct: 30, carbsPct: 25 },
+      [gfId]:      { proteinPct: 15, fatPct: 25, carbsPct: 60 },
+    };
+
+    // Розумне масштабування: кожен інгредієнт скейлиться пропорційно до того,
+    // наскільки його домінуючий макрос відповідає цілям людини.
+    // Після першого проходу нормалізуємо так, щоб загальний kcal = targetKcal.
+    function computeIngredientWeights(
+      ingredients: JsonDish["ingredients"],
+      targetKcal: number,
+      targets: { proteinPct: number; fatPct: number; carbsPct: number }
+    ): number[] {
+      let dishKcal = 0, dishProtKcal = 0, dishFatKcal = 0, dishCarbKcal = 0;
+      for (const ing of ingredients) {
+        const p = globalProducts[ing.productName];
+        if (!p) continue;
+        const w = ing.rawWeight / 100;
+        dishKcal     += w * p.caloriesPer100;
+        dishProtKcal += w * p.proteinPer100 * 4;
+        dishFatKcal  += w * p.fatPer100 * 9;
+        dishCarbKcal += w * p.carbsPer100 * 4;
+      }
+
+      if (dishKcal <= 0 || targetKcal <= 0) return ingredients.map(i => i.rawWeight);
+
+      const baseScale = targetKcal / dishKcal;
+      const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+
+      // Коефіцієнти коригування: наскільки більше/менше кожного макросу хоче людина порівняно з профілем страви
+      const protAdj = dishProtKcal > dishKcal * 0.02 ? clamp(targets.proteinPct / (dishProtKcal / dishKcal * 100), 0.25, 4.0) : 1;
+      const fatAdj  = dishFatKcal  > dishKcal * 0.02 ? clamp(targets.fatPct  / (dishFatKcal  / dishKcal * 100), 0.25, 4.0) : 1;
+      const carbAdj = dishCarbKcal > dishKcal * 0.02 ? clamp(targets.carbsPct / (dishCarbKcal / dishKcal * 100), 0.25, 4.0) : 1;
+
+      // Перший прохід: коригуємо кожен інгредієнт по його макро-профілю
+      const firstPass = ingredients.map(ing => {
+        const p = globalProducts[ing.productName];
+        if (!p) return ing.rawWeight * baseScale;
+        const macroKcal = (ing.rawWeight / 100) * (p.proteinPer100 * 4 + p.fatPer100 * 9 + p.carbsPer100 * 4);
+        // Дрібні приправи — без коригування
+        if (macroKcal < 0.5) return ing.rawWeight * baseScale;
+        const total = p.proteinPer100 * 4 + p.fatPer100 * 9 + p.carbsPer100 * 4;
+        const pF = (p.proteinPer100 * 4) / total;
+        const fF = (p.fatPer100 * 9) / total;
+        const cF = (p.carbsPer100 * 4) / total;
+        return ing.rawWeight * baseScale * (pF * protAdj + fF * fatAdj + cF * carbAdj);
+      });
+
+      // Нормалізація до targetKcal
+      let fp = 0;
+      for (let i = 0; i < ingredients.length; i++) {
+        const p = globalProducts[ingredients[i].productName];
+        if (p) fp += firstPass[i] * p.caloriesPer100 / 100;
+      }
+      const norm = fp > 0 ? targetKcal / fp : 1;
+      return firstPass.map(w => w * norm);
+    }
+
     for (const day of weekPlan.dayPlans) {
       const dayName = Object.keys(dayNamesMap).find(key => dayNamesMap[key] === day.dayOfWeek);
       const ws = WEEKLY_SCHEDULE.find(s => s.day === (dayName ?? ""));
@@ -213,7 +272,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
 
       for (const slot of day.mealSlots) {
         let dishName = ws.defaults[slot.name as keyof typeof ws.defaults];
-        
+
         // Special case: Friday Dinner is Fast Food
         if (dayName === "Пт" && slot.name === "Вечеря") {
           dishName = "Кебаб Класичний";
@@ -224,13 +283,8 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         const dish = findDish(dishName);
         const dishJson = findDishJson(dishName);
         if (dish && dishJson) {
-          const targetKcal = slot.targetKcal;
-          const dishTotalKcal = dishJson.ingredients.reduce((acc, ing) => {
-            const prod = globalProducts[ing.productName];
-            return acc + (prod ? (ing.rawWeight * prod.caloriesPer100) / 100 : 0);
-          }, 0);
-          
-          const scale = targetKcal > 0 && dishTotalKcal > 0 ? (targetKcal / dishTotalKcal) : 1;
+          const personTargets = personMacroTargets[slot.personId] ?? { proteinPct: 30, fatPct: 28, carbsPct: 42 };
+          const finalWeights = computeIngredientWeights(dishJson.ingredients, slot.targetKcal, personTargets);
 
           const dishEntry = await prisma.dishEntry.create({
             data: {
@@ -245,7 +299,7 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
               return {
                 dishEntryId: dishEntry.id,
                 ingredientIndex: idx,
-                weight: ing.rawWeight * scale,
+                weight: finalWeights[idx],
                 inputState: "RAW",
                 unit: prod?.unit ?? null,
               };

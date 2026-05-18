@@ -111,7 +111,7 @@
       { "productName": "Огірок", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яблуко", "alternatives": ["Груша"], "rawWeight": 90, "cookingMethod": "RAW" },
-      { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 7, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 15, "cookingMethod": "RAW" },
       { "productName": "Соєвий соус", "rawWeight": 3, "cookingMethod": "RAW" },
       { "productName": "Мед", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" }
@@ -128,10 +128,10 @@
       { "productName": "Томатна пасата", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 65, "cookingMethod": "FRIED" },
-      { "productName": "Твердий сир", "rawWeight": 20, "cookingMethod": "RAW" },
+      { "productName": "Твердий сир", "rawWeight": 30, "cookingMethod": "RAW" },
       { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Базилік", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Олія", "rawWeight": 1, "cookingMethod": "RAW" }
+      { "productName": "Олія", "rawWeight": 10, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -147,7 +147,8 @@
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "BOILED" },
       { "productName": "Петрушка", "alternatives": ["Кріп"], "rawWeight": 7, "cookingMethod": "RAW" },
       { "productName": "Куркума", "rawWeight": 2, "cookingMethod": "RAW" },
-      { "productName": "Лавровий лист", "rawWeight": 1, "cookingMethod": "RAW" }
+      { "productName": "Лавровий лист", "rawWeight": 1, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 10, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -181,7 +182,8 @@
       { "productName": "Перець", "rawWeight": 75, "cookingMethod": "BOILED" },
       { "productName": "Квасоля", "rawWeight": 75, "cookingMethod": "BOILED" },
       { "productName": "Томатна паста", "rawWeight": 15, "cookingMethod": "RAW" },
-      { "productName": "Паприка + Лавровий лист", "rawWeight": 3, "cookingMethod": "RAW" }
+      { "productName": "Паприка + Лавровий лист", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Олія", "rawWeight": 15, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -206,7 +208,7 @@
       { "productName": "Хек", "alternatives": ["Тилапія", "Мінтай"], "rawWeight": 150, "cookingMethod": "BAKED" },
       { "productName": "Гречка", "alternatives": ["Рис"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Броколі зам.", "alternatives": ["Цвітна капуста зам."], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Олія оливкова", "rawWeight": 3, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Кріп", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Грецький йогурт", "rawWeight": 22, "cookingMethod": "RAW" }
@@ -222,7 +224,8 @@
       { "productName": "Айсберг", "alternatives": ["Пекінська капуста"], "rawWeight": 250, "cookingMethod": "RAW" },
       { "productName": "Огірок", "alternatives": ["Помідор"], "rawWeight": 150, "cookingMethod": "RAW" },
       { "productName": "Рис", "alternatives": ["Гречка"], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Грецький йогурт", "rawWeight": 4, "cookingMethod": "RAW" },
+      { "productName": "Грецький йогурт", "rawWeight": 20, "cookingMethod": "RAW" },
+      { "productName": "Олія оливкова", "rawWeight": 10, "cookingMethod": "RAW" },
       { "productName": "Кріп", "rawWeight": 0.5, "cookingMethod": "RAW" },
       { "productName": "Часник", "rawWeight": 0.5, "cookingMethod": "RAW" }
     ]

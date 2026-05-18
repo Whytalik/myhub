@@ -235,7 +235,15 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
   function getProductUnitLabel(unit: string) { return UNIT_LABELS[unit] ?? unit }
   function toDisplayAmount(grams: number, unit: string, stdPkg: number): string {
     if (!NON_GRAM_UNITS.has(unit)) return grams.toFixed(0)
-    return Math.round(grams / stdPkg).toString()
+    const displayVal = Math.round(grams / stdPkg)
+    if (displayVal === 0) return Math.round(grams).toString()
+    return displayVal.toString()
+  }
+  function toDisplayUnit(grams: number, unit: string, stdPkg: number): string {
+    if (!NON_GRAM_UNITS.has(unit)) return getProductUnitLabel(unit)
+    const displayVal = Math.round(grams / stdPkg)
+    if (displayVal === 0) return "г"
+    return getProductUnitLabel(unit)
   }
   function toGrams(displayAmount: number, unit: string, stdPkg: number): number {
     return NON_GRAM_UNITS.has(unit) ? displayAmount * stdPkg : displayAmount
@@ -586,7 +594,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
                                           onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: toDisplayAmount(ing.weight, ingUnit, ingStdPkg) })}
                                         >
-                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{ingUnitLabel}</span>
+                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{toDisplayUnit(ing.weight, ingUnit, ingStdPkg)}</span>
                                         </button>
                                       )
                                     ) : (
