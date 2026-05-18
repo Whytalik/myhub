@@ -1187,6 +1187,11 @@ export function TaskCalendar({
                                     <div className="w-px h-3 bg-white/5 shrink-0" />
 
                                     <div className="flex items-center gap-2 min-w-0 pointer-events-none">
+                                      {task.isFrog && (
+                                        <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-green-500/15 text-green-400 text-[10px] font-black uppercase tracking-tighter border border-green-500/25 shrink-0">
+                                          <span role="img" aria-label="frog">🐸</span>
+                                        </span>
+                                      )}
                                       {task.sphere && (
                                         <div className="flex items-center gap-1 min-w-0">
                                           <div 

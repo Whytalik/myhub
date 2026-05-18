@@ -1,3 +1,11 @@
+## [2026-05-18] — Feature: show frog indicator in day timeline
+
+Таска-жаба (🐸) тепер показує іконку у картці таймлайну (режим Day) поруч зі сферою та пріоритетом.
+
+**Verification:**
+- [x] UI updated (`TaskCalendar.tsx` — день-таймлайн картка)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-18] — Fix: hide parent task in daily grid until subtasks are done
 
 Батьківська задача (з сабтасками) більше не відображається в гріді дня, якщо сабтаски ще не завершені. Показується лише якщо: всі сабтаски мають статус DONE або CANCELLED, або сьогодні є днем дедлайну (`dueDate`).
