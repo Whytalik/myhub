@@ -409,7 +409,13 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
           {/* Meal slots */}
           {mealSlotNames.map((slotName) => {
-            const slotGroup = day.slots.filter(s => s.name === slotName)
+            const slotGroup = day.slots
+              .filter(s => s.name === slotName)
+              .sort((a, b) => {
+                const ai = weekPlan.persons.findIndex(p => p.id === a.personId)
+                const bi = weekPlan.persons.findIndex(p => p.id === b.personId)
+                return ai - bi
+              })
             const timeWindow = slotGroup[0]?.timeWindow
             const totalEntries = slotGroup.reduce((sum, s) => sum + s.entries.length + s.productEntries.length, 0)
             const color = getMealColor(slotName)
@@ -526,7 +532,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                             const productName = personIngredients.find(p => p.ing)?.ing?.productName || ""
                             const ingProductId = personIngredients.find(p => p.ing)?.ing?.productId
                             const ingProdInfo = products.find(pr => pr.id === ingProductId)
-                            const ingUnit = personIngredients.find(p => p.ing)?.ing?.unit ?? ingProdInfo?.unit ?? "GRAM"
+                            const ingUnit = personIngredients.find(p => p.ing)?.ing?.unit ?? "GRAM"
                             const ingStdPkg = ingProdInfo?.standardPackageAmount ?? 1
                             const ingUnitLabel = getProductUnitLabel(ingUnit)
 
@@ -580,7 +586,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
                                           onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: toDisplayAmount(ing.weight, ingUnit, ingStdPkg) })}
                                         >
-                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted">{ingUnitLabel}</span>
+                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{ingUnitLabel}</span>
                                         </button>
                                       )
                                     ) : (
@@ -703,7 +709,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
                                           onClick={() => setEditingProduct({ id: person.entryId, productId, weight: toDisplayAmount(person.weight, pUnit, pStdPkg) })}
                                         >
-                                          {toDisplayAmount(person.weight, pUnit, pStdPkg)}<span className="text-micro text-text-muted">{pUnitLabel}</span>
+                                          {toDisplayAmount(person.weight, pUnit, pStdPkg)}<span className="text-micro text-text-muted ml-0.5">{pUnitLabel}</span>
                                         </button>
                                       )
                                     ) : (

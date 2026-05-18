@@ -186,6 +186,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
 
     const persons = await prisma.nutritionPerson.findMany({
       where: { userId },
+      orderBy: { createdAt: "asc" },
     })
 
     const personMap = new Map(persons.map((p) => [
