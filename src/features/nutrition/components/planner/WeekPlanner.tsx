@@ -217,6 +217,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
       if (result.success) {
         toast.success("Dish added")
+        router.refresh()
       } else {
         toast.error(result.error || "Failed to add dish")
       }
@@ -253,7 +254,8 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         setProductPickerSlotId(null)
         setSelectedProductId(null)
         setProductSearch("")
-        setProductWeight("1")
+        setProductWeight("100")
+        router.refresh()
       } else {
         toast.error(result.error || "Failed to add product")
       }
@@ -498,7 +500,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                 className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-50"
                                 onClick={async () => {
                                   const result = await removeDishFromSlot(dish.persons[0].entryId)
-                                  if (result.success) toast.success("Dish removed")
+                                  if (result.success) { toast.success("Dish removed"); router.refresh() }
                                 }}
                                 disabled={isPending || dish.persons[0].slotLocked}
                               >
@@ -545,7 +547,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                                 if (w > 0) {
                                                   startTransition(async () => {
                                                     const result = await updateDishEntryIngredient(person.entryId, idx, w)
-                                                    if (result.success) { toast.success("Weight updated"); setEditingIngredient(null) }
+                                                    if (result.success) { toast.success("Weight updated"); setEditingIngredient(null); router.refresh() }
                                                   })
                                                 }
                                               }
@@ -556,7 +558,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               if (w > 0 && Math.round(w) !== Math.round(ing.weight)) {
                                                 startTransition(async () => {
                                                   const result = await updateDishEntryIngredient(person.entryId, idx, w)
-                                                  if (result.success) setEditingIngredient(null)
+                                                  if (result.success) { setEditingIngredient(null); router.refresh() }
                                                 })
                                               } else {
                                                 setEditingIngredient(null)
@@ -636,6 +638,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                         await removeProductFromSlot(pers.entryId)
                                       }
                                       toast.success("Product removed")
+                                      router.refresh()
                                     })
                                   }}
                                   disabled={isPending || p.persons.some(pers => pers.slotLocked)}
@@ -665,7 +668,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                                   startTransition(async () => {
                                                     const grams = toGrams(displayW, pUnit, pStdPkg)
                                                     const result = await updateProductEntryWeight(person.entryId, grams)
-                                                    if (result.success) { toast.success("Weight updated"); setEditingProduct(null) }
+                                                    if (result.success) { toast.success("Weight updated"); setEditingProduct(null); router.refresh() }
                                                   })
                                                 }
                                               }
@@ -678,7 +681,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                                 startTransition(async () => {
                                                   const grams = toGrams(displayW, pUnit, pStdPkg)
                                                   const result = await updateProductEntryWeight(person.entryId, grams)
-                                                  if (result.success) setEditingProduct(null)
+                                                  if (result.success) { setEditingProduct(null); router.refresh() }
                                                 })
                                               } else {
                                                 setEditingProduct(null)
