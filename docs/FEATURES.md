@@ -40,6 +40,7 @@ This file serves as the definitive, exhaustive index of all currently implemente
     - **Carry-over**: Unfinished tasks retain original date (`carriedFromDate`) and require a `carryOverReason`.
     - **Blockers**: `isBlocked` flag for dependency tracking.
     - **Privacy**: `isPrivate` flag for sensitive tasks (local-only visibility).
+    - **Eat the Frog**: `isFrog` flag marks the single highest-priority task. Setting a new frog automatically clears the previous one (global toggle). Frog tasks are pinned to the top of all sorted views and visually distinguished with a green indicator.
   - **Associations**: Tied to Life Spheres and Projects.
 - **Routine Scheduling**:
   - **Day Templates**: Global mappings (e.g., "Regular", "Training").

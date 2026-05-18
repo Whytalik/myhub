@@ -51,6 +51,7 @@ function mapTask(task: TaskWithRelations): TaskData {
     priority: task.priority,
     isPrivate: task.isPrivate ?? false,
     isBlocked: task.isBlocked ?? false,
+    isFrog: task.isFrog ?? false,
     plannedDate: task.plannedDate,
     hasPlannedTime: task.hasPlannedTime,
     plannedEndDate: task.plannedEndDate,
@@ -104,6 +105,9 @@ const STATUS_SORT_ORDER: Record<TaskStatus, number> = {
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
+    // 0. Frog task always first
+    if (a.isFrog !== b.isFrog) return a.isFrog ? -1 : 1;
+
     // 1. Sort by Status (based on STATUS_SORT_ORDER)
     const sA = STATUS_SORT_ORDER[a.status] ?? 99;
     const sB = STATUS_SORT_ORDER[b.status] ?? 99;
@@ -282,6 +286,16 @@ async function autoCompleteParentIfAllChildrenDone(userId: string, childId: stri
 
 export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {
   await prisma.task.update({ where: { id, userId }, data: { priority } });
+}
+
+export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
+  const task = await prisma.task.findUnique({ where: { id, userId }, select: { isFrog: true } });
+  if (!task) throw new Error("Task not found");
+
+  await prisma.$transaction([
+    prisma.task.updateMany({ where: { userId, isFrog: true }, data: { isFrog: false } }),
+    ...(task.isFrog ? [] : [prisma.task.update({ where: { id }, data: { isFrog: true } })]),
+  ]);
 }
 
 // ─── Spheres ──────────────────────────────────────────────────────────────────

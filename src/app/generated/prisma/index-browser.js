@@ -389,7 +389,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   completedAt: 'completedAt',
   carriedFromDate: 'carriedFromDate',
   carryOverReason: 'carryOverReason',
-  isBlocked: 'isBlocked'
+  isBlocked: 'isBlocked',
+  isFrog: 'isFrog'
 };
 
 exports.Prisma.DailyEntryScalarFieldEnum = {
@@ -438,6 +439,7 @@ exports.Prisma.HabitScalarFieldEnum = {
   archived: 'archived',
   targetDaysPerWeek: 'targetDaysPerWeek',
   sphereLevel: 'sphereLevel',
+  subcategory: 'subcategory',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sphereId: 'sphereId'

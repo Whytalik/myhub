@@ -33235,6 +33235,7 @@ export namespace Prisma {
     carriedFromDate: Date | null
     carryOverReason: string | null
     isBlocked: boolean | null
+    isFrog: boolean | null
   }
 
   export type TaskMaxAggregateOutputType = {
@@ -33263,6 +33264,7 @@ export namespace Prisma {
     carriedFromDate: Date | null
     carryOverReason: string | null
     isBlocked: boolean | null
+    isFrog: boolean | null
   }
 
   export type TaskCountAggregateOutputType = {
@@ -33291,6 +33293,7 @@ export namespace Prisma {
     carriedFromDate: number
     carryOverReason: number
     isBlocked: number
+    isFrog: number
     _all: number
   }
 
@@ -33331,6 +33334,7 @@ export namespace Prisma {
     carriedFromDate?: true
     carryOverReason?: true
     isBlocked?: true
+    isFrog?: true
   }
 
   export type TaskMaxAggregateInputType = {
@@ -33359,6 +33363,7 @@ export namespace Prisma {
     carriedFromDate?: true
     carryOverReason?: true
     isBlocked?: true
+    isFrog?: true
   }
 
   export type TaskCountAggregateInputType = {
@@ -33387,6 +33392,7 @@ export namespace Prisma {
     carriedFromDate?: true
     carryOverReason?: true
     isBlocked?: true
+    isFrog?: true
     _all?: true
   }
 
@@ -33502,6 +33508,7 @@ export namespace Prisma {
     carriedFromDate: Date | null
     carryOverReason: string | null
     isBlocked: boolean
+    isFrog: boolean
     _count: TaskCountAggregateOutputType | null
     _avg: TaskAvgAggregateOutputType | null
     _sum: TaskSumAggregateOutputType | null
@@ -33549,6 +33556,7 @@ export namespace Prisma {
     carriedFromDate?: boolean
     carryOverReason?: boolean
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -33583,6 +33591,7 @@ export namespace Prisma {
     carriedFromDate?: boolean
     carryOverReason?: boolean
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -33615,6 +33624,7 @@ export namespace Prisma {
     carriedFromDate?: boolean
     carryOverReason?: boolean
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -33647,9 +33657,10 @@ export namespace Prisma {
     carriedFromDate?: boolean
     carryOverReason?: boolean
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "carriedFromDate" | "carryOverReason" | "isBlocked", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "carriedFromDate" | "carryOverReason" | "isBlocked" | "isFrog", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
@@ -33706,6 +33717,7 @@ export namespace Prisma {
       carriedFromDate: Date | null
       carryOverReason: string | null
       isBlocked: boolean
+      isFrog: boolean
     }, ExtArgs["result"]["task"]>
     composites: {}
   }
@@ -34159,6 +34171,7 @@ export namespace Prisma {
     readonly carriedFromDate: FieldRef<"Task", 'DateTime'>
     readonly carryOverReason: FieldRef<"Task", 'String'>
     readonly isBlocked: FieldRef<"Task", 'Boolean'>
+    readonly isFrog: FieldRef<"Task", 'Boolean'>
   }
     
 
@@ -36128,6 +36141,7 @@ export namespace Prisma {
     archived: boolean | null
     targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
+    subcategory: string | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
@@ -36146,6 +36160,7 @@ export namespace Prisma {
     archived: boolean | null
     targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
+    subcategory: string | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
@@ -36164,6 +36179,7 @@ export namespace Prisma {
     archived: number
     targetDaysPerWeek: number
     sphereLevel: number
+    subcategory: number
     createdAt: number
     updatedAt: number
     sphereId: number
@@ -36194,6 +36210,7 @@ export namespace Prisma {
     archived?: true
     targetDaysPerWeek?: true
     sphereLevel?: true
+    subcategory?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36212,6 +36229,7 @@ export namespace Prisma {
     archived?: true
     targetDaysPerWeek?: true
     sphereLevel?: true
+    subcategory?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36230,6 +36248,7 @@ export namespace Prisma {
     archived?: true
     targetDaysPerWeek?: true
     sphereLevel?: true
+    subcategory?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
@@ -36335,6 +36354,7 @@ export namespace Prisma {
     archived: boolean
     targetDaysPerWeek: number
     sphereLevel: $Enums.SphereLevel | null
+    subcategory: string | null
     createdAt: Date
     updatedAt: Date
     sphereId: string | null
@@ -36372,6 +36392,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
+    subcategory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36394,6 +36415,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
+    subcategory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36414,6 +36436,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
+    subcategory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
@@ -36434,12 +36457,13 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
+    subcategory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "targetDaysPerWeek" | "sphereLevel" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "targetDaysPerWeek" | "sphereLevel" | "subcategory" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -36475,6 +36499,7 @@ export namespace Prisma {
       archived: boolean
       targetDaysPerWeek: number
       sphereLevel: $Enums.SphereLevel | null
+      subcategory: string | null
       createdAt: Date
       updatedAt: Date
       sphereId: string | null
@@ -36916,6 +36941,7 @@ export namespace Prisma {
     readonly archived: FieldRef<"Habit", 'Boolean'>
     readonly targetDaysPerWeek: FieldRef<"Habit", 'Int'>
     readonly sphereLevel: FieldRef<"Habit", 'SphereLevel'>
+    readonly subcategory: FieldRef<"Habit", 'String'>
     readonly createdAt: FieldRef<"Habit", 'DateTime'>
     readonly updatedAt: FieldRef<"Habit", 'DateTime'>
     readonly sphereId: FieldRef<"Habit", 'String'>
@@ -59492,7 +59518,8 @@ export namespace Prisma {
     completedAt: 'completedAt',
     carriedFromDate: 'carriedFromDate',
     carryOverReason: 'carryOverReason',
-    isBlocked: 'isBlocked'
+    isBlocked: 'isBlocked',
+    isFrog: 'isFrog'
   };
 
   export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
@@ -59547,6 +59574,7 @@ export namespace Prisma {
     archived: 'archived',
     targetDaysPerWeek: 'targetDaysPerWeek',
     sphereLevel: 'sphereLevel',
+    subcategory: 'subcategory',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     sphereId: 'sphereId'
@@ -62019,6 +62047,7 @@ export namespace Prisma {
     carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
+    isFrog?: BoolFilter<"Task"> | boolean
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
@@ -62052,6 +62081,7 @@ export namespace Prisma {
     carriedFromDate?: SortOrderInput | SortOrder
     carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
+    isFrog?: SortOrder
     parent?: TaskOrderByWithRelationInput
     children?: TaskOrderByRelationAggregateInput
     project?: ProjectOrderByWithRelationInput
@@ -62088,6 +62118,7 @@ export namespace Prisma {
     carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
+    isFrog?: BoolFilter<"Task"> | boolean
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
@@ -62121,6 +62152,7 @@ export namespace Prisma {
     carriedFromDate?: SortOrderInput | SortOrder
     carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
+    isFrog?: SortOrder
     _count?: TaskCountOrderByAggregateInput
     _avg?: TaskAvgOrderByAggregateInput
     _max?: TaskMaxOrderByAggregateInput
@@ -62157,6 +62189,7 @@ export namespace Prisma {
     carriedFromDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
     carryOverReason?: StringNullableWithAggregatesFilter<"Task"> | string | null
     isBlocked?: BoolWithAggregatesFilter<"Task"> | boolean
+    isFrog?: BoolWithAggregatesFilter<"Task"> | boolean
   }
 
   export type DailyEntryWhereInput = {
@@ -62358,6 +62391,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
+    subcategory?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -62379,6 +62413,7 @@ export namespace Prisma {
     archived?: SortOrder
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
+    subcategory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
@@ -62403,6 +62438,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
+    subcategory?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -62424,6 +62460,7 @@ export namespace Prisma {
     archived?: SortOrder
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
+    subcategory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
@@ -62450,6 +62487,7 @@ export namespace Prisma {
     archived?: BoolWithAggregatesFilter<"Habit"> | boolean
     targetDaysPerWeek?: IntWithAggregatesFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableWithAggregatesFilter<"Habit"> | $Enums.SphereLevel | null
+    subcategory?: StringNullableWithAggregatesFilter<"Habit"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     sphereId?: StringNullableWithAggregatesFilter<"Habit"> | string | null
@@ -65747,6 +65785,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -65780,6 +65819,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -65805,6 +65845,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -65838,6 +65879,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -65867,6 +65909,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type TaskUpdateManyMutationInput = {
@@ -65891,6 +65934,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TaskUncheckedUpdateManyInput = {
@@ -65919,6 +65963,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type DailyEntryCreateInput = {
@@ -66163,6 +66208,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -66183,6 +66229,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -66201,6 +66248,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -66221,6 +66269,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66240,6 +66289,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -66257,6 +66307,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -66274,6 +66325,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69574,6 +69626,7 @@ export namespace Prisma {
     carriedFromDate?: SortOrder
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
+    isFrog?: SortOrder
   }
 
   export type TaskAvgOrderByAggregateInput = {
@@ -69607,6 +69660,7 @@ export namespace Prisma {
     carriedFromDate?: SortOrder
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
+    isFrog?: SortOrder
   }
 
   export type TaskMinOrderByAggregateInput = {
@@ -69635,6 +69689,7 @@ export namespace Prisma {
     carriedFromDate?: SortOrder
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
+    isFrog?: SortOrder
   }
 
   export type TaskSumOrderByAggregateInput = {
@@ -69810,6 +69865,7 @@ export namespace Prisma {
     archived?: SortOrder
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
+    subcategory?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -69833,6 +69889,7 @@ export namespace Prisma {
     archived?: SortOrder
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
+    subcategory?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -69851,6 +69908,7 @@ export namespace Prisma {
     archived?: SortOrder
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
+    subcategory?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
@@ -75151,6 +75209,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -75169,6 +75228,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -75527,6 +75587,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -75558,6 +75619,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -75944,6 +76006,7 @@ export namespace Prisma {
     archived?: BoolFilter<"Habit"> | boolean
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
+    subcategory?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
@@ -76277,6 +76340,7 @@ export namespace Prisma {
     carriedFromDate?: DateTimeNullableFilter<"Task"> | Date | string | null
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
+    isFrog?: BoolFilter<"Task"> | boolean
   }
 
   export type UserLanguageUpsertWithWhereUniqueWithoutUserInput = {
@@ -80149,6 +80213,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutHabitsInput
@@ -80168,6 +80233,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
@@ -80342,6 +80408,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -80373,6 +80440,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -80563,6 +80631,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     project?: ProjectCreateNestedOneWithoutTasksInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -80595,6 +80664,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type TaskCreateOrConnectWithoutChildrenInput = {
@@ -80624,6 +80694,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -80655,6 +80726,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -80836,6 +80908,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -80868,6 +80941,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TaskUpsertWithWhereUniqueWithoutParentInput = {
@@ -81471,6 +81545,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
@@ -81490,6 +81565,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -81523,6 +81599,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -81542,6 +81619,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83839,6 +83917,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -83870,6 +83949,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -84256,6 +84336,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
@@ -84389,6 +84470,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type UserLanguageCreateManyUserInput = {
@@ -84687,6 +84769,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
@@ -84705,6 +84788,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84723,6 +84807,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85083,6 +85168,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -85114,6 +85200,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -85142,6 +85229,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserLanguageUpdateWithoutUserInput = {
@@ -85926,6 +86014,7 @@ export namespace Prisma {
     archived?: boolean
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85976,6 +86065,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type HabitUpdateWithoutSphereInput = {
@@ -85990,6 +86080,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
@@ -86009,6 +86100,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
@@ -86027,6 +86119,7 @@ export namespace Prisma {
     archived?: BoolFieldUpdateOperationsInput | boolean
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -86120,6 +86213,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -86151,6 +86245,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -86179,6 +86274,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TaskCreateManyParentInput = {
@@ -86206,6 +86302,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type TaskUpdateWithoutParentInput = {
@@ -86230,6 +86327,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -86261,6 +86359,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -86289,6 +86388,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type HabitCompletionCreateManyHabitInput = {
@@ -86766,6 +86866,7 @@ export namespace Prisma {
     carriedFromDate?: Date | string | null
     carryOverReason?: string | null
     isBlocked?: boolean
+    isFrog?: boolean
   }
 
   export type TaskUpdateWithoutProjectInput = {
@@ -86790,6 +86891,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -86821,6 +86923,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -86849,6 +86952,7 @@ export namespace Prisma {
     carriedFromDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    isFrog?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TacticCompletionCreateManyTacticInput = {

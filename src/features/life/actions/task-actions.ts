@@ -119,6 +119,13 @@ export async function updateTaskTimeRangeAction(id: string, plannedDate: string 
   });
 }
 
+export async function setTaskAsFrogAction(id: string): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await taskService.setTaskAsFrog(userId, id);
+    invalidateTaskCache(userId);
+  });
+}
+
 export async function carryOverTaskAction(
   taskId: string,
   reason: string | null,

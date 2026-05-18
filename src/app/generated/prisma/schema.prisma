@@ -395,6 +395,7 @@ model Task {
   carriedFromDate   DateTime?
   carryOverReason   String?
   isBlocked         Boolean      @default(false)
+  isFrog            Boolean      @default(false)
   parent            Task?        @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
   children          Task[]       @relation("TaskChildren")
   project           Project?     @relation(fields: [projectId], references: [id])
@@ -463,6 +464,7 @@ model Habit {
   archived          Boolean           @default(false)
   targetDaysPerWeek Int               @default(7)
   sphereLevel       SphereLevel?
+  subcategory       String?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   sphereId          String?

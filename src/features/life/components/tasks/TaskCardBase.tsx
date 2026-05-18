@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition, useCallback } from "react";
 import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw } from "lucide-react";
-import { deleteTaskAction } from "@/features/life/actions/task-actions";
+import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/dialog";
@@ -57,6 +57,17 @@ export function TaskCardBase({
         toast.success("Task deleted");
       } else {
         toast.error(result.error || "Failed to delete task");
+      }
+    });
+  };
+
+  const handleToggleFrog = () => {
+    startTransition(async () => {
+      const result = await setTaskAsFrogAction(task.id);
+      if (result.success) {
+        toast.success(task.isFrog ? "Жабу знято" : "🐸 Жабу встановлено!");
+      } else {
+        toast.error(result.error || "Failed to update frog");
       }
     });
   };
@@ -134,18 +145,31 @@ export function TaskCardBase({
 className={`
          group relative flex flex-col transition-all cursor-grab active:cursor-grabbing
          ${isCompact ? 'gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0' : 'gap-3 p-4 pt-5 rounded-2xl border h-full'}
-         ${isDragging 
-           ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]' 
-           : isDone 
-             ? 'bg-surface/30 border-border/40 opacity-70' 
+         ${isDragging
+           ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]'
+           : isDone
+             ? 'bg-surface/30 border-border/40 opacity-70'
              : task.isPrivate
                ? 'bg-amber-500/[0.05] !border-amber-500/80 ring-1 ring-amber-500/20 shadow-md shadow-amber-500/5'
-               : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'
+               : task.isFrog
+                 ? 'bg-green-500/[0.04] !border-green-500/60 ring-1 ring-green-500/20 shadow-md shadow-green-500/5 hover:shadow-green-500/10'
+                 : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'
          }
          ${className}
        `}
     >
       <div className={`absolute ${isCompact ? 'top-1 right-1' : 'top-3 right-3'} flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20`}>
+        <button
+          onClick={(e) => { e.stopPropagation(); handleToggleFrog(); }}
+          className={`${isCompact ? 'p-1' : 'p-1.5'} rounded-lg transition-colors backdrop-blur-sm border ${
+            task.isFrog
+              ? 'text-green-400 bg-green-500/10 border-green-500/40 hover:bg-green-500/20'
+              : 'text-muted hover:text-green-400 hover:bg-green-400/10 bg-surface/80 border-border/50'
+          }`}
+          title={task.isFrog ? "Зняти жабу" : "Зробити жабою"}
+        >
+          <span className={isCompact ? 'text-[10px]' : 'text-xs'} role="img" aria-label="frog">🐸</span>
+        </button>
         {onDuplicate && (
           <button
             onClick={(e) => { e.stopPropagation(); onDuplicate(task); }}
@@ -204,6 +228,11 @@ className={`
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "��������" : task.title) }}
             title={task.isPrivate ? "Private Task" : task.title}
           />
+          {task.isFrog && (
+            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 text-[10px] font-black uppercase tracking-tighter border border-green-500/25 whitespace-nowrap h-fit mt-0.5">
+              <span role="img" aria-label="frog">🐸</span> Frog
+            </span>
+          )}
           {task.isPrivate && (
              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-tighter border border-amber-500/20 whitespace-nowrap h-fit mt-0.5">
                Private
