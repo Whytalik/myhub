@@ -75,7 +75,7 @@ export default async function JournalPage({
         />
         <Link
           href="/life/history"
-          className="absolute top-0 right-0 inline-flex items-center gap-2 h-8 px-5 rounded-xl text-note font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
+          className="absolute top-0 right-0 z-20 inline-flex items-center gap-2 h-8 px-5 rounded-xl text-note font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
         >
           <History size={14} />
           History
