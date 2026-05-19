@@ -74,13 +74,13 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Тости з тунцем, яйцем та овочами",
+    "defaultSauces": ["Гірчиця"],
     "ingredients": [
       { "productName": "Тунець у вл. соку", "rawWeight": 137, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
       { "productName": "Яйця", "rawWeight": 75, "cookingMethod": "BOILED" },
       { "productName": "Огірок", "alternatives": ["Зелена цибуля"], "rawWeight": 100, "cookingMethod": "RAW" },
-      { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
-      { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -104,7 +104,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Комплексний боул з гречкою, куркою та свіжими овочами",
-    "defaultSauce": "Соєво-медовий",
+    "defaultSauces": ["Соєво-медовий"],
     "ingredients": [
       { "productName": "Гречка", "alternatives": ["Рис", "Булгур"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Куряче філе", "alternatives": ["Курячий фарш", "Курячі серця"], "rawWeight": 125, "cookingMethod": "FRIED" },
@@ -154,6 +154,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Запечена картопля з рибою та овочами",
+    "defaultSauces": ["Гірчиця"],
     "ingredients": [
       { "productName": "Картопля", "rawWeight": 300, "cookingMethod": "BAKED" },
       { "productName": "Хек", "alternatives": ["Тилапія", "Куряче стегно"], "rawWeight": 150, "cookingMethod": "BAKED" },
@@ -163,8 +164,7 @@
       { "productName": "Цукор", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Паприка", "rawWeight": 1, "cookingMethod": "RAW" },
       { "productName": "Лимонний сік", "rawWeight": 3, "cookingMethod": "RAW" },
-      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Гірчиця діжонська", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -202,14 +202,12 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Запечена риба з гречкою та броколі",
+    "defaultSauces": ["Йогурт з кропом"],
     "ingredients": [
       { "productName": "Хек", "alternatives": ["Тилапія", "Мінтай"], "rawWeight": 150, "cookingMethod": "BAKED" },
       { "productName": "Гречка", "alternatives": ["Рис"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Броколі зам.", "alternatives": ["Цвітна капуста зам."], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Олія оливкова", "rawWeight": 12, "cookingMethod": "RAW" },
-      { "productName": "Кріп", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Грецький йогурт", "rawWeight": 22, "cookingMethod": "RAW" }
+      { "productName": "Олія оливкова", "rawWeight": 12, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -217,15 +215,13 @@
     "type": "SALAD",
     "servings": 1,
     "description": "Салат з тунцем, овочами та рисом",
+    "defaultSauces": ["Йогурт з кропом"],
     "ingredients": [
       { "productName": "Тунець у вл. соку", "alternatives": ["Куряче філе", "Яйця"], "rawWeight": 150, "cookingMethod": "RAW" },
       { "productName": "Айсберг", "alternatives": ["Пекінська капуста"], "rawWeight": 250, "cookingMethod": "RAW" },
       { "productName": "Огірок", "alternatives": ["Помідор"], "rawWeight": 150, "cookingMethod": "RAW" },
       { "productName": "Рис", "alternatives": ["Гречка"], "rawWeight": 125, "cookingMethod": "BOILED" },
-      { "productName": "Грецький йогурт", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Олія оливкова", "rawWeight": 10, "cookingMethod": "RAW" },
-      { "productName": "Кріп", "rawWeight": 0.5, "cookingMethod": "RAW" },
-      { "productName": "Часник", "rawWeight": 0.5, "cookingMethod": "RAW" }
+      { "productName": "Олія оливкова", "rawWeight": 10, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -448,13 +444,12 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Хрустка курка в паніровці з овочами та соусами",
+    "defaultSauces": ["Напівгострий соус"],
     "ingredients": [
       { "productName": "Куряче філе", "rawWeight": 120, "cookingMethod": "FRIED" },
       { "productName": "Айсберг", "rawWeight": 30, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 30, "cookingMethod": "RAW" },
       { "productName": "Маринований огірок", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Майонез", "rawWeight": 12, "cookingMethod": "RAW" },
-      { "productName": "Гірчиця діжонська", "rawWeight": 5, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 35, "cookingMethod": "RAW" },
       { "productName": "Звичайне борошно", "rawWeight": 25, "cookingMethod": "RAW" },
       { "productName": "Кукурудзяний крохмаль", "rawWeight": 5, "cookingMethod": "RAW" },
@@ -471,13 +466,12 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Домашній чізбургер з яловичини з сиром чеддер",
+    "defaultSauces": ["Напівгострий соус"],
     "ingredients": [
       { "productName": "Яловичий фарш", "rawWeight": 100, "cookingMethod": "FRIED" },
       { "productName": "Чеддер", "rawWeight": 25, "cookingMethod": "RAW" },
       { "productName": "Маринований огірок", "rawWeight": 15, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 10, "cookingMethod": "RAW" },
-      { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" },
-      { "productName": "Кетчуп", "rawWeight": 10, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 30, "cookingMethod": "RAW" },
       { "productName": "Звичайне борошно", "rawWeight": 30, "cookingMethod": "RAW" },
       { "productName": "Молоко", "rawWeight": 25, "cookingMethod": "RAW" },
@@ -514,14 +508,12 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Кебаб з куркою та овочами в домашньому лаваші",
+    "defaultSauces": ["Напівгострий соус"],
     "ingredients": [
       { "productName": "Куряче філе", "rawWeight": 135, "cookingMethod": "FRIED" },
       { "productName": "Помідор", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Айсберг", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 20, "cookingMethod": "RAW" },
-      { "productName": "Кетчуп", "rawWeight": 18, "cookingMethod": "RAW" },
-      { "productName": "Гірчиця", "rawWeight": 5, "cookingMethod": "RAW" },
-      { "productName": "Паприка", "rawWeight": 2, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Борошно", "rawWeight": 40, "cookingMethod": "RAW" },
       { "productName": "Звичайне борошно", "rawWeight": 40, "cookingMethod": "RAW" },
       { "productName": "Олія оливкова", "rawWeight": 5, "cookingMethod": "RAW" },
