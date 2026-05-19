@@ -20,8 +20,6 @@ const PRESETS = [
 ] as const;
 
 export function TaskReviewSection({ tasks, date }: Props) {
-  const [initialTotal] = useState(() => tasks.length);
-
   const [carriedTaskIds, setCarriedTaskIds] = useState<string[]>([]);
   const [dismissedTaskIds, setDismissedTaskIds] = useState<string[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -44,7 +42,8 @@ export function TaskReviewSection({ tasks, date }: Props) {
   const incompleteTasks = visible.filter(
     (t) => t.status !== "DONE" && t.status !== "CANCELLED"
   );
-  const pct = initialTotal > 0 ? Math.round((done / initialTotal) * 100) : 0;
+  const total = tasks.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   const handleOpenReason = (taskId: string) => {
     setExpandedId((prev) => (prev === taskId ? null : taskId));
@@ -73,7 +72,7 @@ export function TaskReviewSection({ tasks, date }: Props) {
     if (expandedId === taskId) setExpandedId(null);
   };
 
-  if (initialTotal === 0) return null;
+  if (total === 0) return null;
 
   return (
     <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-5">
@@ -94,7 +93,7 @@ export function TaskReviewSection({ tasks, date }: Props) {
             />
           </div>
           <span className="text-[11px] font-mono text-muted tabular-nums shrink-0">
-            {done} / {initialTotal} виконано
+            {done} / {total} виконано
           </span>
         </div>
         {carriedTaskIds.length > 0 && (

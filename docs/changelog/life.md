@@ -1,3 +1,19 @@
+## [2026-05-19] — Fix: TaskReviewSection always reflects current day tasks count
+
+Видалено `initialTotal` — frozen state, що не оновлювався при додаванні нових тасок протягом дня. Тепер `total`, прогрес-бар та лічильник `done / total` завжди відображають актуальну кількість тасок з пропу `tasks`.
+
+**Verification:**
+- [x] Logic implemented (`TaskReviewSection.tsx` — removed `useState(() => tasks.length)`, replaced with `tasks.length`)
+- [x] Verified with `pnpm tsc --noEmit`
+
+## [2026-05-19] — Feature: auto-update current time line in Day timeline + Tasks tab done/total count
+
+Лінія поточного часу в Day-таймлайні тепер оновлюється кожну хвилину через `setInterval`. Таб "Tasks" у журналі тепер показує `done/total` (наприклад, `Tasks (2/5)`) замість лише загальної кількості.
+
+**Verification:**
+- [x] Logic implemented (`TaskCalendar.tsx` — `now` state + interval; `DailyEntryForm.tsx` — tasks label)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-18] — Feature: show frog indicator in day timeline
 
 Таска-жаба (🐸) тепер показує іконку у картці таймлайну (режим Day) поруч зі сферою та пріоритетом.

@@ -350,10 +350,17 @@ export function TaskCalendar({
   const [resizingTimeline, setResizingTimeline] = useState<{ id: string, delta: number, edge: 'start' | 'end' } | null>(null);
   
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
-  
+  const [now, setNow] = useState(() => new Date());
+
   useEffect(() => {
     setLocalTasks(initialTasks);
   }, [initialTasks]);
+
+  useEffect(() => {
+    if (mode !== 'day') return;
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, [mode]);
 
   const parentResolutionTasks = allTasks || localTasks;
 
@@ -1087,7 +1094,6 @@ export function TaskCalendar({
                   </div>
 
                   {isToday(currentDate) && (() => {
-                    const now = new Date();
                     const nowMin = now.getHours() * 60 + now.getMinutes();
                     const dayStartMin = DAY_START * 60;
                     if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {

@@ -320,7 +320,7 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, sphere
                 },
                 { 
                   id: "tasks", 
-                  label: `Tasks (${tasks.length})`,
+                  label: `Tasks (${tasks.filter(t => t.status === 'DONE').length}/${tasks.length})`,
                   content: (
                     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
                       <div className="flex justify-center">
