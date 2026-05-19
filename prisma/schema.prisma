@@ -308,15 +308,16 @@ model ProductEntry {
 }
 
 model DishEntry {
-  id                   String                @id @default(uuid())
-  mealSlotId           String
-  dishId               String
-  selectedAlternatives Json?
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  dish                 Dish                  @relation(fields: [dishId], references: [id])
-  mealSlot             MealSlotInstance      @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
-  ingredients          DishEntryIngredient[]
+  id                    String                @id @default(uuid())
+  mealSlotId            String
+  dishId                String
+  selectedAlternatives  Json?
+  marinadeForIngredient String?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  dish                  Dish                  @relation(fields: [dishId], references: [id])
+  mealSlot              MealSlotInstance      @relation(fields: [mealSlotId], references: [id], onDelete: Cascade)
+  ingredients           DishEntryIngredient[]
 
   @@index([mealSlotId])
   @@index([dishId])

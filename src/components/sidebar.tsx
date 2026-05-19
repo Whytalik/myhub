@@ -27,6 +27,7 @@ import {
   Target,
   TrendingUp,
   Users,
+  Utensils,
   Zap,
   Pin,
   X,
@@ -53,6 +54,7 @@ const nutritionNav = [
   { href: "/nutrition/products", label: "Products", icon: Package },
   { href: "/nutrition/dishes", label: "Dishes", icon: ChefHat },
   { href: "/nutrition/plans", label: "Plans", icon: CalendarDays },
+  { href: "/nutrition/meal-prep", label: "Meal Prep", icon: Utensils },
   { href: "/nutrition/shopping", label: "Shopping", icon: ShoppingCart },
 ];
 

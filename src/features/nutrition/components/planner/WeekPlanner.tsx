@@ -71,6 +71,7 @@ interface WeekPlannerProps {
           dishName: string
           dishType: string
           dishServings: number
+          marinadeForIngredient: string | null
           nutrition: {
             kcal: number
             protein: number
@@ -468,9 +469,16 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               {(() => {
                 const personNames = slotGroup.map(s => s.personName || "")
                 const dishMap = new Map<string, { dishName: string; dishType: string; nutrition: { kcal: number; protein: number; fat: number; carbs: number }; persons: { personId: string; personName: string; entryId: string; slotId: string; slotLocked: boolean; totalWeight: number; ingredients: { ingredientIndex: number; productName: string; weight: number; inputState: string; rawWeight: number; cookedWeight: number; coefficient: number; cookingMethodName: string | null; unit: string | null; productId: string; alternatives: string[]; selectedAlternatives: Record<string, string | null> }[] }[] }>()
+                const slotMarinadeChips = new Map<string, string>() // ingredientName → marinadeName
 
                 slotGroup.forEach(slot => {
                   slot.entries.forEach(entry => {
+                    if (entry.dishType === "MARINADE") {
+                      if (entry.marinadeForIngredient) {
+                        slotMarinadeChips.set(entry.marinadeForIngredient, entry.dishName)
+                      }
+                      return
+                    }
                     if (!dishMap.has(entry.dishId)) {
                       dishMap.set(entry.dishId, {
                         dishName: entry.dishName,
@@ -553,7 +561,12 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
-                                <div className="px-4 py-2 text-caption text-text-muted">{productName}</div>
+                                <div className="px-4 py-2 text-caption text-text-muted flex items-center gap-1.5">
+                                  {productName}
+                                  {slotMarinadeChips.has(productName) && (
+                                    <span className="text-label font-mono text-violet-400" title={slotMarinadeChips.get(productName)}>🧂</span>
+                                  )}
+                                </div>
                                 {personIngredients.map(({ person, ing }) => (
                                   <div key={person.personId} className="px-4 py-2 border-l border-border/20">
                                     {ing ? (

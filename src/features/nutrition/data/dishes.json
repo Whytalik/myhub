@@ -57,7 +57,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Омлет з курячим філе та овочами — високобілковий сніданок",
-    "defaultSauces": ["Соєво-часниковий"],
+    "marinades": [{"ingredient": "Куряче філе", "sauce": "Соєво-часниковий"}],
     "ingredients": [
       { "productName": "Яйця", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яєчні білки", "rawWeight": 60, "cookingMethod": "RAW" },
@@ -86,7 +86,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Ролл з лаваша з куркою, яйцем та овочами",
-    "defaultSauces": ["Лимонно-трав'яний"],
+    "marinades": [{"ingredient": "Куряче філе", "sauce": "Лимонно-трав'яний"}],
     "ingredients": [
       { "productName": "Лаваш тонкий", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },

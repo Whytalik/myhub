@@ -327,6 +327,7 @@ exports.Prisma.DishEntryScalarFieldEnum = {
   mealSlotId: 'mealSlotId',
   dishId: 'dishId',
   selectedAlternatives: 'selectedAlternatives',
+  marinadeForIngredient: 'marinadeForIngredient',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -28553,6 +28553,7 @@ export namespace Prisma {
     id: string | null
     mealSlotId: string | null
     dishId: string | null
+    marinadeForIngredient: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -28561,6 +28562,7 @@ export namespace Prisma {
     id: string | null
     mealSlotId: string | null
     dishId: string | null
+    marinadeForIngredient: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -28570,6 +28572,7 @@ export namespace Prisma {
     mealSlotId: number
     dishId: number
     selectedAlternatives: number
+    marinadeForIngredient: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -28580,6 +28583,7 @@ export namespace Prisma {
     id?: true
     mealSlotId?: true
     dishId?: true
+    marinadeForIngredient?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -28588,6 +28592,7 @@ export namespace Prisma {
     id?: true
     mealSlotId?: true
     dishId?: true
+    marinadeForIngredient?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -28597,6 +28602,7 @@ export namespace Prisma {
     mealSlotId?: true
     dishId?: true
     selectedAlternatives?: true
+    marinadeForIngredient?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -28679,6 +28685,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     selectedAlternatives: JsonValue | null
+    marinadeForIngredient: string | null
     createdAt: Date
     updatedAt: Date
     _count: DishEntryCountAggregateOutputType | null
@@ -28705,6 +28712,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     selectedAlternatives?: boolean
+    marinadeForIngredient?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -28718,6 +28726,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     selectedAlternatives?: boolean
+    marinadeForIngredient?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -28729,6 +28738,7 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     selectedAlternatives?: boolean
+    marinadeForIngredient?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dish?: boolean | DishDefaultArgs<ExtArgs>
@@ -28740,11 +28750,12 @@ export namespace Prisma {
     mealSlotId?: boolean
     dishId?: boolean
     selectedAlternatives?: boolean
+    marinadeForIngredient?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "selectedAlternatives" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
+  export type DishEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mealSlotId" | "dishId" | "selectedAlternatives" | "marinadeForIngredient" | "createdAt" | "updatedAt", ExtArgs["result"]["dishEntry"]>
   export type DishEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dish?: boolean | DishDefaultArgs<ExtArgs>
     mealSlot?: boolean | MealSlotInstanceDefaultArgs<ExtArgs>
@@ -28772,6 +28783,7 @@ export namespace Prisma {
       mealSlotId: string
       dishId: string
       selectedAlternatives: Prisma.JsonValue | null
+      marinadeForIngredient: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dishEntry"]>
@@ -29204,6 +29216,7 @@ export namespace Prisma {
     readonly mealSlotId: FieldRef<"DishEntry", 'String'>
     readonly dishId: FieldRef<"DishEntry", 'String'>
     readonly selectedAlternatives: FieldRef<"DishEntry", 'Json'>
+    readonly marinadeForIngredient: FieldRef<"DishEntry", 'String'>
     readonly createdAt: FieldRef<"DishEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DishEntry", 'DateTime'>
   }
@@ -59444,6 +59457,7 @@ export namespace Prisma {
     mealSlotId: 'mealSlotId',
     dishId: 'dishId',
     selectedAlternatives: 'selectedAlternatives',
+    marinadeForIngredient: 'marinadeForIngredient',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -61727,6 +61741,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     selectedAlternatives?: JsonNullableFilter<"DishEntry">
+    marinadeForIngredient?: StringNullableFilter<"DishEntry"> | string | null
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
@@ -61739,6 +61754,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     selectedAlternatives?: SortOrderInput | SortOrder
+    marinadeForIngredient?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dish?: DishOrderByWithRelationInput
@@ -61754,6 +61770,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     selectedAlternatives?: JsonNullableFilter<"DishEntry">
+    marinadeForIngredient?: StringNullableFilter<"DishEntry"> | string | null
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
     dish?: XOR<DishScalarRelationFilter, DishWhereInput>
@@ -61766,6 +61783,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     selectedAlternatives?: SortOrderInput | SortOrder
+    marinadeForIngredient?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DishEntryCountOrderByAggregateInput
@@ -61781,6 +61799,7 @@ export namespace Prisma {
     mealSlotId?: StringWithAggregatesFilter<"DishEntry"> | string
     dishId?: StringWithAggregatesFilter<"DishEntry"> | string
     selectedAlternatives?: JsonNullableWithAggregatesFilter<"DishEntry">
+    marinadeForIngredient?: StringNullableWithAggregatesFilter<"DishEntry"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DishEntry"> | Date | string
   }
@@ -65454,6 +65473,7 @@ export namespace Prisma {
   export type DishEntryCreateInput = {
     id?: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dish: DishCreateNestedOneWithoutDishEntriesInput
@@ -65466,6 +65486,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
@@ -65474,6 +65495,7 @@ export namespace Prisma {
   export type DishEntryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
@@ -65486,6 +65508,7 @@ export namespace Prisma {
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
@@ -65496,6 +65519,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65503,6 +65527,7 @@ export namespace Prisma {
   export type DishEntryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65512,6 +65537,7 @@ export namespace Prisma {
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69362,6 +69388,7 @@ export namespace Prisma {
     mealSlotId?: SortOrder
     dishId?: SortOrder
     selectedAlternatives?: SortOrder
+    marinadeForIngredient?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69370,6 +69397,7 @@ export namespace Prisma {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
+    marinadeForIngredient?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -69378,6 +69406,7 @@ export namespace Prisma {
     id?: SortOrder
     mealSlotId?: SortOrder
     dishId?: SortOrder
+    marinadeForIngredient?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -77821,6 +77850,7 @@ export namespace Prisma {
   export type DishEntryCreateWithoutDishInput = {
     id?: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     mealSlot: MealSlotInstanceCreateNestedOneWithoutDishEntriesInput
@@ -77831,6 +77861,7 @@ export namespace Prisma {
     id?: string
     mealSlotId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
@@ -77963,6 +77994,7 @@ export namespace Prisma {
     mealSlotId?: StringFilter<"DishEntry"> | string
     dishId?: StringFilter<"DishEntry"> | string
     selectedAlternatives?: JsonNullableFilter<"DishEntry">
+    marinadeForIngredient?: StringNullableFilter<"DishEntry"> | string | null
     createdAt?: DateTimeFilter<"DishEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DishEntry"> | Date | string
   }
@@ -78202,6 +78234,7 @@ export namespace Prisma {
   export type DishEntryCreateWithoutIngredientsInput = {
     id?: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dish: DishCreateNestedOneWithoutDishEntriesInput
@@ -78213,6 +78246,7 @@ export namespace Prisma {
     mealSlotId: string
     dishId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -78236,6 +78270,7 @@ export namespace Prisma {
   export type DishEntryUpdateWithoutIngredientsInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
@@ -78247,6 +78282,7 @@ export namespace Prisma {
     mealSlotId?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -79388,6 +79424,7 @@ export namespace Prisma {
   export type DishEntryCreateWithoutMealSlotInput = {
     id?: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dish: DishCreateNestedOneWithoutDishEntriesInput
@@ -79398,6 +79435,7 @@ export namespace Prisma {
     id?: string
     dishId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     ingredients?: DishEntryIngredientUncheckedCreateNestedManyWithoutDishEntryInput
@@ -85638,6 +85676,7 @@ export namespace Prisma {
     id?: string
     mealSlotId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85666,6 +85705,7 @@ export namespace Prisma {
   export type DishEntryUpdateWithoutDishInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mealSlot?: MealSlotInstanceUpdateOneRequiredWithoutDishEntriesNestedInput
@@ -85676,6 +85716,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
@@ -85685,6 +85726,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     mealSlotId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -85855,6 +85897,7 @@ export namespace Prisma {
     id?: string
     dishId: string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85870,6 +85913,7 @@ export namespace Prisma {
   export type DishEntryUpdateWithoutMealSlotInput = {
     id?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dish?: DishUpdateOneRequiredWithoutDishEntriesNestedInput
@@ -85880,6 +85924,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ingredients?: DishEntryIngredientUncheckedUpdateManyWithoutDishEntryNestedInput
@@ -85889,6 +85934,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dishId?: StringFieldUpdateOperationsInput | string
     selectedAlternatives?: NullableJsonNullValueInput | InputJsonValue
+    marinadeForIngredient?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

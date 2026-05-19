@@ -103,6 +103,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
         dishName: string
         dishType: string
         dishServings: number
+        marinadeForIngredient: string | null
         nutrition: {
           kcal: number
           protein: number
@@ -261,6 +262,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
             dishName: entry.dish.name,
             dishType: entry.dish.type,
             dishServings: entry.dish.servings,
+            marinadeForIngredient: entry.marinadeForIngredient ?? null,
             nutrition: nutrition.total,
             ingredients,
             selectedAlternatives: selectedAlts,
