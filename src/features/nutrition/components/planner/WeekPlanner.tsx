@@ -9,6 +9,7 @@ import { DishPicker } from "./DishPicker"
 import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
+import { DISH_TYPE_META } from "../../constants/dish-types"
 import { useRouter } from "next/navigation"
 
 import { MacroSummary } from "./MacroSummary"
@@ -466,13 +467,14 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
             <div className="p-4">
               {(() => {
                 const personNames = slotGroup.map(s => s.personName || "")
-                const dishMap = new Map<string, { dishName: string; nutrition: { kcal: number; protein: number; fat: number; carbs: number }; persons: { personId: string; personName: string; entryId: string; slotId: string; slotLocked: boolean; totalWeight: number; ingredients: { ingredientIndex: number; productName: string; weight: number; inputState: string; rawWeight: number; cookedWeight: number; coefficient: number; cookingMethodName: string | null; unit: string | null; productId: string; alternatives: string[]; selectedAlternatives: Record<string, string | null> }[] }[] }>()
+                const dishMap = new Map<string, { dishName: string; dishType: string; nutrition: { kcal: number; protein: number; fat: number; carbs: number }; persons: { personId: string; personName: string; entryId: string; slotId: string; slotLocked: boolean; totalWeight: number; ingredients: { ingredientIndex: number; productName: string; weight: number; inputState: string; rawWeight: number; cookedWeight: number; coefficient: number; cookingMethodName: string | null; unit: string | null; productId: string; alternatives: string[]; selectedAlternatives: Record<string, string | null> }[] }[] }>()
 
                 slotGroup.forEach(slot => {
                   slot.entries.forEach(entry => {
                     if (!dishMap.has(entry.dishId)) {
                       dishMap.set(entry.dishId, {
                         dishName: entry.dishName,
+                        dishType: entry.dishType,
                         nutrition: entry.nutrition,
                         persons: [],
                       })
@@ -506,6 +508,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                           {/* Dish header row */}
                           <div className={`flex items-center gap-3 px-4 py-2.5 border-b ${color.border}`}>
                             <span className="text-body font-semibold text-text-primary flex-1">{dish.dishName}</span>
+                            {dish.dishType && DISH_TYPE_META[dish.dishType as DishType] && (
+                              <span className={`text-label font-mono ${DISH_TYPE_META[dish.dishType as DishType].color}`}>
+                                {DISH_TYPE_META[dish.dishType as DishType].emoji} {DISH_TYPE_META[dish.dishType as DishType].label}
+                              </span>
+                            )}
                             <span className={`text-note font-mono px-2.5 py-1 rounded-lg ${color.badge}`}>{dish.nutrition.kcal.toFixed(0)} kcal</span>
                             {dish.persons.length > 0 && (
                               <Button

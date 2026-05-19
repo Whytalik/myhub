@@ -57,16 +57,14 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Омлет з курячим філе та овочами — високобілковий сніданок",
+    "defaultSauces": ["Соєво-часниковий"],
     "ingredients": [
       { "productName": "Яйця", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яєчні білки", "rawWeight": 60, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },
       { "productName": "Помідор", "alternatives": ["Мікс овочей"], "rawWeight": 200, "cookingMethod": "RAW" },
       { "productName": "ЦЗ Хліб", "rawWeight": 45, "cookingMethod": "RAW" },
-      { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
-      { "productName": "Соєвий соус", "rawWeight": 3, "cookingMethod": "RAW" },
-      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Олія", "rawWeight": 1, "cookingMethod": "RAW" }
+      { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -88,6 +86,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Ролл з лаваша з куркою, яйцем та овочами",
+    "defaultSauces": ["Лимонно-трав'яний"],
     "ingredients": [
       { "productName": "Лаваш тонкий", "rawWeight": 50, "cookingMethod": "RAW" },
       { "productName": "Куряче філе", "rawWeight": 110, "cookingMethod": "FRIED" },
@@ -95,8 +94,7 @@
       { "productName": "Айсберг", "alternatives": ["Огірок"], "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Насіння льону", "rawWeight": 12, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 75, "cookingMethod": "RAW" },
-      { "productName": "Цибуля червона", "rawWeight": 22, "cookingMethod": "RAW" },
-      { "productName": "Лимонний сік", "rawWeight": 5, "cookingMethod": "RAW" }
+      { "productName": "Цибуля червона", "rawWeight": 22, "cookingMethod": "RAW" }
     ]
   },
   {
@@ -120,16 +118,14 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Паста з куркою в томатному соусі з сиром",
+    "defaultSauces": ["Орегано + Базилік"],
     "ingredients": [
       { "productName": "Макарони ТЗ", "rawWeight": 150, "cookingMethod": "BOILED" },
       { "productName": "Куряче філе", "alternatives": ["Яловичий фарш", "Курячий фарш"], "rawWeight": 125, "cookingMethod": "FRIED" },
       { "productName": "Томатна пасата", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Цибуля", "rawWeight": 40, "cookingMethod": "FRIED" },
       { "productName": "Морква", "rawWeight": 65, "cookingMethod": "FRIED" },
-      { "productName": "Твердий сир", "rawWeight": 30, "cookingMethod": "RAW" },
-      { "productName": "Орегано", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Базилік", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Олія", "rawWeight": 10, "cookingMethod": "RAW" }
+      { "productName": "Твердий сир", "rawWeight": 30, "cookingMethod": "RAW" }
     ]
   },
   {
