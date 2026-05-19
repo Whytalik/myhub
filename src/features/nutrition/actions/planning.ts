@@ -115,6 +115,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
           id: string
           productId: string
           productName: string
+          productCategory: string
           cookingMethodName: string | null
           coefficient: number
           alternatives: string[]
@@ -244,6 +245,7 @@ export async function getWeekPlan(weekPlanId: string): Promise<ActionResult<{
               id: ing.id,
               productId: ing.productId,
               productName: isAlternative ? altName : ing.product.name,
+              productCategory: ing.product.category,
               cookingMethodName: ing.cookingMethod?.name ?? null,
               coefficient: coeff,
               alternatives: ing.alternatives,

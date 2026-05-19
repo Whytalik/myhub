@@ -16,15 +16,12 @@ type WeekPlanData = {
         dishType: string
         ingredients: {
           productName: string
+          productCategory: string
           weight: number
           unit: string | null
         }[]
       }[]
-      productEntries: {
-        productId: string
-        productName: string
-        portionWeight: number
-      }[]
+      productEntries: unknown[]
     }[]
   }[]
 }
@@ -68,6 +65,7 @@ function buildAggregation(plan: WeekPlanData): ProductRow[] {
       for (const entry of slot.entries) {
         for (const ing of entry.ingredients) {
           if (ing.weight <= 0) continue
+          if (ing.productCategory !== "MEAT" && ing.productCategory !== "FISH") continue
           const row = getOrCreateProduct(ing.productName)
           const agg = getOrCreatePerson(row, personName)
           agg.totalWeight += ing.weight
@@ -81,19 +79,6 @@ function buildAggregation(plan: WeekPlanData): ProductRow[] {
         }
       }
 
-      for (const pe of slot.productEntries) {
-        if (pe.portionWeight <= 0) continue
-        const row = getOrCreateProduct(pe.productName)
-        const agg = getOrCreatePerson(row, personName)
-        agg.totalWeight += pe.portionWeight
-        const existing = agg.dishes.get("(пряма добавка)")
-        if (existing) {
-          existing.count += 1
-          existing.totalWeight += pe.portionWeight
-        } else {
-          agg.dishes.set("(пряма добавка)", { count: 1, totalWeight: pe.portionWeight })
-        }
-      }
     }
   }
 
