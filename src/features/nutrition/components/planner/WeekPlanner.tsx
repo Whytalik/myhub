@@ -909,7 +909,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         isOpen={!!productPickerSlotId}
         onClose={() => { setProductPickerSlotId(null); setSelectedProductId(null); setProductSearch(""); setProductWeight("100") }}
         title="Додати продукт"
-        maxWidth="340px"
+        maxWidth="460px"
         footer={
           <>
             <Button variant="secondary" onClick={() => { setProductPickerSlotId(null); setSelectedProductId(null) }}>Скасувати</Button>

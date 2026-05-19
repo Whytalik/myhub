@@ -69,7 +69,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slotName = 
   }, [selectedDish, calculatedWeight, person])
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose} title={`Додати страву до ${slotName}`} maxWidth="360px">
+    <Dialog isOpen={isOpen} onClose={onClose} title={`Додати страву до ${slotName}`} maxWidth="480px">
       <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
