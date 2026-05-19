@@ -104,6 +104,7 @@
     "type": "MAIN",
     "servings": 1,
     "description": "Комплексний боул з гречкою, куркою та свіжими овочами",
+    "defaultSauce": "Соєво-медовий",
     "ingredients": [
       { "productName": "Гречка", "alternatives": ["Рис", "Булгур"], "rawWeight": 125, "cookingMethod": "BOILED" },
       { "productName": "Куряче філе", "alternatives": ["Курячий фарш", "Курячі серця"], "rawWeight": 125, "cookingMethod": "FRIED" },
@@ -111,10 +112,7 @@
       { "productName": "Огірок", "rawWeight": 90, "cookingMethod": "RAW" },
       { "productName": "Помідор", "rawWeight": 125, "cookingMethod": "RAW" },
       { "productName": "Яблуко", "alternatives": ["Груша"], "rawWeight": 90, "cookingMethod": "RAW" },
-      { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 15, "cookingMethod": "RAW" },
-      { "productName": "Соєвий соус", "rawWeight": 3, "cookingMethod": "RAW" },
-      { "productName": "Мед", "rawWeight": 1, "cookingMethod": "RAW" },
-      { "productName": "Часник", "rawWeight": 1, "cookingMethod": "RAW" }
+      { "productName": "Олія оливкова", "alternatives": ["Арахіс смажений"], "rawWeight": 15, "cookingMethod": "RAW" }
     ]
   },
   {

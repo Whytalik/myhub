@@ -26,6 +26,7 @@ interface JsonDish {
   type: string
   servings: number
   description?: string
+  defaultSauce?: string
   ingredients: {
     productName: string
     rawWeight: number
@@ -305,6 +306,28 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
               };
             })
           });
+
+          if (dishJson.defaultSauce) {
+            const sauceDish = findDish(dishJson.defaultSauce);
+            const sauceJson = findDishJson(dishJson.defaultSauce);
+            if (sauceDish && sauceJson) {
+              const sauceEntry = await prisma.dishEntry.create({
+                data: { mealSlotId: slot.id, dishId: sauceDish.id }
+              });
+              await prisma.dishEntryIngredient.createMany({
+                data: sauceJson.ingredients.map((ing, idx) => {
+                  const prod = globalProducts[ing.productName];
+                  return {
+                    dishEntryId: sauceEntry.id,
+                    ingredientIndex: idx,
+                    weight: ing.rawWeight,
+                    inputState: "RAW",
+                    unit: prod?.unit ?? null,
+                  };
+                })
+              });
+            }
+          }
         }
       }
     }
