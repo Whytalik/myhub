@@ -909,7 +909,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
         isOpen={!!productPickerSlotId}
         onClose={() => { setProductPickerSlotId(null); setSelectedProductId(null); setProductSearch(""); setProductWeight("100") }}
         title="Додати продукт"
-        maxWidth="max-w-sm"
+        maxWidth="340px"
         footer={
           <>
             <Button variant="secondary" onClick={() => { setProductPickerSlotId(null); setSelectedProductId(null) }}>Скасувати</Button>
@@ -927,7 +927,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               className="pl-8"
             />
           </div>
-          <div className="max-h-48 overflow-y-auto space-y-1">
+          <div className="max-h-64 overflow-y-auto space-y-1">
             {products
               .filter(p => p.name.toLowerCase().includes(productSearch.toLowerCase()))
               .slice(0, 12)

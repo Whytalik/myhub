@@ -69,7 +69,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slotName = 
   }, [selectedDish, calculatedWeight, person])
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose} title={`Додати страву до ${slotName}`} maxWidth="max-w-md">
+    <Dialog isOpen={isOpen} onClose={onClose} title={`Додати страву до ${slotName}`} maxWidth="360px">
       <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -110,7 +110,7 @@ export function DishPicker({ isOpen, onClose, onAdd, dishes, person, slotName = 
           })}
         </div>
 
-        <div className="max-h-60 overflow-y-auto space-y-2 pr-2">
+        <div className="max-h-72 overflow-y-auto space-y-2 pr-2">
           {filteredDishes.map((dish) => {
             const previewWeight = (person.targetKcal * 0.25 * 100) / (dish.per100g.kcal || 1)
             const previewFit = calculateFitScore(dish.per100g, previewWeight, person)
