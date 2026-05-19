@@ -1,105 +1,116 @@
 "use client"
 
-const DAY_NAMES = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота", "Неділя"]
-const DAY_SHORT = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
-
 type WeekPlanData = {
   id: string
   name: string | null
+  persons: { id: string; name: string | null }[]
   days: {
-    dayPlanId: string
     dayOfWeek: number
     slots: {
-      id: string
       personId: string
       personName: string | null
       name: string
       entries: {
-        id: string
         dishId: string
         dishName: string
         dishType: string
-        marinadeForIngredient: string | null
         ingredients: {
           productName: string
           weight: number
           unit: string | null
         }[]
       }[]
+      productEntries: {
+        productId: string
+        productName: string
+        portionWeight: number
+      }[]
     }[]
   }[]
 }
 
-interface PrepGroup {
-  slotName: string
-  marinadeIngredient: string
-  marinadeName: string
-  marinadeComponents: { productName: string; weight: number; unit: string | null }[]
-  persons: { personName: string; ingredientWeight: number }[]
+interface DishOccurrence {
+  count: number
+  totalWeight: number
 }
 
-interface PrepDay {
-  dayOfWeek: number
-  groups: PrepGroup[]
+interface PersonAggregate {
+  totalWeight: number
+  dishes: Map<string, DishOccurrence>
 }
 
-function buildPrepDays(plan: WeekPlanData): PrepDay[] {
-  const result: PrepDay[] = []
+interface ProductRow {
+  productName: string
+  persons: Map<string, PersonAggregate>
+}
+
+function buildAggregation(plan: WeekPlanData): ProductRow[] {
+  const productMap = new Map<string, ProductRow>()
+
+  function getOrCreateProduct(name: string): ProductRow {
+    if (!productMap.has(name)) {
+      productMap.set(name, { productName: name, persons: new Map() })
+    }
+    return productMap.get(name)!
+  }
+
+  function getOrCreatePerson(row: ProductRow, personName: string): PersonAggregate {
+    if (!row.persons.has(personName)) {
+      row.persons.set(personName, { totalWeight: 0, dishes: new Map() })
+    }
+    return row.persons.get(personName)!
+  }
 
   for (const day of plan.days) {
-    const slotNames = [...new Set(day.slots.map(s => s.name))]
-    const dayGroups: PrepGroup[] = []
+    for (const slot of day.slots) {
+      const personName = slot.personName ?? "?"
 
-    for (const slotName of slotNames) {
-      const slotGroup = day.slots.filter(s => s.name === slotName)
-
-      // Collect MARINADE entries: one per person
-      const marinadesByIngredient = new Map<string, PrepGroup>()
-
-      for (const slot of slotGroup) {
-        for (const entry of slot.entries) {
-          if (entry.dishType !== "MARINADE" || !entry.marinadeForIngredient) continue
-
-          const key = `${entry.marinadeForIngredient}::${entry.dishName}`
-          if (!marinadesByIngredient.has(key)) {
-            marinadesByIngredient.set(key, {
-              slotName,
-              marinadeIngredient: entry.marinadeForIngredient,
-              marinadeName: entry.dishName,
-              marinadeComponents: entry.ingredients.map(i => ({
-                productName: i.productName,
-                weight: i.weight,
-                unit: i.unit,
-              })),
-              persons: [],
-            })
+      for (const entry of slot.entries) {
+        for (const ing of entry.ingredients) {
+          if (ing.weight <= 0) continue
+          const row = getOrCreateProduct(ing.productName)
+          const agg = getOrCreatePerson(row, personName)
+          agg.totalWeight += ing.weight
+          const existing = agg.dishes.get(entry.dishName)
+          if (existing) {
+            existing.count += 1
+            existing.totalWeight += ing.weight
+          } else {
+            agg.dishes.set(entry.dishName, { count: 1, totalWeight: ing.weight })
           }
-
-          // Find the weight of this ingredient in the main dish
-          const mainEntry = slot.entries.find(e => e.dishType !== "MARINADE")
-          const mainIng = mainEntry?.ingredients.find(i => i.productName === entry.marinadeForIngredient)
-          const ingredientWeight = mainIng?.weight ?? 0
-
-          marinadesByIngredient.get(key)!.persons.push({
-            personName: slot.personName ?? "?",
-            ingredientWeight,
-          })
         }
       }
 
-      dayGroups.push(...marinadesByIngredient.values())
-    }
-
-    if (dayGroups.length > 0) {
-      result.push({ dayOfWeek: day.dayOfWeek, groups: dayGroups })
+      for (const pe of slot.productEntries) {
+        if (pe.portionWeight <= 0) continue
+        const row = getOrCreateProduct(pe.productName)
+        const agg = getOrCreatePerson(row, personName)
+        agg.totalWeight += pe.portionWeight
+        const existing = agg.dishes.get("(пряма добавка)")
+        if (existing) {
+          existing.count += 1
+          existing.totalWeight += pe.portionWeight
+        } else {
+          agg.dishes.set("(пряма добавка)", { count: 1, totalWeight: pe.portionWeight })
+        }
+      }
     }
   }
 
-  return result
+  // Sort by max total weight across persons, descending
+  return [...productMap.values()].sort((a, b) => {
+    const aMax = Math.max(...[...a.persons.values()].map(p => p.totalWeight))
+    const bMax = Math.max(...[...b.persons.values()].map(p => p.totalWeight))
+    return bMax - aMax
+  })
 }
 
-const UNIT_LABELS: Record<string, string> = { GRAM: "г", ML: "мл", PIECE: "шт", TBSP: "ст.л.", TSP: "ч.л." }
-function unitLabel(unit: string | null) { return unit ? (UNIT_LABELS[unit] ?? unit) : "г" }
+function formatDishList(dishes: Map<string, DishOccurrence>): string {
+  return [...dishes.entries()]
+    .sort((a, b) => b[1].totalWeight - a[1].totalWeight)
+    .map(([name, occ]) => occ.count > 1 ? `${name} ×${occ.count}` : name)
+    .join(", ")
+}
 
 interface MealPrepViewProps {
   plan: WeekPlanData | null
@@ -107,82 +118,57 @@ interface MealPrepViewProps {
 
 export function MealPrepView({ plan }: MealPrepViewProps) {
   if (!plan) {
-    return (
-      <div className="text-text-muted text-body">Немає даних плану.</div>
-    )
+    return <div className="text-text-muted text-body">Немає даних плану.</div>
   }
 
-  const prepDays = buildPrepDays(plan)
+  const rows = buildAggregation(plan)
+  const personNames = plan.persons.map(p => p.name ?? "?")
 
-  if (prepDays.length === 0) {
+  if (rows.length === 0) {
     return (
       <div className="py-12 text-center text-text-muted text-body">
-        Маринади не знайдено. Додайте страви з маринадом до тижневого плану.
+        Інгредієнти не знайдені. Додайте страви до тижневого плану.
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
-      {prepDays.map(day => (
-        <section key={day.dayOfWeek} className="space-y-3">
-          <div className="flex items-center gap-3">
-            <span className="text-caption font-mono text-text-muted bg-surface border border-border px-2 py-0.5 rounded-md">
-              {DAY_SHORT[day.dayOfWeek]}
-            </span>
-            <h3 className="text-heading font-bold text-text-primary">{DAY_NAMES[day.dayOfWeek]}</h3>
+    <div className="space-y-3">
+      {/* Header row */}
+      <div className={`grid gap-0 border border-border/50 rounded-xl overflow-hidden`}
+           style={{ gridTemplateColumns: `1fr repeat(${personNames.length}, 160px)` }}>
+        <div className="px-4 py-2 bg-raised text-caption font-mono text-text-muted uppercase">Продукт</div>
+        {personNames.map(name => (
+          <div key={name} className="px-4 py-2 bg-raised text-caption font-semibold text-text-primary border-l border-border/30">{name}</div>
+        ))}
+      </div>
+
+      {/* Ingredient rows */}
+      <div className="border border-border rounded-xl overflow-hidden divide-y divide-border/30">
+        {rows.map(row => (
+          <div
+            key={row.productName}
+            className={`grid hover:bg-surface-hover transition-colors`}
+            style={{ gridTemplateColumns: `1fr repeat(${personNames.length}, 160px)` }}
+          >
+            <div className="px-4 py-3 text-caption text-text-secondary">{row.productName}</div>
+            {personNames.map(name => {
+              const agg = row.persons.get(name)
+              if (!agg) return (
+                <div key={name} className="px-4 py-3 border-l border-border/20 text-caption text-text-muted/30">—</div>
+              )
+              return (
+                <div key={name} className="px-4 py-3 border-l border-border/20">
+                  <span className="text-caption font-mono text-text-primary">{agg.totalWeight.toFixed(0)}г</span>
+                  <div className="text-micro text-text-muted leading-tight mt-0.5 truncate" title={formatDishList(agg.dishes)}>
+                    {formatDishList(agg.dishes)}
+                  </div>
+                </div>
+              )
+            })}
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {day.groups.map((group, i) => (
-              <div key={i} className="bg-surface border border-border rounded-2xl overflow-hidden">
-                {/* Card header */}
-                <div className="px-5 py-3 border-b border-border bg-violet-500/[0.04] flex items-center gap-2">
-                  <span className="text-lg">🧂</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-body font-semibold text-text-primary">{group.marinadeIngredient}</span>
-                      <span className="text-caption text-text-muted">→</span>
-                      <span className="text-body font-medium text-violet-400">{group.marinadeName}</span>
-                    </div>
-                    <span className="text-caption text-text-muted font-mono">{group.slotName}</span>
-                  </div>
-                </div>
-
-                {/* Per-person ingredient weights */}
-                <div className="px-5 py-3 border-b border-border/50">
-                  <p className="text-caption font-mono text-text-muted uppercase mb-2">Вага для маринування</p>
-                  <div className="flex flex-wrap gap-3">
-                    {group.persons.map(p => (
-                      <div key={p.personName} className="flex items-center gap-1.5">
-                        <span className="text-caption text-text-secondary font-medium">{p.personName}:</span>
-                        <span className="text-caption font-mono text-text-primary">
-                          {p.ingredientWeight > 0 ? `${p.ingredientWeight.toFixed(0)}г` : "—"}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Marinade components */}
-                <div className="px-5 py-3">
-                  <p className="text-caption font-mono text-text-muted uppercase mb-2">Склад маринаду</p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1">
-                    {group.marinadeComponents.map(comp => (
-                      <span key={comp.productName} className="text-caption text-text-secondary">
-                        {comp.productName}{" "}
-                        <span className="font-mono text-text-primary">
-                          {comp.weight.toFixed(0)}{unitLabel(comp.unit)}
-                        </span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
