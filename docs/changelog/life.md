@@ -1,3 +1,11 @@
+## [2026-05-20] — Fix: Task carry-over timezone bug + Guide page-awareness
+
+Виправлено timezone-баг у `tomorrowISO`: раніше `.toISOString().split("T")[0]` повертало UTC-дату, яка для UTC+3 збігалася з поточним днем, — таски залишалися на тому ж дні з часом 3:00. Тепер дата обчислюється через локальний конструктор `new Date(y, m-1, d+1)`. `carryOverTaskAction` тепер також зсуває `plannedDate`/`plannedEndDate` на правильну кількість UTC-мілісекунд, зберігаючи оригінальний час. Guide modal тепер відкривається на відповідній секції залежно від поточної сторінки (`/life/tasks` → Tasks, `/life/habits` → Habits, `/nutrition/dishes` → Dishes тощо).
+
+**Verification:**
+- [x] Logic implemented (`TaskReviewSection.tsx`, `task-actions.ts`, `guide-drawer.tsx`)
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-19] — Fix: TaskReviewSection always reflects current day tasks count
 
 Видалено `initialTotal` — frozen state, що не оновлювався при додаванні нових тасок протягом дня. Тепер `total`, прогрес-бар та лічильник `done / total` завжди відображають актуальну кількість тасок з пропу `tasks`.

@@ -3,6 +3,7 @@
 import * as taskService from "../services/task-service";
 import { invalidateTaskCache } from "@/lib/revalidate";
 import { withAction, ActionResult } from "@/lib/action-utils";
+import { prisma } from "@/lib/prisma";
 import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority, TaskData } from "../types";
 
 export async function upsertTaskAction(input: UpsertTaskInput): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
@@ -134,9 +135,35 @@ export async function carryOverTaskAction(
   return withAction(async (userId) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    const existing = await prisma.task.findUnique({
+      where: { id: taskId },
+      select: { plannedDate: true, hasPlannedTime: true, plannedEndDate: true },
+    });
+
+    const [ny, nm, nd] = newDateISO.split('-').map(Number);
+    const targetUTCMidnight = Date.UTC(ny, nm - 1, nd);
+
+    let newPlannedDate: string = newDateISO;
+    let newPlannedEndDate: string | null = null;
+
+    if (existing?.hasPlannedTime && existing.plannedDate) {
+      const orig = existing.plannedDate;
+      const origUTCMidnight = Date.UTC(orig.getUTCFullYear(), orig.getUTCMonth(), orig.getUTCDate());
+      newPlannedDate = new Date(orig.getTime() + (targetUTCMidnight - origUTCMidnight)).toISOString();
+    }
+
+    if (existing?.plannedEndDate) {
+      const origEnd = existing.plannedEndDate;
+      const ref = existing.plannedDate ?? origEnd;
+      const refUTCMidnight = Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth(), ref.getUTCDate());
+      newPlannedEndDate = new Date(origEnd.getTime() + (targetUTCMidnight - refUTCMidnight)).toISOString();
+    }
+
     const task = await taskService.upsertTask(userId, {
       id: taskId,
-      plannedDate: newDateISO,
+      plannedDate: newPlannedDate,
+      plannedEndDate: newPlannedEndDate,
       carriedFromDate: today.toISOString(),
       carryOverReason: reason,
     });

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { getSpaceFromPath } from "@/lib/spaces";
-import { GUIDE_DATA } from "@/lib/guide-data";
+import { GUIDE_DATA, type SpaceGuide } from "@/lib/guide-data";
 import { Dialog } from "@/components/ui/dialog";
 
 interface GuideModalProps {
@@ -12,17 +12,36 @@ interface GuideModalProps {
   onClose: () => void;
 }
 
+function getSectionFromPath(pathname: string, guide: SpaceGuide | undefined): string {
+  if (!guide) return "";
+  let targetId: string | undefined;
+
+  if (pathname.startsWith("/life/journal"))              targetId = "journal-sleep";
+  else if (pathname.startsWith("/life/tasks"))           targetId = "tasks";
+  else if (pathname.startsWith("/life/habits"))          targetId = "habits";
+  else if (pathname.startsWith("/life/week"))            targetId = "week";
+  else if (pathname.startsWith("/nutrition/products"))   targetId = "products";
+  else if (pathname.startsWith("/nutrition/dishes"))     targetId = "dishes";
+  else if (pathname.startsWith("/nutrition/plans") ||
+           pathname.startsWith("/nutrition/week") ||
+           pathname.startsWith("/nutrition/meal-prep"))  targetId = "plans";
+  else if (pathname.startsWith("/nutrition/shopping"))   targetId = "shopping";
+
+  const exists = targetId && guide.sections.some((s) => s.id === targetId);
+  return exists ? targetId! : (guide.sections[0]?.id ?? "");
+}
+
 export function GuideModal({ isOpen, onClose }: GuideModalProps) {
   const pathname = usePathname();
   const space = getSpaceFromPath(pathname);
   const guide = GUIDE_DATA[space];
 
-  const [activeSectionId, setActiveSectionId] = useState<string>(guide?.sections[0]?.id ?? "");
-  const [prevSpace, setPrevSpace] = useState(space);
+  const [activeSectionId, setActiveSectionId] = useState<string>(() => getSectionFromPath(pathname, guide));
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
-  if (prevSpace !== space) {
-    setPrevSpace(space);
-    setActiveSectionId(guide?.sections[0]?.id ?? "");
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setActiveSectionId(getSectionFromPath(pathname, guide));
   }
 
   if (!guide) return null;
