@@ -10,10 +10,12 @@ import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
-import { upsertEntryAction } from "../actions/journal-actions";
+import { upsertEntryAction, setDayStartedAction, setDayCompletedAction } from "../actions/journal-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
 import { TaskFormDialog } from "./tasks/TaskFormDialog";
 import { HabitCard } from "./habits/HabitCard";
+import { DayGreeting } from "./DayGreeting";
+import { DayComplete } from "./DayComplete";
 import type { DailyEntryData, UpsertDailyEntryInput, TaskData, LifeSphereData, HabitData, DayType } from "../types";
 import { dayTypeToRoutine } from "../types";
 import type { RoutineMap } from "@/lib/routine-items";
@@ -26,6 +28,8 @@ const TaskCalendar = lazy(() => import("./tasks/TaskCalendar").then(m => ({ defa
 interface Props {
   initialEntry: DailyEntryData | null;
   todayStr: string; // "YYYY-MM-DD"
+  isPast: boolean;
+  yesterdayBrainDump: string | null;
   tasks: TaskData[];
   allTasks: TaskData[];
   spheres: LifeSphereData[];
@@ -33,13 +37,35 @@ interface Props {
   scheduledDayType?: DayType;
 }
 
-export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, spheres, habits, scheduledDayType }: Props) {
+export function DailyEntryForm({ initialEntry, todayStr, isPast, yesterdayBrainDump, tasks, allTasks, spheres, habits, scheduledDayType }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
   const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask]   = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [isCompletePending, startCompletePending] = useTransition();
+
+  // Day lifecycle: greeting → form → complete (today only)
+  const initDayView = (): "greeting" | "form" | "complete" => {
+    if (isPast) return "form";
+    if (!initialEntry?.startedAt) return "greeting";
+    if (initialEntry.completedAt) return "complete";
+    return "form";
+  };
+  const [dayView, setDayView] = useState<"greeting" | "form" | "complete">(initDayView);
+
+  const handleStartDay = async () => {
+    const result = await setDayStartedAction(todayStr);
+    if (result.success) setDayView("form");
+  };
+
+  const handleCompleteDay = () => {
+    startCompletePending(async () => {
+      const result = await setDayCompletedAction(todayStr);
+      if (result.success) setDayView("complete");
+    });
+  };
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -188,6 +214,44 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, sphere
   });
 
   const isToday = todayStr === new Date().toISOString().slice(0, 10);
+
+  // Compute stats for completion screen
+  const todayISO = todayStr;
+  const tasksDone = tasks.filter(t => t.status === 'DONE').length;
+  const habitsDone = habits.filter(h =>
+    h.completions.some(c => new Date(c.date).toISOString().slice(0, 10) === todayISO)
+  ).length;
+
+  if (dayView === "greeting") {
+    return (
+      <DayGreeting
+        dateStr={todayStr}
+        yesterdayBrainDump={yesterdayBrainDump}
+        onStart={handleStartDay}
+      />
+    );
+  }
+
+  if (dayView === "complete") {
+    return (
+      <DayComplete
+        dateStr={todayStr}
+        stats={{
+          tasksTotal: tasks.length,
+          tasksDone,
+          habitsTotal: habits.length,
+          habitsDone,
+          sleepHours: data.sleepHours ?? null,
+          sleepQuality: data.sleepQuality ?? null,
+          energy: data.energy ?? null,
+          eveningEnergy: data.eveningEnergy ?? null,
+          mood: data.mood ?? null,
+          winToday: data.winToday ?? null,
+        }}
+        onViewJournal={() => setDayView("form")}
+      />
+    );
+  }
 
   return (
     <div className={`flex flex-col gap-6 ${!isToday ? "pointer-events-none opacity-80" : ""}`}>
@@ -450,6 +514,24 @@ export function DailyEntryForm({ initialEntry, todayStr, tasks, allTasks, sphere
                         brainDump={data.brainDump ?? null}
                         onChange={patch}
                       />
+
+                      {isToday && (
+                        <div className="flex justify-center pt-2 pb-4">
+                          <button
+                            type="button"
+                            onClick={handleCompleteDay}
+                            disabled={isCompletePending}
+                            className="inline-flex items-center gap-2 h-10 px-6 rounded-xl bg-accent/10 border border-accent/30 text-note font-mono text-accent hover:bg-accent/20 hover:border-accent/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isCompletePending ? (
+                              <Loader2 size={13} className="animate-spin" />
+                            ) : (
+                              <span>🌙</span>
+                            )}
+                            Завершити день
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )
                 }

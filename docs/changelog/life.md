@@ -1,3 +1,17 @@
+## [2026-05-20] — Feature: Day lifecycle (Greeting → Journal → Complete)
+
+Додано екран привітання перед початком дня (з часовим greeting, датою та brain dump вчора) і екран завершення з підсумком (завдання, звички, сон, енергія, настрій, перемога дня). Кнопка "Завершити день" з'являється в кінці Evening-таба. Стан (startedAt/completedAt) зберігається в БД — потрібна міграція: `pnpm prisma migrate dev --name add-day-started-completed`.
+
+**Verification:**
+- [ ] Run migration: `docker compose up -d` → `pnpm prisma migrate dev --name add-day-started-completed`
+- [ ] Open `/life/journal` today → shows greeting screen
+- [ ] Click "Розпочати день" → transitions to journal form
+- [ ] Go to Evening tab → "Завершити день" button at bottom
+- [ ] Click it → shows completion screen with stats
+- [ ] "Переглянути записи" → goes back to form
+- [ ] Past-day entries: no greeting/completion, normal read-only form
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-20] — Fix: Task carry-over timezone bug + Guide page-awareness
 
 Виправлено timezone-баг у `tomorrowISO`: раніше `.toISOString().split("T")[0]` повертало UTC-дату, яка для UTC+3 збігалася з поточним днем, — таски залишалися на тому ж дні з часом 3:00. Тепер дата обчислюється через локальний конструктор `new Date(y, m-1, d+1)`. `carryOverTaskAction` тепер також зсуває `plannedDate`/`plannedEndDate` на правильну кількість UTC-мілісекунд, зберігаючи оригінальний час. Guide modal тепер відкривається на відповідній секції залежно від поточної сторінки (`/life/tasks` → Tasks, `/life/habits` → Habits, `/nutrition/dishes` → Dishes тощо).

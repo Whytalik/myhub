@@ -130,6 +130,9 @@ export interface DailyEntryData {
   standupDone: string | null;
   standupPlan: string | null;
   standupBlockers: string | null;
+  // Day lifecycle
+  startedAt: Date | null;
+  completedAt: Date | null;
   // Timestamps
   createdAt: Date;
   updatedAt: Date;

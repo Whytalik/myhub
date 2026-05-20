@@ -51,8 +51,12 @@ export default async function JournalPage({
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
-  const [raw, tasks, allTasks, spheres, habits, schedule] = await Promise.all([
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const yesterday = new Date(y, m - 1, d - 1);
+
+  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule] = await Promise.all([
     getEntryByDate(userId, date),
+    getEntryByDate(userId, yesterday),
     taskService.getTasksByDate(userId, date),
     taskService.getAllTasks(userId),
     taskService.getAllSpheres(userId),
@@ -61,10 +65,15 @@ export default async function JournalPage({
   ]);
 
   const entry: DailyEntryData | null = raw
-    ? { 
-        ...raw, 
+    ? {
+        ...raw,
         morningRoutine: (raw.morningRoutine as RoutineMap | null) ?? null,
-        eveningRoutine: (raw.eveningRoutine as RoutineMap | null) ?? null 
+        eveningRoutine: (raw.eveningRoutine as RoutineMap | null) ?? null,
+        // Fields added in migration — present after pnpm prisma migrate dev
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        startedAt: ((raw as any).startedAt as Date | null) ?? null,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        completedAt: ((raw as any).completedAt as Date | null) ?? null,
       }
     : null;
 
@@ -93,6 +102,8 @@ export default async function JournalPage({
         key={dateStr}
         initialEntry={entry}
         todayStr={dateStr}
+        isPast={isPast}
+        yesterdayBrainDump={yesterdayRaw?.brainDump ?? null}
         tasks={tasks}
         allTasks={allTasks}
         spheres={spheres}
