@@ -262,6 +262,31 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
   }
 }
 
+export async function autoCarryOverYesterdayTasks(userId: string, todayStr: string): Promise<number> {
+  const today = new Date(todayStr);
+  today.setHours(0, 0, 0, 0);
+
+  const yesterdayStart = new Date(today);
+  yesterdayStart.setDate(today.getDate() - 1);
+  const yesterdayEnd = new Date(yesterdayStart);
+  yesterdayEnd.setHours(23, 59, 59, 999);
+
+  const result = await prisma.task.updateMany({
+    where: {
+      userId,
+      plannedDate: { gte: yesterdayStart, lte: yesterdayEnd },
+      plannedEndDate: null,
+      status: { notIn: ["DONE", "CANCELLED"] },
+    },
+    data: {
+      plannedDate: today,
+      carriedFromDate: yesterdayStart,
+    },
+  });
+
+  return result.count;
+}
+
 export async function deleteTask(userId: string, id: string): Promise<void> {
   await prisma.task.delete({ where: { id, userId } });
 }

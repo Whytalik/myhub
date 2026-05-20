@@ -1,5 +1,15 @@
 # Operations Domain Changelog
 
+## [2026-05-20] — Auto Carry-Over of Incomplete Tasks
+
+Incomplete tasks (TODO / IN_PROGRESS / BACKLOG) planned for yesterday are now automatically moved to today when the journal page opens. Only single-day tasks (no `plannedEndDate`) are affected; multi-day tasks appear naturally via their date range. `carriedFromDate` is set to yesterday so the history is preserved.
+
+### Verification Checklist:
+- [x] Logic implemented (`autoCarryOverYesterdayTasks` in `task-service.ts`)
+- [x] Called from `journal/page.tsx` before data fetch, today-only
+- [x] Cache invalidated if any tasks were carried
+- [x] Verified with `pnpm tsc --noEmit`
+
 ## [2026-05-18] — Completed Tasks Hidden from Day Timeline
 
 Completed (DONE) tasks are now automatically excluded from the day-view timeline in TaskCalendar. Marking a task done via the StatusToggle inside a timeline card immediately removes it from the timeline without requiring a page reload.

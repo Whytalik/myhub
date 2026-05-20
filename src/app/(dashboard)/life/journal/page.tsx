@@ -10,6 +10,7 @@ import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
 import type { DailyEntryData, HabitData, DayType } from "@/features/life/types";
 import type { RoutineMap } from "@/lib/routine-items";
+import { invalidateTaskCache } from "@/lib/revalidate";
 import { History } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -41,6 +42,12 @@ export default async function JournalPage({
   const todayStr = currentTodayStr();
   const dateStr = dateParam && isValidDateStr(dateParam) ? dateParam : todayStr;
   const isPast = dateStr !== todayStr;
+
+  // Auto-carry incomplete tasks from yesterday when viewing today
+  if (!isPast) {
+    const carried = await taskService.autoCarryOverYesterdayTasks(userId, dateStr);
+    if (carried > 0) invalidateTaskCache(userId);
+  }
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
