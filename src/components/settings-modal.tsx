@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useTransition, useRef, useEffect, useCallback } from "react";
-import { Dialog, ConfirmationDialog } from "@/components/ui/dialog";
+import { useState, useTransition, useEffect, useCallback } from "react";
+import { Dialog } from "@/components/ui/dialog";
 import { useSpace } from "./space-provider";
 import { updateUserNameAction, setPrivateTaskPasswordAction } from "@/features/profile/actions";
-import { exportSystemAction, resetSystemAction, importSystemAction } from "@/features/system/actions/system-actions";
 import { savePushSubscriptionAction, sendTestNotificationAction, getPushSubscriptionCountAction } from "@/features/system/actions/push-actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -76,9 +75,6 @@ export function SettingsModal({
       }
     });
   }, [privatePassword]);
-
-  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isNotificationSupported, setIsNotificationSupported] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -157,44 +153,6 @@ export function SettingsModal({
     }
   };
 
-  const handleExport = async () => {
-    const result = await exportSystemAction();
-    if (result.success && result.data) {
-      const blob = new Blob([JSON.stringify(result.data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = `myhub-backup.json`;
-      a.click(); URL.revokeObjectURL(url);
-      toast.success("Exported");
-    }
-  };
-
-  const handleReset = async () => {
-    startTransition(async () => {
-      const result = await resetSystemAction();
-      if (result.success) {
-        toast.success("System reset");
-        onClose(); router.refresh();
-      }
-    });
-  };
-
-  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        JSON.parse(event.target?.result as string);
-        startTransition(async () => {
-          const result = await importSystemAction();
-          if (result.success) {
-            toast.success("Imported"); onClose(); window.location.reload();
-          }
-        });
-      } catch { toast.error("Invalid file"); }
-    };
-    reader.readAsText(file);
-  };
 
   const tabs = [
     { id: "general", label: "General", icon: User },
@@ -325,21 +283,6 @@ export function SettingsModal({
                 <div className="space-y-3 animate-in fade-in slide-in-from-right-2 duration-300">
                   <h4 className="text-micro font-medium uppercase tracking-wider text-accent mb-3">Management</h4>
                   <div className="grid grid-cols-1 gap-2">
-                     <div className="p-4 bg-surface-hover border border-border rounded-lg flex items-center justify-between">
-                        <div><h5 className="text-note font-medium text-text-primary">Export JSON</h5><p className="text-micro text-text-muted">Complete system backup.</p></div>
-                        <button onClick={handleExport} className="p-2.5 bg-accent text-bg rounded-lg hover:bg-accent-hover active:scale-95 transition-all"><Download size={14} strokeWidth={2.5} /></button>
-                     </div>
-                     <div className="p-4 bg-surface-hover border border-border rounded-lg flex items-center justify-between">
-                        <div><h5 className="text-note font-medium text-text-primary">Import Backup</h5><p className="text-micro text-text-muted">Restore system state.</p></div>
-                        <div className="flex items-center gap-2">
-                          <input type="file" ref={fileInputRef} onChange={handleImport} className="hidden" accept=".json" />
-                          <button onClick={() => fileInputRef.current?.click()} className="p-2.5 bg-surface border border-border rounded-lg hover:border-accent transition-all active:scale-95"><Upload size={14} /></button>
-                        </div>
-                     </div>
-                     <div className="p-4 border border-danger/10 bg-danger/5 rounded-lg flex items-center justify-between">
-                          <div><h5 className="text-note font-medium text-danger">Reset System</h5><p className="text-micro text-danger/60">Wipe all local records.</p></div>
-                          <button onClick={() => setIsResetConfirmOpen(true)} className="p-2.5 bg-danger/10 text-danger border border-danger/20 rounded-lg hover:bg-danger/20 transition-all"><Trash2 size={14} /></button>
-                     </div>
                       <div className="p-4 border border-accent/10 bg-accent/5 rounded-lg flex items-center justify-between mt-2">
                            <div className="flex-1 pr-4">
                              <h5 className="text-note font-medium text-accent">Seed Nutrition System</h5>
@@ -436,16 +379,6 @@ export function SettingsModal({
           </div>
         </div>
       </Dialog>
-
-      <ConfirmationDialog
-        isOpen={isResetConfirmOpen}
-        onClose={() => setIsResetConfirmOpen(false)}
-        onConfirm={handleReset}
-        title="Wipe System?"
-        description="Permanently delete all data. CANNOT be undone."
-        confirmLabel={isPending ? "Resetting..." : "Wipe Everything"}
-        variant="danger"
-      />
     </>
   );
 }

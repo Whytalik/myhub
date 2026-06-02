@@ -261,14 +261,22 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         const product = globalProducts[ing.productName]
         if (!product) return null
         const kcalPerGram = product.caloriesPer100 / 100
+        const proteinPerGram = product.proteinPer100 / 100
+        const fatPerGram = product.fatPer100 / 100
+        const carbsPerGram = product.carbsPer100 / 100
+        const macroEnergy = proteinPerGram * 4 + fatPerGram * 9 + carbsPerGram * 4
+
         return {
           rawWeight: ing.rawWeight,
           kcalPerGram,
-          protKcalPerGram: (product.proteinPer100 * 4) / 100,
-          fatKcalPerGram: (product.fatPer100 * 9) / 100,
-          carbKcalPerGram: (product.carbsPer100 * 4) / 100,
-          totalMacroKcalPerGram: kcalPerGram,
-          isMacroIngredient: (product.proteinPer100 + product.fatPer100 + product.carbsPer100) > 0,
+          proteinPerGram,
+          fatPerGram,
+          carbsPerGram,
+          macroEnergy,
+          proteinFraction: macroEnergy > 0 ? (proteinPerGram * 4) / macroEnergy : 0,
+          fatFraction: macroEnergy > 0 ? (fatPerGram * 9) / macroEnergy : 0,
+          carbFraction: macroEnergy > 0 ? (carbsPerGram * 4) / macroEnergy : 0,
+          isMacroIngredient: macroEnergy >= 5,
         }
       })
 
@@ -276,88 +284,97 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         (acc, ing) => {
           if (!ing) return acc
           acc.kcal += ing.rawWeight * ing.kcalPerGram
-          acc.protKcal += ing.rawWeight * ing.protKcalPerGram
-          acc.fatKcal += ing.rawWeight * ing.fatKcalPerGram
-          acc.carbKcal += ing.rawWeight * ing.carbKcalPerGram
+          acc.protein += ing.rawWeight * ing.proteinPerGram
+          acc.fat += ing.rawWeight * ing.fatPerGram
+          acc.carbs += ing.rawWeight * ing.carbsPerGram
           return acc
         },
-        { kcal: 0, protKcal: 0, fatKcal: 0, carbKcal: 0 }
+        { kcal: 0, protein: 0, fat: 0, carbs: 0 }
       )
 
       if (currentTotals.kcal <= 0 || targetKcal <= 0) {
         return ingredients.map((ing) => ing.rawWeight)
       }
 
-      const targetProtKcal = targetKcal * (targets.proteinPct / 100)
-      const targetFatKcal = targetKcal * (targets.fatPct / 100)
-      const targetCarbKcal = targetKcal * (targets.carbsPct / 100)
-      const targetVector = [targetKcal, targetProtKcal, targetFatKcal, targetCarbKcal]
+      const targetProtein = (targetKcal * (targets.proteinPct / 100)) / 4
+      const targetFat = (targetKcal * (targets.fatPct / 100)) / 9
+      const targetCarbs = (targetKcal * (targets.carbsPct / 100)) / 4
 
-      const rawScaled = ingredients.map((ing, index) => {
+      const baseScale = targetKcal / currentTotals.kcal
+      const baseWeights = ingredients.map((ing, index) => {
         const active = activeIngredients[index]
-        return active ? ing.rawWeight * (targetKcal / currentTotals.kcal) : ing.rawWeight
+        return active ? ing.rawWeight * baseScale : ing.rawWeight
       })
 
-      const matrixA: number[][] = [[], [], [], []]
-      const x0: number[] = []
-      const clampRange: Array<[number, number]> = []
+      const currentMacroGrams = activeIngredients.reduce(
+        (acc, ing, index) => {
+          if (!ing) return acc
+          const weight = baseWeights[index]
+          acc.protein += weight * ing.proteinPerGram
+          acc.fat += weight * ing.fatPerGram
+          acc.carbs += weight * ing.carbsPerGram
+          return acc
+        },
+        { protein: 0, fat: 0, carbs: 0 }
+      )
+
+      const deltaProtein = targetProtein - currentMacroGrams.protein
+      const deltaFat = targetFat - currentMacroGrams.fat
+      const deltaCarbs = targetCarbs - currentMacroGrams.carbs
+
+      const matrix: number[][] = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ]
+      const rhs: number[] = [deltaProtein, deltaFat, deltaCarbs]
 
       for (let i = 0; i < ingredients.length; i++) {
         const active = activeIngredients[i]
-        const rawWeight = ingredients[i].rawWeight
-        if (!active) {
-          matrixA[0].push(0)
-          matrixA[1].push(0)
-          matrixA[2].push(0)
-          matrixA[3].push(0)
-          x0.push(rawWeight)
-          clampRange.push([rawWeight, rawWeight])
-          continue
-        }
+        if (!active || !active.isMacroIngredient) continue
 
-        matrixA[0].push(active.kcalPerGram)
-        matrixA[1].push(active.protKcalPerGram)
-        matrixA[2].push(active.fatKcalPerGram)
-        matrixA[3].push(active.carbKcalPerGram)
-        x0.push(rawScaled[i])
-        clampRange.push([Math.max(1, rawWeight * 0.45), rawWeight * 3])
+        const weight = baseWeights[i]
+        const pf = active.proteinFraction
+        const ff = active.fatFraction
+        const cf = active.carbFraction
+
+        matrix[0][0] += weight * active.proteinPerGram * pf
+        matrix[0][1] += weight * active.proteinPerGram * ff
+        matrix[0][2] += weight * active.proteinPerGram * cf
+
+        matrix[1][0] += weight * active.fatPerGram * pf
+        matrix[1][1] += weight * active.fatPerGram * ff
+        matrix[1][2] += weight * active.fatPerGram * cf
+
+        matrix[2][0] += weight * active.carbsPerGram * pf
+        matrix[2][1] += weight * active.carbsPerGram * ff
+        matrix[2][2] += weight * active.carbsPerGram * cf
       }
 
-      const n = x0.length
-      const regularization = 0.8
-      const ata: number[][] = Array.from({ length: n }, () => Array(n).fill(0))
-      const atb: number[] = Array(n).fill(0)
+      const lambdas = solveLinearSystem(matrix, rhs)
+      const clampLambda = (value: number) => Math.max(-0.45, Math.min(0.45, value))
+      const lambdaP = clampLambda(lambdas[0] ?? 0)
+      const lambdaF = clampLambda(lambdas[1] ?? 0)
+      const lambdaC = clampLambda(lambdas[2] ?? 0)
 
-      for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-          let sum = 0
-          for (let m = 0; m < 4; m++) {
-            sum += matrixA[m][i] * matrixA[m][j]
-          }
-          ata[i][j] = sum + (i === j ? regularization : 0)
-        }
-        let sum = 0
-        for (let m = 0; m < 4; m++) {
-          sum += matrixA[m][i] * targetVector[m]
-        }
-        atb[i] = sum + regularization * x0[i]
-      }
-
-      const rawSolution = solveLinearSystem(ata, atb)
-      const clamped = rawSolution.map((value, index) => {
-        const [minWeight, maxWeight] = clampRange[index]
-        return Math.max(minWeight, Math.min(maxWeight, value))
+      const adjusted = baseWeights.map((weight, index) => {
+        const active = activeIngredients[index]
+        if (!active || !active.isMacroIngredient) return weight
+        const factor = 1 + lambdaP * active.proteinFraction + lambdaF * active.fatFraction + lambdaC * active.carbFraction
+        return Math.max(1, Math.min(weight * 3, weight * Math.max(0.45, factor)))
       })
 
-      const totalKcal = clamped.reduce((sum, weight, index) => {
+      const totalKcal = adjusted.reduce((sum, weight, index) => {
         const active = activeIngredients[index]
         return sum + (active ? weight * active.kcalPerGram : 0)
       }, 0)
       const kcalScale = totalKcal > 0 ? targetKcal / totalKcal : 1
 
-      return clamped.map((weight, index) => {
+      return adjusted.map((weight, index) => {
         const active = activeIngredients[index]
-        return active ? Math.max(clampRange[index][0], Math.min(clampRange[index][1], weight * kcalScale)) : weight
+        if (!active) return weight
+        const scaled = weight * kcalScale
+        return Math.max(1, Math.min(active.rawWeight * 3, scaled))
       })
     }
 
