@@ -322,12 +322,16 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       const deltaFat = targetFat - currentMacroGrams.fat
       const deltaCarbs = targetCarbs - currentMacroGrams.carbs
 
+      const proteinPriority = 2.5
+      const fatPriority = 1.0
+      const carbsPriority = 0.5
+
       const matrix: number[][] = [
         [0, 0, 0],
         [0, 0, 0],
         [0, 0, 0],
       ]
-      const rhs: number[] = [deltaProtein, deltaFat, deltaCarbs]
+      const rhs: number[] = [deltaProtein * proteinPriority, deltaFat * fatPriority, deltaCarbs * carbsPriority]
 
       for (let i = 0; i < ingredients.length; i++) {
         const active = activeIngredients[i]
@@ -338,17 +342,17 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         const ff = active.fatFraction
         const cf = active.carbFraction
 
-        matrix[0][0] += weight * active.proteinPerGram * pf
-        matrix[0][1] += weight * active.proteinPerGram * ff
-        matrix[0][2] += weight * active.proteinPerGram * cf
+        matrix[0][0] += proteinPriority * weight * active.proteinPerGram * pf
+        matrix[0][1] += proteinPriority * weight * active.proteinPerGram * ff
+        matrix[0][2] += proteinPriority * weight * active.proteinPerGram * cf
 
-        matrix[1][0] += weight * active.fatPerGram * pf
-        matrix[1][1] += weight * active.fatPerGram * ff
-        matrix[1][2] += weight * active.fatPerGram * cf
+        matrix[1][0] += fatPriority * weight * active.fatPerGram * pf
+        matrix[1][1] += fatPriority * weight * active.fatPerGram * ff
+        matrix[1][2] += fatPriority * weight * active.fatPerGram * cf
 
-        matrix[2][0] += weight * active.carbsPerGram * pf
-        matrix[2][1] += weight * active.carbsPerGram * ff
-        matrix[2][2] += weight * active.carbsPerGram * cf
+        matrix[2][0] += carbsPriority * weight * active.carbsPerGram * pf
+        matrix[2][1] += carbsPriority * weight * active.carbsPerGram * ff
+        matrix[2][2] += carbsPriority * weight * active.carbsPerGram * cf
       }
 
       const lambdas = solveLinearSystem(matrix, rhs)
