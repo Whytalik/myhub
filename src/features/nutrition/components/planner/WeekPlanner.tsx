@@ -425,6 +425,63 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
             label: DAY_NAMES[day.dayOfWeek],
             content: (
               <div className="space-y-4">
+                {/* Day marinated meat summary */}
+          {(() => {
+            const marinatedMap = new Map<string, { weight: number; marinades: Set<string> }>()
+
+            day.slots.forEach((slot) => {
+              slot.entries.forEach((entry) => {
+                if (entry.dishType === "MARINADE" && entry.marinadeForIngredient) {
+                  const item = marinatedMap.get(entry.marinadeForIngredient) ?? { weight: 0, marinades: new Set<string>() }
+                  item.marinades.add(entry.dishName)
+                  marinatedMap.set(entry.marinadeForIngredient, item)
+                }
+              })
+            })
+
+            day.slots.forEach((slot) => {
+              slot.entries.forEach((entry) => {
+                entry.ingredients.forEach((ingredient) => {
+                  const item = marinatedMap.get(ingredient.productName)
+                  if (item) {
+                    item.weight += ingredient.weight
+                  }
+                })
+              })
+            })
+
+            const marinatedItems = Array.from(marinatedMap.entries()).map(([productName, value]) => ({
+              productName,
+              weight: value.weight,
+              marinades: Array.from(value.marinades),
+            }))
+
+            if (marinatedItems.length === 0) return null
+
+            return (
+              <div className="rounded-2xl border border-border bg-surface p-4">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-text-primary">М’ясо з маринадом</h4>
+                    <p className="text-xs text-text-muted">Продукти, які готуємо разом з маринадом цього дня.</p>
+                  </div>
+                  <span className="text-caption font-mono text-text-muted">{marinatedItems.length} item{marinatedItems.length === 1 ? "" : "s"}</span>
+                </div>
+                <div className="grid gap-2">
+                  {marinatedItems.map((item) => (
+                    <div key={item.productName} className="flex items-center justify-between gap-3 rounded-2xl border border-border/50 bg-surface/80 p-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-text-primary truncate">{item.productName}</p>
+                        <p className="text-xs text-text-muted truncate">{item.marinades.join(", ")}</p>
+                      </div>
+                      <span className="text-caption font-mono text-text-secondary">{item.weight.toFixed(0)}г</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
+
                 {/* Day nutrition summary */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {weekPlan.persons.map((person) => {
@@ -620,12 +677,18 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
 
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
-                                <div className="px-4 py-2 text-caption text-text-muted flex items-center gap-1.5">
-                                  {productName}
-                                  {slotMarinadeChips.has(productName) && (
-                                    <span className="text-label font-mono text-violet-400" title={slotMarinadeChips.get(productName)}>🧂</span>
-                                  )}
-                                </div>
+                                <div className="px-4 py-2 text-caption text-text-muted flex items-center gap-2">
+                              <span>{productName}</span>
+                              {slotMarinadeChips.has(productName) && (
+                                <span
+                                  className="inline-flex items-center gap-1 rounded-full border border-violet-300/40 bg-violet-500/10 px-2 py-0.5 text-[11px] font-semibold text-violet-500"
+                                  title={slotMarinadeChips.get(productName)}
+                                >
+                                  <span>🧂</span>
+                                  <span>маринад</span>
+                                </span>
+                              )}
+                            </div>
                                 {personIngredients.map(({ person, ing }) => (
                                   <div key={person.personId} className="px-4 py-2 border-l border-border/20">
                                     {ing ? (
