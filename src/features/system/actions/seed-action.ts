@@ -219,8 +219,8 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     // Після першого проходу нормалізуємо так, щоб загальний kcal = targetKcal.
     function solveLinearSystem(matrix: number[][], rhs: number[]): number[] {
       const n = matrix.length
-      const a = matrix.map(row => [...row])
-      const b = [...rhs]
+      const a: number[][] = matrix.map((row) => [...row])
+      const b: number[] = [...rhs]
 
       for (let i = 0; i < n; i++) {
         let pivot = i
@@ -229,8 +229,12 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         }
         if (Math.abs(a[pivot][i]) < 1e-9) continue
         if (pivot !== i) {
-          [a[i], a[pivot]] = [a[pivot], a[i]]
-          [b[i], b[pivot]] = [b[pivot], b[i]]
+          const tempRow = a[i]
+          a[i] = a[pivot]
+          a[pivot] = tempRow
+          const tempVal = b[i]
+          b[i] = b[pivot]
+          b[pivot] = tempVal
         }
 
         const diag = a[i][i]
