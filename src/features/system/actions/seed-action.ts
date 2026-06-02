@@ -217,54 +217,144 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
     // Розумне масштабування: кожен інгредієнт скейлиться пропорційно до того,
     // наскільки його домінуючий макрос відповідає цілям людини.
     // Після першого проходу нормалізуємо так, щоб загальний kcal = targetKcal.
+    function solveLinearSystem(matrix: number[][], rhs: number[]): number[] {
+      const n = matrix.length
+      const a = matrix.map(row => [...row])
+      const b = [...rhs]
+
+      for (let i = 0; i < n; i++) {
+        let pivot = i
+        for (let j = i + 1; j < n; j++) {
+          if (Math.abs(a[j][i]) > Math.abs(a[pivot][i])) pivot = j
+        }
+        if (Math.abs(a[pivot][i]) < 1e-9) continue
+        if (pivot !== i) {
+          [a[i], a[pivot]] = [a[pivot], a[i]]
+          [b[i], b[pivot]] = [b[pivot], b[i]]
+        }
+
+        const diag = a[i][i]
+        for (let j = i; j < n; j++) a[i][j] /= diag
+        b[i] /= diag
+
+        for (let j = 0; j < n; j++) {
+          if (j === i) continue
+          const factor = a[j][i]
+          for (let k = i; k < n; k++) a[j][k] -= factor * a[i][k]
+          b[j] -= factor * b[i]
+        }
+      }
+
+      return b
+    }
+
     function computeIngredientWeights(
       ingredients: JsonDish["ingredients"],
       targetKcal: number,
       targets: { proteinPct: number; fatPct: number; carbsPct: number }
     ): number[] {
-      let dishKcal = 0, dishProtKcal = 0, dishFatKcal = 0, dishCarbKcal = 0;
-      for (const ing of ingredients) {
-        const p = globalProducts[ing.productName];
-        if (!p) continue;
-        const w = ing.rawWeight / 100;
-        dishKcal     += w * p.caloriesPer100;
-        dishProtKcal += w * p.proteinPer100 * 4;
-        dishFatKcal  += w * p.fatPer100 * 9;
-        dishCarbKcal += w * p.carbsPer100 * 4;
+      const activeIngredients = ingredients.map((ing) => {
+        const product = globalProducts[ing.productName]
+        if (!product) return null
+        const kcalPerGram = product.caloriesPer100 / 100
+        return {
+          rawWeight: ing.rawWeight,
+          kcalPerGram,
+          protKcalPerGram: (product.proteinPer100 * 4) / 100,
+          fatKcalPerGram: (product.fatPer100 * 9) / 100,
+          carbKcalPerGram: (product.carbsPer100 * 4) / 100,
+          totalMacroKcalPerGram: kcalPerGram,
+          isMacroIngredient: (product.proteinPer100 + product.fatPer100 + product.carbsPer100) > 0,
+        }
+      })
+
+      const currentTotals = activeIngredients.reduce(
+        (acc, ing) => {
+          if (!ing) return acc
+          acc.kcal += ing.rawWeight * ing.kcalPerGram
+          acc.protKcal += ing.rawWeight * ing.protKcalPerGram
+          acc.fatKcal += ing.rawWeight * ing.fatKcalPerGram
+          acc.carbKcal += ing.rawWeight * ing.carbKcalPerGram
+          return acc
+        },
+        { kcal: 0, protKcal: 0, fatKcal: 0, carbKcal: 0 }
+      )
+
+      if (currentTotals.kcal <= 0 || targetKcal <= 0) {
+        return ingredients.map((ing) => ing.rawWeight)
       }
 
-      if (dishKcal <= 0 || targetKcal <= 0) return ingredients.map(i => i.rawWeight);
+      const targetProtKcal = targetKcal * (targets.proteinPct / 100)
+      const targetFatKcal = targetKcal * (targets.fatPct / 100)
+      const targetCarbKcal = targetKcal * (targets.carbsPct / 100)
+      const targetVector = [targetKcal, targetProtKcal, targetFatKcal, targetCarbKcal]
 
-      const baseScale = targetKcal / dishKcal;
-      const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+      const rawScaled = ingredients.map((ing, index) => {
+        const active = activeIngredients[index]
+        return active ? ing.rawWeight * (targetKcal / currentTotals.kcal) : ing.rawWeight
+      })
 
-      // Коефіцієнти коригування: наскільки більше/менше кожного макросу хоче людина порівняно з профілем страви
-      const protAdj = dishProtKcal > dishKcal * 0.02 ? clamp(targets.proteinPct / (dishProtKcal / dishKcal * 100), 0.25, 4.0) : 1;
-      const fatAdj  = dishFatKcal  > dishKcal * 0.02 ? clamp(targets.fatPct  / (dishFatKcal  / dishKcal * 100), 0.25, 4.0) : 1;
-      const carbAdj = dishCarbKcal > dishKcal * 0.02 ? clamp(targets.carbsPct / (dishCarbKcal / dishKcal * 100), 0.25, 4.0) : 1;
+      const matrixA: number[][] = [[], [], [], []]
+      const x0: number[] = []
+      const clampRange: Array<[number, number]> = []
 
-      // Перший прохід: коригуємо кожен інгредієнт по його макро-профілю
-      const firstPass = ingredients.map(ing => {
-        const p = globalProducts[ing.productName];
-        if (!p) return ing.rawWeight * baseScale;
-        const macroKcal = (ing.rawWeight / 100) * (p.proteinPer100 * 4 + p.fatPer100 * 9 + p.carbsPer100 * 4);
-        // Дрібні приправи — без коригування
-        if (macroKcal < 0.5) return ing.rawWeight * baseScale;
-        const total = p.proteinPer100 * 4 + p.fatPer100 * 9 + p.carbsPer100 * 4;
-        const pF = (p.proteinPer100 * 4) / total;
-        const fF = (p.fatPer100 * 9) / total;
-        const cF = (p.carbsPer100 * 4) / total;
-        return ing.rawWeight * baseScale * (pF * protAdj + fF * fatAdj + cF * carbAdj);
-      });
-
-      // Нормалізація до targetKcal
-      let fp = 0;
       for (let i = 0; i < ingredients.length; i++) {
-        const p = globalProducts[ingredients[i].productName];
-        if (p) fp += firstPass[i] * p.caloriesPer100 / 100;
+        const active = activeIngredients[i]
+        const rawWeight = ingredients[i].rawWeight
+        if (!active) {
+          matrixA[0].push(0)
+          matrixA[1].push(0)
+          matrixA[2].push(0)
+          matrixA[3].push(0)
+          x0.push(rawWeight)
+          clampRange.push([rawWeight, rawWeight])
+          continue
+        }
+
+        matrixA[0].push(active.kcalPerGram)
+        matrixA[1].push(active.protKcalPerGram)
+        matrixA[2].push(active.fatKcalPerGram)
+        matrixA[3].push(active.carbKcalPerGram)
+        x0.push(rawScaled[i])
+        clampRange.push([Math.max(1, rawWeight * 0.45), rawWeight * 3])
       }
-      const norm = fp > 0 ? targetKcal / fp : 1;
-      return firstPass.map(w => w * norm);
+
+      const n = x0.length
+      const regularization = 0.8
+      const ata: number[][] = Array.from({ length: n }, () => Array(n).fill(0))
+      const atb: number[] = Array(n).fill(0)
+
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          let sum = 0
+          for (let m = 0; m < 4; m++) {
+            sum += matrixA[m][i] * matrixA[m][j]
+          }
+          ata[i][j] = sum + (i === j ? regularization : 0)
+        }
+        let sum = 0
+        for (let m = 0; m < 4; m++) {
+          sum += matrixA[m][i] * targetVector[m]
+        }
+        atb[i] = sum + regularization * x0[i]
+      }
+
+      const rawSolution = solveLinearSystem(ata, atb)
+      const clamped = rawSolution.map((value, index) => {
+        const [minWeight, maxWeight] = clampRange[index]
+        return Math.max(minWeight, Math.min(maxWeight, value))
+      })
+
+      const totalKcal = clamped.reduce((sum, weight, index) => {
+        const active = activeIngredients[index]
+        return sum + (active ? weight * active.kcalPerGram : 0)
+      }, 0)
+      const kcalScale = totalKcal > 0 ? targetKcal / totalKcal : 1
+
+      return clamped.map((weight, index) => {
+        const active = activeIngredients[index]
+        return active ? Math.max(clampRange[index][0], Math.min(clampRange[index][1], weight * kcalScale)) : weight
+      })
     }
 
     for (const day of weekPlan.dayPlans) {

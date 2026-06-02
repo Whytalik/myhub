@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 
 import { MacroSummary } from "./MacroSummary"
 import { Tabs } from "@/components/ui/tabs"
+import { Select } from "@/components/ui/select"
 
 const DAY_NAMES = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"]
 
@@ -739,11 +740,11 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                     return (
                                       <div key={person.personId} className="flex items-center gap-2">
                                         <span className="text-xs text-muted font-mono">{person.personName}</span>
-                                        <select
-                                          defaultValue={selectedAlt}
-                                          className="text-xs bg-background border border-border rounded px-2 py-1"
+                                        <Select
+                                          variant="inline"
+                                          value={selectedAlt}
                                           onChange={(e) => {
-                                            const val = e.target.value || null
+                                            const val = (e.target as HTMLSelectElement).value || null
                                             startTransition(async () => {
                                               const result = await updateDishEntryAlternative(person.entryId, idx, val)
                                               if (result.success) {
@@ -754,6 +755,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               }
                                             })
                                           }}
+                                          className="w-auto"
                                         >
                                           <option value="">Original: {ing.productName}</option>
                                           {ing.alternatives.map((altId) => {
@@ -762,7 +764,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                               <option key={altId} value={altId}>{altProd?.name ?? altId}</option>
                                             )
                                           })}
-                                        </select>
+                                        </Select>
                                       </div>
                                     )
                                   })}
