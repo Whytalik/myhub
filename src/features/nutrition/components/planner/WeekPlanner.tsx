@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, updateDishEntryAlternative, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { DISH_TYPE_META } from "../../constants/dish-types"
@@ -774,12 +774,49 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                           <span className="text-micro text-text-muted">{ingUnitLabel}</span>
                                         </div>
                                       ) : (
-                                        <button
-                                          className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
-                                          onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: toDisplayAmount(ing.weight, ingUnit, ingStdPkg) })}
-                                        >
-                                          {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{toDisplayUnit(ing.weight, ingUnit, ingStdPkg)}</span>
-                                        </button>
+                                        <div>
+                                          <button
+                                            className="text-caption font-mono text-text-secondary hover:text-accent transition-colors"
+                                            onClick={() => setEditingIngredient({ entryId: person.entryId, ingredientIndex: idx, weight: toDisplayAmount(ing.weight, ingUnit, ingStdPkg) })}
+                                          >
+                                            {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{toDisplayUnit(ing.weight, ingUnit, ingStdPkg)}</span>
+                                          </button>
+
+                                          {(ing.alternatives && ing.alternatives.length > 0) && (
+                                            <div className="mt-2">
+                                              {(() => {
+                                                const selectedAlt = (ing.selectedAlternatives && (ing.selectedAlternatives as Record<string, string | null>)[String(idx)]) || ""
+                                                return (
+                                                  <select
+                                                    key={`${person.entryId}-${idx}`}
+                                                    defaultValue={selectedAlt}
+                                                    className="text-xs bg-background border border-border rounded px-2 py-1"
+                                                    onChange={(e) => {
+                                                      const val = e.target.value || null
+                                                      startTransition(async () => {
+                                                        const result = await updateDishEntryAlternative(person.entryId, idx, val)
+                                                        if (result.success) {
+                                                          toast.success("Alternative updated")
+                                                          router.refresh()
+                                                        } else {
+                                                          toast.error(result.error || "Failed to update alternative")
+                                                        }
+                                                      })
+                                                    }}
+                                                  >
+                                                    <option value="">Original: {ing.productName}</option>
+                                                    {ing.alternatives.map((altId) => {
+                                                      const altProd = products.find(p => p.id === altId)
+                                                      return (
+                                                        <option key={altId} value={altId}>{altProd?.name ?? altId}</option>
+                                                      )
+                                                    })}
+                                                  </select>
+                                                )
+                                              })()}
+                                            </div>
+                                          )}
+                                        </div>
                                       )
                                     ) : (
                                       <span className="text-caption text-text-muted/30">—</span>
