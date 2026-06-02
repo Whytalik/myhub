@@ -720,16 +720,54 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                             return (
                               <div key={idx} className={`grid ${personNames.length === 1 ? 'grid-cols-[1fr_120px]' : 'grid-cols-[1fr_1fr_1fr]'} border-b border-border/20 last:border-b-0`}>
                                 <div className="px-4 py-2 text-caption text-text-muted flex items-center gap-2">
-                              <span>{productName}</span>
-                              {slotMarinadeChips.has(productName) && (
-                                <span
-                                  className="inline-flex items-center gap-1 rounded-full border border-violet-300/40 bg-violet-500/10 px-2 py-0.5 text-[11px] font-semibold text-violet-500"
-                                  title={slotMarinadeChips.get(productName)}
-                                >
-                                  <span>🧂</span>
-                                  <span>маринад</span>
-                                </span>
-                              )}
+                              <div className="flex-1">
+                                <span>{productName}</span>
+                                {slotMarinadeChips.has(productName) && (
+                                  <span
+                                    className="inline-flex items-center gap-1 rounded-full border border-violet-300/40 bg-violet-500/10 px-2 py-0.5 text-[11px] font-semibold text-violet-500 ml-2"
+                                    title={slotMarinadeChips.get(productName)}
+                                  >
+                                    <span>🧂</span>
+                                    <span>маринад</span>
+                                  </span>
+                                )}
+                                {/* Alternatives selectors for each person (moved from grams column) */}
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                  {personIngredients.map(({ person, ing }, personIdx) => {
+                                    if (!ing || !ing.alternatives || ing.alternatives.length === 0) return null
+                                    const selectedAlt = (ing.selectedAlternatives && (ing.selectedAlternatives as Record<string, string | null>)[String(idx)]) || ""
+                                    return (
+                                      <div key={person.personId} className="flex items-center gap-2">
+                                        <span className="text-xs text-muted font-mono">{person.personName}</span>
+                                        <select
+                                          defaultValue={selectedAlt}
+                                          className="text-xs bg-background border border-border rounded px-2 py-1"
+                                          onChange={(e) => {
+                                            const val = e.target.value || null
+                                            startTransition(async () => {
+                                              const result = await updateDishEntryAlternative(person.entryId, idx, val)
+                                              if (result.success) {
+                                                toast.success("Alternative updated")
+                                                router.refresh()
+                                              } else {
+                                                toast.error(result.error || "Failed to update alternative")
+                                              }
+                                            })
+                                          }}
+                                        >
+                                          <option value="">Original: {ing.productName}</option>
+                                          {ing.alternatives.map((altId) => {
+                                            const altProd = products.find(p => p.id === altId)
+                                            return (
+                                              <option key={altId} value={altId}>{altProd?.name ?? altId}</option>
+                                            )
+                                          })}
+                                        </select>
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                              </div>
                             </div>
                                 {personIngredients.map(({ person, ing }) => (
                                   <div key={person.personId} className="px-4 py-2 border-l border-border/20">
@@ -782,40 +820,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                                             {toDisplayAmount(ing.weight, ingUnit, ingStdPkg)}<span className="text-micro text-text-muted ml-0.5">{toDisplayUnit(ing.weight, ingUnit, ingStdPkg)}</span>
                                           </button>
 
-                                          {(ing.alternatives && ing.alternatives.length > 0) && (
-                                            <div className="mt-2">
-                                              {(() => {
-                                                const selectedAlt = (ing.selectedAlternatives && (ing.selectedAlternatives as Record<string, string | null>)[String(idx)]) || ""
-                                                return (
-                                                  <select
-                                                    key={`${person.entryId}-${idx}`}
-                                                    defaultValue={selectedAlt}
-                                                    className="text-xs bg-background border border-border rounded px-2 py-1"
-                                                    onChange={(e) => {
-                                                      const val = e.target.value || null
-                                                      startTransition(async () => {
-                                                        const result = await updateDishEntryAlternative(person.entryId, idx, val)
-                                                        if (result.success) {
-                                                          toast.success("Alternative updated")
-                                                          router.refresh()
-                                                        } else {
-                                                          toast.error(result.error || "Failed to update alternative")
-                                                        }
-                                                      })
-                                                    }}
-                                                  >
-                                                    <option value="">Original: {ing.productName}</option>
-                                                    {ing.alternatives.map((altId) => {
-                                                      const altProd = products.find(p => p.id === altId)
-                                                      return (
-                                                        <option key={altId} value={altId}>{altProd?.name ?? altId}</option>
-                                                      )
-                                                    })}
-                                                  </select>
-                                                )
-                                              })()}
-                                            </div>
-                                          )}
+                                          null
                                         </div>
                                       )
                                     ) : (

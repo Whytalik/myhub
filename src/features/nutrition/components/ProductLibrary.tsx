@@ -337,7 +337,7 @@ const handleDeleteAll = () => {
             <Trash2 size={13} />
           </button>
         </div>
-        <h3 className="text-lg font-semibold text-text mb-1 pr-16 truncate">{product.name}</h3>
+        <h3 className="text-lg font-semibold text-text mb-1 pr-16 break-words break-all">{product.name}</h3>
         <div className="flex items-center gap-2 mb-3">
           <span className={`text-label font-mono font-bold ${sourceColor(product.nutritionSource)}`}>
             [{sourceLabel(product.nutritionSource)}]
@@ -388,7 +388,7 @@ const handleDeleteAll = () => {
         onClick={() => onView(product)}
       >
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-text truncate">{product.name}</h3>
+          <h3 className="text-sm font-semibold text-text break-words break-all">{product.name}</h3>
           <div className="flex flex-wrap items-center gap-2 mt-1 text-label text-secondary font-mono text-xs">
             <span>[{sourceLabel(product.nutritionSource)}]</span>
             <span>{product.category}</span>
