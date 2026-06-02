@@ -322,27 +322,23 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       const fatError = currentMacroGrams.fat > 0 ? (targetFat - currentMacroGrams.fat) / currentMacroGrams.fat : 0
       const carbError = currentMacroGrams.carbs > 0 ? (targetCarbs - currentMacroGrams.carbs) / currentMacroGrams.carbs : 0
 
-      const proteinPriority = 5.0
-      const fatPriority = 1.2
-      const carbsPriority = 0.6
+      const proteinPriority = 4.5
+      const fatPriority = 1.0
+      const carbsPriority = 0.5
 
       const scaledErrors = {
-        protein: Math.max(-0.75, Math.min(0.75, proteinError * proteinPriority)),
+        protein: Math.max(-0.8, Math.min(0.8, proteinError * proteinPriority)),
         fat: Math.max(-0.5, Math.min(0.5, fatError * fatPriority)),
-        carbs: Math.max(-0.4, Math.min(0.4, carbError * carbsPriority)),
+        carbs: Math.max(-0.45, Math.min(0.45, carbError * carbsPriority)),
       }
-
-      const avgProteinFraction = activeIngredients.reduce((sum, ing) => sum + (ing?.proteinFraction ?? 0), 0) / Math.max(1, ingredients.length)
-      const avgFatFraction = activeIngredients.reduce((sum, ing) => sum + (ing?.fatFraction ?? 0), 0) / Math.max(1, ingredients.length)
-      const avgCarbFraction = activeIngredients.reduce((sum, ing) => sum + (ing?.carbFraction ?? 0), 0) / Math.max(1, ingredients.length)
 
       const adjusted = baseWeights.map((weight, index) => {
         const active = activeIngredients[index]
         if (!active || !active.isMacroIngredient) return weight
 
-        const proteinBias = (active.proteinFraction - avgProteinFraction) * scaledErrors.protein
-        const fatBias = (active.fatFraction - avgFatFraction) * scaledErrors.fat
-        const carbBias = (active.carbFraction - avgCarbFraction) * scaledErrors.carbs
+        const proteinBias = active.proteinFraction * scaledErrors.protein
+        const fatBias = active.fatFraction * scaledErrors.fat
+        const carbBias = active.carbFraction * scaledErrors.carbs
 
         const factor = 1 + proteinBias + fatBias + carbBias
         return Math.max(1, Math.min(weight * 4, weight * Math.max(0.25, factor)))
@@ -371,15 +367,15 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         { protein: 0, fat: 0, carbs: 0 }
       )
 
-      const proteinNeedExtra = targetProtein - finalMacro.protein
-      if (proteinNeedExtra > 3) {
-        const proteinRich = activeIngredients.map((active, index) => ({ active, index }))
+      const proteinGap = targetProtein - finalMacro.protein
+      if (proteinGap > 3) {
+        const proteinRich = activeIngredients
+          .map((active, index) => ({ active, index }))
           .filter((item): item is { active: NonNullable<typeof activeIngredients[0]>; index: number } => !!item.active)
           .sort((a, b) => b.active.proteinFraction - a.active.proteinFraction)
 
-        for (const item of proteinRich.slice(0, 3)) {
-          const current = finalWeights[item.index]
-          finalWeights[item.index] = Math.min(activeIngredients[item.index]!.rawWeight * 4, current * 1.15)
+        for (const item of proteinRich.slice(0, 2)) {
+          finalWeights[item.index] = Math.min(activeIngredients[item.index]!.rawWeight * 4, finalWeights[item.index] * 1.2)
         }
 
         const kcalAfterBoost = finalWeights.reduce((sum, weight, index) => {
