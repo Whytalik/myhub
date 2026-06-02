@@ -56,7 +56,7 @@ export async function createWeekPlan(
     })
 
     invalidateFoodCache(userId)
-    revalidatePath("/nutrition/plans")
+    revalidatePath("/nutrition/plan")
     return { success: true, data: { weekPlanId: weekPlan.id } }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to create week plan" }

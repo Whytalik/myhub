@@ -33,7 +33,7 @@ export default async function MealPrepPage({ searchParams }: MealPrepPageProps) 
         <PageHeader
           breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "meal prep" }]}
           title="Meal Prep"
-          description="No week plan found. Create one from the Plans page."
+          description="No plan found. Create one from the Plan page."
         />
       </div>
     )
@@ -45,7 +45,7 @@ export default async function MealPrepPage({ searchParams }: MealPrepPageProps) 
   return (
     <div className="px-8 py-8">
       <PageHeader
-        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plans", href: "/nutrition/plans" }, { label: "meal prep" }]}
+        breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "plan", href: "/nutrition/plan" }, { label: "meal prep" }]}
         title="Meal Prep"
         description="Маринади для підготовки перед приготуванням."
       />

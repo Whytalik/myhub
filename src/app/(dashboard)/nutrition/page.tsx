@@ -41,9 +41,9 @@ export default async function NutritionSpacePage() {
             icon: UtensilsCrossed,
           },
           {
-            title: "Plans",
+            title: "Plan",
             description: "Daily & weekly schedules",
-            href: "/nutrition/plans",
+            href: "/nutrition/plan",
             icon: CalendarDays,
           },
           {

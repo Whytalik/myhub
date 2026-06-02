@@ -22,7 +22,8 @@ function getSectionFromPath(pathname: string, guide: SpaceGuide | undefined): st
   else if (pathname.startsWith("/life/week"))            targetId = "week";
   else if (pathname.startsWith("/nutrition/products"))   targetId = "products";
   else if (pathname.startsWith("/nutrition/dishes"))     targetId = "dishes";
-  else if (pathname.startsWith("/nutrition/plans") ||
+  else if (pathname.startsWith("/nutrition/plan") ||
+           pathname.startsWith("/nutrition/plans") ||
            pathname.startsWith("/nutrition/week") ||
            pathname.startsWith("/nutrition/meal-prep"))  targetId = "plans";
   else if (pathname.startsWith("/nutrition/shopping"))   targetId = "shopping";

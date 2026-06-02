@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useMemo, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { Search, Trash2, Plus, Edit2, Loader2, Download, Upload } from "lucide-react";
+import { Search, Trash2, Plus, Edit2, Loader2, Download, Upload, LayoutGrid, List } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -81,6 +81,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
 
   const [selectedGroup, setSelectedGroup] = useState("ALL");
   const [selectedSubTab, setSelectedSubTab] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<"cards" | "list">("cards");
   const [showImportModal, setShowImportModal] = useState(false);
 
   useEffect(() => {
@@ -376,6 +377,53 @@ const handleDeleteAll = () => {
     return Card;
   }, []);
 
+  const ProductListRow = ({ product, onEdit, onDelete }: { product: FoodProduct; onEdit: (p: FoodProduct) => void; onDelete: (p: FoodProduct) => void }) => {
+    const stores = ((product as FoodProduct & { stores?: Store[] }).stores ?? []) as Store[];
+
+    return (
+      <div className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[2fr_0.8fr_1fr_1fr] items-center">
+        <div className="min-w-0">
+          <h3 className="text-sm font-semibold text-text truncate">{product.name}</h3>
+          <div className="flex flex-wrap items-center gap-2 mt-1 text-label text-secondary font-mono text-xs">
+            <span>[{sourceLabel(product.nutritionSource)}]</span>
+            <span>{product.category}</span>
+            {stores.length > 0 && <span>{stores.length} store{stores.length !== 1 ? "s" : ""}</span>}
+          </div>
+        </div>
+        <div className="text-note text-secondary font-mono">
+          <div className="font-semibold text-text">{product.caloriesPer100.toFixed(0)} kcal</div>
+          <div className="text-xs text-muted">per 100{product.unit.toLowerCase()}</div>
+        </div>
+        <div className="text-note text-secondary font-mono space-y-1 text-xs">
+          <div>P: <span className="text-text font-semibold">{product.proteinPer100.toFixed(1)}g</span></div>
+          <div>F: <span className="text-text font-semibold">{product.fatPer100.toFixed(1)}g</span></div>
+          <div>C: <span className="text-text font-semibold">{product.carbsPer100.toFixed(1)}g</span></div>
+        </div>
+        <div className="flex flex-col sm:items-end gap-2">
+          {product.price && product.price > 0 ? (
+            <span className="text-note font-mono text-amber-500 font-semibold">{product.price.toFixed(1)}₴</span>
+          ) : (
+            <span className="text-note text-secondary font-mono">No price</span>
+          )}
+          <div className="flex gap-1">
+            <button
+              onClick={() => onEdit(product)}
+              className="p-2 rounded-lg text-muted hover:bg-blue-500/10 hover:text-blue-500 transition-colors"
+            >
+              <Edit2 size={14} />
+            </button>
+            <button
+              onClick={() => onDelete(product)}
+              className="p-2 rounded-lg text-muted hover:bg-red-500/10 hover:text-red-500 transition-colors"
+            >
+              <Trash2 size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const isSearchMode = searchQuery.trim().length >= 2;
 
   return (
@@ -395,7 +443,23 @@ const handleDeleteAll = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
+          <div className="inline-flex rounded-xl border border-border overflow-hidden bg-surface">
+            <button
+              type="button"
+              onClick={() => setViewMode("cards")}
+              className={`px-3 py-2 text-sm flex items-center gap-1 ${viewMode === "cards" ? "bg-accent/10 text-accent" : "text-muted hover:text-text"}`}
+            >
+              <LayoutGrid size={14} /> Cards
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`px-3 py-2 text-sm flex items-center gap-1 ${viewMode === "list" ? "bg-accent/10 text-accent" : "text-muted hover:text-text"}`}
+            >
+              <List size={14} /> List
+            </button>
+          </div>
           <Button
             variant="ghost"
             size="sm"
@@ -428,11 +492,19 @@ const handleDeleteAll = () => {
                 <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">В бібліотеці</h2>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {searchResults!.local.map(product => (
-                  <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
-                ))}
-              </div>
+              {viewMode === "cards" ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {searchResults!.local.map(product => (
+                    <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {searchResults!.local.map(product => (
+                    <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -516,11 +588,19 @@ const handleDeleteAll = () => {
                     <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">{category}</h2>
                     <div className="h-px flex-1 bg-border" />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {groupedProducts[category].map((product) => (
-                      <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
-                    ))}
-                  </div>
+                  {viewMode === "cards" ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {groupedProducts[category].map((product) => (
+                        <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {groupedProducts[category].map((product) => (
+                        <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

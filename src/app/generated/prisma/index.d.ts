@@ -34746,6 +34746,8 @@ export namespace Prisma {
     standupDone: string | null
     standupPlan: string | null
     recoveryScore: number | null
+    startedAt: Date | null
+    completedAt: Date | null
   }
 
   export type DailyEntryMaxAggregateOutputType = {
@@ -34775,6 +34777,8 @@ export namespace Prisma {
     standupDone: string | null
     standupPlan: string | null
     recoveryScore: number | null
+    startedAt: Date | null
+    completedAt: Date | null
   }
 
   export type DailyEntryCountAggregateOutputType = {
@@ -34808,6 +34812,8 @@ export namespace Prisma {
     standupPlan: number
     recoveryRoutine: number
     recoveryScore: number
+    startedAt: number
+    completedAt: number
     _all: number
   }
 
@@ -34861,6 +34867,8 @@ export namespace Prisma {
     standupDone?: true
     standupPlan?: true
     recoveryScore?: true
+    startedAt?: true
+    completedAt?: true
   }
 
   export type DailyEntryMaxAggregateInputType = {
@@ -34890,6 +34898,8 @@ export namespace Prisma {
     standupDone?: true
     standupPlan?: true
     recoveryScore?: true
+    startedAt?: true
+    completedAt?: true
   }
 
   export type DailyEntryCountAggregateInputType = {
@@ -34923,6 +34933,8 @@ export namespace Prisma {
     standupPlan?: true
     recoveryRoutine?: true
     recoveryScore?: true
+    startedAt?: true
+    completedAt?: true
     _all?: true
   }
 
@@ -35043,6 +35055,8 @@ export namespace Prisma {
     standupPlan: string | null
     recoveryRoutine: JsonValue | null
     recoveryScore: number | null
+    startedAt: Date | null
+    completedAt: Date | null
     _count: DailyEntryCountAggregateOutputType | null
     _avg: DailyEntryAvgAggregateOutputType | null
     _sum: DailyEntrySumAggregateOutputType | null
@@ -35095,6 +35109,8 @@ export namespace Prisma {
     standupPlan?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
@@ -35129,6 +35145,8 @@ export namespace Prisma {
     standupPlan?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
@@ -35163,6 +35181,8 @@ export namespace Prisma {
     standupPlan?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dailyEntry"]>
 
@@ -35197,9 +35217,11 @@ export namespace Prisma {
     standupPlan?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -35246,6 +35268,8 @@ export namespace Prisma {
       standupPlan: string | null
       recoveryRoutine: Prisma.JsonValue | null
       recoveryScore: number | null
+      startedAt: Date | null
+      completedAt: Date | null
     }, ExtArgs["result"]["dailyEntry"]>
     composites: {}
   }
@@ -35700,6 +35724,8 @@ export namespace Prisma {
     readonly standupPlan: FieldRef<"DailyEntry", 'String'>
     readonly recoveryRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly recoveryScore: FieldRef<"DailyEntry", 'Float'>
+    readonly startedAt: FieldRef<"DailyEntry", 'DateTime'>
+    readonly completedAt: FieldRef<"DailyEntry", 'DateTime'>
   }
     
 
@@ -59569,7 +59595,9 @@ export namespace Prisma {
     standupDone: 'standupDone',
     standupPlan: 'standupPlan',
     recoveryRoutine: 'recoveryRoutine',
-    recoveryScore: 'recoveryScore'
+    recoveryScore: 'recoveryScore',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt'
   };
 
   export type DailyEntryScalarFieldEnum = (typeof DailyEntryScalarFieldEnum)[keyof typeof DailyEntryScalarFieldEnum]
@@ -62245,6 +62273,8 @@ export namespace Prisma {
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -62279,6 +62309,8 @@ export namespace Prisma {
     standupPlan?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
     recoveryScore?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -62317,6 +62349,8 @@ export namespace Prisma {
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_date">
 
@@ -62351,6 +62385,8 @@ export namespace Prisma {
     standupPlan?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
     recoveryScore?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
     _count?: DailyEntryCountOrderByAggregateInput
     _avg?: DailyEntryAvgOrderByAggregateInput
     _max?: DailyEntryMaxOrderByAggregateInput
@@ -62392,6 +62428,8 @@ export namespace Prisma {
     standupPlan?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     recoveryRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     recoveryScore?: FloatNullableWithAggregatesFilter<"DailyEntry"> | number | null
+    startedAt?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
   }
 
   export type HabitWhereInput = {
@@ -66022,6 +66060,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
     user: UserCreateNestedOneWithoutDailyEntriesInput
   }
 
@@ -66056,6 +66096,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
   }
 
   export type DailyEntryUpdateInput = {
@@ -66088,6 +66130,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutDailyEntriesNestedInput
   }
 
@@ -66122,6 +66166,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DailyEntryCreateManyInput = {
@@ -66155,6 +66201,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
   }
 
   export type DailyEntryUpdateManyMutationInput = {
@@ -66187,6 +66235,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DailyEntryUncheckedUpdateManyInput = {
@@ -66220,6 +66270,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type HabitCreateInput = {
@@ -69782,6 +69834,8 @@ export namespace Prisma {
     standupPlan?: SortOrder
     recoveryRoutine?: SortOrder
     recoveryScore?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
   }
 
   export type DailyEntryAvgOrderByAggregateInput = {
@@ -69822,6 +69876,8 @@ export namespace Prisma {
     standupDone?: SortOrder
     standupPlan?: SortOrder
     recoveryScore?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
   }
 
   export type DailyEntryMinOrderByAggregateInput = {
@@ -69851,6 +69907,8 @@ export namespace Prisma {
     standupDone?: SortOrder
     standupPlan?: SortOrder
     recoveryScore?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
   }
 
   export type DailyEntrySumOrderByAggregateInput = {
@@ -75116,6 +75174,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
   }
 
   export type DailyEntryUncheckedCreateWithoutUserInput = {
@@ -75148,6 +75208,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
   }
 
   export type DailyEntryCreateOrConnectWithoutUserInput = {
@@ -75942,6 +76004,8 @@ export namespace Prisma {
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
   }
 
   export type DayPlanUpsertWithWhereUniqueWithoutUserInput = {
@@ -84341,6 +84405,8 @@ export namespace Prisma {
     standupPlan?: string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
   }
 
   export type DayPlanCreateManyUserInput = {
@@ -84664,6 +84730,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DailyEntryUncheckedUpdateWithoutUserInput = {
@@ -84696,6 +84764,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DailyEntryUncheckedUpdateManyWithoutUserInput = {
@@ -84728,6 +84798,8 @@ export namespace Prisma {
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DayPlanUpdateWithoutUserInput = {

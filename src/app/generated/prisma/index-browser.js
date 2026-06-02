@@ -424,7 +424,9 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   standupDone: 'standupDone',
   standupPlan: 'standupPlan',
   recoveryRoutine: 'recoveryRoutine',
-  recoveryScore: 'recoveryScore'
+  recoveryScore: 'recoveryScore',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt'
 };
 
 exports.Prisma.HabitScalarFieldEnum = {

@@ -153,17 +153,17 @@ function PersonMacroChip({ name, kcal, protein, fat, carbs, fiber }: { name: str
       <span className="text-caption font-semibold text-text-primary shrink-0">{name}</span>
       <div className="flex items-center gap-1.5 min-w-0 flex-1">
         <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden flex max-w-[140px]">
-          <div style={{ width: `${proteinPct}%` }} className="bg-accent h-full" />
-          <div style={{ width: `${fatPct}%` }} className="bg-secondary h-full" />
-          <div style={{ width: `${carbsPct}%` }} className="bg-text/40 h-full" />
+          <div style={{ width: `${proteinPct}%` }} className="bg-rose-500 h-full" />
+          <div style={{ width: `${fatPct}%` }} className="bg-amber-500 h-full" />
+          <div style={{ width: `${carbsPct}%` }} className="bg-sky-500 h-full" />
         </div>
         <span className="text-caption font-mono text-text-muted shrink-0">{kcal.toFixed(0)}</span>
       </div>
       <div className="hidden sm:flex items-center gap-1 text-caption font-mono text-text-muted shrink-0">
-        <span className="text-accent">Б{protein.toFixed(0)}</span>
-        <span className="text-secondary">Ж{fat.toFixed(0)}</span>
-        <span>В{carbs.toFixed(0)}</span>
-        <span>К{fiber.toFixed(1)}</span>
+        <span className="text-rose-400">Б{protein.toFixed(0)}</span>
+        <span className="text-amber-400">Ж{fat.toFixed(0)}</span>
+        <span className="text-sky-400">В{carbs.toFixed(0)}</span>
+        <span className="text-emerald-400">К{fiber.toFixed(1)}</span>
       </div>
     </div>
   )
@@ -277,7 +277,7 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
       const result = await deleteWeekPlan(weekPlan.id)
       if (result.success) {
         toast.success("Plan deleted")
-        router.push("/nutrition/plans")
+        router.push("/nutrition/plan")
       } else {
         toast.error(result.error || "Failed to delete plan")
       }

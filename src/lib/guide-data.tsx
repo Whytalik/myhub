@@ -421,13 +421,13 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
       },
       {
         id: "plans",
-        label: "Plans",
+        label: "Plan",
         icon: ClipboardList,
         content: (
           <div>
-            <Block title="Що таке Plans?">
+            <Block title="Що таке Plan?">
               <p>
-                Plans — денні або тижневі плани харчування. Комбінуєш страви по прийомах їжі,
+                Plan — тижневий план харчування. Комбінуєш страви по прийомах їжі,
                 система показує загальні макроси дня.
               </p>
             </Block>

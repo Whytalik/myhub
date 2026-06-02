@@ -53,7 +53,7 @@ const nutritionNav = [
   { href: "/nutrition/profiles", label: "Profiles", icon: Users },
   { href: "/nutrition/products", label: "Products", icon: Package },
   { href: "/nutrition/dishes", label: "Dishes", icon: ChefHat },
-  { href: "/nutrition/plans", label: "Plans", icon: CalendarDays },
+  { href: "/nutrition/plan", label: "Plan", icon: CalendarDays },
   { href: "/nutrition/meal-prep", label: "Meal Prep", icon: Utensils },
   { href: "/nutrition/shopping", label: "Shopping", icon: ShoppingCart },
 ];
@@ -196,7 +196,8 @@ export function Sidebar({
       <div key={label} className={`flex flex-col gap-3 w-full ${groupDisabled ? "opacity-30 pointer-events-none" : ""}`}>
         <div className="flex flex-col gap-1.5 w-full">
           {items.map((item) => {
-            const isItemActive = pathname === item.href || pathname.startsWith(item.href + '/') || (item.href === '/nutrition/plans' && pathname.startsWith('/nutrition/week'));
+            const isItemActive = pathname === item.href || pathname.startsWith(item.href + '/') ||
+              (item.href === '/nutrition/plan' && (pathname.startsWith('/nutrition/week') || pathname.startsWith('/nutrition/plans')));
             const subSectionKey = `${label}-${item.label}`;
             const isSubOpen = openSections[subSectionKey] ?? false;
             const isDisabled = item.status === "disabled" || groupDisabled;
@@ -310,7 +311,7 @@ export function Sidebar({
                       {item.subItems.map((sub) => {
                         const SubIcon = sub.icon;
                         const isSubActive = pathname === sub.href || 
-                                          (sub.href === '/nutrition/plans' && pathname.startsWith('/nutrition/week')) ||
+                                          (sub.href === '/nutrition/plan' && (pathname.startsWith('/nutrition/week') || pathname.startsWith('/nutrition/plans'))) ||
                                           (sub.href === '/life/journal' && pathname.startsWith('/life/history'));
                         return (
                           <Link

@@ -35,13 +35,13 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
     if (selectedPersons.length === 0) { toast.error("Select at least one person"); return }
 
     startTransition(async () => {
-      const planName = name.trim() || `Week Plan`
+      const planName = name.trim() || "Plan"
       const result = await createWeekPlan(planName, selectedPersons)
       if (result.success) {
-        toast.success("Week plan created")
+        toast.success("Plan created")
         setIsOpen(false)
         setName("")
-        router.push("/nutrition/week")
+        router.push("/nutrition/plan")
         router.refresh()
       } else {
         toast.error(result.error || "Failed to create plan")
@@ -72,13 +72,13 @@ export function CreatePlanForm({ persons }: CreatePlanFormProps) {
         className="rounded-xl"
         onClick={() => setIsOpen(true)}
       >
-        <Plus size={14} className="mr-1.5" /> Create Week Plan
+        <Plus size={14} className="mr-1.5" /> Create Plan
       </Button>
 
       <Dialog
         isOpen={isOpen}
         onClose={() => { setIsOpen(false); setName(""); setSelectedPersons(persons.map(p => p.id)); }}
-        title="Create New Week Plan"
+        title="Create New Plan"
         maxWidth="max-w-md"
         footer={
           <>

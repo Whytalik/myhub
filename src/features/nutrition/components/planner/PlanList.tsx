@@ -39,7 +39,7 @@ export function PlanList({ initialPlans }: PlanListProps) {
         <div className="w-16 h-16 rounded-3xl bg-bg/50 flex items-center justify-center border border-border mb-4">
           <CalendarDays size={32} className="text-text-muted/40" />
         </div>
-        <p className="text-body font-semibold text-text-primary mb-1">No week plans yet</p>
+        <p className="text-body font-semibold text-text-primary mb-1">No plans yet</p>
         <p className="text-note text-text-secondary">Create one above to get started.</p>
       </div>
     )
@@ -54,7 +54,7 @@ export function PlanList({ initialPlans }: PlanListProps) {
         return (
           <Link
             key={plan.id}
-            href={`/nutrition/week?id=${plan.id}`}
+            href={`/nutrition/plan?id=${plan.id}`}
             className={`block bg-surface border rounded-2xl p-5 hover:border-accent/30 transition-all ${
               isLatest ? "border-accent/30 bg-accent/[0.02]" : "border-border"
             }`}

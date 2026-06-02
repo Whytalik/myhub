@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Trash2, Edit2, Upload, Download, UtensilsCrossed } from "lucide-react";
+import { Search, Plus, Trash2, Edit2, Upload, Download, UtensilsCrossed, LayoutGrid, List } from "lucide-react";
 import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
@@ -46,6 +46,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<DishType | null>(null);
   const [selectedGroup, setSelectedGroup] = useState("ALL");
+  const [viewMode, setViewMode] = useState<"cards" | "list">("cards");
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
@@ -217,7 +218,23 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
+          <div className="inline-flex rounded-xl border border-border overflow-hidden bg-surface">
+            <button
+              type="button"
+              onClick={() => setViewMode("cards")}
+              className={`px-3 py-2 text-sm flex items-center gap-1 ${viewMode === "cards" ? "bg-accent/10 text-accent" : "text-muted hover:text-text"}`}
+            >
+              <LayoutGrid size={14} /> Cards
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`px-3 py-2 text-sm flex items-center gap-1 ${viewMode === "list" ? "bg-accent/10 text-accent" : "text-muted hover:text-text"}`}
+            >
+              <List size={14} /> List
+            </button>
+          </div>
           <Button
             variant="ghost"
             size="sm"
@@ -264,71 +281,138 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         </p>
       )}
 
-      {/* Cards Grid */}
+      {/* Cards/List View */}
       {filteredDishes.length > 0 ? (
         <>
-          {isSearchMode ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredDishes.map((dish) => {
-                const weights = getDishWeights(dish)
-                const stats = calculateDishStats(dish, weights);
-                const costPerServing = getCostPerServing(dish);
-                const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
-                const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+          {viewMode === "cards" ? (
+            <>
+              {isSearchMode ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredDishes.map((dish) => {
+                    const weights = getDishWeights(dish)
+                    const stats = calculateDishStats(dish, weights);
+                    const costPerServing = getCostPerServing(dish);
+                    const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                    const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
 
-                return (
-                  <DishCard
-                    key={dish.id}
-                    dish={dish}
-                    stats={stats}
-                    costPerServing={costPerServing}
-                    kcalPer100g={kcalPer100g}
-                    onEdit={handleEdit}
-                    onDelete={setDishToDelete}
-                  />
-                );
-              })}
-            </div>
+                    return (
+                      <DishCard
+                        key={dish.id}
+                        dish={dish}
+                        stats={stats}
+                        costPerServing={costPerServing}
+                        kcalPer100g={kcalPer100g}
+                        onEdit={handleEdit}
+                        onDelete={setDishToDelete}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {displayedTypes.map((type) => {
+                    const typeDishes = groupedDishes[type];
+                    if (!typeDishes || typeDishes.length === 0) return null;
+                    const meta = DISH_TYPE_META[type];
+
+                    return (
+                      <div key={type} className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <div className="h-px flex-1 bg-border" />
+                          <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">
+                            {meta.emoji} {meta.label}
+                          </h2>
+                          <div className="h-px flex-1 bg-border" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {typeDishes.map((dish) => {
+                            const weights = getDishWeights(dish)
+                            const stats = calculateDishStats(dish, weights);
+                            const costPerServing = getCostPerServing(dish);
+                            const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                            const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+
+                            return (
+                              <DishCard
+                                key={dish.id}
+                                dish={dish}
+                                stats={stats}
+                                costPerServing={costPerServing}
+                                kcalPer100g={kcalPer100g}
+                                onEdit={handleEdit}
+                                onDelete={setDishToDelete}
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
           ) : (
-            <div className="space-y-8">
-              {displayedTypes.map((type) => {
-                const typeDishes = groupedDishes[type];
-                if (!typeDishes || typeDishes.length === 0) return null;
-                const meta = DISH_TYPE_META[type];
+            <div className="space-y-6">
+              {isSearchMode ? (
+                filteredDishes.map((dish) => {
+                  const weights = getDishWeights(dish)
+                  const stats = calculateDishStats(dish, weights);
+                  const costPerServing = getCostPerServing(dish);
+                  const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                  const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
 
-                return (
-                  <div key={type} className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <div className="h-px flex-1 bg-border" />
-                      <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">
-                        {meta.emoji} {meta.label}
-                      </h2>
-                      <div className="h-px flex-1 bg-border" />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {typeDishes.map((dish) => {
-                        const weights = getDishWeights(dish)
-                        const stats = calculateDishStats(dish, weights);
-                        const costPerServing = getCostPerServing(dish);
-                        const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
-                        const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+                  return (
+                    <DishListRow
+                      key={dish.id}
+                      dish={dish}
+                      stats={stats}
+                      costPerServing={costPerServing}
+                      kcalPer100g={kcalPer100g}
+                      onEdit={handleEdit}
+                      onDelete={setDishToDelete}
+                    />
+                  );
+                })
+              ) : (
+                displayedTypes.map((type) => {
+                  const typeDishes = groupedDishes[type];
+                  if (!typeDishes || typeDishes.length === 0) return null;
+                  const meta = DISH_TYPE_META[type];
 
-                        return (
-                          <DishCard
-                            key={dish.id}
-                            dish={dish}
-                            stats={stats}
-                            costPerServing={costPerServing}
-                            kcalPer100g={kcalPer100g}
-                            onEdit={handleEdit}
-                            onDelete={setDishToDelete}
-                          />
-                        );
-                      })}
+                  return (
+                    <div key={type} className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <div className="h-px flex-1 bg-border" />
+                        <h2 className="text-note font-bold font-mono text-muted tracking-[0.2em] uppercase">
+                          {meta.emoji} {meta.label}
+                        </h2>
+                        <div className="h-px flex-1 bg-border" />
+                      </div>
+                      <div className="space-y-3">
+                        {typeDishes.map((dish) => {
+                          const weights = getDishWeights(dish)
+                          const stats = calculateDishStats(dish, weights);
+                          const costPerServing = getCostPerServing(dish);
+                          const totalWeight = weights.reduce((s, w) => s + w.rawWeight, 0);
+                          const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+
+                          return (
+                            <DishListRow
+                              key={dish.id}
+                              dish={dish}
+                              stats={stats}
+                              costPerServing={costPerServing}
+                              kcalPer100g={kcalPer100g}
+                              onEdit={handleEdit}
+                              onDelete={setDishToDelete}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           )}
         </>
@@ -519,6 +603,73 @@ function DishCard({
             +{dish.ingredients.length - 4} more
           </span>
         )}
+      </div>
+    </div>
+  );
+}
+
+function DishListRow({
+  dish,
+  stats,
+  costPerServing,
+  kcalPer100g,
+  onEdit,
+  onDelete,
+}: {
+  dish: DishWithIngredients;
+  stats: { calories: number; protein: number; fat: number; carbs: number; fiber: number };
+  costPerServing: number;
+  kcalPer100g: number;
+  onEdit: (id: string) => void;
+  onDelete: (dish: DishWithIngredients) => void;
+}) {
+  const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
+  const meta = DISH_TYPE_META[t];
+
+  return (
+    <div className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[1.9fr_1fr_0.9fr_0.8fr] items-center">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          <span className={`inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-lg ${meta.bg} ${meta.color}`}>
+            {meta.emoji} {meta.label}
+          </span>
+          <h3 className="text-sm font-semibold text-text truncate">{dish.name}</h3>
+        </div>
+        {dish.description && (
+          <p className="text-note text-muted line-clamp-2">{dish.description}</p>
+        )}
+      </div>
+
+      <div className="text-note text-secondary font-mono">
+        <div className="font-semibold text-text">{Math.round(kcalPer100g)}</div>
+        <div className="text-caption">kcal/100g</div>
+      </div>
+
+      <div className="text-note text-secondary font-mono space-y-1">
+        <div>P: <span className="text-text font-semibold">{stats.protein.toFixed(1)}g</span></div>
+        <div>F: <span className="text-text font-semibold">{stats.fat.toFixed(1)}g</span></div>
+        <div>C: <span className="text-text font-semibold">{stats.carbs.toFixed(1)}g</span></div>
+      </div>
+
+      <div className="flex flex-col sm:items-end gap-2">
+        <span className="text-note text-secondary font-mono">{dish.servings} serving{dish.servings !== 1 ? "s" : ""}</span>
+        {costPerServing > 0 && (
+          <span className="text-note font-mono text-amber-500 font-semibold">{costPerServing.toFixed(1)}₴/serving</span>
+        )}
+        <div className="flex gap-1 mt-2 sm:mt-0">
+          <button
+            onClick={() => onEdit(dish.id)}
+            className="p-2 rounded-lg text-muted hover:bg-blue-500/10 hover:text-blue-500 transition-colors"
+          >
+            <Edit2 size={14} />
+          </button>
+          <button
+            onClick={() => onDelete(dish)}
+            className="p-2 rounded-lg text-muted hover:bg-red-500/10 hover:text-red-500 transition-colors"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
     </div>
   );

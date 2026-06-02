@@ -99,7 +99,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
       })
       .join("\n")
     
-    navigator.clipboard.writeText(`Shopping List for the Week:\n${list}`)
+    navigator.clipboard.writeText(`Shopping List for the Plan:\n${list}`)
     toast.success("Copied to clipboard")
   }
 
@@ -136,7 +136,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
             <ShoppingBag size={18} className="text-accent" />
           </div>
           <div>
-            <h2 className="text-body font-semibold text-text-primary">Weekly Shopping</h2>
+            <h2 className="text-body font-semibold text-text-primary">Shopping List</h2>
             <p className="text-note text-text-muted">{items.length} items total</p>
           </div>
         </div>
@@ -327,7 +327,7 @@ export function ShoppingCartView({ itemsByCategory, weekPlanId, totalCost, varie
         isOpen={showRegenConfirm}
         onClose={() => setShowRegenConfirm(false)}
         title="Refresh List?"
-        description="Recalculate quantities based on the current week plan"
+        description="Recalculate quantities based on the current plan"
         footer={
           <>
             <Button variant="secondary" onClick={() => setShowRegenConfirm(false)}>Cancel</Button>

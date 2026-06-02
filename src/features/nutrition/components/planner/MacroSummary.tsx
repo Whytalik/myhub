@@ -15,6 +15,38 @@ interface MacroSummaryProps {
 }
 
 export function MacroSummary({ personName, macros, repeatedDishes, title }: MacroSummaryProps) {
+  const getMacroColor = (label: string) => {
+    switch (label.toLowerCase()) {
+      case "protein":
+        return "bg-rose-500"
+      case "fat":
+        return "bg-amber-500"
+      case "carbs":
+      case "carbohydrates":
+        return "bg-sky-500"
+      case "fiber":
+        return "bg-emerald-500"
+      default:
+        return "bg-accent"
+    }
+  }
+
+  const getMacroTextColor = (label: string) => {
+    switch (label.toLowerCase()) {
+      case "protein":
+        return "text-rose-400"
+      case "fat":
+        return "text-amber-400"
+      case "carbs":
+      case "carbohydrates":
+        return "text-sky-400"
+      case "fiber":
+        return "text-emerald-400"
+      default:
+        return "text-text-muted"
+    }
+  }
+
   return (
     <div className="bg-surface border border-border rounded-2xl overflow-hidden flex flex-col h-full">
       {title && (
@@ -34,18 +66,14 @@ export function MacroSummary({ personName, macros, repeatedDishes, title }: Macr
         <div className="space-y-1.5 flex-1">
           {macros.map((m) => {
             const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
-            
-            // Status-based coloring
-            const color = m.target > 0 
-              ? m.actual > m.target * 1.1 ? 'bg-red-500' 
-              : m.actual < m.target * 0.9 ? 'bg-amber-500' 
-              : 'bg-green-500'
-              : 'bg-raised'
+
+            const color = getMacroColor(m.label)
+            const labelColor = getMacroTextColor(m.label)
 
             return (
               <div key={m.label} className="flex items-center gap-x-5 min-w-0">
                 {/* Label */}
-                <span className="text-micro font-mono text-text-muted w-3 shrink-0">{m.label}</span>
+                <span className={`text-micro font-mono w-3 shrink-0 ${labelColor}`}>{m.label}</span>
                 
                 {/* Visualization (Progress Bar) */}
                 <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">

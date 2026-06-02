@@ -21,7 +21,7 @@ export default async function ShoppingPage() {
         <PageHeader
           breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]}
           title="Shopping Cart"
-          description="Create a week plan first to generate a shopping cart."
+          description="Create a plan first to generate a shopping cart."
         />
       </div>
     );
@@ -52,7 +52,7 @@ export default async function ShoppingPage() {
         <PageHeader
           breadcrumb={[{ label: "nutrition space", href: "/nutrition" }, { label: "shopping" }]}
           title="Shopping Cart"
-          description="Aggregated ingredients for the week."
+          description="Aggregated ingredients for the current plan."
         />
         <div className="mt-6">
           <ShoppingCartView

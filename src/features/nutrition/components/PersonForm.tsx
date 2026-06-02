@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition, useEffect } from "react";
 import { toast } from "sonner";
@@ -112,78 +112,78 @@ function ProfileCard({
         <div className="grid grid-cols-2 gap-6">
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="text-caption font-mono text-accent tracking-widest font-bold">Protein</label>
-              <span className="text-caption font-mono text-secondary">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
+              <label className="text-caption font-mono text-rose-400 tracking-widest font-bold">Protein</label>
+              <span className="text-caption font-mono text-rose-400/80">{(totalCals * currentPPct / 100 / 4).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 defaultValue={currentPPct}
                 onBlur={(e) => onGoalUpdate(person.id, parseFloat(e.target.value) || 30, currentFPct, currentCPct, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
+                className="font-mono text-lg text-rose-400 border-rose-500/20 hover:border-rose-500/40 focus:border-rose-500 focus:ring-rose-500/20 bg-surface"
               />
-              <span className="text-sm font-mono text-secondary">%</span>
+              <span className="text-sm font-mono text-rose-400/70">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="text-caption font-mono text-secondary tracking-widest font-bold">Fat</label>
-              <span className="text-caption font-mono text-secondary">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
+              <label className="text-caption font-mono text-amber-400 tracking-widest font-bold">Fat</label>
+              <span className="text-caption font-mono text-amber-400/80">{(totalCals * currentFPct / 100 / 9).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 defaultValue={currentFPct}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, parseFloat(e.target.value) || 25, currentCPct, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
+                className="font-mono text-lg text-amber-400 border-amber-500/20 hover:border-amber-500/40 focus:border-amber-500 focus:ring-amber-500/20 bg-surface"
               />
-              <span className="text-sm font-mono text-secondary">%</span>
+              <span className="text-sm font-mono text-amber-400/70">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="text-caption font-mono text-text tracking-widest font-bold">Carbs</label>
-              <span className="text-caption font-mono text-secondary">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
+              <label className="text-caption font-mono text-sky-400 tracking-widest font-bold">Carbs</label>
+              <span className="text-caption font-mono text-sky-400/80">{(totalCals * currentCPct / 100 / 4).toFixed(0)}g</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 defaultValue={currentCPct}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, parseFloat(e.target.value) || 45, person.fiberGrams || 30, totalCals)}
-                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
+                className="font-mono text-lg text-sky-400 border-sky-500/20 hover:border-sky-500/40 focus:border-sky-500 focus:ring-sky-500/20 bg-surface"
               />
-              <span className="text-sm font-mono text-secondary">%</span>
+              <span className="text-sm font-mono text-sky-400/70">%</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="text-caption font-mono text-secondary tracking-widest font-bold">Fiber</label>
-              <span className="text-caption font-mono text-secondary">Goal</span>
+              <label className="text-caption font-mono text-emerald-400 tracking-widest font-bold">Fiber</label>
+              <span className="text-caption font-mono text-emerald-400/80">Goal</span>
             </div>
             <div className="flex items-center gap-2">
               <Input
                 type="number"
                 defaultValue={person.fiberGrams || 30}
                 onBlur={(e) => onGoalUpdate(person.id, currentPPct, currentFPct, currentCPct, parseFloat(e.target.value) || 30, totalCals)}
-                className="font-mono text-lg border-amber-500/40 hover:border-amber-500/60 focus:border-amber-500"
+                className="font-mono text-lg text-emerald-400 border-emerald-500/20 hover:border-emerald-500/40 focus:border-emerald-500 focus:ring-emerald-500/20 bg-surface"
               />
-              <span className="text-sm font-mono text-secondary">g</span>
+              <span className="text-sm font-mono text-emerald-400/70">g</span>
             </div>
           </div>
         </div>
 
         <div className="pt-4 border-t border-border/30 flex items-center gap-4">
           <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden flex">
-            <div style={{ width: `${currentPPct}%` }} className="bg-accent h-full transition-all" />
-            <div style={{ width: `${currentFPct}%` }} className="bg-secondary h-full transition-all" />
-            <div style={{ width: `${currentCPct}%` }} className="bg-text h-full transition-all" />
+            <div style={{ width: `${currentPPct}%` }} className="bg-rose-500 h-full transition-all" />
+            <div style={{ width: `${currentFPct}%` }} className="bg-amber-500 h-full transition-all" />
+            <div style={{ width: `${currentCPct}%` }} className="bg-sky-500 h-full transition-all" />
           </div>
           <div className="flex items-center gap-2 min-w-[100px] justify-end">
             {sum !== 100 && <AlertCircle size={14} className="text-red-500 animate-pulse" />}
-            <span className={`font-mono text-note font-bold ${sum === 100 ? 'text-accent' : 'text-red-500'}`}>
+            <span className={`font-mono text-note font-bold ${sum === 100 ? 'text-emerald-400' : 'text-red-500'}`}>
               {sum}%
             </span>
           </div>
