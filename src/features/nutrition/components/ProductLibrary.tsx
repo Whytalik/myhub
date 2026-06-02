@@ -83,6 +83,7 @@ export function ProductLibrary({ initialProducts }: ProductLibraryProps) {
   const [selectedSubTab, setSelectedSubTab] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"cards" | "list">("cards");
   const [showImportModal, setShowImportModal] = useState(false);
+  const [viewingProduct, setViewingProduct] = useState<FoodProduct | null>(null);
 
   useEffect(() => {
     setProducts(initialProducts);
@@ -321,17 +322,18 @@ const handleDeleteAll = () => {
   };
 
   const ProductCard = useMemo(() => {
-    const Card = ({ product, onEdit, onDelete }: { product: FoodProduct, onEdit: (p: FoodProduct) => void, onDelete: (p: FoodProduct) => void }) => (
+    const Card = ({ product, onEdit, onDelete, onView }: { product: FoodProduct, onEdit: (p: FoodProduct) => void, onDelete: (p: FoodProduct) => void, onView: (p: FoodProduct) => void }) => (
       <div
         key={product.id}
-        className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative"
+        className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative cursor-pointer"
         style={{ contain: "content" }}
+        onClick={() => onView(product)}
       >
         <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={() => onEdit(product)} className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors">
+          <button onClick={(event) => { event.stopPropagation(); onEdit(product); }} className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors">
             <Edit2 size={13} />
           </button>
-          <button onClick={() => onDelete(product)} className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors">
+          <button onClick={(event) => { event.stopPropagation(); onDelete(product); }} className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors">
             <Trash2 size={13} />
           </button>
         </div>
@@ -377,11 +379,14 @@ const handleDeleteAll = () => {
     return Card;
   }, []);
 
-  const ProductListRow = ({ product, onEdit, onDelete }: { product: FoodProduct; onEdit: (p: FoodProduct) => void; onDelete: (p: FoodProduct) => void }) => {
+  const ProductListRow = ({ product, onEdit, onDelete, onView }: { product: FoodProduct; onEdit: (p: FoodProduct) => void; onDelete: (p: FoodProduct) => void; onView: (p: FoodProduct) => void }) => {
     const stores = ((product as FoodProduct & { stores?: Store[] }).stores ?? []) as Store[];
 
     return (
-      <div className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[2fr_0.8fr_1fr_1fr] items-center">
+      <div
+        className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[2fr_0.8fr_1fr_1fr] items-center cursor-pointer hover:border-accent/30 transition-colors"
+        onClick={() => onView(product)}
+      >
         <div className="min-w-0">
           <h3 className="text-sm font-semibold text-text truncate">{product.name}</h3>
           <div className="flex flex-wrap items-center gap-2 mt-1 text-label text-secondary font-mono text-xs">
@@ -407,13 +412,13 @@ const handleDeleteAll = () => {
           )}
           <div className="flex gap-1">
             <button
-              onClick={() => onEdit(product)}
+              onClick={(event) => { event.stopPropagation(); onEdit(product); }}
               className="p-2 rounded-lg text-muted hover:bg-blue-500/10 hover:text-blue-500 transition-colors"
             >
               <Edit2 size={14} />
             </button>
             <button
-              onClick={() => onDelete(product)}
+              onClick={(event) => { event.stopPropagation(); onDelete(product); }}
               className="p-2 rounded-lg text-muted hover:bg-red-500/10 hover:text-red-500 transition-colors"
             >
               <Trash2 size={14} />
@@ -495,13 +500,13 @@ const handleDeleteAll = () => {
               {viewMode === "cards" ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {searchResults!.local.map(product => (
-                    <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                    <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} onView={setViewingProduct} />
                   ))}
                 </div>
               ) : (
                 <div className="space-y-3">
                   {searchResults!.local.map(product => (
-                    <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                    <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} onView={setViewingProduct} />
                   ))}
                 </div>
               )}
@@ -591,13 +596,13 @@ const handleDeleteAll = () => {
                   {viewMode === "cards" ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {groupedProducts[category].map((product) => (
-                        <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                        <ProductCard key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} onView={setViewingProduct} />
                       ))}
                     </div>
                   ) : (
                     <div className="space-y-3">
                       {groupedProducts[category].map((product) => (
-                        <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} />
+                        <ProductListRow key={product.id} product={product} onEdit={openEditForm} onDelete={setProductToDelete} onView={setViewingProduct} />
                       ))}
                     </div>
                   )}
@@ -616,6 +621,83 @@ const handleDeleteAll = () => {
       )}
 
       {/* Create/Edit Dialog */}
+      <Dialog
+        isOpen={!!viewingProduct}
+        onClose={() => setViewingProduct(null)}
+        title={viewingProduct?.name ?? "Product details"}
+        maxWidth="560px"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setViewingProduct(null)}>Close</Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (viewingProduct) {
+                  setEditingProduct(viewingProduct);
+                  setShowFormModal(true);
+                }
+                setViewingProduct(null);
+              }}
+            >
+              Edit
+            </Button>
+          </>
+        }
+      >
+        {viewingProduct ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Category</p>
+                <p className="text-base font-semibold text-text">{viewingProduct.category}</p>
+              </div>
+              <div>
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Source</p>
+                <p className={`text-base font-semibold ${sourceColor(viewingProduct.nutritionSource)}`}>
+                  {sourceLabel(viewingProduct.nutritionSource)}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-raised rounded-2xl p-4 border border-border">
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Calories</p>
+                <p className="text-lg font-semibold text-text">{viewingProduct.caloriesPer100.toFixed(0)} kcal / 100g</p>
+              </div>
+              <div className="bg-raised rounded-2xl p-4 border border-border">
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Macros</p>
+                <p className="text-sm text-text">P {viewingProduct.proteinPer100.toFixed(1)}g · F {viewingProduct.fatPer100.toFixed(1)}g · C {viewingProduct.carbsPer100.toFixed(1)}g</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Package</p>
+                <p className="text-text">{viewingProduct.standardPackageAmount}{viewingProduct.unit}</p>
+              </div>
+              <div>
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Price</p>
+                <p className="text-text">{viewingProduct.price ? `${viewingProduct.price.toFixed(1)}₴` : "No price"}</p>
+              </div>
+            </div>
+            {viewingProduct.stores?.length > 0 && (
+              <div>
+                <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Stores</p>
+                <div className="flex flex-wrap gap-2">
+                  {viewingProduct.stores.map((store) => (
+                    <span
+                      key={store}
+                      className="text-label font-mono px-2 py-1 rounded-lg"
+                      style={{ backgroundColor: STORE_META[store].color + "22", color: STORE_META[store].color }}
+                    >
+                      {STORE_META[store].label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </Dialog>
+
       <Dialog
         isOpen={showFormModal}
         onClose={() => { setShowFormModal(false); setEditingProduct(null); }}

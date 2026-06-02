@@ -49,6 +49,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
   const [viewMode, setViewMode] = useState<"cards" | "list">("cards");
   const [dishToDelete, setDishToDelete] = useState<DishWithIngredients | null>(null);
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
+  const [viewingDish, setViewingDish] = useState<DishWithIngredients | null>(null);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -304,6 +305,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                         kcalPer100g={kcalPer100g}
                         onEdit={handleEdit}
                         onDelete={setDishToDelete}
+                        onView={setViewingDish}
                       />
                     );
                   })}
@@ -341,6 +343,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                                 kcalPer100g={kcalPer100g}
                                 onEdit={handleEdit}
                                 onDelete={setDishToDelete}
+                                onView={setViewingDish}
                               />
                             );
                           })}
@@ -370,6 +373,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                       kcalPer100g={kcalPer100g}
                       onEdit={handleEdit}
                       onDelete={setDishToDelete}
+                      onView={setViewingDish}
                     />
                   );
                 })
@@ -405,6 +409,7 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
                               kcalPer100g={kcalPer100g}
                               onEdit={handleEdit}
                               onDelete={setDishToDelete}
+                              onView={setViewingDish}
                             />
                           );
                         })}
@@ -497,6 +502,79 @@ export function DishLibrary({ initialDishes }: DishLibraryProps) {
         </p>
       </Dialog>
 
+      <Dialog
+        isOpen={!!viewingDish}
+        onClose={() => setViewingDish(null)}
+        title={viewingDish?.name ?? "Dish details"}
+        maxWidth="640px"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setViewingDish(null)}>Close</Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (viewingDish) {
+                  handleEdit(viewingDish.id);
+                  setViewingDish(null);
+                }
+              }}
+            >
+              Edit
+            </Button>
+          </>
+        }
+      >
+        {viewingDish ? (() => {
+          const weights = getDishWeights(viewingDish);
+          const stats = calculateDishStats(viewingDish, weights);
+          const costPerServing = getCostPerServing(viewingDish);
+          const totalWeight = weights.reduce((sum, w) => sum + w.rawWeight, 0);
+          const kcalPer100g = totalWeight > 0 ? (stats.calories / totalWeight) * 100 : 0;
+
+          return (
+            <div className="space-y-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`inline-flex items-center gap-1 text-label font-mono px-2 py-0.5 rounded-lg ${DISH_TYPE_META[((viewingDish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType].bg} ${DISH_TYPE_META[((viewingDish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType].color}`}>
+                  {DISH_TYPE_META[((viewingDish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType].emoji} {DISH_TYPE_META[((viewingDish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType].label}
+                </span>
+                <span className="text-sm font-semibold text-text">{viewingDish.description || "No description"}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-raised rounded-2xl p-4 border border-border">
+                  <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Servings</p>
+                  <p className="text-lg font-semibold text-text">{viewingDish.servings}</p>
+                </div>
+                <div className="bg-raised rounded-2xl p-4 border border-border">
+                  <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Calories</p>
+                  <p className="text-lg font-semibold text-text">{Math.round(kcalPer100g)} kcal / 100g</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-raised rounded-2xl p-4 border border-border">
+                  <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Macros</p>
+                  <p className="text-sm text-text">P {stats.protein.toFixed(1)}g · F {stats.fat.toFixed(1)}g · C {stats.carbs.toFixed(1)}g</p>
+                </div>
+                <div className="bg-raised rounded-2xl p-4 border border-border">
+                  <p className="text-label text-muted uppercase tracking-[0.2em] mb-2">Cost</p>
+                  <p className="text-sm text-text">{costPerServing > 0 ? `${costPerServing.toFixed(1)}₴/serving` : "No price"}</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <p className="text-label text-muted uppercase tracking-[0.2em]">Ingredients</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {viewingDish.ingredients.map((ingredient, idx) => (
+                    <div key={ingredient.id} className="rounded-2xl border border-border p-3 bg-surface">
+                      <div className="font-semibold text-text">{ingredient.product.name}</div>
+                      <div className="text-note text-secondary text-sm mt-1">{weights[idx]?.rawWeight ?? 0} g</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })() : null}
+      </Dialog>
+
       <DishImportModal
         isOpen={showImportModal}
         onClose={() => setShowImportModal(false)}
@@ -513,6 +591,7 @@ function DishCard({
   kcalPer100g,
   onEdit,
   onDelete,
+  onView,
 }: {
   dish: DishWithIngredients;
   stats: { calories: number; protein: number; fat: number; carbs: number; fiber: number };
@@ -520,21 +599,25 @@ function DishCard({
   kcalPer100g: number;
   onEdit: (id: string) => void;
   onDelete: (dish: DishWithIngredients) => void;
+  onView: (dish: DishWithIngredients) => void;
 }) {
   const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
   const meta = DISH_TYPE_META[t];
 
   return (
-    <div className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative">
+    <div
+      className="group bg-surface border border-border rounded-2xl p-5 hover:border-accent/30 transition-colors relative cursor-pointer"
+      onClick={() => onView(dish)}
+    >
       <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
-          onClick={() => onEdit(dish.id)}
+          onClick={(event) => { event.stopPropagation(); onEdit(dish.id); }}
           className="p-1.5 hover:bg-blue-500/10 rounded-lg text-muted hover:text-blue-500 transition-colors"
         >
           <Edit2 size={13} />
         </button>
         <button
-          onClick={() => onDelete(dish)}
+          onClick={(event) => { event.stopPropagation(); onDelete(dish); }}
           className="p-1.5 hover:bg-red-500/10 rounded-lg text-muted hover:text-red-500 transition-colors"
         >
           <Trash2 size={13} />
@@ -615,6 +698,7 @@ function DishListRow({
   kcalPer100g,
   onEdit,
   onDelete,
+  onView,
 }: {
   dish: DishWithIngredients;
   stats: { calories: number; protein: number; fat: number; carbs: number; fiber: number };
@@ -622,12 +706,16 @@ function DishListRow({
   kcalPer100g: number;
   onEdit: (id: string) => void;
   onDelete: (dish: DishWithIngredients) => void;
+  onView: (dish: DishWithIngredients) => void;
 }) {
   const t = ((dish as DishWithIngredients & { type?: string }).type ?? "MAIN") as DishType;
   const meta = DISH_TYPE_META[t];
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[1.9fr_1fr_0.9fr_0.8fr] items-center">
+    <div
+      className="bg-surface border border-border rounded-2xl p-4 grid gap-3 sm:grid-cols-[1.9fr_1fr_0.9fr_0.8fr] items-center cursor-pointer hover:border-accent/30 transition-colors"
+      onClick={() => onView(dish)}
+    >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-1">
           <span className={`inline-flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-lg ${meta.bg} ${meta.color}`}>
@@ -658,13 +746,13 @@ function DishListRow({
         )}
         <div className="flex gap-1 mt-2 sm:mt-0">
           <button
-            onClick={() => onEdit(dish.id)}
+            onClick={(event) => { event.stopPropagation(); onEdit(dish.id); }}
             className="p-2 rounded-lg text-muted hover:bg-blue-500/10 hover:text-blue-500 transition-colors"
           >
             <Edit2 size={14} />
           </button>
           <button
-            onClick={() => onDelete(dish)}
+            onClick={(event) => { event.stopPropagation(); onDelete(dish); }}
             className="p-2 rounded-lg text-muted hover:bg-red-500/10 hover:text-red-500 transition-colors"
           >
             <Trash2 size={14} />

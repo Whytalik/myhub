@@ -21,9 +21,9 @@ export function TabBar({ groups, activeGroup, onGroupChange, subgroups, activeSu
   if (groups.length === 0) return null;
 
   return (
-    <div className={`p-2 bg-surface border border-border/50 rounded-xl shadow-sm ${className}`}>
+    <div className={`w-full p-2 bg-surface border border-border/50 rounded-xl shadow-sm ${className}`}>
       {/* Groups row */}
-      <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit">
+      <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit max-w-full">
         {groups.map((tab) => {
           const isActive = activeGroup === tab.id;
           return (
@@ -54,7 +54,7 @@ export function TabBar({ groups, activeGroup, onGroupChange, subgroups, activeSu
 
       {/* Subgroups row */}
       {subgroups && subgroups.length > 1 && onSubgroupChange && (
-        <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit mt-1.5 pt-1.5 border-t border-border/30">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide min-w-fit max-w-full mt-1.5 pt-1.5 border-t border-border/30">
           {subgroups.map((tab) => {
             const isActive = activeSubgroup === tab.id;
             return (
