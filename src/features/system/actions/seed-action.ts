@@ -322,9 +322,9 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       const deltaFat = targetFat - currentMacroGrams.fat
       const deltaCarbs = targetCarbs - currentMacroGrams.carbs
 
-      const proteinPriority = 2.5
+      const proteinPriority = 4.0
       const fatPriority = 1.0
-      const carbsPriority = 0.5
+      const carbsPriority = 0.25
 
       const matrix: number[][] = [
         [0, 0, 0],
@@ -356,16 +356,16 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
       }
 
       const lambdas = solveLinearSystem(matrix, rhs)
-      const clampLambda = (value: number) => Math.max(-0.45, Math.min(0.45, value))
+      const clampLambda = (value: number) => Math.max(-0.75, Math.min(0.75, value))
       const lambdaP = clampLambda(lambdas[0] ?? 0)
       const lambdaF = clampLambda(lambdas[1] ?? 0)
       const lambdaC = clampLambda(lambdas[2] ?? 0)
 
-      const adjusted = baseWeights.map((weight, index) => {
+      let adjusted = baseWeights.map((weight, index) => {
         const active = activeIngredients[index]
         if (!active || !active.isMacroIngredient) return weight
         const factor = 1 + lambdaP * active.proteinFraction + lambdaF * active.fatFraction + lambdaC * active.carbFraction
-        return Math.max(1, Math.min(weight * 3, weight * Math.max(0.45, factor)))
+        return Math.max(1, Math.min(weight * 4, weight * Math.max(0.35, factor)))
       })
 
       const totalKcal = adjusted.reduce((sum, weight, index) => {
@@ -373,13 +373,55 @@ export async function seedVisualPlanAction(): Promise<ActionResult<void>> {
         return sum + (active ? weight * active.kcalPerGram : 0)
       }, 0)
       const kcalScale = totalKcal > 0 ? targetKcal / totalKcal : 1
-
-      return adjusted.map((weight, index) => {
+      adjusted = adjusted.map((weight, index) => {
         const active = activeIngredients[index]
         if (!active) return weight
         const scaled = weight * kcalScale
-        return Math.max(1, Math.min(active.rawWeight * 3, scaled))
+        return Math.max(1, Math.min(active.rawWeight * 4, scaled))
       })
+
+      const finalMacro = activeIngredients.reduce(
+        (acc, active, index) => {
+          if (!active) return acc
+          const weight = adjusted[index]
+          acc.protein += weight * active.proteinPerGram
+          acc.fat += weight * active.fatPerGram
+          acc.carbs += weight * active.carbsPerGram
+          return acc
+        },
+        { protein: 0, fat: 0, carbs: 0 }
+      )
+
+      const proteinGap = targetProtein - finalMacro.protein
+      if (proteinGap > 2) {
+        const macroIngredients = activeIngredients.filter((ing): ing is NonNullable<typeof ing> => !!ing && ing.isMacroIngredient)
+        const avgProteinFraction = macroIngredients.reduce((sum, ing) => sum + ing.proteinFraction, 0) / Math.max(1, macroIngredients.length)
+        const proteinBoost = Math.min(0.5, proteinGap / targetProtein)
+
+        adjusted = adjusted.map((weight, index) => {
+          const active = activeIngredients[index]
+          if (!active || !active.isMacroIngredient) return weight
+
+          const direction = active.proteinFraction - avgProteinFraction
+          const factor = 1 + proteinBoost * 1.1 * direction
+          return Math.max(1, Math.min(active.rawWeight * 4, weight * Math.max(0.3, factor)))
+        })
+
+        const kcalAfterBoost = adjusted.reduce((sum, weight, index) => {
+          const active = activeIngredients[index]
+          return sum + (active ? weight * active.kcalPerGram : 0)
+        }, 0)
+        const kcalAfterScale = kcalAfterBoost > 0 ? targetKcal / kcalAfterBoost : 1
+
+        adjusted = adjusted.map((weight, index) => {
+          const active = activeIngredients[index]
+          if (!active) return weight
+          const scaled = weight * kcalAfterScale
+          return Math.max(1, Math.min(active.rawWeight * 4, scaled))
+        })
+      }
+
+      return adjusted
     }
 
     for (const day of weekPlan.dayPlans) {
