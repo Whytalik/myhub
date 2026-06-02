@@ -42,7 +42,6 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
             title="Week Overview"
             personName={p.personName || "Unknown"}
             macros={personMacros}
-            repeatedDishes={p.repeatedDishes}
           />
         )
       })}

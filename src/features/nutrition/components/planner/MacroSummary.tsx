@@ -10,41 +10,86 @@ interface MacroData {
 interface MacroSummaryProps {
   personName: string
   macros: MacroData[]
-  repeatedDishes?: { dishName: string; count: number }[]
   title?: string
 }
 
-export function MacroSummary({ personName, macros, repeatedDishes, title }: MacroSummaryProps) {
-  const getMacroColor = (label: string) => {
+export function MacroSummary({ personName, macros, title }: MacroSummaryProps) {
+  const getMacroType = (label: string) => {
     switch (label.toLowerCase()) {
+      case "protein":
+      case "б":
+      case "білок":
+        return "protein"
+      case "fat":
+      case "ж":
+      case "жири":
+        return "fat"
+      case "carbs":
+      case "carbohydrates":
+      case "в":
+      case "вуглеводи":
+        return "carbs"
+      case "fiber":
+      case "кл":
+      case "клітковина":
+        return "fiber"
+      case "kcal":
+      case "к":
+      case "кал":
+      case "калорії":
+        return "kcal"
+      default:
+        return "unknown"
+    }
+  }
+
+  const getMacroColor = (label: string) => {
+    switch (getMacroType(label)) {
       case "protein":
         return "bg-rose-500"
       case "fat":
         return "bg-amber-500"
       case "carbs":
-      case "carbohydrates":
         return "bg-sky-500"
       case "fiber":
         return "bg-emerald-500"
+      case "kcal":
+        return "bg-text-secondary"
       default:
         return "bg-accent"
     }
   }
 
   const getMacroTextColor = (label: string) => {
-    switch (label.toLowerCase()) {
+    switch (getMacroType(label)) {
       case "protein":
         return "text-rose-400"
       case "fat":
         return "text-amber-400"
       case "carbs":
-      case "carbohydrates":
         return "text-sky-400"
       case "fiber":
         return "text-emerald-400"
       default:
         return "text-text-muted"
     }
+  }
+
+  const getMacroStatus = (actual: number, target: number) => {
+    if (!target || target === 0) {
+      return { bg: "bg-text-muted/20", text: undefined }
+    }
+
+    const ratio = actual / target
+    if (ratio < 0.9 || ratio > 1.1) {
+      return { bg: "bg-rose-500", text: "text-rose-400" }
+    }
+
+    if (ratio < 0.95 || ratio > 1.05) {
+      return { bg: "bg-amber-500", text: "text-amber-400" }
+    }
+
+    return { bg: "bg-emerald-500", text: "text-emerald-400" }
   }
 
   return (
@@ -66,9 +111,9 @@ export function MacroSummary({ personName, macros, repeatedDishes, title }: Macr
         <div className="space-y-1.5 flex-1">
           {macros.map((m) => {
             const pct = Math.min((m.actual / (m.target || 1)) * 100, 100)
-
             const color = getMacroColor(m.label)
             const labelColor = getMacroTextColor(m.label)
+            const status = getMacroStatus(m.actual, m.target)
 
             return (
               <div key={m.label} className="flex items-center gap-x-5 min-w-0">
@@ -79,30 +124,20 @@ export function MacroSummary({ personName, macros, repeatedDishes, title }: Macr
                 <div className="flex-1 h-1.5 bg-raised rounded-full overflow-hidden shrink-0">
                   <div 
                     style={{ width: `${pct}%` }} 
-                    className={`h-full ${color} transition-all`} 
+                    className={`h-full ${status.bg} transition-all`} 
                   />
                 </div>
                 
                 {/* Values */}
-                <span className="text-micro font-mono text-text-secondary shrink-0 tabular-nums">
-                  {m.actual.toFixed(0)}{m.unit}<span className="text-text-muted">/{m.target.toFixed(0)}{m.unit}</span>
+                <span className={`text-micro font-mono shrink-0 tabular-nums ${status.text ?? "text-text-secondary"}`}>
+                  {m.actual.toFixed(0)}{m.unit}
+                  <span className="text-text-muted">/{m.target.toFixed(0)}{m.unit}</span>
                 </span>
               </div>
             )
           })}
         </div>
 
-        {repeatedDishes && repeatedDishes.length > 0 && (
-          <div className="pt-2 border-t border-border/30">
-            <div className="flex flex-wrap gap-1">
-              {repeatedDishes.map((d, i) => (
-                <span key={i} className="text-micro font-mono bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded">
-                  {d.dishName}: {d.count}×
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )

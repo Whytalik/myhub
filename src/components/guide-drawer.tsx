@@ -24,8 +24,7 @@ function getSectionFromPath(pathname: string, guide: SpaceGuide | undefined): st
   else if (pathname.startsWith("/nutrition/dishes"))     targetId = "dishes";
   else if (pathname.startsWith("/nutrition/plan") ||
            pathname.startsWith("/nutrition/plans") ||
-           pathname.startsWith("/nutrition/week") ||
-           pathname.startsWith("/nutrition/meal-prep"))  targetId = "plans";
+           pathname.startsWith("/nutrition/week"))  targetId = "plans";
   else if (pathname.startsWith("/nutrition/shopping"))   targetId = "shopping";
 
   const exists = targetId && guide.sections.some((s) => s.id === targetId);

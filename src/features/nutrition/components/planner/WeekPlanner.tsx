@@ -142,11 +142,58 @@ interface WeekPlannerProps {
   }[]
 }
 
-function PersonMacroChip({ name, kcal, protein, fat, carbs, fiber }: { name: string; kcal: number; protein: number; fat: number; carbs: number; fiber: number }) {
+function PersonMacroChip({
+  name,
+  kcal,
+  protein,
+  fat,
+  carbs,
+  fiber,
+  targetKcal,
+  targetProtein,
+  targetFat,
+  targetCarbs,
+  targetFiber,
+}: {
+  name: string
+  kcal: number
+  protein: number
+  fat: number
+  carbs: number
+  fiber: number
+  targetKcal?: number
+  targetProtein?: number
+  targetFat?: number
+  targetCarbs?: number
+  targetFiber?: number
+}) {
   const maxKcal = Math.max(kcal, 1)
   const proteinPct = Math.min((protein * 4 / maxKcal) * 100, 100)
   const fatPct = Math.min((fat * 9 / maxKcal) * 100, 100)
   const carbsPct = Math.min((carbs * 4 / maxKcal) * 100, 100)
+
+  const getStatus = (actual: number, target?: number) => {
+    if (!target || target === 0) {
+      return undefined
+    }
+
+    const ratio = actual / target
+    if (ratio < 0.9 || ratio > 1.1) {
+      return "text-rose-400"
+    }
+
+    if (ratio < 0.95 || ratio > 1.05) {
+      return "text-amber-400"
+    }
+
+    return "text-emerald-400"
+  }
+
+  const kcalStatus = getStatus(kcal, targetKcal)
+  const proteinStatus = getStatus(protein, targetProtein)
+  const fatStatus = getStatus(fat, targetFat)
+  const carbsStatus = getStatus(carbs, targetCarbs)
+  const fiberStatus = getStatus(fiber, targetFiber)
 
   return (
     <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface border border-border min-w-0">
@@ -157,13 +204,13 @@ function PersonMacroChip({ name, kcal, protein, fat, carbs, fiber }: { name: str
           <div style={{ width: `${fatPct}%` }} className="bg-amber-500 h-full" />
           <div style={{ width: `${carbsPct}%` }} className="bg-sky-500 h-full" />
         </div>
-        <span className="text-caption font-mono text-text-muted shrink-0">{kcal.toFixed(0)}</span>
+        <span className={`text-caption font-mono shrink-0 ${kcalStatus ?? "text-text-muted"}`}>{kcal.toFixed(0)}</span>
       </div>
       <div className="hidden sm:flex items-center gap-1 text-caption font-mono text-text-muted shrink-0">
-        <span className="text-rose-400">Б{protein.toFixed(0)}</span>
-        <span className="text-amber-400">Ж{fat.toFixed(0)}</span>
-        <span className="text-sky-400">В{carbs.toFixed(0)}</span>
-        <span className="text-emerald-400">К{fiber.toFixed(1)}</span>
+        <span className={`${proteinStatus ?? "text-rose-400"}`}>Б{protein.toFixed(0)}</span>
+        <span className={`${fatStatus ?? "text-amber-400"}`}>Ж{fat.toFixed(0)}</span>
+        <span className={`${carbsStatus ?? "text-sky-400"}`}>В{carbs.toFixed(0)}</span>
+        <span className={`${fiberStatus ?? "text-emerald-400"}`}>К{fiber.toFixed(1)}</span>
       </div>
     </div>
   )
@@ -449,17 +496,29 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                {slotGroup.map(slot => (
-                  <PersonMacroChip
-                    key={slot.id}
-                    name={slot.personName || ""}
-                    kcal={slot.actualKcal}
-                    protein={slot.actualProtein}
-                    fat={slot.actualFat}
-                    carbs={slot.actualCarbs}
-                    fiber={slot.actualFiber}
-                  />
-                ))}
+                {slotGroup.map(slot => {
+                  const person = weekPlan.persons.find(p => p.id === slot.personId)
+                  const proteinTarget = person ? (slot.targetKcal * person.proteinPct) / 100 / 4 : undefined
+                  const fatTarget = person ? (slot.targetKcal * person.fatPct) / 100 / 9 : undefined
+                  const carbsTarget = person ? (slot.targetKcal * person.carbsPct) / 100 / 4 : undefined
+
+                  return (
+                    <PersonMacroChip
+                      key={slot.id}
+                      name={slot.personName || ""}
+                      kcal={slot.actualKcal}
+                      protein={slot.actualProtein}
+                      fat={slot.actualFat}
+                      carbs={slot.actualCarbs}
+                      fiber={slot.actualFiber}
+                      targetKcal={slot.targetKcal}
+                      targetProtein={proteinTarget}
+                      targetFat={fatTarget}
+                      targetCarbs={carbsTarget}
+                      targetFiber={slot.targetFiberGrams}
+                    />
+                  )
+                })}
                 <span className="text-caption font-mono text-text-muted">{totalEntries} items</span>
               </div>
             </div>
