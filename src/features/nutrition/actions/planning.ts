@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { Prisma, ProductEntry, IngredientInputState } from "@/app/generated/prisma"
 import { ActionResult, getRequiredUserId } from "@/lib/action-utils"
 import { calculateEntryNutrition, toRawWeight, EntryWeightInput } from "@/lib/nutrition/calculations"
+import { fitDayMacros, type FittableIngredient } from "@/lib/nutrition/macro-fitter"
 import { invalidateFoodCache } from "@/lib/revalidate"
 import { revalidatePath } from "next/cache"
 
@@ -995,5 +996,141 @@ export async function updateWeekPlanNotes(
     return { success: true, data: undefined }
   } catch (error) {
     return { success: false, error: error instanceof Error ? error.message : "Failed to update week plan notes" }
+  }
+}
+
+export async function fitDayToNormsAction(
+  dayPlanId: string,
+  personId: string,
+): Promise<ActionResult<{ kcal: number; protein: number; fat: number; carbs: number }>> {
+  try {
+    const userId = await getRequiredUserId()
+
+    const dayPlan = await prisma.dayPlan.findUnique({
+      where: { id: dayPlanId },
+      include: { weekPlan: true },
+    })
+    if (!dayPlan) return { success: false, error: "Day plan not found" }
+    if (dayPlan.weekPlan?.userId !== userId) return { success: false, error: "Unauthorized" }
+
+    const person = await prisma.nutritionPerson.findUnique({ where: { id: personId, userId } })
+    if (!person) return { success: false, error: "Person not found" }
+
+    const targetKcal = person.targetKcal ?? 2000
+    const targetProtein = (targetKcal * ((person.proteinPct ?? 30) / 100)) / 4
+    const targetFat = (targetKcal * ((person.fatPct ?? 25) / 100)) / 9
+    const targetCarbs = (targetKcal * ((person.carbsPct ?? 45) / 100)) / 4
+
+    const slots = await prisma.mealSlotInstance.findMany({
+      where: { dayPlanId, personId, locked: false },
+      include: {
+        dishEntries: {
+          include: {
+            ingredients: { orderBy: { ingredientIndex: "asc" } },
+            dish: {
+              include: {
+                ingredients: { include: { product: true, cookingMethod: true } },
+              },
+            },
+          },
+        },
+        productEntries: { include: { product: true } },
+      },
+    })
+
+    const fittable: FittableIngredient[] = []
+
+    // Map ingredient key → {dishEntryId, ingredientIndex} for DB update
+    const dishIngMap = new Map<string, { dishEntryId: string; ingredientIndex: number }>()
+    const productEntryMap = new Map<string, string>()
+
+    for (const slot of slots) {
+      for (const entry of slot.dishEntries) {
+        if (entry.marinadeForIngredient !== null) continue
+
+        for (let idx = 0; idx < entry.dish.ingredients.length; idx++) {
+          const dishIng = entry.dish.ingredients[idx]
+          const entryIng = entry.ingredients.find(ei => ei.ingredientIndex === idx)
+          if (!entryIng || entryIng.weight <= 0) continue
+
+          const coeff = dishIng.cookingMethod?.coefficient ?? 1.0
+          const divisor = entryIng.inputState === IngredientInputState.COOKED
+            ? 100 * coeff
+            : 100
+
+          const key = `de:${entry.id}:${idx}`
+          fittable.push({
+            key,
+            currentStoredWeight: entryIng.weight,
+            effectiveProteinPerGram: (dishIng.product.proteinPer100 ?? 0) / divisor,
+            effectiveFatPerGram: (dishIng.product.fatPer100 ?? 0) / divisor,
+            effectiveCarbsPerGram: (dishIng.product.carbsPer100 ?? 0) / divisor,
+            effectiveKcalPerGram: (dishIng.product.caloriesPer100 ?? 0) / divisor,
+          })
+          dishIngMap.set(key, { dishEntryId: entry.id, ingredientIndex: idx })
+        }
+      }
+
+      for (const pe of slot.productEntries) {
+        if (pe.portionWeight <= 0) continue
+        const key = `pe:${pe.id}`
+        fittable.push({
+          key,
+          currentStoredWeight: pe.portionWeight,
+          effectiveProteinPerGram: (pe.product.proteinPer100 ?? 0) / 100,
+          effectiveFatPerGram: (pe.product.fatPer100 ?? 0) / 100,
+          effectiveCarbsPerGram: (pe.product.carbsPer100 ?? 0) / 100,
+          effectiveKcalPerGram: (pe.product.caloriesPer100 ?? 0) / 100,
+        })
+        productEntryMap.set(key, pe.id)
+      }
+    }
+
+    if (fittable.length === 0) {
+      return { success: false, error: "No adjustable items found for this day" }
+    }
+
+    const { newWeights, achieved } = fitDayMacros(
+      fittable,
+      { protein: targetProtein, fat: targetFat, carbs: targetCarbs },
+    )
+
+    await prisma.$transaction(async (tx) => {
+      for (const [key, newW] of newWeights) {
+        if (newW <= 0) continue
+
+        if (key.startsWith("de:")) {
+          const meta = dishIngMap.get(key)!
+          await tx.dishEntryIngredient.update({
+            where: {
+              dishEntryId_ingredientIndex: {
+                dishEntryId: meta.dishEntryId,
+                ingredientIndex: meta.ingredientIndex,
+              },
+            },
+            data: { weight: newW },
+          })
+        } else if (key.startsWith("pe:")) {
+          const peId = productEntryMap.get(key)!
+          await tx.productEntry.update({
+            where: { id: peId },
+            data: { portionWeight: newW },
+          })
+        }
+      }
+    })
+
+    invalidateFoodCache(userId)
+    return {
+      success: true,
+      data: {
+        kcal: Math.round(achieved.kcal),
+        protein: Math.round(achieved.protein),
+        fat: Math.round(achieved.fat),
+        carbs: Math.round(achieved.carbs),
+      },
+    }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : "Failed to fit day to norms" }
   }
 }

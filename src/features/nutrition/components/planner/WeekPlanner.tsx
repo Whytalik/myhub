@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useTransition, useCallback } from "react"
-import { Plus, Trash2, Search, Flame, UtensilsCrossed, Clock, StickyNote, Check, X } from "lucide-react"
+import { Plus, Trash2, Search, Flame, UtensilsCrossed, Clock, StickyNote, Check, X, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { DishPicker } from "./DishPicker"
-import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, updateDishEntryAlternative, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote } from "../../actions/planning"
+import { removeDishFromSlot, addDishToSlot, updateDishEntryIngredient, updateDishEntryAlternative, addProductToSlot, updateProductEntryWeight, removeProductFromSlot, deleteWeekPlan, updateWeekPlanName, updateWeekPlanNotes, updateDayPrepNote, fitDayToNormsAction } from "../../actions/planning"
 import { toast } from "sonner"
 import type { DishType } from "../../constants/dish-types"
 import { DISH_TYPE_META } from "../../constants/dish-types"
@@ -569,12 +569,35 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
               ]
 
               return (
-                <MacroSummary
-                  key={person.id}
-                  title="Day Nutrition"
-                  personName={person.name ?? "Unknown"}
-                  macros={macros}
-                />
+                <div key={person.id} className="flex flex-col gap-2">
+                  <MacroSummary
+                    title="Day Nutrition"
+                    personName={person.name ?? "Unknown"}
+                    macros={macros}
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full h-8 border border-dashed border-border text-text-muted text-note hover:border-accent hover:text-accent"
+                    disabled={isPending}
+                    onClick={() => {
+                      startTransition(async () => {
+                        const result = await fitDayToNormsAction(day.dayPlanId, person.id)
+                        if (result.success) {
+                          toast.success(
+                            `Підігнано: Б${result.data.protein}г Ж${result.data.fat}г В${result.data.carbs}г (${result.data.kcal} ккал)`,
+                          )
+                          router.refresh()
+                        } else {
+                          toast.error(result.error || "Помилка підгонки")
+                        }
+                      })
+                    }}
+                  >
+                    <Target className="h-3.5 w-3.5 mr-1.5" />
+                    Підігнати під норми
+                  </Button>
+                </div>
               )
             })}
           </div>
