@@ -369,6 +369,37 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
     })
   }, [localCooking])
 
+  const weeklyMarinatedMap = new Map<string, { weight: number; marinades: Set<string> }>()
+
+  weekPlan.days.forEach((day) => {
+    day.slots.forEach((slot) => {
+      slot.entries.forEach((entry) => {
+        if (entry.dishType === "MARINADE" && entry.marinadeForIngredient) {
+          const current = weeklyMarinatedMap.get(entry.marinadeForIngredient) ?? { weight: 0, marinades: new Set<string>() }
+          current.marinades.add(entry.dishName)
+          weeklyMarinatedMap.set(entry.marinadeForIngredient, current)
+        }
+      })
+    })
+  })
+
+  weekPlan.days.forEach((day) => {
+    day.slots.forEach((slot) => {
+      slot.entries.forEach((entry) => {
+        entry.ingredients.forEach((ingredient) => {
+          const current = weeklyMarinatedMap.get(ingredient.productName)
+          if (current) {
+            current.weight += ingredient.weight
+          }
+        })
+      })
+    })
+  })
+
+  const weeklyMarinatedItems = Array.from(weeklyMarinatedMap.entries())
+    .map(([productName, item]) => ({ productName, weight: item.weight, marinades: Array.from(item.marinades) }))
+    .sort((a, b) => b.weight - a.weight)
+
   return (
     <div className="space-y-6">
       {/* Plan Header */}
@@ -414,6 +445,32 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
           Delete Plan
         </Button>
       </div>
+
+      {weeklyMarinatedItems.length > 0 && (
+        <div className="rounded-2xl border border-border bg-surface p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div>
+              <h4 className="text-base font-semibold text-text-primary">Тиждень: м’ясо з маринадами</h4>
+              <p className="text-sm text-text-muted">Усі мариновані продукти за тиждень з повними грамовими підсумками.</p>
+            </div>
+            <span className="text-caption font-mono text-text-muted">{weeklyMarinatedItems.length} product{weeklyMarinatedItems.length === 1 ? "" : "s"}</span>
+          </div>
+          <div className="grid gap-3">
+            {weeklyMarinatedItems.map((item) => (
+              <div key={item.productName} className="grid grid-cols-[1fr_90px] gap-3 rounded-2xl border border-border/50 bg-surface/80 p-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-text-primary truncate">{item.productName}</p>
+                  <p className="text-xs text-text-muted truncate">{item.marinades.join(", ")}</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-caption font-mono text-text-secondary">{item.weight.toFixed(0)}г</div>
+                  <div className="text-[11px] text-text-muted">за тиждень</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* All days as tabs */}
       <Tabs
@@ -553,29 +610,14 @@ export function WeekPlanner({ weekPlan, dishes, products }: WeekPlannerProps) {
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                {slotGroup.map(slot => {
-                  const person = weekPlan.persons.find(p => p.id === slot.personId)
-                  const proteinTarget = person ? (slot.targetKcal * person.proteinPct) / 100 / 4 : undefined
-                  const fatTarget = person ? (slot.targetKcal * person.fatPct) / 100 / 9 : undefined
-                  const carbsTarget = person ? (slot.targetKcal * person.carbsPct) / 100 / 4 : undefined
-
-                  return (
-                    <PersonMacroChip
-                      key={slot.id}
-                      name={slot.personName || ""}
-                      kcal={slot.actualKcal}
-                      protein={slot.actualProtein}
-                      fat={slot.actualFat}
-                      carbs={slot.actualCarbs}
-                      fiber={slot.actualFiber}
-                      targetKcal={slot.targetKcal}
-                      targetProtein={proteinTarget}
-                      targetFat={fatTarget}
-                      targetCarbs={carbsTarget}
-                      targetFiber={slot.targetFiberGrams}
-                    />
-                  )
-                })}
+                {slotGroup.map((slot) => (
+                  <div
+                    key={slot.id}
+                    className="px-2 py-1 rounded-full bg-surface/60 border border-border/20 text-caption font-mono text-text-primary"
+                  >
+                    {slot.personName || "Unnamed"}
+                  </div>
+                ))}
                 <span className="text-caption font-mono text-text-muted">{totalEntries} items</span>
               </div>
             </div>
