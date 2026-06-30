@@ -9,6 +9,7 @@
     "db:migrate": "prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write .",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -59,6 +60,8 @@
     "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.4",
     "prisma": "^7.7.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
