@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import { loginWithCredentialsAction } from "./actions";
 import { Sparkles, Loader2 } from "lucide-react";
-import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -64,12 +63,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-text-muted mt-5">
-            Ще немає акаунту?{" "}
-            <Link href="/register" className="text-accent hover:underline font-medium">
-              Зареєструватись
-            </Link>
-          </p>
         </div>
       </div>
     </div>

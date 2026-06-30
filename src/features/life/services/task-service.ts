@@ -135,9 +135,9 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       completedAt,
       carriedFromDate: parsedCarriedFrom !== undefined ? parsedCarriedFrom : undefined,
       carryOverReason: carryOverReason !== undefined ? carryOverReason ?? null : undefined,
-      parent:   parentId  !== undefined ? (parentId  ? { connect: { id: parentId  } } : { disconnect: true }) : undefined,
-      sphere:   sphereId  !== undefined ? (sphereId  ? { connect: { id: sphereId  } } : { disconnect: true }) : undefined,
-      project:  projectId !== undefined ? (projectId ? { connect: { id: projectId } } : { disconnect: true }) : undefined,
+      parentId:  parentId  !== undefined ? (parentId  ?? null) : undefined,
+      sphereId:  sphereId  !== undefined ? (sphereId  ?? null) : undefined,
+      projectId: projectId !== undefined ? (projectId ?? null) : undefined,
     });
     return mapTask(saved);
   }

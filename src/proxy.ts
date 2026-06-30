@@ -13,9 +13,7 @@ export default auth((req) => {
     return NextResponse.redirect(new URL(isAuth ? "/life" : "/login", nextUrl));
   }
 
-  const isAuthRoute =
-    nextUrl.pathname.startsWith("/login") ||
-    nextUrl.pathname.startsWith("/register");
+  const isAuthRoute = nextUrl.pathname.startsWith("/login");
   const isPublicRoute =
     nextUrl.pathname === "/favicon.ico" ||
     nextUrl.pathname.startsWith("/api/auth");
