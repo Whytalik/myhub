@@ -9,10 +9,13 @@ import {
   CalendarDays,
   CheckCircle2,
   ChevronRight,
+  Dumbbell,
+  Heart,
   History,
   LogOut,
   Settings2,
   Sparkles,
+  Utensils,
   Zap,
   Pin,
   X,
@@ -22,12 +25,18 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const LIFE_ACCENT = "#6fbfbf";
+const HEALTH_ACCENT = "#ff8c00";
 
 const lifeNav = [
   { href: "/life/journal", label: "Journal", icon: BookText },
   { href: "/life/habits",  label: "Habits",  icon: Zap },
   { href: "/life/tasks",   label: "Tasks",   icon: CheckCircle2 },
   { href: "/life/week",    label: "Week",    icon: CalendarDays },
+];
+
+const healthNav = [
+  { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
+  { href: "/health/training",  label: "Training",  icon: Dumbbell },
 ];
 
 const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
@@ -48,6 +57,9 @@ export function Sidebar({ user, initialOpenSections = {} }: SidebarProps) {
   const [isLifeOpen, setIsLifeOpen] = useState(
     initialOpenSections["Life"] ?? true,
   );
+  const [isHealthOpen, setIsHealthOpen] = useState(
+    initialOpenSections["Health"] ?? pathname.startsWith("/health"),
+  );
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
 
@@ -57,7 +69,14 @@ export function Sidebar({ user, initialOpenSections = {} }: SidebarProps) {
     borderActive: `${LIFE_ACCENT}30`,
   };
 
+  const healthColor = {
+    text: HEALTH_ACCENT,
+    bgActive: `${HEALTH_ACCENT}12`,
+    borderActive: `${HEALTH_ACCENT}30`,
+  };
+
   const isLifeActive = pathname.startsWith("/life");
+  const isHealthActive = pathname.startsWith("/health");
 
   return (
     <>
@@ -240,6 +259,87 @@ export function Sidebar({ user, initialOpenSections = {} }: SidebarProps) {
                       />
                       <span className="truncate">History</span>
                     </Link>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+            {/* Health Space */}
+            <div className="flex flex-col gap-1.5 w-full">
+              <div
+                className={`flex flex-col transition-all duration-200 overflow-hidden rounded-lg relative ${
+                  isHealthActive ? "bg-[var(--item-bg)]" : "hover:bg-surface-hover"
+                }`}
+                style={{ "--item-bg": healthColor.bgActive } as React.CSSProperties}
+              >
+                {isHealthActive && (
+                  <div className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full" style={{ backgroundColor: healthColor.text }} />
+                )}
+                <div className="flex items-center w-full">
+                  <Link href="/health" className="flex-1 flex items-center h-11">
+                    <motion.div
+                      initial={false}
+                      animate={{ paddingLeft: isExpanded ? 12 : 10 }}
+                      transition={SIDEBAR_SPRING}
+                      className="flex items-center w-full h-full"
+                    >
+                      <div className="w-9 h-9 flex items-center justify-center shrink-0 rounded-lg">
+                        <Heart size={18} style={{ color: healthColor.text }} strokeWidth={isHealthActive ? 2.5 : 2} className="transition-colors duration-200" />
+                      </div>
+                      <motion.div
+                        initial={false}
+                        animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
+                        transition={LABEL_TRANSITION}
+                        className="ml-3 overflow-hidden flex items-center gap-2"
+                        style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+                      >
+                        <span className="text-note font-medium whitespace-nowrap" style={{ color: healthColor.text }}>Health Space</span>
+                      </motion.div>
+                    </motion.div>
+                  </Link>
+
+                  <motion.button
+                    initial={false}
+                    animate={{ opacity: isExpanded ? 1 : 0 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={() => setIsHealthOpen((v) => !v)}
+                    className="p-2 transition-colors duration-200 text-text-muted hover:text-text-primary"
+                    style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+                  >
+                    <motion.div
+                      initial={false}
+                      animate={{ rotate: isHealthOpen ? 90 : 0 }}
+                      transition={{ duration: 0.2, ease: "easeInOut" }}
+                    >
+                      <ChevronRight size={14} />
+                    </motion.div>
+                  </motion.button>
+                </div>
+
+                <motion.div
+                  initial={false}
+                  animate={{ height: isExpanded && isHealthOpen ? "auto" : 0, opacity: isExpanded && isHealthOpen ? 1 : 0 }}
+                  transition={SUBMENU_TRANSITION}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className="flex flex-col gap-0.5 pl-3 pr-2 pb-2 pt-1">
+                    <div className="h-px mb-1 transition-colors duration-500" style={{ backgroundColor: isHealthActive ? healthColor.borderActive : "rgba(255,255,255,0.04)" }} />
+                    {healthNav.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 ${
+                            isActive ? "font-medium text-text-primary" : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                          }`}
+                          style={{ color: isActive ? healthColor.text : undefined }}
+                        >
+                          <Icon size={13} style={{ color: isActive ? healthColor.text : undefined }} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
+                          <span className="truncate">{item.label}</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </motion.div>
               </div>

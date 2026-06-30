@@ -1,6 +1,6 @@
 "use client";
 
-import { BookText, CalendarDays, CheckCircle2, Zap } from "lucide-react";
+import { BookText, CalendarDays, CheckCircle2, Dumbbell, Utensils, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
@@ -12,10 +12,17 @@ const LIFE_NAV = [
   { href: "/life/week",    label: "Week",    icon: CalendarDays },
 ];
 
+const HEALTH_NAV = [
+  { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
+  { href: "/health/training",  label: "Training",  icon: Dumbbell },
+];
+
 export function MobileBottomNav() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
+
+  const activeNav = pathname.startsWith("/health") ? HEALTH_NAV : LIFE_NAV;
 
   useEffect(() => {
     const scrollContainer = document.querySelector("main");
@@ -40,7 +47,7 @@ export function MobileBottomNav() {
         ${isVisible ? "translate-y-0" : "translate-y-full"}
       `}
     >
-      {LIFE_NAV.map((item) => {
+      {activeNav.map((item) => {
         const Icon = item.icon;
         const isActive =
           pathname === item.href ||

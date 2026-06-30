@@ -8,6 +8,7 @@ export const SPACE_THEMES = {
   // Specific spaces within domains
   planning:   { accent: "#fbbf24", accentMuted: "#2d2005" },
   nutrition:  { accent: "#ff8c00", accentMuted: "#2e1c0a" },
+  training:   { accent: "#e87d88", accentMuted: "#2a0d11" },
   life:       { accent: "#6fbfbf", accentMuted: "#0b2222" },
   fitness:    { accent: "#e87d88", accentMuted: "#2a0d11" },
   library:    { accent: "#818cf8", accentMuted: "#1e1b4b" },
@@ -30,10 +31,13 @@ export function getSpaceFromPath(pathname: string): SpaceKey {
   if (pathname === "/vault")      return "vault";
 
   // Specific Spaces
-  if (pathname.startsWith("/planning"))  return "planning";
-  if (pathname.startsWith("/nutrition")) return "nutrition";
-  if (pathname.startsWith("/life"))      return "life";
-  if (pathname.startsWith("/fitness"))   return "fitness";
+  if (pathname.startsWith("/planning"))          return "planning";
+  if (pathname.startsWith("/health/nutrition"))  return "nutrition";
+  if (pathname.startsWith("/health/training"))   return "training";
+  if (pathname.startsWith("/health"))            return "health";
+  if (pathname.startsWith("/nutrition"))         return "nutrition";
+  if (pathname.startsWith("/life"))              return "life";
+  if (pathname.startsWith("/fitness"))           return "fitness";
   if (pathname.startsWith("/library"))   return "library";
   if (pathname.startsWith("/languages")) return "languages";
   if (pathname.startsWith("/trading"))   return "trading";
