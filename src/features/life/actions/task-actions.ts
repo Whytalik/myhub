@@ -3,7 +3,7 @@
 import * as taskService from "../services/task-service";
 import { invalidateTaskCache } from "@/lib/revalidate";
 import { withAction, ActionResult } from "@/lib/action-utils";
-import { prisma } from "@/lib/prisma";
+import { taskRepository } from "../repositories/task.repository";
 import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority, TaskData } from "../types";
 
 export async function upsertTaskAction(input: UpsertTaskInput): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
@@ -136,9 +136,8 @@ export async function carryOverTaskAction(
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const existing = await prisma.task.findUnique({
-      where: { id: taskId },
-      select: { plannedDate: true, hasPlannedTime: true, plannedEndDate: true },
+    const existing = await taskRepository.findByIdSelect(taskId, {
+      plannedDate: true, hasPlannedTime: true, plannedEndDate: true,
     });
 
     const [ny, nm, nd] = newDateISO.split('-').map(Number);

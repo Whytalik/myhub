@@ -1,5 +1,9 @@
-import { SpaceSkeleton } from "@/components/space-landing/space-skeleton";
+import { Loader2 } from "lucide-react";
 
 export default function Loading() {
-  return <SpaceSkeleton tileCount={4} variant="space" />;
+  return (
+    <div className="flex items-center justify-center h-full py-32">
+      <Loader2 size={24} className="text-accent animate-spin" />
+    </div>
+  );
 }

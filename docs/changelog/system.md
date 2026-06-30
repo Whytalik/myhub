@@ -1,3 +1,21 @@
+## [2026-06-26] — Google OAuth Migration & Landing Page Bypass
+
+### Added
+- **Research Note**: Documented the transition plan in [google-oauth-migration.md](file:///Users/vitalii/Desktop/myhub/docs/research/google-oauth-migration.md).
+
+### Changed
+- **NextAuth Config**: Replaced Credentials provider with Google OAuth provider in `src/auth.ts`, enabling `allowDangerousEmailAccountLinking` for seamless access.
+- **Root Route & Middleware**: Configured `src/proxy.ts` middleware to intercept `/` and redirect to `/home` or `/login` immediately. Removed heavy landing page implementation from `src/app/page.tsx`, rendering `null` as a static fallback.
+- **Login Page UI**: Redesigned `src/app/(auth)/login/page.tsx` to remove email/password forms and display only a sleek "Continue with Google" button styled for the Void Terminal theme.
+- **Registration Removal**: Cleaned up and removed `/register` routes and page files.
+
+### Verification Checklist:
+- [x] Logic implemented (NextAuth & middleware redirect updated)
+- [x] UI updated (Sleek login page with Google button)
+- [x] Verified with `pnpm tsc --noEmit`
+- [x] Verified with `pnpm lint`
+- [x] Verified with `pnpm build`
+
 ## [2026-05-14] — Nutrition Seeding Unified
 
 Unified the nutrition seeding process into a single action and provided a clear explanation of its components.

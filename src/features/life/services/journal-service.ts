@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
 import { getCachedDailyEntry, getCachedAllEntries } from "@/lib/cache";
+import { journalRepository } from "../repositories/journal.repository";
 import type { UpsertDailyEntryInput } from "../types";
 import { Prisma } from "@/app/generated/prisma";
 
@@ -20,7 +20,6 @@ export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) 
   const date = new Date(input.date);
   const { date: _date, emotions, morningRoutine, eveningRoutine, ...data } = input;
 
-  // We explicitly map the fields to satisfy Prisma's types without 'any' or 'unknown'
   const basePayload = {
     ...data,
     userId,
@@ -29,17 +28,16 @@ export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) 
     eveningRoutine: (eveningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
   };
 
-  return prisma.dailyEntry.upsert({
-    where: { userId_date: { userId, date } },
-    create: { ...basePayload, date } as Prisma.DailyEntryUncheckedCreateInput,
-    update: basePayload as Prisma.DailyEntryUncheckedUpdateInput,
-  });
+  return journalRepository.upsert(
+    userId,
+    date,
+    { ...basePayload, date } as Prisma.DailyEntryUncheckedCreateInput,
+    basePayload as Prisma.DailyEntryUncheckedUpdateInput,
+  );
 }
 
 export async function deleteEntry(userId: string, id: string) {
-  return prisma.dailyEntry.delete({
-    where: { id },
-  });
+  return journalRepository.delete(id);
 }
 
 export async function getAllEntries(userId: string) {

@@ -1,36 +1,9 @@
-import { prisma } from "@/lib/prisma";
 import { getCachedAllTasks, getCachedCalendarTasks, getCachedTasksByDate, getCachedSpheres } from "@/lib/cache";
-import { Prisma } from "@/app/generated/prisma";
-import type {
-  TaskData,
-  LifeSphereData,
-  TaskStatus,
-  TaskPriority,
-  UpsertTaskInput,
-  UpsertSphereInput,
-} from "../types";
+import { taskRepository, type TaskRow } from "../repositories/task.repository";
+import { sphereRepository } from "../repositories/sphere.repository";
+import type { TaskData, LifeSphereData, TaskStatus, TaskPriority, UpsertTaskInput, UpsertSphereInput } from "../types";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-const TASK_INCLUDE = {
-  sphere: true,
-  project: { select: { id: true, title: true } },
-  parent: { select: { id: true, title: true, icon: true } },
-  children: {
-    include: {
-      sphere: true,
-      project: { select: { id: true, title: true } },
-      parent: { select: { id: true, title: true, icon: true } },
-      children: {
-        include: {
-          sphere: true,
-          project: { select: { id: true, title: true } },
-          parent: { select: { id: true, title: true, icon: true } },
-        },
-      },
-    },
-  },
-} as const satisfies Prisma.TaskInclude;
+// ─── Mapping ──────────────────────────────────────────────────────────────────
 
 function mapSphere(
   sphere: { id: string; name: string; color: string; icon: string; order: number; isActive: boolean; createdAt: Date; updatedAt: Date } | null,
@@ -39,9 +12,7 @@ function mapSphere(
   return { ...sphere, taskCount: 0 };
 }
 
-type TaskWithRelations = Prisma.TaskGetPayload<{ include: typeof TASK_INCLUDE }>;
-
-function mapTask(task: TaskWithRelations): TaskData {
+function mapTask(task: TaskRow): TaskData {
   return {
     id: task.id,
     title: task.title,
@@ -67,7 +38,7 @@ function mapTask(task: TaskWithRelations): TaskData {
     sphere: mapSphere(task.sphere),
     projectId: task.projectId,
     project: task.project,
-    children: (task.children as unknown as TaskWithRelations[] ?? []).map(mapTask),
+    children: (task.children as unknown as TaskRow[] ?? []).map(mapTask),
     completedAt: task.completedAt,
     carriedFromDate: task.carriedFromDate,
     carryOverReason: task.carryOverReason,
@@ -76,62 +47,29 @@ function mapTask(task: TaskWithRelations): TaskData {
   };
 }
 
-async function resolveDepth(userId: string, parentId: string | null | undefined): Promise<number> {
-  if (!parentId) return 0;
-  const parent = await prisma.task.findUniqueOrThrow({
-    where: { id: parentId },
-    select: { depth: true },
-  });
+// ─── Sorting ──────────────────────────────────────────────────────────────────
 
-  const depth = parent.depth + 1;
-  if (depth > 2) throw new Error("Max nesting depth is 2 (Task → Subtask → Sub-subtask)");
-  return depth;
-}
-
-const PRIORITY_ORDER: Record<TaskPriority, number> = {
-  URGENT: 3,
-  HIGH:   2,
-  MEDIUM: 1,
-  LOW:    0,
-};
-
-const STATUS_SORT_ORDER: Record<TaskStatus, number> = {
-  IN_PROGRESS: 0,
-  TODO:        1,
-  BACKLOG:     2,
-  DONE:        3,
-  CANCELLED:   4,
-};
+const PRIORITY_ORDER: Record<TaskPriority, number> = { URGENT: 3, HIGH: 2, MEDIUM: 1, LOW: 0 };
+const STATUS_SORT_ORDER: Record<TaskStatus, number> = { IN_PROGRESS: 0, TODO: 1, BACKLOG: 2, DONE: 3, CANCELLED: 4 };
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
-    // 0. Frog task always first
     if (a.isFrog !== b.isFrog) return a.isFrog ? -1 : 1;
-
-    // 1. Sort by Status (based on STATUS_SORT_ORDER)
     const sA = STATUS_SORT_ORDER[a.status] ?? 99;
     const sB = STATUS_SORT_ORDER[b.status] ?? 99;
     if (sA !== sB) return sA - sB;
-
-    // 2. Sort by Priority (desc)
     const pA = PRIORITY_ORDER[a.priority] ?? 0;
     const pB = PRIORITY_ORDER[b.priority] ?? 0;
     if (pA !== pB) return pB - pA;
-
-    // 3. Sort by plannedDate (asc)
     const timeA = a.plannedDate ? new Date(a.plannedDate).getTime() : Infinity;
     const timeB = b.plannedDate ? new Date(b.plannedDate).getTime() : Infinity;
     if (timeA !== timeB) return timeA - timeB;
-
-    // 4. Fallback to manually set order (asc)
     if (a.order !== b.order) return a.order - b.order;
-
-    // 5. Fallback to creation date (asc)
     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
 
-// ─── Tasks ────────────────────────────────────────────────────────────────────
+// ─── Tasks: reads ─────────────────────────────────────────────────────────────
 
 export async function getAllTasks(userId: string): Promise<TaskData[]> {
   const tasks = await getCachedAllTasks(userId);
@@ -143,198 +81,146 @@ export async function getCalendarTasks(userId: string): Promise<TaskData[]> {
   return sortTasks(tasks.map(mapTask));
 }
 
-function filterDailyTasks(tasks: TaskData[], date: Date): TaskData[] {
+export async function getTasksByDate(userId: string, date: Date): Promise<TaskData[]> {
+  const tasks = await getCachedTasksByDate(userId, date.toISOString());
   const dateStr = date.toISOString().slice(0, 10);
-  return tasks.filter(task => {
+  const mapped = sortTasks(tasks.map(mapTask));
+  return mapped.filter((task) => {
     if (task.children.length === 0) return true;
-    const allSubtasksDone = task.children.every(
-      c => c.status === 'DONE' || c.status === 'CANCELLED'
-    );
-    const isDueToday = task.dueDate
-      ? new Date(task.dueDate).toISOString().slice(0, 10) === dateStr
-      : false;
+    const allSubtasksDone = task.children.every((c) => c.status === "DONE" || c.status === "CANCELLED");
+    const isDueToday = task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) === dateStr : false;
     return allSubtasksDone || isDueToday;
   });
 }
 
-export async function getTasksByDate(userId: string, date: Date): Promise<TaskData[]> {
-  const tasks = await getCachedTasksByDate(userId, date.toISOString());
-  return filterDailyTasks(sortTasks(tasks.map(mapTask)), date);
+// ─── Tasks: writes ────────────────────────────────────────────────────────────
+
+async function resolveDepth(parentId: string | null | undefined): Promise<number> {
+  if (!parentId) return 0;
+  const parent = await taskRepository.findParentDepth(parentId);
+  const depth = parent.depth + 1;
+  if (depth > 2) throw new Error("Max nesting depth is 2");
+  return depth;
 }
 
 export async function upsertTask(userId: string, input: UpsertTaskInput): Promise<TaskData> {
   const {
-    id,
-    title,
-    description,
-    icon,
-    status,
-    priority,
-    isPrivate,
-    isBlocked,
-    plannedDate,
-    hasPlannedTime,
-    plannedEndDate,
-    hasPlannedEndTime,
-    dueDate,
-    hasDueTime,
-    parentId,
-    sphereId,
-    projectId,
-    carriedFromDate,
-    carryOverReason,
+    id, title, description, icon, status, priority, isPrivate, isBlocked,
+    plannedDate, hasPlannedTime, plannedEndDate, hasPlannedEndTime,
+    dueDate, hasDueTime, parentId, sphereId, projectId, carriedFromDate, carryOverReason,
   } = input;
 
-  const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
-  const parsedPlannedEndDate = plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
-  const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
-  const parsedCarriedFromDate = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
+  const parsedPlannedDate    = plannedDate     !== undefined ? (plannedDate     ? new Date(plannedDate)     : null) : undefined;
+  const parsedPlannedEndDate = plannedEndDate  !== undefined ? (plannedEndDate  ? new Date(plannedEndDate)  : null) : undefined;
+  const parsedDueDate        = dueDate         !== undefined ? (dueDate         ? new Date(dueDate)         : null) : undefined;
+  const parsedCarriedFrom    = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
 
-  // Auto-set completedAt
-  let completedAt: Date | null | undefined = undefined;
-  if (status === 'DONE') {
-    completedAt = new Date();
-  } else if (status) {
-    completedAt = null;
-  }
+  const completedAt = status === "DONE" ? new Date() : status ? null : undefined;
 
   if (id) {
-    // Perform Update
-    const saved = await prisma.task.update({
-      where: { id },
-      data: {
-        title:       title ?? undefined,
-        description: description !== undefined ? (description ?? null) : undefined,
-        icon:        icon !== undefined ? (icon ?? null) : undefined,
-        status:      status ?? undefined,
-        priority:    priority ?? undefined,
-        isPrivate:  isPrivate ?? undefined,
-        isBlocked:  isBlocked ?? undefined,
-        plannedDate: parsedPlannedDate !== undefined ? parsedPlannedDate : undefined,
-        hasPlannedTime: hasPlannedTime ?? undefined,
-        plannedEndDate: parsedPlannedEndDate !== undefined ? parsedPlannedEndDate : undefined,
-        hasPlannedEndTime: hasPlannedEndTime ?? undefined,
-        dueDate:     parsedDueDate !== undefined ? parsedDueDate : undefined,
-        hasDueTime:  hasDueTime ?? undefined,
-        completedAt,
-        carriedFromDate: parsedCarriedFromDate !== undefined ? parsedCarriedFromDate : undefined,
-        carryOverReason: carryOverReason !== undefined ? (carryOverReason ?? null) : undefined,
-        parent: parentId !== undefined ? (parentId ? { connect: { id: parentId } } : { disconnect: true }) : undefined,
-        sphere: sphereId !== undefined ? (sphereId ? { connect: { id: sphereId } } : { disconnect: true }) : undefined,
-        project: projectId !== undefined ? (projectId ? { connect: { id: projectId } } : { disconnect: true }) : undefined,
-      },
-      include: TASK_INCLUDE,
-    });
-    return mapTask(saved);
-  } else {
-    // Perform Create
-    if (!title) throw new Error("Title is required for new tasks");
-    
-    const depth = await resolveDepth(userId, parentId);
-
-    const saved = await prisma.task.create({
-      data: {
-        userId,
-        title,
-        description: description ?? null,
-        icon:        icon ?? null,
-        status:      status ?? "TODO",
-        priority:    priority ?? "MEDIUM",
-        isPrivate:  isPrivate ?? false,
-        isBlocked:  isBlocked ?? false,
-        plannedDate: (parsedPlannedDate as Date | null) ?? null,
-        hasPlannedTime: hasPlannedTime ?? false,
-        plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
-        hasPlannedEndTime: hasPlannedEndTime ?? false,
-        dueDate: (parsedDueDate as Date | null) ?? null,
-        hasDueTime: hasDueTime ?? false,
-        depth,
-        completedAt: status === 'DONE' ? new Date() : null,
-        carriedFromDate: (parsedCarriedFromDate as Date | null) ?? null,
-        carryOverReason: carryOverReason ?? null,
-        parentId: parentId ?? null,
-        sphereId: sphereId ?? null,
-        projectId: projectId ?? null,
-      },
-      include: TASK_INCLUDE,
+    const saved = await taskRepository.update(id, userId, {
+      title: title ?? undefined,
+      description: description !== undefined ? description ?? null : undefined,
+      icon: icon !== undefined ? icon ?? null : undefined,
+      status: status ?? undefined,
+      priority: priority ?? undefined,
+      isPrivate: isPrivate ?? undefined,
+      isBlocked: isBlocked ?? undefined,
+      plannedDate: parsedPlannedDate !== undefined ? parsedPlannedDate : undefined,
+      hasPlannedTime: hasPlannedTime ?? undefined,
+      plannedEndDate: parsedPlannedEndDate !== undefined ? parsedPlannedEndDate : undefined,
+      hasPlannedEndTime: hasPlannedEndTime ?? undefined,
+      dueDate: parsedDueDate !== undefined ? parsedDueDate : undefined,
+      hasDueTime: hasDueTime ?? undefined,
+      completedAt,
+      carriedFromDate: parsedCarriedFrom !== undefined ? parsedCarriedFrom : undefined,
+      carryOverReason: carryOverReason !== undefined ? carryOverReason ?? null : undefined,
+      parent:   parentId  !== undefined ? (parentId  ? { connect: { id: parentId  } } : { disconnect: true }) : undefined,
+      sphere:   sphereId  !== undefined ? (sphereId  ? { connect: { id: sphereId  } } : { disconnect: true }) : undefined,
+      project:  projectId !== undefined ? (projectId ? { connect: { id: projectId } } : { disconnect: true }) : undefined,
     });
     return mapTask(saved);
   }
+
+  if (!title) throw new Error("Title is required for new tasks");
+  const depth = await resolveDepth(parentId);
+
+  const saved = await taskRepository.create({
+    userId,
+    title,
+    description: description ?? null,
+    icon: icon ?? null,
+    status: status ?? "TODO",
+    priority: priority ?? "MEDIUM",
+    isPrivate: isPrivate ?? false,
+    isBlocked: isBlocked ?? false,
+    plannedDate: (parsedPlannedDate as Date | null) ?? null,
+    hasPlannedTime: hasPlannedTime ?? false,
+    plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
+    hasPlannedEndTime: hasPlannedEndTime ?? false,
+    dueDate: (parsedDueDate as Date | null) ?? null,
+    hasDueTime: hasDueTime ?? false,
+    depth,
+    completedAt: status === "DONE" ? new Date() : null,
+    carriedFromDate: (parsedCarriedFrom as Date | null) ?? null,
+    carryOverReason: carryOverReason ?? null,
+    parentId: parentId ?? null,
+    sphereId: sphereId ?? null,
+    projectId: projectId ?? null,
+  });
+  return mapTask(saved);
 }
 
 export async function autoCarryOverYesterdayTasks(userId: string, todayStr: string): Promise<number> {
   const today = new Date(todayStr);
   today.setHours(0, 0, 0, 0);
-
   const yesterdayStart = new Date(today);
   yesterdayStart.setDate(today.getDate() - 1);
   const yesterdayEnd = new Date(yesterdayStart);
   yesterdayEnd.setHours(23, 59, 59, 999);
 
-  const result = await prisma.task.updateMany({
-    where: {
-      userId,
-      plannedDate: { gte: yesterdayStart, lte: yesterdayEnd },
-      plannedEndDate: null,
-      status: { notIn: ["DONE", "CANCELLED"] },
-    },
-    data: {
-      plannedDate: today,
-      carriedFromDate: yesterdayStart,
-    },
-  });
-
+  const result = await taskRepository.updateMany(
+    { userId, plannedDate: { gte: yesterdayStart, lte: yesterdayEnd }, plannedEndDate: null, status: { notIn: ["DONE", "CANCELLED"] } },
+    { plannedDate: today, carriedFromDate: yesterdayStart },
+  );
   return result.count;
 }
 
 export async function deleteTask(userId: string, id: string): Promise<void> {
-  await prisma.task.delete({ where: { id, userId } });
+  await taskRepository.delete(id, userId);
 }
 
 export async function updateTaskStatus(userId: string, id: string, status: TaskStatus): Promise<void> {
-  const completedAt = status === 'DONE' ? new Date() : null;
-  await prisma.task.update({ where: { id, userId }, data: { status, completedAt } });
-
-  if (status === 'DONE') {
-    await autoCompleteParentIfAllChildrenDone(userId, id);
-  }
+  const completedAt = status === "DONE" ? new Date() : null;
+  await taskRepository.updateById(id, { status, completedAt });
+  if (status === "DONE") await autoCompleteParentIfAllChildrenDone(id);
 }
 
-async function autoCompleteParentIfAllChildrenDone(userId: string, childId: string): Promise<void> {
-  const child = await prisma.task.findUnique({ where: { id: childId }, select: { parentId: true } });
+async function autoCompleteParentIfAllChildrenDone(childId: string): Promise<void> {
+  const child = await taskRepository.findParentId(childId);
   if (!child?.parentId) return;
 
-  const siblings = await prisma.task.findMany({
-    where: { parentId: child.parentId },
-    select: { id: true, status: true },
-  });
+  const siblings = await taskRepository.findSiblings(child.parentId);
+  if (!siblings.every((s) => s.status === "DONE" || s.status === "CANCELLED")) return;
 
-  const allDone = siblings.every(s => s.status === 'DONE' || s.status === 'CANCELLED');
-  if (allDone) {
-    await prisma.task.update({
-      where: { id: child.parentId },
-      data: { status: 'DONE', completedAt: new Date() },
-    });
+  await taskRepository.updateById(child.parentId, { status: "DONE", completedAt: new Date() });
 
-    const parent = await prisma.task.findUnique({ where: { id: child.parentId }, select: { parentId: true } });
-    if (parent?.parentId) {
-      await autoCompleteParentIfAllChildrenDone(userId, child.parentId);
-    }
-  }
+  const parent = await taskRepository.findParentId(child.parentId);
+  if (parent?.parentId) await autoCompleteParentIfAllChildrenDone(child.parentId);
 }
 
 export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {
-  await prisma.task.update({ where: { id, userId }, data: { priority } });
+  await taskRepository.updateById(id, { priority });
 }
 
 export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
-  const task = await prisma.task.findUnique({ where: { id, userId }, select: { isFrog: true } });
+  const task = await taskRepository.findById(id);
   if (!task) throw new Error("Task not found");
-
-  await prisma.$transaction([
-    prisma.task.updateMany({ where: { userId, isFrog: true }, data: { isFrog: false } }),
-    ...(task.isFrog ? [] : [prisma.task.update({ where: { id }, data: { isFrog: true } })]),
-  ]);
+  if (task.isFrog) {
+    await taskRepository.clearFrog(userId);
+  } else {
+    await taskRepository.setFrogExclusive(userId, id);
+  }
 }
 
 // ─── Spheres ──────────────────────────────────────────────────────────────────
@@ -356,12 +242,7 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
 
 export async function upsertSphere(userId: string, input: UpsertSphereInput): Promise<LifeSphereData> {
   const { id, name, color, icon, order = 0 } = input;
-  const sphere = await prisma.lifeSphere.upsert({
-    where: { id: id ?? "" },
-    create: { userId, name, color, icon, order },
-    update: { name, color, icon, order },
-    include: { _count: { select: { tasks: true } } },
-  });
+  const sphere = await sphereRepository.upsert(id, userId, { name, color, icon, order });
   return {
     id: sphere.id,
     name: sphere.name,
@@ -376,9 +257,9 @@ export async function upsertSphere(userId: string, input: UpsertSphereInput): Pr
 }
 
 export async function toggleSphereActive(userId: string, id: string, isActive: boolean): Promise<void> {
-  await prisma.lifeSphere.update({ where: { id, userId }, data: { isActive } });
+  await sphereRepository.update(id, userId, { isActive });
 }
 
 export async function deleteSphere(userId: string, id: string): Promise<void> {
-  await prisma.lifeSphere.delete({ where: { id, userId } });
+  await sphereRepository.delete(id, userId);
 }

@@ -25,7 +25,6 @@ function DashboardSkeleton() {
   );
 }
 
-// Динамічний компонент, який зчитує дані сесії та куки
 async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
   
@@ -73,7 +72,6 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Статичний лейаут, який не блокує рендеринг
 export default function DashboardLayout({
   children,
 }: {

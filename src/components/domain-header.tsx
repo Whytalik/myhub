@@ -1,112 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { useSpace } from "./space-provider";
 import { useSidebar } from "./sidebar-provider";
-import {
-  Briefcase,
-  Shield,
-  Brain,
-  Database,
-  Package,
-  Menu,
-  X,
-  Sparkles,
-  Lock,
-  BookOpen,
-} from "lucide-react";
+import { Menu, X, Sparkles, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getSpaceFromPath } from "@/lib/spaces";
 import { GUIDE_DATA } from "@/lib/guide-data";
 import { GuideModal } from "@/components/guide-drawer";
 
-const DOMAIN_STATUS: Record<string, "active" | "locked"> = {
-  operations: "active",
-  health: "active",
-  mind: "locked",
-  wealth: "locked",
-  vault: "locked",
-};
-
-const DOMAINS_CONFIG = [
-  { id: "operations", label: "Operations", icon: Briefcase, href: "/operations" },
-  { id: "health",     label: "Health",     icon: Shield,    href: "/health" },
-  { id: "mind",       label: "Mind",       icon: Brain,     href: "/mind" },
-  { id: "wealth",     label: "Wealth",     icon: Database,  href: "/wealth" },
-  { id: "vault",      label: "Vault",      icon: Package,   href: "/vault" },
-];
-
 export function DomainHeader() {
-  const { activeDomain } = useSpace();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
   const pathname = usePathname();
   const [guideOpen, setGuideOpen] = useState(false);
   const hasGuide = !!GUIDE_DATA[getSpaceFromPath(pathname)];
 
-  const visibleDomains = DOMAINS_CONFIG;
-
   return (
     <header className="h-20 border-b border-border-dim bg-bg/60 backdrop-blur-xl sticky top-0 z-[60] px-4 flex items-center justify-between shrink-0 overflow-hidden">
-      <div className="flex items-center gap-3 w-full lg:w-auto">
-        {/* Mobile: Burger + Logo */}
-        <div className="flex lg:hidden items-center justify-between w-full">
-          <Link href="/home" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
-              <Sparkles size={16} className="text-bg" />
-            </div>
-            <span className="text-heading font-bold tracking-tight leading-none text-text-primary">MyHub</span>
-          </Link>
+      {/* Mobile: Burger + Logo */}
+      <div className="flex lg:hidden items-center justify-between w-full">
+        <Link href="/life" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shrink-0">
+            <Sparkles size={16} className="text-bg" />
+          </div>
+          <span className="text-heading font-bold tracking-tight leading-none text-text-primary">MyHub</span>
+        </Link>
 
-          <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
-            aria-label="Toggle Spaces Menu"
-          >
-            {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-
-        {/* Desktop: Domains List */}
-        <div className="hidden lg:flex items-center gap-1">
-          {visibleDomains.map((domain) => {
-            const Icon = domain.icon;
-            const isActive = activeDomain === domain.id;
-            const status = DOMAIN_STATUS[domain.id] ?? "active";
-            const isLocked = status === "locked";
-
-            return (
-              <div
-                key={domain.id}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 shrink-0 ${
-                  isLocked
-                    ? "opacity-30 cursor-not-allowed"
-                    : isActive
-                      ? "bg-accent/10 border border-accent/20"
-                      : "hover:bg-surface-hover border border-transparent"
-                }`}
-              >
-                <Icon
-                  size={14}
-                  className={`transition-colors duration-300 ${
-                    isLocked ? "text-text-muted" : isActive ? "text-accent" : "text-text-muted group-hover:text-text-primary"
-                  }`}
-                />
-                <span className={`text-note font-medium transition-colors duration-300 ${
-                  isLocked ? "text-text-muted" : isActive ? "text-text-primary" : "text-text-muted"
-                }`}>
-                  {domain.label}
-                </span>
-                {isLocked && <Lock size={10} className="text-text-muted/40" />}
-                {!isLocked && (
-                  <Link href={domain.href} className="absolute inset-0" />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <button
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          className="p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-surface-hover transition-all duration-300"
+          aria-label="Toggle menu"
+        >
+          {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
+      {/* Desktop: empty left side (sidebar handles navigation) */}
+      <div className="hidden lg:block" />
+
+      {/* Guide button */}
       <div className="hidden lg:flex items-center gap-3">
         {hasGuide && (
           <button

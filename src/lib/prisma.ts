@@ -39,7 +39,7 @@ const fixRuntimeUrl = (url: string | undefined, isLocal: boolean) => {
 
 const rawUrl = process.env.POSTGRES_PRISMA_URL || 
               process.env.DATABASE_URL || 
-              (process.env.POSTGRES_HOST ? `postgres://${process.env.POSTGRES_USER || 'postgres'}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:6543/${process.env.POSTGRES_DATABASE}` : undefined);
+              (process.env.POSTGRES_HOST ? `postgres://${process.env.POSTGRES_USER || 'postgres'}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}:6543/${process.env.POSTGRES_DATABASE}` : "postgresql://unused:unused@localhost:5432/unused");
 
 const isLocal = rawUrl?.includes('localhost') || rawUrl?.includes('127.0.0.1') || false;
 

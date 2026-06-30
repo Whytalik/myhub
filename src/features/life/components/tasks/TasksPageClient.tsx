@@ -3,10 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Heading } from "@/components/ui/heading";
-import { Input } from "@/components/ui/input";
 import { instantDuplicateTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
-import { verifyPrivateTaskPasswordAction } from "@/features/profile/actions";
 import { CheckCircle2, Layers, Loader2, Plus } from "lucide-react";
 import { lazy, Suspense, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -38,13 +36,6 @@ export function TasksPageClient({
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "gallery");
   const [hideDoneSubtasks, setHideDoneSubtasks] = useState(false);
-  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
-  const [passwordInput, setPasswordInput] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [pendingTaskAction, setPendingTaskAction] = useState<{
-    type: "edit" | "duplicate" | "addChild";
-    task: TaskData;
-  } | null>(null);
   const [isActionPending, startActionTransition] = useTransition();
 
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
@@ -52,62 +43,31 @@ export function TasksPageClient({
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [dialogVersion, setDialogVersion] = useState(0);
 
-  const checkPrivate = (
-    task: TaskData,
-    action: () => void,
-    type: "edit" | "duplicate" | "addChild",
-  ) => {
-    if (task.isPrivate) {
-      setPendingTaskAction({ type, task });
-      setPasswordDialogOpen(true);
-    } else {
-      action();
-    }
-  };
-
   const handleEdit = (task: TaskData) => {
-    checkPrivate(
-      task,
-      () => {
-        setEditingTask(task);
-        setParentTask(null);
-        setIsDuplicate(false);
-        setDialogVersion((v) => v + 1);
-        setTaskFormOpen(true);
-      },
-      "edit",
-    );
+    setEditingTask(task);
+    setParentTask(null);
+    setIsDuplicate(false);
+    setDialogVersion((v) => v + 1);
+    setTaskFormOpen(true);
   };
 
   const handleDuplicate = (task: TaskData) => {
-    checkPrivate(
-      task,
-      () => {
-        startActionTransition(async () => {
-          const result = await instantDuplicateTaskAction(task);
-          if (result.success) {
-            toast.success("Task duplicated instantly");
-          } else {
-            toast.error(result.error || "Failed to duplicate task");
-          }
-        });
-      },
-      "duplicate",
-    );
+    startActionTransition(async () => {
+      const result = await instantDuplicateTaskAction(task);
+      if (result.success) {
+        toast.success("Task duplicated instantly");
+      } else {
+        toast.error(result.error || "Failed to duplicate task");
+      }
+    });
   };
 
   const handleAddChild = (parent: TaskData) => {
-    checkPrivate(
-      parent,
-      () => {
-        setEditingTask(null);
-        setParentTask(parent);
-        setIsDuplicate(false);
-        setDialogVersion((v) => v + 1);
-        setTaskFormOpen(true);
-      },
-      "addChild",
-    );
+    setEditingTask(null);
+    setParentTask(parent);
+    setIsDuplicate(false);
+    setDialogVersion((v) => v + 1);
+    setTaskFormOpen(true);
   };
 
   const handleAddNew = () => {
@@ -126,15 +86,10 @@ export function TasksPageClient({
     setIsDuplicate(false);
   };
 
-  const tasks = initialTasks;
-
   const filteredTasks = useMemo(() => {
-    let result = tasks;
-    if (hideDoneSubtasks) {
-      result = result.filter((t) => !(t.parentId && t.status === "DONE"));
-    }
-    return result;
-  }, [tasks, hideDoneSubtasks]);
+    if (!hideDoneSubtasks) return initialTasks;
+    return initialTasks.filter((t) => !(t.parentId && t.status === "DONE"));
+  }, [initialTasks, hideDoneSubtasks]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -230,7 +185,7 @@ export function TasksPageClient({
       <div className="animate-in fade-in duration-500">
         {view === "gallery" && (
           <TaskTree
-            tasks={tasks}
+            tasks={initialTasks}
             spheres={spheres}
             onEdit={handleEdit}
             onDuplicate={handleDuplicate}
@@ -275,6 +230,7 @@ export function TasksPageClient({
           </Suspense>
         )}
       </div>
+
       <Dialog
         isOpen={spheresOpen}
         onClose={() => setSpheresOpen(false)}
@@ -297,97 +253,6 @@ export function TasksPageClient({
         isDuplicate={isDuplicate}
         onViewTask={(t) => handleEdit(t)}
       />
-
-      <Dialog
-        isOpen={passwordDialogOpen}
-        onClose={() => {
-          setPasswordDialogOpen(false);
-          setPasswordInput("");
-          setPasswordError(false);
-          setPendingTaskAction(null);
-        }}
-        title="Verification Required"
-        description="Enter password to access private entry"
-      >
-        <div className="space-y-4">
-          <Input
-            autoFocus
-            type="password"
-            value={passwordInput}
-            onChange={(e) => {
-              setPasswordInput(e.target.value);
-              setPasswordError(false);
-            }}
-            placeholder="��������"
-            onKeyDown={(e) => {
-              if (e.key === "Enter")
-                document.getElementById("unlock-btn")?.click();
-            }}
-          />
-          {passwordError && (
-            <p className="text-caption font-bold text-rose-500">
-              Invalid password
-            </p>
-          )}
-          <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setPasswordDialogOpen(false);
-                setPasswordInput("");
-                setPasswordError(false);
-                setPendingTaskAction(null);
-              }}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button
-              id="unlock-btn"
-              variant="primary"
-              onClick={async () => {
-                const result =
-                  await verifyPrivateTaskPasswordAction(passwordInput);
-                if (result.success) {
-                  const { type, task } = pendingTaskAction!;
-                  setPasswordDialogOpen(false);
-                  setPasswordInput("");
-                  setPendingTaskAction(null);
-
-                  // Execute the actual action
-                  if (type === "edit") {
-                    setEditingTask(task);
-                    setParentTask(null);
-                    setIsDuplicate(false);
-                    setDialogVersion((v) => v + 1);
-                    setTaskFormOpen(true);
-                  } else if (type === "duplicate") {
-                    startActionTransition(async () => {
-                      const result = await instantDuplicateTaskAction(task);
-                      if (result.success) {
-                        toast.success("Task duplicated instantly");
-                      } else {
-                        toast.error(result.error || "Failed to duplicate task");
-                      }
-                    });
-                  } else if (type === "addChild") {
-                    setEditingTask(null);
-                    setParentTask(task);
-                    setIsDuplicate(false);
-                    setDialogVersion((v) => v + 1);
-                    setTaskFormOpen(true);
-                  }
-                } else {
-                  setPasswordError(true);
-                }
-              }}
-              className="flex-1"
-            >
-              Verify
-            </Button>
-          </div>
-        </div>
-      </Dialog>
     </div>
   );
 }
