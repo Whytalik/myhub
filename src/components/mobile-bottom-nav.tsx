@@ -1,28 +1,16 @@
 "use client";
 
-import { BookText, CalendarDays, CheckCircle2, Dumbbell, Utensils, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-
-const LIFE_NAV = [
-  { href: "/life/journal", label: "Journal", icon: BookText },
-  { href: "/life/habits",  label: "Habits",  icon: Zap },
-  { href: "/life/tasks",   label: "Tasks",   icon: CheckCircle2 },
-  { href: "/life/week",    label: "Week",    icon: CalendarDays },
-];
-
-const HEALTH_NAV = [
-  { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
-  { href: "/health/training",  label: "Training",  icon: Dumbbell },
-];
+import { getActiveDomain } from "@/lib/domains";
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  const activeNav = pathname.startsWith("/health") ? HEALTH_NAV : LIFE_NAV;
+  const activeNav = getActiveDomain(pathname).spaces;
 
   useEffect(() => {
     const scrollContainer = document.querySelector("main");
@@ -60,10 +48,14 @@ export function MobileBottomNav() {
             href={item.href}
             className={`flex flex-col items-center gap-1 flex-1 py-1 transition-all duration-300 ${isActive ? "text-accent" : "text-muted"}`}
           >
-            <div className={`p-1.5 rounded-lg transition-all duration-300 ${isActive ? "bg-accent/10 scale-105" : ""}`}>
+            <div
+              className={`p-1.5 rounded-lg transition-all duration-300 ${isActive ? "bg-accent/10 scale-105" : ""}`}
+            >
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
             </div>
-            <span className={`text-label font-medium uppercase tracking-tighter transition-colors duration-300 ${isActive ? "text-text" : "text-muted"}`}>
+            <span
+              className={`text-label font-medium uppercase tracking-tighter transition-colors duration-300 ${isActive ? "text-text" : "text-muted"}`}
+            >
               {item.label}
             </span>
           </Link>
