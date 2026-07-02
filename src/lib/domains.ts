@@ -8,6 +8,8 @@ import {
   Sparkles,
   Utensils,
   Zap,
+  ClipboardList,
+  ShoppingCart,
 } from "lucide-react";
 
 export interface SpaceLink {
@@ -47,7 +49,9 @@ export const DOMAINS: Domain[] = [
     icon: Heart,
     accent: "#ff8c00",
     spaces: [
-      { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
+      { href: "/health/nutrition", label: "На день", icon: Utensils },
+      { href: "/health/meal-prep", label: "Мілпреп", icon: ClipboardList },
+      { href: "/health/shopping-list", label: "Список покупок", icon: ShoppingCart },
     ],
   },
 ];
