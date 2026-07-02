@@ -38,14 +38,11 @@ const EMOTIONAL_STATES = [
 const PHYSICAL_STATES = [
   { label: "Спокійний", positive: true },
   { label: "Розслаблений", positive: true },
-  { label: "Збалансований", positive: true },
   { label: "Енергійний", positive: true },
-  { label: "Стрес", positive: false },
   { label: "Тривожний", positive: false },
   { label: "Втомлений", positive: false },
   { label: "Перевантажений", positive: false },
   { label: "Вигорання", positive: false },
-  { label: "Неспокійний", positive: false },
 ];
 
 interface EmotionColumnProps {
@@ -61,12 +58,16 @@ const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnP
       {title}
     </span>
     <div className="flex flex-wrap gap-1.5">
-      {items.map(item => {
+      {items.map((item) => {
         const active = emotions?.includes(item.label);
-        const colorClass = item.positive 
-          ? active ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-600 font-bold" : "hover:border-emerald-500/20"
-          : active ? "bg-rose-500/10 border-rose-500/40 text-rose-600 font-bold" : "hover:border-rose-500/20";
-        
+        const colorClass = item.positive
+          ? active
+            ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-600 font-bold"
+            : "hover:border-emerald-500/20"
+          : active
+            ? "bg-rose-500/10 border-rose-500/40 text-rose-600 font-bold"
+            : "hover:border-rose-500/20";
+
         return (
           <button
             key={item.label}
@@ -90,33 +91,52 @@ export function EmotionsSection({ emotions, onChange }: Props) {
   const toggleEmotion = (emotion: string) => {
     const current = emotions ?? [];
     const next = current.includes(emotion)
-      ? current.filter(e => e !== emotion)
+      ? current.filter((e) => e !== emotion)
       : [...current, emotion];
     onChange({ emotions: next.length > 0 ? next : null });
   };
 
   return (
-    <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
-      hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-    }`}>
+    <div
+      className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
+        hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
+      }`}
+    >
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2.5 px-1">
           <Brain size={14} className="text-accent" />
-          <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>
+          <h3
+            className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}
+          >
             Емоції та стани
           </h3>
         </div>
-        
+
         <div className="flex flex-col md:flex-row gap-8 relative">
-          <EmotionColumn title="Ментальний стан" items={MENTAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
-          
+          <EmotionColumn
+            title="Ментальний стан"
+            items={MENTAL_STATES}
+            emotions={emotions}
+            toggleEmotion={toggleEmotion}
+          />
+
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
-          
-          <EmotionColumn title="Емоційний стан" items={EMOTIONAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
-          
+
+          <EmotionColumn
+            title="Емоційний стан"
+            items={EMOTIONAL_STATES}
+            emotions={emotions}
+            toggleEmotion={toggleEmotion}
+          />
+
           <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
-          
-          <EmotionColumn title="Стрес та енергія" items={PHYSICAL_STATES} emotions={emotions} toggleEmotion={toggleEmotion} />
+
+          <EmotionColumn
+            title="Стрес та енергія"
+            items={PHYSICAL_STATES}
+            emotions={emotions}
+            toggleEmotion={toggleEmotion}
+          />
         </div>
       </div>
     </div>
