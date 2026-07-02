@@ -19,7 +19,6 @@ export interface DayPlan {
   labelUk: string;
   labelShort: string;
   meals: Meal[];
-  olesiaAdditions?: string[];
   prepSteps?: PrepSection[];
   note?: string;
 }

@@ -94,22 +94,6 @@ export function DayPlan() {
           </div>
         </div>
       )}
-
-      {day.olesiaAdditions && day.olesiaAdditions.length > 0 && (
-        <div className="bg-surface/50 border border-border-dim rounded-xl p-4 flex flex-col gap-2">
-          <span className="text-caption font-mono uppercase tracking-wider text-text-muted">
-            Добавки для Олесі
-          </span>
-          <ul className="flex flex-col gap-1">
-            {day.olesiaAdditions.map((addition, i) => (
-              <li key={i} className="text-caption text-text-secondary leading-relaxed flex gap-2">
-                <span className="text-text-muted shrink-0">·</span>
-                <span>{addition}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
