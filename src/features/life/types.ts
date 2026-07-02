@@ -1,4 +1,4 @@
-import type { 
+import type {
   TaskStatus as PrismaTaskStatus,
   TaskPriority as PrismaTaskPriority,
   Prisma,
@@ -174,7 +174,7 @@ export interface UpsertDailyEntryInput {
 //
 // --- Habit ---
 //
-export type SphereLevel = 'MINIMUM' | 'MEDIUM' | 'DESIRED';
+export type SphereLevel = "MINIMUM" | "MEDIUM" | "DESIRED";
 
 export interface HabitData {
   id: string;
@@ -204,7 +204,7 @@ export interface HabitCompletionData {
 }
 
 // --- Week Template ---
-export type DayType = "regular" | "train_am" | "train_pm" | "fun";
+export type DayType = "regular" | "train_am" | "train_pm";
 
 export interface DayScheduleData {
   id: string;
@@ -217,15 +217,6 @@ export interface DayScheduleData {
 export interface UpsertDayScheduleInput {
   dayOfWeek: number; // 0=Mon..6=Sun
   dayType: DayType;
-}
-
-export function dayTypeToRoutine(dayType: DayType): { isTrainingDay: boolean; eveningMode: "normal" | "gym" | "fun" } {
-  switch (dayType) {
-    case "train_am": return { isTrainingDay: true, eveningMode: "normal" };
-    case "train_pm": return { isTrainingDay: false, eveningMode: "gym" };
-    case "fun":      return { isTrainingDay: false, eveningMode: "fun" };
-    default:         return { isTrainingDay: false, eveningMode: "normal" };
-  }
 }
 
 //

@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { User, Dumbbell, Gamepad2, Sun } from "lucide-react";
+import { User, Dumbbell, Sun } from "lucide-react";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import type { DayScheduleData, DayType } from "../types";
+
+// Train AM/PM are disabled for now — there's no distinct routine content behind them yet.
+const DISABLED_DAY_TYPES: DayType[] = ["train_am", "train_pm"];
 
 const DAY_TYPES: {
   id: DayType;
@@ -12,10 +15,27 @@ const DAY_TYPES: {
   icon: React.ComponentType<{ size?: number; className?: string }>;
   color: string;
 }[] = [
-  { id: "regular",  label: "Regular",  labelShort: "REG", icon: User,     color: "border-border bg-raised/50 text-secondary" },
-  { id: "train_am", label: "Train AM", labelShort: "AM",  icon: Sun,      color: "border-amber-500/40 bg-amber-500/10 text-amber-400" },
-  { id: "train_pm", label: "Train PM", labelShort: "PM",  icon: Dumbbell, color: "border-blue-500/40 bg-blue-500/10 text-blue-400" },
-  { id: "fun",      label: "Fun Day",  labelShort: "FUN", icon: Gamepad2, color: "border-purple-500/40 bg-purple-500/10 text-purple-400" },
+  {
+    id: "regular",
+    label: "Regular",
+    labelShort: "REG",
+    icon: User,
+    color: "border-border bg-raised/50 text-secondary",
+  },
+  {
+    id: "train_am",
+    label: "Train AM",
+    labelShort: "AM",
+    icon: Sun,
+    color: "border-amber-500/40 bg-amber-500/10 text-amber-400",
+  },
+  {
+    id: "train_pm",
+    label: "Train PM",
+    labelShort: "PM",
+    icon: Dumbbell,
+    color: "border-blue-500/40 bg-blue-500/10 text-blue-400",
+  },
 ];
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -79,7 +99,9 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
             >
               {/* Day header */}
               <div className="flex items-center justify-between">
-                <span className={`text-note font-mono font-bold tracking-widest uppercase ${isToday ? "text-accent" : "text-muted"}`}>
+                <span
+                  className={`text-note font-mono font-bold tracking-widest uppercase ${isToday ? "text-accent" : "text-muted"}`}
+                >
                   {name}
                 </span>
                 <div className={`p-1.5 rounded-lg ${dayType.color}`}>
@@ -93,17 +115,19 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
                   const active = currentType === type.id;
                   const Icon = type.icon;
                   const isPending = pending === `${dayOfWeek}-${type.id}`;
+                  const isDisabled = DISABLED_DAY_TYPES.includes(type.id) && !active;
 
                   return (
                     <button
                       key={type.id}
                       onClick={() => setDayType(dayOfWeek, type.id)}
-                      disabled={!!pending}
+                      disabled={!!pending || isDisabled}
+                      title={isDisabled ? "No distinct routine yet — coming soon" : undefined}
                       className={`flex flex-col items-center gap-1 py-2 px-1 rounded-xl border text-center transition-all ${
                         active
                           ? type.color
                           : "border-border/60 bg-raised/30 text-muted hover:border-border hover:text-secondary"
-                      } ${isPending ? "opacity-60" : ""}`}
+                      } ${isPending ? "opacity-60" : ""} ${isDisabled ? "opacity-40 cursor-not-allowed hover:border-border/60 hover:text-muted" : ""}`}
                     >
                       <Icon size={12} />
                       <span className="text-label font-bold leading-none">{type.labelShort}</span>
@@ -113,7 +137,9 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
               </div>
 
               {/* Active label */}
-              <span className={`text-label font-mono text-center leading-none ${isToday ? "text-accent/60" : "text-muted/60"}`}>
+              <span
+                className={`text-label font-mono text-center leading-none ${isToday ? "text-accent/60" : "text-muted/60"}`}
+              >
                 {dayType.label}
               </span>
             </div>
@@ -133,10 +159,9 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
               <span className="text-note text-secondary">{type.label}</span>
               <span className="text-note text-muted">—</span>
               <span className="text-note text-muted/70">
-                {type.id === "regular"  && "Normal morning + Normal evening"}
-                {type.id === "train_am" && "Morning training + Normal evening"}
-                {type.id === "train_pm" && "Normal morning + Evening gym"}
-                {type.id === "fun"      && "Normal morning + Fun evening"}
+                {type.id === "regular" && "Standard routine"}
+                {(type.id === "train_am" || type.id === "train_pm") &&
+                  "Standard routine — custom variant coming soon"}
               </span>
             </div>
           );

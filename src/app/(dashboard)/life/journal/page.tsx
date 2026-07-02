@@ -51,18 +51,24 @@ export default async function JournalPage({
 
   // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
-  const [y, m, d] = dateStr.split('-').map(Number);
+  const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
 
-  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule] = await Promise.all([
-    getEntryByDate(userId, date),
-    getEntryByDate(userId, yesterday),
-    taskService.getTasksByDate(userId, date),
-    taskService.getAllTasks(userId),
-    taskService.getAllSpheres(userId),
-    habitService.getActiveHabits(userId),
-    getScheduleByDate(userId, date),
-  ]);
+  const [raw, yesterdayRaw, tasks, yesterdayTasks, allTasks, spheres, habits, schedule] =
+    await Promise.all([
+      getEntryByDate(userId, date),
+      getEntryByDate(userId, yesterday),
+      taskService.getTasksByDate(userId, date),
+      taskService.getTasksByDate(userId, yesterday),
+      taskService.getAllTasks(userId),
+      taskService.getAllSpheres(userId),
+      habitService.getActiveHabits(userId),
+      getScheduleByDate(userId, date),
+    ]);
+
+  const yesterdayCompletedTasks = yesterdayTasks
+    .filter((t) => t.status === "DONE")
+    .map((t) => t.title);
 
   const entry: DailyEntryData | null = raw
     ? {
@@ -83,10 +89,21 @@ export default async function JournalPage({
         <PageHeader
           breadcrumb={[
             { label: "life space", href: "/life" },
-            ...(isPast ? [{ label: "daily journal", href: "/life/journal" }] : [{ label: "daily journal" }]),
+            ...(isPast
+              ? [{ label: "daily journal", href: "/life/journal" }]
+              : [{ label: "daily journal" }]),
             ...(isPast ? [{ label: dateStr }] : []),
           ]}
-          title={isPast ? new Date(dateStr).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : "Daily Journal"}
+          title={
+            isPast
+              ? new Date(dateStr).toLocaleDateString("en-US", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              : "Daily Journal"
+          }
           description={isPast ? undefined : "Daily reflection, tracking, and intention."}
         />
         <Link
@@ -104,6 +121,8 @@ export default async function JournalPage({
         todayStr={dateStr}
         isPast={isPast}
         yesterdayBrainDump={yesterdayRaw?.brainDump ?? null}
+        yesterdayStandupPlan={yesterdayRaw?.standupPlan ?? null}
+        yesterdayCompletedTasks={yesterdayCompletedTasks}
         tasks={tasks}
         allTasks={allTasks}
         spheres={spheres}
