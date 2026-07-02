@@ -3,9 +3,15 @@
 import { PROFILES } from "../data";
 import { MealCard } from "./MealCard";
 import type { DayPlan as DayPlanType } from "../types";
-
 export function DayPlan({ day }: { day: DayPlanType }) {
   const vitalii = PROFILES.find((p) => p.id === "vitalii");
+
+  const dayIngredients = day.meals
+    .flatMap((m) => m.ingredients)
+    .filter((ing) => {
+      const lower = ing.toLowerCase();
+      return !lower.includes("друга порція") && !lower.includes("обідньої страви");
+    });
 
   return (
     <div className="flex flex-col gap-5">
@@ -34,6 +40,23 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           <MealCard key={meal.type} meal={meal} />
         ))}
       </div>
+
+      {/* Products for the Day */}
+      {dayIngredients.length > 0 && (
+        <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-3">
+          <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+            Продукти на день
+          </span>
+          <ul className="flex flex-col gap-1.5 pl-1">
+            {dayIngredients.map((ingredient, i) => (
+              <li key={i} className="text-caption text-text-secondary leading-relaxed flex gap-2">
+                <span className="text-accent shrink-0 font-bold font-mono">·</span>
+                <span>{ingredient}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Preparation Algorithm */}
       {day.prepSteps && day.prepSteps.length > 0 && (

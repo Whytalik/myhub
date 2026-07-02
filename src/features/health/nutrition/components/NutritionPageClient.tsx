@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, Apple } from "lucide-react";
-import { Tabs } from "@/components/ui/tabs";
 import { DayPlan } from "./DayPlan";
-import { DailyProducts } from "./DailyProducts";
 import { WEEK_PLAN } from "../data";
 
 function todayIndex() {
@@ -43,22 +40,7 @@ export function NutritionPageClient() {
         })}
       </div>
 
-      <Tabs
-        tabs={[
-          {
-            id: "day",
-            label: "На день",
-            icon: <CalendarDays size={14} />,
-            content: <DayPlan day={day} />,
-          },
-          {
-            id: "products",
-            label: "Продукти",
-            icon: <Apple size={14} />,
-            content: <DailyProducts day={day} />,
-          },
-        ]}
-      />
+      <DayPlan day={day} />
     </div>
   );
 }
