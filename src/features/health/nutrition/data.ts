@@ -714,6 +714,13 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         options: ["банани", "яблука", "груші", "апельсини"],
         price: 22,
       },
+      {
+        id: "fruits-2",
+        name: "Банани",
+        qty: "7 шт",
+        note: "по 1 щодня — перекус Олесі",
+        price: 66,
+      },
     ],
   },
   {
@@ -784,20 +791,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qty: "~200 г",
         note: "вівсянка Вт+Пт + перекус Сб",
         price: 160,
-      },
-    ],
-  },
-  {
-    id: "olesia",
-    title: "Добавки для Олесі (окремо)",
-    items: [
-      { id: "olesia-banana", name: "Банани", qty: "7 шт", note: "по 1 щодня", price: 66 },
-      {
-        id: "olesia-bread",
-        name: "Хліб цільнозерновий",
-        qty: "+4 скибки",
-        note: "Пн, Ср, Пт сніданки + Ср вечеря",
-        price: 14,
       },
     ],
   },
