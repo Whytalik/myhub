@@ -29,6 +29,7 @@ export interface ShoppingItem {
   qty: string;
   note?: string;
   options?: string[];
+  price?: number;
 }
 
 export interface ShoppingCategory {

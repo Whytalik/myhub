@@ -45,8 +45,20 @@ const TOTAL_ITEMS = SHOPPING_LIST.reduce((sum, category) => sum + category.items
 export function ShoppingList() {
   const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const checkedCount = Object.values(checked).filter(Boolean).length;
+  const checkedCount = Object.entries(checked).filter(([id, val]) => val && !id.includes("-opt-")).length;
   const progress = TOTAL_ITEMS > 0 ? Math.round((checkedCount / TOTAL_ITEMS) * 100) : 0;
+
+  const totalCost = SHOPPING_LIST.reduce((sum, category) => {
+    return sum + category.items.reduce((itemSum, item) => itemSum + (item.price || 0), 0);
+  }, 0);
+
+  const checkedCost = SHOPPING_LIST.reduce((sum, category) => {
+    return sum + category.items.reduce((itemSum, item) => {
+      return itemSum + (checked[item.id] ? (item.price || 0) : 0);
+    }, 0);
+  }, 0);
+
+  const remainingCost = totalCost - checkedCost;
 
   const toggle = (id: string) => write({ ...checked, [id]: !checked[id] });
   const reset = () => write({});
@@ -72,6 +84,23 @@ export function ShoppingList() {
             className="h-full bg-accent rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-y-2 pt-2.5 border-t border-border mt-1">
+          <div className="flex items-center gap-4">
+            <span className="text-caption text-text-muted">
+              Бюджет: <span className="font-mono text-text-primary font-semibold">{totalCost} ₴</span>
+            </span>
+            {checkedCost > 0 && (
+              <span className="text-caption text-text-muted">
+                Куплено: <span className="font-mono text-accent font-semibold">{checkedCost} ₴</span>
+              </span>
+            )}
+          </div>
+          {remainingCost > 0 && remainingCost !== totalCost && (
+            <span className="text-caption text-text-muted">
+              Залишилось: <span className="font-mono text-text-secondary font-semibold">{remainingCost} ₴</span>
+            </span>
+          )}
         </div>
       </div>
 
@@ -110,6 +139,11 @@ export function ShoppingList() {
                           {item.name}
                           {item.qty && (
                             <span className="text-text-secondary font-medium"> — {item.qty}</span>
+                          )}
+                          {item.price && (
+                            <span className={`ml-1.5 font-mono text-[11px] font-medium transition-colors duration-150 ${isChecked ? "text-text-muted" : "text-accent"}`}>
+                              ~{item.price} ₴
+                            </span>
                           )}
                         </span>
                         {item.note && (
