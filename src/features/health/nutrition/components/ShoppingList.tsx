@@ -89,7 +89,7 @@ export function ShoppingList() {
               {category.items.map((item) => {
                 const isChecked = !!checked[item.id];
                 return (
-                  <li key={item.id}>
+                  <li key={item.id} className="flex flex-col gap-1">
                     <button
                       onClick={() => toggle(item.id)}
                       className="w-full flex items-start gap-2.5 px-1 py-1.5 rounded-lg text-left hover:bg-surface-hover transition-colors duration-150"
@@ -119,6 +119,38 @@ export function ShoppingList() {
                         )}
                       </span>
                     </button>
+
+                    {item.options && item.options.length > 0 && (
+                      <ul className="flex flex-col gap-0.5 mt-0.5 ml-[26px]">
+                        {item.options.map((option, idx) => {
+                          const optionId = `${item.id}-opt-${idx}`;
+                          const isOptChecked = !!checked[optionId];
+                          return (
+                            <li key={idx}>
+                              <button
+                                onClick={() => toggle(optionId)}
+                                className="w-full flex items-center gap-2 px-1 py-1 rounded-md text-left hover:bg-surface-hover/50 transition-colors duration-150"
+                              >
+                                <span
+                                  className={`shrink-0 w-3.5 h-3.5 rounded-[3px] border flex items-center justify-center transition-all duration-150 ${
+                                    isOptChecked ? "bg-accent border-accent" : "border-border-strong/70"
+                                  }`}
+                                >
+                                  {isOptChecked && <Check size={9} className="text-bg" strokeWidth={3.5} />}
+                                </span>
+                                <span
+                                  className={`text-label transition-colors duration-150 ${
+                                    isOptChecked ? "text-text-muted line-through" : "text-text-secondary"
+                                  }`}
+                                >
+                                  {option}
+                                </span>
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
                   </li>
                 );
               })}

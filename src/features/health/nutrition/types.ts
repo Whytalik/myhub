@@ -28,6 +28,7 @@ export interface ShoppingItem {
   name: string;
   qty: string;
   note?: string;
+  options?: string[];
 }
 
 export interface ShoppingCategory {
