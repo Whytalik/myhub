@@ -66,6 +66,35 @@ export function DayPlan() {
         ))}
       </div>
 
+      {/* Preparation Algorithm */}
+      {day.prepSteps && day.prepSteps.length > 0 && (
+        <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
+          <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+            Алгоритм приготування
+          </span>
+          <div className="flex flex-col gap-4">
+            {day.prepSteps.map((section, idx) => (
+              <div key={idx} className="flex flex-col gap-2">
+                <span className="text-caption font-semibold text-accent">
+                  {section.title}
+                </span>
+                <ul className="flex flex-col gap-2 pl-1">
+                  {section.steps.map((step, stepIdx) => (
+                    <li
+                      key={stepIdx}
+                      className="text-caption text-text-secondary leading-relaxed flex gap-2"
+                    >
+                      <span className="text-accent shrink-0 font-mono font-bold">{stepIdx + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {day.olesiaAdditions && day.olesiaAdditions.length > 0 && (
         <div className="bg-surface/50 border border-border-dim rounded-xl p-4 flex flex-col gap-2">
           <span className="text-caption font-mono uppercase tracking-wider text-text-muted">

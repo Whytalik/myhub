@@ -9,12 +9,18 @@ export interface Meal {
   ingredients: string[];
 }
 
+export interface PrepSection {
+  title: string;
+  steps: string[];
+}
+
 export interface DayPlan {
   weekday: Weekday;
   labelUk: string;
   labelShort: string;
   meals: Meal[];
   olesiaAdditions?: string[];
+  prepSteps?: PrepSection[];
   note?: string;
 }
 
