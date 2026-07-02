@@ -8,7 +8,7 @@ import { LogOut, Settings2, Sparkles, Pin, X, ChevronRight } from "lucide-react"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { getActiveDomain, DOMAINS } from "@/lib/domains";
+import { getActiveDomain } from "@/lib/domains";
 
 const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
 const LABEL_TRANSITION = { duration: 0.14, ease: "easeOut" } as const;
@@ -20,19 +20,24 @@ interface SidebarProps {
   initialOrder?: string[];
 }
 
-export function Sidebar({ user, initialOpenSections = {} }: SidebarProps) {
+export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [openDomains, setOpenDomains] = useState<Record<string, boolean>>({
-    life: initialOpenSections["Life"] ?? true,
-    health: initialOpenSections["Health"] ?? pathname.startsWith("/health"),
-  });
+
+  const domain = getActiveDomain(pathname);
+  const [isOpen, setIsOpen] = useState(true);
+  const [lastDomainId, setLastDomainId] = useState(domain.id);
+
+  if (domain.id !== lastDomainId) {
+    setLastDomainId(domain.id);
+    setIsOpen(true);
+  }
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
 
-  const domain = getActiveDomain(pathname);
+  const DomainIcon = domain.icon;
   const color = {
     text: domain.accent,
     bgActive: `${domain.accent}12`,
@@ -131,137 +136,116 @@ export function Sidebar({ user, initialOpenSections = {} }: SidebarProps) {
           </AnimatePresence>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation — spaces of the active domain */}
         <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth px-3 pt-4">
-          <nav className="flex flex-col gap-4">
-            {DOMAINS.map((dom) => {
-              const DomIcon = dom.icon;
-              const isDomOpen = openDomains[dom.id] ?? false;
-              const isDomActive = pathname.startsWith(dom.href);
-              const domColor = {
-                text: dom.accent,
-                bgActive: `${dom.accent}12`,
-                borderActive: `${dom.accent}30`,
-              };
-
-              return (
-                <div key={dom.id} className="flex flex-col gap-1.5 w-full">
-                  <div
-                    className={`flex flex-col transition-all duration-200 overflow-hidden rounded-lg relative ${
-                      isDomActive ? "bg-[var(--item-bg)]" : "hover:bg-surface-hover"
-                    }`}
-                    style={{ "--item-bg": domColor.bgActive } as React.CSSProperties}
+          <nav className="flex flex-col gap-1.5 w-full">
+            <div
+              className={`flex flex-col transition-all duration-200 overflow-hidden rounded-lg relative ${
+                pathname.startsWith(domain.href) ? "bg-[var(--item-bg)]" : "hover:bg-surface-hover"
+              }`}
+              style={{ "--item-bg": color.bgActive } as React.CSSProperties}
+            >
+              {pathname.startsWith(domain.href) && (
+                <div
+                  className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full"
+                  style={{ backgroundColor: color.text }}
+                />
+              )}
+              <div className="flex items-center w-full">
+                <Link href={domain.href} className="flex-1 flex items-center h-11">
+                  <motion.div
+                    initial={false}
+                    animate={{ paddingLeft: isExpanded ? 12 : 10 }}
+                    transition={SIDEBAR_SPRING}
+                    className="flex items-center w-full h-full"
                   >
-                    {isDomActive && (
-                      <div
-                        className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full"
-                        style={{ backgroundColor: domColor.text }}
+                    <div className="w-9 h-9 flex items-center justify-center shrink-0 rounded-lg">
+                      <DomainIcon
+                        size={18}
+                        style={{ color: color.text }}
+                        strokeWidth={2.5}
+                        className="transition-colors duration-200"
                       />
-                    )}
-                    <div className="flex items-center w-full">
-                      <Link href={dom.href} className="flex-1 flex items-center h-11">
-                        <motion.div
-                          initial={false}
-                          animate={{ paddingLeft: isExpanded ? 12 : 10 }}
-                          transition={SIDEBAR_SPRING}
-                          className="flex items-center w-full h-full"
-                        >
-                          <div className="w-9 h-9 flex items-center justify-center shrink-0 rounded-lg">
-                            <DomIcon
-                              size={18}
-                              style={{ color: domColor.text }}
-                              strokeWidth={isDomActive ? 2.5 : 2}
-                              className="transition-colors duration-200"
-                            />
-                          </div>
-                          <motion.div
-                            initial={false}
-                            animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
-                            transition={LABEL_TRANSITION}
-                            className="ml-3 overflow-hidden flex items-center gap-2"
-                            style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-                          >
-                            <span
-                              className="text-note font-medium whitespace-nowrap"
-                              style={{ color: domColor.text }}
-                            >
-                              {dom.label} Space
-                            </span>
-                          </motion.div>
-                        </motion.div>
-                      </Link>
-
-                      <motion.button
-                        initial={false}
-                        animate={{ opacity: isExpanded ? 1 : 0 }}
-                        transition={{ duration: 0.15 }}
-                        onClick={() =>
-                          setOpenDomains((prev) => ({ ...prev, [dom.id]: !prev[dom.id] }))
-                        }
-                        className="p-2 transition-colors duration-200 text-text-muted hover:text-text-primary"
-                        style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-                      >
-                        <motion.div
-                          initial={false}
-                          animate={{ rotate: isDomOpen ? 90 : 0 }}
-                          transition={{ duration: 0.2, ease: "easeInOut" }}
-                        >
-                          <ChevronRight size={14} />
-                        </motion.div>
-                      </motion.button>
                     </div>
-
                     <motion.div
                       initial={false}
-                      animate={{
-                        height: isExpanded && isDomOpen ? "auto" : 0,
-                        opacity: isExpanded && isDomOpen ? 1 : 0,
-                      }}
-                      transition={SUBMENU_TRANSITION}
-                      style={{ overflow: "hidden" }}
+                      animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
+                      transition={LABEL_TRANSITION}
+                      className="ml-3 overflow-hidden flex items-center gap-2"
+                      style={{ pointerEvents: isExpanded ? "auto" : "none" }}
                     >
-                      <div className="flex flex-col gap-0.5 pl-3 pr-2 pb-2 pt-1">
-                        <div
-                          className="h-px mb-1 transition-colors duration-500"
-                          style={{
-                            backgroundColor: isDomActive
-                              ? domColor.borderActive
-                              : "rgba(255,255,255,0.04)",
-                          }}
-                        />
-                        {dom.spaces.map((item) => {
-                          const Icon = item.icon;
-                          const isActive =
-                            pathname === item.href ||
-                            pathname.startsWith(item.href + "/") ||
-                            (item.href === "/life/journal" && pathname.startsWith("/life/history"));
-                          return (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 ${
-                                isActive
-                                  ? "font-medium text-text-primary"
-                                  : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                              }`}
-                              style={{ color: isActive ? domColor.text : undefined }}
-                            >
-                              <Icon
-                                size={13}
-                                style={{ color: isActive ? domColor.text : undefined }}
-                                strokeWidth={isActive ? 2.5 : 2}
-                                className="shrink-0"
-                              />
-                              <span className="truncate">{item.label}</span>
-                            </Link>
-                          );
-                        })}
-                      </div>
+                      <span
+                        className="text-note font-medium whitespace-nowrap text-caption uppercase tracking-wider font-mono"
+                        style={{ color: color.text }}
+                      >
+                        {domain.label} Space
+                      </span>
                     </motion.div>
-                  </div>
+                  </motion.div>
+                </Link>
+
+                <motion.button
+                  initial={false}
+                  animate={{ opacity: isExpanded ? 1 : 0 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={() => setIsOpen((v) => !v)}
+                  className="p-2 transition-colors duration-200 text-text-muted hover:text-text-primary"
+                  style={{ pointerEvents: isExpanded ? "auto" : "none" }}
+                >
+                  <motion.div
+                    initial={false}
+                    animate={{ rotate: isOpen ? 90 : 0 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                  >
+                    <ChevronRight size={14} />
+                  </motion.div>
+                </motion.button>
+              </div>
+
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isExpanded && isOpen ? "auto" : 0,
+                  opacity: isExpanded && isOpen ? 1 : 0,
+                }}
+                transition={SUBMENU_TRANSITION}
+                style={{ overflow: "hidden" }}
+              >
+                <div className="flex flex-col gap-0.5 pl-3 pr-2 pb-2 pt-1">
+                  <div
+                    className="h-px mb-1 transition-colors duration-500"
+                    style={{ backgroundColor: color.borderActive }}
+                  />
+                  {domain.spaces.map((item) => {
+                    const Icon = item.icon;
+                    const isActive =
+                      pathname === item.href ||
+                      pathname.startsWith(item.href + "/") ||
+                      (item.href === "/life/journal" && pathname.startsWith("/life/history"));
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 relative ${
+                          isActive
+                            ? "font-medium text-text-primary"
+                            : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                        }`}
+                        style={{ color: isActive ? color.text : undefined }}
+                      >
+                        <Icon
+                          size={13}
+                          style={{ color: isActive ? color.text : undefined }}
+                          strokeWidth={isActive ? 2.5 : 2}
+                          className="shrink-0"
+                        />
+                        <span className="truncate">{item.label}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
-              );
-            })}
+              </motion.div>
+            </div>
           </nav>
         </div>
 
