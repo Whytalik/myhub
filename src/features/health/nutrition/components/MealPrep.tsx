@@ -1,4 +1,4 @@
-import { ClipboardList, Flame } from "lucide-react";
+import { ClipboardList, Flame, Apple } from "lucide-react";
 
 export function MealPrep() {
   const prepTable = [
@@ -13,24 +13,29 @@ export function MealPrep() {
     {
       title: "Блок 1 — Маринування (~20 хв)",
       steps: [
-        "Дістати все м'ясо, розкласти на столі. Підготувати 5 мисок.",
-        "Серця промити, натискаючи пальцями — видалити залишки крові.",
-        "Відбивну накрити плівкою і відбити молотком з обох боків.",
-        "Куряче стегно для шашликів нарізати шматками 2–3 см.",
-        "Зробити всі маринади і замаринувати м'ясо поспіль: йогуртово-лимонний (шашлики), соєво-томатний (серця), соєво-часниковий (смаження), медово-гірчичний (запікання), цитрусово-розмариновий (відбивна).",
+        "Дістати все м'ясо з холодильника, розкласти на робочій поверхні. Підготувати 5 глибоких мисок для маринування.",
+        "Очищення: курячі серця (600 г) промити у друшляку, натискаючи пальцями для видалення згустків крові.",
+        "Відбивання: шматки свинячої відбивної (600 г) накрити харчовою плівкою і відбити молотком з обох боків.",
+        "Нарізка: куряче стегно для шашликів (800 г) нарізати порційними шматочками розміром 2–3 см.",
+        "Миска 1 (Йогуртово-лимонний): змішати грецький йогурт 150 г, сік ½ лимона + подрібнену цедру, 2 вичавлені зубчики часнику, 1 ч.л. паприки, ½ ч.л. прованських трав, 1 ст.л. оливкової олії, сіль та чорний перець. Додати куряче стегно (800 г) та перемішати.",
+        "Миска 2 (Соєво-томатний): змішати соєвий соусу 3 ст.л., томатну пасту 1 ст.л., оливкову олію 1 ст.л., ½ ч.л. прованських трав та чорний перець. Додати очищені курячі серця (600 г) та перемішати.",
+        "Миска 3 (Соєво-часниковий): змішати соєвий соусу 3 ст.л., оливкову олію 1 ст.л., 2 вичавлені зубчики часнику, ½ ч.л. паприки та чорний перець. Додати куряче стегно/філе для смаження (680 г) та перемішати.",
+        "Миска 4 (Медово-гірчичний): змішати гірчицю 2 ст.л., мед 1 ст.л., оливкову олію 2 ст.л., 2 вичавлені зубчики часнику, сіль та чорний перець. Обмазати сумішшю куряче філе (1.2 кг).",
+        "Миска 5 (Цитрусово-розмариновий): змішати сік 1 апельсина (або 1 лимона), оливкову олію 3 ст.л., 2 вичавлені зубчики часнику, 1 ч.л. розмарину, ½ ч.л. чебрецю, сіль та чорний перець. Обмазати відбивні (600 г).",
       ],
     },
     {
       title: "Блок 2 — Поки м'ясо маринується (~10 хв активно)",
       steps: [
-        "Сирники: розім'яти творог → замісити тісто → сформувати 10 заготовок.",
-        "Викласти заготовки сирників на дошку та поставити в морозилку (смажити свіжими безпосередньо перед прийомом їжі).",
+        "Сирники (тісто): добре розім'яти 500 г творогу виделкою. Додати 1 яйце, 2–3 ст.л. цукру, 1 пакетик ванільного цукру, дрібку солі та ретельно перемішати. Поступово ввести 5–6 ст.л. борошна до отримання м'якого тіста.",
+        "Сирники (формування): мокрими руками сформувати 10 кульок, обваляти їх у борошні та сформувати гарні заготовки сирників.",
+        "Заморозка: викласти сформовані заготовки сирників на дошку, присипану борошном, та поставити в морозильну камеру (смажити свіжими перед прийомом).",
       ],
     },
     {
       title: "Фінал",
       steps: [
-        "М'ясо розфасувати по контейнерах за днями, підписати — в холодильник або морозилку.",
+        "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах для заморозки, підписати дні тижня та відправити в холодильник (для страв на найближчі дні) або морозильну камеру.",
       ],
     },
   ];
@@ -135,6 +140,94 @@ export function MealPrep() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Products list for Prep */}
+      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">
+            <Apple size={16} />
+          </div>
+          <div>
+            <h3 className="text-note font-semibold text-text-primary">Продукти для підготовки</h3>
+            <p className="text-caption text-text-muted">Необхідні інгредієнти для міл-препу та заготовок</p>
+          </div>
+        </div>
+
+        <div className="h-px bg-border/50" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-caption">
+          <div>
+            <span className="font-semibold text-text-primary uppercase tracking-wider font-mono text-[11px] block mb-2 text-accent">
+              М'ясо та білки
+            </span>
+            <ul className="flex flex-col gap-1.5 pl-1 text-text-secondary">
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Куряче стегно або філе — 1.48 кг</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Куряче філе — 1.2 кг</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Курячі серця — 600 г</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Свиняча відбивна — 600 г (~4 шт)</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Творог 5–9% — 500 г (для сирників)</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Яйце — 1 шт (для сирників)</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <span className="font-semibold text-text-primary uppercase tracking-wider font-mono text-[11px] block mb-2 text-accent">
+              Маринади та спеції
+            </span>
+            <ul className="flex flex-col gap-1.5 pl-1 text-text-secondary">
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Грецький йогурт — 150 г</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Лимон — 1.5 шт, Апельсин — 1 шт</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Часник — 10 зубчиків</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Соєвий соус — 6 ст.л., Томатна паста — 1 ст.л.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Мед — 1 ст.л., Гірчиця — 2 ст.л.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Оливкова олія — ~9 ст.л.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Борошно — 5–6 ст.л., Цукор — 3 ст.л., Ванільний цукор</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                <span>Розмарин, чебрець, паприка, прованські трави, сіль, перець</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
