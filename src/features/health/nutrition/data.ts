@@ -33,6 +33,12 @@ export const WEEK_PLAN: DayPlan[] = [
           "Свіжі овочі — огірок, помідор, перець солодкий",
           "Олія — 1 ч.л. (для смаження)",
         ],
+        macroItems: [
+          { food: "eggs", vitalii: 120, olesia: 120 },
+          { food: "bread", vitalii: 35, olesia: 70 },
+          { food: "freshVeg", vitalii: 75, olesia: 75 },
+          { food: "oil", vitalii: 2.5, olesia: 2.5 },
+        ],
       },
       {
         type: "lunch",
@@ -45,12 +51,26 @@ export const WEEK_PLAN: DayPlan[] = [
           "Вершкове масло — 30 г",
           "Для салату: помідори 4 шт (~520 г), огірок 2 шт (~400 г), перець солодкий 1 шт (~170 г), червона цибуля ½ шт (~60 г), бринза 150 г, олія 4 ч.л., орегано",
         ],
+        // Totals below cover lunch + dinner combined (dinner is the leftover portion).
+        macroItems: [
+          { food: "chickenMarinated", vitalii: 320, olesia: 480 },
+          { food: "potato", vitalii: 400, olesia: 600 },
+          { food: "milk", vitalii: 80, olesia: 120 },
+          { food: "butter", vitalii: 12, olesia: 18 },
+          { food: "tomato", vitalii: 260, olesia: 260 },
+          { food: "cucumber", vitalii: 200, olesia: 200 },
+          { food: "pepper", vitalii: 85, olesia: 85 },
+          { food: "onion", vitalii: 30, olesia: 30 },
+          { food: "brynza", vitalii: 75, olesia: 75 },
+          { food: "oil", vitalii: 10, olesia: 10 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Курячі шашлички + Картопляне пюре + Грецький салат",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [], // already counted in lunch — same batch, eaten twice
       },
       {
         type: "snack",
@@ -60,6 +80,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Ягоди — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "berries", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -95,6 +120,11 @@ export const WEEK_PLAN: DayPlan[] = [
         label: "Сніданок",
         title: "Вівсянка з протеїном + фрукти",
         ingredients: ["Вівсянка — 120 г (по 60 г)", "Протеїн — 2 мірні ложки", "Фрукти"],
+        macroItems: [
+          { food: "oats", vitalii: 60, olesia: 60 },
+          { food: "proteinPowder", vitalii: 30, olesia: 30 },
+          { food: "fruitMix", vitalii: 75, olesia: 75 },
+        ],
       },
       {
         type: "lunch",
@@ -106,12 +136,23 @@ export const WEEK_PLAN: DayPlan[] = [
           "Для салату: рукола 150 г, помідори 4 шт (~520 г), твердий сир 60 г, олія 4 ч.л., яблучний оцет 2 ч.л.",
           "Соєва глазур: 4 ст.л. соєвого соусу, 2 ч.л. меду, лимонний сік",
         ],
+        macroItems: [
+          { food: "chickenHearts", vitalii: 240, olesia: 360 },
+          { food: "buckwheat", vitalii: 150, olesia: 200 },
+          { food: "arugula", vitalii: 75, olesia: 75 },
+          { food: "tomato", vitalii: 260, olesia: 260 },
+          { food: "hardCheese", vitalii: 30, olesia: 30 },
+          { food: "oil", vitalii: 10, olesia: 10 },
+          { food: "soySauce", vitalii: 30, olesia: 30 },
+          { food: "honey", vitalii: 7, olesia: 7 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Запечені курячі серця + Варена гречка + Салат з руколою",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [],
       },
       {
         type: "snack",
@@ -121,6 +162,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Ягоди — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "berries", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -159,6 +205,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Ягоди",
           "Цільнозерновий хліб — 3 скибки (Віталій — 1, Олеся — 2)",
         ],
+        macroItems: [
+          { food: "cottageCheese", vitalii: 200, olesia: 200 },
+          { food: "berries", vitalii: 75, olesia: 75 },
+          { food: "bread", vitalii: 35, olesia: 70 },
+        ],
       },
       {
         type: "lunch",
@@ -169,6 +220,13 @@ export const WEEK_PLAN: DayPlan[] = [
           "Лимон — 1 шт (~120 г)",
           "Картопля — 800 г (загальна порція: Віталій — 300 г, Олеся — 500 г)",
           "Для салату: помідори 2 шт (~260 г), огірки 2 шт (~400 г), зелена цибуля, зелень, олія 2 ч.л.",
+        ],
+        macroItems: [
+          { food: "mackerel", vitalii: 350, olesia: 350 },
+          { food: "potato", vitalii: 300, olesia: 500 },
+          { food: "tomato", vitalii: 130, olesia: 130 },
+          { food: "cucumber", vitalii: 200, olesia: 200 },
+          { food: "oil", vitalii: 5, olesia: 5 },
         ],
       },
       {
@@ -182,6 +240,13 @@ export const WEEK_PLAN: DayPlan[] = [
           "Цільнозерновий хліб — 3 скибки (Віталій — 1, Олеся — 2)",
           "Зелена цибуля, зелень, олія 2 ч.л., лимонний сік",
         ],
+        macroItems: [
+          { food: "tunaCanned", vitalii: 180, olesia: 180 },
+          { food: "cornCanned", vitalii: 45, olesia: 45 },
+          { food: "eggs", vitalii: 120, olesia: 120 },
+          { food: "bread", vitalii: 35, olesia: 70 },
+          { food: "oil", vitalii: 5, olesia: 5 },
+        ],
       },
       {
         type: "snack",
@@ -191,6 +256,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Фрукти — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "fruitMix", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -236,6 +306,12 @@ export const WEEK_PLAN: DayPlan[] = [
           "Помідори — 2 шт (~260 г) — по 1 шт кожному",
           "Цільнозерновий хліб, свіжі овочі",
         ],
+        macroItems: [
+          { food: "eggs", vitalii: 120, olesia: 120 },
+          { food: "tomato", vitalii: 130, olesia: 130 },
+          { food: "bread", vitalii: 35, olesia: 35 },
+          { food: "freshVeg", vitalii: 50, olesia: 50 },
+        ],
       },
       {
         type: "lunch",
@@ -246,12 +322,20 @@ export const WEEK_PLAN: DayPlan[] = [
           "Рис — 350 г сухого (загальна порція: Віталій — 150 г, Олеся — 200 г)",
           "Для Капрезе: помідори 4 шт (~520 г), сулугуні 200 г, базилік, олія 4 ч.л., яблучний оцет",
         ],
+        macroItems: [
+          { food: "friedChicken", vitalii: 270, olesia: 410 },
+          { food: "rice", vitalii: 150, olesia: 200 },
+          { food: "tomato", vitalii: 260, olesia: 260 },
+          { food: "suluguni", vitalii: 100, olesia: 100 },
+          { food: "oil", vitalii: 10, olesia: 10 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Смажена курка + Варений рис + Капрезе",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [],
       },
       {
         type: "snack",
@@ -261,6 +345,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Ягоди — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "berries", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -299,6 +388,12 @@ export const WEEK_PLAN: DayPlan[] = [
           "Ягоди",
           "Цільнозерновий хліб (для Олесі) — 1 скибка",
         ],
+        macroItems: [
+          { food: "oats", vitalii: 65, olesia: 95 },
+          { food: "proteinPowder", vitalii: 30, olesia: 30 },
+          { food: "berries", vitalii: 75, olesia: 75 },
+          { food: "bread", vitalii: 0, olesia: 35 },
+        ],
       },
       {
         type: "lunch",
@@ -310,12 +405,21 @@ export const WEEK_PLAN: DayPlan[] = [
           "Олія — 4 ч.л., паприка, сіль, перець (для картоплі)",
           "Для моркви: carrot 400 г, часник 3 зубчики (~15 г), олія 2 ст.л., оцет 1 ст.л., цукор 1 ч.л., сіль, паприка, коріандр",
         ],
+        macroItems: [
+          { food: "chickenMarinated", vitalii: 320, olesia: 480 },
+          { food: "potato", vitalii: 400, olesia: 600 },
+          { food: "oil", vitalii: 10, olesia: 10 },
+          { food: "carrot", vitalii: 200, olesia: 200 },
+          { food: "oil", vitalii: 13.5, olesia: 13.5 },
+          { food: "sugar", vitalii: 2, olesia: 2 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Запечене куряче філе + Запечена картопля + Корейська морква",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [],
       },
       {
         type: "snack",
@@ -325,6 +429,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Ягоди — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "berries", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -362,6 +471,10 @@ export const WEEK_PLAN: DayPlan[] = [
           "Сирники з морозилки — 4–6 шт (~280–390 г) — орієнтовно Віталій 2 шт, Олеся 3 шт",
           "Ягоди або мед",
         ],
+        macroItems: [
+          { food: "syrniki", vitalii: 134, olesia: 201 },
+          { food: "berries", vitalii: 50, olesia: 50 },
+        ],
       },
       {
         type: "lunch",
@@ -372,12 +485,22 @@ export const WEEK_PLAN: DayPlan[] = [
           "Рис — 250 г сухого (загальна порція: Віталій — 100 г, Олеся — 150 г)",
           "Для салату: листя айсберг 240 г, твердий сир 60 г, цільнозерновий хліб для сухариків (~60 г), майонез 4 ст.л., діжонська гірчиця 2 ч.л., часник 2 зубчики (~10 г), лимонний сік",
         ],
+        macroItems: [
+          { food: "chickenMarinated", vitalii: 120, olesia: 180 },
+          { food: "rice", vitalii: 100, olesia: 150 },
+          { food: "icebergLettuce", vitalii: 120, olesia: 120 },
+          { food: "hardCheese", vitalii: 30, olesia: 30 },
+          { food: "bread", vitalii: 30, olesia: 30 },
+          { food: "mayo", vitalii: 30, olesia: 30 },
+          { food: "mustardDijon", vitalii: 5, olesia: 5 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Цезар з куркою + Варений рис",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [],
       },
       {
         type: "snack",
@@ -387,6 +510,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Протеїн — 2 мірні ложки (по 1 ложці кожному)",
           "Вода або молоко — 400 мл (по 200 мл кожному)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        // Assumes water as the shake base (0 kcal) — swap to "milk" food item if made with milk.
+        macroItems: [
+          { food: "proteinPowder", vitalii: 30, olesia: 30 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],
@@ -426,6 +554,13 @@ export const WEEK_PLAN: DayPlan[] = [
           "Цільнозерновий хліб, свіжі овочі",
           "Олія — 1 ч.л.",
         ],
+        macroItems: [
+          { food: "eggs", vitalii: 120, olesia: 120 },
+          { food: "milk", vitalii: 30, olesia: 30 },
+          { food: "bread", vitalii: 35, olesia: 35 },
+          { food: "freshVeg", vitalii: 50, olesia: 50 },
+          { food: "oil", vitalii: 2.5, olesia: 2.5 },
+        ],
       },
       {
         type: "lunch",
@@ -437,12 +572,25 @@ export const WEEK_PLAN: DayPlan[] = [
           "Для соусу: цибуля 2 шт (~240 г), вершки 10–15% 120 мл, мускатний горіх",
           "Для салату: помідори 4 шт (~520 г), огірок 2 шт (~400 г), перець солодкий 1 шт (~170 г), червона цибуля ½ шт (~60 г), бринза 100 г, олія 4 ч.л., орегано",
         ],
+        macroItems: [
+          { food: "porkChop", vitalii: 240, olesia: 360 },
+          { food: "rice", vitalii: 150, olesia: 200 },
+          { food: "onion", vitalii: 120, olesia: 120 },
+          { food: "cream", vitalii: 60, olesia: 60 },
+          { food: "tomato", vitalii: 260, olesia: 260 },
+          { food: "cucumber", vitalii: 200, olesia: 200 },
+          { food: "pepper", vitalii: 85, olesia: 85 },
+          { food: "onion", vitalii: 30, olesia: 30 },
+          { food: "brynza", vitalii: 50, olesia: 50 },
+          { food: "oil", vitalii: 10, olesia: 10 },
+        ],
       },
       {
         type: "dinner",
         label: "Вечеря",
         title: "Свиняча відбивна + Варений рис + Грецький салат",
         ingredients: ["Друга порція обідньої страви"],
+        macroItems: [],
       },
       {
         type: "snack",
@@ -452,6 +600,11 @@ export const WEEK_PLAN: DayPlan[] = [
           "Грецький йогурт — 300 г (по 150 г)",
           "Ягоди — 200 г (по 100 г)",
           "Банан (для Олесі) — 1 шт (~120 г)",
+        ],
+        macroItems: [
+          { food: "yogurtGreek", vitalii: 150, olesia: 150 },
+          { food: "berries", vitalii: 100, olesia: 100 },
+          { food: "banana", vitalii: 0, olesia: 120 },
         ],
       },
     ],

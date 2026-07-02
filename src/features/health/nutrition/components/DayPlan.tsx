@@ -1,9 +1,15 @@
 "use client";
 
 import { PROFILES } from "../data";
+import { calculateDayMacros } from "../nutrition-calc";
 import { MealCard } from "./MealCard";
 import type { DayPlan as DayPlanType } from "../types";
 export function DayPlan({ day }: { day: DayPlanType }) {
+  const actual = {
+    vitalii: calculateDayMacros(day, "vitalii"),
+    olesia: calculateDayMacros(day, "olesia"),
+  };
+
   const dayIngredients = day.meals
     .flatMap((m) => m.ingredients)
     .filter((ing) => {
@@ -13,23 +19,27 @@ export function DayPlan({ day }: { day: DayPlanType }) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Macro strip */}
+      {/* Macro strip — calculated from this day's actual meals, target shown for reference */}
       <div className="flex flex-col gap-1.5">
-        {PROFILES.map((profile) => (
-          <div
-            key={profile.id}
-            className="flex items-center gap-4 flex-wrap text-caption text-text-secondary"
-          >
-            <span className="font-semibold text-text-primary w-16 shrink-0">{profile.name}</span>
-            <span className="font-medium text-text-primary">{profile.kcal} ккал/день</span>
-            <span className="text-text-muted">·</span>
-            <span>Б {profile.macros.protein} г</span>
-            <span className="text-text-muted">·</span>
-            <span>Ж {profile.macros.fat} г</span>
-            <span className="text-text-muted">·</span>
-            <span>В {profile.macros.carbs} г</span>
-          </div>
-        ))}
+        {PROFILES.map((profile) => {
+          const macros = actual[profile.id as keyof typeof actual];
+          return (
+            <div
+              key={profile.id}
+              className="flex items-center gap-4 flex-wrap text-caption text-text-secondary"
+            >
+              <span className="font-semibold text-text-primary w-16 shrink-0">{profile.name}</span>
+              <span className="font-medium text-text-primary">{macros.kcal} ккал/день</span>
+              <span className="text-text-muted">·</span>
+              <span>Б {macros.protein} г</span>
+              <span className="text-text-muted">·</span>
+              <span>Ж {macros.fat} г</span>
+              <span className="text-text-muted">·</span>
+              <span>В {macros.carbs} г</span>
+              <span className="text-text-muted/60">(ціль {profile.kcal} ккал)</span>
+            </div>
+          );
+        })}
       </div>
 
       {day.note && (
