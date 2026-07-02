@@ -35,6 +35,72 @@ export function MealPrep() {
     },
   ];
 
+  const marinades = [
+    {
+      title: "Йогуртово-лимонний маринад",
+      for: "Для курячих шашликів (Пн). Соус подачі: Часниково-йогуртовий",
+      ingredients: [
+        "150 г грецького йогурту",
+        "сік ½ лимона + цедра",
+        "2 зубчики часнику (тиском)",
+        "1 ч.л. паприки",
+        "½ ч.л. прованських трав",
+        "1 ст.л. оливкової олії",
+        "сіль, чорний перець",
+      ],
+      note: "Маринувати мінімум 2 год, ідеально — ніч у холодильнику.",
+    },
+    {
+      title: "Соєво-томатний маринад",
+      for: "Для курячих сердець (Вт). Соус подачі: Соєва глазур",
+      ingredients: [
+        "3 ст.л. соєвого соусу",
+        "1 ст.л. томатної пасти",
+        "1 ст.л. оливкової олії",
+        "½ ч.л. прованських трав",
+        "чорний перець (сіль не потрібна — соєвий соус солоний)",
+      ],
+      note: "Маринувати 30–60 хв, перемішувати кожні 10 хв.",
+    },
+    {
+      title: "Соєво-часниковий маринад",
+      for: "Для смаженої курки (Чт)",
+      ingredients: [
+        "3 ст.л. соєвого соусу",
+        "1 ст.л. оливкової олії",
+        "2 зубчики часнику (тиском)",
+        "½ ч.л. паприки",
+        "чорний перець",
+      ],
+      note: "Маринувати від 1 до 4 год.",
+    },
+    {
+      title: "Медово-гірчичний маринад",
+      for: "Для запеченого курячого філе (Пт). Утворює соус при запіканні.",
+      ingredients: [
+        "2 ст.л. гірчиці (французька зернова або діжонська)",
+        "1 ст.л. меду",
+        "2 ст.л. оливкової олії",
+        "2 зубчики часнику (тиском)",
+        "сіль, чорний перець",
+      ],
+      note: "Маринувати від 1 до 4 год. Запікати у фользі або рукаві при 180°C — 30–35 хв.",
+    },
+    {
+      title: "Цитрусово-розмариновий маринад",
+      for: "Для свинячої відбивної (Нд). Соус подачі: Цибулево-вершковий",
+      ingredients: [
+        "сік 1 апельсина (або 1 лимона)",
+        "3 ст.л. оливкової олії",
+        "2 зубчики часнику (тиском)",
+        "1 ч.л. свіжого або сухого розмарину",
+        "½ ч.л. чебрецю",
+        "сіль, чорний перець",
+      ],
+      note: "Маринувати 2–4 год для тонких відбивних, до 8 год для товстих.",
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       {/* Overview Card */}
@@ -92,6 +158,38 @@ export function MealPrep() {
                   </li>
                 ))}
               </ol>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Marinades */}
+      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
+        <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+          Рецепти маринадів
+        </span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {marinades.map((m, idx) => (
+            <div key={idx} className="border border-border/40 rounded-xl p-4 flex flex-col gap-2 bg-surface/50">
+              <span className="text-caption font-semibold text-accent">
+                {m.title}
+              </span>
+              <p className="text-caption text-text-muted italic mb-1">
+                {m.for}
+              </p>
+              <ul className="flex flex-col gap-1 pl-1">
+                {m.ingredients.map((ing, ingIdx) => (
+                  <li key={ingIdx} className="text-caption text-text-secondary leading-relaxed flex gap-2">
+                    <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                    <span>{ing}</span>
+                  </li>
+                ))}
+              </ul>
+              {m.note && (
+                <p className="text-caption text-text-muted mt-2 border-t border-border/20 pt-2 leading-relaxed">
+                  {m.note}
+                </p>
+              )}
             </div>
           ))}
         </div>
