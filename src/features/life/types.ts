@@ -220,6 +220,96 @@ export interface UpsertDayScheduleInput {
 }
 
 //
+// --- Weekly Review ---
+//
+export interface ReviewEntryData {
+  id: string;
+  date: Date;
+  energy: number | null;
+  mood: number | null;
+  eveningEnergy: number | null;
+  weight: number | null;
+  sleepHours: number | null;
+  sleepQuality: number | null;
+  nutrition: number | null;
+  morningRoutine: JsonValue | null;
+  eveningRoutine: JsonValue | null;
+  recoveryRoutine: JsonValue | null;
+  recoveryScore: number | null;
+  emotions: JsonValue | null;
+  winToday: string | null;
+  improveTomorrow: string | null;
+  gratitude: string | null;
+  completedAt: Date | null;
+}
+
+export interface WeekRange {
+  start: Date;
+  end: Date; // exclusive
+}
+
+export interface EmotionBalance {
+  positiveCount: number;
+  negativeCount: number;
+  ratio: number | null; // positive / (positive + negative)
+  top: { label: string; count: number; positive: boolean }[];
+}
+
+export interface WeekSummary {
+  range: WeekRange;
+  daysLogged: number;
+  daysCompleted: number;
+  avgMood: number | null;
+  avgEnergy: number | null;
+  avgEveningEnergy: number | null;
+  avgSleepHours: number | null;
+  avgSleepQuality: number | null;
+  avgWeight: number | null;
+  avgRecoveryScore: number | null;
+  nutritionAdherencePct: number | null;
+  morningRoutinePct: number | null;
+  eveningRoutinePct: number | null;
+  recoveryRoutinePct: number | null;
+  habitsAdherencePct: number | null;
+  tasksCompleted: number;
+  tasksCarriedOver: number;
+  frogsCompleted: number;
+  emotionBalance: EmotionBalance;
+  wins: string[];
+  gratitudeNotes: string[];
+  improvements: string[];
+}
+
+export type MetricDirection = "up" | "down" | "flat" | "unknown";
+
+export interface MetricComparison {
+  key: string;
+  label: string;
+  unit?: string;
+  current: number | null;
+  previous: number | null;
+  delta: number | null;
+  direction: MetricDirection;
+}
+
+export type PatternStrength = "weak" | "moderate" | "strong";
+
+export interface Pattern {
+  id: string;
+  labelA: string;
+  labelB: string;
+  r: number;
+  n: number;
+  strength: PatternStrength;
+  description: string;
+}
+
+export interface WeeklyTrendPoint {
+  weekStart: Date;
+  value: number | null;
+}
+
+//
 // --- Habit ---
 //
 export interface UpsertHabitInput {

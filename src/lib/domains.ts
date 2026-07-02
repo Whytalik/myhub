@@ -4,6 +4,7 @@ import {
   CalendarDays,
   CheckCircle2,
   Heart,
+  LineChart,
   Sparkles,
   Utensils,
   Zap,
@@ -38,6 +39,7 @@ export const DOMAINS: Domain[] = [
       { href: "/life/habits", label: "Habits", icon: Zap },
       { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
       { href: "/life/week", label: "Week", icon: CalendarDays },
+      { href: "/life/review", label: "Review", icon: LineChart },
     ],
   },
   {

@@ -17,13 +17,17 @@ export function invalidateJournalCache(userId: string, date?: Date) {
   revalidateTag("daily-entry", INVALIDATE_PROFILE);
   revalidateTag("daily-entries", INVALIDATE_PROFILE);
   if (date) {
-    revalidateTag(cacheTags.dailyEntry(userId, date.toISOString().split("T")[0]), INVALIDATE_PROFILE);
+    revalidateTag(
+      cacheTags.dailyEntry(userId, date.toISOString().split("T")[0]),
+      INVALIDATE_PROFILE,
+    );
   }
 }
 
 export function invalidateHabitCache(userId: string) {
   revalidateTag(cacheTags.habits(userId), INVALIDATE_PROFILE);
   revalidateTag("habits", INVALIDATE_PROFILE);
+  revalidateTag("habits-review", INVALIDATE_PROFILE);
 }
 
 export function invalidateScheduleCache(userId: string) {

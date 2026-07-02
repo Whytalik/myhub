@@ -1,49 +1,12 @@
 "use client";
 
 import { Brain } from "lucide-react";
+import { MENTAL_STATES, EMOTIONAL_STATES, PHYSICAL_STATES } from "@/lib/emotion-taxonomy";
 
 interface Props {
   emotions: string[] | null;
   onChange: (patch: { emotions: string[] | null }) => void;
 }
-
-const MENTAL_STATES = [
-  { label: "Ясний розум", positive: true },
-  { label: "Креативний", positive: true },
-  { label: "Зосереджений", positive: true },
-  { label: "В потоці", positive: true },
-  { label: "Продуктивний", positive: true },
-  { label: "Прокрастинація", positive: false },
-  { label: "Нудьга", positive: false },
-  { label: "Відволікання", positive: false },
-  { label: "Туман в голові", positive: false },
-];
-
-const EMOTIONAL_STATES = [
-  { label: "Радісний", positive: true },
-  { label: "Вдячний", positive: true },
-  { label: "Натхненний", positive: true },
-  { label: "Впевнений", positive: true },
-  { label: "Задоволений", positive: true },
-  { label: "Захоплений", positive: true },
-  { label: "Оптимістичний", positive: true },
-  { label: "Роздратований", positive: false },
-  { label: "Сумний", positive: false },
-  { label: "Самотній", positive: false },
-  { label: "Злий", positive: false },
-  { label: "Винуватий", positive: false },
-  { label: "Невпевнений", positive: false },
-];
-
-const PHYSICAL_STATES = [
-  { label: "Спокійний", positive: true },
-  { label: "Розслаблений", positive: true },
-  { label: "Енергійний", positive: true },
-  { label: "Тривожний", positive: false },
-  { label: "Втомлений", positive: false },
-  { label: "Перевантажений", positive: false },
-  { label: "Вигорання", positive: false },
-];
 
 interface EmotionColumnProps {
   title: string;

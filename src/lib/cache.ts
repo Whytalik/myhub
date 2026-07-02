@@ -7,10 +7,10 @@ import { journalRepository } from "@/features/life/repositories/journal.reposito
 // ─── Tag Constants ────────────────────────────────────────────────────────────
 
 export const cacheTags = {
-  spheres:      (userId: string) => `spheres:${userId}`,
-  tasks:        (userId: string) => `tasks:${userId}`,
-  habits:       (userId: string) => `habits:${userId}`,
-  dailyEntry:   (userId: string, dateStr: string) => `daily-entry:${userId}:${dateStr}`,
+  spheres: (userId: string) => `spheres:${userId}`,
+  tasks: (userId: string) => `tasks:${userId}`,
+  habits: (userId: string) => `habits:${userId}`,
+  dailyEntry: (userId: string, dateStr: string) => `daily-entry:${userId}:${dateStr}`,
   dailyEntries: (userId: string) => `daily-entries:${userId}`,
 };
 
@@ -59,11 +59,21 @@ export const getCachedActiveHabits = unstable_cache(
   { tags: ["habits"] },
 );
 
+// Wider completion window for the Review page (trends span ~8-12 weeks,
+// vs. the 30-day window the habit tracker UI needs).
+export const getCachedHabitsForReview = unstable_cache(
+  (userId: string) => {
+    const since = new Date(new Date().setDate(new Date().getDate() - 120));
+    return habitRepository.findAll(userId, since);
+  },
+  [],
+  { tags: ["habits-review"] },
+);
+
 // ─── Journal / Daily Entries ──────────────────────────────────────────────────
 
 export const getCachedDailyEntry = unstable_cache(
-  (userId: string, dateISO: string) =>
-    journalRepository.findByDate(userId, new Date(dateISO)),
+  (userId: string, dateISO: string) => journalRepository.findByDate(userId, new Date(dateISO)),
   [],
   { tags: ["daily-entry"] },
 );
