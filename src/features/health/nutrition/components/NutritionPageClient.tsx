@@ -1,22 +1,83 @@
 "use client";
 
-import { CalendarDays, ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { CalendarDays, ShoppingCart, Apple, ClipboardList } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import { DayPlan } from "./DayPlan";
+import { DailyProducts } from "./DailyProducts";
+import { MealPrep } from "./MealPrep";
 import { ShoppingList } from "./ShoppingList";
+import { WEEK_PLAN } from "../data";
+
+function todayIndex() {
+  // JS getDay(): 0=Sun..6=Sat. WEEK_PLAN is Mon-first (index 0=Mon..6=Sun).
+  return (new Date().getDay() + 6) % 7;
+}
 
 export function NutritionPageClient() {
+  const [activeTab, setActiveTab] = useState("day");
+  const [activeIndex, setActiveIndex] = useState(todayIndex);
+
+  const day = WEEK_PLAN[activeIndex];
+
   return (
-    <Tabs
-      tabs={[
-        { id: "day", label: "На день", icon: <CalendarDays size={14} />, content: <DayPlan /> },
-        {
-          id: "shopping",
-          label: "Список покупок",
-          icon: <ShoppingCart size={14} />,
-          content: <ShoppingList />,
-        },
-      ]}
-    />
+    <div className="flex flex-col gap-6">
+      {/* Day pills navigation (only shown on day-specific tabs) */}
+      {(activeTab === "day" || activeTab === "products") && (
+        <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+          {WEEK_PLAN.map((d, i) => {
+            const isActive = i === activeIndex;
+            const isToday = i === todayIndex();
+            return (
+              <button
+                key={d.weekday}
+                onClick={() => setActiveIndex(i)}
+                className={`relative flex items-center justify-center h-10 w-14 shrink-0 rounded-lg text-note font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-accent text-bg font-semibold shadow-sm"
+                    : "bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-border-strong"
+                }`}
+              >
+                {d.labelShort}
+                {isToday && !isActive && (
+                  <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-accent" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      <Tabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        tabs={[
+          {
+            id: "day",
+            label: "На день",
+            icon: <CalendarDays size={14} />,
+            content: <DayPlan day={day} />,
+          },
+          {
+            id: "products",
+            label: "Продукти",
+            icon: <Apple size={14} />,
+            content: <DailyProducts day={day} />,
+          },
+          {
+            id: "prep",
+            label: "Мілпреп",
+            icon: <ClipboardList size={14} />,
+            content: <MealPrep />,
+          },
+          {
+            id: "shopping",
+            label: "Список покупок",
+            icon: <ShoppingCart size={14} />,
+            content: <ShoppingList />,
+          },
+        ]}
+      />
+    </div>
   );
 }

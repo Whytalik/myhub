@@ -1,52 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { WEEK_PLAN, PROFILES } from "../data";
+import { PROFILES } from "../data";
 import { MealCard } from "./MealCard";
+import type { DayPlan as DayPlanType } from "../types";
 
-function todayIndex() {
-  // JS getDay(): 0=Sun..6=Sat. WEEK_PLAN is Mon-first (index 0=Mon..6=Sun).
-  return (new Date().getDay() + 6) % 7;
-}
-
-export function DayPlan() {
-  const [activeIndex, setActiveIndex] = useState(todayIndex);
-  const day = WEEK_PLAN[activeIndex];
+export function DayPlan({ day }: { day: DayPlanType }) {
   const vitalii = PROFILES.find((p) => p.id === "vitalii");
-
-  const dayIngredients = day.meals
-    .flatMap((m) => m.ingredients)
-    .filter((ing) => {
-      const lower = ing.toLowerCase();
-      return !lower.includes("друга порція") && !lower.includes("обідньої страви");
-    });
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Day pills */}
-      <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-        {WEEK_PLAN.map((d, i) => {
-          const isActive = i === activeIndex;
-          const isToday = i === todayIndex();
-          return (
-            <button
-              key={d.weekday}
-              onClick={() => setActiveIndex(i)}
-              className={`relative flex items-center justify-center h-10 w-14 shrink-0 rounded-lg text-note font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-accent text-bg font-semibold shadow-sm"
-                  : "bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-border-strong"
-              }`}
-            >
-              {d.labelShort}
-              {isToday && !isActive && (
-                <span className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-accent" />
-              )}
-            </button>
-          );
-        })}
-      </div>
-
       {/* Macro strip */}
       {vitalii && (
         <div className="flex items-center gap-4 flex-wrap text-caption text-text-secondary">
@@ -72,23 +34,6 @@ export function DayPlan() {
           <MealCard key={meal.type} meal={meal} />
         ))}
       </div>
-
-      {/* Products for the Day */}
-      {dayIngredients.length > 0 && (
-        <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-3">
-          <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
-            Продукти на день
-          </span>
-          <ul className="flex flex-col gap-1.5 pl-1">
-            {dayIngredients.map((ingredient, i) => (
-              <li key={i} className="text-caption text-text-secondary leading-relaxed flex gap-2">
-                <span className="text-accent shrink-0 font-bold font-mono">·</span>
-                <span>{ingredient}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       {/* Preparation Algorithm */}
       {day.prepSteps && day.prepSteps.length > 0 && (

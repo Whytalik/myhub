@@ -3,7 +3,6 @@ import {
   BookText,
   CalendarDays,
   CheckCircle2,
-  Dumbbell,
   Heart,
   History,
   Sparkles,
@@ -49,7 +48,6 @@ export const DOMAINS: Domain[] = [
     accent: "#ff8c00",
     spaces: [
       { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
-      { href: "/health/training", label: "Training", icon: Dumbbell },
     ],
   },
 ];
