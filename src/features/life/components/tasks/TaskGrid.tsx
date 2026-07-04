@@ -12,17 +12,24 @@ interface TaskGridProps {
   allTasks: TaskData[];
 }
 
-export function TaskGrid({ tasks, onEdit, onDuplicate, onAddChild, onDelete, allTasks = [] }: TaskGridProps) {
+export function TaskGrid({
+  tasks,
+  onEdit,
+  onDuplicate,
+  onAddChild,
+  onDelete,
+  allTasks = [],
+}: TaskGridProps) {
   if (tasks.length === 0) {
     return (
-      <div >
-        <p >No tasks found.</p>
+      <div className="glass-card p-8 flex items-center justify-center">
+        <p className="text-caption">No tasks found.</p>
       </div>
     );
   }
 
   return (
-    <div >
+    <div className="flex flex-col gap-2">
       {tasks.map((task) => (
         <TaskRow
           key={task.id}

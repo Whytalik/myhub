@@ -17,6 +17,7 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();
   const Icon = SPHERE_ICONS[sphere.icon];
+  const taskCountLabel = `${sphere.taskCount} task${sphere.taskCount !== 1 ? "s" : ""}`;
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -30,43 +31,34 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
   };
 
   return (
-    <div
-
-    >
-      {}
-      <div >
-        <div >
-          {Icon && (
-            <div
-
-            >
-              <Icon size={16} />
-            </div>
-          )}
-          <div>
-            <p >{sphere.name}</p>
-            <p >
-              {sphere.taskCount} task{sphere.taskCount !== 1 ? "s" : ""}
-            </p>
+    <div className="glass-card p-4 flex items-center justify-between gap-3 hover:border-white/[0.12] transition-colors duration-150">
+      <div className="flex items-center gap-3 min-w-0">
+        {Icon && (
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/10 text-accent shrink-0">
+            <Icon size={16} />
           </div>
+        )}
+        <div className="min-w-0">
+          <p className="text-panel-title truncate">{sphere.name}</p>
+          <p className="text-caption">{taskCountLabel}</p>
         </div>
+      </div>
 
-        <div >
-          <button
-            onClick={() => onEdit(sphere)}
-
-            title="Edit sphere"
-          >
-            <Pencil size={13} />
-          </button>
-          <button
-            onClick={() => setIsDeleteDialogOpen(true)}
-
-            title="Delete sphere"
-          >
-            <Trash2 size={13} />
-          </button>
-        </div>
+      <div className="flex items-center gap-1 shrink-0">
+        <button
+          onClick={() => onEdit(sphere)}
+          className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-white/5 rounded-md transition-colors"
+          title="Edit sphere"
+        >
+          <Pencil size={13} />
+        </button>
+        <button
+          onClick={() => setIsDeleteDialogOpen(true)}
+          className="p-1.5 text-zinc-500 hover:text-rose-400 hover:bg-white/5 rounded-md transition-colors"
+          title="Delete sphere"
+        >
+          <Trash2 size={13} />
+        </button>
       </div>
 
       <ConfirmationDialog
@@ -78,9 +70,6 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
         confirmLabel="Delete"
         variant="danger"
       />
-
-      {}
-      <div />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { memo } from 'react';
-import { Handle, Position, Node, NodeProps } from '@xyflow/react';
-import { TaskCardBase } from './TaskCardBase';
-import type { TaskData } from '@/features/life/types';
+import React, { memo } from "react";
+import { Handle, Position, Node, NodeProps } from "@xyflow/react";
+import { TaskCardBase } from "./TaskCardBase";
+import type { TaskData } from "@/features/life/types";
 
 export type TaskNodeData = {
   task: TaskData;
@@ -13,18 +13,16 @@ export type TaskNodeData = {
   onAddChild: (parent: TaskData) => void;
 };
 
-type TaskNodeType = Node<TaskNodeData, 'task'>;
+type TaskNodeType = Node<TaskNodeData, "task">;
+
+const handleClass = "!bg-zinc-600 !border-none !w-2 !h-2";
 
 export const TaskNode = memo((props: NodeProps<TaskNodeType>) => {
   const { task, allTasks, onEdit, onDuplicate, onAddChild } = props.data;
 
   return (
-    <div >
-      <Handle
-        type="target"
-        position={Position.Left}
-
-      />
+    <div className="w-72">
+      <Handle type="target" position={Position.Left} className={handleClass} />
 
       <TaskCardBase
         task={task}
@@ -32,16 +30,12 @@ export const TaskNode = memo((props: NodeProps<TaskNodeType>) => {
         onEdit={onEdit}
         onDuplicate={onDuplicate}
         onAddChild={onAddChild}
-
+        className="shadow-lg"
       />
 
-      <Handle
-        type="source"
-        position={Position.Right}
-
-      />
+      <Handle type="source" position={Position.Right} className={handleClass} />
     </div>
   );
 });
 
-TaskNode.displayName = 'TaskNode';
+TaskNode.displayName = "TaskNode";

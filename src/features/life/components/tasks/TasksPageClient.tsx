@@ -15,9 +15,7 @@ import { TaskTree } from "./TaskTree";
 const TaskCalendar = lazy(() =>
   import("./TaskCalendar").then((m) => ({ default: m.TaskCalendar })),
 );
-const TaskGraph = lazy(() =>
-  import("./TaskGraph").then((m) => ({ default: m.TaskGraph })),
-);
+const TaskGraph = lazy(() => import("./TaskGraph").then((m) => ({ default: m.TaskGraph })));
 
 interface TasksPageClientProps {
   initialTasks: TaskData[];
@@ -91,98 +89,67 @@ export function TasksPageClient({
     return initialTasks.filter((t) => !(t.parentId && t.status === "DONE"));
   }, [initialTasks, hideDoneSubtasks]);
 
+  const galleryButtonVariant = view === "gallery" ? "primary" : "ghost";
+  const calendarButtonVariant = view === "calendar" ? "primary" : "ghost";
+  const graphButtonVariant = view === "graph" ? "primary" : "ghost";
+  const hideDoneButtonVariant = hideDoneSubtasks ? "primary" : "outline";
+  const hideDoneLabel = hideDoneSubtasks ? "Showing Active" : "Hide Done";
+
   return (
-    <div >
-      <div >
-        <div >
-          <div >
-            <Heading title="Tasks" />
-            <p >
-              Organize your goals, projects, and daily work.
-            </p>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <Heading title="Tasks" />
+          <p className="text-caption mt-1">Organize your goals, projects, and daily work.</p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit">
+            <Button variant={galleryButtonVariant} size="sm" onClick={() => setView("gallery")}>
+              Gallery
+            </Button>
+            <Button variant={calendarButtonVariant} size="sm" onClick={() => setView("calendar")}>
+              Calendar
+            </Button>
+            <Button variant={graphButtonVariant} size="sm" onClick={() => setView("graph")}>
+              Graph
+            </Button>
           </div>
 
-          <div >
-            <div >
+          <div className="flex items-center gap-2">
+            {view === "graph" && (
               <Button
-                variant={view === "gallery" ? "primary" : "ghost"}
+                variant={hideDoneButtonVariant}
                 size="sm"
-                onClick={() => setView("gallery")}
-
+                onClick={() => setHideDoneSubtasks(!hideDoneSubtasks)}
+                title="Toggle completed subtasks"
               >
-                Gallery
+                <CheckCircle2 size={14} />
+                {hideDoneLabel}
               </Button>
-              <Button
-                variant={view === "calendar" ? "primary" : "ghost"}
-                size="sm"
-                onClick={() => setView("calendar")}
+            )}
 
-              >
-                Calendar
-              </Button>
-              <Button
-                variant={view === "graph" ? "primary" : "ghost"}
-                size="sm"
-                onClick={() => setView("graph")}
+            <Button variant="outline" size="sm" onClick={() => setSpheresOpen(true)}>
+              <Layers size={14} />
+              Life Spheres
+            </Button>
 
-              >
-                Graph
-              </Button>
-            </div>
-
-            <div >
-              {view === "graph" && (
-                <Button
-                  variant={hideDoneSubtasks ? "primary" : "outline"}
-                  size="sm"
-                  onClick={() => setHideDoneSubtasks(!hideDoneSubtasks)}
-
-                  title="Toggle completed subtasks"
-                >
-                  <CheckCircle2
-                    size={14}
-
-                  />
-                  {hideDoneSubtasks ? "Showing Active" : "Hide Done"}
-                </Button>
-              )}
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setSpheresOpen(true)}
-
-              >
-                <Layers size={14} />
-                Life Spheres
-              </Button>
-
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleAddNew}
-
-              >
-                <Plus size={16} />
-                New Task
-              </Button>
-            </div>
+            <Button variant="primary" size="sm" onClick={handleAddNew}>
+              <Plus size={16} />
+              New Task
+            </Button>
           </div>
         </div>
       </div>
 
       {isActionPending && (
-        <div >
-          <div >
-            <Loader2 size={20} />
-            <span >
-              Updating...
-            </span>
-          </div>
+        <div className="glass-card px-4 py-2 flex items-center gap-2 w-fit">
+          <Loader2 size={20} className="animate-spin text-accent" />
+          <span className="text-caption">Updating...</span>
         </div>
       )}
 
-      <div >
+      <div>
         {view === "gallery" && (
           <TaskTree
             tasks={initialTasks}
@@ -197,8 +164,8 @@ export function TasksPageClient({
         {view === "calendar" && (
           <Suspense
             fallback={
-              <div >
-                <Loader2 size={24} />
+              <div className="flex items-center justify-center h-96">
+                <Loader2 size={24} className="animate-spin text-accent" />
               </div>
             }
           >
@@ -215,8 +182,8 @@ export function TasksPageClient({
         {view === "graph" && (
           <Suspense
             fallback={
-              <div >
-                <Loader2 size={24} />
+              <div className="flex items-center justify-center h-96">
+                <Loader2 size={24} className="animate-spin text-accent" />
               </div>
             }
           >

@@ -15,10 +15,21 @@ import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 import type { TaskData, LifeSphereData, TaskStatus, TaskPriority } from "@/features/life/types";
 import { toast } from "sonner";
 import {
-  CalendarClock, Flag, Pencil, FileText,
-  Link2Off, Eye, EyeOff,
-  Trash2, Calendar, LayoutGrid,
-  Check, ChevronRight, ChevronLeft, X, Plus
+  CalendarClock,
+  Flag,
+  Pencil,
+  FileText,
+  Link2Off,
+  Eye,
+  EyeOff,
+  Trash2,
+  Calendar,
+  LayoutGrid,
+  Check,
+  ChevronRight,
+  ChevronLeft,
+  X,
+  Plus,
 } from "lucide-react";
 import { STATUS_CONFIG } from "./StatusToggle";
 import { PRIORITY_CONFIG } from "./PriorityBadge";
@@ -46,23 +57,29 @@ const STEPS = [
 
 function Stepper({ currentStep }: { currentStep: number }) {
   return (
-    <div >
+    <div className="flex items-center gap-2 px-1">
       {STEPS.map((step, idx) => {
         const isCompleted = currentStep > step.number;
         const isActive = currentStep === step.number;
+        const circleClass = `flex items-center justify-center w-8 h-8 rounded-full border shrink-0 transition-colors duration-150 ${
+          isActive
+            ? "bg-accent text-white border-accent"
+            : isCompleted
+              ? "bg-accent/15 text-accent border-accent/30"
+              : "bg-white/[0.02] text-zinc-500 border-white/[0.08]"
+        }`;
+        const labelClass = `text-[11px] font-medium whitespace-nowrap ${isActive ? "text-zinc-100" : "text-zinc-500"}`;
+        const lineClass = `flex-1 h-px ${isCompleted ? "bg-accent/40" : "bg-white/[0.06]"}`;
+
         return (
           <React.Fragment key={step.number}>
-            <div >
-              <div >
+            <div className="flex items-center gap-2">
+              <div className={circleClass}>
                 {isCompleted ? <Check size={14} strokeWidth={3} /> : step.icon}
               </div>
-              <span >
-                {step.label}
-              </span>
+              <span className={labelClass}>{step.label}</span>
             </div>
-            {idx < STEPS.length - 1 && (
-              <div />
-            )}
+            {idx < STEPS.length - 1 && <div className={lineClass} />}
           </React.Fragment>
         );
       })}
@@ -118,23 +135,50 @@ interface UnifiedTaskFormProps {
 }
 
 function UnifiedTaskForm({
-  spheres, allTasks,
-  title, setTitle, description, setDescription,
-  icon, setIconPickerOpen,
-  status, setStatus, priority, setPriority, sphereId, setSphereId,
-  parentId, setParentId, isPrivate, setIsPrivate,
-  plannedDate, setPlannedDate, plannedTime, setPlannedTime,
-  hasPlannedTime, setHasPlannedTime,
-  plannedEndTime, setPlannedEndTime,
-  plannedEndDate, setPlannedEndDate,
-  hasPlannedEndTime, setHasPlannedEndTime,
-  useDeadline, setUseDeadline, dueDate, setDueDate,
-  dueTime, setDueTime, hasDueTime, setHasDueTime,
-  onSubmit, isPending,
+  spheres,
+  allTasks,
+  title,
+  setTitle,
+  description,
+  setDescription,
+  icon,
+  setIconPickerOpen,
+  status,
+  setStatus,
+  priority,
+  setPriority,
+  sphereId,
+  setSphereId,
+  parentId,
+  setParentId,
+  isPrivate,
+  setIsPrivate,
+  plannedDate,
+  setPlannedDate,
+  plannedTime,
+  setPlannedTime,
+  hasPlannedTime,
+  setHasPlannedTime,
+  plannedEndTime,
+  setPlannedEndTime,
+  plannedEndDate,
+  setPlannedEndDate,
+  hasPlannedEndTime,
+  setHasPlannedEndTime,
+  useDeadline,
+  setUseDeadline,
+  dueDate,
+  setDueDate,
+  dueTime,
+  setDueTime,
+  hasDueTime,
+  setHasDueTime,
+  onSubmit,
+  isPending,
 }: UnifiedTaskFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, 4));
-  const handleBack = () => setCurrentStep(prev => Math.max(1, prev - 1));
+  const handleNext = () => setCurrentStep((prev) => Math.min(prev + 1, 4));
+  const handleBack = () => setCurrentStep((prev) => Math.max(1, prev - 1));
 
   const handleTogglePlannedTime = (checked: boolean) => {
     setHasPlannedTime(checked);
@@ -159,34 +203,51 @@ function UnifiedTaskForm({
     if (checked && !dueTime) setDueTime("12:00");
   };
 
+  const fieldLabelClass = "text-label";
+  const symbolButtonClass =
+    "flex items-center justify-center w-11 h-11 rounded-xl glass-input cursor-pointer text-zinc-400 hover:text-accent transition-colors shrink-0";
+  const sphereChipsClass = "flex flex-wrap gap-2";
+  const timeCheckboxLabelClass = "flex items-center gap-1.5 text-xs text-zinc-400 cursor-pointer";
+  const deadlineToggleClass =
+    "text-xs font-semibold text-accent hover:opacity-80 transition-opacity";
+  const privateToggleClass =
+    "glass-card p-3 flex items-center gap-3 text-left hover:border-white/[0.12] transition-colors";
+
   const renderStepContent = () => {
-    const sphere = spheres.find(s => s.id === sphereId);
+    const sphere = spheres.find((s) => s.id === sphereId);
     switch (currentStep) {
       case 1:
         return (
-          <div >
-            <div >
-              <label >Title & Symbol</label>
-              <div >
-                <div
-                  onClick={() => setIconPickerOpen(true)}
-
-                >
-                  {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={24} />; })() : <Plus size={20} />}
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className={fieldLabelClass}>Title & Symbol</label>
+              <div className="flex items-center gap-2">
+                <div onClick={() => setIconPickerOpen(true)} className={symbolButtonClass}>
+                  {icon && ALL_ICONS[icon] ? (
+                    (() => {
+                      const I = ALL_ICONS[icon];
+                      return <I size={24} />;
+                    })()
+                  ) : (
+                    <Plus size={20} />
+                  )}
                 </div>
                 <Input
-                  value={title} onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   placeholder="What needs to be done?"
                   autoFocus
+                  className="flex-1"
                 />
               </div>
             </div>
-            <div >
-              <label >Description</label>
+            <div className="flex flex-col gap-1.5">
+              <label className={fieldLabelClass}>Description</label>
               <Textarea
-                value={description} onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder="Add more details..."
-
+                rows={4}
               />
             </div>
           </div>
@@ -194,63 +255,94 @@ function UnifiedTaskForm({
 
       case 2:
         return (
-          <div >
-            <div >
-              <label >Sphere</label>
-              <div >
-                {spheres.map(s => (
-                  <button
-                    key={s.id} type="button" onClick={() => setSphereId(s.id)}
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className={fieldLabelClass}>Sphere</label>
+              <div className={sphereChipsClass}>
+                {spheres.map((s) => {
+                  const isActive = s.id === sphereId;
+                  const chipClass = `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors duration-150 ${
+                    isActive
+                      ? "bg-accent/15 text-accent border-accent/30"
+                      : "text-zinc-400 border-white/[0.08] hover:text-zinc-200 hover:bg-white/5"
+                  }`;
 
-                  >
-                    {s.icon && SPHERE_ICONS[s.icon] && (() => { const I = SPHERE_ICONS[s.icon]; return <I size={14} strokeWidth={3} />; })()}
-                    <span >{s.name}</span>
-                  </button>
-                ))}
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setSphereId(s.id)}
+                      className={chipClass}
+                    >
+                      {s.icon &&
+                        SPHERE_ICONS[s.icon] &&
+                        (() => {
+                          const I = SPHERE_ICONS[s.icon];
+                          return <I size={14} strokeWidth={3} />;
+                        })()}
+                      <span>{s.name}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div >
-              <div >
-                <label >Status</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className={fieldLabelClass}>Status</label>
                 <CustomSelect
                   value={status}
                   onChange={(val) => setStatus(val as TaskStatus)}
                   options={(Object.keys(STATUS_CONFIG) as TaskStatus[]).map((s) => ({
-                    id: s, label: STATUS_CONFIG[s as TaskStatus].label, icon: STATUS_CONFIG[s as TaskStatus].icon, color: STATUS_CONFIG[s as TaskStatus].color,
+                    id: s,
+                    label: STATUS_CONFIG[s as TaskStatus].label,
+                    icon: STATUS_CONFIG[s as TaskStatus].icon,
+                    color: STATUS_CONFIG[s as TaskStatus].color,
                   }))}
                 />
               </div>
-              <div >
-                <label >Priority</label>
+              <div className="flex flex-col gap-1.5">
+                <label className={fieldLabelClass}>Priority</label>
                 <CustomSelect
                   value={priority}
                   onChange={(val) => setPriority(val as TaskPriority)}
                   options={Object.keys(PRIORITY_CONFIG).map((p) => ({
-                    id: p, label: PRIORITY_CONFIG[p as TaskPriority].label, icon: PRIORITY_CONFIG[p as TaskPriority].icon, color: PRIORITY_CONFIG[p as TaskPriority].color,
+                    id: p,
+                    label: PRIORITY_CONFIG[p as TaskPriority].label,
+                    icon: PRIORITY_CONFIG[p as TaskPriority].icon,
+                    color: PRIORITY_CONFIG[p as TaskPriority].color,
                   }))}
                 />
               </div>
             </div>
 
-            <div >
-              <label >Preview</label>
-              <div >
-                <div >
-                  {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={20} />; })() : <FileText size={16} />}
+            <div className="flex flex-col gap-1.5">
+              <label className={fieldLabelClass}>Preview</label>
+              <div className="glass-card p-3 flex items-center gap-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/5 text-zinc-400 shrink-0">
+                  {icon && ALL_ICONS[icon] ? (
+                    (() => {
+                      const I = ALL_ICONS[icon];
+                      return <I size={20} />;
+                    })()
+                  ) : (
+                    <FileText size={16} />
+                  )}
                 </div>
-                <div >
-                  <p >{title || "Task title"}</p>
-                  <p >{sphere?.name || "No sphere"}</p>
-                  <div >
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-zinc-100 truncate">
+                    {title || "Task title"}
+                  </p>
+                  <p className="text-caption truncate">{sphere?.name || "No sphere"}</p>
+                  <div className="flex items-center gap-1.5 mt-1">
                     <span
-
+                      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${STATUS_CONFIG[status].style}`}
                     >
                       {React.createElement(STATUS_CONFIG[status].icon, { size: 10 })}
                       {STATUS_CONFIG[status].label}
                     </span>
                     <span
-
+                      className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${PRIORITY_CONFIG[priority].style}`}
                     >
                       {React.createElement(PRIORITY_CONFIG[priority].icon, { size: 10 })}
                       {PRIORITY_CONFIG[priority].label}
@@ -264,14 +356,14 @@ function UnifiedTaskForm({
 
       case 3:
         return (
-          <div >
+          <div className="flex flex-col gap-5">
             {parentId ? (
-              <div >
-                <label >Subtask Planning</label>
-                <div >
-                  <div >
+              <div className="flex flex-col gap-1.5">
+                <label className={fieldLabelClass}>Subtask Planning</label>
+                <div className="glass-card p-4 flex flex-col gap-3">
+                  <div className="flex items-center gap-2 text-zinc-400">
                     <Calendar size={12} />
-                    <span >When will you do this?</span>
+                    <span className="text-caption">When will you do this?</span>
                   </div>
                   <DateRangePicker
                     startDate={plannedDate}
@@ -282,32 +374,42 @@ function UnifiedTaskForm({
                     }}
                     placeholder="Select range"
                   />
-                  <div >
-                    <div >
-                      <label >
-                        <Checkbox  checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} />
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <label className={timeCheckboxLabelClass}>
+                        <Checkbox
+                          checked={hasPlannedTime}
+                          onChange={(e) => handleTogglePlannedTime(e.target.checked)}
+                        />
                         <span>Start time</span>
                       </label>
-                      {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                      {hasPlannedTime && (
+                        <TimePicker value={plannedTime} onChange={setPlannedTime} />
+                      )}
                     </div>
-                    <div >
-                      <label >
-                        <Checkbox  checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} />
+                    <div className="flex items-center gap-2">
+                      <label className={timeCheckboxLabelClass}>
+                        <Checkbox
+                          checked={hasPlannedEndTime}
+                          onChange={(e) => handleTogglePlannedEndTime(e.target.checked)}
+                        />
                         <span>End time</span>
                       </label>
-                      {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
+                      {hasPlannedEndTime && (
+                        <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
               <>
-                <div >
-                  <label >Planning (Optional)</label>
-                  <div >
-                    <div >
+                <div className="flex flex-col gap-1.5">
+                  <label className={fieldLabelClass}>Planning (Optional)</label>
+                  <div className="glass-card p-4 flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-zinc-400">
                       <Calendar size={12} />
-                      <span >Planned Range</span>
+                      <span className="text-caption">Planned Range</span>
                     </div>
                     <DateRangePicker
                       startDate={plannedDate}
@@ -318,41 +420,58 @@ function UnifiedTaskForm({
                       }}
                       placeholder="Select range"
                     />
-                    <div >
-                      <div >
-                        <label >
-                          <Checkbox  checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} />
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <label className={timeCheckboxLabelClass}>
+                          <Checkbox
+                            checked={hasPlannedTime}
+                            onChange={(e) => handleTogglePlannedTime(e.target.checked)}
+                          />
                           <span>Start time</span>
                         </label>
-                        {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+                        {hasPlannedTime && (
+                          <TimePicker value={plannedTime} onChange={setPlannedTime} />
+                        )}
                       </div>
-                      <div >
-                        <label >
-                          <Checkbox  checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} />
+                      <div className="flex items-center gap-2">
+                        <label className={timeCheckboxLabelClass}>
+                          <Checkbox
+                            checked={hasPlannedEndTime}
+                            onChange={(e) => handleTogglePlannedEndTime(e.target.checked)}
+                          />
                           <span>End time</span>
                         </label>
-                        {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
+                        {hasPlannedEndTime && (
+                          <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div >
-                  <div >
-                    <div >
-                      <div >
+                <div className="flex flex-col gap-1.5">
+                  <div className="glass-card p-4 flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-zinc-400">
                         <Flag size={12} />
-                        <span >Deadline</span>
+                        <span className="text-caption">Deadline</span>
                       </div>
-                      <button type="button" onClick={() => setUseDeadline(!useDeadline)} >
+                      <button
+                        type="button"
+                        onClick={() => setUseDeadline(!useDeadline)}
+                        className={deadlineToggleClass}
+                      >
                         {useDeadline ? "Active" : "Add"}
                       </button>
                     </div>
                     {useDeadline && (
-                      <div >
+                      <div className="flex items-center gap-3 flex-wrap">
                         <DatePicker value={dueDate} onChange={setDueDate} />
-                        <label >
-                          <Checkbox  checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} />
+                        <label className={timeCheckboxLabelClass}>
+                          <Checkbox
+                            checked={hasDueTime}
+                            onChange={(e) => handleToggleDueTime(e.target.checked)}
+                          />
                           <span>Specific time</span>
                         </label>
                         {hasDueTime && <TimePicker value={dueTime} onChange={setDueTime} />}
@@ -367,9 +486,9 @@ function UnifiedTaskForm({
 
       case 4:
         return (
-          <div >
-            <div >
-              <label >Parent Task</label>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label className={fieldLabelClass}>Parent Task</label>
               <CustomSelect
                 value={parentId || "none"}
                 onChange={(val) => setParentId(val === "none" ? null : val)}
@@ -377,20 +496,27 @@ function UnifiedTaskForm({
                 options={[
                   { id: "none", label: "Top Level", icon: Link2Off, color: "#666" },
                   ...allTasks.map((t: TaskData) => ({
-                    id: t.id, label: t.isPrivate ? "Private" : t.title, icon: t.icon ? (SPHERE_ICONS[t.icon] || FileText) : FileText, color: t.sphere?.color || "#888",
-                  }))
+                    id: t.id,
+                    label: t.isPrivate ? "Private" : t.title,
+                    icon: t.icon ? SPHERE_ICONS[t.icon] || FileText : FileText,
+                    color: t.sphere?.color || "#888",
+                  })),
                 ]}
               />
             </div>
             <button
               type="button"
               onClick={() => setIsPrivate(!isPrivate)}
-
+              className={privateToggleClass}
             >
-              <EyeOff size={14} />
-              <div >
-                <span >{isPrivate ? "Private" : "Public"}</span>
-                <span >{isPrivate ? "Only you can see this" : "Visible to everyone"}</span>
+              <EyeOff size={14} className="text-zinc-400 shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-zinc-100">
+                  {isPrivate ? "Private" : "Public"}
+                </span>
+                <span className="text-caption">
+                  {isPrivate ? "Only you can see this" : "Visible to everyone"}
+                </span>
               </div>
             </button>
           </div>
@@ -402,21 +528,25 @@ function UnifiedTaskForm({
   };
 
   return (
-    <div >
+    <div className="flex flex-col gap-5">
       <Stepper currentStep={currentStep} />
 
-      <div >
-        {renderStepContent()}
-      </div>
+      <div className="min-h-[280px]">{renderStepContent()}</div>
 
-      <div >
-        <div >
-          <div />
-          <span >Required Fields</span>
+      <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+        <div className="flex items-center gap-1.5">
+          <div className="w-1 h-1 rounded-full bg-accent" />
+          <span className="text-caption">Required Fields</span>
         </div>
-        <div >
+        <div className="flex items-center gap-2">
           {currentStep > 1 && (
-            <Button type="button" variant="ghost" size="sm" onClick={handleBack} disabled={isPending}>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleBack}
+              disabled={isPending}
+            >
               <ChevronLeft size={14} />
               Back
             </Button>
@@ -428,18 +558,11 @@ function UnifiedTaskForm({
               size="sm"
               onClick={onSubmit}
               disabled={isPending}
-
             >
               {isPending ? "Saving..." : "Create Task"}
             </Button>
           ) : (
-            <Button
-              type="button"
-              variant="primary"
-              size="sm"
-              onClick={handleNext}
-
-            >
+            <Button type="button" variant="primary" size="sm" onClick={handleNext}>
               Next
               <ChevronRight size={14} />
             </Button>
@@ -498,19 +621,47 @@ interface TaskDetailProps {
 }
 
 function TaskDetail({
-  task, spheres, allTasks, onViewTask,
-  title, setTitle, description, setDescription,
-  icon, setIconPickerOpen,
-  status, setStatus, priority, setPriority, sphereId,
-  parentId, setParentId, isPrivate, setIsPrivate,
-  plannedDate, setPlannedDate, plannedTime, setPlannedTime,
-  hasPlannedTime, setHasPlannedTime,
-  plannedEndTime, setPlannedEndTime,
-  plannedEndDate, setPlannedEndDate,
-  hasPlannedEndTime, setHasPlannedEndTime,
-  useDeadline, setUseDeadline, dueDate, setDueDate,
-  dueTime, setDueTime, hasDueTime, setHasDueTime,
-  hasChanges, onClose,
+  task,
+  spheres,
+  allTasks,
+  onViewTask,
+  title,
+  setTitle,
+  description,
+  setDescription,
+  icon,
+  setIconPickerOpen,
+  status,
+  setStatus,
+  priority,
+  setPriority,
+  sphereId,
+  parentId,
+  setParentId,
+  isPrivate,
+  setIsPrivate,
+  plannedDate,
+  setPlannedDate,
+  plannedTime,
+  setPlannedTime,
+  hasPlannedTime,
+  setHasPlannedTime,
+  plannedEndTime,
+  setPlannedEndTime,
+  plannedEndDate,
+  setPlannedEndDate,
+  hasPlannedEndTime,
+  setHasPlannedEndTime,
+  useDeadline,
+  setUseDeadline,
+  dueDate,
+  setDueDate,
+  dueTime,
+  setDueTime,
+  hasDueTime,
+  setHasDueTime,
+  hasChanges,
+  onClose,
 }: TaskDetailProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();
@@ -555,259 +706,361 @@ function TaskDetail({
     });
   };
 
-  const sphere = spheres.find(s => s.id === sphereId);
+  const sphere = spheres.find((s) => s.id === sphereId);
   const statusCfg = STATUS_CONFIG[status];
   const priorityCfg = PRIORITY_CONFIG[priority];
+  const hasSubtasks = task.children.length > 0;
+  const symbolButtonClass =
+    "flex items-center justify-center w-11 h-11 rounded-xl glass-input cursor-pointer text-zinc-400 hover:text-accent transition-colors shrink-0 mt-0.5";
+  const spherePillClass =
+    "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide";
+  const statusPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${statusCfg.style}`;
+  const priorityPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${priorityCfg.style}`;
+  const iconActionButtonClass =
+    "p-2 rounded-lg text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
+  const deleteActionButtonClass =
+    "p-2 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
+  const sectionLabelClass = "text-label";
+  const timeCheckboxLabelClass =
+    "flex items-center gap-1.5 text-xs text-zinc-400 cursor-pointer w-fit";
+  const deadlineToggleClass =
+    "text-xs font-semibold text-accent hover:opacity-80 transition-opacity";
+  const clearButtonClass =
+    "p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors shrink-0";
+  const planningLabel = hasSubtasks ? "Deadline" : parentId ? "When to do" : "Planning";
 
   return (
-    <div >
-      {}
-      <div >
-        <div onClick={() => setIconPickerOpen(true)}>
-          {icon && ALL_ICONS[icon] ? (() => { const I = ALL_ICONS[icon]; return <I size={20} />; })() : <FileText size={20} />}
+    <div className="flex flex-col gap-5">
+      <div className="flex items-start gap-3">
+        <div onClick={() => setIconPickerOpen(true)} className={symbolButtonClass}>
+          {icon && ALL_ICONS[icon] ? (
+            (() => {
+              const I = ALL_ICONS[icon];
+              return <I size={20} />;
+            })()
+          ) : (
+            <FileText size={20} />
+          )}
         </div>
-        <div >
-          <input
+        <div className="flex-1 min-w-0">
+          <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-
             placeholder="Task title"
+            variant="inline"
+            className="text-panel-title w-full"
           />
-          <div >
-            <button
-              onClick={() => {}}
-
-            >
-              {sphere && ALL_ICONS[sphere.icon] && (() => { const I = ALL_ICONS[sphere.icon]; return <I size={9} strokeWidth={3} />; })()}
+          <div className="flex items-center gap-2 flex-wrap mt-1.5">
+            <button onClick={() => {}} className={spherePillClass}>
+              {sphere &&
+                ALL_ICONS[sphere.icon] &&
+                (() => {
+                  const I = ALL_ICONS[sphere.icon];
+                  return <I size={9} strokeWidth={3} />;
+                })()}
               {sphere?.name || "Sphere"}
             </button>
-            <div />
+            <div className="w-1 h-1 rounded-full bg-zinc-700" />
             <button
-              onClick={() => setStatus(status === "DONE" ? "TODO" : status === "TODO" ? "IN_PROGRESS" : "DONE")}
-
+              onClick={() =>
+                setStatus(status === "DONE" ? "TODO" : status === "TODO" ? "IN_PROGRESS" : "DONE")
+              }
+              className={statusPillClass}
             >
               <statusCfg.icon size={9} />
               {statusCfg.label}
             </button>
             <button
               onClick={() => setPriority(priority === "URGENT" ? "LOW" : "URGENT")}
-
+              className={priorityPillClass}
             >
               <priorityCfg.icon size={9} />
               {priorityCfg.label}
             </button>
           </div>
         </div>
-        <div >
-          <button onClick={() => setDeleteDialogOpen(true)} >
+        <div className="flex items-center gap-1 shrink-0">
+          <button onClick={() => setDeleteDialogOpen(true)} className={deleteActionButtonClass}>
             <Trash2 size={18} />
           </button>
-          <button onClick={onClose} >
+          <button onClick={onClose} className={iconActionButtonClass}>
             <X size={18} />
           </button>
         </div>
       </div>
 
-      <div >
-        <div >
-          {}
-          <div >
-            <section >
-              <label >Description</label>
-              <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Add notes, steps, or details..."
+      <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6">
+        <div className="flex flex-col gap-5">
+          <section className="flex flex-col gap-1.5">
+            <label className={sectionLabelClass}>Description</label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Add notes, steps, or details..."
+              rows={6}
+            />
+          </section>
 
-              />
-            </section>
-
-            <section >
-              <label >
-                <span>Subtasks</span>
-                {task.children?.length > 0 && <span >{task.children.length}</span>}
-              </label>
-              {task.children?.length > 0 ? (
-                <div >
-                  {task.children.map((child: TaskData) => (
-                    <div key={child.id} >
-                      <div >
-                        {child.icon && SPHERE_ICONS[child.icon] ? (() => { const I = SPHERE_ICONS[child.icon]; return <I size={11} />; })() : <FileText size={11} />}
-                        <span >{child.isPrivate ? "Private" : child.title}</span>
-                      </div>
-                      <div >
-                        {onViewTask && <button onClick={() => onViewTask(child)} ><Eye size={12} /></button>}
-                        <button onClick={() => handleUnlinkSubtask(child)} ><Link2Off size={12} /></button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div >
-                  <span >No subtasks</span>
-                </div>
+          <section className="flex flex-col gap-1.5">
+            <label className={`${sectionLabelClass} flex items-center gap-1.5`}>
+              <span>Subtasks</span>
+              {task.children?.length > 0 && (
+                <span className="text-zinc-600">({task.children.length})</span>
               )}
-            </section>
-          </div>
-
-          {}
-          <div >
-            {}
-            <div >
-              <section >
-                <label >
-                  {task.children.length > 0 ? "Deadline" : parentId ? "When to do" : "Planning"}
-                </label>
-                {task.children.length > 0 ? (
-                  <div >
-                    <div >
-                      <Flag size={13} />
-                      {useDeadline ? (
-                        <>
-                          <DatePicker value={dueDate} onChange={setDueDate} />
-                          <button
-                            type="button"
-                            onClick={() => { setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false); }}
-
-                            title="Clear deadline"
-                          >
-                            <X size={11} />
-                          </button>
-                        </>
-                      ) : (
-                        <button onClick={() => setUseDeadline(true)} >Set deadline...</button>
-                      )}
-                    </div>
-                    {useDeadline && (
-                      <>
-                        <label >
-                          <Checkbox  checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} />
-                          <span>Exact time</span>
-                        </label>
-                        {hasDueTime && <div ><TimePicker value={dueTime} onChange={setDueTime} /></div>}
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <>
-                    <div >
-                      <div >
-                        <CalendarClock size={13} />
-                        <DateRangePicker
-                          startDate={plannedDate}
-                          endDate={plannedEndDate}
-                          onChange={(start, end) => {
-                            setPlannedDate(start);
-                            setPlannedEndDate(end);
-                          }}
-                        />
-                        {plannedDate && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPlannedDate("");
-                              setPlannedEndDate(null);
-                              setPlannedTime("");
-                              setPlannedEndTime("");
-                              setHasPlannedTime(false);
-                              setHasPlannedEndTime(false);
-                            }}
-
-                            title="Clear date"
-                          >
-                            <X size={11} />
-                          </button>
-                        )}
-                      </div>
-                      <div >
-                        <label >
-                          <Checkbox  checked={hasPlannedTime} onChange={(e) => handleTogglePlannedTime(e.target.checked)} />
-                          <span>Start time</span>
-                        </label>
-                        {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
-
-                        <label >
-                          <Checkbox  checked={hasPlannedEndTime} onChange={(e) => handleTogglePlannedEndTime(e.target.checked)} />
-                          <span>End time</span>
-                        </label>
-                        {hasPlannedEndTime && <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />}
-                      </div>
-                    </div>
-                    <div >
-                      <div >
-                        <Flag size={13} />
-                        {useDeadline ? (
-                          <>
-                            <DatePicker value={dueDate} onChange={setDueDate} />
-                            <button
-                              type="button"
-                              onClick={() => { setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false); }}
-
-                              title="Clear deadline"
-                            >
-                              <X size={11} />
-                            </button>
-                          </>
-                        ) : (
-                          <button onClick={() => setUseDeadline(true)} >Set deadline...</button>
-                        )}
-                      </div>
-                      {useDeadline && (
-                        <>
-                          <label >
-                            <Checkbox  checked={hasDueTime} onChange={(e) => handleToggleDueTime(e.target.checked)} />
-                            <span>Exact time</span>
-                          </label>
-                          {hasDueTime && <div ><TimePicker value={dueTime} onChange={setDueTime} /></div>}
-                        </>
-                      )}
-                    </div>
-                  </>
-                )}
-              </section>
-            </div>
-
-            {}
-            <div >
-              <section >
-                <label >Organization</label>
-                <div >
-                  <div >
-                    <label >Parent Task</label>
-                    <CustomSelect
-                      value={parentId || "none"}
-                      onChange={(val) => setParentId(val === "none" ? null : val)}
-                      options={[{ id: "none", label: "Top Level", icon: Link2Off }, ...allTasks.filter((t: TaskData) => t.id !== task.id).map((t: TaskData) => ({ id: t.id, label: t.isPrivate ? "Private" : t.title, icon: LayoutGrid }))]}
-                    />
-                  </div>
-                  <button
-                    onClick={() => setIsPrivate(!isPrivate)}
-
+            </label>
+            {task.children?.length > 0 ? (
+              <div className="flex flex-col gap-1">
+                {task.children.map((child: TaskData) => (
+                  <div
+                    key={child.id}
+                    className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
                   >
-                    <EyeOff size={12} />
-                    <span >{isPrivate ? "Private Task" : "Public Task"}</span>
-                  </button>
-                </div>
-              </section>
-            </div>
-
-            {hasChanges && (
-              <div >
-                <div />
-                <span >Saving on close...</span>
+                    <div className="flex items-center gap-2 min-w-0 text-sm text-zinc-300">
+                      {child.icon && SPHERE_ICONS[child.icon] ? (
+                        (() => {
+                          const I = SPHERE_ICONS[child.icon];
+                          return <I size={11} />;
+                        })()
+                      ) : (
+                        <FileText size={11} />
+                      )}
+                      <span className="truncate">{child.isPrivate ? "Private" : child.title}</span>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      {onViewTask && (
+                        <button onClick={() => onViewTask(child)} className={clearButtonClass}>
+                          <Eye size={12} />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleUnlinkSubtask(child)}
+                        className={clearButtonClass}
+                      >
+                        <Link2Off size={12} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="glass-card p-4 flex items-center justify-center">
+                <span className="text-caption">No subtasks</span>
               </div>
             )}
-          </div>
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <section className="flex flex-col gap-3">
+            <label className={sectionLabelClass}>{planningLabel}</label>
+            {hasSubtasks ? (
+              <div className="glass-card p-3 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Flag size={13} className="text-zinc-400 shrink-0" />
+                  {useDeadline ? (
+                    <>
+                      <DatePicker value={dueDate} onChange={setDueDate} />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUseDeadline(false);
+                          setDueDate("");
+                          setDueTime("");
+                          setHasDueTime(false);
+                        }}
+                        title="Clear deadline"
+                        className={clearButtonClass}
+                      >
+                        <X size={11} />
+                      </button>
+                    </>
+                  ) : (
+                    <button onClick={() => setUseDeadline(true)} className={deadlineToggleClass}>
+                      Set deadline...
+                    </button>
+                  )}
+                </div>
+                {useDeadline && (
+                  <>
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasDueTime}
+                        onChange={(e) => handleToggleDueTime(e.target.checked)}
+                      />
+                      <span>Exact time</span>
+                    </label>
+                    {hasDueTime && (
+                      <div>
+                        <TimePicker value={dueTime} onChange={setDueTime} />
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="glass-card p-3 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <CalendarClock size={13} className="text-zinc-400 shrink-0" />
+                    <DateRangePicker
+                      startDate={plannedDate}
+                      endDate={plannedEndDate}
+                      onChange={(start, end) => {
+                        setPlannedDate(start);
+                        setPlannedEndDate(end);
+                      }}
+                    />
+                    {plannedDate && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPlannedDate("");
+                          setPlannedEndDate(null);
+                          setPlannedTime("");
+                          setPlannedEndTime("");
+                          setHasPlannedTime(false);
+                          setHasPlannedEndTime(false);
+                        }}
+                        title="Clear date"
+                        className={clearButtonClass}
+                      >
+                        <X size={11} />
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasPlannedTime}
+                        onChange={(e) => handleTogglePlannedTime(e.target.checked)}
+                      />
+                      <span>Start time</span>
+                    </label>
+                    {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasPlannedEndTime}
+                        onChange={(e) => handleTogglePlannedEndTime(e.target.checked)}
+                      />
+                      <span>End time</span>
+                    </label>
+                    {hasPlannedEndTime && (
+                      <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />
+                    )}
+                  </div>
+                </div>
+                <div className="glass-card p-3 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Flag size={13} className="text-zinc-400 shrink-0" />
+                    {useDeadline ? (
+                      <>
+                        <DatePicker value={dueDate} onChange={setDueDate} />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUseDeadline(false);
+                            setDueDate("");
+                            setDueTime("");
+                            setHasDueTime(false);
+                          }}
+                          title="Clear deadline"
+                          className={clearButtonClass}
+                        >
+                          <X size={11} />
+                        </button>
+                      </>
+                    ) : (
+                      <button onClick={() => setUseDeadline(true)} className={deadlineToggleClass}>
+                        Set deadline...
+                      </button>
+                    )}
+                  </div>
+                  {useDeadline && (
+                    <>
+                      <label className={timeCheckboxLabelClass}>
+                        <Checkbox
+                          checked={hasDueTime}
+                          onChange={(e) => handleToggleDueTime(e.target.checked)}
+                        />
+                        <span>Exact time</span>
+                      </label>
+                      {hasDueTime && (
+                        <div>
+                          <TimePicker value={dueTime} onChange={setDueTime} />
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <label className={sectionLabelClass}>Organization</label>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-caption">Parent Task</label>
+                <CustomSelect
+                  value={parentId || "none"}
+                  onChange={(val) => setParentId(val === "none" ? null : val)}
+                  options={[
+                    { id: "none", label: "Top Level", icon: Link2Off },
+                    ...allTasks
+                      .filter((t: TaskData) => t.id !== task.id)
+                      .map((t: TaskData) => ({
+                        id: t.id,
+                        label: t.isPrivate ? "Private" : t.title,
+                        icon: LayoutGrid,
+                      })),
+                  ]}
+                />
+              </div>
+              <button
+                onClick={() => setIsPrivate(!isPrivate)}
+                className="glass-card p-2.5 flex items-center gap-2 text-left hover:border-white/[0.12] transition-colors"
+              >
+                <EyeOff size={12} className="text-zinc-400 shrink-0" />
+                <span className="text-sm text-zinc-200">
+                  {isPrivate ? "Private Task" : "Public Task"}
+                </span>
+              </button>
+            </div>
+          </section>
+
+          {hasChanges && (
+            <div className="flex items-center gap-2 text-caption">
+              <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>Saving on close...</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <ConfirmationDialog isOpen={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} onConfirm={handleDelete} title="Delete Task" description={`Permanently delete "${task.title}"?`} confirmLabel="Delete" variant="danger" />
+      <ConfirmationDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Task"
+        description={`Permanently delete "${task.title}"?`}
+        confirmLabel="Delete"
+        variant="danger"
+      />
     </div>
   );
 }
 
 export function TaskFormDialog({
-  isOpen, onClose, onSuccess, task, parentTask, spheres, allTasks = [], onViewTask, isDuplicate = false,
+  isOpen,
+  onClose,
+  onSuccess,
+  task,
+  parentTask,
+  spheres,
+  allTasks = [],
+  onViewTask,
+  isDuplicate = false,
 }: TaskFormDialogProps) {
   const isEditing = !!task?.id && !isDuplicate;
   const [isPending, startTransition] = useTransition();
@@ -815,74 +1068,144 @@ export function TaskFormDialog({
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   const getInitialValue = (key: string) => {
-    if (key === 'icon') return task?.icon ?? parentTask?.icon ?? null;
-    if (key === 'status') return isDuplicate ? "TODO" : (task?.status ?? "TODO");
-    if (key === 'priority') return task?.priority ?? parentTask?.priority ?? "MEDIUM";
-    if (key === 'sphereId') return task?.sphereId ?? parentTask?.sphereId ?? "";
-    if (key === 'parentId') return task?.parentId ?? parentTask?.id ?? null;
+    if (key === "icon") return task?.icon ?? parentTask?.icon ?? null;
+    if (key === "status") return isDuplicate ? "TODO" : (task?.status ?? "TODO");
+    if (key === "priority") return task?.priority ?? parentTask?.priority ?? "MEDIUM";
+    if (key === "sphereId") return task?.sphereId ?? parentTask?.sphereId ?? "";
+    if (key === "parentId") return task?.parentId ?? parentTask?.id ?? null;
     return null;
   };
 
   const [title, setTitle] = useState(() => task?.title ?? "");
   const [description, setDescription] = useState(() => task?.description ?? "");
-  const [icon, setIcon] = useState<string | null>(() => getInitialValue('icon'));
-  const [status, setStatus] = useState<TaskStatus>(() => getInitialValue('status') as TaskStatus);
-  const [priority, setPriority] = useState<TaskPriority>(() => getInitialValue('priority') as TaskPriority);
-  const [sphereId, setSphereId] = useState(() => getInitialValue('sphereId') as string);
-  const [parentId, setParentId] = useState<string | null>(() => getInitialValue('parentId'));
+  const [icon, setIcon] = useState<string | null>(() => getInitialValue("icon"));
+  const [status, setStatus] = useState<TaskStatus>(() => getInitialValue("status") as TaskStatus);
+  const [priority, setPriority] = useState<TaskPriority>(
+    () => getInitialValue("priority") as TaskPriority,
+  );
+  const [sphereId, setSphereId] = useState(() => getInitialValue("sphereId") as string);
+  const [parentId, setParentId] = useState<string | null>(() => getInitialValue("parentId"));
   const [isPrivate, setIsPrivate] = useState(() => task?.isPrivate ?? false);
 
-  const [plannedDate, setPlannedDate] = useState(() => task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "");
-  const [plannedTime, setPlannedTime] = useState(() => task?.plannedDate ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "");
-  const [hasPlannedTime, setHasPlannedTime] = useState(() => task?.hasPlannedTime ?? !!task?.plannedDate);
-  const [plannedEndDate, setPlannedEndDate] = useState<string | null>(() => task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null);
-  const [plannedEndTime, setPlannedEndTime] = useState(() => task?.plannedEndDate ? new Date(task.plannedEndDate).toTimeString().slice(0, 5) : "");
-  const [hasPlannedEndTime, setHasPlannedEndTime] = useState(() => task?.hasPlannedEndTime ?? !!task?.plannedEndDate);
+  const [plannedDate, setPlannedDate] = useState(() =>
+    task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "",
+  );
+  const [plannedTime, setPlannedTime] = useState(() =>
+    task?.plannedDate ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "",
+  );
+  const [hasPlannedTime, setHasPlannedTime] = useState(
+    () => task?.hasPlannedTime ?? !!task?.plannedDate,
+  );
+  const [plannedEndDate, setPlannedEndDate] = useState<string | null>(() =>
+    task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null,
+  );
+  const [plannedEndTime, setPlannedEndTime] = useState(() =>
+    task?.plannedEndDate ? new Date(task.plannedEndDate).toTimeString().slice(0, 5) : "",
+  );
+  const [hasPlannedEndTime, setHasPlannedEndTime] = useState(
+    () => task?.hasPlannedEndTime ?? !!task?.plannedEndDate,
+  );
 
   const [useDeadline, setUseDeadline] = useState(() => !!task?.dueDate);
-  const [dueDate, setDueDate] = useState(() => useDeadline && task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "");
-  const [dueTime, setDueTime] = useState(() => useDeadline && task?.hasDueTime ? new Date(task.dueDate!).toTimeString().slice(0, 5) : "");
+  const [dueDate, setDueDate] = useState(() =>
+    useDeadline && task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
+  );
+  const [dueTime, setDueTime] = useState(() =>
+    useDeadline && task?.hasDueTime ? new Date(task.dueDate!).toTimeString().slice(0, 5) : "",
+  );
   const [hasDueTime, setHasDueTime] = useState(() => task?.hasDueTime ?? false);
 
   const resetForm = () => {
-    setTitle(""); setDescription(""); setIcon(null); setStatus("TODO"); setPriority("MEDIUM");
-    setSphereId(""); setParentId(null); setIsPrivate(false);
-    setPlannedDate(""); setPlannedTime(""); setHasPlannedTime(false);
-    setPlannedEndDate(null); setPlannedEndTime(""); setHasPlannedEndTime(false);
-    setUseDeadline(false); setDueDate(""); setDueTime(""); setHasDueTime(false);
+    setTitle("");
+    setDescription("");
+    setIcon(null);
+    setStatus("TODO");
+    setPriority("MEDIUM");
+    setSphereId("");
+    setParentId(null);
+    setIsPrivate(false);
+    setPlannedDate("");
+    setPlannedTime("");
+    setHasPlannedTime(false);
+    setPlannedEndDate(null);
+    setPlannedEndTime("");
+    setHasPlannedEndTime(false);
+    setUseDeadline(false);
+    setDueDate("");
+    setDueTime("");
+    setHasDueTime(false);
     setShowErrors(false);
   };
 
-  const hasChanges = isEditing ? (
-    title !== (task?.title ?? "") || description !== (task?.description ?? "") ||
-    icon !== (task?.icon ?? null) || status !== (task?.status ?? "TODO") ||
-    priority !== (task?.priority ?? "MEDIUM") || sphereId !== (task?.sphereId ?? "") ||
-    parentId !== (task?.parentId ?? null) || isPrivate !== (task?.isPrivate ?? false) ||
-    plannedDate !== (task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "") ||
-    plannedTime !== (task?.plannedDate && task?.hasPlannedTime ? new Date(task.plannedDate).toTimeString().slice(0, 5) : "") ||
-    hasPlannedTime !== (task?.hasPlannedTime ?? false) ||
-    plannedEndDate !== (task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null) ||
-    plannedEndTime !== (task?.plannedEndDate && task?.hasPlannedEndTime ? new Date(task.plannedEndDate).toTimeString().slice(0, 5) : "") ||
-    hasPlannedEndTime !== (task?.hasPlannedEndTime ?? false) ||
-    useDeadline !== (!!task?.dueDate) ||
-    dueDate !== (task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "") ||
-    dueTime !== (task?.dueDate && task?.hasDueTime ? new Date(task.dueDate).toTimeString().slice(0, 5) : "") ||
-    hasDueTime !== (task?.hasDueTime ?? false)
-  ) : false;
+  const hasChanges = isEditing
+    ? title !== (task?.title ?? "") ||
+      description !== (task?.description ?? "") ||
+      icon !== (task?.icon ?? null) ||
+      status !== (task?.status ?? "TODO") ||
+      priority !== (task?.priority ?? "MEDIUM") ||
+      sphereId !== (task?.sphereId ?? "") ||
+      parentId !== (task?.parentId ?? null) ||
+      isPrivate !== (task?.isPrivate ?? false) ||
+      plannedDate !==
+        (task?.plannedDate ? new Date(task.plannedDate).toISOString().split("T")[0] : "") ||
+      plannedTime !==
+        (task?.plannedDate && task?.hasPlannedTime
+          ? new Date(task.plannedDate).toTimeString().slice(0, 5)
+          : "") ||
+      hasPlannedTime !== (task?.hasPlannedTime ?? false) ||
+      plannedEndDate !==
+        (task?.plannedEndDate ? new Date(task.plannedEndDate).toISOString().split("T")[0] : null) ||
+      plannedEndTime !==
+        (task?.plannedEndDate && task?.hasPlannedEndTime
+          ? new Date(task.plannedEndDate).toTimeString().slice(0, 5)
+          : "") ||
+      hasPlannedEndTime !== (task?.hasPlannedEndTime ?? false) ||
+      useDeadline !== !!task?.dueDate ||
+      dueDate !== (task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "") ||
+      dueTime !==
+        (task?.dueDate && task?.hasDueTime
+          ? new Date(task.dueDate).toTimeString().slice(0, 5)
+          : "") ||
+      hasDueTime !== (task?.hasDueTime ?? false)
+    : false;
 
   const saveInBackground = () => {
     if (!title.trim() || !sphereId) return;
 
-    const finalPlannedDate = plannedDate ? new Date(`${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`).toISOString() : null;
-    const finalPlannedEndDate = plannedEndDate ? new Date(`${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`).toISOString() : null;
-    const finalDueDate = (useDeadline && dueDate) ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString() : null;
+    const finalPlannedDate = plannedDate
+      ? new Date(
+          `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`,
+        ).toISOString()
+      : null;
+    const finalPlannedEndDate = plannedEndDate
+      ? new Date(
+          `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
+        ).toISOString()
+      : null;
+    const finalDueDate =
+      useDeadline && dueDate
+        ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString()
+        : null;
 
     upsertTaskAction({
-      id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
-      icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
-      plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
-      dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
-    }).then(r => { if (!r.success) toast.error(r.error || "Error saving task"); });
+      id: isDuplicate ? undefined : task?.id,
+      title: title.trim(),
+      description: description.trim() || null,
+      icon,
+      status,
+      priority,
+      plannedDate: finalPlannedDate,
+      hasPlannedTime,
+      plannedEndDate: finalPlannedEndDate,
+      hasPlannedEndTime,
+      dueDate: finalDueDate,
+      hasDueTime,
+      parentId,
+      sphereId,
+      isPrivate,
+    }).then((r) => {
+      if (!r.success) toast.error(r.error || "Error saving task");
+    });
   };
 
   const handleClose = () => {
@@ -906,18 +1229,43 @@ export function TaskFormDialog({
       return;
     }
 
-    const finalPlannedDate = plannedDate ? new Date(`${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`).toISOString() : null;
-    const finalPlannedEndDate = plannedEndDate ? new Date(`${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`).toISOString() : null;
-    const finalDueDate = (useDeadline && dueDate) ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString() : null;
+    const finalPlannedDate = plannedDate
+      ? new Date(
+          `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`,
+        ).toISOString()
+      : null;
+    const finalPlannedEndDate = plannedEndDate
+      ? new Date(
+          `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
+        ).toISOString()
+      : null;
+    const finalDueDate =
+      useDeadline && dueDate
+        ? new Date(`${dueDate}T${hasDueTime && dueTime ? dueTime : "12:00"}:00`).toISOString()
+        : null;
 
     startTransition(async () => {
       const result = await upsertTaskAction({
-        id: isDuplicate ? undefined : task?.id, title: title.trim(), description: description.trim() || null,
-        icon, status, priority, plannedDate: finalPlannedDate, hasPlannedTime,
-        plannedEndDate: finalPlannedEndDate, hasPlannedEndTime,
-        dueDate: finalDueDate, hasDueTime, parentId, sphereId, isPrivate,
+        id: isDuplicate ? undefined : task?.id,
+        title: title.trim(),
+        description: description.trim() || null,
+        icon,
+        status,
+        priority,
+        plannedDate: finalPlannedDate,
+        hasPlannedTime,
+        plannedEndDate: finalPlannedEndDate,
+        hasPlannedEndTime,
+        dueDate: finalDueDate,
+        hasDueTime,
+        parentId,
+        sphereId,
+        isPrivate,
       });
-      if (!result.success) { toast.error(result.error || "Error saving task"); return; }
+      if (!result.success) {
+        toast.error(result.error || "Error saving task");
+        return;
+      }
       if (!isEditing) toast.success(isDuplicate ? "Duplicated" : "Created");
       if (result.data) onSuccess?.(result.data);
       onClose();
@@ -925,51 +1273,123 @@ export function TaskFormDialog({
     });
   };
 
+  const dialogTitle = isEditing ? "" : isDuplicate ? "Duplicate Task" : "New Life Task";
+  const dialogDescription = isEditing ? "" : "Define your next objective";
+  const dialogMaxWidth = isEditing ? "1060px" : "960px";
+
   return (
     <Dialog
-      isOpen={isOpen} onClose={handleClose}
-      title={isEditing ? "" : isDuplicate ? "Duplicate Task" : "New Life Task"}
-      description={isEditing ? "" : "Define your next objective"}
-      maxWidth={isEditing ? "1060px" : "960px"}
+      isOpen={isOpen}
+      onClose={handleClose}
+      title={dialogTitle}
+      description={dialogDescription}
+      maxWidth={dialogMaxWidth}
       bare={isEditing}
     >
       {isEditing && task ? (
         <TaskDetail
-          task={task} spheres={spheres} allTasks={allTasks} onViewTask={onViewTask}
-          title={title} setTitle={setTitle} description={description} setDescription={setDescription}
-          icon={icon} setIcon={setIcon} iconPickerOpen={iconPickerOpen} setIconPickerOpen={setIconPickerOpen}
-          status={status} setStatus={setStatus} priority={priority} setPriority={setPriority}
-          sphereId={sphereId} parentId={parentId} setParentId={setParentId}
-          isPrivate={isPrivate} setIsPrivate={setIsPrivate}
-          plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
-          hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
-          plannedEndTime={plannedEndTime} setPlannedEndTime={setPlannedEndTime}
-          plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
-          hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
-          useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}
-          dueTime={dueTime} setDueTime={setDueTime} hasDueTime={hasDueTime} setHasDueTime={setHasDueTime}
-          hasChanges={hasChanges} onSave={doSubmit} onClose={handleClose}
+          task={task}
+          spheres={spheres}
+          allTasks={allTasks}
+          onViewTask={onViewTask}
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          icon={icon}
+          setIcon={setIcon}
+          iconPickerOpen={iconPickerOpen}
+          setIconPickerOpen={setIconPickerOpen}
+          status={status}
+          setStatus={setStatus}
+          priority={priority}
+          setPriority={setPriority}
+          sphereId={sphereId}
+          parentId={parentId}
+          setParentId={setParentId}
+          isPrivate={isPrivate}
+          setIsPrivate={setIsPrivate}
+          plannedDate={plannedDate}
+          setPlannedDate={setPlannedDate}
+          plannedTime={plannedTime}
+          setPlannedTime={setPlannedTime}
+          hasPlannedTime={hasPlannedTime}
+          setHasPlannedTime={setHasPlannedTime}
+          plannedEndTime={plannedEndTime}
+          setPlannedEndTime={setPlannedEndTime}
+          plannedEndDate={plannedEndDate}
+          setPlannedEndDate={setPlannedEndDate}
+          hasPlannedEndTime={hasPlannedEndTime}
+          setHasPlannedEndTime={setHasPlannedEndTime}
+          useDeadline={useDeadline}
+          setUseDeadline={setUseDeadline}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+          dueTime={dueTime}
+          setDueTime={setDueTime}
+          hasDueTime={hasDueTime}
+          setHasDueTime={setHasDueTime}
+          hasChanges={hasChanges}
+          onSave={doSubmit}
+          onClose={handleClose}
         />
       ) : (
         <UnifiedTaskForm
-          key={isOpen ? 'create' : 'closed'}
-          spheres={spheres} allTasks={allTasks}
-          title={title} setTitle={setTitle} description={description} setDescription={setDescription}
-          icon={icon} setIcon={setIcon} iconPickerOpen={iconPickerOpen} setIconPickerOpen={setIconPickerOpen}
-          status={status} setStatus={setStatus} priority={priority} setPriority={setPriority}
-          sphereId={sphereId} setSphereId={setSphereId} parentId={parentId} setParentId={setParentId}
-          isPrivate={isPrivate} setIsPrivate={setIsPrivate}
-          plannedDate={plannedDate} setPlannedDate={setPlannedDate} plannedTime={plannedTime} setPlannedTime={setPlannedTime}
-          hasPlannedTime={hasPlannedTime} setHasPlannedTime={setHasPlannedTime}
-          plannedEndTime={plannedEndTime} setPlannedEndTime={setPlannedEndTime}
-          plannedEndDate={plannedEndDate} setPlannedEndDate={setPlannedEndDate}
-          hasPlannedEndTime={hasPlannedEndTime} setHasPlannedEndTime={setHasPlannedEndTime}
-          useDeadline={useDeadline} setUseDeadline={setUseDeadline} dueDate={dueDate} setDueDate={setDueDate}
-          dueTime={dueTime} setDueTime={setDueTime} hasDueTime={hasDueTime} setHasDueTime={setHasDueTime}
-          onSubmit={doSubmit} isPending={isPending} showErrors={showErrors} setShowErrors={setShowErrors}
+          key={isOpen ? "create" : "closed"}
+          spheres={spheres}
+          allTasks={allTasks}
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          icon={icon}
+          setIcon={setIcon}
+          iconPickerOpen={iconPickerOpen}
+          setIconPickerOpen={setIconPickerOpen}
+          status={status}
+          setStatus={setStatus}
+          priority={priority}
+          setPriority={setPriority}
+          sphereId={sphereId}
+          setSphereId={setSphereId}
+          parentId={parentId}
+          setParentId={setParentId}
+          isPrivate={isPrivate}
+          setIsPrivate={setIsPrivate}
+          plannedDate={plannedDate}
+          setPlannedDate={setPlannedDate}
+          plannedTime={plannedTime}
+          setPlannedTime={setPlannedTime}
+          hasPlannedTime={hasPlannedTime}
+          setHasPlannedTime={setHasPlannedTime}
+          plannedEndTime={plannedEndTime}
+          setPlannedEndTime={setPlannedEndTime}
+          plannedEndDate={plannedEndDate}
+          setPlannedEndDate={setPlannedEndDate}
+          hasPlannedEndTime={hasPlannedEndTime}
+          setHasPlannedEndTime={setHasPlannedEndTime}
+          useDeadline={useDeadline}
+          setUseDeadline={setUseDeadline}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+          dueTime={dueTime}
+          setDueTime={setDueTime}
+          hasDueTime={hasDueTime}
+          setHasDueTime={setHasDueTime}
+          onSubmit={doSubmit}
+          isPending={isPending}
+          showErrors={showErrors}
+          setShowErrors={setShowErrors}
         />
       )}
-      <IconPickerDialog isOpen={iconPickerOpen} onClose={() => setIconPickerOpen(false)} value={icon} onChange={setIcon} color={spheres.find(s => s.id === sphereId)?.color || "#fbbf24"} title="Task Symbol" />
+      <IconPickerDialog
+        isOpen={iconPickerOpen}
+        onClose={() => setIconPickerOpen(false)}
+        value={icon}
+        onChange={setIcon}
+        color={spheres.find((s) => s.id === sphereId)?.color || "#fbbf24"}
+        title="Task Symbol"
+      />
     </Dialog>
   );
 }

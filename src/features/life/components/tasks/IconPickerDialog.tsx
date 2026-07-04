@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Search, X } from "lucide-react";
 import { Dialog } from "@/components/ui/overlays/dialog";
+import { Input } from "@/components/ui/inputs/input";
 import { ALL_ICONS, SPHERE_ICON_NAMES } from "./lucide-icons-map";
 
 interface IconPickerDialogProps {
@@ -19,14 +20,18 @@ export function IconPickerDialog({
   onClose,
   value,
   onChange,
-  color = "#fbbf24",
-  title = "Pick an icon"
+  title = "Pick an icon",
 }: IconPickerDialogProps) {
   const [search, setSearch] = useState("");
 
-  const filteredIcons = SPHERE_ICON_NAMES.filter(name =>
-    name.toLowerCase().includes(search.toLowerCase())
+  const filteredIcons = SPHERE_ICON_NAMES.filter((name) =>
+    name.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const handleSelect = (name: string | null) => {
+    onChange(name);
+    onClose();
+  };
 
   return (
     <Dialog
@@ -36,69 +41,63 @@ export function IconPickerDialog({
       description="Choose a visual symbol"
       maxWidth="600px"
     >
-      <div >
-        {}
-        <div >
-          <Search size={18} />
-          <input
+      <div className="flex flex-col gap-4">
+        <div className="glass-input flex items-center gap-2 px-3 py-2">
+          <Search size={18} className="text-zinc-500 shrink-0" />
+          <Input
+            variant="inline"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search all icons..."
-
             autoFocus
+            className="flex-1"
           />
           {search && (
-            <button onClick={() => setSearch("")} >
+            <button
+              onClick={() => setSearch("")}
+              className="text-zinc-500 hover:text-zinc-200 transition-colors"
+            >
               <X size={16} />
             </button>
           )}
         </div>
 
-        {}
-        <div >
-          {}
+        <div className="grid grid-cols-8 gap-1 max-h-80 overflow-y-auto">
           <button
             type="button"
-            onClick={() => {
-              onChange(null);
-              onClose();
-            }}
-
+            onClick={() => handleSelect(null)}
+            className="aspect-square flex flex-col items-center justify-center gap-0.5 rounded-lg text-zinc-500 hover:bg-white/5 hover:text-zinc-200 transition-colors"
           >
-            <div >
-              <X size={16} />
-              <span >None</span>
-            </div>
+            <X size={16} />
+            <span className="text-[9px] uppercase tracking-wide">None</span>
           </button>
 
           {filteredIcons.map((name) => {
             const Icon = ALL_ICONS[name];
             const isSelected = value === name;
+            const iconButtonClass = `aspect-square flex items-center justify-center rounded-lg transition-colors ${
+              isSelected
+                ? "bg-accent/15 text-accent"
+                : "text-zinc-400 hover:bg-white/5 hover:text-white"
+            }`;
+
             return (
               <button
                 key={name}
                 type="button"
-                onClick={() => {
-                  onChange(name);
-                  onClose();
-                }}
-
-
+                onClick={() => handleSelect(name)}
+                className={iconButtonClass}
                 title={name}
               >
-                <Icon
-                  size={20}
-
-
-                />
+                <Icon size={20} />
               </button>
             );
           })}
         </div>
 
         {filteredIcons.length === 0 && (
-          <div >
-             <p >No matching icons found.</p>
+          <div className="flex items-center justify-center p-6">
+            <p className="text-caption">No matching icons found.</p>
           </div>
         )}
       </div>

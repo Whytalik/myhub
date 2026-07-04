@@ -23,7 +23,7 @@ import {
   parseISO,
   isToday,
   differenceInMinutes,
-  isBefore
+  isBefore,
 } from "date-fns";
 import {
   Calendar as CalendarIcon,
@@ -42,12 +42,15 @@ import {
   DragStartEvent,
   DragMoveEvent,
   useDraggable,
-  useDroppable
+  useDroppable,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
 import type { TaskData, LifeSphereData } from "@/features/life/types";
-import { updateTaskRangeAction, updateTaskTimeRangeAction } from "@/features/life/actions/task-actions";
+import {
+  updateTaskRangeAction,
+  updateTaskTimeRangeAction,
+} from "@/features/life/actions/task-actions";
 import { toast } from "sonner";
 import { TaskFormDialog } from "./TaskFormDialog";
 import { TaskCardBase } from "./TaskCardBase";
@@ -87,32 +90,32 @@ function TaskCalendarCard({
   onHeightChange,
   fixedHeight,
 }: {
-  task: TaskData,
-  onEdit: (t: TaskData) => void,
-  onDuplicate?: (t: TaskData) => void,
-  onAddChild?: (t: TaskData) => void,
-  onDelete?: () => void,
-  allTasks: TaskData[],
-  isDraggable?: boolean,
-  isOverlay?: boolean,
-  startIdx?: number,
-  endIdx?: number,
-  level?: number,
-  rowIdx?: number,
-  mode?: "month" | "week" | "day",
-  days?: Date[],
-  onResize?: (taskId: string, daysDelta: number) => void,
-  isResizing?: boolean,
-  onResizeStart?: (taskId: string) => void,
-  onResizeEnd?: () => void,
-  style?: React.CSSProperties,
-  onHeightChange?: (id: string, height: number) => void,
-  fixedHeight?: number,
+  task: TaskData;
+  onEdit: (t: TaskData) => void;
+  onDuplicate?: (t: TaskData) => void;
+  onAddChild?: (t: TaskData) => void;
+  onDelete?: () => void;
+  allTasks: TaskData[];
+  isDraggable?: boolean;
+  isOverlay?: boolean;
+  startIdx?: number;
+  endIdx?: number;
+  level?: number;
+  rowIdx?: number;
+  mode?: "month" | "week" | "day";
+  days?: Date[];
+  onResize?: (taskId: string, daysDelta: number) => void;
+  isResizing?: boolean;
+  onResizeStart?: (taskId: string) => void;
+  onResizeEnd?: () => void;
+  style?: React.CSSProperties;
+  onHeightChange?: (id: string, height: number) => void;
+  fixedHeight?: number;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
     data: task,
-    disabled: !isDraggable
+    disabled: !isDraggable,
   });
 
   const ref = useRef<HTMLDivElement>(null);
@@ -121,28 +124,41 @@ function TaskCalendarCard({
     if (isOverlay && ref.current) {
       onHeightChange?.(task.id, ref.current.offsetHeight);
     }
-  }, [isOverlay, task.id, task.title, task.description, task.status, task.plannedDate, task.plannedEndDate, onHeightChange]);
+  }, [
+    isOverlay,
+    task.id,
+    task.title,
+    task.description,
+    task.status,
+    task.plannedDate,
+    task.plannedEndDate,
+    onHeightChange,
+  ]);
 
   const dragStyle: React.CSSProperties = {
-    ...(isDraggable ? {
-      transform: CSS.Translate.toString(transform ?? null),
-      zIndex: isDragging ? 1000 : isOverlay ? 30 : undefined,
-      position: 'relative' as const,
-      transition: isDragging ? 'none' : 'transform 200ms cubic-bezier(0.2, 0, 0, 1)',
-      willChange: isDragging ? 'transform' : 'auto',
-    } : {}),
+    ...(isDraggable
+      ? {
+          transform: CSS.Translate.toString(transform ?? null),
+          zIndex: isDragging ? 1000 : isOverlay ? 30 : undefined,
+          position: "relative" as const,
+          transition: isDragging ? "none" : "transform 200ms cubic-bezier(0.2, 0, 0, 1)",
+          willChange: isDragging ? "transform" : "auto",
+        }
+      : {}),
     ...(fixedHeight ? { minHeight: `${fixedHeight}px` } : {}),
   };
 
-  const overlayStyle: React.CSSProperties = isOverlay ? {
-    gridRowStart: 1,
-    gridColumnStart: ((startIdx ?? 0) % 7) + 1,
-    gridColumnEnd: `span ${Math.max(((endIdx ?? startIdx ?? 0) - (startIdx ?? 0)) + 1, 1)}`,
-    left: '0',
-    right: '0',
-    zIndex: isDragging || isResizing ? 9999 : 30 + level,
-    ...style,
-  } : {};
+  const overlayStyle: React.CSSProperties = isOverlay
+    ? {
+        gridRowStart: 1,
+        gridColumnStart: ((startIdx ?? 0) % 7) + 1,
+        gridColumnEnd: `span ${Math.max((endIdx ?? startIdx ?? 0) - (startIdx ?? 0) + 1, 1)}`,
+        left: "0",
+        right: "0",
+        zIndex: isDragging || isResizing ? 9999 : 30 + level,
+        ...style,
+      }
+    : {};
 
   const handleResizeStart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -150,7 +166,7 @@ function TaskCalendarCard({
     onResizeStart?.(task.id);
 
     const startX = e.clientX;
-    const container = (e.currentTarget as HTMLElement).closest('.grid-cols-7');
+    const container = (e.currentTarget as HTMLElement).closest(".grid-cols-7");
     const cellWidth = container ? container.clientWidth / 7 : 100;
 
     const handleMouseUp = (upEvent: MouseEvent) => {
@@ -172,6 +188,7 @@ function TaskCalendarCard({
   };
 
   const showResizeHandle = isOverlay && task.plannedDate;
+  const combinedStyle: React.CSSProperties = { ...dragStyle, ...overlayStyle };
 
   return (
     <div
@@ -179,8 +196,8 @@ function TaskCalendarCard({
         setNodeRef(node);
         if (ref) ref.current = node;
       }}
-
-
+      className="relative"
+      style={combinedStyle}
     >
       <TaskCardBase
         task={task}
@@ -188,20 +205,18 @@ function TaskCalendarCard({
         isDragging={isDragging}
         listeners={listeners}
         attributes={attributes}
-
         onEdit={onEdit}
         onDuplicate={onDuplicate}
         onAddChild={onAddChild}
         onDelete={onDelete}
         allTasks={allTasks}
-
       />
       {showResizeHandle && (
         <div
-
+          className="absolute top-0 right-0 bottom-0 w-2 cursor-ew-resize flex items-center justify-center z-10"
           onMouseDown={handleResizeStart}
         >
-          <div />
+          <div className="w-0.5 h-4 rounded-full bg-white/20 hover:bg-accent transition-colors" />
         </div>
       )}
     </div>
@@ -214,31 +229,31 @@ function DayTimelineCardWrapper({
   style,
   isResizing = false,
 }: {
-  task: TaskData,
-  children: React.ReactNode,
-  style?: React.CSSProperties,
-  isResizing?: boolean,
+  task: TaskData;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+  isResizing?: boolean;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: task.id,
     data: task,
-    disabled: isResizing
+    disabled: isResizing,
   });
 
   const dragStyle: React.CSSProperties = {
     ...style,
-    transform: 'none',
-    zIndex: (isDragging || isResizing) ? 1000 : style?.zIndex,
-    transition: 'none',
+    transform: "none",
+    zIndex: isDragging || isResizing ? 1000 : style?.zIndex,
+    transition: "none",
     top: 0,
-    willChange: isResizing ? 'width' : 'auto',
+    willChange: isResizing ? "width" : "auto",
   };
 
   return (
     <div
       ref={setNodeRef}
-
-
+      className="absolute h-full"
+      style={dragStyle}
       {...attributes}
       {...listeners}
     >
@@ -255,12 +270,12 @@ function CalendarDayCell({
   tasksForDay = [],
   minHeight,
 }: {
-  day: Date,
-  currentMonth: Date,
-  onAdd?: (date: Date) => void,
-  isDraggingAny: boolean,
-  mode: "month" | "week" | "day",
-  tasksForDay?: TaskData[],
+  day: Date;
+  currentMonth: Date;
+  onAdd?: (date: Date) => void;
+  isDraggingAny: boolean;
+  mode: "month" | "week" | "day";
+  tasksForDay?: TaskData[];
   minHeight?: number;
 }) {
   const dateKey = format(day, "yyyy-MM-dd");
@@ -273,30 +288,44 @@ function CalendarDayCell({
   const isWeekend = day.getDay() === 0 || day.getDay() === 6;
 
   const timesForDay = tasksForDay
-    .filter(t => t.plannedDate && t.hasPlannedTime)
-    .map(t => format(new Date(t.plannedDate!), "HH:mm"))
+    .filter((t) => t.plannedDate && t.hasPlannedTime)
+    .map((t) => format(new Date(t.plannedDate!), "HH:mm"))
     .sort();
+
+  const cellClass = `group relative flex flex-col border-r border-b border-white/[0.06] transition-colors duration-150 ${
+    isOver ? "bg-accent/5" : ""
+  } ${!isCurrentMonth ? "bg-black/10" : ""}`;
+  const dayNumberClass = `text-xs font-mono font-semibold w-5 h-5 flex items-center justify-center rounded-full ${
+    isTodayDate
+      ? "bg-accent text-white"
+      : isWeekend
+        ? "text-zinc-600"
+        : isCurrentMonth
+          ? "text-zinc-300"
+          : "text-zinc-700"
+  }`;
 
   return (
     <div
       ref={setNodeRef}
-
-
+      className={cellClass}
+      style={{ minHeight: minHeight ? `${minHeight}px` : undefined }}
     >
-      <div >
-        <div >
-           {mode === 'week' && (
-              <span >
-                {format(day, "EEEE")}
-              </span>
-           )}
-           <span >
-            {format(day, "d")}
-          </span>
+      <div className="flex items-start justify-between px-2 pt-2">
+        <div className="flex flex-col gap-0.5">
+          {mode === "week" && (
+            <span className="text-[10px] font-mono uppercase tracking-wide text-zinc-500">
+              {format(day, "EEEE")}
+            </span>
+          )}
+          <span className={dayNumberClass}>{format(day, "d")}</span>
           {timesForDay.length > 0 && (
-            <div >
+            <div className="flex flex-wrap gap-1 mt-0.5">
               {timesForDay.map((time, i) => (
-                <span key={i} >
+                <span
+                  key={i}
+                  className="text-[9px] font-mono text-zinc-500 bg-white/5 px-1 rounded"
+                >
                   {time}
                 </span>
               ))}
@@ -307,8 +336,8 @@ function CalendarDayCell({
         {onAdd && (
           <button
             onClick={() => onAdd(day)}
-
             title="Add task to this day"
+            className="p-1 rounded-md text-zinc-600 hover:text-accent hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-all"
           >
             <Plus size={12} />
           </button>
@@ -326,7 +355,7 @@ export function TaskCalendar({
   hideControls = false,
   hideModeSwitch = false,
   onDuplicate,
-  onDelete
+  onDelete,
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week" | "day">(defaultMode);
@@ -336,10 +365,16 @@ export function TaskCalendar({
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [dialogVersion, setDialogVersion] = useState(0);
   const [isDraggingAny, setIsDraggingAny] = useState(false);
-  const [draggingTimeline, setDraggingTimeline] = useState<{ id: string, deltaX: number } | null>(null);
+  const [draggingTimeline, setDraggingTimeline] = useState<{ id: string; deltaX: number } | null>(
+    null,
+  );
   const [resizingTaskId, setResizingTaskId] = useState<string | null>(null);
   const [taskHeights, setTaskHeights] = useState<Record<string, number>>({});
-  const [resizingTimeline, setResizingTimeline] = useState<{ id: string, delta: number, edge: 'start' | 'end' } | null>(null);
+  const [resizingTimeline, setResizingTimeline] = useState<{
+    id: string;
+    delta: number;
+    edge: "start" | "end";
+  } | null>(null);
 
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
@@ -349,7 +384,7 @@ export function TaskCalendar({
   }, [initialTasks]);
 
   useEffect(() => {
-    if (mode !== 'day') return;
+    if (mode !== "day") return;
     const id = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(id);
   }, [mode]);
@@ -357,7 +392,7 @@ export function TaskCalendar({
   const parentResolutionTasks = allTasks || localTasks;
 
   const handleHeightChange = (id: string, height: number) => {
-    setTaskHeights(prev => {
+    setTaskHeights((prev) => {
       if (prev[id] === height) return prev;
       return { ...prev, [id]: height };
     });
@@ -369,7 +404,7 @@ export function TaskCalendar({
   }, [taskHeights]);
 
   const calculateTop = (level: number) => {
-    const baseTop = mode === 'month' ? 64 : 74;
+    const baseTop = mode === "month" ? 64 : 74;
     const padding = 8;
     return baseTop + level * (maxTaskHeight + padding);
   };
@@ -378,7 +413,7 @@ export function TaskCalendar({
     setEditingTask(t);
     setParentTask(null);
     setIsDuplicate(false);
-    setDialogVersion(v => v + 1);
+    setDialogVersion((v) => v + 1);
     setDialogOpen(true);
   };
 
@@ -389,7 +424,7 @@ export function TaskCalendar({
       setEditingTask(t);
       setParentTask(null);
       setIsDuplicate(true);
-      setDialogVersion(v => v + 1);
+      setDialogVersion((v) => v + 1);
       setDialogOpen(true);
     }
   };
@@ -398,16 +433,16 @@ export function TaskCalendar({
     setEditingTask(null);
     setParentTask(parent);
     setIsDuplicate(false);
-    setDialogVersion(v => v + 1);
+    setDialogVersion((v) => v + 1);
     setDialogOpen(true);
   };
 
-  const handleTaskStatusChange = (taskId: string, newStatus: TaskData['status']) => {
-    setLocalTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t));
+  const handleTaskStatusChange = (taskId: string, newStatus: TaskData["status"]) => {
+    setLocalTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)));
   };
 
   const handleTaskDeleted = () => {
-    setDialogVersion(v => v + 1);
+    setDialogVersion((v) => v + 1);
     setDialogOpen(false);
     setEditingTask(null);
     setParentTask(null);
@@ -427,7 +462,7 @@ export function TaskCalendar({
       activationConstraint: {
         distance: 4,
       },
-    })
+    }),
   );
 
   const days = useMemo(() => {
@@ -457,7 +492,7 @@ export function TaskCalendar({
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (mode === 'day' && isSameDay(currentDate, new Date()) && timelineContainerRef.current) {
+    if (mode === "day" && isSameDay(currentDate, new Date()) && timelineContainerRef.current) {
       const now = new Date();
       const nowMin = now.getHours() * 60 + now.getMinutes();
       const dayStartMin = DAY_START * 60;
@@ -466,34 +501,42 @@ export function TaskCalendar({
     }
   }, [mode, currentDate]);
 
-  const projectTasks = useMemo(() =>
-    localTasks.filter(t => !t.parentId && t.children.length > 0),
-    [localTasks]
+  const projectTasks = useMemo(
+    () => localTasks.filter((t) => !t.parentId && t.children.length > 0),
+    [localTasks],
   );
 
-  const calendarTasks = useMemo(() =>
-    localTasks.filter(t => t.children.length === 0),
-    [localTasks]
+  const calendarTasks = useMemo(
+    () => localTasks.filter((t) => t.children.length === 0),
+    [localTasks],
   );
 
   const tasksForDay = useMemo(() => {
-    return calendarTasks.filter(t => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate));
+    return calendarTasks.filter(
+      (t) => t.plannedDate && isSameDay(new Date(t.plannedDate), currentDate),
+    );
   }, [calendarTasks, currentDate]);
 
-  const scheduledTasks = useMemo(() => tasksForDay.filter(t => t.hasPlannedTime && t.status !== 'DONE'), [tasksForDay]);
-  const unscheduledTasks = useMemo(() => tasksForDay.filter(t => !t.hasPlannedTime && t.status !== 'DONE'), [tasksForDay]);
+  const scheduledTasks = useMemo(
+    () => tasksForDay.filter((t) => t.hasPlannedTime && t.status !== "DONE"),
+    [tasksForDay],
+  );
+  const unscheduledTasks = useMemo(
+    () => tasksForDay.filter((t) => !t.hasPlannedTime && t.status !== "DONE"),
+    [tasksForDay],
+  );
 
   const timelineRows = useMemo(() => {
-    const sorted = [...scheduledTasks].sort((a, b) =>
-      new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime()
+    const sorted = [...scheduledTasks].sort(
+      (a, b) => new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime(),
     );
-    return sorted.map(task => [task]);
+    return sorted.map((task) => [task]);
   }, [scheduledTasks]);
 
   const handleTimelineDragStart = (event: DragStartEvent) => {
     setIsDraggingAny(true);
     setDraggingTimeline({ id: String(event.active.id), deltaX: 0 });
-    document.body.style.cursor = 'grabbing';
+    document.body.style.cursor = "grabbing";
   };
 
   const handleTimelineDragMove = (event: DragMoveEvent) => {
@@ -506,7 +549,7 @@ export function TaskCalendar({
     const { active, delta } = event;
     setIsDraggingAny(false);
     setDraggingTimeline(null);
-    document.body.style.cursor = 'auto';
+    document.body.style.cursor = "auto";
 
     const task = active.data.current as TaskData;
     if (!task) return;
@@ -523,11 +566,17 @@ export function TaskCalendar({
     const newEnd = new Date(newStart.getTime() + durationMs);
 
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t =>
-      t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t
-    ));
+    setLocalTasks((prev) =>
+      prev.map((t) =>
+        t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t,
+      ),
+    );
 
-    const result = await updateTaskTimeRangeAction(task.id, newStart.toISOString(), newEnd.toISOString());
+    const result = await updateTaskTimeRangeAction(
+      task.id,
+      newStart.toISOString(),
+      newEnd.toISOString(),
+    );
     if (result.success) {
       toast.success("Task moved");
     } else {
@@ -536,8 +585,12 @@ export function TaskCalendar({
     }
   };
 
-  const handleTimelineResize = async (taskId: string, minutesDeltaRaw: number, edge: 'start' | 'end') => {
-    const task = localTasks.find(t => t.id === taskId);
+  const handleTimelineResize = async (
+    taskId: string,
+    minutesDeltaRaw: number,
+    edge: "start" | "end",
+  ) => {
+    const task = localTasks.find((t) => t.id === taskId);
     if (!task || !task.plannedDate) return;
 
     const minutesDelta = Math.round(minutesDeltaRaw / 5) * 5;
@@ -546,14 +599,14 @@ export function TaskCalendar({
     let newStart = new Date(task.plannedDate);
     let newEnd = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(newStart, 60);
 
-    if (edge === 'start') {
+    if (edge === "start") {
       newStart = addMinutes(newStart, minutesDelta);
     } else {
       newEnd = addMinutes(newEnd, minutesDelta);
     }
 
     if (differenceInMinutes(newEnd, newStart) < 60) {
-      if (edge === 'start') {
+      if (edge === "start") {
         newStart = addMinutes(newEnd, -60);
       } else {
         newEnd = addMinutes(newStart, 60);
@@ -561,11 +614,17 @@ export function TaskCalendar({
     }
 
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t =>
-      t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t
-    ));
+    setLocalTasks((prev) =>
+      prev.map((t) =>
+        t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t,
+      ),
+    );
 
-    const result = await updateTaskTimeRangeAction(task.id, newStart.toISOString(), newEnd.toISOString());
+    const result = await updateTaskTimeRangeAction(
+      task.id,
+      newStart.toISOString(),
+      newEnd.toISOString(),
+    );
     if (result.success) {
       toast.success("Task resized");
     } else {
@@ -575,11 +634,12 @@ export function TaskCalendar({
   };
 
   const allTasksWithLevels = useMemo(() => {
-    const levelsByRow: Record<number, { taskId: string, startIdx: number, endIdx: number, level: number }[]> = {};
+    const levelsByRow: Record<
+      number,
+      { taskId: string; startIdx: number; endIdx: number; level: number }[]
+    > = {};
 
-
-    const tasksWithDates = calendarTasks.filter(t => t.plannedDate);
-
+    const tasksWithDates = calendarTasks.filter((t) => t.plannedDate);
 
     const sortedTasks = [...tasksWithDates].sort((a, b) => {
       const aStart = new Date(a.plannedDate!).getTime();
@@ -588,19 +648,18 @@ export function TaskCalendar({
       return a.title.localeCompare(b.title);
     });
 
-    return sortedTasks.flatMap(task => {
+    return sortedTasks.flatMap((task) => {
       const start = new Date(task.plannedDate!);
       const end = task.plannedEndDate ? new Date(task.plannedEndDate) : start;
 
       const startKey = format(start, "yyyy-MM-dd");
       const endKey = format(end, "yyyy-MM-dd");
 
-      let startIdxTotal = days.findIndex(d => format(d, "yyyy-MM-dd") === startKey);
-      let endIdxTotal = days.findIndex(d => format(d, "yyyy-MM-dd") === endKey);
+      let startIdxTotal = days.findIndex((d) => format(d, "yyyy-MM-dd") === startKey);
+      let endIdxTotal = days.findIndex((d) => format(d, "yyyy-MM-dd") === endKey);
 
       const viewStart = days[0];
       const viewEnd = days[days.length - 1];
-
 
       if (startIdxTotal === -1) {
         if (start < viewStart && end >= viewStart) startIdxTotal = 0;
@@ -612,7 +671,8 @@ export function TaskCalendar({
       }
 
       const rows = [];
-      for (let r = Math.floor(startIdxTotal / 7); r <= Math.floor(endIdxTotal / 7); r++) rows.push(r);
+      for (let r = Math.floor(startIdxTotal / 7); r <= Math.floor(endIdxTotal / 7); r++)
+        rows.push(r);
 
       const segments = [];
       for (const r of rows) {
@@ -622,9 +682,8 @@ export function TaskCalendar({
         const e = Math.min(endIdxTotal, rowEnd);
         if (!levelsByRow[r]) levelsByRow[r] = [];
 
-
         let level = 0;
-        while (levelsByRow[r].some(l => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
+        while (levelsByRow[r].some((l) => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
           level++;
         }
 
@@ -637,22 +696,23 @@ export function TaskCalendar({
 
   const handleDragStart = () => {
     setIsDraggingAny(true);
-    document.body.style.cursor = 'grabbing';
+    document.body.style.cursor = "grabbing";
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setIsDraggingAny(false);
-    document.body.style.cursor = 'auto';
+    document.body.style.cursor = "auto";
 
     if (over) {
       const taskId = active.id as string;
       const newDateStr = over.id as string;
 
-      const task = localTasks.find(t => t.id === taskId);
+      const task = localTasks.find((t) => t.id === taskId);
       if (!task) return;
 
-      if (task.plannedDate && format(new Date(task.plannedDate), 'yyyy-MM-dd') === newDateStr) return;
+      if (task.plannedDate && format(new Date(task.plannedDate), "yyyy-MM-dd") === newDateStr)
+        return;
 
       const newStartDate = new Date(newDateStr);
       if (task.plannedDate) {
@@ -662,19 +722,26 @@ export function TaskCalendar({
 
       let newEndDate = null;
       if (task.plannedDate && task.plannedEndDate) {
-        const durationMs = new Date(task.plannedEndDate).getTime() - new Date(task.plannedDate).getTime();
+        const durationMs =
+          new Date(task.plannedEndDate).getTime() - new Date(task.plannedDate).getTime();
         newEndDate = new Date(newStartDate.getTime() + durationMs);
       }
 
       const originalTasks = [...localTasks];
-      setLocalTasks(prev => prev.map(t => {
-        if (t.id === taskId) {
-          return { ...t, plannedDate: newStartDate, plannedEndDate: newEndDate };
-        }
-        return t;
-      }));
+      setLocalTasks((prev) =>
+        prev.map((t) => {
+          if (t.id === taskId) {
+            return { ...t, plannedDate: newStartDate, plannedEndDate: newEndDate };
+          }
+          return t;
+        }),
+      );
 
-      const result = await updateTaskRangeAction(taskId, newStartDate.toISOString(), newEndDate?.toISOString() ?? null);
+      const result = await updateTaskRangeAction(
+        taskId,
+        newStartDate.toISOString(),
+        newEndDate?.toISOString() ?? null,
+      );
       if (result.success) {
         toast.success(`Moved to ${format(parseISO(newDateStr), "MMM d")}`);
       } else {
@@ -685,11 +752,13 @@ export function TaskCalendar({
   };
 
   const handleResize = async (taskId: string, daysDelta: number) => {
-    const originalTask = localTasks.find(t => t.id === taskId);
+    const originalTask = localTasks.find((t) => t.id === taskId);
     if (!originalTask || !originalTask.plannedDate) return;
 
     const currentStart = new Date(originalTask.plannedDate);
-    const currentEnd = originalTask.plannedEndDate ? new Date(originalTask.plannedEndDate) : new Date(currentStart);
+    const currentEnd = originalTask.plannedEndDate
+      ? new Date(originalTask.plannedEndDate)
+      : new Date(currentStart);
 
     const newEnd = new Date(currentEnd);
     newEnd.setDate(newEnd.getDate() + daysDelta);
@@ -703,13 +772,17 @@ export function TaskCalendar({
     const finalEnd = isSameDayVal ? null : newEnd;
 
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t =>
-      t.id === taskId
-        ? { ...t, plannedDate: currentStart, plannedEndDate: finalEnd }
-        : t
-    ));
+    setLocalTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId ? { ...t, plannedDate: currentStart, plannedEndDate: finalEnd } : t,
+      ),
+    );
 
-    const result = await updateTaskRangeAction(taskId, currentStart.toISOString(), finalEnd?.toISOString() ?? null);
+    const result = await updateTaskRangeAction(
+      taskId,
+      currentStart.toISOString(),
+      finalEnd?.toISOString() ?? null,
+    );
     if (result.success) {
       toast.success("Task duration updated");
     } else {
@@ -720,11 +793,11 @@ export function TaskCalendar({
 
   const navigate = (direction: number) => {
     if (mode === "month") {
-      setCurrentDate(prev => direction > 0 ? addMonths(prev, 1) : subMonths(prev, 1));
+      setCurrentDate((prev) => (direction > 0 ? addMonths(prev, 1) : subMonths(prev, 1)));
     } else if (mode === "week") {
-      setCurrentDate(prev => direction > 0 ? addWeeks(prev, 1) : subWeeks(prev, 1));
+      setCurrentDate((prev) => (direction > 0 ? addWeeks(prev, 1) : subWeeks(prev, 1)));
     } else {
-      setCurrentDate(prev => direction > 0 ? addDays(prev, 1) : subDays(prev, 1));
+      setCurrentDate((prev) => (direction > 0 ? addDays(prev, 1) : subDays(prev, 1)));
     }
   };
 
@@ -738,16 +811,16 @@ export function TaskCalendar({
 
   const rowHeights = useMemo(() => {
     const heights: Record<number, number> = {};
-    const baseTop = mode === 'month' ? 64 : 74;
+    const baseTop = mode === "month" ? 64 : 74;
     const padding = 8;
-    const minCellHeight = mode === 'month' ? 200 : 500;
+    const minCellHeight = mode === "month" ? 200 : 500;
 
     const rowCount = Math.ceil(days.length / 7);
 
     for (let r = 0; r < rowCount; r++) {
       let total = baseTop;
-      const rowSegments = allTasksWithLevels.filter(s => s.rowIdx === r);
-      const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map(s => s.level)) : -1;
+      const rowSegments = allTasksWithLevels.filter((s) => s.rowIdx === r);
+      const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map((s) => s.level)) : -1;
 
       if (maxLevel >= 0) {
         total += (maxLevel + 1) * (maxTaskHeight + padding);
@@ -760,9 +833,9 @@ export function TaskCalendar({
 
   const deadlinesByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
-    projectTasks.forEach(task => {
+    projectTasks.forEach((task) => {
       if (!task.dueDate) return;
-      const idx = days.findIndex(d => isSameDay(d, new Date(task.dueDate!)));
+      const idx = days.findIndex((d) => isSameDay(d, new Date(task.dueDate!)));
       if (idx >= 0) {
         if (!map[idx]) map[idx] = [];
         map[idx].push(task);
@@ -773,10 +846,10 @@ export function TaskCalendar({
 
   const tasksByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
-    calendarTasks.forEach(task => {
+    calendarTasks.forEach((task) => {
       if (!task.plannedDate) return;
       const taskDate = new Date(task.plannedDate);
-      const idx = days.findIndex(d => isSameDay(d, taskDate));
+      const idx = days.findIndex((d) => isSameDay(d, taskDate));
       if (idx >= 0) {
         if (!map[idx]) map[idx] = [];
         map[idx].push(task);
@@ -785,226 +858,236 @@ export function TaskCalendar({
     return map;
   }, [calendarTasks, days]);
 
-  const renderGridBody = () => (
-    <div >
-      <div >
-        <div >
-          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-            <div key={day} >
-              {day}
-            </div>
-          ))}
-        </div>
+  const navButtonClass =
+    "p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/5 transition-colors";
+  const todayButtonClass =
+    "px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:bg-white/5 transition-colors";
 
-        <div >
-          {weeks.map((week, weekIdx) => (
-            <div key={weekIdx} >
-              <div >
-                {week.map((day, dayIdx) => (
-                  <CalendarDayCell
-                    key={dayIdx}
-                    day={day}
-                    currentMonth={currentDate}
-                    onAdd={(date) => {
-                      setEditingTask({ plannedDate: date } as TaskData);
-                      setParentTask(null);
-                      setIsDuplicate(false);
-                      setDialogVersion(v => v + 1);
-                      setDialogOpen(true);
-                    }}
-                    isDraggingAny={isDraggingAny}
+  const headerTitle =
+    mode === "day"
+      ? format(currentDate, "MMMM d, yyyy")
+      : mode === "month"
+        ? format(currentDate, "MMMM yyyy")
+        : format(currentDate, "'Week' w, MMMM yyyy");
+  const headerSubtitle =
+    mode === "month" ? "Monthly overview" : mode === "week" ? "Weekly focus" : "Daily timeline";
+
+  const renderGridBody = () => (
+    <div className="flex flex-col rounded-2xl border border-white/[0.06] overflow-hidden">
+      <div className="grid grid-cols-7 border-b border-white/[0.06] bg-white/[0.02]">
+        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
+          <div key={day} className="text-label text-center py-2">
+            {day}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col">
+        {weeks.map((week, weekIdx) => (
+          <div key={weekIdx} className="relative">
+            <div className="grid grid-cols-7">
+              {week.map((day, dayIdx) => (
+                <CalendarDayCell
+                  key={dayIdx}
+                  day={day}
+                  currentMonth={currentDate}
+                  onAdd={(date) => {
+                    setEditingTask({ plannedDate: date } as TaskData);
+                    setParentTask(null);
+                    setIsDuplicate(false);
+                    setDialogVersion((v) => v + 1);
+                    setDialogOpen(true);
+                  }}
+                  isDraggingAny={isDraggingAny}
+                  mode={mode}
+                  tasksForDay={tasksByDayIndex[weekIdx * 7 + dayIdx] || []}
+                  minHeight={rowHeights[weekIdx]}
+                />
+              ))}
+            </div>
+
+            <div className="absolute inset-0 grid grid-cols-7 pointer-events-none">
+              {days.slice(weekIdx * 7, weekIdx * 7 + 7).map((_, dayOffset) => {
+                const globalIdx = weekIdx * 7 + dayOffset;
+                const deadlines = deadlinesByDayIndex[globalIdx];
+                if (!deadlines?.length) return null;
+                return deadlines.map((task, di) => {
+                  const isOverdue =
+                    isBefore(new Date(task.dueDate!), new Date()) && task.status !== "DONE";
+                  const Icon = task.icon ? ALL_ICONS[task.icon] : null;
+                  const deadlineClass = `pointer-events-auto absolute flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[9px] font-medium truncate max-w-[90%] ${
+                    isOverdue ? "bg-rose-500/15 text-rose-400" : "bg-white/10 text-zinc-300"
+                  }`;
+
+                  return (
+                    <button
+                      key={`deadline-${task.id}`}
+                      onClick={() => handleEdit(task)}
+                      className={deadlineClass}
+                      style={{ gridColumnStart: dayOffset + 1, top: 4 + di * 20 }}
+                    >
+                      <Flag size={8} className="shrink-0" />
+                      {Icon && <Icon size={8} className="shrink-0" />}
+                      <span className="truncate">{task.isPrivate ? "Private" : task.title}</span>
+                    </button>
+                  );
+                });
+              })}
+
+              {allTasksWithLevels
+                .filter((seg) => seg.rowIdx === weekIdx)
+                .map((seg) => (
+                  <TaskCalendarCard
+                    key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
+                    task={seg.task}
+                    startIdx={seg.startIdx}
+                    endIdx={seg.endIdx}
+                    level={seg.level}
+                    rowIdx={seg.rowIdx}
+                    onEdit={handleEdit}
+                    onDuplicate={handleDuplicate}
+                    onAddChild={handleAddChild}
+                    onDelete={handleTaskDeleted}
+                    allTasks={parentResolutionTasks}
                     mode={mode}
-                    tasksForDay={tasksByDayIndex[weekIdx * 7 + dayIdx] || []}
-                    minHeight={rowHeights[weekIdx]}
+                    days={days}
+                    onResize={handleResize}
+                    isResizing={resizingTaskId === seg.task.id}
+                    onResizeStart={(id) => setResizingTaskId(id)}
+                    onResizeEnd={() => setResizingTaskId(null)}
+                    isOverlay
+                    isDraggable
+                    onHeightChange={handleHeightChange}
+                    fixedHeight={maxTaskHeight}
+                    style={{ top: calculateTop(seg.level), pointerEvents: "auto" }}
                   />
                 ))}
-              </div>
-
-              <div >
-                {}
-                {days.slice(weekIdx * 7, weekIdx * 7 + 7).map((_, dayOffset) => {
-                  const globalIdx = weekIdx * 7 + dayOffset;
-                  const deadlines = deadlinesByDayIndex[globalIdx];
-                  if (!deadlines?.length) return null;
-                  return deadlines.map((task, di) => {
-                    const isOverdue = isBefore(new Date(task.dueDate!), new Date()) && task.status !== 'DONE';
-                    const Icon = task.icon ? ALL_ICONS[task.icon] : null;
-                    return (
-                      <button
-                        key={`deadline-${task.id}`}
-                        onClick={() => handleEdit(task)}
-
-
-                      >
-                        <Flag size={8} />
-                        {Icon && <Icon size={8} />}
-                        <span
-
-
-                        >
-                          {task.isPrivate ? 'Private' : task.title}
-                        </span>
-                      </button>
-                    );
-                  });
-                })}
-
-                {allTasksWithLevels
-                  .filter(seg => seg.rowIdx === weekIdx)
-                  .map((seg) => (
-                    <TaskCalendarCard
-                      key={`task-${seg.task.id}-${seg.startIdx}-${seg.endIdx}`}
-                      task={seg.task}
-                      startIdx={seg.startIdx}
-                      endIdx={seg.endIdx}
-                      level={seg.level}
-                      rowIdx={seg.rowIdx}
-                      onEdit={handleEdit}
-                      onDuplicate={handleDuplicate}
-                      onAddChild={handleAddChild}
-                      onDelete={handleTaskDeleted}
-                      allTasks={parentResolutionTasks}
-                      mode={mode}
-                      days={days}
-                      onResize={handleResize}
-                      isResizing={resizingTaskId === seg.task.id}
-                      onResizeStart={(id) => setResizingTaskId(id)}
-                      onResizeEnd={() => setResizingTaskId(null)}
-                      isOverlay
-                      isDraggable
-                      onHeightChange={handleHeightChange}
-                      fixedHeight={maxTaskHeight}
-
-                    />
-                  ))}
-              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 
   return (
-    <DndContext
-      sensors={sensors}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
-      <div >
-        {}
-        {!hideControls && <div >
-          <div >
-            <div >
-              <div >
-                <CalendarIcon size={20} />
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="flex flex-col">
+        {!hideControls && (
+          <div className="flex flex-col gap-3 mb-4">
+            <div className="hidden md:flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-accent/10 text-accent">
+                  <CalendarIcon size={20} />
+                </div>
+                <div>
+                  <h2 className="text-panel-title">{headerTitle}</h2>
+                  <p className="text-caption">{headerSubtitle}</p>
+                </div>
               </div>
-              <div >
-                <h2 >
-                  {mode === 'day'
-                    ? format(currentDate, "MMMM d, yyyy")
-                    : mode === 'month'
-                      ? format(currentDate, "MMMM yyyy")
-                      : format(currentDate, "'Week' w, MMMM yyyy")}
-                </h2>
-                <p >
-                  {mode === 'month' ? 'Monthly overview' : mode === 'week' ? 'Weekly focus' : 'Daily timeline'}
-                </p>
+
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <button onClick={() => navigate(-1)} title="Previous" className={navButtonClass}>
+                  <ChevronLeft size={16} />
+                </button>
+                <button onClick={() => setCurrentDate(new Date())} className={todayButtonClass}>
+                  Today
+                </button>
+                <button onClick={() => navigate(1)} title="Next" className={navButtonClass}>
+                  <ChevronRight size={16} />
+                </button>
               </div>
             </div>
 
-            {}
-            <div >
-              <button
-                onClick={() => navigate(-1)}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex md:hidden items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <button onClick={() => navigate(-1)} className={navButtonClass}>
+                  <ChevronLeft size={14} />
+                </button>
+                <button onClick={() => setCurrentDate(new Date())} className={todayButtonClass}>
+                  Today
+                </button>
+                <button onClick={() => navigate(1)} className={navButtonClass}>
+                  <ChevronRight size={14} />
+                </button>
+              </div>
 
-                title="Previous"
-              >
-                <ChevronLeft size={16} />
-              </button>
-              <button
-                onClick={() => setCurrentDate(new Date())}
+              {!hideModeSwitch && (
+                <div className="relative flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  {["month", "week", "day"].map((id) => {
+                    const isActive = mode === id;
+                    const modeButtonClass = `relative px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors duration-150 ${
+                      isActive ? "text-white" : "text-zinc-400 hover:text-zinc-100"
+                    }`;
 
-              >
-                Today
-              </button>
-              <button
-                onClick={() => navigate(1)}
-
-                title="Next"
-              >
-                <ChevronRight size={16} />
-              </button>
+                    return (
+                      <button
+                        key={id}
+                        onClick={() => setMode(id as "month" | "week" | "day")}
+                        className={modeButtonClass}
+                      >
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeViewTab"
+                            className="absolute inset-0 bg-accent rounded-lg -z-10"
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <span className="relative">{id}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
+        )}
 
-          <div >
-            {}
-            <div >
-              <button onClick={() => navigate(-1)} ><ChevronLeft size={14} /></button>
-              <button onClick={() => setCurrentDate(new Date())} >Today</button>
-              <button onClick={() => navigate(1)} ><ChevronRight size={14} /></button>
-            </div>
-
-            {}
-            {!hideModeSwitch && (
-              <div >
-                {["month", "week", "day"].map((id) => {
-                  const isActive = mode === id;
-                  return (
-                    <button
-                      key={id}
-                      onClick={() => setMode(id as "month" | "week" | "day")}
-
-                    >
-                      {isActive && (
-                        <motion.div
-                          layoutId="activeViewTab"
-
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                        />
-                      )}
-                      <span >{id}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>}
-
-        {}
         {projectTasks.length > 0 && (
-          <div >
-            <span >Projects</span>
-            <div >
-              {projectTasks.map(task => {
-                const completed = task.children.filter(c => c.status === 'DONE').length;
+          <div className="flex items-center gap-3 mb-4 overflow-x-auto pb-1">
+            <span className="text-label shrink-0">Projects</span>
+            <div className="flex items-center gap-2">
+              {projectTasks.map((task) => {
+                const completed = task.children.filter((c) => c.status === "DONE").length;
                 const total = task.children.length;
                 const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
-                const isOverdue = task.dueDate && isBefore(new Date(task.dueDate), new Date()) && task.status !== 'DONE';
+                const isOverdue =
+                  task.dueDate &&
+                  isBefore(new Date(task.dueDate), new Date()) &&
+                  task.status !== "DONE";
                 const Icon = task.icon ? ALL_ICONS[task.icon] : null;
+                const dueDateClass = `flex items-center gap-1 text-[10px] ${isOverdue ? "text-rose-400" : "text-zinc-500"}`;
+
                 return (
                   <button
                     key={task.id}
                     onClick={() => handleEdit(task)}
-
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl glass-card shrink-0 hover:border-white/[0.12] transition-colors"
                   >
                     {task.sphere && (
-                      <div />
+                      <div
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={{ backgroundColor: task.sphere.color }}
+                      />
                     )}
-                    {Icon && <Icon size={11} />}
-                    <span >{task.isPrivate ? "Private" : task.title}</span>
-                    <div >
-                      <div >
-                        <div />
+                    {Icon && <Icon size={11} className="text-zinc-400 shrink-0" />}
+                    <span className="text-xs font-medium text-zinc-200 whitespace-nowrap">
+                      {task.isPrivate ? "Private" : task.title}
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-12 h-1 rounded-full bg-white/10 overflow-hidden">
+                        <div
+                          className="h-full bg-accent rounded-full"
+                          style={{ width: `${progress}%` }}
+                        />
                       </div>
-                      <span >{completed}/{total}</span>
+                      <span className="text-[10px] font-mono text-zinc-500">
+                        {completed}/{total}
+                      </span>
                     </div>
                     {task.dueDate && (
-                      <div >
+                      <div className={dueDateClass}>
                         <Flag size={9} />
-                        <span >{format(new Date(task.dueDate), 'MMM d')}</span>
+                        <span>{format(new Date(task.dueDate), "MMM d")}</span>
                       </div>
                     )}
                   </button>
@@ -1014,77 +1097,87 @@ export function TaskCalendar({
           </div>
         )}
 
-        {}
-        <div >
-          {mode === 'day' ? (
-            <div >
+        <div>
+          {mode === "day" ? (
+            <div className="flex flex-col gap-3">
               {unscheduledTasks.length > 0 && (
-                <div >
-                  <span >Unscheduled</span>
-                  {unscheduledTasks.map(task => (
+                <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                  <span className="text-label shrink-0">Unscheduled</span>
+                  {unscheduledTasks.map((task) => (
                     <button
                       key={task.id}
                       onClick={() => handleEdit(task)}
-
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] shrink-0 hover:bg-white/5 transition-colors"
                     >
-                      {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-accent/50 shrink-0" })}
-                      <span >{task.isPrivate ? "Private" : task.title}</span>
-                      {task.sphere && <div />}
+                      {task.icon &&
+                        ALL_ICONS[task.icon] &&
+                        React.createElement(ALL_ICONS[task.icon], {
+                          size: 10,
+                          className: "text-accent/50 shrink-0",
+                        })}
+                      <span className="text-xs text-zinc-300 whitespace-nowrap">
+                        {task.isPrivate ? "Private" : task.title}
+                      </span>
+                      {task.sphere && (
+                        <div
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: task.sphere.color }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
               )}
               <div
                 ref={timelineContainerRef}
-
+                className="overflow-x-auto rounded-2xl border border-white/[0.06]"
               >
-                <div
-
-
-                >
-                  <div >
+                <div className="relative" style={{ width: TOTAL_WIDTH }}>
+                  <div className="flex border-b border-white/[0.06]">
                     {hours.map((hour, i) => (
                       <div
                         key={i}
-
-
+                        className="flex items-center border-r border-white/[0.04] py-2 shrink-0"
+                        style={{ width: HOUR_WIDTH }}
                       >
-                        <span >
+                        <span className="text-[10px] font-mono text-zinc-500 pl-2">
                           {format(hour, "HH:mm")}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <div >
+                  <div className="absolute inset-0 flex pointer-events-none">
                     {hours.map((_, i) => (
                       <div
                         key={i}
-
-
+                        className="border-r border-white/[0.03] relative shrink-0"
+                        style={{ width: HOUR_WIDTH }}
                       >
-                        <div />
-                        <div />
-                        <div />
+                        <div className="absolute left-1/4 top-0 bottom-0 border-r border-white/[0.02]" />
+                        <div className="absolute left-1/2 top-0 bottom-0 border-r border-white/[0.02]" />
+                        <div className="absolute left-3/4 top-0 bottom-0 border-r border-white/[0.02]" />
                       </div>
                     ))}
                   </div>
 
-                  {isToday(currentDate) && (() => {
-                    const nowMin = now.getHours() * 60 + now.getMinutes();
-                    const dayStartMin = DAY_START * 60;
-                    if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {
-                      return (
-                        <div
-
-
-                        >
-                          <div />
-                        </div>
-                      );
-                    }
-                    return null;
-                  })()}
+                  {isToday(currentDate) &&
+                    (() => {
+                      const nowMin = now.getHours() * 60 + now.getMinutes();
+                      const dayStartMin = DAY_START * 60;
+                      if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {
+                        const nowLeft = ((nowMin - dayStartMin) / 60) * HOUR_WIDTH;
+                        return (
+                          <div
+                            className="absolute top-0 bottom-0 w-px bg-rose-500 z-20"
+                            style={{ left: nowLeft }}
+                          >
+                            <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full bg-rose-500" />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
 
                   <DndContext
                     sensors={sensors}
@@ -1092,21 +1185,27 @@ export function TaskCalendar({
                     onDragMove={handleTimelineDragMove}
                     onDragEnd={handleTimelineDragEnd}
                   >
-                    <div >
+                    <div className="relative pt-4 pb-6" style={{ minHeight: 200 }}>
                       {timelineRows.map((rowTasks, rowIdx) => (
-                        <div key={rowIdx} >
-                          {rowTasks.map(task => {
+                        <div key={rowIdx} className="relative h-20 mb-2">
+                          {rowTasks.map((task) => {
                             const isResizingThis = resizingTimeline?.id === task.id;
                             const isDraggingThis = draggingTimeline?.id === task.id;
 
-                            const resDelta = isResizingThis ? Math.round(resizingTimeline!.delta / 5) * 5 : 0;
-                            const drgDelta = isDraggingThis ? Math.round((draggingTimeline!.deltaX / HOUR_WIDTH) * 60 / 5) * 5 : 0;
+                            const resDelta = isResizingThis
+                              ? Math.round(resizingTimeline!.delta / 5) * 5
+                              : 0;
+                            const drgDelta = isDraggingThis
+                              ? Math.round(((draggingTimeline!.deltaX / HOUR_WIDTH) * 60) / 5) * 5
+                              : 0;
 
                             let start = new Date(task.plannedDate!);
-                            let end = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(start, 60);
+                            let end = task.plannedEndDate
+                              ? new Date(task.plannedEndDate)
+                              : addMinutes(start, 60);
 
                             if (isResizingThis) {
-                              if (resizingTimeline!.edge === 'start') {
+                              if (resizingTimeline!.edge === "start") {
                                 start = addMinutes(start, resDelta);
                               } else {
                                 const potentialEnd = addMinutes(end, resDelta);
@@ -1134,27 +1233,32 @@ export function TaskCalendar({
                                 key={task.id}
                                 task={task}
                                 isResizing={isResizingThis}
-
+                                style={{ left: leftPos, width: widthVal }}
                               >
                                 <div
-
+                                  className="w-full h-full rounded-lg glass-card px-2.5 py-1.5 flex flex-col justify-center cursor-pointer overflow-hidden"
                                   onClick={() => {
                                     if (!isDraggingAny) handleEdit(task);
                                   }}
                                 >
-                                  <div >
-                                    <span >
+                                  <div className="flex items-center justify-between gap-1">
+                                    <span className="text-[10px] font-mono text-zinc-400">
                                       {format(start, "HH:mm")} — {format(end, "HH:mm")}
                                     </span>
-                                    {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-muted/40" })}
+                                    {task.icon &&
+                                      ALL_ICONS[task.icon] &&
+                                      React.createElement(ALL_ICONS[task.icon], {
+                                        size: 10,
+                                        className: "text-zinc-500 shrink-0",
+                                      })}
                                   </div>
 
-                                  <h4 >
+                                  <h4 className="text-xs font-medium text-zinc-100 truncate">
                                     {task.title}
                                   </h4>
 
-                                  <div >
-                                    <div onClick={(e) => e.stopPropagation()} >
+                                  <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                    <div onClick={(e) => e.stopPropagation()}>
                                       <StatusToggle
                                         taskId={task.id}
                                         status={task.status}
@@ -1164,33 +1268,35 @@ export function TaskCalendar({
                                       />
                                     </div>
 
-                                    <div />
+                                    <div className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
 
-                                    <div >
+                                    <div className="flex items-center gap-1.5 flex-wrap">
                                       {task.isFrog && (
-                                        <span >
-                                          <span role="img" aria-label="frog">🐸</span>
+                                        <span className="text-[9px]">
+                                          <span role="img" aria-label="frog">
+                                            🐸
+                                          </span>
                                         </span>
                                       )}
                                       {task.sphere && (
-                                        <div >
+                                        <div className="flex items-center gap-1">
                                           <div
-
-
+                                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                                            style={{ backgroundColor: task.sphere.color }}
                                           />
-                                          <span >
+                                          <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wide">
                                             {task.sphere.name}
                                           </span>
                                         </div>
                                       )}
-                                      <div >
+                                      <div className="flex items-center gap-1">
                                         {React.createElement(pCfg.icon, {
                                           size: 10,
-                                          style: { color: pCfg.color }
+                                          style: { color: pCfg.color },
                                         })}
                                         <span
-
-
+                                          className="text-[9px] font-mono uppercase tracking-wide"
+                                          style={{ color: pCfg.color }}
                                         >
                                           {pCfg.label}
                                         </span>
@@ -1199,7 +1305,7 @@ export function TaskCalendar({
                                   </div>
                                 </div>
                                 <div
-
+                                  className="absolute top-0 right-0 bottom-0 w-1.5 cursor-ew-resize flex items-center justify-center"
                                   onMouseDown={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
@@ -1208,7 +1314,11 @@ export function TaskCalendar({
                                     const hMouseMove = (mv: MouseEvent) => {
                                       const dX = mv.clientX - sX;
                                       const minDelta = (dX / HOUR_WIDTH) * 60;
-                                      setResizingTimeline({ id: task.id, delta: minDelta, edge: 'end' });
+                                      setResizingTimeline({
+                                        id: task.id,
+                                        delta: minDelta,
+                                        edge: "end",
+                                      });
                                     };
 
                                     const hMouseUp = (ev: MouseEvent) => {
@@ -1221,9 +1331,9 @@ export function TaskCalendar({
                                       if (minDelta !== 0) {
                                         const cDur = differenceInMinutes(end, start);
                                         if (cDur + minDelta < 60) {
-                                          handleTimelineResize(task.id, 60 - cDur, 'end');
+                                          handleTimelineResize(task.id, 60 - cDur, "end");
                                         } else {
-                                          handleTimelineResize(task.id, minDelta, 'end');
+                                          handleTimelineResize(task.id, minDelta, "end");
                                         }
                                       }
                                       setResizingTimeline(null);
@@ -1233,7 +1343,7 @@ export function TaskCalendar({
                                     document.addEventListener("mouseup", hMouseUp);
                                   }}
                                 >
-                                  <div />
+                                  <div className="w-0.5 h-1/2 rounded-full bg-white/20 hover:bg-accent transition-colors" />
                                 </div>
                               </DayTimelineCardWrapper>
                             );
@@ -1242,9 +1352,9 @@ export function TaskCalendar({
                       ))}
 
                       {timelineRows.length === 0 && unscheduledTasks.length === 0 && (
-                        <div >
+                        <div className="flex flex-col items-center justify-center gap-2 py-16 text-zinc-600">
                           <Clock size={48} strokeWidth={1} />
-                          <p >No tasks scheduled for this day</p>
+                          <p className="text-caption">No tasks scheduled for this day</p>
                         </div>
                       )}
                     </div>
@@ -1252,19 +1362,21 @@ export function TaskCalendar({
                 </div>
               </div>
             </div>
-          ) : renderGridBody()}
+          ) : (
+            renderGridBody()
+          )}
         </div>
       </div>
 
       <TaskFormDialog
-        key={`task-form-${dialogVersion}-${editingTask?.id ?? 'new'}`}
+        key={`task-form-${dialogVersion}-${editingTask?.id ?? "new"}`}
         isOpen={dialogOpen}
         onClose={handleCloseDialog}
         onSuccess={(savedTask) => {
-          setLocalTasks(prev => {
-            const existing = prev.find(t => t.id === savedTask.id);
+          setLocalTasks((prev) => {
+            const existing = prev.find((t) => t.id === savedTask.id);
             if (existing) {
-              return prev.map(t => t.id === savedTask.id ? savedTask : t);
+              return prev.map((t) => (t.id === savedTask.id ? savedTask : t));
             }
             return [...prev, savedTask];
           });

@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { ChevronDown, Calendar, Layers, Activity, LayoutList } from "lucide-react";
 import { TaskGrid } from "./TaskGrid";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -30,9 +30,9 @@ function getWeekLabel(date: Date) {
   const startMonth = start.toLocaleDateString("en-US", { month: "short" });
   const endMonth = end.toLocaleDateString("en-US", { month: "short" });
   if (startMonth === endMonth) {
-    return `${startMonth} ${start.getDate()}�${end.getDate()}, ${start.getFullYear()}`;
+    return `${startMonth} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
   }
-  return `${startMonth} ${start.getDate()} � ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
+  return `${startMonth} ${start.getDate()} – ${endMonth} ${end.getDate()}, ${end.getFullYear()}`;
 }
 
 const PRIMARY_TABS = [
@@ -42,7 +42,14 @@ const PRIMARY_TABS = [
   { id: "status", label: "Status", icon: Activity },
 ];
 
-export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDelete }: TaskTreeProps & { onDelete?: () => void }) {
+export function TaskTree({
+  tasks,
+  spheres,
+  onEdit,
+  onDuplicate,
+  onAddChild,
+  onDelete,
+}: TaskTreeProps & { onDelete?: () => void }) {
   const [activePrimary, setActivePrimary] = useState("time");
   const [activeSecondary, setActiveSecondary] = useState("weeks");
   const [visibleGroups, setVisibleGroups] = useState(3);
@@ -66,21 +73,20 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       case "sphere":
         return [
           { id: "all", label: "All Spheres" },
-          ...spheres.map(s => ({ id: s.id, label: s.name })),
+          ...spheres.map((s) => ({ id: s.id, label: s.name })),
         ];
       case "status":
         return [
           { id: "all", label: "All Statuses" },
-          ...Object.keys(STATUS_CONFIG).map(s => ({
+          ...Object.keys(STATUS_CONFIG).map((s) => ({
             id: s,
-            label: STATUS_CONFIG[s as TaskStatus].label
+            label: STATUS_CONFIG[s as TaskStatus].label,
           })),
         ];
       default:
         return [];
     }
   }, [activePrimary, spheres]);
-
 
   const handlePrimaryChange = (id: string) => {
     setActivePrimary(id);
@@ -95,21 +101,19 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
   const groupedTasks = useMemo(() => {
     let filtered = tasks;
 
-
     if (activePrimary === "hierarchy") {
       if (activeSecondary === "parents") {
-        filtered = tasks.filter(t => t.children.length > 0 || !t.parentId);
+        filtered = tasks.filter((t) => t.children.length > 0 || !t.parentId);
       } else if (activeSecondary === "subtasks") {
-        filtered = tasks.filter(t => !!t.parentId);
+        filtered = tasks.filter((t) => !!t.parentId);
       }
     } else if (activePrimary === "sphere" && activeSecondary !== "all") {
-      filtered = tasks.filter(t => t.sphereId === activeSecondary);
+      filtered = tasks.filter((t) => t.sphereId === activeSecondary);
     } else if (activePrimary === "status" && activeSecondary !== "all") {
-      filtered = tasks.filter(t => t.status === activeSecondary);
+      filtered = tasks.filter((t) => t.status === activeSecondary);
     } else if (activePrimary === "time" && activeSecondary === "no-date") {
-      filtered = tasks.filter(t => !t.plannedDate);
+      filtered = tasks.filter((t) => !t.plannedDate);
     }
-
 
     const groups: Record<string, { tasks: TaskData[]; sortKey: number }> = {};
 
@@ -117,7 +121,7 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       const now = new Date();
       const currentWeekStart = getWeekStart(now);
 
-      filtered.forEach(task => {
+      filtered.forEach((task) => {
         if (!task.plannedDate) return;
         const date = new Date(task.plannedDate);
         let key = "";
@@ -134,7 +138,11 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
         } else if (activeSecondary === "quarters") {
           const quarter = Math.floor(date.getMonth() / 3) + 1;
           const currentQuarter = Math.floor(now.getMonth() / 3) + 1;
-          if (date.getFullYear() < now.getFullYear() || (date.getFullYear() === now.getFullYear() && quarter < currentQuarter)) return;
+          if (
+            date.getFullYear() < now.getFullYear() ||
+            (date.getFullYear() === now.getFullYear() && quarter < currentQuarter)
+          )
+            return;
           key = `Q${quarter} ${date.getFullYear()}`;
           sortKey = new Date(date.getFullYear(), (quarter - 1) * 3, 1).getTime();
         } else if (activeSecondary === "years") {
@@ -146,26 +154,42 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
         groups[key].tasks.push(task);
       });
     } else if (activePrimary === "sphere" && activeSecondary === "all") {
-      spheres.forEach(s => {
-        const sphereTasks = filtered.filter(t => t.sphereId === s.id);
+      spheres.forEach((s) => {
+        const sphereTasks = filtered.filter((t) => t.sphereId === s.id);
         if (sphereTasks.length > 0) groups[s.name] = { tasks: sphereTasks, sortKey: 0 };
       });
     } else if (activePrimary === "status" && activeSecondary === "all") {
-      const statusOrder: Record<string, number> = { "BACKLOG": 0, "TODO": 1, "IN_PROGRESS": 2, "DONE": 3, "CANCELLED": 4 };
-      Object.keys(STATUS_CONFIG).forEach(s => {
-        const statusTasks = filtered.filter(t => t.status === s);
-        if (statusTasks.length > 0) groups[STATUS_CONFIG[s as TaskStatus].label] = { tasks: statusTasks, sortKey: statusOrder[s] ?? 99 };
+      const statusOrder: Record<string, number> = {
+        BACKLOG: 0,
+        TODO: 1,
+        IN_PROGRESS: 2,
+        DONE: 3,
+        CANCELLED: 4,
+      };
+      Object.keys(STATUS_CONFIG).forEach((s) => {
+        const statusTasks = filtered.filter((t) => t.status === s);
+        if (statusTasks.length > 0)
+          groups[STATUS_CONFIG[s as TaskStatus].label] = {
+            tasks: statusTasks,
+            sortKey: statusOrder[s] ?? 99,
+          };
       });
     } else {
-      const label = activePrimary === "hierarchy"
-        ? (activeSecondary === "parents" ? "Main Tasks" : activeSecondary === "subtasks" ? "Subtasks" : "All Tasks")
-        : activePrimary === "sphere" ? spheres.find(s => s.id === activeSecondary)?.name || "Sphere Tasks"
-        : activePrimary === "status" ? STATUS_CONFIG[activeSecondary as TaskStatus]?.label || "Status Tasks"
-        : "Unplanned Tasks";
+      const label =
+        activePrimary === "hierarchy"
+          ? activeSecondary === "parents"
+            ? "Main Tasks"
+            : activeSecondary === "subtasks"
+              ? "Subtasks"
+              : "All Tasks"
+          : activePrimary === "sphere"
+            ? spheres.find((s) => s.id === activeSecondary)?.name || "Sphere Tasks"
+            : activePrimary === "status"
+              ? STATUS_CONFIG[activeSecondary as TaskStatus]?.label || "Status Tasks"
+              : "Unplanned Tasks";
 
       if (filtered.length > 0) groups[label] = { tasks: filtered, sortKey: 0 };
     }
-
 
     if (activePrimary === "time" && activeSecondary !== "no-date") {
       const sorted = Object.entries(groups).sort((a, b) => a[1].sortKey - b[1].sortKey);
@@ -175,7 +199,6 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
       }
       return result;
     }
-
 
     const result: Record<string, TaskData[]> = {};
     for (const [key, value] of Object.entries(groups)) {
@@ -189,21 +212,25 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
   const hasMore = groupKeys.length > visibleGroups;
 
   return (
-    <div >
-      {}
-      <div >
-        {}
-        <div >
-          <span >Group By:</span>
-          <div >
-            {PRIMARY_TABS.map(tab => {
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-label">Group By:</span>
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            {PRIMARY_TABS.map((tab) => {
               const Icon = tab.icon;
               const active = activePrimary === tab.id;
+              const tabButtonClass = `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 ${
+                active
+                  ? "bg-accent text-white"
+                  : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+              }`;
+
               return (
                 <button
                   key={tab.id}
                   onClick={() => handlePrimaryChange(tab.id)}
-
+                  className={tabButtonClass}
                 >
                   <Icon size={14} strokeWidth={active ? 3 : 2} />
                   <span>{tab.label}</span>
@@ -213,34 +240,26 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
           </div>
         </div>
 
-        {}
-        <div />
-
-        {}
-        <div >
-          <Tabs
-            tabs={secondaryTabs}
-            activeTab={activeSecondary}
-            onTabChange={setActiveSecondary}
-            variant="ghost"
-          />
-        </div>
+        <Tabs
+          tabs={secondaryTabs}
+          activeTab={activeSecondary}
+          onTabChange={setActiveSecondary}
+          variant="ghost"
+        />
       </div>
 
-      {}
       {groupKeys.length === 0 ? (
-        <div >
-          <p >No tasks found for this view.</p>
+        <div className="glass-card p-8 flex items-center justify-center">
+          <p className="text-caption">No tasks found for this view.</p>
         </div>
       ) : (
-        <div >
-          {displayedKeys.map(key => (
-            <div key={key} >
-              {}
-              <div >
-                <div />
-                <span >{key}</span>
-                <div />
+        <div className="flex flex-col gap-6">
+          {displayedKeys.map((key) => (
+            <div key={key} className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-white/[0.06]" />
+                <span className="text-label whitespace-nowrap">{key}</span>
+                <div className="flex-1 h-px bg-white/[0.06]" />
               </div>
 
               <TaskGrid
@@ -258,8 +277,8 @@ export function TaskTree({ tasks, spheres, onEdit, onDuplicate, onAddChild, onDe
 
       {hasMore && (
         <button
-          onClick={() => setVisibleGroups(prev => prev + 5)}
-
+          onClick={() => setVisibleGroups((prev) => prev + 5)}
+          className="flex items-center gap-1 mx-auto text-xs font-semibold text-accent hover:opacity-80 transition-opacity"
         >
           <ChevronDown size={14} />
           Show More Groups

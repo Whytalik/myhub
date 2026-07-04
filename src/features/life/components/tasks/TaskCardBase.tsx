@@ -36,18 +36,18 @@ export function TaskCardBase({
   allTasks = [],
   variant = "default",
   isDragging = false,
-  className = "••••••••",
+  className = "",
   style,
   listeners,
   attributes,
-  setNodeRef
+  setNodeRef,
 }: TaskCardBaseProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();
 
-  const isDone = task.status === "DONE" || task.status === "CANCELLED";
   const hasChildren = task.children.length > 0;
-  const completedSubtasks = task.children.filter(c => c.status === 'DONE').length;
+  const completedSubtasks = task.children.filter((c) => c.status === "DONE").length;
+  const isCompact = variant === "compact";
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -72,20 +72,24 @@ export function TaskCardBase({
     });
   };
 
-  const formatDateTime = useCallback((date: Date | null, hasTime: boolean) => {
-    if (!date) return null;
-    const d = new Date(date);
-    const options: Intl.DateTimeFormatOptions = variant === "compact"
-      ? { month: "short", day: "numeric" }
-      : { month: "long", day: "numeric", year: "numeric" };
+  const formatDateTime = useCallback(
+    (date: Date | null, hasTime: boolean) => {
+      if (!date) return null;
+      const d = new Date(date);
+      const options: Intl.DateTimeFormatOptions =
+        variant === "compact"
+          ? { month: "short", day: "numeric" }
+          : { month: "long", day: "numeric", year: "numeric" };
 
-    if (hasTime) {
-      options.hour = "2-digit";
-      options.minute = "2-digit";
-      options.hour12 = false;
-    }
-    return d.toLocaleString("en-US", options);
-  }, [variant]);
+      if (hasTime) {
+        options.hour = "2-digit";
+        options.minute = "2-digit";
+        options.hour12 = false;
+      }
+      return d.toLocaleString("en-US", options);
+    },
+    [variant],
+  );
 
   const plannedLabel = React.useMemo(() => {
     const start = formatDateTime(task.plannedDate, task.hasPlannedTime);
@@ -94,7 +98,13 @@ export function TaskCardBase({
     const end = formatDateTime(task.plannedEndDate, task.hasPlannedEndTime);
     if (!start) return `Until ${end}`;
     return `${start} - ${end}`;
-  }, [task.plannedDate, task.hasPlannedTime, task.plannedEndDate, task.hasPlannedEndTime, formatDateTime]);
+  }, [
+    task.plannedDate,
+    task.hasPlannedTime,
+    task.plannedEndDate,
+    task.hasPlannedEndTime,
+    formatDateTime,
+  ]);
 
   const dueLabel = formatDateTime(task.dueDate, task.hasDueTime);
 
@@ -105,7 +115,7 @@ export function TaskCardBase({
     new Date(task.dueDate) < new Date();
 
   const formatText = (text: string) => {
-    if (!text) return "••••••••";
+    if (!text) return "";
     const escaped = text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -115,9 +125,18 @@ export function TaskCardBase({
 
     let formatted = escaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
     formatted = formatted.replace(/\*(.*?)\*/g, "<em>$1</em>");
-    formatted = formatted.replace(/`(.*?)`/g, "<code class='bg-white/10 px-1 rounded font-mono text-note'>$1</code>");
-    formatted = formatted.replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>");
-    formatted = formatted.replace(/(?<!href='|">)(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>");
+    formatted = formatted.replace(
+      /`(.*?)`/g,
+      "<code class='bg-white/10 px-1 rounded font-mono text-xs'>$1</code>",
+    );
+    formatted = formatted.replace(
+      /\[(.*?)\]\((.*?)\)/g,
+      "<a href='$2' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>",
+    );
+    formatted = formatted.replace(
+      /(?<!href='|">)(https?:\/\/[^\s]+)/g,
+      "<a href='$1' target='_blank' class='text-accent hover:underline' onclick='event.stopPropagation()'>$1</a>",
+    );
 
     return formatted;
   };
@@ -125,105 +144,146 @@ export function TaskCardBase({
   const handleParentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (task.parentId) {
-      const parent = allTasks.find(t => t.id === task.parentId);
+      const parent = allTasks.find((t) => t.id === task.parentId);
       if (parent) onEdit(parent);
     }
   };
 
-  const isCompact = variant === "compact";
+  const cardClass = `group relative glass-card flex flex-col transition-colors duration-150 hover:border-white/[0.12] cursor-pointer ${
+    isCompact ? "p-2.5 gap-1.5" : "p-3.5 gap-2"
+  } ${isDragging ? "opacity-50 shadow-2xl" : ""} ${className}`;
+  const actionBarClass =
+    "absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150";
+  const actionButtonClass =
+    "p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
+  const deleteButtonClass =
+    "p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
+  const parentLinkClass =
+    "flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors w-fit";
+  const titleClass = isCompact
+    ? "text-sm font-medium text-zinc-100 truncate"
+    : "text-panel-title truncate";
+  const titleText = task.isPrivate ? "Hidden" : task.title;
+  const titleHtml = { __html: formatText(titleText) };
+  const parentLabel = task.isPrivate ? "Hidden" : task.parentTitle || "Parent Task";
+  const descriptionText = task.isPrivate ? "Content is hidden" : task.description;
+  const iconSize = isCompact ? 10 : 16;
+  const actionIconSize = isCompact ? 10 : 12;
+  const dateIconSize = isCompact ? 8 : 11;
+  const parentArrowSize = 8;
+  const sphereIconSize = isCompact ? 6 : 10;
+  const dueLabelClass = `flex items-center gap-1 ${isOverdue ? "text-rose-400" : "text-zinc-500"}`;
+  const carriedFromLabel = task.carriedFromDate
+    ? `Перенесено з ${new Date(task.carriedFromDate).toLocaleDateString("uk-UA", { day: "numeric", month: "short" })}`
+    : "";
+  const carriedFromText = task.carriedFromDate
+    ? `від ${new Date(task.carriedFromDate).toLocaleDateString("uk-UA", { day: "numeric", month: "short" })}`
+    : "";
+  const subtaskProgressPct = hasChildren
+    ? Math.round((completedSubtasks / task.children.length) * 100)
+    : 0;
 
   return (
     <div
       ref={setNodeRef}
-
+      className={cardClass}
       {...listeners}
       {...attributes}
       onClick={() => {
         if (style?.transform) return;
         onEdit(task);
       }}
-
+      style={style}
     >
-      <div >
+      <div className={actionBarClass}>
         <button
-          onClick={(e) => { e.stopPropagation(); handleToggleFrog(); }}
-
+          onClick={(e) => {
+            e.stopPropagation();
+            handleToggleFrog();
+          }}
+          className={actionButtonClass}
           title={task.isFrog ? "Зняти жабу" : "Зробити жабою"}
         >
-          <span role="img" aria-label="frog">🐸</span>
+          <span role="img" aria-label="frog">
+            🐸
+          </span>
         </button>
         {onDuplicate && (
           <button
-            onClick={(e) => { e.stopPropagation(); onDuplicate(task); }}
-
+            onClick={(e) => {
+              e.stopPropagation();
+              onDuplicate(task);
+            }}
+            className={actionButtonClass}
             title="Duplicate task"
           >
-            <Copy size={isCompact ? 10 : 12} />
+            <Copy size={actionIconSize} />
           </button>
         )}
         {onAddChild && (
           <button
-            onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
-
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddChild(task);
+            }}
+            className={actionButtonClass}
             title="Add subtask"
           >
-            <Plus size={isCompact ? 10 : 12} />
+            <Plus size={actionIconSize} />
           </button>
         )}
         <button
-          onClick={(e) => { e.stopPropagation(); setIsDeleteDialogOpen(true); }}
-
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsDeleteDialogOpen(true);
+          }}
+          className={deleteButtonClass}
           title="Delete task"
         >
-          <Trash2 size={isCompact ? 10 : 12} />
+          <Trash2 size={actionIconSize} />
         </button>
       </div>
 
-      {}
       {task.parentId && (
-        <div
-          onClick={handleParentClick}
-
-        >
-          <ArrowUp size={isCompact ? 8 : 8} />
-          {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
-             const PIcon = ALL_ICONS[task.parentIcon];
-             return <PIcon size={isCompact ? 8 : 10} />;
-          })()}
-          <span >
-            {task.isPrivate ? "��������" : (task.parentTitle || 'Parent Task')}
-          </span>
+        <div onClick={handleParentClick} className={parentLinkClass}>
+          <ArrowUp size={parentArrowSize} />
+          {task.parentIcon &&
+            ALL_ICONS[task.parentIcon] &&
+            (() => {
+              const PIcon = ALL_ICONS[task.parentIcon];
+              return <PIcon size={dateIconSize} />;
+            })()}
+          <span className="truncate">{parentLabel}</span>
         </div>
       )}
 
-      {}
-      <div >
-        <div >
-          {task.icon && SPHERE_ICONS[task.icon] ? (() => {
-            const Icon = SPHERE_ICONS[task.icon];
-            return <Icon size={isCompact ? 10 : 16} strokeWidth={2.5} />;
-          })() : (
-            <FileText size={isCompact ? 10 : 16} strokeWidth={2.5} />
+      <div className="flex flex-col gap-1.5 pr-16">
+        <div className="flex items-center gap-2 flex-wrap">
+          {task.icon && SPHERE_ICONS[task.icon] ? (
+            (() => {
+              const Icon = SPHERE_ICONS[task.icon];
+              return <Icon size={iconSize} strokeWidth={2.5} className="text-zinc-400 shrink-0" />;
+            })()
+          ) : (
+            <FileText size={iconSize} strokeWidth={2.5} className="text-zinc-500 shrink-0" />
           )}
-          <h3
-
-            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "��������" : task.title) }}
-            title={task.isPrivate ? "Private Task" : task.title}
-          />
+          <h3 className={titleClass} dangerouslySetInnerHTML={titleHtml} title={titleText} />
           {task.isFrog && (
-            <span >
-              <span role="img" aria-label="frog">🐸</span> Frog
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-400/10 text-amber-400 text-[10px] font-mono font-semibold uppercase tracking-wide">
+              <span role="img" aria-label="frog">
+                🐸
+              </span>{" "}
+              Frog
             </span>
           )}
           {task.isPrivate && (
-             <span >
-               Private
-             </span>
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-zinc-500/10 text-zinc-400 text-[10px] font-mono font-semibold uppercase tracking-wide">
+              Private
+            </span>
           )}
         </div>
 
-        {}
-        <div >
+        <div className="flex items-center gap-1.5 flex-wrap">
           <StatusToggle
             taskId={task.id}
             status={task.status}
@@ -238,70 +298,58 @@ export function TaskCardBase({
           />
 
           {task.sphere && (
-             <div
-
-
-             >
-               {(() => {
-                 const SphereIcon = SPHERE_ICONS[task.sphere.icon] || FileText;
-                 return <SphereIcon size={isCompact ? 6 : 10} strokeWidth={3} />;
-               })()}
-               {task.sphere.name}
-             </div>
+            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide">
+              {(() => {
+                const SphereIcon = SPHERE_ICONS[task.sphere.icon] || FileText;
+                return <SphereIcon size={sphereIconSize} strokeWidth={3} />;
+              })()}
+              {task.sphere.name}
+            </div>
           )}
         </div>
 
-        {!isCompact && task.description && (
+        {!isCompact && descriptionText && (
           <div
-
-            dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "Content is hidden" : task.description) }}
+            className="text-caption line-clamp-2"
+            dangerouslySetInnerHTML={{ __html: formatText(descriptionText) }}
           />
         )}
       </div>
 
-      {}
-      <div >
-        {hasChildren && (() => {
-          const pct = Math.round((completedSubtasks / task.children.length) * 100);
-          return (
-            <div >
-              <div >
-                <div />
-              </div>
-              <span >{pct}%</span>
+      <div className="flex flex-col gap-1.5">
+        {hasChildren && (
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1 rounded-full bg-white/5 overflow-hidden">
+              <div
+                className="h-full bg-accent rounded-full transition-all duration-300"
+                style={{ width: `${subtaskProgressPct}%` }}
+              />
             </div>
-          );
-        })()}
+            <span className="text-label">{subtaskProgressPct}%</span>
+          </div>
+        )}
 
-        <div >
-            {plannedLabel && (
-              <div title="Planned for">
-                <Calendar size={isCompact ? 8 : 11} />
-                <span >{plannedLabel}</span>
-              </div>
-            )}
+        <div className="flex items-center gap-3 flex-wrap text-[11px] text-zinc-500">
+          {plannedLabel && (
+            <div className="flex items-center gap-1" title="Planned for">
+              <Calendar size={dateIconSize} />
+              <span>{plannedLabel}</span>
+            </div>
+          )}
 
-            {dueLabel && (
-              <div
+          {dueLabel && (
+            <div className={dueLabelClass} title="Deadline">
+              <Flag size={dateIconSize} />
+              <span>{dueLabel}</span>
+            </div>
+          )}
 
-                title="Deadline"
-              >
-                <Flag size={isCompact ? 8 : 11} />
-                <span >{dueLabel}</span>
-              </div>
-            )}
-
-            {task.carriedFromDate && (
-              <div
-
-                title={`Перенесено з ${new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}`}
-              >
-                <RefreshCw size={isCompact ? 8 : 11} />
-                <span >
-                  від {new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}
-                </span>
-              </div>
-            )}
+          {task.carriedFromDate && (
+            <div className="flex items-center gap-1" title={carriedFromLabel}>
+              <RefreshCw size={dateIconSize} />
+              <span>{carriedFromText}</span>
+            </div>
+          )}
         </div>
       </div>
 

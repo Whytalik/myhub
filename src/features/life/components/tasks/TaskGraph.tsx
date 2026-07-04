@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import {
   ReactFlow,
   Background,
@@ -10,11 +10,11 @@ import {
   Edge,
   MarkerType,
   Node,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 
-import { TaskNode, TaskNodeData } from './TaskNode';
-import type { TaskData, LifeSphereData } from '@/features/life/types';
+import { TaskNode, TaskNodeData } from "./TaskNode";
+import type { TaskData, LifeSphereData } from "@/features/life/types";
 
 interface TaskGraphProps {
   tasks: TaskData[];
@@ -42,11 +42,11 @@ function buildTree(tasks: TaskData[]): TreeNode[] {
   const nodeMap = new Map<string, TreeNode>();
   const roots: TreeNode[] = [];
 
-  tasks.forEach(task => {
+  tasks.forEach((task) => {
     nodeMap.set(task.id, { id: task.id, children: [] });
   });
 
-  tasks.forEach(task => {
+  tasks.forEach((task) => {
     const node = nodeMap.get(task.id)!;
     if (task.parentId && nodeMap.has(task.parentId)) {
       nodeMap.get(task.parentId)!.children.push(node);
@@ -60,7 +60,7 @@ function buildTree(tasks: TaskData[]): TreeNode[] {
 
 function subtreeHeight(node: TreeNode): number {
   if (node.children.length === 0) return NODE_HEIGHT;
-  const childHeights = node.children.map(c => subtreeHeight(c));
+  const childHeights = node.children.map((c) => subtreeHeight(c));
   const total = childHeights.reduce((a, b) => a + b, 0);
   return Math.max(NODE_HEIGHT, total + NODE_SEP * (node.children.length - 1));
 }
@@ -69,18 +69,19 @@ function layoutTree(
   node: TreeNode,
   x: number,
   y: number,
-  positions: Map<string, { x: number; y: number }>
+  positions: Map<string, { x: number; y: number }>,
 ): void {
   positions.set(node.id, { x, y });
 
   if (node.children.length === 0) return;
 
-  const totalHeight = node.children.reduce((sum, c) => sum + subtreeHeight(c), 0)
-    + NODE_SEP * (node.children.length - 1);
+  const totalHeight =
+    node.children.reduce((sum, c) => sum + subtreeHeight(c), 0) +
+    NODE_SEP * (node.children.length - 1);
 
   let currentY = y - totalHeight / 2;
 
-  node.children.forEach(child => {
+  node.children.forEach((child) => {
     const childH = subtreeHeight(child);
     const childY = currentY + childH / 2;
     layoutTree(child, x + NODE_WIDTH + RANK_SEP, childY, positions);
@@ -89,7 +90,7 @@ function layoutTree(
 }
 
 const getLayoutedElements = (nodes: Node<TaskNodeData>[], edges: Edge[]) => {
-  const allTasks = nodes.map(n => n.data.task);
+  const allTasks = nodes.map((n) => n.data.task);
   const roots = buildTree(allTasks);
 
   const positions = new Map<string, { x: number; y: number }>();
@@ -110,13 +111,13 @@ const getLayoutedElements = (nodes: Node<TaskNodeData>[], edges: Edge[]) => {
     }, 0);
 
     let currentX = 0;
-    roots.forEach(root => {
+    roots.forEach((root) => {
       layoutTree(root, currentX, 0, positions);
       currentX += totalWidth + RANK_SEP * 2;
     });
   }
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     const pos = positions.get(node.id);
     if (pos) {
       node.position = { x: pos.x, y: pos.y };
@@ -135,7 +136,7 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
   const { layoutedNodes, layoutedEdges } = useMemo(() => {
     const nodes: Node<TaskNodeData>[] = tasks.map((task) => ({
       id: task.id,
-      type: 'task',
+      type: "task",
       data: {
         task,
         allTasks: tasks,
@@ -154,10 +155,10 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
           source: task.parentId,
           target: task.id,
           animated: true,
-          style: { stroke: 'rgba(192, 132, 252, 0.35)', strokeWidth: 2 },
+          style: { stroke: "rgba(192, 132, 252, 0.35)", strokeWidth: 2 },
           markerEnd: {
             type: MarkerType.ArrowClosed,
-            color: 'rgba(192, 132, 252, 0.35)',
+            color: "rgba(192, 132, 252, 0.35)",
           },
         });
       }
@@ -176,7 +177,7 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
   }, [layoutedNodes, layoutedEdges, setNodes, setEdges]);
 
   return (
-    <div >
+    <div className="relative w-full h-[70vh] rounded-2xl overflow-hidden border border-white/[0.06]">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -196,16 +197,14 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
         selectionOnDrag={false}
         proOptions={{ hideAttribution: true }}
         defaultEdgeOptions={{
-          type: 'smoothstep',
+          type: "smoothstep",
         }}
       >
         <Background color="#2a2a2a" gap={24} size={1} />
       </ReactFlow>
 
-      <div >
-        <p >
-          Mind Map — Horizontal
-        </p>
+      <div className="absolute top-3 left-3 glass-card px-3 py-1.5 pointer-events-none">
+        <p className="text-label">Mind Map — Horizontal</p>
       </div>
     </div>
   );
