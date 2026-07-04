@@ -21,8 +21,8 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-life",
       iconActive: "text-accent-life",
       bgActive: "bg-accent-life",
-      containerActive: "bg-accent-life/[0.03] border-accent-life/10",
-      containerInactive: "border-transparent",
+      containerActive: "bg-accent-life/[0.04] border-accent-life/15 rounded-2xl",
+      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
   }
   if (cleanLabel.includes("nutrition")) {
@@ -30,8 +30,8 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-nutrition",
       iconActive: "text-accent-nutrition",
       bgActive: "bg-accent-nutrition",
-      containerActive: "bg-accent-nutrition/[0.03] border-accent-nutrition/10",
-      containerInactive: "border-transparent",
+      containerActive: "bg-accent-nutrition/[0.04] border-accent-nutrition/15 rounded-2xl",
+      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
   }
   if (cleanLabel.includes("training")) {
@@ -39,17 +39,37 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-training",
       iconActive: "text-accent-training",
       bgActive: "bg-accent-training",
-      containerActive: "bg-accent-training/[0.03] border-accent-training/10",
-      containerInactive: "border-transparent",
+      containerActive: "bg-accent-training/[0.04] border-accent-training/15 rounded-2xl",
+      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
   }
   return {
     accentText: "text-accent",
     iconActive: "text-accent",
     bgActive: "bg-accent",
-    containerActive: "bg-accent-muted/10 border-accent/20",
-    containerInactive: "border-transparent",
+    containerActive: "bg-accent-muted/10 border-accent/20 rounded-2xl",
+    containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
   };
+}
+
+function getOpenSectionsFromCookie(spaces: { label: string }[]): Set<string> {
+  if (typeof document === "undefined") {
+    return new Set(spaces.map((s) => s.label));
+  }
+  const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
+  if (match) {
+    try {
+      const parsed = JSON.parse(decodeURIComponent(match[2])) as Record<string, boolean>;
+      const openSet = new Set<string>();
+      spaces.forEach((s) => {
+        if (parsed[s.label] !== false) {
+          openSet.add(s.label);
+        }
+      });
+      return openSet;
+    } catch {}
+  }
+  return new Set(spaces.map((s) => s.label));
 }
 
 interface SidebarProps {
@@ -58,20 +78,31 @@ interface SidebarProps {
   initialOrder?: string[];
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export function Sidebar({ user, initialOpenSections }: SidebarProps) {
   const pathname = usePathname();
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const domain = getActiveDomain(pathname);
-  const [openSpaces, setOpenSpaces] = useState<Set<string>>(
-    () => new Set(domain.spaces.map((s) => s.label)),
-  );
+  const [mounted, setMounted] = useState(false);
+
+  const [openSpaces, setOpenSpaces] = useState<Set<string>>(() => {
+    const openSet = new Set<string>();
+    domain.spaces.forEach((s) => {
+      if (initialOpenSections && initialOpenSections[s.label] === false) {
+        // closed
+      } else {
+        openSet.add(s.label);
+      }
+    });
+    return openSet;
+  });
+
   const [lastDomainId, setLastDomainId] = useState(domain.id);
 
   if (domain.id !== lastDomainId) {
     setLastDomainId(domain.id);
-    setOpenSpaces(new Set(domain.spaces.map((s) => s.label)));
+    setOpenSpaces(getOpenSectionsFromCookie(domain.spaces));
   }
 
   const matchesPage = (page: { href: string }) =>
@@ -89,16 +120,43 @@ export function Sidebar({ user }: SidebarProps) {
   const isPageActive = (page: { href: string }) => activePage?.href === page.href;
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const targetSpace = domain.spaces.find((s) => s.pages.some((p) => p.href === activePage?.href));
     if (targetSpace) {
-      setOpenSpaces((prev) =>
-        prev.has(targetSpace.label) ? prev : new Set([...prev, targetSpace.label]),
-      );
+      setOpenSpaces((prev) => {
+        if (prev.has(targetSpace.label)) return prev;
+        const next = new Set(prev).add(targetSpace.label);
+        
+        // Update cookie
+        if (typeof document !== "undefined") {
+          let existing: Record<string, boolean> = {};
+          const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
+          if (match) {
+            try { existing = JSON.parse(decodeURIComponent(match[2])); } catch {}
+          }
+          const updated = { ...existing, [targetSpace.label]: true };
+          document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
+        }
+        
+        return next;
+      });
     }
-
-  }, [pathname]);
+  }, [pathname, mounted]);
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
+
+  if (!mounted) {
+    return (
+      <aside
+        style={{ width: isCollapsed ? 72 : 280 }}
+        className="fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-30 h-screen glass-sidebar flex flex-col justify-between overflow-hidden select-none opacity-0 flex-shrink-0"
+      />
+    );
+  }
 
   return (
     <>
@@ -207,10 +265,22 @@ export function Sidebar({ user }: SidebarProps) {
                         const next = new Set(prev);
                         if (next.has(space.label)) next.delete(space.label);
                         else next.add(space.label);
+                        
+                        // Update cookie
+                        if (typeof document !== "undefined") {
+                          let existing: Record<string, boolean> = {};
+                          const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
+                          if (match) {
+                            try { existing = JSON.parse(decodeURIComponent(match[2])); } catch {}
+                          }
+                          const updated = { ...existing, [space.label]: next.has(space.label) };
+                          document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
+                        }
+                        
                         return next;
                       });
                     }}
-                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider transition-colors duration-150 ${
+                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider outline-none focus:outline-none transition-colors duration-150 ${
                       anyPageActive ? styles.accentText : "text-zinc-500 hover:text-zinc-300"
                     }`}
                   >
@@ -248,10 +318,10 @@ export function Sidebar({ user }: SidebarProps) {
                             <Link
                               key={page.href}
                               href={page.href}
-                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-[13px] transition-all duration-150 ${
+                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-150 ${
                                 isActive
                                   ? `text-white font-medium ${styles.bgActive} shadow-sm`
-                                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
+                                  : "text-zinc-350 hover:text-white hover:bg-white/10"
                               }`}
                             >
                               <PageIcon

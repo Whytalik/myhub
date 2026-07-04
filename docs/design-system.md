@@ -1,39 +1,39 @@
-# 🪐 Linear Calm Density Design System Specification
+# 🍏 macOS Sonoma Minimalist Design System Specification
 
-**myhub** is the user's personal digital environment. This design system is inspired by the structured, high-density, minimalist aesthetics of modern developer tools like **Linear** and **Vercel**. It focuses on razor-thin borders, solid dark nesting, clean sans-serif typography, and semantic, sparse accent highlights.
+**myhub** is the user's personal digital environment. This design system is inspired by the premium, spacious, translucent glassmorphism aesthetics of **macOS Sonoma**. It features warm dark slate backdrops, frosted glass panels, spacious rounded layout systems, and elegant system typography.
 
 ---
 
 ## 🎨 1. Hierarchy & Color Palette
 
-Rather than using heavy frosted glass overlays, this system builds hierarchy using **solid nesting** (elevation colors) and **razor-thin borders**.
+The system builds hierarchy using **translucent frosted panels** (`backdrop-filter`) and delicate borders.
 
 ### 🌑 Elevation Surfaces
 
 | Token | CSS / Tailwind Classes | Description | Purpose |
 | :--- | :--- | :--- | :--- |
-| `bg-canvas` | `#09090b` (Solid) | Deep dark backing | Primary page viewport background. |
-| `bg-surface` | `#121215` (Solid) | Mid-tone surface | Sidebar navigation, main content panels. |
-| `bg-elevated`| `#18181b` (Solid) | Lighter elevated surface | Modals, context dropdowns, calendar pickers. |
-| `border-subtle`| `border-zinc-800/80` or `border-white/5` | Razor-thin border separator | Defines boundaries between panels. |
-| `bg-hover` | `bg-white/[0.04]` | Subtle row hover | Interactive items list hover background. |
+| `bg-canvas` | `#1c1c1e` (Solid) | Deep warm dark gray | Primary page viewport background. |
+| `bg-surface` | `rgba(30, 30, 30, 0.45)` | Translucent frosted glass | Sidebar navigation, main content panels. |
+| `bg-elevated`| `rgba(45, 45, 45, 0.85)` | Elevated glass overlay | Modals, context dropdowns, calendar pickers. |
+| `border-subtle`| `rgba(255, 255, 255, 0.08)` | Razor-thin border separator | Defines boundaries between panels. |
+| `bg-hover` | `rgba(255, 255, 255, 0.06)` | Translucent row hover | Interactive items list hover background. |
 
 ### 🔵 Dynamic System Accents
-Accents are used with extreme restraint (CTAs, focus rings, status indicators):
+Accents are used with restraint (CTAs, focus rings, status indicators):
 
 | Accent Color | Hex (Dark) | Badge Style | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Blue (Default)**| `#3b82f6` | `bg-blue-500/10 text-blue-400` | Focus states, universal action buttons. |
-| **Green (Health)**| `#22c55e` | `bg-emerald-500/10 text-emerald-400`| Nutrition goals, completed metrics. |
-| **Orange (Life)** | `#f97316` | `bg-orange-500/10 text-orange-400` | Task reminders, routine highlights. |
-| **Red (Alert)**   | `#ef4444` | `bg-red-500/10 text-red-400`     | Destructive actions, warnings. |
+| **Blue (Default)**| `#007aff` | `bg-blue-500/10 text-blue-400` | Focus states, universal action buttons. |
+| **Green (Health)**| `#34c759` | `bg-emerald-500/10 text-emerald-400`| Nutrition goals, completed metrics. |
+| **Orange (Life)** | `#ff9500` | `bg-orange-500/10 text-orange-400` | Task reminders, routine highlights. |
+| **Red (Alert)**   | `#ff3b30` | `bg-red-500/10 text-red-400`     | Destructive actions, warnings. |
 
 ---
 
 ## 🔠 2. Typography Scale
 
-1.  **Sans-Serif (`Geist Sans / Inter / system-ui`):** Primary UI font stack. Designed with a tight letter-spacing (`tracking-tight`) for high density.
-2.  **Monospace (`Geist Mono / SF Mono`):** Mandatory for numeric counters, dates, indicators, and uppercase labels.
+1.  **Sans-Serif (`-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif`):** Primary UI font stack.
+2.  **Monospace (`SFMono-Regular, SF Mono, Menlo, monospace`):** Mandatory for numeric counters, dates, indicators, and uppercase labels.
 
 ### Typography Hierarchy:
 *   `text-page-title` — `1.25rem (20px) | Semibold | tracking-tight` (Main Page Title)
@@ -46,27 +46,22 @@ Accents are used with extreme restraint (CTAs, focus rings, status indicators):
 
 ## 🧱 3. Form Input Elements
 
-Inputs use flat well styling that fits seamlessly into the panel structures.
+Inputs use a dark well style that recesses elegantly into the frosted glass panels.
 
 ### 📝 Text & Number Inputs (`Input`)
-*   **Style:** `bg-zinc-950 border border-zinc-800 rounded-md px-3 py-1.5 text-sm text-zinc-150 transition-all duration-150`
-*   **Focus State:** High-contrast border `border-accent/80` and zero glowing shadows (focus ring is clean and sharp).
+*   **Style:** `bg-black/30 border border-white/8 rounded-lg px-3 py-1.5 text-sm text-zinc-150 transition-all duration-150`
+*   **Focus State:** High-contrast border `border-accent/80` and subtle glow `box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2)`.
 *   **Number Inputs:** Right-aligned numerical font (`font-mono text-right`).
-
-### 🟦 Checkbox
-*   **Style:** `w-4 h-4 bg-zinc-950 border border-zinc-800 rounded`
-*   **Checked:** Fills with `bg-accent` containing a clean checkmark icon.
 
 ---
 
 ## ⚠️ 4. Implementation Guidelines
 
 ✅ **DO:**
-*   Rely on sharp, razor-thin borders (`border-white/5` or `border-zinc-800`) to organize content.
-*   Enforce a clean, structured sidebar layout with solid backgrounds and sharp list elements.
-*   Use a default UI font size of **13px** (`text-[13px]`) for sidebar items and secondary copy to maintain calm density.
+*   Rely on frosted glass borders (`border-white/8` or `border-zinc-800/40`) to organize content.
+*   Enforce a clean, spacious sidebar layout with rounded card shapes (`rounded-2xl`).
+*   Ensure that browser focus outlines on click are removed using `outline-none focus:outline-none`.
 
 ❌ **DON'T:**
-*   Use heavy blurred frosted glass overlays.
-*   Add drop shadows on dark surfaces (they look muddy).
-*   Hardcode hex colors inline in JSX.
+*   Add macOS window traffic light dots on the layout panels (keep it clean).
+*   Use raw custom properties inside JSX; map all styles to Tailwind's `@theme` or `@utility`.

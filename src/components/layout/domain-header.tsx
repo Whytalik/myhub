@@ -48,7 +48,7 @@ export function DomainHeader() {
             <Link
               key={domain.id}
               href={domain.href}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium transition-all duration-150 ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
                 isActive
                   ? "text-zinc-100 bg-zinc-800/60 border border-zinc-700/50 shadow-sm"
                   : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent"
@@ -66,7 +66,7 @@ export function DomainHeader() {
         {hasGuide && (
           <button
             onClick={() => setGuideOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-zinc-400 hover:text-zinc-250 border border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-900/60 transition-all duration-150 cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-zinc-400 hover:text-zinc-250 border border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-900/60 outline-none focus:outline-none transition-all duration-150 cursor-pointer shadow-sm"
           >
             <BookOpen size={13} className="text-zinc-500" />
             Guide
