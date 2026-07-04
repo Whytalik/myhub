@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/page-header";
-import { NutritionPageClient } from "@/features/health/nutrition/components/NutritionPageClient";
+import { NutritionSpaceClient } from "@/features/health/nutrition/components/NutritionSpaceClient";
 
 export const metadata: Metadata = {
   title: "Nutrition",
@@ -12,9 +12,8 @@ export default function NutritionPage() {
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "nutrition" }]}
         title="Nutrition"
-        description="Track meals, macros, and eating patterns to fuel your body optimally."
       />
-      <NutritionPageClient />
+      <NutritionSpaceClient />
     </div>
   );
 }

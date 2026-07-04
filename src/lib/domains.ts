@@ -8,8 +8,6 @@ import {
   Sparkles,
   Utensils,
   Zap,
-  ClipboardList,
-  ShoppingCart,
   Dumbbell,
 } from "lucide-react";
 
@@ -50,9 +48,7 @@ export const DOMAINS: Domain[] = [
     icon: Heart,
     accent: "#ff8c00",
     spaces: [
-      { href: "/health/nutrition", label: "Daily", icon: Utensils },
-      { href: "/health/meal-prep", label: "Meal Prep", icon: ClipboardList },
-      { href: "/health/shopping-list", label: "Shopping List", icon: ShoppingCart },
+      { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
       { href: "/health/training", label: "Training", icon: Dumbbell },
     ],
   },
