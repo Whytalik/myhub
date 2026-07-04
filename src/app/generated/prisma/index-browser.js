@@ -270,9 +270,26 @@ exports.Prisma.HabitScalarFieldEnum = {
   targetDaysPerWeek: 'targetDaysPerWeek',
   sphereLevel: 'sphereLevel',
   subcategory: 'subcategory',
+  ifThenPlan: 'ifThenPlan',
+  frictionReduction: 'frictionReduction',
+  identityStatement: 'identityStatement',
+  minimalThreshold: 'minimalThreshold',
+  copingPlan: 'copingPlan',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  sphereId: 'sphereId'
+  sphereId: 'sphereId',
+  chainId: 'chainId'
+};
+
+exports.Prisma.HabitChainScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  description: 'description',
+  order: 'order',
+  archived: 'archived',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.HabitCompletionScalarFieldEnum = {
@@ -391,6 +408,89 @@ exports.Prisma.SprintReviewScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ExerciseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  muscleGroup: 'muscleGroup',
+  equipment: 'equipment',
+  trackingType: 'trackingType',
+  notes: 'notes',
+  archived: 'archived',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrainingPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  description: 'description',
+  archived: 'archived',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrainingDayScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  planId: 'planId',
+  name: 'name',
+  notes: 'notes',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TrainingDayExerciseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dayId: 'dayId',
+  exerciseId: 'exerciseId',
+  order: 'order',
+  sets: 'sets',
+  targetReps: 'targetReps',
+  targetWeight: 'targetWeight',
+  targetRpe: 'targetRpe',
+  restSeconds: 'restSeconds',
+  targetDurationSeconds: 'targetDurationSeconds',
+  targetDistanceMeters: 'targetDistanceMeters',
+  notes: 'notes'
+};
+
+exports.Prisma.TrainingSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  dayId: 'dayId',
+  dayName: 'dayName',
+  date: 'date',
+  status: 'status',
+  durationSeconds: 'durationSeconds',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SetLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sessionId: 'sessionId',
+  exerciseId: 'exerciseId',
+  exerciseName: 'exerciseName',
+  setNumber: 'setNumber',
+  reps: 'reps',
+  weight: 'weight',
+  rpe: 'rpe',
+  restSeconds: 'restSeconds',
+  durationSeconds: 'durationSeconds',
+  distanceMeters: 'distanceMeters',
+  completed: 'completed',
+  notes: 'notes',
+  order: 'order'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -475,6 +575,7 @@ exports.Prisma.ModelName = {
   Task: 'Task',
   DailyEntry: 'DailyEntry',
   Habit: 'Habit',
+  HabitChain: 'HabitChain',
   HabitCompletion: 'HabitCompletion',
   Vision: 'Vision',
   AnnualCompass: 'AnnualCompass',
@@ -485,7 +586,13 @@ exports.Prisma.ModelName = {
   Project: 'Project',
   Tactic: 'Tactic',
   TacticCompletion: 'TacticCompletion',
-  SprintReview: 'SprintReview'
+  SprintReview: 'SprintReview',
+  Exercise: 'Exercise',
+  TrainingPlan: 'TrainingPlan',
+  TrainingDay: 'TrainingDay',
+  TrainingDayExercise: 'TrainingDayExercise',
+  TrainingSession: 'TrainingSession',
+  SetLog: 'SetLog'
 };
 
 /**

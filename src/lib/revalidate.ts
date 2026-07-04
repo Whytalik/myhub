@@ -30,6 +30,28 @@ export function invalidateHabitCache(userId: string) {
   revalidateTag("habits-review", INVALIDATE_PROFILE);
 }
 
+export function invalidateHabitChainCache(userId: string) {
+  revalidateTag(cacheTags.habitChains(userId), INVALIDATE_PROFILE);
+  revalidateTag("habit-chains", INVALIDATE_PROFILE);
+  revalidateTag("habits", INVALIDATE_PROFILE);
+  revalidateTag("habits-review", INVALIDATE_PROFILE);
+}
+
 export function invalidateScheduleCache(userId: string) {
   revalidateTag("week-templates", INVALIDATE_PROFILE);
+}
+
+export function invalidateExerciseCache(userId: string) {
+  revalidateTag(cacheTags.exercises(userId), INVALIDATE_PROFILE);
+  revalidateTag("exercises", INVALIDATE_PROFILE);
+}
+
+export function invalidateTrainingPlanCache(userId: string) {
+  revalidateTag(cacheTags.trainingPlans(userId), INVALIDATE_PROFILE);
+  revalidateTag("training-plans", INVALIDATE_PROFILE);
+}
+
+export function invalidateTrainingSessionCache(userId: string) {
+  revalidateTag(cacheTags.trainingSessions(userId), INVALIDATE_PROFILE);
+  revalidateTag("training-sessions", INVALIDATE_PROFILE);
 }

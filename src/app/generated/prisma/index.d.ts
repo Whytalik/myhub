@@ -64,6 +64,11 @@ export type DailyEntry = $Result.DefaultSelection<Prisma.$DailyEntryPayload>
  */
 export type Habit = $Result.DefaultSelection<Prisma.$HabitPayload>
 /**
+ * Model HabitChain
+ * 
+ */
+export type HabitChain = $Result.DefaultSelection<Prisma.$HabitChainPayload>
+/**
  * Model HabitCompletion
  * 
  */
@@ -118,6 +123,36 @@ export type TacticCompletion = $Result.DefaultSelection<Prisma.$TacticCompletion
  * 
  */
 export type SprintReview = $Result.DefaultSelection<Prisma.$SprintReviewPayload>
+/**
+ * Model Exercise
+ * 
+ */
+export type Exercise = $Result.DefaultSelection<Prisma.$ExercisePayload>
+/**
+ * Model TrainingPlan
+ * 
+ */
+export type TrainingPlan = $Result.DefaultSelection<Prisma.$TrainingPlanPayload>
+/**
+ * Model TrainingDay
+ * 
+ */
+export type TrainingDay = $Result.DefaultSelection<Prisma.$TrainingDayPayload>
+/**
+ * Model TrainingDayExercise
+ * 
+ */
+export type TrainingDayExercise = $Result.DefaultSelection<Prisma.$TrainingDayExercisePayload>
+/**
+ * Model TrainingSession
+ * 
+ */
+export type TrainingSession = $Result.DefaultSelection<Prisma.$TrainingSessionPayload>
+/**
+ * Model SetLog
+ * 
+ */
+export type SetLog = $Result.DefaultSelection<Prisma.$SetLogPayload>
 
 /**
  * Enums
@@ -443,6 +478,16 @@ export class PrismaClient<
   get habit(): Prisma.HabitDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.habitChain`: Exposes CRUD operations for the **HabitChain** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HabitChains
+    * const habitChains = await prisma.habitChain.findMany()
+    * ```
+    */
+  get habitChain(): Prisma.HabitChainDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.habitCompletion`: Exposes CRUD operations for the **HabitCompletion** model.
     * Example usage:
     * ```ts
@@ -551,6 +596,66 @@ export class PrismaClient<
     * ```
     */
   get sprintReview(): Prisma.SprintReviewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.exercise`: Exposes CRUD operations for the **Exercise** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Exercises
+    * const exercises = await prisma.exercise.findMany()
+    * ```
+    */
+  get exercise(): Prisma.ExerciseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trainingPlan`: Exposes CRUD operations for the **TrainingPlan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrainingPlans
+    * const trainingPlans = await prisma.trainingPlan.findMany()
+    * ```
+    */
+  get trainingPlan(): Prisma.TrainingPlanDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trainingDay`: Exposes CRUD operations for the **TrainingDay** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrainingDays
+    * const trainingDays = await prisma.trainingDay.findMany()
+    * ```
+    */
+  get trainingDay(): Prisma.TrainingDayDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trainingDayExercise`: Exposes CRUD operations for the **TrainingDayExercise** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrainingDayExercises
+    * const trainingDayExercises = await prisma.trainingDayExercise.findMany()
+    * ```
+    */
+  get trainingDayExercise(): Prisma.TrainingDayExerciseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trainingSession`: Exposes CRUD operations for the **TrainingSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrainingSessions
+    * const trainingSessions = await prisma.trainingSession.findMany()
+    * ```
+    */
+  get trainingSession(): Prisma.TrainingSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.setLog`: Exposes CRUD operations for the **SetLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SetLogs
+    * const setLogs = await prisma.setLog.findMany()
+    * ```
+    */
+  get setLog(): Prisma.SetLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -995,6 +1100,7 @@ export namespace Prisma {
     Task: 'Task',
     DailyEntry: 'DailyEntry',
     Habit: 'Habit',
+    HabitChain: 'HabitChain',
     HabitCompletion: 'HabitCompletion',
     Vision: 'Vision',
     AnnualCompass: 'AnnualCompass',
@@ -1005,7 +1111,13 @@ export namespace Prisma {
     Project: 'Project',
     Tactic: 'Tactic',
     TacticCompletion: 'TacticCompletion',
-    SprintReview: 'SprintReview'
+    SprintReview: 'SprintReview',
+    Exercise: 'Exercise',
+    TrainingPlan: 'TrainingPlan',
+    TrainingDay: 'TrainingDay',
+    TrainingDayExercise: 'TrainingDayExercise',
+    TrainingSession: 'TrainingSession',
+    SetLog: 'SetLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1021,7 +1133,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "weekTemplate" | "pushSubscription" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1762,6 +1874,80 @@ export namespace Prisma {
           count: {
             args: Prisma.HabitCountArgs<ExtArgs>
             result: $Utils.Optional<HabitCountAggregateOutputType> | number
+          }
+        }
+      }
+      HabitChain: {
+        payload: Prisma.$HabitChainPayload<ExtArgs>
+        fields: Prisma.HabitChainFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HabitChainFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HabitChainFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          findFirst: {
+            args: Prisma.HabitChainFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HabitChainFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          findMany: {
+            args: Prisma.HabitChainFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>[]
+          }
+          create: {
+            args: Prisma.HabitChainCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          createMany: {
+            args: Prisma.HabitChainCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.HabitChainCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>[]
+          }
+          delete: {
+            args: Prisma.HabitChainDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          update: {
+            args: Prisma.HabitChainUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          deleteMany: {
+            args: Prisma.HabitChainDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HabitChainUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.HabitChainUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>[]
+          }
+          upsert: {
+            args: Prisma.HabitChainUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HabitChainPayload>
+          }
+          aggregate: {
+            args: Prisma.HabitChainAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHabitChain>
+          }
+          groupBy: {
+            args: Prisma.HabitChainGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HabitChainGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HabitChainCountArgs<ExtArgs>
+            result: $Utils.Optional<HabitChainCountAggregateOutputType> | number
           }
         }
       }
@@ -2579,6 +2765,450 @@ export namespace Prisma {
           }
         }
       }
+      Exercise: {
+        payload: Prisma.$ExercisePayload<ExtArgs>
+        fields: Prisma.ExerciseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExerciseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExerciseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          findFirst: {
+            args: Prisma.ExerciseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExerciseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          findMany: {
+            args: Prisma.ExerciseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>[]
+          }
+          create: {
+            args: Prisma.ExerciseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          createMany: {
+            args: Prisma.ExerciseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExerciseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>[]
+          }
+          delete: {
+            args: Prisma.ExerciseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          update: {
+            args: Prisma.ExerciseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          deleteMany: {
+            args: Prisma.ExerciseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExerciseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExerciseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>[]
+          }
+          upsert: {
+            args: Prisma.ExerciseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExercisePayload>
+          }
+          aggregate: {
+            args: Prisma.ExerciseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExercise>
+          }
+          groupBy: {
+            args: Prisma.ExerciseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExerciseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExerciseCountArgs<ExtArgs>
+            result: $Utils.Optional<ExerciseCountAggregateOutputType> | number
+          }
+        }
+      }
+      TrainingPlan: {
+        payload: Prisma.$TrainingPlanPayload<ExtArgs>
+        fields: Prisma.TrainingPlanFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrainingPlanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrainingPlanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          findFirst: {
+            args: Prisma.TrainingPlanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrainingPlanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          findMany: {
+            args: Prisma.TrainingPlanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>[]
+          }
+          create: {
+            args: Prisma.TrainingPlanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          createMany: {
+            args: Prisma.TrainingPlanCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrainingPlanCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>[]
+          }
+          delete: {
+            args: Prisma.TrainingPlanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          update: {
+            args: Prisma.TrainingPlanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrainingPlanDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrainingPlanUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrainingPlanUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrainingPlanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingPlanPayload>
+          }
+          aggregate: {
+            args: Prisma.TrainingPlanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrainingPlan>
+          }
+          groupBy: {
+            args: Prisma.TrainingPlanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrainingPlanGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrainingPlanCountArgs<ExtArgs>
+            result: $Utils.Optional<TrainingPlanCountAggregateOutputType> | number
+          }
+        }
+      }
+      TrainingDay: {
+        payload: Prisma.$TrainingDayPayload<ExtArgs>
+        fields: Prisma.TrainingDayFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrainingDayFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrainingDayFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          findFirst: {
+            args: Prisma.TrainingDayFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrainingDayFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          findMany: {
+            args: Prisma.TrainingDayFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>[]
+          }
+          create: {
+            args: Prisma.TrainingDayCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          createMany: {
+            args: Prisma.TrainingDayCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrainingDayCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>[]
+          }
+          delete: {
+            args: Prisma.TrainingDayDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          update: {
+            args: Prisma.TrainingDayUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrainingDayDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrainingDayUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrainingDayUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrainingDayUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayPayload>
+          }
+          aggregate: {
+            args: Prisma.TrainingDayAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrainingDay>
+          }
+          groupBy: {
+            args: Prisma.TrainingDayGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrainingDayGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrainingDayCountArgs<ExtArgs>
+            result: $Utils.Optional<TrainingDayCountAggregateOutputType> | number
+          }
+        }
+      }
+      TrainingDayExercise: {
+        payload: Prisma.$TrainingDayExercisePayload<ExtArgs>
+        fields: Prisma.TrainingDayExerciseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrainingDayExerciseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrainingDayExerciseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          findFirst: {
+            args: Prisma.TrainingDayExerciseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrainingDayExerciseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          findMany: {
+            args: Prisma.TrainingDayExerciseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>[]
+          }
+          create: {
+            args: Prisma.TrainingDayExerciseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          createMany: {
+            args: Prisma.TrainingDayExerciseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrainingDayExerciseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>[]
+          }
+          delete: {
+            args: Prisma.TrainingDayExerciseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          update: {
+            args: Prisma.TrainingDayExerciseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          deleteMany: {
+            args: Prisma.TrainingDayExerciseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrainingDayExerciseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrainingDayExerciseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>[]
+          }
+          upsert: {
+            args: Prisma.TrainingDayExerciseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingDayExercisePayload>
+          }
+          aggregate: {
+            args: Prisma.TrainingDayExerciseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrainingDayExercise>
+          }
+          groupBy: {
+            args: Prisma.TrainingDayExerciseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrainingDayExerciseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrainingDayExerciseCountArgs<ExtArgs>
+            result: $Utils.Optional<TrainingDayExerciseCountAggregateOutputType> | number
+          }
+        }
+      }
+      TrainingSession: {
+        payload: Prisma.$TrainingSessionPayload<ExtArgs>
+        fields: Prisma.TrainingSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrainingSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrainingSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.TrainingSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrainingSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          findMany: {
+            args: Prisma.TrainingSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>[]
+          }
+          create: {
+            args: Prisma.TrainingSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          createMany: {
+            args: Prisma.TrainingSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrainingSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.TrainingSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          update: {
+            args: Prisma.TrainingSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrainingSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrainingSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrainingSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrainingSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrainingSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.TrainingSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrainingSession>
+          }
+          groupBy: {
+            args: Prisma.TrainingSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrainingSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrainingSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<TrainingSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SetLog: {
+        payload: Prisma.$SetLogPayload<ExtArgs>
+        fields: Prisma.SetLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SetLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SetLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          findFirst: {
+            args: Prisma.SetLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SetLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          findMany: {
+            args: Prisma.SetLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>[]
+          }
+          create: {
+            args: Prisma.SetLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          createMany: {
+            args: Prisma.SetLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SetLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>[]
+          }
+          delete: {
+            args: Prisma.SetLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          update: {
+            args: Prisma.SetLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.SetLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SetLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SetLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.SetLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SetLogPayload>
+          }
+          aggregate: {
+            args: Prisma.SetLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSetLog>
+          }
+          groupBy: {
+            args: Prisma.SetLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SetLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SetLogCountArgs<ExtArgs>
+            result: $Utils.Optional<SetLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2697,6 +3327,7 @@ export namespace Prisma {
     task?: TaskOmit
     dailyEntry?: DailyEntryOmit
     habit?: HabitOmit
+    habitChain?: HabitChainOmit
     habitCompletion?: HabitCompletionOmit
     vision?: VisionOmit
     annualCompass?: AnnualCompassOmit
@@ -2708,6 +3339,12 @@ export namespace Prisma {
     tactic?: TacticOmit
     tacticCompletion?: TacticCompletionOmit
     sprintReview?: SprintReviewOmit
+    exercise?: ExerciseOmit
+    trainingPlan?: TrainingPlanOmit
+    trainingDay?: TrainingDayOmit
+    trainingDayExercise?: TrainingDayExerciseOmit
+    trainingSession?: TrainingSessionOmit
+    setLog?: SetLogOmit
   }
 
   /* Types for Logging */
@@ -2792,6 +3429,7 @@ export namespace Prisma {
     annualCompasses: number
     dailyEntries: number
     habits: number
+    habitChains: number
     lifeSpheres: number
     milestones: number
     pushSubscriptions: number
@@ -2800,6 +3438,12 @@ export namespace Prisma {
     tasks: number
     visions: number
     weekTemplates: number
+    exercises: number
+    trainingPlans: number
+    trainingDays: number
+    trainingDayExercises: number
+    trainingSessions: number
+    setLogs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2807,6 +3451,7 @@ export namespace Prisma {
     annualCompasses?: boolean | UserCountOutputTypeCountAnnualCompassesArgs
     dailyEntries?: boolean | UserCountOutputTypeCountDailyEntriesArgs
     habits?: boolean | UserCountOutputTypeCountHabitsArgs
+    habitChains?: boolean | UserCountOutputTypeCountHabitChainsArgs
     lifeSpheres?: boolean | UserCountOutputTypeCountLifeSpheresArgs
     milestones?: boolean | UserCountOutputTypeCountMilestonesArgs
     pushSubscriptions?: boolean | UserCountOutputTypeCountPushSubscriptionsArgs
@@ -2815,6 +3460,12 @@ export namespace Prisma {
     tasks?: boolean | UserCountOutputTypeCountTasksArgs
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     weekTemplates?: boolean | UserCountOutputTypeCountWeekTemplatesArgs
+    exercises?: boolean | UserCountOutputTypeCountExercisesArgs
+    trainingPlans?: boolean | UserCountOutputTypeCountTrainingPlansArgs
+    trainingDays?: boolean | UserCountOutputTypeCountTrainingDaysArgs
+    trainingDayExercises?: boolean | UserCountOutputTypeCountTrainingDayExercisesArgs
+    trainingSessions?: boolean | UserCountOutputTypeCountTrainingSessionsArgs
+    setLogs?: boolean | UserCountOutputTypeCountSetLogsArgs
   }
 
   // Custom InputTypes
@@ -2854,6 +3505,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HabitWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountHabitChainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HabitChainWhereInput
   }
 
   /**
@@ -2910,6 +3568,48 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWeekTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WeekTemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExerciseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrainingPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingPlanWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrainingDaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrainingDayExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayExerciseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrainingSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingSessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSetLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SetLogWhereInput
   }
 
 
@@ -3030,6 +3730,37 @@ export namespace Prisma {
    */
   export type HabitCountOutputTypeCountCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HabitCompletionWhereInput
+  }
+
+
+  /**
+   * Count Type HabitChainCountOutputType
+   */
+
+  export type HabitChainCountOutputType = {
+    habits: number
+  }
+
+  export type HabitChainCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    habits?: boolean | HabitChainCountOutputTypeCountHabitsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * HabitChainCountOutputType without action
+   */
+  export type HabitChainCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChainCountOutputType
+     */
+    select?: HabitChainCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * HabitChainCountOutputType without action
+   */
+  export type HabitChainCountOutputTypeCountHabitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HabitWhereInput
   }
 
 
@@ -3203,6 +3934,148 @@ export namespace Prisma {
    */
   export type TacticCountOutputTypeCountCompletionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TacticCompletionWhereInput
+  }
+
+
+  /**
+   * Count Type ExerciseCountOutputType
+   */
+
+  export type ExerciseCountOutputType = {
+    dayExercises: number
+    setLogs: number
+  }
+
+  export type ExerciseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dayExercises?: boolean | ExerciseCountOutputTypeCountDayExercisesArgs
+    setLogs?: boolean | ExerciseCountOutputTypeCountSetLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ExerciseCountOutputType without action
+   */
+  export type ExerciseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExerciseCountOutputType
+     */
+    select?: ExerciseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ExerciseCountOutputType without action
+   */
+  export type ExerciseCountOutputTypeCountDayExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayExerciseWhereInput
+  }
+
+  /**
+   * ExerciseCountOutputType without action
+   */
+  export type ExerciseCountOutputTypeCountSetLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SetLogWhereInput
+  }
+
+
+  /**
+   * Count Type TrainingPlanCountOutputType
+   */
+
+  export type TrainingPlanCountOutputType = {
+    days: number
+  }
+
+  export type TrainingPlanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    days?: boolean | TrainingPlanCountOutputTypeCountDaysArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TrainingPlanCountOutputType without action
+   */
+  export type TrainingPlanCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlanCountOutputType
+     */
+    select?: TrainingPlanCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TrainingPlanCountOutputType without action
+   */
+  export type TrainingPlanCountOutputTypeCountDaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayWhereInput
+  }
+
+
+  /**
+   * Count Type TrainingDayCountOutputType
+   */
+
+  export type TrainingDayCountOutputType = {
+    exercises: number
+    sessions: number
+  }
+
+  export type TrainingDayCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exercises?: boolean | TrainingDayCountOutputTypeCountExercisesArgs
+    sessions?: boolean | TrainingDayCountOutputTypeCountSessionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TrainingDayCountOutputType without action
+   */
+  export type TrainingDayCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayCountOutputType
+     */
+    select?: TrainingDayCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TrainingDayCountOutputType without action
+   */
+  export type TrainingDayCountOutputTypeCountExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayExerciseWhereInput
+  }
+
+  /**
+   * TrainingDayCountOutputType without action
+   */
+  export type TrainingDayCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingSessionWhereInput
+  }
+
+
+  /**
+   * Count Type TrainingSessionCountOutputType
+   */
+
+  export type TrainingSessionCountOutputType = {
+    setLogs: number
+  }
+
+  export type TrainingSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    setLogs?: boolean | TrainingSessionCountOutputTypeCountSetLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TrainingSessionCountOutputType without action
+   */
+  export type TrainingSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSessionCountOutputType
+     */
+    select?: TrainingSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TrainingSessionCountOutputType without action
+   */
+  export type TrainingSessionCountOutputTypeCountSetLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SetLogWhereInput
   }
 
 
@@ -3418,6 +4291,7 @@ export namespace Prisma {
     annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
+    habitChains?: boolean | User$habitChainsArgs<ExtArgs>
     lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
@@ -3426,6 +4300,12 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
+    exercises?: boolean | User$exercisesArgs<ExtArgs>
+    trainingPlans?: boolean | User$trainingPlansArgs<ExtArgs>
+    trainingDays?: boolean | User$trainingDaysArgs<ExtArgs>
+    trainingDayExercises?: boolean | User$trainingDayExercisesArgs<ExtArgs>
+    trainingSessions?: boolean | User$trainingSessionsArgs<ExtArgs>
+    setLogs?: boolean | User$setLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3474,6 +4354,7 @@ export namespace Prisma {
     annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
     dailyEntries?: boolean | User$dailyEntriesArgs<ExtArgs>
     habits?: boolean | User$habitsArgs<ExtArgs>
+    habitChains?: boolean | User$habitChainsArgs<ExtArgs>
     lifeSpheres?: boolean | User$lifeSpheresArgs<ExtArgs>
     milestones?: boolean | User$milestonesArgs<ExtArgs>
     pushSubscriptions?: boolean | User$pushSubscriptionsArgs<ExtArgs>
@@ -3482,6 +4363,12 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
+    exercises?: boolean | User$exercisesArgs<ExtArgs>
+    trainingPlans?: boolean | User$trainingPlansArgs<ExtArgs>
+    trainingDays?: boolean | User$trainingDaysArgs<ExtArgs>
+    trainingDayExercises?: boolean | User$trainingDayExercisesArgs<ExtArgs>
+    trainingSessions?: boolean | User$trainingSessionsArgs<ExtArgs>
+    setLogs?: boolean | User$setLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3494,6 +4381,7 @@ export namespace Prisma {
       annualCompasses: Prisma.$AnnualCompassPayload<ExtArgs>[]
       dailyEntries: Prisma.$DailyEntryPayload<ExtArgs>[]
       habits: Prisma.$HabitPayload<ExtArgs>[]
+      habitChains: Prisma.$HabitChainPayload<ExtArgs>[]
       lifeSpheres: Prisma.$LifeSpherePayload<ExtArgs>[]
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
@@ -3502,6 +4390,12 @@ export namespace Prisma {
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       visions: Prisma.$VisionPayload<ExtArgs>[]
       weekTemplates: Prisma.$WeekTemplatePayload<ExtArgs>[]
+      exercises: Prisma.$ExercisePayload<ExtArgs>[]
+      trainingPlans: Prisma.$TrainingPlanPayload<ExtArgs>[]
+      trainingDays: Prisma.$TrainingDayPayload<ExtArgs>[]
+      trainingDayExercises: Prisma.$TrainingDayExercisePayload<ExtArgs>[]
+      trainingSessions: Prisma.$TrainingSessionPayload<ExtArgs>[]
+      setLogs: Prisma.$SetLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3912,6 +4806,7 @@ export namespace Prisma {
     annualCompasses<T extends User$annualCompassesArgs<ExtArgs> = {}>(args?: Subset<T, User$annualCompassesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnualCompassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dailyEntries<T extends User$dailyEntriesArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     habits<T extends User$habitsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    habitChains<T extends User$habitChainsArgs<ExtArgs> = {}>(args?: Subset<T, User$habitChainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lifeSpheres<T extends User$lifeSpheresArgs<ExtArgs> = {}>(args?: Subset<T, User$lifeSpheresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     milestones<T extends User$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, User$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pushSubscriptions<T extends User$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3920,6 +4815,12 @@ export namespace Prisma {
     tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weekTemplates<T extends User$weekTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$weekTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exercises<T extends User$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trainingPlans<T extends User$trainingPlansArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingPlansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trainingDays<T extends User$trainingDaysArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingDaysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trainingDayExercises<T extends User$trainingDayExercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingDayExercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trainingSessions<T extends User$trainingSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    setLogs<T extends User$setLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$setLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4448,6 +5349,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.habitChains
+   */
+  export type User$habitChainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    where?: HabitChainWhereInput
+    orderBy?: HabitChainOrderByWithRelationInput | HabitChainOrderByWithRelationInput[]
+    cursor?: HabitChainWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HabitChainScalarFieldEnum | HabitChainScalarFieldEnum[]
+  }
+
+  /**
    * User.lifeSpheres
    */
   export type User$lifeSpheresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4637,6 +5562,150 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.exercises
+   */
+  export type User$exercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    where?: ExerciseWhereInput
+    orderBy?: ExerciseOrderByWithRelationInput | ExerciseOrderByWithRelationInput[]
+    cursor?: ExerciseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * User.trainingPlans
+   */
+  export type User$trainingPlansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    where?: TrainingPlanWhereInput
+    orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
+    cursor?: TrainingPlanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
+  }
+
+  /**
+   * User.trainingDays
+   */
+  export type User$trainingDaysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    where?: TrainingDayWhereInput
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    cursor?: TrainingDayWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingDayScalarFieldEnum | TrainingDayScalarFieldEnum[]
+  }
+
+  /**
+   * User.trainingDayExercises
+   */
+  export type User$trainingDayExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    where?: TrainingDayExerciseWhereInput
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * User.trainingSessions
+   */
+  export type User$trainingSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    where?: TrainingSessionWhereInput
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    cursor?: TrainingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.setLogs
+   */
+  export type User$setLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    where?: SetLogWhereInput
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    cursor?: SetLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
   }
 
   /**
@@ -14313,9 +15382,15 @@ export namespace Prisma {
     targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
+    ifThenPlan: string | null
+    frictionReduction: string | null
+    identityStatement: string | null
+    minimalThreshold: string | null
+    copingPlan: string | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
+    chainId: string | null
   }
 
   export type HabitMaxAggregateOutputType = {
@@ -14332,9 +15407,15 @@ export namespace Prisma {
     targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
+    ifThenPlan: string | null
+    frictionReduction: string | null
+    identityStatement: string | null
+    minimalThreshold: string | null
+    copingPlan: string | null
     createdAt: Date | null
     updatedAt: Date | null
     sphereId: string | null
+    chainId: string | null
   }
 
   export type HabitCountAggregateOutputType = {
@@ -14351,9 +15432,15 @@ export namespace Prisma {
     targetDaysPerWeek: number
     sphereLevel: number
     subcategory: number
+    ifThenPlan: number
+    frictionReduction: number
+    identityStatement: number
+    minimalThreshold: number
+    copingPlan: number
     createdAt: number
     updatedAt: number
     sphereId: number
+    chainId: number
     _all: number
   }
 
@@ -14382,9 +15469,15 @@ export namespace Prisma {
     targetDaysPerWeek?: true
     sphereLevel?: true
     subcategory?: true
+    ifThenPlan?: true
+    frictionReduction?: true
+    identityStatement?: true
+    minimalThreshold?: true
+    copingPlan?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
+    chainId?: true
   }
 
   export type HabitMaxAggregateInputType = {
@@ -14401,9 +15494,15 @@ export namespace Prisma {
     targetDaysPerWeek?: true
     sphereLevel?: true
     subcategory?: true
+    ifThenPlan?: true
+    frictionReduction?: true
+    identityStatement?: true
+    minimalThreshold?: true
+    copingPlan?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
+    chainId?: true
   }
 
   export type HabitCountAggregateInputType = {
@@ -14420,9 +15519,15 @@ export namespace Prisma {
     targetDaysPerWeek?: true
     sphereLevel?: true
     subcategory?: true
+    ifThenPlan?: true
+    frictionReduction?: true
+    identityStatement?: true
+    minimalThreshold?: true
+    copingPlan?: true
     createdAt?: true
     updatedAt?: true
     sphereId?: true
+    chainId?: true
     _all?: true
   }
 
@@ -14526,9 +15631,15 @@ export namespace Prisma {
     targetDaysPerWeek: number
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
+    ifThenPlan: string | null
+    frictionReduction: string | null
+    identityStatement: string | null
+    minimalThreshold: string | null
+    copingPlan: string | null
     createdAt: Date
     updatedAt: Date
     sphereId: string | null
+    chainId: string | null
     _count: HabitCountAggregateOutputType | null
     _avg: HabitAvgAggregateOutputType | null
     _sum: HabitSumAggregateOutputType | null
@@ -14564,10 +15675,17 @@ export namespace Prisma {
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
+    ifThenPlan?: boolean
+    frictionReduction?: boolean
+    identityStatement?: boolean
+    minimalThreshold?: boolean
+    copingPlan?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
+    chainId?: boolean
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
@@ -14587,10 +15705,17 @@ export namespace Prisma {
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
+    ifThenPlan?: boolean
+    frictionReduction?: boolean
+    identityStatement?: boolean
+    minimalThreshold?: boolean
+    copingPlan?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
+    chainId?: boolean
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
@@ -14608,10 +15733,17 @@ export namespace Prisma {
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
+    ifThenPlan?: boolean
+    frictionReduction?: boolean
+    identityStatement?: boolean
+    minimalThreshold?: boolean
+    copingPlan?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
+    chainId?: boolean
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["habit"]>
 
@@ -14629,24 +15761,33 @@ export namespace Prisma {
     targetDaysPerWeek?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
+    ifThenPlan?: boolean
+    frictionReduction?: boolean
+    identityStatement?: boolean
+    minimalThreshold?: boolean
+    copingPlan?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sphereId?: boolean
+    chainId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "targetDaysPerWeek" | "sphereLevel" | "subcategory" | "createdAt" | "updatedAt" | "sphereId", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "targetDaysPerWeek" | "sphereLevel" | "subcategory" | "ifThenPlan" | "frictionReduction" | "identityStatement" | "minimalThreshold" | "copingPlan" | "createdAt" | "updatedAt" | "sphereId" | "chainId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     completions?: boolean | Habit$completionsArgs<ExtArgs>
     _count?: boolean | HabitCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type HabitIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type HabitIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
+    chain?: boolean | Habit$chainArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -14654,6 +15795,7 @@ export namespace Prisma {
     name: "Habit"
     objects: {
       sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
+      chain: Prisma.$HabitChainPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       completions: Prisma.$HabitCompletionPayload<ExtArgs>[]
     }
@@ -14671,9 +15813,15 @@ export namespace Prisma {
       targetDaysPerWeek: number
       sphereLevel: $Enums.SphereLevel | null
       subcategory: string | null
+      ifThenPlan: string | null
+      frictionReduction: string | null
+      identityStatement: string | null
+      minimalThreshold: string | null
+      copingPlan: string | null
       createdAt: Date
       updatedAt: Date
       sphereId: string | null
+      chainId: string | null
     }, ExtArgs["result"]["habit"]>
     composites: {}
   }
@@ -15069,6 +16217,7 @@ export namespace Prisma {
   export interface Prisma__HabitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sphere<T extends Habit$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Habit$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    chain<T extends Habit$chainArgs<ExtArgs> = {}>(args?: Subset<T, Habit$chainArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     completions<T extends Habit$completionsArgs<ExtArgs> = {}>(args?: Subset<T, Habit$completionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitCompletionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -15113,9 +16262,15 @@ export namespace Prisma {
     readonly targetDaysPerWeek: FieldRef<"Habit", 'Int'>
     readonly sphereLevel: FieldRef<"Habit", 'SphereLevel'>
     readonly subcategory: FieldRef<"Habit", 'String'>
+    readonly ifThenPlan: FieldRef<"Habit", 'String'>
+    readonly frictionReduction: FieldRef<"Habit", 'String'>
+    readonly identityStatement: FieldRef<"Habit", 'String'>
+    readonly minimalThreshold: FieldRef<"Habit", 'String'>
+    readonly copingPlan: FieldRef<"Habit", 'String'>
     readonly createdAt: FieldRef<"Habit", 'DateTime'>
     readonly updatedAt: FieldRef<"Habit", 'DateTime'>
     readonly sphereId: FieldRef<"Habit", 'String'>
+    readonly chainId: FieldRef<"Habit", 'String'>
   }
     
 
@@ -15536,6 +16691,25 @@ export namespace Prisma {
   }
 
   /**
+   * Habit.chain
+   */
+  export type Habit$chainArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    where?: HabitChainWhereInput
+  }
+
+  /**
    * Habit.completions
    */
   export type Habit$completionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15575,6 +16749,1172 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: HabitInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HabitChain
+   */
+
+  export type AggregateHabitChain = {
+    _count: HabitChainCountAggregateOutputType | null
+    _avg: HabitChainAvgAggregateOutputType | null
+    _sum: HabitChainSumAggregateOutputType | null
+    _min: HabitChainMinAggregateOutputType | null
+    _max: HabitChainMaxAggregateOutputType | null
+  }
+
+  export type HabitChainAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type HabitChainSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type HabitChainMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    order: number | null
+    archived: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HabitChainMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    order: number | null
+    archived: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HabitChainCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    description: number
+    order: number
+    archived: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type HabitChainAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type HabitChainSumAggregateInputType = {
+    order?: true
+  }
+
+  export type HabitChainMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    order?: true
+    archived?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HabitChainMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    order?: true
+    archived?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HabitChainCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    order?: true
+    archived?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type HabitChainAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HabitChain to aggregate.
+     */
+    where?: HabitChainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HabitChains to fetch.
+     */
+    orderBy?: HabitChainOrderByWithRelationInput | HabitChainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: HabitChainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HabitChains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HabitChains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned HabitChains
+    **/
+    _count?: true | HabitChainCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: HabitChainAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: HabitChainSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: HabitChainMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: HabitChainMaxAggregateInputType
+  }
+
+  export type GetHabitChainAggregateType<T extends HabitChainAggregateArgs> = {
+        [P in keyof T & keyof AggregateHabitChain]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHabitChain[P]>
+      : GetScalarType<T[P], AggregateHabitChain[P]>
+  }
+
+
+
+
+  export type HabitChainGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HabitChainWhereInput
+    orderBy?: HabitChainOrderByWithAggregationInput | HabitChainOrderByWithAggregationInput[]
+    by: HabitChainScalarFieldEnum[] | HabitChainScalarFieldEnum
+    having?: HabitChainScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HabitChainCountAggregateInputType | true
+    _avg?: HabitChainAvgAggregateInputType
+    _sum?: HabitChainSumAggregateInputType
+    _min?: HabitChainMinAggregateInputType
+    _max?: HabitChainMaxAggregateInputType
+  }
+
+  export type HabitChainGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    description: string | null
+    order: number
+    archived: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: HabitChainCountAggregateOutputType | null
+    _avg: HabitChainAvgAggregateOutputType | null
+    _sum: HabitChainSumAggregateOutputType | null
+    _min: HabitChainMinAggregateOutputType | null
+    _max: HabitChainMaxAggregateOutputType | null
+  }
+
+  type GetHabitChainGroupByPayload<T extends HabitChainGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HabitChainGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HabitChainGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HabitChainGroupByOutputType[P]>
+            : GetScalarType<T[P], HabitChainGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HabitChainSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    order?: boolean
+    archived?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    habits?: boolean | HabitChain$habitsArgs<ExtArgs>
+    _count?: boolean | HabitChainCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["habitChain"]>
+
+  export type HabitChainSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    order?: boolean
+    archived?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["habitChain"]>
+
+  export type HabitChainSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    order?: boolean
+    archived?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["habitChain"]>
+
+  export type HabitChainSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    order?: boolean
+    archived?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type HabitChainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "order" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["habitChain"]>
+  export type HabitChainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    habits?: boolean | HabitChain$habitsArgs<ExtArgs>
+    _count?: boolean | HabitChainCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type HabitChainIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type HabitChainIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $HabitChainPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HabitChain"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      habits: Prisma.$HabitPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      description: string | null
+      order: number
+      archived: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["habitChain"]>
+    composites: {}
+  }
+
+  type HabitChainGetPayload<S extends boolean | null | undefined | HabitChainDefaultArgs> = $Result.GetResult<Prisma.$HabitChainPayload, S>
+
+  type HabitChainCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HabitChainFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HabitChainCountAggregateInputType | true
+    }
+
+  export interface HabitChainDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HabitChain'], meta: { name: 'HabitChain' } }
+    /**
+     * Find zero or one HabitChain that matches the filter.
+     * @param {HabitChainFindUniqueArgs} args - Arguments to find a HabitChain
+     * @example
+     * // Get one HabitChain
+     * const habitChain = await prisma.habitChain.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HabitChainFindUniqueArgs>(args: SelectSubset<T, HabitChainFindUniqueArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HabitChain that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HabitChainFindUniqueOrThrowArgs} args - Arguments to find a HabitChain
+     * @example
+     * // Get one HabitChain
+     * const habitChain = await prisma.habitChain.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HabitChainFindUniqueOrThrowArgs>(args: SelectSubset<T, HabitChainFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HabitChain that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainFindFirstArgs} args - Arguments to find a HabitChain
+     * @example
+     * // Get one HabitChain
+     * const habitChain = await prisma.habitChain.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HabitChainFindFirstArgs>(args?: SelectSubset<T, HabitChainFindFirstArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HabitChain that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainFindFirstOrThrowArgs} args - Arguments to find a HabitChain
+     * @example
+     * // Get one HabitChain
+     * const habitChain = await prisma.habitChain.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HabitChainFindFirstOrThrowArgs>(args?: SelectSubset<T, HabitChainFindFirstOrThrowArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HabitChains that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HabitChains
+     * const habitChains = await prisma.habitChain.findMany()
+     * 
+     * // Get first 10 HabitChains
+     * const habitChains = await prisma.habitChain.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const habitChainWithIdOnly = await prisma.habitChain.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends HabitChainFindManyArgs>(args?: SelectSubset<T, HabitChainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HabitChain.
+     * @param {HabitChainCreateArgs} args - Arguments to create a HabitChain.
+     * @example
+     * // Create one HabitChain
+     * const HabitChain = await prisma.habitChain.create({
+     *   data: {
+     *     // ... data to create a HabitChain
+     *   }
+     * })
+     * 
+     */
+    create<T extends HabitChainCreateArgs>(args: SelectSubset<T, HabitChainCreateArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HabitChains.
+     * @param {HabitChainCreateManyArgs} args - Arguments to create many HabitChains.
+     * @example
+     * // Create many HabitChains
+     * const habitChain = await prisma.habitChain.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends HabitChainCreateManyArgs>(args?: SelectSubset<T, HabitChainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many HabitChains and returns the data saved in the database.
+     * @param {HabitChainCreateManyAndReturnArgs} args - Arguments to create many HabitChains.
+     * @example
+     * // Create many HabitChains
+     * const habitChain = await prisma.habitChain.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many HabitChains and only return the `id`
+     * const habitChainWithIdOnly = await prisma.habitChain.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends HabitChainCreateManyAndReturnArgs>(args?: SelectSubset<T, HabitChainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a HabitChain.
+     * @param {HabitChainDeleteArgs} args - Arguments to delete one HabitChain.
+     * @example
+     * // Delete one HabitChain
+     * const HabitChain = await prisma.habitChain.delete({
+     *   where: {
+     *     // ... filter to delete one HabitChain
+     *   }
+     * })
+     * 
+     */
+    delete<T extends HabitChainDeleteArgs>(args: SelectSubset<T, HabitChainDeleteArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HabitChain.
+     * @param {HabitChainUpdateArgs} args - Arguments to update one HabitChain.
+     * @example
+     * // Update one HabitChain
+     * const habitChain = await prisma.habitChain.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends HabitChainUpdateArgs>(args: SelectSubset<T, HabitChainUpdateArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HabitChains.
+     * @param {HabitChainDeleteManyArgs} args - Arguments to filter HabitChains to delete.
+     * @example
+     * // Delete a few HabitChains
+     * const { count } = await prisma.habitChain.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends HabitChainDeleteManyArgs>(args?: SelectSubset<T, HabitChainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HabitChains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HabitChains
+     * const habitChain = await prisma.habitChain.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends HabitChainUpdateManyArgs>(args: SelectSubset<T, HabitChainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HabitChains and returns the data updated in the database.
+     * @param {HabitChainUpdateManyAndReturnArgs} args - Arguments to update many HabitChains.
+     * @example
+     * // Update many HabitChains
+     * const habitChain = await prisma.habitChain.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more HabitChains and only return the `id`
+     * const habitChainWithIdOnly = await prisma.habitChain.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends HabitChainUpdateManyAndReturnArgs>(args: SelectSubset<T, HabitChainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one HabitChain.
+     * @param {HabitChainUpsertArgs} args - Arguments to update or create a HabitChain.
+     * @example
+     * // Update or create a HabitChain
+     * const habitChain = await prisma.habitChain.upsert({
+     *   create: {
+     *     // ... data to create a HabitChain
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HabitChain we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HabitChainUpsertArgs>(args: SelectSubset<T, HabitChainUpsertArgs<ExtArgs>>): Prisma__HabitChainClient<$Result.GetResult<Prisma.$HabitChainPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HabitChains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainCountArgs} args - Arguments to filter HabitChains to count.
+     * @example
+     * // Count the number of HabitChains
+     * const count = await prisma.habitChain.count({
+     *   where: {
+     *     // ... the filter for the HabitChains we want to count
+     *   }
+     * })
+    **/
+    count<T extends HabitChainCountArgs>(
+      args?: Subset<T, HabitChainCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HabitChainCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HabitChain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HabitChainAggregateArgs>(args: Subset<T, HabitChainAggregateArgs>): Prisma.PrismaPromise<GetHabitChainAggregateType<T>>
+
+    /**
+     * Group by HabitChain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HabitChainGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends HabitChainGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HabitChainGroupByArgs['orderBy'] }
+        : { orderBy?: HabitChainGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HabitChainGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHabitChainGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HabitChain model
+   */
+  readonly fields: HabitChainFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HabitChain.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HabitChainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    habits<T extends HabitChain$habitsArgs<ExtArgs> = {}>(args?: Subset<T, HabitChain$habitsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HabitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HabitChain model
+   */
+  interface HabitChainFieldRefs {
+    readonly id: FieldRef<"HabitChain", 'String'>
+    readonly userId: FieldRef<"HabitChain", 'String'>
+    readonly name: FieldRef<"HabitChain", 'String'>
+    readonly description: FieldRef<"HabitChain", 'String'>
+    readonly order: FieldRef<"HabitChain", 'Int'>
+    readonly archived: FieldRef<"HabitChain", 'Boolean'>
+    readonly createdAt: FieldRef<"HabitChain", 'DateTime'>
+    readonly updatedAt: FieldRef<"HabitChain", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * HabitChain findUnique
+   */
+  export type HabitChainFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter, which HabitChain to fetch.
+     */
+    where: HabitChainWhereUniqueInput
+  }
+
+  /**
+   * HabitChain findUniqueOrThrow
+   */
+  export type HabitChainFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter, which HabitChain to fetch.
+     */
+    where: HabitChainWhereUniqueInput
+  }
+
+  /**
+   * HabitChain findFirst
+   */
+  export type HabitChainFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter, which HabitChain to fetch.
+     */
+    where?: HabitChainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HabitChains to fetch.
+     */
+    orderBy?: HabitChainOrderByWithRelationInput | HabitChainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HabitChains.
+     */
+    cursor?: HabitChainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HabitChains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HabitChains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HabitChains.
+     */
+    distinct?: HabitChainScalarFieldEnum | HabitChainScalarFieldEnum[]
+  }
+
+  /**
+   * HabitChain findFirstOrThrow
+   */
+  export type HabitChainFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter, which HabitChain to fetch.
+     */
+    where?: HabitChainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HabitChains to fetch.
+     */
+    orderBy?: HabitChainOrderByWithRelationInput | HabitChainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HabitChains.
+     */
+    cursor?: HabitChainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HabitChains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HabitChains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HabitChains.
+     */
+    distinct?: HabitChainScalarFieldEnum | HabitChainScalarFieldEnum[]
+  }
+
+  /**
+   * HabitChain findMany
+   */
+  export type HabitChainFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter, which HabitChains to fetch.
+     */
+    where?: HabitChainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HabitChains to fetch.
+     */
+    orderBy?: HabitChainOrderByWithRelationInput | HabitChainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing HabitChains.
+     */
+    cursor?: HabitChainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HabitChains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HabitChains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HabitChains.
+     */
+    distinct?: HabitChainScalarFieldEnum | HabitChainScalarFieldEnum[]
+  }
+
+  /**
+   * HabitChain create
+   */
+  export type HabitChainCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HabitChain.
+     */
+    data: XOR<HabitChainCreateInput, HabitChainUncheckedCreateInput>
+  }
+
+  /**
+   * HabitChain createMany
+   */
+  export type HabitChainCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HabitChains.
+     */
+    data: HabitChainCreateManyInput | HabitChainCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HabitChain createManyAndReturn
+   */
+  export type HabitChainCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * The data used to create many HabitChains.
+     */
+    data: HabitChainCreateManyInput | HabitChainCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * HabitChain update
+   */
+  export type HabitChainUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HabitChain.
+     */
+    data: XOR<HabitChainUpdateInput, HabitChainUncheckedUpdateInput>
+    /**
+     * Choose, which HabitChain to update.
+     */
+    where: HabitChainWhereUniqueInput
+  }
+
+  /**
+   * HabitChain updateMany
+   */
+  export type HabitChainUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HabitChains.
+     */
+    data: XOR<HabitChainUpdateManyMutationInput, HabitChainUncheckedUpdateManyInput>
+    /**
+     * Filter which HabitChains to update
+     */
+    where?: HabitChainWhereInput
+    /**
+     * Limit how many HabitChains to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HabitChain updateManyAndReturn
+   */
+  export type HabitChainUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * The data used to update HabitChains.
+     */
+    data: XOR<HabitChainUpdateManyMutationInput, HabitChainUncheckedUpdateManyInput>
+    /**
+     * Filter which HabitChains to update
+     */
+    where?: HabitChainWhereInput
+    /**
+     * Limit how many HabitChains to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * HabitChain upsert
+   */
+  export type HabitChainUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HabitChain to update in case it exists.
+     */
+    where: HabitChainWhereUniqueInput
+    /**
+     * In case the HabitChain found by the `where` argument doesn't exist, create a new HabitChain with this data.
+     */
+    create: XOR<HabitChainCreateInput, HabitChainUncheckedCreateInput>
+    /**
+     * In case the HabitChain was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HabitChainUpdateInput, HabitChainUncheckedUpdateInput>
+  }
+
+  /**
+   * HabitChain delete
+   */
+  export type HabitChainDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
+    /**
+     * Filter which HabitChain to delete.
+     */
+    where: HabitChainWhereUniqueInput
+  }
+
+  /**
+   * HabitChain deleteMany
+   */
+  export type HabitChainDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HabitChains to delete
+     */
+    where?: HabitChainWhereInput
+    /**
+     * Limit how many HabitChains to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HabitChain.habits
+   */
+  export type HabitChain$habitsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Habit
+     */
+    select?: HabitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Habit
+     */
+    omit?: HabitOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitInclude<ExtArgs> | null
+    where?: HabitWhereInput
+    orderBy?: HabitOrderByWithRelationInput | HabitOrderByWithRelationInput[]
+    cursor?: HabitWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HabitScalarFieldEnum | HabitScalarFieldEnum[]
+  }
+
+  /**
+   * HabitChain without action
+   */
+  export type HabitChainDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HabitChain
+     */
+    select?: HabitChainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HabitChain
+     */
+    omit?: HabitChainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HabitChainInclude<ExtArgs> | null
   }
 
 
@@ -28059,6 +30399,7342 @@ export namespace Prisma {
 
 
   /**
+   * Model Exercise
+   */
+
+  export type AggregateExercise = {
+    _count: ExerciseCountAggregateOutputType | null
+    _avg: ExerciseAvgAggregateOutputType | null
+    _sum: ExerciseSumAggregateOutputType | null
+    _min: ExerciseMinAggregateOutputType | null
+    _max: ExerciseMaxAggregateOutputType | null
+  }
+
+  export type ExerciseAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ExerciseSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ExerciseMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    muscleGroup: string | null
+    equipment: string | null
+    trackingType: string | null
+    notes: string | null
+    archived: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExerciseMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    muscleGroup: string | null
+    equipment: string | null
+    trackingType: string | null
+    notes: string | null
+    archived: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExerciseCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    muscleGroup: number
+    equipment: number
+    trackingType: number
+    notes: number
+    archived: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ExerciseAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type ExerciseSumAggregateInputType = {
+    order?: true
+  }
+
+  export type ExerciseMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    muscleGroup?: true
+    equipment?: true
+    trackingType?: true
+    notes?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExerciseMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    muscleGroup?: true
+    equipment?: true
+    trackingType?: true
+    notes?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExerciseCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    muscleGroup?: true
+    equipment?: true
+    trackingType?: true
+    notes?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ExerciseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Exercise to aggregate.
+     */
+    where?: ExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Exercises to fetch.
+     */
+    orderBy?: ExerciseOrderByWithRelationInput | ExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Exercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Exercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Exercises
+    **/
+    _count?: true | ExerciseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExerciseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExerciseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExerciseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExerciseMaxAggregateInputType
+  }
+
+  export type GetExerciseAggregateType<T extends ExerciseAggregateArgs> = {
+        [P in keyof T & keyof AggregateExercise]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExercise[P]>
+      : GetScalarType<T[P], AggregateExercise[P]>
+  }
+
+
+
+
+  export type ExerciseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExerciseWhereInput
+    orderBy?: ExerciseOrderByWithAggregationInput | ExerciseOrderByWithAggregationInput[]
+    by: ExerciseScalarFieldEnum[] | ExerciseScalarFieldEnum
+    having?: ExerciseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExerciseCountAggregateInputType | true
+    _avg?: ExerciseAvgAggregateInputType
+    _sum?: ExerciseSumAggregateInputType
+    _min?: ExerciseMinAggregateInputType
+    _max?: ExerciseMaxAggregateInputType
+  }
+
+  export type ExerciseGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    muscleGroup: string | null
+    equipment: string | null
+    trackingType: string
+    notes: string | null
+    archived: boolean
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ExerciseCountAggregateOutputType | null
+    _avg: ExerciseAvgAggregateOutputType | null
+    _sum: ExerciseSumAggregateOutputType | null
+    _min: ExerciseMinAggregateOutputType | null
+    _max: ExerciseMaxAggregateOutputType | null
+  }
+
+  type GetExerciseGroupByPayload<T extends ExerciseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExerciseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExerciseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExerciseGroupByOutputType[P]>
+            : GetScalarType<T[P], ExerciseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExerciseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    muscleGroup?: boolean
+    equipment?: boolean
+    trackingType?: boolean
+    notes?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dayExercises?: boolean | Exercise$dayExercisesArgs<ExtArgs>
+    setLogs?: boolean | Exercise$setLogsArgs<ExtArgs>
+    _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exercise"]>
+
+  export type ExerciseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    muscleGroup?: boolean
+    equipment?: boolean
+    trackingType?: boolean
+    notes?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exercise"]>
+
+  export type ExerciseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    muscleGroup?: boolean
+    equipment?: boolean
+    trackingType?: boolean
+    notes?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exercise"]>
+
+  export type ExerciseSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    muscleGroup?: boolean
+    equipment?: boolean
+    trackingType?: boolean
+    notes?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "muscleGroup" | "equipment" | "trackingType" | "notes" | "archived" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["exercise"]>
+  export type ExerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    dayExercises?: boolean | Exercise$dayExercisesArgs<ExtArgs>
+    setLogs?: boolean | Exercise$setLogsArgs<ExtArgs>
+    _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ExerciseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ExerciseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ExercisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Exercise"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      dayExercises: Prisma.$TrainingDayExercisePayload<ExtArgs>[]
+      setLogs: Prisma.$SetLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      muscleGroup: string | null
+      equipment: string | null
+      trackingType: string
+      notes: string | null
+      archived: boolean
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["exercise"]>
+    composites: {}
+  }
+
+  type ExerciseGetPayload<S extends boolean | null | undefined | ExerciseDefaultArgs> = $Result.GetResult<Prisma.$ExercisePayload, S>
+
+  type ExerciseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExerciseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExerciseCountAggregateInputType | true
+    }
+
+  export interface ExerciseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Exercise'], meta: { name: 'Exercise' } }
+    /**
+     * Find zero or one Exercise that matches the filter.
+     * @param {ExerciseFindUniqueArgs} args - Arguments to find a Exercise
+     * @example
+     * // Get one Exercise
+     * const exercise = await prisma.exercise.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExerciseFindUniqueArgs>(args: SelectSubset<T, ExerciseFindUniqueArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Exercise that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExerciseFindUniqueOrThrowArgs} args - Arguments to find a Exercise
+     * @example
+     * // Get one Exercise
+     * const exercise = await prisma.exercise.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExerciseFindUniqueOrThrowArgs>(args: SelectSubset<T, ExerciseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Exercise that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseFindFirstArgs} args - Arguments to find a Exercise
+     * @example
+     * // Get one Exercise
+     * const exercise = await prisma.exercise.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExerciseFindFirstArgs>(args?: SelectSubset<T, ExerciseFindFirstArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Exercise that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseFindFirstOrThrowArgs} args - Arguments to find a Exercise
+     * @example
+     * // Get one Exercise
+     * const exercise = await prisma.exercise.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExerciseFindFirstOrThrowArgs>(args?: SelectSubset<T, ExerciseFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Exercises that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Exercises
+     * const exercises = await prisma.exercise.findMany()
+     * 
+     * // Get first 10 Exercises
+     * const exercises = await prisma.exercise.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const exerciseWithIdOnly = await prisma.exercise.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ExerciseFindManyArgs>(args?: SelectSubset<T, ExerciseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Exercise.
+     * @param {ExerciseCreateArgs} args - Arguments to create a Exercise.
+     * @example
+     * // Create one Exercise
+     * const Exercise = await prisma.exercise.create({
+     *   data: {
+     *     // ... data to create a Exercise
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExerciseCreateArgs>(args: SelectSubset<T, ExerciseCreateArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Exercises.
+     * @param {ExerciseCreateManyArgs} args - Arguments to create many Exercises.
+     * @example
+     * // Create many Exercises
+     * const exercise = await prisma.exercise.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExerciseCreateManyArgs>(args?: SelectSubset<T, ExerciseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Exercises and returns the data saved in the database.
+     * @param {ExerciseCreateManyAndReturnArgs} args - Arguments to create many Exercises.
+     * @example
+     * // Create many Exercises
+     * const exercise = await prisma.exercise.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Exercises and only return the `id`
+     * const exerciseWithIdOnly = await prisma.exercise.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExerciseCreateManyAndReturnArgs>(args?: SelectSubset<T, ExerciseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Exercise.
+     * @param {ExerciseDeleteArgs} args - Arguments to delete one Exercise.
+     * @example
+     * // Delete one Exercise
+     * const Exercise = await prisma.exercise.delete({
+     *   where: {
+     *     // ... filter to delete one Exercise
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExerciseDeleteArgs>(args: SelectSubset<T, ExerciseDeleteArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Exercise.
+     * @param {ExerciseUpdateArgs} args - Arguments to update one Exercise.
+     * @example
+     * // Update one Exercise
+     * const exercise = await prisma.exercise.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExerciseUpdateArgs>(args: SelectSubset<T, ExerciseUpdateArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Exercises.
+     * @param {ExerciseDeleteManyArgs} args - Arguments to filter Exercises to delete.
+     * @example
+     * // Delete a few Exercises
+     * const { count } = await prisma.exercise.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExerciseDeleteManyArgs>(args?: SelectSubset<T, ExerciseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Exercises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Exercises
+     * const exercise = await prisma.exercise.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExerciseUpdateManyArgs>(args: SelectSubset<T, ExerciseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Exercises and returns the data updated in the database.
+     * @param {ExerciseUpdateManyAndReturnArgs} args - Arguments to update many Exercises.
+     * @example
+     * // Update many Exercises
+     * const exercise = await prisma.exercise.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Exercises and only return the `id`
+     * const exerciseWithIdOnly = await prisma.exercise.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExerciseUpdateManyAndReturnArgs>(args: SelectSubset<T, ExerciseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Exercise.
+     * @param {ExerciseUpsertArgs} args - Arguments to update or create a Exercise.
+     * @example
+     * // Update or create a Exercise
+     * const exercise = await prisma.exercise.upsert({
+     *   create: {
+     *     // ... data to create a Exercise
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Exercise we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExerciseUpsertArgs>(args: SelectSubset<T, ExerciseUpsertArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Exercises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseCountArgs} args - Arguments to filter Exercises to count.
+     * @example
+     * // Count the number of Exercises
+     * const count = await prisma.exercise.count({
+     *   where: {
+     *     // ... the filter for the Exercises we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExerciseCountArgs>(
+      args?: Subset<T, ExerciseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExerciseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Exercise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExerciseAggregateArgs>(args: Subset<T, ExerciseAggregateArgs>): Prisma.PrismaPromise<GetExerciseAggregateType<T>>
+
+    /**
+     * Group by Exercise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExerciseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExerciseGroupByArgs['orderBy'] }
+        : { orderBy?: ExerciseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExerciseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExerciseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Exercise model
+   */
+  readonly fields: ExerciseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Exercise.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExerciseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dayExercises<T extends Exercise$dayExercisesArgs<ExtArgs> = {}>(args?: Subset<T, Exercise$dayExercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    setLogs<T extends Exercise$setLogsArgs<ExtArgs> = {}>(args?: Subset<T, Exercise$setLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Exercise model
+   */
+  interface ExerciseFieldRefs {
+    readonly id: FieldRef<"Exercise", 'String'>
+    readonly userId: FieldRef<"Exercise", 'String'>
+    readonly name: FieldRef<"Exercise", 'String'>
+    readonly muscleGroup: FieldRef<"Exercise", 'String'>
+    readonly equipment: FieldRef<"Exercise", 'String'>
+    readonly trackingType: FieldRef<"Exercise", 'String'>
+    readonly notes: FieldRef<"Exercise", 'String'>
+    readonly archived: FieldRef<"Exercise", 'Boolean'>
+    readonly order: FieldRef<"Exercise", 'Int'>
+    readonly createdAt: FieldRef<"Exercise", 'DateTime'>
+    readonly updatedAt: FieldRef<"Exercise", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Exercise findUnique
+   */
+  export type ExerciseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which Exercise to fetch.
+     */
+    where: ExerciseWhereUniqueInput
+  }
+
+  /**
+   * Exercise findUniqueOrThrow
+   */
+  export type ExerciseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which Exercise to fetch.
+     */
+    where: ExerciseWhereUniqueInput
+  }
+
+  /**
+   * Exercise findFirst
+   */
+  export type ExerciseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which Exercise to fetch.
+     */
+    where?: ExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Exercises to fetch.
+     */
+    orderBy?: ExerciseOrderByWithRelationInput | ExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Exercises.
+     */
+    cursor?: ExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Exercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Exercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Exercises.
+     */
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * Exercise findFirstOrThrow
+   */
+  export type ExerciseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which Exercise to fetch.
+     */
+    where?: ExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Exercises to fetch.
+     */
+    orderBy?: ExerciseOrderByWithRelationInput | ExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Exercises.
+     */
+    cursor?: ExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Exercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Exercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Exercises.
+     */
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * Exercise findMany
+   */
+  export type ExerciseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which Exercises to fetch.
+     */
+    where?: ExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Exercises to fetch.
+     */
+    orderBy?: ExerciseOrderByWithRelationInput | ExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Exercises.
+     */
+    cursor?: ExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Exercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Exercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Exercises.
+     */
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * Exercise create
+   */
+  export type ExerciseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Exercise.
+     */
+    data: XOR<ExerciseCreateInput, ExerciseUncheckedCreateInput>
+  }
+
+  /**
+   * Exercise createMany
+   */
+  export type ExerciseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Exercises.
+     */
+    data: ExerciseCreateManyInput | ExerciseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Exercise createManyAndReturn
+   */
+  export type ExerciseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * The data used to create many Exercises.
+     */
+    data: ExerciseCreateManyInput | ExerciseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Exercise update
+   */
+  export type ExerciseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Exercise.
+     */
+    data: XOR<ExerciseUpdateInput, ExerciseUncheckedUpdateInput>
+    /**
+     * Choose, which Exercise to update.
+     */
+    where: ExerciseWhereUniqueInput
+  }
+
+  /**
+   * Exercise updateMany
+   */
+  export type ExerciseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Exercises.
+     */
+    data: XOR<ExerciseUpdateManyMutationInput, ExerciseUncheckedUpdateManyInput>
+    /**
+     * Filter which Exercises to update
+     */
+    where?: ExerciseWhereInput
+    /**
+     * Limit how many Exercises to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Exercise updateManyAndReturn
+   */
+  export type ExerciseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * The data used to update Exercises.
+     */
+    data: XOR<ExerciseUpdateManyMutationInput, ExerciseUncheckedUpdateManyInput>
+    /**
+     * Filter which Exercises to update
+     */
+    where?: ExerciseWhereInput
+    /**
+     * Limit how many Exercises to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Exercise upsert
+   */
+  export type ExerciseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Exercise to update in case it exists.
+     */
+    where: ExerciseWhereUniqueInput
+    /**
+     * In case the Exercise found by the `where` argument doesn't exist, create a new Exercise with this data.
+     */
+    create: XOR<ExerciseCreateInput, ExerciseUncheckedCreateInput>
+    /**
+     * In case the Exercise was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExerciseUpdateInput, ExerciseUncheckedUpdateInput>
+  }
+
+  /**
+   * Exercise delete
+   */
+  export type ExerciseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+    /**
+     * Filter which Exercise to delete.
+     */
+    where: ExerciseWhereUniqueInput
+  }
+
+  /**
+   * Exercise deleteMany
+   */
+  export type ExerciseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Exercises to delete
+     */
+    where?: ExerciseWhereInput
+    /**
+     * Limit how many Exercises to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Exercise.dayExercises
+   */
+  export type Exercise$dayExercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    where?: TrainingDayExerciseWhereInput
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * Exercise.setLogs
+   */
+  export type Exercise$setLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    where?: SetLogWhereInput
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    cursor?: SetLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * Exercise without action
+   */
+  export type ExerciseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exercise
+     */
+    select?: ExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exercise
+     */
+    omit?: ExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExerciseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TrainingPlan
+   */
+
+  export type AggregateTrainingPlan = {
+    _count: TrainingPlanCountAggregateOutputType | null
+    _avg: TrainingPlanAvgAggregateOutputType | null
+    _sum: TrainingPlanSumAggregateOutputType | null
+    _min: TrainingPlanMinAggregateOutputType | null
+    _max: TrainingPlanMaxAggregateOutputType | null
+  }
+
+  export type TrainingPlanAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TrainingPlanSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TrainingPlanMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    archived: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingPlanMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    description: string | null
+    archived: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingPlanCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    description: number
+    archived: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TrainingPlanAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type TrainingPlanSumAggregateInputType = {
+    order?: true
+  }
+
+  export type TrainingPlanMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingPlanMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingPlanCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    description?: true
+    archived?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TrainingPlanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingPlan to aggregate.
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingPlans to fetch.
+     */
+    orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrainingPlanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingPlans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingPlans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrainingPlans
+    **/
+    _count?: true | TrainingPlanCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrainingPlanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrainingPlanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrainingPlanMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrainingPlanMaxAggregateInputType
+  }
+
+  export type GetTrainingPlanAggregateType<T extends TrainingPlanAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrainingPlan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrainingPlan[P]>
+      : GetScalarType<T[P], AggregateTrainingPlan[P]>
+  }
+
+
+
+
+  export type TrainingPlanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingPlanWhereInput
+    orderBy?: TrainingPlanOrderByWithAggregationInput | TrainingPlanOrderByWithAggregationInput[]
+    by: TrainingPlanScalarFieldEnum[] | TrainingPlanScalarFieldEnum
+    having?: TrainingPlanScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrainingPlanCountAggregateInputType | true
+    _avg?: TrainingPlanAvgAggregateInputType
+    _sum?: TrainingPlanSumAggregateInputType
+    _min?: TrainingPlanMinAggregateInputType
+    _max?: TrainingPlanMaxAggregateInputType
+  }
+
+  export type TrainingPlanGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    description: string | null
+    archived: boolean
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: TrainingPlanCountAggregateOutputType | null
+    _avg: TrainingPlanAvgAggregateOutputType | null
+    _sum: TrainingPlanSumAggregateOutputType | null
+    _min: TrainingPlanMinAggregateOutputType | null
+    _max: TrainingPlanMaxAggregateOutputType | null
+  }
+
+  type GetTrainingPlanGroupByPayload<T extends TrainingPlanGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrainingPlanGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrainingPlanGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrainingPlanGroupByOutputType[P]>
+            : GetScalarType<T[P], TrainingPlanGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrainingPlanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    days?: boolean | TrainingPlan$daysArgs<ExtArgs>
+    _count?: boolean | TrainingPlanCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingPlan"]>
+
+  export type TrainingPlanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingPlan"]>
+
+  export type TrainingPlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingPlan"]>
+
+  export type TrainingPlanSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    description?: boolean
+    archived?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TrainingPlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "archived" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingPlan"]>
+  export type TrainingPlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    days?: boolean | TrainingPlan$daysArgs<ExtArgs>
+    _count?: boolean | TrainingPlanCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TrainingPlanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrainingPlanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TrainingPlanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrainingPlan"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      days: Prisma.$TrainingDayPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      description: string | null
+      archived: boolean
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["trainingPlan"]>
+    composites: {}
+  }
+
+  type TrainingPlanGetPayload<S extends boolean | null | undefined | TrainingPlanDefaultArgs> = $Result.GetResult<Prisma.$TrainingPlanPayload, S>
+
+  type TrainingPlanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrainingPlanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrainingPlanCountAggregateInputType | true
+    }
+
+  export interface TrainingPlanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrainingPlan'], meta: { name: 'TrainingPlan' } }
+    /**
+     * Find zero or one TrainingPlan that matches the filter.
+     * @param {TrainingPlanFindUniqueArgs} args - Arguments to find a TrainingPlan
+     * @example
+     * // Get one TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrainingPlanFindUniqueArgs>(args: SelectSubset<T, TrainingPlanFindUniqueArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrainingPlan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrainingPlanFindUniqueOrThrowArgs} args - Arguments to find a TrainingPlan
+     * @example
+     * // Get one TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrainingPlanFindUniqueOrThrowArgs>(args: SelectSubset<T, TrainingPlanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingPlan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanFindFirstArgs} args - Arguments to find a TrainingPlan
+     * @example
+     * // Get one TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrainingPlanFindFirstArgs>(args?: SelectSubset<T, TrainingPlanFindFirstArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingPlan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanFindFirstOrThrowArgs} args - Arguments to find a TrainingPlan
+     * @example
+     * // Get one TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrainingPlanFindFirstOrThrowArgs>(args?: SelectSubset<T, TrainingPlanFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrainingPlans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrainingPlans
+     * const trainingPlans = await prisma.trainingPlan.findMany()
+     * 
+     * // Get first 10 TrainingPlans
+     * const trainingPlans = await prisma.trainingPlan.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trainingPlanWithIdOnly = await prisma.trainingPlan.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrainingPlanFindManyArgs>(args?: SelectSubset<T, TrainingPlanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrainingPlan.
+     * @param {TrainingPlanCreateArgs} args - Arguments to create a TrainingPlan.
+     * @example
+     * // Create one TrainingPlan
+     * const TrainingPlan = await prisma.trainingPlan.create({
+     *   data: {
+     *     // ... data to create a TrainingPlan
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrainingPlanCreateArgs>(args: SelectSubset<T, TrainingPlanCreateArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrainingPlans.
+     * @param {TrainingPlanCreateManyArgs} args - Arguments to create many TrainingPlans.
+     * @example
+     * // Create many TrainingPlans
+     * const trainingPlan = await prisma.trainingPlan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrainingPlanCreateManyArgs>(args?: SelectSubset<T, TrainingPlanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrainingPlans and returns the data saved in the database.
+     * @param {TrainingPlanCreateManyAndReturnArgs} args - Arguments to create many TrainingPlans.
+     * @example
+     * // Create many TrainingPlans
+     * const trainingPlan = await prisma.trainingPlan.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrainingPlans and only return the `id`
+     * const trainingPlanWithIdOnly = await prisma.trainingPlan.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrainingPlanCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingPlanCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrainingPlan.
+     * @param {TrainingPlanDeleteArgs} args - Arguments to delete one TrainingPlan.
+     * @example
+     * // Delete one TrainingPlan
+     * const TrainingPlan = await prisma.trainingPlan.delete({
+     *   where: {
+     *     // ... filter to delete one TrainingPlan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrainingPlanDeleteArgs>(args: SelectSubset<T, TrainingPlanDeleteArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrainingPlan.
+     * @param {TrainingPlanUpdateArgs} args - Arguments to update one TrainingPlan.
+     * @example
+     * // Update one TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrainingPlanUpdateArgs>(args: SelectSubset<T, TrainingPlanUpdateArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrainingPlans.
+     * @param {TrainingPlanDeleteManyArgs} args - Arguments to filter TrainingPlans to delete.
+     * @example
+     * // Delete a few TrainingPlans
+     * const { count } = await prisma.trainingPlan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrainingPlanDeleteManyArgs>(args?: SelectSubset<T, TrainingPlanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingPlans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrainingPlans
+     * const trainingPlan = await prisma.trainingPlan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrainingPlanUpdateManyArgs>(args: SelectSubset<T, TrainingPlanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingPlans and returns the data updated in the database.
+     * @param {TrainingPlanUpdateManyAndReturnArgs} args - Arguments to update many TrainingPlans.
+     * @example
+     * // Update many TrainingPlans
+     * const trainingPlan = await prisma.trainingPlan.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrainingPlans and only return the `id`
+     * const trainingPlanWithIdOnly = await prisma.trainingPlan.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrainingPlanUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingPlanUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrainingPlan.
+     * @param {TrainingPlanUpsertArgs} args - Arguments to update or create a TrainingPlan.
+     * @example
+     * // Update or create a TrainingPlan
+     * const trainingPlan = await prisma.trainingPlan.upsert({
+     *   create: {
+     *     // ... data to create a TrainingPlan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrainingPlan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrainingPlanUpsertArgs>(args: SelectSubset<T, TrainingPlanUpsertArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrainingPlans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanCountArgs} args - Arguments to filter TrainingPlans to count.
+     * @example
+     * // Count the number of TrainingPlans
+     * const count = await prisma.trainingPlan.count({
+     *   where: {
+     *     // ... the filter for the TrainingPlans we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrainingPlanCountArgs>(
+      args?: Subset<T, TrainingPlanCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrainingPlanCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrainingPlan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrainingPlanAggregateArgs>(args: Subset<T, TrainingPlanAggregateArgs>): Prisma.PrismaPromise<GetTrainingPlanAggregateType<T>>
+
+    /**
+     * Group by TrainingPlan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingPlanGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrainingPlanGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrainingPlanGroupByArgs['orderBy'] }
+        : { orderBy?: TrainingPlanGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrainingPlanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrainingPlanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrainingPlan model
+   */
+  readonly fields: TrainingPlanFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrainingPlan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrainingPlanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    days<T extends TrainingPlan$daysArgs<ExtArgs> = {}>(args?: Subset<T, TrainingPlan$daysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrainingPlan model
+   */
+  interface TrainingPlanFieldRefs {
+    readonly id: FieldRef<"TrainingPlan", 'String'>
+    readonly userId: FieldRef<"TrainingPlan", 'String'>
+    readonly name: FieldRef<"TrainingPlan", 'String'>
+    readonly description: FieldRef<"TrainingPlan", 'String'>
+    readonly archived: FieldRef<"TrainingPlan", 'Boolean'>
+    readonly order: FieldRef<"TrainingPlan", 'Int'>
+    readonly createdAt: FieldRef<"TrainingPlan", 'DateTime'>
+    readonly updatedAt: FieldRef<"TrainingPlan", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrainingPlan findUnique
+   */
+  export type TrainingPlanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingPlan to fetch.
+     */
+    where: TrainingPlanWhereUniqueInput
+  }
+
+  /**
+   * TrainingPlan findUniqueOrThrow
+   */
+  export type TrainingPlanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingPlan to fetch.
+     */
+    where: TrainingPlanWhereUniqueInput
+  }
+
+  /**
+   * TrainingPlan findFirst
+   */
+  export type TrainingPlanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingPlan to fetch.
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingPlans to fetch.
+     */
+    orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingPlans.
+     */
+    cursor?: TrainingPlanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingPlans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingPlans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingPlans.
+     */
+    distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingPlan findFirstOrThrow
+   */
+  export type TrainingPlanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingPlan to fetch.
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingPlans to fetch.
+     */
+    orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingPlans.
+     */
+    cursor?: TrainingPlanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingPlans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingPlans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingPlans.
+     */
+    distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingPlan findMany
+   */
+  export type TrainingPlanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingPlans to fetch.
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingPlans to fetch.
+     */
+    orderBy?: TrainingPlanOrderByWithRelationInput | TrainingPlanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrainingPlans.
+     */
+    cursor?: TrainingPlanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingPlans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingPlans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingPlans.
+     */
+    distinct?: TrainingPlanScalarFieldEnum | TrainingPlanScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingPlan create
+   */
+  export type TrainingPlanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrainingPlan.
+     */
+    data: XOR<TrainingPlanCreateInput, TrainingPlanUncheckedCreateInput>
+  }
+
+  /**
+   * TrainingPlan createMany
+   */
+  export type TrainingPlanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrainingPlans.
+     */
+    data: TrainingPlanCreateManyInput | TrainingPlanCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrainingPlan createManyAndReturn
+   */
+  export type TrainingPlanCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrainingPlans.
+     */
+    data: TrainingPlanCreateManyInput | TrainingPlanCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingPlan update
+   */
+  export type TrainingPlanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrainingPlan.
+     */
+    data: XOR<TrainingPlanUpdateInput, TrainingPlanUncheckedUpdateInput>
+    /**
+     * Choose, which TrainingPlan to update.
+     */
+    where: TrainingPlanWhereUniqueInput
+  }
+
+  /**
+   * TrainingPlan updateMany
+   */
+  export type TrainingPlanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrainingPlans.
+     */
+    data: XOR<TrainingPlanUpdateManyMutationInput, TrainingPlanUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingPlans to update
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * Limit how many TrainingPlans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingPlan updateManyAndReturn
+   */
+  export type TrainingPlanUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * The data used to update TrainingPlans.
+     */
+    data: XOR<TrainingPlanUpdateManyMutationInput, TrainingPlanUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingPlans to update
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * Limit how many TrainingPlans to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingPlan upsert
+   */
+  export type TrainingPlanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrainingPlan to update in case it exists.
+     */
+    where: TrainingPlanWhereUniqueInput
+    /**
+     * In case the TrainingPlan found by the `where` argument doesn't exist, create a new TrainingPlan with this data.
+     */
+    create: XOR<TrainingPlanCreateInput, TrainingPlanUncheckedCreateInput>
+    /**
+     * In case the TrainingPlan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrainingPlanUpdateInput, TrainingPlanUncheckedUpdateInput>
+  }
+
+  /**
+   * TrainingPlan delete
+   */
+  export type TrainingPlanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+    /**
+     * Filter which TrainingPlan to delete.
+     */
+    where: TrainingPlanWhereUniqueInput
+  }
+
+  /**
+   * TrainingPlan deleteMany
+   */
+  export type TrainingPlanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingPlans to delete
+     */
+    where?: TrainingPlanWhereInput
+    /**
+     * Limit how many TrainingPlans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingPlan.days
+   */
+  export type TrainingPlan$daysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    where?: TrainingDayWhereInput
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    cursor?: TrainingDayWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingDayScalarFieldEnum | TrainingDayScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingPlan without action
+   */
+  export type TrainingPlanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingPlan
+     */
+    select?: TrainingPlanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingPlan
+     */
+    omit?: TrainingPlanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingPlanInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TrainingDay
+   */
+
+  export type AggregateTrainingDay = {
+    _count: TrainingDayCountAggregateOutputType | null
+    _avg: TrainingDayAvgAggregateOutputType | null
+    _sum: TrainingDaySumAggregateOutputType | null
+    _min: TrainingDayMinAggregateOutputType | null
+    _max: TrainingDayMaxAggregateOutputType | null
+  }
+
+  export type TrainingDayAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TrainingDaySumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type TrainingDayMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    planId: string | null
+    name: string | null
+    notes: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingDayMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    planId: string | null
+    name: string | null
+    notes: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingDayCountAggregateOutputType = {
+    id: number
+    userId: number
+    planId: number
+    name: number
+    notes: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TrainingDayAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type TrainingDaySumAggregateInputType = {
+    order?: true
+  }
+
+  export type TrainingDayMinAggregateInputType = {
+    id?: true
+    userId?: true
+    planId?: true
+    name?: true
+    notes?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingDayMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    planId?: true
+    name?: true
+    notes?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingDayCountAggregateInputType = {
+    id?: true
+    userId?: true
+    planId?: true
+    name?: true
+    notes?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TrainingDayAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingDay to aggregate.
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDays to fetch.
+     */
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrainingDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrainingDays
+    **/
+    _count?: true | TrainingDayCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrainingDayAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrainingDaySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrainingDayMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrainingDayMaxAggregateInputType
+  }
+
+  export type GetTrainingDayAggregateType<T extends TrainingDayAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrainingDay]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrainingDay[P]>
+      : GetScalarType<T[P], AggregateTrainingDay[P]>
+  }
+
+
+
+
+  export type TrainingDayGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayWhereInput
+    orderBy?: TrainingDayOrderByWithAggregationInput | TrainingDayOrderByWithAggregationInput[]
+    by: TrainingDayScalarFieldEnum[] | TrainingDayScalarFieldEnum
+    having?: TrainingDayScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrainingDayCountAggregateInputType | true
+    _avg?: TrainingDayAvgAggregateInputType
+    _sum?: TrainingDaySumAggregateInputType
+    _min?: TrainingDayMinAggregateInputType
+    _max?: TrainingDayMaxAggregateInputType
+  }
+
+  export type TrainingDayGroupByOutputType = {
+    id: string
+    userId: string
+    planId: string
+    name: string
+    notes: string | null
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: TrainingDayCountAggregateOutputType | null
+    _avg: TrainingDayAvgAggregateOutputType | null
+    _sum: TrainingDaySumAggregateOutputType | null
+    _min: TrainingDayMinAggregateOutputType | null
+    _max: TrainingDayMaxAggregateOutputType | null
+  }
+
+  type GetTrainingDayGroupByPayload<T extends TrainingDayGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrainingDayGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrainingDayGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrainingDayGroupByOutputType[P]>
+            : GetScalarType<T[P], TrainingDayGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrainingDaySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    planId?: boolean
+    name?: boolean
+    notes?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+    exercises?: boolean | TrainingDay$exercisesArgs<ExtArgs>
+    sessions?: boolean | TrainingDay$sessionsArgs<ExtArgs>
+    _count?: boolean | TrainingDayCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDay"]>
+
+  export type TrainingDaySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    planId?: boolean
+    name?: boolean
+    notes?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDay"]>
+
+  export type TrainingDaySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    planId?: boolean
+    name?: boolean
+    notes?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDay"]>
+
+  export type TrainingDaySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    planId?: boolean
+    name?: boolean
+    notes?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TrainingDayOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "planId" | "name" | "notes" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingDay"]>
+  export type TrainingDayInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+    exercises?: boolean | TrainingDay$exercisesArgs<ExtArgs>
+    sessions?: boolean | TrainingDay$sessionsArgs<ExtArgs>
+    _count?: boolean | TrainingDayCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TrainingDayIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+  }
+  export type TrainingDayIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
+  }
+
+  export type $TrainingDayPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrainingDay"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      plan: Prisma.$TrainingPlanPayload<ExtArgs>
+      exercises: Prisma.$TrainingDayExercisePayload<ExtArgs>[]
+      sessions: Prisma.$TrainingSessionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      planId: string
+      name: string
+      notes: string | null
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["trainingDay"]>
+    composites: {}
+  }
+
+  type TrainingDayGetPayload<S extends boolean | null | undefined | TrainingDayDefaultArgs> = $Result.GetResult<Prisma.$TrainingDayPayload, S>
+
+  type TrainingDayCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrainingDayFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrainingDayCountAggregateInputType | true
+    }
+
+  export interface TrainingDayDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrainingDay'], meta: { name: 'TrainingDay' } }
+    /**
+     * Find zero or one TrainingDay that matches the filter.
+     * @param {TrainingDayFindUniqueArgs} args - Arguments to find a TrainingDay
+     * @example
+     * // Get one TrainingDay
+     * const trainingDay = await prisma.trainingDay.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrainingDayFindUniqueArgs>(args: SelectSubset<T, TrainingDayFindUniqueArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrainingDay that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrainingDayFindUniqueOrThrowArgs} args - Arguments to find a TrainingDay
+     * @example
+     * // Get one TrainingDay
+     * const trainingDay = await prisma.trainingDay.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrainingDayFindUniqueOrThrowArgs>(args: SelectSubset<T, TrainingDayFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingDay that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayFindFirstArgs} args - Arguments to find a TrainingDay
+     * @example
+     * // Get one TrainingDay
+     * const trainingDay = await prisma.trainingDay.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrainingDayFindFirstArgs>(args?: SelectSubset<T, TrainingDayFindFirstArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingDay that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayFindFirstOrThrowArgs} args - Arguments to find a TrainingDay
+     * @example
+     * // Get one TrainingDay
+     * const trainingDay = await prisma.trainingDay.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrainingDayFindFirstOrThrowArgs>(args?: SelectSubset<T, TrainingDayFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrainingDays that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrainingDays
+     * const trainingDays = await prisma.trainingDay.findMany()
+     * 
+     * // Get first 10 TrainingDays
+     * const trainingDays = await prisma.trainingDay.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trainingDayWithIdOnly = await prisma.trainingDay.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrainingDayFindManyArgs>(args?: SelectSubset<T, TrainingDayFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrainingDay.
+     * @param {TrainingDayCreateArgs} args - Arguments to create a TrainingDay.
+     * @example
+     * // Create one TrainingDay
+     * const TrainingDay = await prisma.trainingDay.create({
+     *   data: {
+     *     // ... data to create a TrainingDay
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrainingDayCreateArgs>(args: SelectSubset<T, TrainingDayCreateArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrainingDays.
+     * @param {TrainingDayCreateManyArgs} args - Arguments to create many TrainingDays.
+     * @example
+     * // Create many TrainingDays
+     * const trainingDay = await prisma.trainingDay.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrainingDayCreateManyArgs>(args?: SelectSubset<T, TrainingDayCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrainingDays and returns the data saved in the database.
+     * @param {TrainingDayCreateManyAndReturnArgs} args - Arguments to create many TrainingDays.
+     * @example
+     * // Create many TrainingDays
+     * const trainingDay = await prisma.trainingDay.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrainingDays and only return the `id`
+     * const trainingDayWithIdOnly = await prisma.trainingDay.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrainingDayCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingDayCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrainingDay.
+     * @param {TrainingDayDeleteArgs} args - Arguments to delete one TrainingDay.
+     * @example
+     * // Delete one TrainingDay
+     * const TrainingDay = await prisma.trainingDay.delete({
+     *   where: {
+     *     // ... filter to delete one TrainingDay
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrainingDayDeleteArgs>(args: SelectSubset<T, TrainingDayDeleteArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrainingDay.
+     * @param {TrainingDayUpdateArgs} args - Arguments to update one TrainingDay.
+     * @example
+     * // Update one TrainingDay
+     * const trainingDay = await prisma.trainingDay.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrainingDayUpdateArgs>(args: SelectSubset<T, TrainingDayUpdateArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrainingDays.
+     * @param {TrainingDayDeleteManyArgs} args - Arguments to filter TrainingDays to delete.
+     * @example
+     * // Delete a few TrainingDays
+     * const { count } = await prisma.trainingDay.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrainingDayDeleteManyArgs>(args?: SelectSubset<T, TrainingDayDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingDays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrainingDays
+     * const trainingDay = await prisma.trainingDay.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrainingDayUpdateManyArgs>(args: SelectSubset<T, TrainingDayUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingDays and returns the data updated in the database.
+     * @param {TrainingDayUpdateManyAndReturnArgs} args - Arguments to update many TrainingDays.
+     * @example
+     * // Update many TrainingDays
+     * const trainingDay = await prisma.trainingDay.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrainingDays and only return the `id`
+     * const trainingDayWithIdOnly = await prisma.trainingDay.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrainingDayUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingDayUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrainingDay.
+     * @param {TrainingDayUpsertArgs} args - Arguments to update or create a TrainingDay.
+     * @example
+     * // Update or create a TrainingDay
+     * const trainingDay = await prisma.trainingDay.upsert({
+     *   create: {
+     *     // ... data to create a TrainingDay
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrainingDay we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrainingDayUpsertArgs>(args: SelectSubset<T, TrainingDayUpsertArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrainingDays.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayCountArgs} args - Arguments to filter TrainingDays to count.
+     * @example
+     * // Count the number of TrainingDays
+     * const count = await prisma.trainingDay.count({
+     *   where: {
+     *     // ... the filter for the TrainingDays we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrainingDayCountArgs>(
+      args?: Subset<T, TrainingDayCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrainingDayCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrainingDay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrainingDayAggregateArgs>(args: Subset<T, TrainingDayAggregateArgs>): Prisma.PrismaPromise<GetTrainingDayAggregateType<T>>
+
+    /**
+     * Group by TrainingDay.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrainingDayGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrainingDayGroupByArgs['orderBy'] }
+        : { orderBy?: TrainingDayGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrainingDayGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrainingDayGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrainingDay model
+   */
+  readonly fields: TrainingDayFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrainingDay.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrainingDayClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    plan<T extends TrainingPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TrainingPlanDefaultArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    exercises<T extends TrainingDay$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDay$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends TrainingDay$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDay$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrainingDay model
+   */
+  interface TrainingDayFieldRefs {
+    readonly id: FieldRef<"TrainingDay", 'String'>
+    readonly userId: FieldRef<"TrainingDay", 'String'>
+    readonly planId: FieldRef<"TrainingDay", 'String'>
+    readonly name: FieldRef<"TrainingDay", 'String'>
+    readonly notes: FieldRef<"TrainingDay", 'String'>
+    readonly order: FieldRef<"TrainingDay", 'Int'>
+    readonly createdAt: FieldRef<"TrainingDay", 'DateTime'>
+    readonly updatedAt: FieldRef<"TrainingDay", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrainingDay findUnique
+   */
+  export type TrainingDayFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDay to fetch.
+     */
+    where: TrainingDayWhereUniqueInput
+  }
+
+  /**
+   * TrainingDay findUniqueOrThrow
+   */
+  export type TrainingDayFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDay to fetch.
+     */
+    where: TrainingDayWhereUniqueInput
+  }
+
+  /**
+   * TrainingDay findFirst
+   */
+  export type TrainingDayFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDay to fetch.
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDays to fetch.
+     */
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingDays.
+     */
+    cursor?: TrainingDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDays.
+     */
+    distinct?: TrainingDayScalarFieldEnum | TrainingDayScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay findFirstOrThrow
+   */
+  export type TrainingDayFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDay to fetch.
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDays to fetch.
+     */
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingDays.
+     */
+    cursor?: TrainingDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDays.
+     */
+    distinct?: TrainingDayScalarFieldEnum | TrainingDayScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay findMany
+   */
+  export type TrainingDayFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDays to fetch.
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDays to fetch.
+     */
+    orderBy?: TrainingDayOrderByWithRelationInput | TrainingDayOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrainingDays.
+     */
+    cursor?: TrainingDayWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDays from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDays.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDays.
+     */
+    distinct?: TrainingDayScalarFieldEnum | TrainingDayScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay create
+   */
+  export type TrainingDayCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrainingDay.
+     */
+    data: XOR<TrainingDayCreateInput, TrainingDayUncheckedCreateInput>
+  }
+
+  /**
+   * TrainingDay createMany
+   */
+  export type TrainingDayCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrainingDays.
+     */
+    data: TrainingDayCreateManyInput | TrainingDayCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrainingDay createManyAndReturn
+   */
+  export type TrainingDayCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrainingDays.
+     */
+    data: TrainingDayCreateManyInput | TrainingDayCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingDay update
+   */
+  export type TrainingDayUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrainingDay.
+     */
+    data: XOR<TrainingDayUpdateInput, TrainingDayUncheckedUpdateInput>
+    /**
+     * Choose, which TrainingDay to update.
+     */
+    where: TrainingDayWhereUniqueInput
+  }
+
+  /**
+   * TrainingDay updateMany
+   */
+  export type TrainingDayUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrainingDays.
+     */
+    data: XOR<TrainingDayUpdateManyMutationInput, TrainingDayUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingDays to update
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * Limit how many TrainingDays to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingDay updateManyAndReturn
+   */
+  export type TrainingDayUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * The data used to update TrainingDays.
+     */
+    data: XOR<TrainingDayUpdateManyMutationInput, TrainingDayUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingDays to update
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * Limit how many TrainingDays to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingDay upsert
+   */
+  export type TrainingDayUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrainingDay to update in case it exists.
+     */
+    where: TrainingDayWhereUniqueInput
+    /**
+     * In case the TrainingDay found by the `where` argument doesn't exist, create a new TrainingDay with this data.
+     */
+    create: XOR<TrainingDayCreateInput, TrainingDayUncheckedCreateInput>
+    /**
+     * In case the TrainingDay was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrainingDayUpdateInput, TrainingDayUncheckedUpdateInput>
+  }
+
+  /**
+   * TrainingDay delete
+   */
+  export type TrainingDayDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    /**
+     * Filter which TrainingDay to delete.
+     */
+    where: TrainingDayWhereUniqueInput
+  }
+
+  /**
+   * TrainingDay deleteMany
+   */
+  export type TrainingDayDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingDays to delete
+     */
+    where?: TrainingDayWhereInput
+    /**
+     * Limit how many TrainingDays to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingDay.exercises
+   */
+  export type TrainingDay$exercisesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    where?: TrainingDayExerciseWhereInput
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay.sessions
+   */
+  export type TrainingDay$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    where?: TrainingSessionWhereInput
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    cursor?: TrainingSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay without action
+   */
+  export type TrainingDayDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TrainingDayExercise
+   */
+
+  export type AggregateTrainingDayExercise = {
+    _count: TrainingDayExerciseCountAggregateOutputType | null
+    _avg: TrainingDayExerciseAvgAggregateOutputType | null
+    _sum: TrainingDayExerciseSumAggregateOutputType | null
+    _min: TrainingDayExerciseMinAggregateOutputType | null
+    _max: TrainingDayExerciseMaxAggregateOutputType | null
+  }
+
+  export type TrainingDayExerciseAvgAggregateOutputType = {
+    order: number | null
+    sets: number | null
+    targetReps: number | null
+    targetWeight: number | null
+    targetRpe: number | null
+    restSeconds: number | null
+    targetDurationSeconds: number | null
+    targetDistanceMeters: number | null
+  }
+
+  export type TrainingDayExerciseSumAggregateOutputType = {
+    order: number | null
+    sets: number | null
+    targetReps: number | null
+    targetWeight: number | null
+    targetRpe: number | null
+    restSeconds: number | null
+    targetDurationSeconds: number | null
+    targetDistanceMeters: number | null
+  }
+
+  export type TrainingDayExerciseMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dayId: string | null
+    exerciseId: string | null
+    order: number | null
+    sets: number | null
+    targetReps: number | null
+    targetWeight: number | null
+    targetRpe: number | null
+    restSeconds: number | null
+    targetDurationSeconds: number | null
+    targetDistanceMeters: number | null
+    notes: string | null
+  }
+
+  export type TrainingDayExerciseMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dayId: string | null
+    exerciseId: string | null
+    order: number | null
+    sets: number | null
+    targetReps: number | null
+    targetWeight: number | null
+    targetRpe: number | null
+    restSeconds: number | null
+    targetDurationSeconds: number | null
+    targetDistanceMeters: number | null
+    notes: string | null
+  }
+
+  export type TrainingDayExerciseCountAggregateOutputType = {
+    id: number
+    userId: number
+    dayId: number
+    exerciseId: number
+    order: number
+    sets: number
+    targetReps: number
+    targetWeight: number
+    targetRpe: number
+    restSeconds: number
+    targetDurationSeconds: number
+    targetDistanceMeters: number
+    notes: number
+    _all: number
+  }
+
+
+  export type TrainingDayExerciseAvgAggregateInputType = {
+    order?: true
+    sets?: true
+    targetReps?: true
+    targetWeight?: true
+    targetRpe?: true
+    restSeconds?: true
+    targetDurationSeconds?: true
+    targetDistanceMeters?: true
+  }
+
+  export type TrainingDayExerciseSumAggregateInputType = {
+    order?: true
+    sets?: true
+    targetReps?: true
+    targetWeight?: true
+    targetRpe?: true
+    restSeconds?: true
+    targetDurationSeconds?: true
+    targetDistanceMeters?: true
+  }
+
+  export type TrainingDayExerciseMinAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    exerciseId?: true
+    order?: true
+    sets?: true
+    targetReps?: true
+    targetWeight?: true
+    targetRpe?: true
+    restSeconds?: true
+    targetDurationSeconds?: true
+    targetDistanceMeters?: true
+    notes?: true
+  }
+
+  export type TrainingDayExerciseMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    exerciseId?: true
+    order?: true
+    sets?: true
+    targetReps?: true
+    targetWeight?: true
+    targetRpe?: true
+    restSeconds?: true
+    targetDurationSeconds?: true
+    targetDistanceMeters?: true
+    notes?: true
+  }
+
+  export type TrainingDayExerciseCountAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    exerciseId?: true
+    order?: true
+    sets?: true
+    targetReps?: true
+    targetWeight?: true
+    targetRpe?: true
+    restSeconds?: true
+    targetDurationSeconds?: true
+    targetDistanceMeters?: true
+    notes?: true
+    _all?: true
+  }
+
+  export type TrainingDayExerciseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingDayExercise to aggregate.
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDayExercises to fetch.
+     */
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDayExercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDayExercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrainingDayExercises
+    **/
+    _count?: true | TrainingDayExerciseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrainingDayExerciseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrainingDayExerciseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrainingDayExerciseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrainingDayExerciseMaxAggregateInputType
+  }
+
+  export type GetTrainingDayExerciseAggregateType<T extends TrainingDayExerciseAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrainingDayExercise]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrainingDayExercise[P]>
+      : GetScalarType<T[P], AggregateTrainingDayExercise[P]>
+  }
+
+
+
+
+  export type TrainingDayExerciseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingDayExerciseWhereInput
+    orderBy?: TrainingDayExerciseOrderByWithAggregationInput | TrainingDayExerciseOrderByWithAggregationInput[]
+    by: TrainingDayExerciseScalarFieldEnum[] | TrainingDayExerciseScalarFieldEnum
+    having?: TrainingDayExerciseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrainingDayExerciseCountAggregateInputType | true
+    _avg?: TrainingDayExerciseAvgAggregateInputType
+    _sum?: TrainingDayExerciseSumAggregateInputType
+    _min?: TrainingDayExerciseMinAggregateInputType
+    _max?: TrainingDayExerciseMaxAggregateInputType
+  }
+
+  export type TrainingDayExerciseGroupByOutputType = {
+    id: string
+    userId: string
+    dayId: string
+    exerciseId: string
+    order: number
+    sets: number
+    targetReps: number | null
+    targetWeight: number | null
+    targetRpe: number | null
+    restSeconds: number | null
+    targetDurationSeconds: number | null
+    targetDistanceMeters: number | null
+    notes: string | null
+    _count: TrainingDayExerciseCountAggregateOutputType | null
+    _avg: TrainingDayExerciseAvgAggregateOutputType | null
+    _sum: TrainingDayExerciseSumAggregateOutputType | null
+    _min: TrainingDayExerciseMinAggregateOutputType | null
+    _max: TrainingDayExerciseMaxAggregateOutputType | null
+  }
+
+  type GetTrainingDayExerciseGroupByPayload<T extends TrainingDayExerciseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrainingDayExerciseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrainingDayExerciseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrainingDayExerciseGroupByOutputType[P]>
+            : GetScalarType<T[P], TrainingDayExerciseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrainingDayExerciseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    exerciseId?: boolean
+    order?: boolean
+    sets?: boolean
+    targetReps?: boolean
+    targetWeight?: boolean
+    targetRpe?: boolean
+    restSeconds?: boolean
+    targetDurationSeconds?: boolean
+    targetDistanceMeters?: boolean
+    notes?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDayExercise"]>
+
+  export type TrainingDayExerciseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    exerciseId?: boolean
+    order?: boolean
+    sets?: boolean
+    targetReps?: boolean
+    targetWeight?: boolean
+    targetRpe?: boolean
+    restSeconds?: boolean
+    targetDurationSeconds?: boolean
+    targetDistanceMeters?: boolean
+    notes?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDayExercise"]>
+
+  export type TrainingDayExerciseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    exerciseId?: boolean
+    order?: boolean
+    sets?: boolean
+    targetReps?: boolean
+    targetWeight?: boolean
+    targetRpe?: boolean
+    restSeconds?: boolean
+    targetDurationSeconds?: boolean
+    targetDistanceMeters?: boolean
+    notes?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingDayExercise"]>
+
+  export type TrainingDayExerciseSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    exerciseId?: boolean
+    order?: boolean
+    sets?: boolean
+    targetReps?: boolean
+    targetWeight?: boolean
+    targetRpe?: boolean
+    restSeconds?: boolean
+    targetDurationSeconds?: boolean
+    targetDistanceMeters?: boolean
+    notes?: boolean
+  }
+
+  export type TrainingDayExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayId" | "exerciseId" | "order" | "sets" | "targetReps" | "targetWeight" | "targetRpe" | "restSeconds" | "targetDurationSeconds" | "targetDistanceMeters" | "notes", ExtArgs["result"]["trainingDayExercise"]>
+  export type TrainingDayExerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+  export type TrainingDayExerciseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+  export type TrainingDayExerciseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingDayDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+
+  export type $TrainingDayExercisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrainingDayExercise"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      day: Prisma.$TrainingDayPayload<ExtArgs>
+      exercise: Prisma.$ExercisePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      dayId: string
+      exerciseId: string
+      order: number
+      sets: number
+      targetReps: number | null
+      targetWeight: number | null
+      targetRpe: number | null
+      restSeconds: number | null
+      targetDurationSeconds: number | null
+      targetDistanceMeters: number | null
+      notes: string | null
+    }, ExtArgs["result"]["trainingDayExercise"]>
+    composites: {}
+  }
+
+  type TrainingDayExerciseGetPayload<S extends boolean | null | undefined | TrainingDayExerciseDefaultArgs> = $Result.GetResult<Prisma.$TrainingDayExercisePayload, S>
+
+  type TrainingDayExerciseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrainingDayExerciseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrainingDayExerciseCountAggregateInputType | true
+    }
+
+  export interface TrainingDayExerciseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrainingDayExercise'], meta: { name: 'TrainingDayExercise' } }
+    /**
+     * Find zero or one TrainingDayExercise that matches the filter.
+     * @param {TrainingDayExerciseFindUniqueArgs} args - Arguments to find a TrainingDayExercise
+     * @example
+     * // Get one TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrainingDayExerciseFindUniqueArgs>(args: SelectSubset<T, TrainingDayExerciseFindUniqueArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrainingDayExercise that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrainingDayExerciseFindUniqueOrThrowArgs} args - Arguments to find a TrainingDayExercise
+     * @example
+     * // Get one TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrainingDayExerciseFindUniqueOrThrowArgs>(args: SelectSubset<T, TrainingDayExerciseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingDayExercise that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseFindFirstArgs} args - Arguments to find a TrainingDayExercise
+     * @example
+     * // Get one TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrainingDayExerciseFindFirstArgs>(args?: SelectSubset<T, TrainingDayExerciseFindFirstArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingDayExercise that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseFindFirstOrThrowArgs} args - Arguments to find a TrainingDayExercise
+     * @example
+     * // Get one TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrainingDayExerciseFindFirstOrThrowArgs>(args?: SelectSubset<T, TrainingDayExerciseFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrainingDayExercises that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrainingDayExercises
+     * const trainingDayExercises = await prisma.trainingDayExercise.findMany()
+     * 
+     * // Get first 10 TrainingDayExercises
+     * const trainingDayExercises = await prisma.trainingDayExercise.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trainingDayExerciseWithIdOnly = await prisma.trainingDayExercise.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrainingDayExerciseFindManyArgs>(args?: SelectSubset<T, TrainingDayExerciseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrainingDayExercise.
+     * @param {TrainingDayExerciseCreateArgs} args - Arguments to create a TrainingDayExercise.
+     * @example
+     * // Create one TrainingDayExercise
+     * const TrainingDayExercise = await prisma.trainingDayExercise.create({
+     *   data: {
+     *     // ... data to create a TrainingDayExercise
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrainingDayExerciseCreateArgs>(args: SelectSubset<T, TrainingDayExerciseCreateArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrainingDayExercises.
+     * @param {TrainingDayExerciseCreateManyArgs} args - Arguments to create many TrainingDayExercises.
+     * @example
+     * // Create many TrainingDayExercises
+     * const trainingDayExercise = await prisma.trainingDayExercise.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrainingDayExerciseCreateManyArgs>(args?: SelectSubset<T, TrainingDayExerciseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrainingDayExercises and returns the data saved in the database.
+     * @param {TrainingDayExerciseCreateManyAndReturnArgs} args - Arguments to create many TrainingDayExercises.
+     * @example
+     * // Create many TrainingDayExercises
+     * const trainingDayExercise = await prisma.trainingDayExercise.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrainingDayExercises and only return the `id`
+     * const trainingDayExerciseWithIdOnly = await prisma.trainingDayExercise.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrainingDayExerciseCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingDayExerciseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrainingDayExercise.
+     * @param {TrainingDayExerciseDeleteArgs} args - Arguments to delete one TrainingDayExercise.
+     * @example
+     * // Delete one TrainingDayExercise
+     * const TrainingDayExercise = await prisma.trainingDayExercise.delete({
+     *   where: {
+     *     // ... filter to delete one TrainingDayExercise
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrainingDayExerciseDeleteArgs>(args: SelectSubset<T, TrainingDayExerciseDeleteArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrainingDayExercise.
+     * @param {TrainingDayExerciseUpdateArgs} args - Arguments to update one TrainingDayExercise.
+     * @example
+     * // Update one TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrainingDayExerciseUpdateArgs>(args: SelectSubset<T, TrainingDayExerciseUpdateArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrainingDayExercises.
+     * @param {TrainingDayExerciseDeleteManyArgs} args - Arguments to filter TrainingDayExercises to delete.
+     * @example
+     * // Delete a few TrainingDayExercises
+     * const { count } = await prisma.trainingDayExercise.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrainingDayExerciseDeleteManyArgs>(args?: SelectSubset<T, TrainingDayExerciseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingDayExercises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrainingDayExercises
+     * const trainingDayExercise = await prisma.trainingDayExercise.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrainingDayExerciseUpdateManyArgs>(args: SelectSubset<T, TrainingDayExerciseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingDayExercises and returns the data updated in the database.
+     * @param {TrainingDayExerciseUpdateManyAndReturnArgs} args - Arguments to update many TrainingDayExercises.
+     * @example
+     * // Update many TrainingDayExercises
+     * const trainingDayExercise = await prisma.trainingDayExercise.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrainingDayExercises and only return the `id`
+     * const trainingDayExerciseWithIdOnly = await prisma.trainingDayExercise.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrainingDayExerciseUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingDayExerciseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrainingDayExercise.
+     * @param {TrainingDayExerciseUpsertArgs} args - Arguments to update or create a TrainingDayExercise.
+     * @example
+     * // Update or create a TrainingDayExercise
+     * const trainingDayExercise = await prisma.trainingDayExercise.upsert({
+     *   create: {
+     *     // ... data to create a TrainingDayExercise
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrainingDayExercise we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrainingDayExerciseUpsertArgs>(args: SelectSubset<T, TrainingDayExerciseUpsertArgs<ExtArgs>>): Prisma__TrainingDayExerciseClient<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrainingDayExercises.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseCountArgs} args - Arguments to filter TrainingDayExercises to count.
+     * @example
+     * // Count the number of TrainingDayExercises
+     * const count = await prisma.trainingDayExercise.count({
+     *   where: {
+     *     // ... the filter for the TrainingDayExercises we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrainingDayExerciseCountArgs>(
+      args?: Subset<T, TrainingDayExerciseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrainingDayExerciseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrainingDayExercise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrainingDayExerciseAggregateArgs>(args: Subset<T, TrainingDayExerciseAggregateArgs>): Prisma.PrismaPromise<GetTrainingDayExerciseAggregateType<T>>
+
+    /**
+     * Group by TrainingDayExercise.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingDayExerciseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrainingDayExerciseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrainingDayExerciseGroupByArgs['orderBy'] }
+        : { orderBy?: TrainingDayExerciseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrainingDayExerciseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrainingDayExerciseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrainingDayExercise model
+   */
+  readonly fields: TrainingDayExerciseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrainingDayExercise.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrainingDayExerciseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    day<T extends TrainingDayDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDayDefaultArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    exercise<T extends ExerciseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExerciseDefaultArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrainingDayExercise model
+   */
+  interface TrainingDayExerciseFieldRefs {
+    readonly id: FieldRef<"TrainingDayExercise", 'String'>
+    readonly userId: FieldRef<"TrainingDayExercise", 'String'>
+    readonly dayId: FieldRef<"TrainingDayExercise", 'String'>
+    readonly exerciseId: FieldRef<"TrainingDayExercise", 'String'>
+    readonly order: FieldRef<"TrainingDayExercise", 'Int'>
+    readonly sets: FieldRef<"TrainingDayExercise", 'Int'>
+    readonly targetReps: FieldRef<"TrainingDayExercise", 'Int'>
+    readonly targetWeight: FieldRef<"TrainingDayExercise", 'Float'>
+    readonly targetRpe: FieldRef<"TrainingDayExercise", 'Float'>
+    readonly restSeconds: FieldRef<"TrainingDayExercise", 'Int'>
+    readonly targetDurationSeconds: FieldRef<"TrainingDayExercise", 'Int'>
+    readonly targetDistanceMeters: FieldRef<"TrainingDayExercise", 'Float'>
+    readonly notes: FieldRef<"TrainingDayExercise", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrainingDayExercise findUnique
+   */
+  export type TrainingDayExerciseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDayExercise to fetch.
+     */
+    where: TrainingDayExerciseWhereUniqueInput
+  }
+
+  /**
+   * TrainingDayExercise findUniqueOrThrow
+   */
+  export type TrainingDayExerciseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDayExercise to fetch.
+     */
+    where: TrainingDayExerciseWhereUniqueInput
+  }
+
+  /**
+   * TrainingDayExercise findFirst
+   */
+  export type TrainingDayExerciseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDayExercise to fetch.
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDayExercises to fetch.
+     */
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingDayExercises.
+     */
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDayExercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDayExercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDayExercises.
+     */
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDayExercise findFirstOrThrow
+   */
+  export type TrainingDayExerciseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDayExercise to fetch.
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDayExercises to fetch.
+     */
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingDayExercises.
+     */
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDayExercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDayExercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDayExercises.
+     */
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDayExercise findMany
+   */
+  export type TrainingDayExerciseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingDayExercises to fetch.
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingDayExercises to fetch.
+     */
+    orderBy?: TrainingDayExerciseOrderByWithRelationInput | TrainingDayExerciseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrainingDayExercises.
+     */
+    cursor?: TrainingDayExerciseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingDayExercises from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingDayExercises.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingDayExercises.
+     */
+    distinct?: TrainingDayExerciseScalarFieldEnum | TrainingDayExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDayExercise create
+   */
+  export type TrainingDayExerciseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrainingDayExercise.
+     */
+    data: XOR<TrainingDayExerciseCreateInput, TrainingDayExerciseUncheckedCreateInput>
+  }
+
+  /**
+   * TrainingDayExercise createMany
+   */
+  export type TrainingDayExerciseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrainingDayExercises.
+     */
+    data: TrainingDayExerciseCreateManyInput | TrainingDayExerciseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrainingDayExercise createManyAndReturn
+   */
+  export type TrainingDayExerciseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrainingDayExercises.
+     */
+    data: TrainingDayExerciseCreateManyInput | TrainingDayExerciseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingDayExercise update
+   */
+  export type TrainingDayExerciseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrainingDayExercise.
+     */
+    data: XOR<TrainingDayExerciseUpdateInput, TrainingDayExerciseUncheckedUpdateInput>
+    /**
+     * Choose, which TrainingDayExercise to update.
+     */
+    where: TrainingDayExerciseWhereUniqueInput
+  }
+
+  /**
+   * TrainingDayExercise updateMany
+   */
+  export type TrainingDayExerciseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrainingDayExercises.
+     */
+    data: XOR<TrainingDayExerciseUpdateManyMutationInput, TrainingDayExerciseUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingDayExercises to update
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * Limit how many TrainingDayExercises to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingDayExercise updateManyAndReturn
+   */
+  export type TrainingDayExerciseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * The data used to update TrainingDayExercises.
+     */
+    data: XOR<TrainingDayExerciseUpdateManyMutationInput, TrainingDayExerciseUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingDayExercises to update
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * Limit how many TrainingDayExercises to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingDayExercise upsert
+   */
+  export type TrainingDayExerciseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrainingDayExercise to update in case it exists.
+     */
+    where: TrainingDayExerciseWhereUniqueInput
+    /**
+     * In case the TrainingDayExercise found by the `where` argument doesn't exist, create a new TrainingDayExercise with this data.
+     */
+    create: XOR<TrainingDayExerciseCreateInput, TrainingDayExerciseUncheckedCreateInput>
+    /**
+     * In case the TrainingDayExercise was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrainingDayExerciseUpdateInput, TrainingDayExerciseUncheckedUpdateInput>
+  }
+
+  /**
+   * TrainingDayExercise delete
+   */
+  export type TrainingDayExerciseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+    /**
+     * Filter which TrainingDayExercise to delete.
+     */
+    where: TrainingDayExerciseWhereUniqueInput
+  }
+
+  /**
+   * TrainingDayExercise deleteMany
+   */
+  export type TrainingDayExerciseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingDayExercises to delete
+     */
+    where?: TrainingDayExerciseWhereInput
+    /**
+     * Limit how many TrainingDayExercises to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingDayExercise without action
+   */
+  export type TrainingDayExerciseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDayExercise
+     */
+    select?: TrainingDayExerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDayExercise
+     */
+    omit?: TrainingDayExerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayExerciseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TrainingSession
+   */
+
+  export type AggregateTrainingSession = {
+    _count: TrainingSessionCountAggregateOutputType | null
+    _avg: TrainingSessionAvgAggregateOutputType | null
+    _sum: TrainingSessionSumAggregateOutputType | null
+    _min: TrainingSessionMinAggregateOutputType | null
+    _max: TrainingSessionMaxAggregateOutputType | null
+  }
+
+  export type TrainingSessionAvgAggregateOutputType = {
+    durationSeconds: number | null
+  }
+
+  export type TrainingSessionSumAggregateOutputType = {
+    durationSeconds: number | null
+  }
+
+  export type TrainingSessionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dayId: string | null
+    dayName: string | null
+    date: Date | null
+    status: string | null
+    durationSeconds: number | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingSessionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    dayId: string | null
+    dayName: string | null
+    date: Date | null
+    status: string | null
+    durationSeconds: number | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TrainingSessionCountAggregateOutputType = {
+    id: number
+    userId: number
+    dayId: number
+    dayName: number
+    date: number
+    status: number
+    durationSeconds: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TrainingSessionAvgAggregateInputType = {
+    durationSeconds?: true
+  }
+
+  export type TrainingSessionSumAggregateInputType = {
+    durationSeconds?: true
+  }
+
+  export type TrainingSessionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    dayName?: true
+    date?: true
+    status?: true
+    durationSeconds?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingSessionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    dayName?: true
+    date?: true
+    status?: true
+    durationSeconds?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TrainingSessionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    dayId?: true
+    dayName?: true
+    date?: true
+    status?: true
+    durationSeconds?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TrainingSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingSession to aggregate.
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingSessions to fetch.
+     */
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrainingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrainingSessions
+    **/
+    _count?: true | TrainingSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrainingSessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrainingSessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrainingSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrainingSessionMaxAggregateInputType
+  }
+
+  export type GetTrainingSessionAggregateType<T extends TrainingSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrainingSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrainingSession[P]>
+      : GetScalarType<T[P], AggregateTrainingSession[P]>
+  }
+
+
+
+
+  export type TrainingSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrainingSessionWhereInput
+    orderBy?: TrainingSessionOrderByWithAggregationInput | TrainingSessionOrderByWithAggregationInput[]
+    by: TrainingSessionScalarFieldEnum[] | TrainingSessionScalarFieldEnum
+    having?: TrainingSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrainingSessionCountAggregateInputType | true
+    _avg?: TrainingSessionAvgAggregateInputType
+    _sum?: TrainingSessionSumAggregateInputType
+    _min?: TrainingSessionMinAggregateInputType
+    _max?: TrainingSessionMaxAggregateInputType
+  }
+
+  export type TrainingSessionGroupByOutputType = {
+    id: string
+    userId: string
+    dayId: string | null
+    dayName: string
+    date: Date
+    status: string
+    durationSeconds: number | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TrainingSessionCountAggregateOutputType | null
+    _avg: TrainingSessionAvgAggregateOutputType | null
+    _sum: TrainingSessionSumAggregateOutputType | null
+    _min: TrainingSessionMinAggregateOutputType | null
+    _max: TrainingSessionMaxAggregateOutputType | null
+  }
+
+  type GetTrainingSessionGroupByPayload<T extends TrainingSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrainingSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrainingSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrainingSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], TrainingSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrainingSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    dayName?: boolean
+    date?: boolean
+    status?: boolean
+    durationSeconds?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+    setLogs?: boolean | TrainingSession$setLogsArgs<ExtArgs>
+    _count?: boolean | TrainingSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingSession"]>
+
+  export type TrainingSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    dayName?: boolean
+    date?: boolean
+    status?: boolean
+    durationSeconds?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingSession"]>
+
+  export type TrainingSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    dayName?: boolean
+    date?: boolean
+    status?: boolean
+    durationSeconds?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+  }, ExtArgs["result"]["trainingSession"]>
+
+  export type TrainingSessionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    dayId?: boolean
+    dayName?: boolean
+    date?: boolean
+    status?: boolean
+    durationSeconds?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TrainingSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayId" | "dayName" | "date" | "status" | "durationSeconds" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["trainingSession"]>
+  export type TrainingSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+    setLogs?: boolean | TrainingSession$setLogsArgs<ExtArgs>
+    _count?: boolean | TrainingSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TrainingSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+  }
+  export type TrainingSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    day?: boolean | TrainingSession$dayArgs<ExtArgs>
+  }
+
+  export type $TrainingSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrainingSession"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      day: Prisma.$TrainingDayPayload<ExtArgs> | null
+      setLogs: Prisma.$SetLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      dayId: string | null
+      dayName: string
+      date: Date
+      status: string
+      durationSeconds: number | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["trainingSession"]>
+    composites: {}
+  }
+
+  type TrainingSessionGetPayload<S extends boolean | null | undefined | TrainingSessionDefaultArgs> = $Result.GetResult<Prisma.$TrainingSessionPayload, S>
+
+  type TrainingSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrainingSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrainingSessionCountAggregateInputType | true
+    }
+
+  export interface TrainingSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrainingSession'], meta: { name: 'TrainingSession' } }
+    /**
+     * Find zero or one TrainingSession that matches the filter.
+     * @param {TrainingSessionFindUniqueArgs} args - Arguments to find a TrainingSession
+     * @example
+     * // Get one TrainingSession
+     * const trainingSession = await prisma.trainingSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrainingSessionFindUniqueArgs>(args: SelectSubset<T, TrainingSessionFindUniqueArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrainingSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrainingSessionFindUniqueOrThrowArgs} args - Arguments to find a TrainingSession
+     * @example
+     * // Get one TrainingSession
+     * const trainingSession = await prisma.trainingSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrainingSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, TrainingSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionFindFirstArgs} args - Arguments to find a TrainingSession
+     * @example
+     * // Get one TrainingSession
+     * const trainingSession = await prisma.trainingSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrainingSessionFindFirstArgs>(args?: SelectSubset<T, TrainingSessionFindFirstArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrainingSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionFindFirstOrThrowArgs} args - Arguments to find a TrainingSession
+     * @example
+     * // Get one TrainingSession
+     * const trainingSession = await prisma.trainingSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrainingSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, TrainingSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrainingSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrainingSessions
+     * const trainingSessions = await prisma.trainingSession.findMany()
+     * 
+     * // Get first 10 TrainingSessions
+     * const trainingSessions = await prisma.trainingSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trainingSessionWithIdOnly = await prisma.trainingSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrainingSessionFindManyArgs>(args?: SelectSubset<T, TrainingSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrainingSession.
+     * @param {TrainingSessionCreateArgs} args - Arguments to create a TrainingSession.
+     * @example
+     * // Create one TrainingSession
+     * const TrainingSession = await prisma.trainingSession.create({
+     *   data: {
+     *     // ... data to create a TrainingSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrainingSessionCreateArgs>(args: SelectSubset<T, TrainingSessionCreateArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrainingSessions.
+     * @param {TrainingSessionCreateManyArgs} args - Arguments to create many TrainingSessions.
+     * @example
+     * // Create many TrainingSessions
+     * const trainingSession = await prisma.trainingSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrainingSessionCreateManyArgs>(args?: SelectSubset<T, TrainingSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrainingSessions and returns the data saved in the database.
+     * @param {TrainingSessionCreateManyAndReturnArgs} args - Arguments to create many TrainingSessions.
+     * @example
+     * // Create many TrainingSessions
+     * const trainingSession = await prisma.trainingSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrainingSessions and only return the `id`
+     * const trainingSessionWithIdOnly = await prisma.trainingSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrainingSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, TrainingSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrainingSession.
+     * @param {TrainingSessionDeleteArgs} args - Arguments to delete one TrainingSession.
+     * @example
+     * // Delete one TrainingSession
+     * const TrainingSession = await prisma.trainingSession.delete({
+     *   where: {
+     *     // ... filter to delete one TrainingSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrainingSessionDeleteArgs>(args: SelectSubset<T, TrainingSessionDeleteArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrainingSession.
+     * @param {TrainingSessionUpdateArgs} args - Arguments to update one TrainingSession.
+     * @example
+     * // Update one TrainingSession
+     * const trainingSession = await prisma.trainingSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrainingSessionUpdateArgs>(args: SelectSubset<T, TrainingSessionUpdateArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrainingSessions.
+     * @param {TrainingSessionDeleteManyArgs} args - Arguments to filter TrainingSessions to delete.
+     * @example
+     * // Delete a few TrainingSessions
+     * const { count } = await prisma.trainingSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrainingSessionDeleteManyArgs>(args?: SelectSubset<T, TrainingSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrainingSessions
+     * const trainingSession = await prisma.trainingSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrainingSessionUpdateManyArgs>(args: SelectSubset<T, TrainingSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrainingSessions and returns the data updated in the database.
+     * @param {TrainingSessionUpdateManyAndReturnArgs} args - Arguments to update many TrainingSessions.
+     * @example
+     * // Update many TrainingSessions
+     * const trainingSession = await prisma.trainingSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrainingSessions and only return the `id`
+     * const trainingSessionWithIdOnly = await prisma.trainingSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrainingSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, TrainingSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrainingSession.
+     * @param {TrainingSessionUpsertArgs} args - Arguments to update or create a TrainingSession.
+     * @example
+     * // Update or create a TrainingSession
+     * const trainingSession = await prisma.trainingSession.upsert({
+     *   create: {
+     *     // ... data to create a TrainingSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrainingSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrainingSessionUpsertArgs>(args: SelectSubset<T, TrainingSessionUpsertArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrainingSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionCountArgs} args - Arguments to filter TrainingSessions to count.
+     * @example
+     * // Count the number of TrainingSessions
+     * const count = await prisma.trainingSession.count({
+     *   where: {
+     *     // ... the filter for the TrainingSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrainingSessionCountArgs>(
+      args?: Subset<T, TrainingSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrainingSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrainingSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrainingSessionAggregateArgs>(args: Subset<T, TrainingSessionAggregateArgs>): Prisma.PrismaPromise<GetTrainingSessionAggregateType<T>>
+
+    /**
+     * Group by TrainingSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrainingSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrainingSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrainingSessionGroupByArgs['orderBy'] }
+        : { orderBy?: TrainingSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrainingSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrainingSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrainingSession model
+   */
+  readonly fields: TrainingSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrainingSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrainingSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    day<T extends TrainingSession$dayArgs<ExtArgs> = {}>(args?: Subset<T, TrainingSession$dayArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    setLogs<T extends TrainingSession$setLogsArgs<ExtArgs> = {}>(args?: Subset<T, TrainingSession$setLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrainingSession model
+   */
+  interface TrainingSessionFieldRefs {
+    readonly id: FieldRef<"TrainingSession", 'String'>
+    readonly userId: FieldRef<"TrainingSession", 'String'>
+    readonly dayId: FieldRef<"TrainingSession", 'String'>
+    readonly dayName: FieldRef<"TrainingSession", 'String'>
+    readonly date: FieldRef<"TrainingSession", 'DateTime'>
+    readonly status: FieldRef<"TrainingSession", 'String'>
+    readonly durationSeconds: FieldRef<"TrainingSession", 'Int'>
+    readonly notes: FieldRef<"TrainingSession", 'String'>
+    readonly createdAt: FieldRef<"TrainingSession", 'DateTime'>
+    readonly updatedAt: FieldRef<"TrainingSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrainingSession findUnique
+   */
+  export type TrainingSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingSession to fetch.
+     */
+    where: TrainingSessionWhereUniqueInput
+  }
+
+  /**
+   * TrainingSession findUniqueOrThrow
+   */
+  export type TrainingSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingSession to fetch.
+     */
+    where: TrainingSessionWhereUniqueInput
+  }
+
+  /**
+   * TrainingSession findFirst
+   */
+  export type TrainingSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingSession to fetch.
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingSessions to fetch.
+     */
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingSessions.
+     */
+    cursor?: TrainingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingSessions.
+     */
+    distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingSession findFirstOrThrow
+   */
+  export type TrainingSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingSession to fetch.
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingSessions to fetch.
+     */
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrainingSessions.
+     */
+    cursor?: TrainingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingSessions.
+     */
+    distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingSession findMany
+   */
+  export type TrainingSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which TrainingSessions to fetch.
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrainingSessions to fetch.
+     */
+    orderBy?: TrainingSessionOrderByWithRelationInput | TrainingSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrainingSessions.
+     */
+    cursor?: TrainingSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrainingSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrainingSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrainingSessions.
+     */
+    distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingSession create
+   */
+  export type TrainingSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrainingSession.
+     */
+    data: XOR<TrainingSessionCreateInput, TrainingSessionUncheckedCreateInput>
+  }
+
+  /**
+   * TrainingSession createMany
+   */
+  export type TrainingSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrainingSessions.
+     */
+    data: TrainingSessionCreateManyInput | TrainingSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrainingSession createManyAndReturn
+   */
+  export type TrainingSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrainingSessions.
+     */
+    data: TrainingSessionCreateManyInput | TrainingSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingSession update
+   */
+  export type TrainingSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrainingSession.
+     */
+    data: XOR<TrainingSessionUpdateInput, TrainingSessionUncheckedUpdateInput>
+    /**
+     * Choose, which TrainingSession to update.
+     */
+    where: TrainingSessionWhereUniqueInput
+  }
+
+  /**
+   * TrainingSession updateMany
+   */
+  export type TrainingSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrainingSessions.
+     */
+    data: XOR<TrainingSessionUpdateManyMutationInput, TrainingSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingSessions to update
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * Limit how many TrainingSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingSession updateManyAndReturn
+   */
+  export type TrainingSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update TrainingSessions.
+     */
+    data: XOR<TrainingSessionUpdateManyMutationInput, TrainingSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which TrainingSessions to update
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * Limit how many TrainingSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrainingSession upsert
+   */
+  export type TrainingSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrainingSession to update in case it exists.
+     */
+    where: TrainingSessionWhereUniqueInput
+    /**
+     * In case the TrainingSession found by the `where` argument doesn't exist, create a new TrainingSession with this data.
+     */
+    create: XOR<TrainingSessionCreateInput, TrainingSessionUncheckedCreateInput>
+    /**
+     * In case the TrainingSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrainingSessionUpdateInput, TrainingSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * TrainingSession delete
+   */
+  export type TrainingSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+    /**
+     * Filter which TrainingSession to delete.
+     */
+    where: TrainingSessionWhereUniqueInput
+  }
+
+  /**
+   * TrainingSession deleteMany
+   */
+  export type TrainingSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrainingSessions to delete
+     */
+    where?: TrainingSessionWhereInput
+    /**
+     * Limit how many TrainingSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrainingSession.day
+   */
+  export type TrainingSession$dayArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    where?: TrainingDayWhereInput
+  }
+
+  /**
+   * TrainingSession.setLogs
+   */
+  export type TrainingSession$setLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    where?: SetLogWhereInput
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    cursor?: SetLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingSession without action
+   */
+  export type TrainingSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingSession
+     */
+    select?: TrainingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingSession
+     */
+    omit?: TrainingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SetLog
+   */
+
+  export type AggregateSetLog = {
+    _count: SetLogCountAggregateOutputType | null
+    _avg: SetLogAvgAggregateOutputType | null
+    _sum: SetLogSumAggregateOutputType | null
+    _min: SetLogMinAggregateOutputType | null
+    _max: SetLogMaxAggregateOutputType | null
+  }
+
+  export type SetLogAvgAggregateOutputType = {
+    setNumber: number | null
+    reps: number | null
+    weight: number | null
+    rpe: number | null
+    restSeconds: number | null
+    durationSeconds: number | null
+    distanceMeters: number | null
+    order: number | null
+  }
+
+  export type SetLogSumAggregateOutputType = {
+    setNumber: number | null
+    reps: number | null
+    weight: number | null
+    rpe: number | null
+    restSeconds: number | null
+    durationSeconds: number | null
+    distanceMeters: number | null
+    order: number | null
+  }
+
+  export type SetLogMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    sessionId: string | null
+    exerciseId: string | null
+    exerciseName: string | null
+    setNumber: number | null
+    reps: number | null
+    weight: number | null
+    rpe: number | null
+    restSeconds: number | null
+    durationSeconds: number | null
+    distanceMeters: number | null
+    completed: boolean | null
+    notes: string | null
+    order: number | null
+  }
+
+  export type SetLogMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    sessionId: string | null
+    exerciseId: string | null
+    exerciseName: string | null
+    setNumber: number | null
+    reps: number | null
+    weight: number | null
+    rpe: number | null
+    restSeconds: number | null
+    durationSeconds: number | null
+    distanceMeters: number | null
+    completed: boolean | null
+    notes: string | null
+    order: number | null
+  }
+
+  export type SetLogCountAggregateOutputType = {
+    id: number
+    userId: number
+    sessionId: number
+    exerciseId: number
+    exerciseName: number
+    setNumber: number
+    reps: number
+    weight: number
+    rpe: number
+    restSeconds: number
+    durationSeconds: number
+    distanceMeters: number
+    completed: number
+    notes: number
+    order: number
+    _all: number
+  }
+
+
+  export type SetLogAvgAggregateInputType = {
+    setNumber?: true
+    reps?: true
+    weight?: true
+    rpe?: true
+    restSeconds?: true
+    durationSeconds?: true
+    distanceMeters?: true
+    order?: true
+  }
+
+  export type SetLogSumAggregateInputType = {
+    setNumber?: true
+    reps?: true
+    weight?: true
+    rpe?: true
+    restSeconds?: true
+    durationSeconds?: true
+    distanceMeters?: true
+    order?: true
+  }
+
+  export type SetLogMinAggregateInputType = {
+    id?: true
+    userId?: true
+    sessionId?: true
+    exerciseId?: true
+    exerciseName?: true
+    setNumber?: true
+    reps?: true
+    weight?: true
+    rpe?: true
+    restSeconds?: true
+    durationSeconds?: true
+    distanceMeters?: true
+    completed?: true
+    notes?: true
+    order?: true
+  }
+
+  export type SetLogMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    sessionId?: true
+    exerciseId?: true
+    exerciseName?: true
+    setNumber?: true
+    reps?: true
+    weight?: true
+    rpe?: true
+    restSeconds?: true
+    durationSeconds?: true
+    distanceMeters?: true
+    completed?: true
+    notes?: true
+    order?: true
+  }
+
+  export type SetLogCountAggregateInputType = {
+    id?: true
+    userId?: true
+    sessionId?: true
+    exerciseId?: true
+    exerciseName?: true
+    setNumber?: true
+    reps?: true
+    weight?: true
+    rpe?: true
+    restSeconds?: true
+    durationSeconds?: true
+    distanceMeters?: true
+    completed?: true
+    notes?: true
+    order?: true
+    _all?: true
+  }
+
+  export type SetLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SetLog to aggregate.
+     */
+    where?: SetLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SetLogs to fetch.
+     */
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SetLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SetLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SetLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SetLogs
+    **/
+    _count?: true | SetLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SetLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SetLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SetLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SetLogMaxAggregateInputType
+  }
+
+  export type GetSetLogAggregateType<T extends SetLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateSetLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSetLog[P]>
+      : GetScalarType<T[P], AggregateSetLog[P]>
+  }
+
+
+
+
+  export type SetLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SetLogWhereInput
+    orderBy?: SetLogOrderByWithAggregationInput | SetLogOrderByWithAggregationInput[]
+    by: SetLogScalarFieldEnum[] | SetLogScalarFieldEnum
+    having?: SetLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SetLogCountAggregateInputType | true
+    _avg?: SetLogAvgAggregateInputType
+    _sum?: SetLogSumAggregateInputType
+    _min?: SetLogMinAggregateInputType
+    _max?: SetLogMaxAggregateInputType
+  }
+
+  export type SetLogGroupByOutputType = {
+    id: string
+    userId: string
+    sessionId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps: number | null
+    weight: number | null
+    rpe: number | null
+    restSeconds: number | null
+    durationSeconds: number | null
+    distanceMeters: number | null
+    completed: boolean
+    notes: string | null
+    order: number
+    _count: SetLogCountAggregateOutputType | null
+    _avg: SetLogAvgAggregateOutputType | null
+    _sum: SetLogSumAggregateOutputType | null
+    _min: SetLogMinAggregateOutputType | null
+    _max: SetLogMaxAggregateOutputType | null
+  }
+
+  type GetSetLogGroupByPayload<T extends SetLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SetLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SetLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SetLogGroupByOutputType[P]>
+            : GetScalarType<T[P], SetLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SetLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sessionId?: boolean
+    exerciseId?: boolean
+    exerciseName?: boolean
+    setNumber?: boolean
+    reps?: boolean
+    weight?: boolean
+    rpe?: boolean
+    restSeconds?: boolean
+    durationSeconds?: boolean
+    distanceMeters?: boolean
+    completed?: boolean
+    notes?: boolean
+    order?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["setLog"]>
+
+  export type SetLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sessionId?: boolean
+    exerciseId?: boolean
+    exerciseName?: boolean
+    setNumber?: boolean
+    reps?: boolean
+    weight?: boolean
+    rpe?: boolean
+    restSeconds?: boolean
+    durationSeconds?: boolean
+    distanceMeters?: boolean
+    completed?: boolean
+    notes?: boolean
+    order?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["setLog"]>
+
+  export type SetLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    sessionId?: boolean
+    exerciseId?: boolean
+    exerciseName?: boolean
+    setNumber?: boolean
+    reps?: boolean
+    weight?: boolean
+    rpe?: boolean
+    restSeconds?: boolean
+    durationSeconds?: boolean
+    distanceMeters?: boolean
+    completed?: boolean
+    notes?: boolean
+    order?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["setLog"]>
+
+  export type SetLogSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    sessionId?: boolean
+    exerciseId?: boolean
+    exerciseName?: boolean
+    setNumber?: boolean
+    reps?: boolean
+    weight?: boolean
+    rpe?: boolean
+    restSeconds?: boolean
+    durationSeconds?: boolean
+    distanceMeters?: boolean
+    completed?: boolean
+    notes?: boolean
+    order?: boolean
+  }
+
+  export type SetLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sessionId" | "exerciseId" | "exerciseName" | "setNumber" | "reps" | "weight" | "rpe" | "restSeconds" | "durationSeconds" | "distanceMeters" | "completed" | "notes" | "order", ExtArgs["result"]["setLog"]>
+  export type SetLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+  export type SetLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+  export type SetLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
+    exercise?: boolean | ExerciseDefaultArgs<ExtArgs>
+  }
+
+  export type $SetLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SetLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      session: Prisma.$TrainingSessionPayload<ExtArgs>
+      exercise: Prisma.$ExercisePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      sessionId: string
+      exerciseId: string
+      exerciseName: string
+      setNumber: number
+      reps: number | null
+      weight: number | null
+      rpe: number | null
+      restSeconds: number | null
+      durationSeconds: number | null
+      distanceMeters: number | null
+      completed: boolean
+      notes: string | null
+      order: number
+    }, ExtArgs["result"]["setLog"]>
+    composites: {}
+  }
+
+  type SetLogGetPayload<S extends boolean | null | undefined | SetLogDefaultArgs> = $Result.GetResult<Prisma.$SetLogPayload, S>
+
+  type SetLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SetLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SetLogCountAggregateInputType | true
+    }
+
+  export interface SetLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SetLog'], meta: { name: 'SetLog' } }
+    /**
+     * Find zero or one SetLog that matches the filter.
+     * @param {SetLogFindUniqueArgs} args - Arguments to find a SetLog
+     * @example
+     * // Get one SetLog
+     * const setLog = await prisma.setLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SetLogFindUniqueArgs>(args: SelectSubset<T, SetLogFindUniqueArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SetLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SetLogFindUniqueOrThrowArgs} args - Arguments to find a SetLog
+     * @example
+     * // Get one SetLog
+     * const setLog = await prisma.setLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SetLogFindUniqueOrThrowArgs>(args: SelectSubset<T, SetLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SetLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogFindFirstArgs} args - Arguments to find a SetLog
+     * @example
+     * // Get one SetLog
+     * const setLog = await prisma.setLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SetLogFindFirstArgs>(args?: SelectSubset<T, SetLogFindFirstArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SetLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogFindFirstOrThrowArgs} args - Arguments to find a SetLog
+     * @example
+     * // Get one SetLog
+     * const setLog = await prisma.setLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SetLogFindFirstOrThrowArgs>(args?: SelectSubset<T, SetLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SetLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SetLogs
+     * const setLogs = await prisma.setLog.findMany()
+     * 
+     * // Get first 10 SetLogs
+     * const setLogs = await prisma.setLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const setLogWithIdOnly = await prisma.setLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SetLogFindManyArgs>(args?: SelectSubset<T, SetLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SetLog.
+     * @param {SetLogCreateArgs} args - Arguments to create a SetLog.
+     * @example
+     * // Create one SetLog
+     * const SetLog = await prisma.setLog.create({
+     *   data: {
+     *     // ... data to create a SetLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends SetLogCreateArgs>(args: SelectSubset<T, SetLogCreateArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SetLogs.
+     * @param {SetLogCreateManyArgs} args - Arguments to create many SetLogs.
+     * @example
+     * // Create many SetLogs
+     * const setLog = await prisma.setLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SetLogCreateManyArgs>(args?: SelectSubset<T, SetLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SetLogs and returns the data saved in the database.
+     * @param {SetLogCreateManyAndReturnArgs} args - Arguments to create many SetLogs.
+     * @example
+     * // Create many SetLogs
+     * const setLog = await prisma.setLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SetLogs and only return the `id`
+     * const setLogWithIdOnly = await prisma.setLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SetLogCreateManyAndReturnArgs>(args?: SelectSubset<T, SetLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SetLog.
+     * @param {SetLogDeleteArgs} args - Arguments to delete one SetLog.
+     * @example
+     * // Delete one SetLog
+     * const SetLog = await prisma.setLog.delete({
+     *   where: {
+     *     // ... filter to delete one SetLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SetLogDeleteArgs>(args: SelectSubset<T, SetLogDeleteArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SetLog.
+     * @param {SetLogUpdateArgs} args - Arguments to update one SetLog.
+     * @example
+     * // Update one SetLog
+     * const setLog = await prisma.setLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SetLogUpdateArgs>(args: SelectSubset<T, SetLogUpdateArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SetLogs.
+     * @param {SetLogDeleteManyArgs} args - Arguments to filter SetLogs to delete.
+     * @example
+     * // Delete a few SetLogs
+     * const { count } = await prisma.setLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SetLogDeleteManyArgs>(args?: SelectSubset<T, SetLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SetLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SetLogs
+     * const setLog = await prisma.setLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SetLogUpdateManyArgs>(args: SelectSubset<T, SetLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SetLogs and returns the data updated in the database.
+     * @param {SetLogUpdateManyAndReturnArgs} args - Arguments to update many SetLogs.
+     * @example
+     * // Update many SetLogs
+     * const setLog = await prisma.setLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SetLogs and only return the `id`
+     * const setLogWithIdOnly = await prisma.setLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SetLogUpdateManyAndReturnArgs>(args: SelectSubset<T, SetLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SetLog.
+     * @param {SetLogUpsertArgs} args - Arguments to update or create a SetLog.
+     * @example
+     * // Update or create a SetLog
+     * const setLog = await prisma.setLog.upsert({
+     *   create: {
+     *     // ... data to create a SetLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SetLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SetLogUpsertArgs>(args: SelectSubset<T, SetLogUpsertArgs<ExtArgs>>): Prisma__SetLogClient<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SetLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogCountArgs} args - Arguments to filter SetLogs to count.
+     * @example
+     * // Count the number of SetLogs
+     * const count = await prisma.setLog.count({
+     *   where: {
+     *     // ... the filter for the SetLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends SetLogCountArgs>(
+      args?: Subset<T, SetLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SetLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SetLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SetLogAggregateArgs>(args: Subset<T, SetLogAggregateArgs>): Prisma.PrismaPromise<GetSetLogAggregateType<T>>
+
+    /**
+     * Group by SetLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SetLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SetLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SetLogGroupByArgs['orderBy'] }
+        : { orderBy?: SetLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SetLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSetLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SetLog model
+   */
+  readonly fields: SetLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SetLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SetLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    session<T extends TrainingSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TrainingSessionDefaultArgs<ExtArgs>>): Prisma__TrainingSessionClient<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    exercise<T extends ExerciseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExerciseDefaultArgs<ExtArgs>>): Prisma__ExerciseClient<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SetLog model
+   */
+  interface SetLogFieldRefs {
+    readonly id: FieldRef<"SetLog", 'String'>
+    readonly userId: FieldRef<"SetLog", 'String'>
+    readonly sessionId: FieldRef<"SetLog", 'String'>
+    readonly exerciseId: FieldRef<"SetLog", 'String'>
+    readonly exerciseName: FieldRef<"SetLog", 'String'>
+    readonly setNumber: FieldRef<"SetLog", 'Int'>
+    readonly reps: FieldRef<"SetLog", 'Int'>
+    readonly weight: FieldRef<"SetLog", 'Float'>
+    readonly rpe: FieldRef<"SetLog", 'Float'>
+    readonly restSeconds: FieldRef<"SetLog", 'Int'>
+    readonly durationSeconds: FieldRef<"SetLog", 'Int'>
+    readonly distanceMeters: FieldRef<"SetLog", 'Float'>
+    readonly completed: FieldRef<"SetLog", 'Boolean'>
+    readonly notes: FieldRef<"SetLog", 'String'>
+    readonly order: FieldRef<"SetLog", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SetLog findUnique
+   */
+  export type SetLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter, which SetLog to fetch.
+     */
+    where: SetLogWhereUniqueInput
+  }
+
+  /**
+   * SetLog findUniqueOrThrow
+   */
+  export type SetLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter, which SetLog to fetch.
+     */
+    where: SetLogWhereUniqueInput
+  }
+
+  /**
+   * SetLog findFirst
+   */
+  export type SetLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter, which SetLog to fetch.
+     */
+    where?: SetLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SetLogs to fetch.
+     */
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SetLogs.
+     */
+    cursor?: SetLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SetLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SetLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SetLogs.
+     */
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * SetLog findFirstOrThrow
+   */
+  export type SetLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter, which SetLog to fetch.
+     */
+    where?: SetLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SetLogs to fetch.
+     */
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SetLogs.
+     */
+    cursor?: SetLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SetLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SetLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SetLogs.
+     */
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * SetLog findMany
+   */
+  export type SetLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter, which SetLogs to fetch.
+     */
+    where?: SetLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SetLogs to fetch.
+     */
+    orderBy?: SetLogOrderByWithRelationInput | SetLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SetLogs.
+     */
+    cursor?: SetLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SetLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SetLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SetLogs.
+     */
+    distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * SetLog create
+   */
+  export type SetLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SetLog.
+     */
+    data: XOR<SetLogCreateInput, SetLogUncheckedCreateInput>
+  }
+
+  /**
+   * SetLog createMany
+   */
+  export type SetLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SetLogs.
+     */
+    data: SetLogCreateManyInput | SetLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SetLog createManyAndReturn
+   */
+  export type SetLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many SetLogs.
+     */
+    data: SetLogCreateManyInput | SetLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SetLog update
+   */
+  export type SetLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SetLog.
+     */
+    data: XOR<SetLogUpdateInput, SetLogUncheckedUpdateInput>
+    /**
+     * Choose, which SetLog to update.
+     */
+    where: SetLogWhereUniqueInput
+  }
+
+  /**
+   * SetLog updateMany
+   */
+  export type SetLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SetLogs.
+     */
+    data: XOR<SetLogUpdateManyMutationInput, SetLogUncheckedUpdateManyInput>
+    /**
+     * Filter which SetLogs to update
+     */
+    where?: SetLogWhereInput
+    /**
+     * Limit how many SetLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SetLog updateManyAndReturn
+   */
+  export type SetLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * The data used to update SetLogs.
+     */
+    data: XOR<SetLogUpdateManyMutationInput, SetLogUncheckedUpdateManyInput>
+    /**
+     * Filter which SetLogs to update
+     */
+    where?: SetLogWhereInput
+    /**
+     * Limit how many SetLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SetLog upsert
+   */
+  export type SetLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SetLog to update in case it exists.
+     */
+    where: SetLogWhereUniqueInput
+    /**
+     * In case the SetLog found by the `where` argument doesn't exist, create a new SetLog with this data.
+     */
+    create: XOR<SetLogCreateInput, SetLogUncheckedCreateInput>
+    /**
+     * In case the SetLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SetLogUpdateInput, SetLogUncheckedUpdateInput>
+  }
+
+  /**
+   * SetLog delete
+   */
+  export type SetLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+    /**
+     * Filter which SetLog to delete.
+     */
+    where: SetLogWhereUniqueInput
+  }
+
+  /**
+   * SetLog deleteMany
+   */
+  export type SetLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SetLogs to delete
+     */
+    where?: SetLogWhereInput
+    /**
+     * Limit how many SetLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SetLog without action
+   */
+  export type SetLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SetLog
+     */
+    select?: SetLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SetLog
+     */
+    omit?: SetLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SetLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -28249,12 +37925,32 @@ export namespace Prisma {
     targetDaysPerWeek: 'targetDaysPerWeek',
     sphereLevel: 'sphereLevel',
     subcategory: 'subcategory',
+    ifThenPlan: 'ifThenPlan',
+    frictionReduction: 'frictionReduction',
+    identityStatement: 'identityStatement',
+    minimalThreshold: 'minimalThreshold',
+    copingPlan: 'copingPlan',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    sphereId: 'sphereId'
+    sphereId: 'sphereId',
+    chainId: 'chainId'
   };
 
   export type HabitScalarFieldEnum = (typeof HabitScalarFieldEnum)[keyof typeof HabitScalarFieldEnum]
+
+
+  export const HabitChainScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    description: 'description',
+    order: 'order',
+    archived: 'archived',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type HabitChainScalarFieldEnum = (typeof HabitChainScalarFieldEnum)[keyof typeof HabitChainScalarFieldEnum]
 
 
   export const HabitCompletionScalarFieldEnum: {
@@ -28404,6 +38100,107 @@ export namespace Prisma {
   };
 
   export type SprintReviewScalarFieldEnum = (typeof SprintReviewScalarFieldEnum)[keyof typeof SprintReviewScalarFieldEnum]
+
+
+  export const ExerciseScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    muscleGroup: 'muscleGroup',
+    equipment: 'equipment',
+    trackingType: 'trackingType',
+    notes: 'notes',
+    archived: 'archived',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
+
+
+  export const TrainingPlanScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    description: 'description',
+    archived: 'archived',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TrainingPlanScalarFieldEnum = (typeof TrainingPlanScalarFieldEnum)[keyof typeof TrainingPlanScalarFieldEnum]
+
+
+  export const TrainingDayScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    planId: 'planId',
+    name: 'name',
+    notes: 'notes',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TrainingDayScalarFieldEnum = (typeof TrainingDayScalarFieldEnum)[keyof typeof TrainingDayScalarFieldEnum]
+
+
+  export const TrainingDayExerciseScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    dayId: 'dayId',
+    exerciseId: 'exerciseId',
+    order: 'order',
+    sets: 'sets',
+    targetReps: 'targetReps',
+    targetWeight: 'targetWeight',
+    targetRpe: 'targetRpe',
+    restSeconds: 'restSeconds',
+    targetDurationSeconds: 'targetDurationSeconds',
+    targetDistanceMeters: 'targetDistanceMeters',
+    notes: 'notes'
+  };
+
+  export type TrainingDayExerciseScalarFieldEnum = (typeof TrainingDayExerciseScalarFieldEnum)[keyof typeof TrainingDayExerciseScalarFieldEnum]
+
+
+  export const TrainingSessionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    dayId: 'dayId',
+    dayName: 'dayName',
+    date: 'date',
+    status: 'status',
+    durationSeconds: 'durationSeconds',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TrainingSessionScalarFieldEnum = (typeof TrainingSessionScalarFieldEnum)[keyof typeof TrainingSessionScalarFieldEnum]
+
+
+  export const SetLogScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    sessionId: 'sessionId',
+    exerciseId: 'exerciseId',
+    exerciseName: 'exerciseName',
+    setNumber: 'setNumber',
+    reps: 'reps',
+    weight: 'weight',
+    rpe: 'rpe',
+    restSeconds: 'restSeconds',
+    durationSeconds: 'durationSeconds',
+    distanceMeters: 'distanceMeters',
+    completed: 'completed',
+    notes: 'notes',
+    order: 'order'
+  };
+
+  export type SetLogScalarFieldEnum = (typeof SetLogScalarFieldEnum)[keyof typeof SetLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -28648,6 +38445,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassListRelationFilter
     dailyEntries?: DailyEntryListRelationFilter
     habits?: HabitListRelationFilter
+    habitChains?: HabitChainListRelationFilter
     lifeSpheres?: LifeSphereListRelationFilter
     milestones?: MilestoneListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
@@ -28656,6 +38454,12 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     visions?: VisionListRelationFilter
     weekTemplates?: WeekTemplateListRelationFilter
+    exercises?: ExerciseListRelationFilter
+    trainingPlans?: TrainingPlanListRelationFilter
+    trainingDays?: TrainingDayListRelationFilter
+    trainingDayExercises?: TrainingDayExerciseListRelationFilter
+    trainingSessions?: TrainingSessionListRelationFilter
+    setLogs?: SetLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -28673,6 +38477,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassOrderByRelationAggregateInput
     dailyEntries?: DailyEntryOrderByRelationAggregateInput
     habits?: HabitOrderByRelationAggregateInput
+    habitChains?: HabitChainOrderByRelationAggregateInput
     lifeSpheres?: LifeSphereOrderByRelationAggregateInput
     milestones?: MilestoneOrderByRelationAggregateInput
     pushSubscriptions?: PushSubscriptionOrderByRelationAggregateInput
@@ -28681,6 +38486,12 @@ export namespace Prisma {
     tasks?: TaskOrderByRelationAggregateInput
     visions?: VisionOrderByRelationAggregateInput
     weekTemplates?: WeekTemplateOrderByRelationAggregateInput
+    exercises?: ExerciseOrderByRelationAggregateInput
+    trainingPlans?: TrainingPlanOrderByRelationAggregateInput
+    trainingDays?: TrainingDayOrderByRelationAggregateInput
+    trainingDayExercises?: TrainingDayExerciseOrderByRelationAggregateInput
+    trainingSessions?: TrainingSessionOrderByRelationAggregateInput
+    setLogs?: SetLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -28701,6 +38512,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassListRelationFilter
     dailyEntries?: DailyEntryListRelationFilter
     habits?: HabitListRelationFilter
+    habitChains?: HabitChainListRelationFilter
     lifeSpheres?: LifeSphereListRelationFilter
     milestones?: MilestoneListRelationFilter
     pushSubscriptions?: PushSubscriptionListRelationFilter
@@ -28709,6 +38521,12 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     visions?: VisionListRelationFilter
     weekTemplates?: WeekTemplateListRelationFilter
+    exercises?: ExerciseListRelationFilter
+    trainingPlans?: TrainingPlanListRelationFilter
+    trainingDays?: TrainingDayListRelationFilter
+    trainingDayExercises?: TrainingDayExerciseListRelationFilter
+    trainingSessions?: TrainingSessionListRelationFilter
+    setLogs?: SetLogListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -29530,10 +39348,17 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
+    ifThenPlan?: StringNullableFilter<"Habit"> | string | null
+    frictionReduction?: StringNullableFilter<"Habit"> | string | null
+    identityStatement?: StringNullableFilter<"Habit"> | string | null
+    minimalThreshold?: StringNullableFilter<"Habit"> | string | null
+    copingPlan?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
+    chainId?: StringNullableFilter<"Habit"> | string | null
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
+    chain?: XOR<HabitChainNullableScalarRelationFilter, HabitChainWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
   }
@@ -29552,10 +39377,17 @@ export namespace Prisma {
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
+    ifThenPlan?: SortOrderInput | SortOrder
+    frictionReduction?: SortOrderInput | SortOrder
+    identityStatement?: SortOrderInput | SortOrder
+    minimalThreshold?: SortOrderInput | SortOrder
+    copingPlan?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
+    chainId?: SortOrderInput | SortOrder
     sphere?: LifeSphereOrderByWithRelationInput
+    chain?: HabitChainOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     completions?: HabitCompletionOrderByRelationAggregateInput
   }
@@ -29577,10 +39409,17 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
+    ifThenPlan?: StringNullableFilter<"Habit"> | string | null
+    frictionReduction?: StringNullableFilter<"Habit"> | string | null
+    identityStatement?: StringNullableFilter<"Habit"> | string | null
+    minimalThreshold?: StringNullableFilter<"Habit"> | string | null
+    copingPlan?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
+    chainId?: StringNullableFilter<"Habit"> | string | null
     sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
+    chain?: XOR<HabitChainNullableScalarRelationFilter, HabitChainWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     completions?: HabitCompletionListRelationFilter
   }, "id">
@@ -29599,9 +39438,15 @@ export namespace Prisma {
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
+    ifThenPlan?: SortOrderInput | SortOrder
+    frictionReduction?: SortOrderInput | SortOrder
+    identityStatement?: SortOrderInput | SortOrder
+    minimalThreshold?: SortOrderInput | SortOrder
+    copingPlan?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrderInput | SortOrder
+    chainId?: SortOrderInput | SortOrder
     _count?: HabitCountOrderByAggregateInput
     _avg?: HabitAvgOrderByAggregateInput
     _max?: HabitMaxOrderByAggregateInput
@@ -29626,9 +39471,90 @@ export namespace Prisma {
     targetDaysPerWeek?: IntWithAggregatesFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableWithAggregatesFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    ifThenPlan?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    frictionReduction?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    identityStatement?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    minimalThreshold?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    copingPlan?: StringNullableWithAggregatesFilter<"Habit"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Habit"> | Date | string
     sphereId?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+    chainId?: StringNullableWithAggregatesFilter<"Habit"> | string | null
+  }
+
+  export type HabitChainWhereInput = {
+    AND?: HabitChainWhereInput | HabitChainWhereInput[]
+    OR?: HabitChainWhereInput[]
+    NOT?: HabitChainWhereInput | HabitChainWhereInput[]
+    id?: StringFilter<"HabitChain"> | string
+    userId?: StringFilter<"HabitChain"> | string
+    name?: StringFilter<"HabitChain"> | string
+    description?: StringNullableFilter<"HabitChain"> | string | null
+    order?: IntFilter<"HabitChain"> | number
+    archived?: BoolFilter<"HabitChain"> | boolean
+    createdAt?: DateTimeFilter<"HabitChain"> | Date | string
+    updatedAt?: DateTimeFilter<"HabitChain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    habits?: HabitListRelationFilter
+  }
+
+  export type HabitChainOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    order?: SortOrder
+    archived?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    habits?: HabitOrderByRelationAggregateInput
+  }
+
+  export type HabitChainWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HabitChainWhereInput | HabitChainWhereInput[]
+    OR?: HabitChainWhereInput[]
+    NOT?: HabitChainWhereInput | HabitChainWhereInput[]
+    userId?: StringFilter<"HabitChain"> | string
+    name?: StringFilter<"HabitChain"> | string
+    description?: StringNullableFilter<"HabitChain"> | string | null
+    order?: IntFilter<"HabitChain"> | number
+    archived?: BoolFilter<"HabitChain"> | boolean
+    createdAt?: DateTimeFilter<"HabitChain"> | Date | string
+    updatedAt?: DateTimeFilter<"HabitChain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    habits?: HabitListRelationFilter
+  }, "id">
+
+  export type HabitChainOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    order?: SortOrder
+    archived?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: HabitChainCountOrderByAggregateInput
+    _avg?: HabitChainAvgOrderByAggregateInput
+    _max?: HabitChainMaxOrderByAggregateInput
+    _min?: HabitChainMinOrderByAggregateInput
+    _sum?: HabitChainSumOrderByAggregateInput
+  }
+
+  export type HabitChainScalarWhereWithAggregatesInput = {
+    AND?: HabitChainScalarWhereWithAggregatesInput | HabitChainScalarWhereWithAggregatesInput[]
+    OR?: HabitChainScalarWhereWithAggregatesInput[]
+    NOT?: HabitChainScalarWhereWithAggregatesInput | HabitChainScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HabitChain"> | string
+    userId?: StringWithAggregatesFilter<"HabitChain"> | string
+    name?: StringWithAggregatesFilter<"HabitChain"> | string
+    description?: StringNullableWithAggregatesFilter<"HabitChain"> | string | null
+    order?: IntWithAggregatesFilter<"HabitChain"> | number
+    archived?: BoolWithAggregatesFilter<"HabitChain"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"HabitChain"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"HabitChain"> | Date | string
   }
 
   export type HabitCompletionWhereInput = {
@@ -30416,6 +40342,559 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"SprintReview"> | Date | string
   }
 
+  export type ExerciseWhereInput = {
+    AND?: ExerciseWhereInput | ExerciseWhereInput[]
+    OR?: ExerciseWhereInput[]
+    NOT?: ExerciseWhereInput | ExerciseWhereInput[]
+    id?: StringFilter<"Exercise"> | string
+    userId?: StringFilter<"Exercise"> | string
+    name?: StringFilter<"Exercise"> | string
+    muscleGroup?: StringNullableFilter<"Exercise"> | string | null
+    equipment?: StringNullableFilter<"Exercise"> | string | null
+    trackingType?: StringFilter<"Exercise"> | string
+    notes?: StringNullableFilter<"Exercise"> | string | null
+    archived?: BoolFilter<"Exercise"> | boolean
+    order?: IntFilter<"Exercise"> | number
+    createdAt?: DateTimeFilter<"Exercise"> | Date | string
+    updatedAt?: DateTimeFilter<"Exercise"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    dayExercises?: TrainingDayExerciseListRelationFilter
+    setLogs?: SetLogListRelationFilter
+  }
+
+  export type ExerciseOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    muscleGroup?: SortOrderInput | SortOrder
+    equipment?: SortOrderInput | SortOrder
+    trackingType?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    dayExercises?: TrainingDayExerciseOrderByRelationAggregateInput
+    setLogs?: SetLogOrderByRelationAggregateInput
+  }
+
+  export type ExerciseWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ExerciseWhereInput | ExerciseWhereInput[]
+    OR?: ExerciseWhereInput[]
+    NOT?: ExerciseWhereInput | ExerciseWhereInput[]
+    userId?: StringFilter<"Exercise"> | string
+    name?: StringFilter<"Exercise"> | string
+    muscleGroup?: StringNullableFilter<"Exercise"> | string | null
+    equipment?: StringNullableFilter<"Exercise"> | string | null
+    trackingType?: StringFilter<"Exercise"> | string
+    notes?: StringNullableFilter<"Exercise"> | string | null
+    archived?: BoolFilter<"Exercise"> | boolean
+    order?: IntFilter<"Exercise"> | number
+    createdAt?: DateTimeFilter<"Exercise"> | Date | string
+    updatedAt?: DateTimeFilter<"Exercise"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    dayExercises?: TrainingDayExerciseListRelationFilter
+    setLogs?: SetLogListRelationFilter
+  }, "id">
+
+  export type ExerciseOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    muscleGroup?: SortOrderInput | SortOrder
+    equipment?: SortOrderInput | SortOrder
+    trackingType?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ExerciseCountOrderByAggregateInput
+    _avg?: ExerciseAvgOrderByAggregateInput
+    _max?: ExerciseMaxOrderByAggregateInput
+    _min?: ExerciseMinOrderByAggregateInput
+    _sum?: ExerciseSumOrderByAggregateInput
+  }
+
+  export type ExerciseScalarWhereWithAggregatesInput = {
+    AND?: ExerciseScalarWhereWithAggregatesInput | ExerciseScalarWhereWithAggregatesInput[]
+    OR?: ExerciseScalarWhereWithAggregatesInput[]
+    NOT?: ExerciseScalarWhereWithAggregatesInput | ExerciseScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Exercise"> | string
+    userId?: StringWithAggregatesFilter<"Exercise"> | string
+    name?: StringWithAggregatesFilter<"Exercise"> | string
+    muscleGroup?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    equipment?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    trackingType?: StringWithAggregatesFilter<"Exercise"> | string
+    notes?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    archived?: BoolWithAggregatesFilter<"Exercise"> | boolean
+    order?: IntWithAggregatesFilter<"Exercise"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Exercise"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Exercise"> | Date | string
+  }
+
+  export type TrainingPlanWhereInput = {
+    AND?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
+    OR?: TrainingPlanWhereInput[]
+    NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
+    id?: StringFilter<"TrainingPlan"> | string
+    userId?: StringFilter<"TrainingPlan"> | string
+    name?: StringFilter<"TrainingPlan"> | string
+    description?: StringNullableFilter<"TrainingPlan"> | string | null
+    archived?: BoolFilter<"TrainingPlan"> | boolean
+    order?: IntFilter<"TrainingPlan"> | number
+    createdAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    days?: TrainingDayListRelationFilter
+  }
+
+  export type TrainingPlanOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    days?: TrainingDayOrderByRelationAggregateInput
+  }
+
+  export type TrainingPlanWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
+    OR?: TrainingPlanWhereInput[]
+    NOT?: TrainingPlanWhereInput | TrainingPlanWhereInput[]
+    userId?: StringFilter<"TrainingPlan"> | string
+    name?: StringFilter<"TrainingPlan"> | string
+    description?: StringNullableFilter<"TrainingPlan"> | string | null
+    archived?: BoolFilter<"TrainingPlan"> | boolean
+    order?: IntFilter<"TrainingPlan"> | number
+    createdAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    days?: TrainingDayListRelationFilter
+  }, "id">
+
+  export type TrainingPlanOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TrainingPlanCountOrderByAggregateInput
+    _avg?: TrainingPlanAvgOrderByAggregateInput
+    _max?: TrainingPlanMaxOrderByAggregateInput
+    _min?: TrainingPlanMinOrderByAggregateInput
+    _sum?: TrainingPlanSumOrderByAggregateInput
+  }
+
+  export type TrainingPlanScalarWhereWithAggregatesInput = {
+    AND?: TrainingPlanScalarWhereWithAggregatesInput | TrainingPlanScalarWhereWithAggregatesInput[]
+    OR?: TrainingPlanScalarWhereWithAggregatesInput[]
+    NOT?: TrainingPlanScalarWhereWithAggregatesInput | TrainingPlanScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrainingPlan"> | string
+    userId?: StringWithAggregatesFilter<"TrainingPlan"> | string
+    name?: StringWithAggregatesFilter<"TrainingPlan"> | string
+    description?: StringNullableWithAggregatesFilter<"TrainingPlan"> | string | null
+    archived?: BoolWithAggregatesFilter<"TrainingPlan"> | boolean
+    order?: IntWithAggregatesFilter<"TrainingPlan"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"TrainingPlan"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TrainingPlan"> | Date | string
+  }
+
+  export type TrainingDayWhereInput = {
+    AND?: TrainingDayWhereInput | TrainingDayWhereInput[]
+    OR?: TrainingDayWhereInput[]
+    NOT?: TrainingDayWhereInput | TrainingDayWhereInput[]
+    id?: StringFilter<"TrainingDay"> | string
+    userId?: StringFilter<"TrainingDay"> | string
+    planId?: StringFilter<"TrainingDay"> | string
+    name?: StringFilter<"TrainingDay"> | string
+    notes?: StringNullableFilter<"TrainingDay"> | string | null
+    order?: IntFilter<"TrainingDay"> | number
+    createdAt?: DateTimeFilter<"TrainingDay"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingDay"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    plan?: XOR<TrainingPlanScalarRelationFilter, TrainingPlanWhereInput>
+    exercises?: TrainingDayExerciseListRelationFilter
+    sessions?: TrainingSessionListRelationFilter
+  }
+
+  export type TrainingDayOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    planId?: SortOrder
+    name?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    plan?: TrainingPlanOrderByWithRelationInput
+    exercises?: TrainingDayExerciseOrderByRelationAggregateInput
+    sessions?: TrainingSessionOrderByRelationAggregateInput
+  }
+
+  export type TrainingDayWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrainingDayWhereInput | TrainingDayWhereInput[]
+    OR?: TrainingDayWhereInput[]
+    NOT?: TrainingDayWhereInput | TrainingDayWhereInput[]
+    userId?: StringFilter<"TrainingDay"> | string
+    planId?: StringFilter<"TrainingDay"> | string
+    name?: StringFilter<"TrainingDay"> | string
+    notes?: StringNullableFilter<"TrainingDay"> | string | null
+    order?: IntFilter<"TrainingDay"> | number
+    createdAt?: DateTimeFilter<"TrainingDay"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingDay"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    plan?: XOR<TrainingPlanScalarRelationFilter, TrainingPlanWhereInput>
+    exercises?: TrainingDayExerciseListRelationFilter
+    sessions?: TrainingSessionListRelationFilter
+  }, "id">
+
+  export type TrainingDayOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    planId?: SortOrder
+    name?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TrainingDayCountOrderByAggregateInput
+    _avg?: TrainingDayAvgOrderByAggregateInput
+    _max?: TrainingDayMaxOrderByAggregateInput
+    _min?: TrainingDayMinOrderByAggregateInput
+    _sum?: TrainingDaySumOrderByAggregateInput
+  }
+
+  export type TrainingDayScalarWhereWithAggregatesInput = {
+    AND?: TrainingDayScalarWhereWithAggregatesInput | TrainingDayScalarWhereWithAggregatesInput[]
+    OR?: TrainingDayScalarWhereWithAggregatesInput[]
+    NOT?: TrainingDayScalarWhereWithAggregatesInput | TrainingDayScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrainingDay"> | string
+    userId?: StringWithAggregatesFilter<"TrainingDay"> | string
+    planId?: StringWithAggregatesFilter<"TrainingDay"> | string
+    name?: StringWithAggregatesFilter<"TrainingDay"> | string
+    notes?: StringNullableWithAggregatesFilter<"TrainingDay"> | string | null
+    order?: IntWithAggregatesFilter<"TrainingDay"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"TrainingDay"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TrainingDay"> | Date | string
+  }
+
+  export type TrainingDayExerciseWhereInput = {
+    AND?: TrainingDayExerciseWhereInput | TrainingDayExerciseWhereInput[]
+    OR?: TrainingDayExerciseWhereInput[]
+    NOT?: TrainingDayExerciseWhereInput | TrainingDayExerciseWhereInput[]
+    id?: StringFilter<"TrainingDayExercise"> | string
+    userId?: StringFilter<"TrainingDayExercise"> | string
+    dayId?: StringFilter<"TrainingDayExercise"> | string
+    exerciseId?: StringFilter<"TrainingDayExercise"> | string
+    order?: IntFilter<"TrainingDayExercise"> | number
+    sets?: IntFilter<"TrainingDayExercise"> | number
+    targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    notes?: StringNullableFilter<"TrainingDayExercise"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    day?: XOR<TrainingDayScalarRelationFilter, TrainingDayWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, ExerciseWhereInput>
+  }
+
+  export type TrainingDayExerciseOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    exerciseId?: SortOrder
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrderInput | SortOrder
+    targetWeight?: SortOrderInput | SortOrder
+    targetRpe?: SortOrderInput | SortOrder
+    restSeconds?: SortOrderInput | SortOrder
+    targetDurationSeconds?: SortOrderInput | SortOrder
+    targetDistanceMeters?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    day?: TrainingDayOrderByWithRelationInput
+    exercise?: ExerciseOrderByWithRelationInput
+  }
+
+  export type TrainingDayExerciseWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrainingDayExerciseWhereInput | TrainingDayExerciseWhereInput[]
+    OR?: TrainingDayExerciseWhereInput[]
+    NOT?: TrainingDayExerciseWhereInput | TrainingDayExerciseWhereInput[]
+    userId?: StringFilter<"TrainingDayExercise"> | string
+    dayId?: StringFilter<"TrainingDayExercise"> | string
+    exerciseId?: StringFilter<"TrainingDayExercise"> | string
+    order?: IntFilter<"TrainingDayExercise"> | number
+    sets?: IntFilter<"TrainingDayExercise"> | number
+    targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    notes?: StringNullableFilter<"TrainingDayExercise"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    day?: XOR<TrainingDayScalarRelationFilter, TrainingDayWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, ExerciseWhereInput>
+  }, "id">
+
+  export type TrainingDayExerciseOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    exerciseId?: SortOrder
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrderInput | SortOrder
+    targetWeight?: SortOrderInput | SortOrder
+    targetRpe?: SortOrderInput | SortOrder
+    restSeconds?: SortOrderInput | SortOrder
+    targetDurationSeconds?: SortOrderInput | SortOrder
+    targetDistanceMeters?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    _count?: TrainingDayExerciseCountOrderByAggregateInput
+    _avg?: TrainingDayExerciseAvgOrderByAggregateInput
+    _max?: TrainingDayExerciseMaxOrderByAggregateInput
+    _min?: TrainingDayExerciseMinOrderByAggregateInput
+    _sum?: TrainingDayExerciseSumOrderByAggregateInput
+  }
+
+  export type TrainingDayExerciseScalarWhereWithAggregatesInput = {
+    AND?: TrainingDayExerciseScalarWhereWithAggregatesInput | TrainingDayExerciseScalarWhereWithAggregatesInput[]
+    OR?: TrainingDayExerciseScalarWhereWithAggregatesInput[]
+    NOT?: TrainingDayExerciseScalarWhereWithAggregatesInput | TrainingDayExerciseScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrainingDayExercise"> | string
+    userId?: StringWithAggregatesFilter<"TrainingDayExercise"> | string
+    dayId?: StringWithAggregatesFilter<"TrainingDayExercise"> | string
+    exerciseId?: StringWithAggregatesFilter<"TrainingDayExercise"> | string
+    order?: IntWithAggregatesFilter<"TrainingDayExercise"> | number
+    sets?: IntWithAggregatesFilter<"TrainingDayExercise"> | number
+    targetReps?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    targetWeight?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    targetRpe?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    restSeconds?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    targetDurationSeconds?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    targetDistanceMeters?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    notes?: StringNullableWithAggregatesFilter<"TrainingDayExercise"> | string | null
+  }
+
+  export type TrainingSessionWhereInput = {
+    AND?: TrainingSessionWhereInput | TrainingSessionWhereInput[]
+    OR?: TrainingSessionWhereInput[]
+    NOT?: TrainingSessionWhereInput | TrainingSessionWhereInput[]
+    id?: StringFilter<"TrainingSession"> | string
+    userId?: StringFilter<"TrainingSession"> | string
+    dayId?: StringNullableFilter<"TrainingSession"> | string | null
+    dayName?: StringFilter<"TrainingSession"> | string
+    date?: DateTimeFilter<"TrainingSession"> | Date | string
+    status?: StringFilter<"TrainingSession"> | string
+    durationSeconds?: IntNullableFilter<"TrainingSession"> | number | null
+    notes?: StringNullableFilter<"TrainingSession"> | string | null
+    createdAt?: DateTimeFilter<"TrainingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingSession"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    day?: XOR<TrainingDayNullableScalarRelationFilter, TrainingDayWhereInput> | null
+    setLogs?: SetLogListRelationFilter
+  }
+
+  export type TrainingSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrderInput | SortOrder
+    dayName?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    durationSeconds?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    day?: TrainingDayOrderByWithRelationInput
+    setLogs?: SetLogOrderByRelationAggregateInput
+  }
+
+  export type TrainingSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TrainingSessionWhereInput | TrainingSessionWhereInput[]
+    OR?: TrainingSessionWhereInput[]
+    NOT?: TrainingSessionWhereInput | TrainingSessionWhereInput[]
+    userId?: StringFilter<"TrainingSession"> | string
+    dayId?: StringNullableFilter<"TrainingSession"> | string | null
+    dayName?: StringFilter<"TrainingSession"> | string
+    date?: DateTimeFilter<"TrainingSession"> | Date | string
+    status?: StringFilter<"TrainingSession"> | string
+    durationSeconds?: IntNullableFilter<"TrainingSession"> | number | null
+    notes?: StringNullableFilter<"TrainingSession"> | string | null
+    createdAt?: DateTimeFilter<"TrainingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingSession"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    day?: XOR<TrainingDayNullableScalarRelationFilter, TrainingDayWhereInput> | null
+    setLogs?: SetLogListRelationFilter
+  }, "id">
+
+  export type TrainingSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrderInput | SortOrder
+    dayName?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    durationSeconds?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TrainingSessionCountOrderByAggregateInput
+    _avg?: TrainingSessionAvgOrderByAggregateInput
+    _max?: TrainingSessionMaxOrderByAggregateInput
+    _min?: TrainingSessionMinOrderByAggregateInput
+    _sum?: TrainingSessionSumOrderByAggregateInput
+  }
+
+  export type TrainingSessionScalarWhereWithAggregatesInput = {
+    AND?: TrainingSessionScalarWhereWithAggregatesInput | TrainingSessionScalarWhereWithAggregatesInput[]
+    OR?: TrainingSessionScalarWhereWithAggregatesInput[]
+    NOT?: TrainingSessionScalarWhereWithAggregatesInput | TrainingSessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrainingSession"> | string
+    userId?: StringWithAggregatesFilter<"TrainingSession"> | string
+    dayId?: StringNullableWithAggregatesFilter<"TrainingSession"> | string | null
+    dayName?: StringWithAggregatesFilter<"TrainingSession"> | string
+    date?: DateTimeWithAggregatesFilter<"TrainingSession"> | Date | string
+    status?: StringWithAggregatesFilter<"TrainingSession"> | string
+    durationSeconds?: IntNullableWithAggregatesFilter<"TrainingSession"> | number | null
+    notes?: StringNullableWithAggregatesFilter<"TrainingSession"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TrainingSession"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TrainingSession"> | Date | string
+  }
+
+  export type SetLogWhereInput = {
+    AND?: SetLogWhereInput | SetLogWhereInput[]
+    OR?: SetLogWhereInput[]
+    NOT?: SetLogWhereInput | SetLogWhereInput[]
+    id?: StringFilter<"SetLog"> | string
+    userId?: StringFilter<"SetLog"> | string
+    sessionId?: StringFilter<"SetLog"> | string
+    exerciseId?: StringFilter<"SetLog"> | string
+    exerciseName?: StringFilter<"SetLog"> | string
+    setNumber?: IntFilter<"SetLog"> | number
+    reps?: IntNullableFilter<"SetLog"> | number | null
+    weight?: FloatNullableFilter<"SetLog"> | number | null
+    rpe?: FloatNullableFilter<"SetLog"> | number | null
+    restSeconds?: IntNullableFilter<"SetLog"> | number | null
+    durationSeconds?: IntNullableFilter<"SetLog"> | number | null
+    distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
+    completed?: BoolFilter<"SetLog"> | boolean
+    notes?: StringNullableFilter<"SetLog"> | string | null
+    order?: IntFilter<"SetLog"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    session?: XOR<TrainingSessionScalarRelationFilter, TrainingSessionWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, ExerciseWhereInput>
+  }
+
+  export type SetLogOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sessionId?: SortOrder
+    exerciseId?: SortOrder
+    exerciseName?: SortOrder
+    setNumber?: SortOrder
+    reps?: SortOrderInput | SortOrder
+    weight?: SortOrderInput | SortOrder
+    rpe?: SortOrderInput | SortOrder
+    restSeconds?: SortOrderInput | SortOrder
+    durationSeconds?: SortOrderInput | SortOrder
+    distanceMeters?: SortOrderInput | SortOrder
+    completed?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    order?: SortOrder
+    user?: UserOrderByWithRelationInput
+    session?: TrainingSessionOrderByWithRelationInput
+    exercise?: ExerciseOrderByWithRelationInput
+  }
+
+  export type SetLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SetLogWhereInput | SetLogWhereInput[]
+    OR?: SetLogWhereInput[]
+    NOT?: SetLogWhereInput | SetLogWhereInput[]
+    userId?: StringFilter<"SetLog"> | string
+    sessionId?: StringFilter<"SetLog"> | string
+    exerciseId?: StringFilter<"SetLog"> | string
+    exerciseName?: StringFilter<"SetLog"> | string
+    setNumber?: IntFilter<"SetLog"> | number
+    reps?: IntNullableFilter<"SetLog"> | number | null
+    weight?: FloatNullableFilter<"SetLog"> | number | null
+    rpe?: FloatNullableFilter<"SetLog"> | number | null
+    restSeconds?: IntNullableFilter<"SetLog"> | number | null
+    durationSeconds?: IntNullableFilter<"SetLog"> | number | null
+    distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
+    completed?: BoolFilter<"SetLog"> | boolean
+    notes?: StringNullableFilter<"SetLog"> | string | null
+    order?: IntFilter<"SetLog"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    session?: XOR<TrainingSessionScalarRelationFilter, TrainingSessionWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, ExerciseWhereInput>
+  }, "id">
+
+  export type SetLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sessionId?: SortOrder
+    exerciseId?: SortOrder
+    exerciseName?: SortOrder
+    setNumber?: SortOrder
+    reps?: SortOrderInput | SortOrder
+    weight?: SortOrderInput | SortOrder
+    rpe?: SortOrderInput | SortOrder
+    restSeconds?: SortOrderInput | SortOrder
+    durationSeconds?: SortOrderInput | SortOrder
+    distanceMeters?: SortOrderInput | SortOrder
+    completed?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    order?: SortOrder
+    _count?: SetLogCountOrderByAggregateInput
+    _avg?: SetLogAvgOrderByAggregateInput
+    _max?: SetLogMaxOrderByAggregateInput
+    _min?: SetLogMinOrderByAggregateInput
+    _sum?: SetLogSumOrderByAggregateInput
+  }
+
+  export type SetLogScalarWhereWithAggregatesInput = {
+    AND?: SetLogScalarWhereWithAggregatesInput | SetLogScalarWhereWithAggregatesInput[]
+    OR?: SetLogScalarWhereWithAggregatesInput[]
+    NOT?: SetLogScalarWhereWithAggregatesInput | SetLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SetLog"> | string
+    userId?: StringWithAggregatesFilter<"SetLog"> | string
+    sessionId?: StringWithAggregatesFilter<"SetLog"> | string
+    exerciseId?: StringWithAggregatesFilter<"SetLog"> | string
+    exerciseName?: StringWithAggregatesFilter<"SetLog"> | string
+    setNumber?: IntWithAggregatesFilter<"SetLog"> | number
+    reps?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
+    weight?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
+    rpe?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
+    restSeconds?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
+    durationSeconds?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
+    distanceMeters?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
+    completed?: BoolWithAggregatesFilter<"SetLog"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"SetLog"> | string | null
+    order?: IntWithAggregatesFilter<"SetLog"> | number
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -30431,6 +40910,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -30439,6 +40919,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -30456,6 +40942,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -30464,6 +40951,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -30481,6 +40974,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -30489,6 +40983,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -30506,6 +41006,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -30514,6 +41015,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -31439,9 +41946,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
+    chain?: HabitChainCreateNestedOneWithoutHabitsInput
     user: UserCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
   }
@@ -31460,9 +41973,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
+    chainId?: string | null
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
@@ -31479,9 +41998,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
+    chain?: HabitChainUpdateOneWithoutHabitsNestedInput
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
@@ -31500,9 +42025,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
@@ -31520,9 +42051,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
+    chainId?: string | null
   }
 
   export type HabitUpdateManyMutationInput = {
@@ -31538,6 +42075,11 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31556,9 +42098,95 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type HabitChainCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutHabitChainsInput
+    habits?: HabitCreateNestedManyWithoutChainInput
+  }
+
+  export type HabitChainUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    habits?: HabitUncheckedCreateNestedManyWithoutChainInput
+  }
+
+  export type HabitChainUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutHabitChainsNestedInput
+    habits?: HabitUpdateManyWithoutChainNestedInput
+  }
+
+  export type HabitChainUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    habits?: HabitUncheckedUpdateManyWithoutChainNestedInput
+  }
+
+  export type HabitChainCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HabitChainUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HabitChainUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HabitCompletionCreateInput = {
@@ -32388,6 +43016,599 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ExerciseCreateInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExercisesInput
+    dayExercises?: TrainingDayExerciseCreateNestedManyWithoutExerciseInput
+    setLogs?: SetLogCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutExerciseInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExercisesNestedInput
+    dayExercises?: TrainingDayExerciseUpdateManyWithoutExerciseNestedInput
+    setLogs?: SetLogUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutExerciseNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExerciseUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExerciseUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingPlanCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingPlansInput
+    days?: TrainingDayCreateNestedManyWithoutPlanInput
+  }
+
+  export type TrainingPlanUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    days?: TrainingDayUncheckedCreateNestedManyWithoutPlanInput
+  }
+
+  export type TrainingPlanUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingPlansNestedInput
+    days?: TrainingDayUpdateManyWithoutPlanNestedInput
+  }
+
+  export type TrainingPlanUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    days?: TrainingDayUncheckedUpdateManyWithoutPlanNestedInput
+  }
+
+  export type TrainingPlanCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingPlanUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingPlanUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayCreateInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingDaysInput
+    plan: TrainingPlanCreateNestedOneWithoutDaysInput
+    exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateInput = {
+    id?: string
+    userId: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
+    plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
+    exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayCreateManyInput = {
+    id?: string
+    userId: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingDayUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayExerciseCreateInput = {
+    id?: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+    user: UserCreateNestedOneWithoutTrainingDayExercisesInput
+    day: TrainingDayCreateNestedOneWithoutExercisesInput
+    exercise: ExerciseCreateNestedOneWithoutDayExercisesInput
+  }
+
+  export type TrainingDayExerciseUncheckedCreateInput = {
+    id?: string
+    userId: string
+    dayId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingDayExerciseUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutTrainingDayExercisesNestedInput
+    day?: TrainingDayUpdateOneRequiredWithoutExercisesNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutDayExercisesNestedInput
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingDayExerciseCreateManyInput = {
+    id?: string
+    userId: string
+    dayId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingDayExerciseUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingSessionCreateInput = {
+    id?: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingSessionsInput
+    day?: TrainingDayCreateNestedOneWithoutSessionsInput
+    setLogs?: SetLogCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    dayId?: string | null
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingSessionsNestedInput
+    day?: TrainingDayUpdateOneWithoutSessionsNestedInput
+    setLogs?: SetLogUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setLogs?: SetLogUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionCreateManyInput = {
+    id?: string
+    userId: string
+    dayId?: string | null
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SetLogCreateInput = {
+    id?: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+    user: UserCreateNestedOneWithoutSetLogsInput
+    session: TrainingSessionCreateNestedOneWithoutSetLogsInput
+    exercise: ExerciseCreateNestedOneWithoutSetLogsInput
+  }
+
+  export type SetLogUncheckedCreateInput = {
+    id?: string
+    userId: string
+    sessionId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
+    session?: TrainingSessionUpdateOneRequiredWithoutSetLogsNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutSetLogsNestedInput
+  }
+
+  export type SetLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SetLogCreateManyInput = {
+    id?: string
+    userId: string
+    sessionId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SetLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -32471,6 +43692,12 @@ export namespace Prisma {
     none?: HabitWhereInput
   }
 
+  export type HabitChainListRelationFilter = {
+    every?: HabitChainWhereInput
+    some?: HabitChainWhereInput
+    none?: HabitChainWhereInput
+  }
+
   export type LifeSphereListRelationFilter = {
     every?: LifeSphereWhereInput
     some?: LifeSphereWhereInput
@@ -32519,6 +43746,42 @@ export namespace Prisma {
     none?: WeekTemplateWhereInput
   }
 
+  export type ExerciseListRelationFilter = {
+    every?: ExerciseWhereInput
+    some?: ExerciseWhereInput
+    none?: ExerciseWhereInput
+  }
+
+  export type TrainingPlanListRelationFilter = {
+    every?: TrainingPlanWhereInput
+    some?: TrainingPlanWhereInput
+    none?: TrainingPlanWhereInput
+  }
+
+  export type TrainingDayListRelationFilter = {
+    every?: TrainingDayWhereInput
+    some?: TrainingDayWhereInput
+    none?: TrainingDayWhereInput
+  }
+
+  export type TrainingDayExerciseListRelationFilter = {
+    every?: TrainingDayExerciseWhereInput
+    some?: TrainingDayExerciseWhereInput
+    none?: TrainingDayExerciseWhereInput
+  }
+
+  export type TrainingSessionListRelationFilter = {
+    every?: TrainingSessionWhereInput
+    some?: TrainingSessionWhereInput
+    none?: TrainingSessionWhereInput
+  }
+
+  export type SetLogListRelationFilter = {
+    every?: SetLogWhereInput
+    some?: SetLogWhereInput
+    none?: SetLogWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -32537,6 +43800,10 @@ export namespace Prisma {
   }
 
   export type HabitOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HabitChainOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32569,6 +43836,30 @@ export namespace Prisma {
   }
 
   export type WeekTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExerciseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrainingPlanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrainingDayOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrainingDayExerciseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrainingSessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SetLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33336,6 +44627,11 @@ export namespace Prisma {
     not?: NestedEnumSphereLevelNullableFilter<$PrismaModel> | $Enums.SphereLevel | null
   }
 
+  export type HabitChainNullableScalarRelationFilter = {
+    is?: HabitChainWhereInput | null
+    isNot?: HabitChainWhereInput | null
+  }
+
   export type HabitCompletionListRelationFilter = {
     every?: HabitCompletionWhereInput
     some?: HabitCompletionWhereInput
@@ -33360,9 +44656,15 @@ export namespace Prisma {
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
+    ifThenPlan?: SortOrder
+    frictionReduction?: SortOrder
+    identityStatement?: SortOrder
+    minimalThreshold?: SortOrder
+    copingPlan?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
+    chainId?: SortOrder
   }
 
   export type HabitAvgOrderByAggregateInput = {
@@ -33384,9 +44686,15 @@ export namespace Prisma {
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
+    ifThenPlan?: SortOrder
+    frictionReduction?: SortOrder
+    identityStatement?: SortOrder
+    minimalThreshold?: SortOrder
+    copingPlan?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
+    chainId?: SortOrder
   }
 
   export type HabitMinOrderByAggregateInput = {
@@ -33403,9 +44711,15 @@ export namespace Prisma {
     targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
+    ifThenPlan?: SortOrder
+    frictionReduction?: SortOrder
+    identityStatement?: SortOrder
+    minimalThreshold?: SortOrder
+    copingPlan?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sphereId?: SortOrder
+    chainId?: SortOrder
   }
 
   export type HabitSumOrderByAggregateInput = {
@@ -33421,6 +44735,47 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
     _max?: NestedEnumSphereLevelNullableFilter<$PrismaModel>
+  }
+
+  export type HabitChainCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    order?: SortOrder
+    archived?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HabitChainAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type HabitChainMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    order?: SortOrder
+    archived?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HabitChainMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    order?: SortOrder
+    archived?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HabitChainSumOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type HabitScalarRelationFilter = {
@@ -33990,6 +45345,356 @@ export namespace Prisma {
     score?: SortOrder
   }
 
+  export type ExerciseCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    muscleGroup?: SortOrder
+    equipment?: SortOrder
+    trackingType?: SortOrder
+    notes?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExerciseAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ExerciseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    muscleGroup?: SortOrder
+    equipment?: SortOrder
+    trackingType?: SortOrder
+    notes?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExerciseMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    muscleGroup?: SortOrder
+    equipment?: SortOrder
+    trackingType?: SortOrder
+    notes?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExerciseSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TrainingPlanCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingPlanAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TrainingPlanMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingPlanMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    archived?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingPlanSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TrainingPlanScalarRelationFilter = {
+    is?: TrainingPlanWhereInput
+    isNot?: TrainingPlanWhereInput
+  }
+
+  export type TrainingDayCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    planId?: SortOrder
+    name?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingDayAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TrainingDayMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    planId?: SortOrder
+    name?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingDayMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    planId?: SortOrder
+    name?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingDaySumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type TrainingDayScalarRelationFilter = {
+    is?: TrainingDayWhereInput
+    isNot?: TrainingDayWhereInput
+  }
+
+  export type ExerciseScalarRelationFilter = {
+    is?: ExerciseWhereInput
+    isNot?: ExerciseWhereInput
+  }
+
+  export type TrainingDayExerciseCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    exerciseId?: SortOrder
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrder
+    targetWeight?: SortOrder
+    targetRpe?: SortOrder
+    restSeconds?: SortOrder
+    targetDurationSeconds?: SortOrder
+    targetDistanceMeters?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type TrainingDayExerciseAvgOrderByAggregateInput = {
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrder
+    targetWeight?: SortOrder
+    targetRpe?: SortOrder
+    restSeconds?: SortOrder
+    targetDurationSeconds?: SortOrder
+    targetDistanceMeters?: SortOrder
+  }
+
+  export type TrainingDayExerciseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    exerciseId?: SortOrder
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrder
+    targetWeight?: SortOrder
+    targetRpe?: SortOrder
+    restSeconds?: SortOrder
+    targetDurationSeconds?: SortOrder
+    targetDistanceMeters?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type TrainingDayExerciseMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    exerciseId?: SortOrder
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrder
+    targetWeight?: SortOrder
+    targetRpe?: SortOrder
+    restSeconds?: SortOrder
+    targetDurationSeconds?: SortOrder
+    targetDistanceMeters?: SortOrder
+    notes?: SortOrder
+  }
+
+  export type TrainingDayExerciseSumOrderByAggregateInput = {
+    order?: SortOrder
+    sets?: SortOrder
+    targetReps?: SortOrder
+    targetWeight?: SortOrder
+    targetRpe?: SortOrder
+    restSeconds?: SortOrder
+    targetDurationSeconds?: SortOrder
+    targetDistanceMeters?: SortOrder
+  }
+
+  export type TrainingDayNullableScalarRelationFilter = {
+    is?: TrainingDayWhereInput | null
+    isNot?: TrainingDayWhereInput | null
+  }
+
+  export type TrainingSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    dayName?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    durationSeconds?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingSessionAvgOrderByAggregateInput = {
+    durationSeconds?: SortOrder
+  }
+
+  export type TrainingSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    dayName?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    durationSeconds?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    dayId?: SortOrder
+    dayName?: SortOrder
+    date?: SortOrder
+    status?: SortOrder
+    durationSeconds?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TrainingSessionSumOrderByAggregateInput = {
+    durationSeconds?: SortOrder
+  }
+
+  export type TrainingSessionScalarRelationFilter = {
+    is?: TrainingSessionWhereInput
+    isNot?: TrainingSessionWhereInput
+  }
+
+  export type SetLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sessionId?: SortOrder
+    exerciseId?: SortOrder
+    exerciseName?: SortOrder
+    setNumber?: SortOrder
+    reps?: SortOrder
+    weight?: SortOrder
+    rpe?: SortOrder
+    restSeconds?: SortOrder
+    durationSeconds?: SortOrder
+    distanceMeters?: SortOrder
+    completed?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+  }
+
+  export type SetLogAvgOrderByAggregateInput = {
+    setNumber?: SortOrder
+    reps?: SortOrder
+    weight?: SortOrder
+    rpe?: SortOrder
+    restSeconds?: SortOrder
+    durationSeconds?: SortOrder
+    distanceMeters?: SortOrder
+    order?: SortOrder
+  }
+
+  export type SetLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sessionId?: SortOrder
+    exerciseId?: SortOrder
+    exerciseName?: SortOrder
+    setNumber?: SortOrder
+    reps?: SortOrder
+    weight?: SortOrder
+    rpe?: SortOrder
+    restSeconds?: SortOrder
+    durationSeconds?: SortOrder
+    distanceMeters?: SortOrder
+    completed?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+  }
+
+  export type SetLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    sessionId?: SortOrder
+    exerciseId?: SortOrder
+    exerciseName?: SortOrder
+    setNumber?: SortOrder
+    reps?: SortOrder
+    weight?: SortOrder
+    rpe?: SortOrder
+    restSeconds?: SortOrder
+    durationSeconds?: SortOrder
+    distanceMeters?: SortOrder
+    completed?: SortOrder
+    notes?: SortOrder
+    order?: SortOrder
+  }
+
+  export type SetLogSumOrderByAggregateInput = {
+    setNumber?: SortOrder
+    reps?: SortOrder
+    weight?: SortOrder
+    rpe?: SortOrder
+    restSeconds?: SortOrder
+    durationSeconds?: SortOrder
+    distanceMeters?: SortOrder
+    order?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -34016,6 +45721,13 @@ export namespace Prisma {
     connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
     createMany?: HabitCreateManyUserInputEnvelope
     connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type HabitChainCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput> | HabitChainCreateWithoutUserInput[] | HabitChainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitChainCreateOrConnectWithoutUserInput | HabitChainCreateOrConnectWithoutUserInput[]
+    createMany?: HabitChainCreateManyUserInputEnvelope
+    connect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
   }
 
   export type LifeSphereCreateNestedManyWithoutUserInput = {
@@ -34074,6 +45786,48 @@ export namespace Prisma {
     connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
   }
 
+  export type ExerciseCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput> | ExerciseCreateWithoutUserInput[] | ExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExerciseCreateOrConnectWithoutUserInput | ExerciseCreateOrConnectWithoutUserInput[]
+    createMany?: ExerciseCreateManyUserInputEnvelope
+    connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingPlanCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput> | TrainingPlanCreateWithoutUserInput[] | TrainingPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutUserInput | TrainingPlanCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingPlanCreateManyUserInputEnvelope
+    connect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+  }
+
+  export type TrainingDayCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput> | TrainingDayCreateWithoutUserInput[] | TrainingDayUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutUserInput | TrainingDayCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingDayCreateManyUserInputEnvelope
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+  }
+
+  export type TrainingDayExerciseCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput> | TrainingDayExerciseCreateWithoutUserInput[] | TrainingDayExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutUserInput | TrainingDayExerciseCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingDayExerciseCreateManyUserInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingSessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput> | TrainingSessionCreateWithoutUserInput[] | TrainingSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutUserInput | TrainingSessionCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingSessionCreateManyUserInputEnvelope
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+  }
+
+  export type SetLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput> | SetLogCreateWithoutUserInput[] | SetLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutUserInput | SetLogCreateOrConnectWithoutUserInput[]
+    createMany?: SetLogCreateManyUserInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -34100,6 +45854,13 @@ export namespace Prisma {
     connectOrCreate?: HabitCreateOrConnectWithoutUserInput | HabitCreateOrConnectWithoutUserInput[]
     createMany?: HabitCreateManyUserInputEnvelope
     connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type HabitChainUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput> | HabitChainCreateWithoutUserInput[] | HabitChainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitChainCreateOrConnectWithoutUserInput | HabitChainCreateOrConnectWithoutUserInput[]
+    createMany?: HabitChainCreateManyUserInputEnvelope
+    connect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
   }
 
   export type LifeSphereUncheckedCreateNestedManyWithoutUserInput = {
@@ -34156,6 +45917,48 @@ export namespace Prisma {
     connectOrCreate?: WeekTemplateCreateOrConnectWithoutUserInput | WeekTemplateCreateOrConnectWithoutUserInput[]
     createMany?: WeekTemplateCreateManyUserInputEnvelope
     connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+  }
+
+  export type ExerciseUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput> | ExerciseCreateWithoutUserInput[] | ExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExerciseCreateOrConnectWithoutUserInput | ExerciseCreateOrConnectWithoutUserInput[]
+    createMany?: ExerciseCreateManyUserInputEnvelope
+    connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingPlanUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput> | TrainingPlanCreateWithoutUserInput[] | TrainingPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutUserInput | TrainingPlanCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingPlanCreateManyUserInputEnvelope
+    connect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+  }
+
+  export type TrainingDayUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput> | TrainingDayCreateWithoutUserInput[] | TrainingDayUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutUserInput | TrainingDayCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingDayCreateManyUserInputEnvelope
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput> | TrainingDayExerciseCreateWithoutUserInput[] | TrainingDayExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutUserInput | TrainingDayExerciseCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingDayExerciseCreateManyUserInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingSessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput> | TrainingSessionCreateWithoutUserInput[] | TrainingSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutUserInput | TrainingSessionCreateOrConnectWithoutUserInput[]
+    createMany?: TrainingSessionCreateManyUserInputEnvelope
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+  }
+
+  export type SetLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput> | SetLogCreateWithoutUserInput[] | SetLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutUserInput | SetLogCreateOrConnectWithoutUserInput[]
+    createMany?: SetLogCreateManyUserInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -34232,6 +46035,20 @@ export namespace Prisma {
     update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type HabitChainUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput> | HabitChainCreateWithoutUserInput[] | HabitChainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitChainCreateOrConnectWithoutUserInput | HabitChainCreateOrConnectWithoutUserInput[]
+    upsert?: HabitChainUpsertWithWhereUniqueWithoutUserInput | HabitChainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HabitChainCreateManyUserInputEnvelope
+    set?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    disconnect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    delete?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    connect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    update?: HabitChainUpdateWithWhereUniqueWithoutUserInput | HabitChainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HabitChainUpdateManyWithWhereWithoutUserInput | HabitChainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HabitChainScalarWhereInput | HabitChainScalarWhereInput[]
   }
 
   export type LifeSphereUpdateManyWithoutUserNestedInput = {
@@ -34346,6 +46163,90 @@ export namespace Prisma {
     deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
   }
 
+  export type ExerciseUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput> | ExerciseCreateWithoutUserInput[] | ExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExerciseCreateOrConnectWithoutUserInput | ExerciseCreateOrConnectWithoutUserInput[]
+    upsert?: ExerciseUpsertWithWhereUniqueWithoutUserInput | ExerciseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExerciseCreateManyUserInputEnvelope
+    set?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    disconnect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    delete?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    update?: ExerciseUpdateWithWhereUniqueWithoutUserInput | ExerciseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExerciseUpdateManyWithWhereWithoutUserInput | ExerciseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type TrainingPlanUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput> | TrainingPlanCreateWithoutUserInput[] | TrainingPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutUserInput | TrainingPlanCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingPlanUpsertWithWhereUniqueWithoutUserInput | TrainingPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingPlanCreateManyUserInputEnvelope
+    set?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    disconnect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    delete?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    connect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    update?: TrainingPlanUpdateWithWhereUniqueWithoutUserInput | TrainingPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingPlanUpdateManyWithWhereWithoutUserInput | TrainingPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
+  }
+
+  export type TrainingDayUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput> | TrainingDayCreateWithoutUserInput[] | TrainingDayUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutUserInput | TrainingDayCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingDayUpsertWithWhereUniqueWithoutUserInput | TrainingDayUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingDayCreateManyUserInputEnvelope
+    set?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    disconnect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    delete?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    update?: TrainingDayUpdateWithWhereUniqueWithoutUserInput | TrainingDayUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingDayUpdateManyWithWhereWithoutUserInput | TrainingDayUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+  }
+
+  export type TrainingDayExerciseUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput> | TrainingDayExerciseCreateWithoutUserInput[] | TrainingDayExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutUserInput | TrainingDayExerciseCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutUserInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingDayExerciseCreateManyUserInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutUserInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutUserInput | TrainingDayExerciseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type TrainingSessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput> | TrainingSessionCreateWithoutUserInput[] | TrainingSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutUserInput | TrainingSessionCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingSessionUpsertWithWhereUniqueWithoutUserInput | TrainingSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingSessionCreateManyUserInputEnvelope
+    set?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    disconnect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    delete?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    update?: TrainingSessionUpdateWithWhereUniqueWithoutUserInput | TrainingSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingSessionUpdateManyWithWhereWithoutUserInput | TrainingSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+  }
+
+  export type SetLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput> | SetLogCreateWithoutUserInput[] | SetLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutUserInput | SetLogCreateOrConnectWithoutUserInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutUserInput | SetLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SetLogCreateManyUserInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutUserInput | SetLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutUserInput | SetLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -34400,6 +46301,20 @@ export namespace Prisma {
     update?: HabitUpdateWithWhereUniqueWithoutUserInput | HabitUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: HabitUpdateManyWithWhereWithoutUserInput | HabitUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type HabitChainUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput> | HabitChainCreateWithoutUserInput[] | HabitChainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: HabitChainCreateOrConnectWithoutUserInput | HabitChainCreateOrConnectWithoutUserInput[]
+    upsert?: HabitChainUpsertWithWhereUniqueWithoutUserInput | HabitChainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: HabitChainCreateManyUserInputEnvelope
+    set?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    disconnect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    delete?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    connect?: HabitChainWhereUniqueInput | HabitChainWhereUniqueInput[]
+    update?: HabitChainUpdateWithWhereUniqueWithoutUserInput | HabitChainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: HabitChainUpdateManyWithWhereWithoutUserInput | HabitChainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: HabitChainScalarWhereInput | HabitChainScalarWhereInput[]
   }
 
   export type LifeSphereUncheckedUpdateManyWithoutUserNestedInput = {
@@ -34512,6 +46427,90 @@ export namespace Prisma {
     update?: WeekTemplateUpdateWithWhereUniqueWithoutUserInput | WeekTemplateUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WeekTemplateUpdateManyWithWhereWithoutUserInput | WeekTemplateUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
+  }
+
+  export type ExerciseUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput> | ExerciseCreateWithoutUserInput[] | ExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExerciseCreateOrConnectWithoutUserInput | ExerciseCreateOrConnectWithoutUserInput[]
+    upsert?: ExerciseUpsertWithWhereUniqueWithoutUserInput | ExerciseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExerciseCreateManyUserInputEnvelope
+    set?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    disconnect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    delete?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    connect?: ExerciseWhereUniqueInput | ExerciseWhereUniqueInput[]
+    update?: ExerciseUpdateWithWhereUniqueWithoutUserInput | ExerciseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExerciseUpdateManyWithWhereWithoutUserInput | ExerciseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+  }
+
+  export type TrainingPlanUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput> | TrainingPlanCreateWithoutUserInput[] | TrainingPlanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutUserInput | TrainingPlanCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingPlanUpsertWithWhereUniqueWithoutUserInput | TrainingPlanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingPlanCreateManyUserInputEnvelope
+    set?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    disconnect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    delete?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    connect?: TrainingPlanWhereUniqueInput | TrainingPlanWhereUniqueInput[]
+    update?: TrainingPlanUpdateWithWhereUniqueWithoutUserInput | TrainingPlanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingPlanUpdateManyWithWhereWithoutUserInput | TrainingPlanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
+  }
+
+  export type TrainingDayUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput> | TrainingDayCreateWithoutUserInput[] | TrainingDayUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutUserInput | TrainingDayCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingDayUpsertWithWhereUniqueWithoutUserInput | TrainingDayUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingDayCreateManyUserInputEnvelope
+    set?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    disconnect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    delete?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    update?: TrainingDayUpdateWithWhereUniqueWithoutUserInput | TrainingDayUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingDayUpdateManyWithWhereWithoutUserInput | TrainingDayUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput> | TrainingDayExerciseCreateWithoutUserInput[] | TrainingDayExerciseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutUserInput | TrainingDayExerciseCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutUserInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingDayExerciseCreateManyUserInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutUserInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutUserInput | TrainingDayExerciseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type TrainingSessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput> | TrainingSessionCreateWithoutUserInput[] | TrainingSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutUserInput | TrainingSessionCreateOrConnectWithoutUserInput[]
+    upsert?: TrainingSessionUpsertWithWhereUniqueWithoutUserInput | TrainingSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrainingSessionCreateManyUserInputEnvelope
+    set?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    disconnect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    delete?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    update?: TrainingSessionUpdateWithWhereUniqueWithoutUserInput | TrainingSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrainingSessionUpdateManyWithWhereWithoutUserInput | TrainingSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput> | SetLogCreateWithoutUserInput[] | SetLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutUserInput | SetLogCreateOrConnectWithoutUserInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutUserInput | SetLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SetLogCreateManyUserInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutUserInput | SetLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutUserInput | SetLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutWeekTemplatesInput = {
@@ -34912,6 +46911,12 @@ export namespace Prisma {
     connect?: LifeSphereWhereUniqueInput
   }
 
+  export type HabitChainCreateNestedOneWithoutHabitsInput = {
+    create?: XOR<HabitChainCreateWithoutHabitsInput, HabitChainUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: HabitChainCreateOrConnectWithoutHabitsInput
+    connect?: HabitChainWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutHabitsInput = {
     create?: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
     connectOrCreate?: UserCreateOrConnectWithoutHabitsInput
@@ -34944,6 +46949,16 @@ export namespace Prisma {
     delete?: LifeSphereWhereInput | boolean
     connect?: LifeSphereWhereUniqueInput
     update?: XOR<XOR<LifeSphereUpdateToOneWithWhereWithoutHabitsInput, LifeSphereUpdateWithoutHabitsInput>, LifeSphereUncheckedUpdateWithoutHabitsInput>
+  }
+
+  export type HabitChainUpdateOneWithoutHabitsNestedInput = {
+    create?: XOR<HabitChainCreateWithoutHabitsInput, HabitChainUncheckedCreateWithoutHabitsInput>
+    connectOrCreate?: HabitChainCreateOrConnectWithoutHabitsInput
+    upsert?: HabitChainUpsertWithoutHabitsInput
+    disconnect?: HabitChainWhereInput | boolean
+    delete?: HabitChainWhereInput | boolean
+    connect?: HabitChainWhereUniqueInput
+    update?: XOR<XOR<HabitChainUpdateToOneWithWhereWithoutHabitsInput, HabitChainUpdateWithoutHabitsInput>, HabitChainUncheckedUpdateWithoutHabitsInput>
   }
 
   export type UserUpdateOneRequiredWithoutHabitsNestedInput = {
@@ -34980,6 +46995,62 @@ export namespace Prisma {
     update?: HabitCompletionUpdateWithWhereUniqueWithoutHabitInput | HabitCompletionUpdateWithWhereUniqueWithoutHabitInput[]
     updateMany?: HabitCompletionUpdateManyWithWhereWithoutHabitInput | HabitCompletionUpdateManyWithWhereWithoutHabitInput[]
     deleteMany?: HabitCompletionScalarWhereInput | HabitCompletionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutHabitChainsInput = {
+    create?: XOR<UserCreateWithoutHabitChainsInput, UserUncheckedCreateWithoutHabitChainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitChainsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type HabitCreateNestedManyWithoutChainInput = {
+    create?: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput> | HabitCreateWithoutChainInput[] | HabitUncheckedCreateWithoutChainInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutChainInput | HabitCreateOrConnectWithoutChainInput[]
+    createMany?: HabitCreateManyChainInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type HabitUncheckedCreateNestedManyWithoutChainInput = {
+    create?: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput> | HabitCreateWithoutChainInput[] | HabitUncheckedCreateWithoutChainInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutChainInput | HabitCreateOrConnectWithoutChainInput[]
+    createMany?: HabitCreateManyChainInputEnvelope
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutHabitChainsNestedInput = {
+    create?: XOR<UserCreateWithoutHabitChainsInput, UserUncheckedCreateWithoutHabitChainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutHabitChainsInput
+    upsert?: UserUpsertWithoutHabitChainsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutHabitChainsInput, UserUpdateWithoutHabitChainsInput>, UserUncheckedUpdateWithoutHabitChainsInput>
+  }
+
+  export type HabitUpdateManyWithoutChainNestedInput = {
+    create?: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput> | HabitCreateWithoutChainInput[] | HabitUncheckedCreateWithoutChainInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutChainInput | HabitCreateOrConnectWithoutChainInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutChainInput | HabitUpsertWithWhereUniqueWithoutChainInput[]
+    createMany?: HabitCreateManyChainInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutChainInput | HabitUpdateWithWhereUniqueWithoutChainInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutChainInput | HabitUpdateManyWithWhereWithoutChainInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
+  }
+
+  export type HabitUncheckedUpdateManyWithoutChainNestedInput = {
+    create?: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput> | HabitCreateWithoutChainInput[] | HabitUncheckedCreateWithoutChainInput[]
+    connectOrCreate?: HabitCreateOrConnectWithoutChainInput | HabitCreateOrConnectWithoutChainInput[]
+    upsert?: HabitUpsertWithWhereUniqueWithoutChainInput | HabitUpsertWithWhereUniqueWithoutChainInput[]
+    createMany?: HabitCreateManyChainInputEnvelope
+    set?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    disconnect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    delete?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    connect?: HabitWhereUniqueInput | HabitWhereUniqueInput[]
+    update?: HabitUpdateWithWhereUniqueWithoutChainInput | HabitUpdateWithWhereUniqueWithoutChainInput[]
+    updateMany?: HabitUpdateManyWithWhereWithoutChainInput | HabitUpdateManyWithWhereWithoutChainInput[]
+    deleteMany?: HabitScalarWhereInput | HabitScalarWhereInput[]
   }
 
   export type HabitCreateNestedOneWithoutCompletionsInput = {
@@ -35478,6 +47549,428 @@ export namespace Prisma {
     upsert?: SprintUpsertWithoutReviewsInput
     connect?: SprintWhereUniqueInput
     update?: XOR<XOR<SprintUpdateToOneWithWhereWithoutReviewsInput, SprintUpdateWithoutReviewsInput>, SprintUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type UserCreateNestedOneWithoutExercisesInput = {
+    create?: XOR<UserCreateWithoutExercisesInput, UserUncheckedCreateWithoutExercisesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExercisesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingDayExerciseCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput> | TrainingDayExerciseCreateWithoutExerciseInput[] | TrainingDayExerciseUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutExerciseInput | TrainingDayExerciseCreateOrConnectWithoutExerciseInput[]
+    createMany?: TrainingDayExerciseCreateManyExerciseInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type SetLogCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput> | SetLogCreateWithoutExerciseInput[] | SetLogUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutExerciseInput | SetLogCreateOrConnectWithoutExerciseInput[]
+    createMany?: SetLogCreateManyExerciseInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput> | TrainingDayExerciseCreateWithoutExerciseInput[] | TrainingDayExerciseUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutExerciseInput | TrainingDayExerciseCreateOrConnectWithoutExerciseInput[]
+    createMany?: TrainingDayExerciseCreateManyExerciseInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type SetLogUncheckedCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput> | SetLogCreateWithoutExerciseInput[] | SetLogUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutExerciseInput | SetLogCreateOrConnectWithoutExerciseInput[]
+    createMany?: SetLogCreateManyExerciseInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutExercisesNestedInput = {
+    create?: XOR<UserCreateWithoutExercisesInput, UserUncheckedCreateWithoutExercisesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExercisesInput
+    upsert?: UserUpsertWithoutExercisesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExercisesInput, UserUpdateWithoutExercisesInput>, UserUncheckedUpdateWithoutExercisesInput>
+  }
+
+  export type TrainingDayExerciseUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput> | TrainingDayExerciseCreateWithoutExerciseInput[] | TrainingDayExerciseUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutExerciseInput | TrainingDayExerciseCreateOrConnectWithoutExerciseInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: TrainingDayExerciseCreateManyExerciseInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutExerciseInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutExerciseInput | TrainingDayExerciseUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type SetLogUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput> | SetLogCreateWithoutExerciseInput[] | SetLogUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutExerciseInput | SetLogCreateOrConnectWithoutExerciseInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutExerciseInput | SetLogUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: SetLogCreateManyExerciseInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutExerciseInput | SetLogUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutExerciseInput | SetLogUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput> | TrainingDayExerciseCreateWithoutExerciseInput[] | TrainingDayExerciseUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutExerciseInput | TrainingDayExerciseCreateOrConnectWithoutExerciseInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: TrainingDayExerciseCreateManyExerciseInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutExerciseInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutExerciseInput | TrainingDayExerciseUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput> | SetLogCreateWithoutExerciseInput[] | SetLogUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutExerciseInput | SetLogCreateOrConnectWithoutExerciseInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutExerciseInput | SetLogUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: SetLogCreateManyExerciseInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutExerciseInput | SetLogUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutExerciseInput | SetLogUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTrainingPlansInput = {
+    create?: XOR<UserCreateWithoutTrainingPlansInput, UserUncheckedCreateWithoutTrainingPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingPlansInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingDayCreateNestedManyWithoutPlanInput = {
+    create?: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput> | TrainingDayCreateWithoutPlanInput[] | TrainingDayUncheckedCreateWithoutPlanInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutPlanInput | TrainingDayCreateOrConnectWithoutPlanInput[]
+    createMany?: TrainingDayCreateManyPlanInputEnvelope
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+  }
+
+  export type TrainingDayUncheckedCreateNestedManyWithoutPlanInput = {
+    create?: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput> | TrainingDayCreateWithoutPlanInput[] | TrainingDayUncheckedCreateWithoutPlanInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutPlanInput | TrainingDayCreateOrConnectWithoutPlanInput[]
+    createMany?: TrainingDayCreateManyPlanInputEnvelope
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutTrainingPlansNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingPlansInput, UserUncheckedCreateWithoutTrainingPlansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingPlansInput
+    upsert?: UserUpsertWithoutTrainingPlansInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingPlansInput, UserUpdateWithoutTrainingPlansInput>, UserUncheckedUpdateWithoutTrainingPlansInput>
+  }
+
+  export type TrainingDayUpdateManyWithoutPlanNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput> | TrainingDayCreateWithoutPlanInput[] | TrainingDayUncheckedCreateWithoutPlanInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutPlanInput | TrainingDayCreateOrConnectWithoutPlanInput[]
+    upsert?: TrainingDayUpsertWithWhereUniqueWithoutPlanInput | TrainingDayUpsertWithWhereUniqueWithoutPlanInput[]
+    createMany?: TrainingDayCreateManyPlanInputEnvelope
+    set?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    disconnect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    delete?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    update?: TrainingDayUpdateWithWhereUniqueWithoutPlanInput | TrainingDayUpdateWithWhereUniqueWithoutPlanInput[]
+    updateMany?: TrainingDayUpdateManyWithWhereWithoutPlanInput | TrainingDayUpdateManyWithWhereWithoutPlanInput[]
+    deleteMany?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+  }
+
+  export type TrainingDayUncheckedUpdateManyWithoutPlanNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput> | TrainingDayCreateWithoutPlanInput[] | TrainingDayUncheckedCreateWithoutPlanInput[]
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutPlanInput | TrainingDayCreateOrConnectWithoutPlanInput[]
+    upsert?: TrainingDayUpsertWithWhereUniqueWithoutPlanInput | TrainingDayUpsertWithWhereUniqueWithoutPlanInput[]
+    createMany?: TrainingDayCreateManyPlanInputEnvelope
+    set?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    disconnect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    delete?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    connect?: TrainingDayWhereUniqueInput | TrainingDayWhereUniqueInput[]
+    update?: TrainingDayUpdateWithWhereUniqueWithoutPlanInput | TrainingDayUpdateWithWhereUniqueWithoutPlanInput[]
+    updateMany?: TrainingDayUpdateManyWithWhereWithoutPlanInput | TrainingDayUpdateManyWithWhereWithoutPlanInput[]
+    deleteMany?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTrainingDaysInput = {
+    create?: XOR<UserCreateWithoutTrainingDaysInput, UserUncheckedCreateWithoutTrainingDaysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingDaysInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingPlanCreateNestedOneWithoutDaysInput = {
+    create?: XOR<TrainingPlanCreateWithoutDaysInput, TrainingPlanUncheckedCreateWithoutDaysInput>
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutDaysInput
+    connect?: TrainingPlanWhereUniqueInput
+  }
+
+  export type TrainingDayExerciseCreateNestedManyWithoutDayInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
+    createMany?: TrainingDayExerciseCreateManyDayInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingSessionCreateNestedManyWithoutDayInput = {
+    create?: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput> | TrainingSessionCreateWithoutDayInput[] | TrainingSessionUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutDayInput | TrainingSessionCreateOrConnectWithoutDayInput[]
+    createMany?: TrainingSessionCreateManyDayInputEnvelope
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
+    createMany?: TrainingDayExerciseCreateManyDayInputEnvelope
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+  }
+
+  export type TrainingSessionUncheckedCreateNestedManyWithoutDayInput = {
+    create?: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput> | TrainingSessionCreateWithoutDayInput[] | TrainingSessionUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutDayInput | TrainingSessionCreateOrConnectWithoutDayInput[]
+    createMany?: TrainingSessionCreateManyDayInputEnvelope
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutTrainingDaysNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingDaysInput, UserUncheckedCreateWithoutTrainingDaysInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingDaysInput
+    upsert?: UserUpsertWithoutTrainingDaysInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingDaysInput, UserUpdateWithoutTrainingDaysInput>, UserUncheckedUpdateWithoutTrainingDaysInput>
+  }
+
+  export type TrainingPlanUpdateOneRequiredWithoutDaysNestedInput = {
+    create?: XOR<TrainingPlanCreateWithoutDaysInput, TrainingPlanUncheckedCreateWithoutDaysInput>
+    connectOrCreate?: TrainingPlanCreateOrConnectWithoutDaysInput
+    upsert?: TrainingPlanUpsertWithoutDaysInput
+    connect?: TrainingPlanWhereUniqueInput
+    update?: XOR<XOR<TrainingPlanUpdateToOneWithWhereWithoutDaysInput, TrainingPlanUpdateWithoutDaysInput>, TrainingPlanUncheckedUpdateWithoutDaysInput>
+  }
+
+  export type TrainingDayExerciseUpdateManyWithoutDayNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutDayInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutDayInput[]
+    createMany?: TrainingDayExerciseCreateManyDayInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutDayInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutDayInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutDayInput | TrainingDayExerciseUpdateManyWithWhereWithoutDayInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type TrainingSessionUpdateManyWithoutDayNestedInput = {
+    create?: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput> | TrainingSessionCreateWithoutDayInput[] | TrainingSessionUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutDayInput | TrainingSessionCreateOrConnectWithoutDayInput[]
+    upsert?: TrainingSessionUpsertWithWhereUniqueWithoutDayInput | TrainingSessionUpsertWithWhereUniqueWithoutDayInput[]
+    createMany?: TrainingSessionCreateManyDayInputEnvelope
+    set?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    disconnect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    delete?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    update?: TrainingSessionUpdateWithWhereUniqueWithoutDayInput | TrainingSessionUpdateWithWhereUniqueWithoutDayInput[]
+    updateMany?: TrainingSessionUpdateManyWithWhereWithoutDayInput | TrainingSessionUpdateManyWithWhereWithoutDayInput[]
+    deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput = {
+    create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
+    upsert?: TrainingDayExerciseUpsertWithWhereUniqueWithoutDayInput | TrainingDayExerciseUpsertWithWhereUniqueWithoutDayInput[]
+    createMany?: TrainingDayExerciseCreateManyDayInputEnvelope
+    set?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    disconnect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    delete?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    connect?: TrainingDayExerciseWhereUniqueInput | TrainingDayExerciseWhereUniqueInput[]
+    update?: TrainingDayExerciseUpdateWithWhereUniqueWithoutDayInput | TrainingDayExerciseUpdateWithWhereUniqueWithoutDayInput[]
+    updateMany?: TrainingDayExerciseUpdateManyWithWhereWithoutDayInput | TrainingDayExerciseUpdateManyWithWhereWithoutDayInput[]
+    deleteMany?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+  }
+
+  export type TrainingSessionUncheckedUpdateManyWithoutDayNestedInput = {
+    create?: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput> | TrainingSessionCreateWithoutDayInput[] | TrainingSessionUncheckedCreateWithoutDayInput[]
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutDayInput | TrainingSessionCreateOrConnectWithoutDayInput[]
+    upsert?: TrainingSessionUpsertWithWhereUniqueWithoutDayInput | TrainingSessionUpsertWithWhereUniqueWithoutDayInput[]
+    createMany?: TrainingSessionCreateManyDayInputEnvelope
+    set?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    disconnect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    delete?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+    update?: TrainingSessionUpdateWithWhereUniqueWithoutDayInput | TrainingSessionUpdateWithWhereUniqueWithoutDayInput[]
+    updateMany?: TrainingSessionUpdateManyWithWhereWithoutDayInput | TrainingSessionUpdateManyWithWhereWithoutDayInput[]
+    deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTrainingDayExercisesInput = {
+    create?: XOR<UserCreateWithoutTrainingDayExercisesInput, UserUncheckedCreateWithoutTrainingDayExercisesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingDayExercisesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingDayCreateNestedOneWithoutExercisesInput = {
+    create?: XOR<TrainingDayCreateWithoutExercisesInput, TrainingDayUncheckedCreateWithoutExercisesInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutExercisesInput
+    connect?: TrainingDayWhereUniqueInput
+  }
+
+  export type ExerciseCreateNestedOneWithoutDayExercisesInput = {
+    create?: XOR<ExerciseCreateWithoutDayExercisesInput, ExerciseUncheckedCreateWithoutDayExercisesInput>
+    connectOrCreate?: ExerciseCreateOrConnectWithoutDayExercisesInput
+    connect?: ExerciseWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutTrainingDayExercisesNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingDayExercisesInput, UserUncheckedCreateWithoutTrainingDayExercisesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingDayExercisesInput
+    upsert?: UserUpsertWithoutTrainingDayExercisesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingDayExercisesInput, UserUpdateWithoutTrainingDayExercisesInput>, UserUncheckedUpdateWithoutTrainingDayExercisesInput>
+  }
+
+  export type TrainingDayUpdateOneRequiredWithoutExercisesNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutExercisesInput, TrainingDayUncheckedCreateWithoutExercisesInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutExercisesInput
+    upsert?: TrainingDayUpsertWithoutExercisesInput
+    connect?: TrainingDayWhereUniqueInput
+    update?: XOR<XOR<TrainingDayUpdateToOneWithWhereWithoutExercisesInput, TrainingDayUpdateWithoutExercisesInput>, TrainingDayUncheckedUpdateWithoutExercisesInput>
+  }
+
+  export type ExerciseUpdateOneRequiredWithoutDayExercisesNestedInput = {
+    create?: XOR<ExerciseCreateWithoutDayExercisesInput, ExerciseUncheckedCreateWithoutDayExercisesInput>
+    connectOrCreate?: ExerciseCreateOrConnectWithoutDayExercisesInput
+    upsert?: ExerciseUpsertWithoutDayExercisesInput
+    connect?: ExerciseWhereUniqueInput
+    update?: XOR<XOR<ExerciseUpdateToOneWithWhereWithoutDayExercisesInput, ExerciseUpdateWithoutDayExercisesInput>, ExerciseUncheckedUpdateWithoutDayExercisesInput>
+  }
+
+  export type UserCreateNestedOneWithoutTrainingSessionsInput = {
+    create?: XOR<UserCreateWithoutTrainingSessionsInput, UserUncheckedCreateWithoutTrainingSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingDayCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<TrainingDayCreateWithoutSessionsInput, TrainingDayUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutSessionsInput
+    connect?: TrainingDayWhereUniqueInput
+  }
+
+  export type SetLogCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput> | SetLogCreateWithoutSessionInput[] | SetLogUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutSessionInput | SetLogCreateOrConnectWithoutSessionInput[]
+    createMany?: SetLogCreateManySessionInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
+  export type SetLogUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput> | SetLogCreateWithoutSessionInput[] | SetLogUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutSessionInput | SetLogCreateOrConnectWithoutSessionInput[]
+    createMany?: SetLogCreateManySessionInputEnvelope
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutTrainingSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutTrainingSessionsInput, UserUncheckedCreateWithoutTrainingSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrainingSessionsInput
+    upsert?: UserUpsertWithoutTrainingSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrainingSessionsInput, UserUpdateWithoutTrainingSessionsInput>, UserUncheckedUpdateWithoutTrainingSessionsInput>
+  }
+
+  export type TrainingDayUpdateOneWithoutSessionsNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutSessionsInput, TrainingDayUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutSessionsInput
+    upsert?: TrainingDayUpsertWithoutSessionsInput
+    disconnect?: TrainingDayWhereInput | boolean
+    delete?: TrainingDayWhereInput | boolean
+    connect?: TrainingDayWhereUniqueInput
+    update?: XOR<XOR<TrainingDayUpdateToOneWithWhereWithoutSessionsInput, TrainingDayUpdateWithoutSessionsInput>, TrainingDayUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type SetLogUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput> | SetLogCreateWithoutSessionInput[] | SetLogUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutSessionInput | SetLogCreateOrConnectWithoutSessionInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutSessionInput | SetLogUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SetLogCreateManySessionInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutSessionInput | SetLogUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutSessionInput | SetLogUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput> | SetLogCreateWithoutSessionInput[] | SetLogUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SetLogCreateOrConnectWithoutSessionInput | SetLogCreateOrConnectWithoutSessionInput[]
+    upsert?: SetLogUpsertWithWhereUniqueWithoutSessionInput | SetLogUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SetLogCreateManySessionInputEnvelope
+    set?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    disconnect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    delete?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+    update?: SetLogUpdateWithWhereUniqueWithoutSessionInput | SetLogUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SetLogUpdateManyWithWhereWithoutSessionInput | SetLogUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutSetLogsInput = {
+    create?: XOR<UserCreateWithoutSetLogsInput, UserUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSetLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TrainingSessionCreateNestedOneWithoutSetLogsInput = {
+    create?: XOR<TrainingSessionCreateWithoutSetLogsInput, TrainingSessionUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutSetLogsInput
+    connect?: TrainingSessionWhereUniqueInput
+  }
+
+  export type ExerciseCreateNestedOneWithoutSetLogsInput = {
+    create?: XOR<ExerciseCreateWithoutSetLogsInput, ExerciseUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: ExerciseCreateOrConnectWithoutSetLogsInput
+    connect?: ExerciseWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSetLogsNestedInput = {
+    create?: XOR<UserCreateWithoutSetLogsInput, UserUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSetLogsInput
+    upsert?: UserUpsertWithoutSetLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSetLogsInput, UserUpdateWithoutSetLogsInput>, UserUncheckedUpdateWithoutSetLogsInput>
+  }
+
+  export type TrainingSessionUpdateOneRequiredWithoutSetLogsNestedInput = {
+    create?: XOR<TrainingSessionCreateWithoutSetLogsInput, TrainingSessionUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: TrainingSessionCreateOrConnectWithoutSetLogsInput
+    upsert?: TrainingSessionUpsertWithoutSetLogsInput
+    connect?: TrainingSessionWhereUniqueInput
+    update?: XOR<XOR<TrainingSessionUpdateToOneWithWhereWithoutSetLogsInput, TrainingSessionUpdateWithoutSetLogsInput>, TrainingSessionUncheckedUpdateWithoutSetLogsInput>
+  }
+
+  export type ExerciseUpdateOneRequiredWithoutSetLogsNestedInput = {
+    create?: XOR<ExerciseCreateWithoutSetLogsInput, ExerciseUncheckedCreateWithoutSetLogsInput>
+    connectOrCreate?: ExerciseCreateOrConnectWithoutSetLogsInput
+    upsert?: ExerciseUpsertWithoutSetLogsInput
+    connect?: ExerciseWhereUniqueInput
+    update?: XOR<XOR<ExerciseUpdateToOneWithWhereWithoutSetLogsInput, ExerciseUpdateWithoutSetLogsInput>, ExerciseUncheckedUpdateWithoutSetLogsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -36014,9 +48507,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
+    chain?: HabitChainCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
   }
 
@@ -36033,9 +48532,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
+    chainId?: string | null
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
@@ -36046,6 +48551,38 @@ export namespace Prisma {
 
   export type HabitCreateManyUserInputEnvelope = {
     data: HabitCreateManyUserInput | HabitCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HabitChainCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    habits?: HabitCreateNestedManyWithoutChainInput
+  }
+
+  export type HabitChainUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    habits?: HabitUncheckedCreateNestedManyWithoutChainInput
+  }
+
+  export type HabitChainCreateOrConnectWithoutUserInput = {
+    where: HabitChainWhereUniqueInput
+    create: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput>
+  }
+
+  export type HabitChainCreateManyUserInputEnvelope = {
+    data: HabitChainCreateManyUserInput | HabitChainCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -36327,6 +48864,232 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ExerciseCreateWithoutUserInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayExercises?: TrainingDayExerciseCreateNestedManyWithoutExerciseInput
+    setLogs?: SetLogCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutExerciseInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseCreateOrConnectWithoutUserInput = {
+    where: ExerciseWhereUniqueInput
+    create: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExerciseCreateManyUserInputEnvelope = {
+    data: ExerciseCreateManyUserInput | ExerciseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrainingPlanCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    days?: TrainingDayCreateNestedManyWithoutPlanInput
+  }
+
+  export type TrainingPlanUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    days?: TrainingDayUncheckedCreateNestedManyWithoutPlanInput
+  }
+
+  export type TrainingPlanCreateOrConnectWithoutUserInput = {
+    where: TrainingPlanWhereUniqueInput
+    create: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingPlanCreateManyUserInputEnvelope = {
+    data: TrainingPlanCreateManyUserInput | TrainingPlanCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrainingDayCreateWithoutUserInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    plan: TrainingPlanCreateNestedOneWithoutDaysInput
+    exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateWithoutUserInput = {
+    id?: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayCreateOrConnectWithoutUserInput = {
+    where: TrainingDayWhereUniqueInput
+    create: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingDayCreateManyUserInputEnvelope = {
+    data: TrainingDayCreateManyUserInput | TrainingDayCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrainingDayExerciseCreateWithoutUserInput = {
+    id?: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+    day: TrainingDayCreateNestedOneWithoutExercisesInput
+    exercise: ExerciseCreateNestedOneWithoutDayExercisesInput
+  }
+
+  export type TrainingDayExerciseUncheckedCreateWithoutUserInput = {
+    id?: string
+    dayId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingDayExerciseCreateOrConnectWithoutUserInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    create: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingDayExerciseCreateManyUserInputEnvelope = {
+    data: TrainingDayExerciseCreateManyUserInput | TrainingDayExerciseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrainingSessionCreateWithoutUserInput = {
+    id?: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    day?: TrainingDayCreateNestedOneWithoutSessionsInput
+    setLogs?: SetLogCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    dayId?: string | null
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionCreateOrConnectWithoutUserInput = {
+    where: TrainingSessionWhereUniqueInput
+    create: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingSessionCreateManyUserInputEnvelope = {
+    data: TrainingSessionCreateManyUserInput | TrainingSessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SetLogCreateWithoutUserInput = {
+    id?: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+    session: TrainingSessionCreateNestedOneWithoutSetLogsInput
+    exercise: ExerciseCreateNestedOneWithoutSetLogsInput
+  }
+
+  export type SetLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogCreateOrConnectWithoutUserInput = {
+    where: SetLogWhereUniqueInput
+    create: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type SetLogCreateManyUserInputEnvelope = {
+    data: SetLogCreateManyUserInput | SetLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -36478,9 +49241,45 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFilter<"Habit"> | number
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
+    ifThenPlan?: StringNullableFilter<"Habit"> | string | null
+    frictionReduction?: StringNullableFilter<"Habit"> | string | null
+    identityStatement?: StringNullableFilter<"Habit"> | string | null
+    minimalThreshold?: StringNullableFilter<"Habit"> | string | null
+    copingPlan?: StringNullableFilter<"Habit"> | string | null
     createdAt?: DateTimeFilter<"Habit"> | Date | string
     updatedAt?: DateTimeFilter<"Habit"> | Date | string
     sphereId?: StringNullableFilter<"Habit"> | string | null
+    chainId?: StringNullableFilter<"Habit"> | string | null
+  }
+
+  export type HabitChainUpsertWithWhereUniqueWithoutUserInput = {
+    where: HabitChainWhereUniqueInput
+    update: XOR<HabitChainUpdateWithoutUserInput, HabitChainUncheckedUpdateWithoutUserInput>
+    create: XOR<HabitChainCreateWithoutUserInput, HabitChainUncheckedCreateWithoutUserInput>
+  }
+
+  export type HabitChainUpdateWithWhereUniqueWithoutUserInput = {
+    where: HabitChainWhereUniqueInput
+    data: XOR<HabitChainUpdateWithoutUserInput, HabitChainUncheckedUpdateWithoutUserInput>
+  }
+
+  export type HabitChainUpdateManyWithWhereWithoutUserInput = {
+    where: HabitChainScalarWhereInput
+    data: XOR<HabitChainUpdateManyMutationInput, HabitChainUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type HabitChainScalarWhereInput = {
+    AND?: HabitChainScalarWhereInput | HabitChainScalarWhereInput[]
+    OR?: HabitChainScalarWhereInput[]
+    NOT?: HabitChainScalarWhereInput | HabitChainScalarWhereInput[]
+    id?: StringFilter<"HabitChain"> | string
+    userId?: StringFilter<"HabitChain"> | string
+    name?: StringFilter<"HabitChain"> | string
+    description?: StringNullableFilter<"HabitChain"> | string | null
+    order?: IntFilter<"HabitChain"> | number
+    archived?: BoolFilter<"HabitChain"> | boolean
+    createdAt?: DateTimeFilter<"HabitChain"> | Date | string
+    updatedAt?: DateTimeFilter<"HabitChain"> | Date | string
   }
 
   export type LifeSphereUpsertWithWhereUniqueWithoutUserInput = {
@@ -36735,6 +49534,203 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
   }
 
+  export type ExerciseUpsertWithWhereUniqueWithoutUserInput = {
+    where: ExerciseWhereUniqueInput
+    update: XOR<ExerciseUpdateWithoutUserInput, ExerciseUncheckedUpdateWithoutUserInput>
+    create: XOR<ExerciseCreateWithoutUserInput, ExerciseUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExerciseUpdateWithWhereUniqueWithoutUserInput = {
+    where: ExerciseWhereUniqueInput
+    data: XOR<ExerciseUpdateWithoutUserInput, ExerciseUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ExerciseUpdateManyWithWhereWithoutUserInput = {
+    where: ExerciseScalarWhereInput
+    data: XOR<ExerciseUpdateManyMutationInput, ExerciseUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ExerciseScalarWhereInput = {
+    AND?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+    OR?: ExerciseScalarWhereInput[]
+    NOT?: ExerciseScalarWhereInput | ExerciseScalarWhereInput[]
+    id?: StringFilter<"Exercise"> | string
+    userId?: StringFilter<"Exercise"> | string
+    name?: StringFilter<"Exercise"> | string
+    muscleGroup?: StringNullableFilter<"Exercise"> | string | null
+    equipment?: StringNullableFilter<"Exercise"> | string | null
+    trackingType?: StringFilter<"Exercise"> | string
+    notes?: StringNullableFilter<"Exercise"> | string | null
+    archived?: BoolFilter<"Exercise"> | boolean
+    order?: IntFilter<"Exercise"> | number
+    createdAt?: DateTimeFilter<"Exercise"> | Date | string
+    updatedAt?: DateTimeFilter<"Exercise"> | Date | string
+  }
+
+  export type TrainingPlanUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingPlanWhereUniqueInput
+    update: XOR<TrainingPlanUpdateWithoutUserInput, TrainingPlanUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingPlanCreateWithoutUserInput, TrainingPlanUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingPlanUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingPlanWhereUniqueInput
+    data: XOR<TrainingPlanUpdateWithoutUserInput, TrainingPlanUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrainingPlanUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingPlanScalarWhereInput
+    data: XOR<TrainingPlanUpdateManyMutationInput, TrainingPlanUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrainingPlanScalarWhereInput = {
+    AND?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
+    OR?: TrainingPlanScalarWhereInput[]
+    NOT?: TrainingPlanScalarWhereInput | TrainingPlanScalarWhereInput[]
+    id?: StringFilter<"TrainingPlan"> | string
+    userId?: StringFilter<"TrainingPlan"> | string
+    name?: StringFilter<"TrainingPlan"> | string
+    description?: StringNullableFilter<"TrainingPlan"> | string | null
+    archived?: BoolFilter<"TrainingPlan"> | boolean
+    order?: IntFilter<"TrainingPlan"> | number
+    createdAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingPlan"> | Date | string
+  }
+
+  export type TrainingDayUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingDayWhereUniqueInput
+    update: XOR<TrainingDayUpdateWithoutUserInput, TrainingDayUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingDayCreateWithoutUserInput, TrainingDayUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingDayUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingDayWhereUniqueInput
+    data: XOR<TrainingDayUpdateWithoutUserInput, TrainingDayUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrainingDayUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingDayScalarWhereInput
+    data: XOR<TrainingDayUpdateManyMutationInput, TrainingDayUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrainingDayScalarWhereInput = {
+    AND?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+    OR?: TrainingDayScalarWhereInput[]
+    NOT?: TrainingDayScalarWhereInput | TrainingDayScalarWhereInput[]
+    id?: StringFilter<"TrainingDay"> | string
+    userId?: StringFilter<"TrainingDay"> | string
+    planId?: StringFilter<"TrainingDay"> | string
+    name?: StringFilter<"TrainingDay"> | string
+    notes?: StringNullableFilter<"TrainingDay"> | string | null
+    order?: IntFilter<"TrainingDay"> | number
+    createdAt?: DateTimeFilter<"TrainingDay"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingDay"> | Date | string
+  }
+
+  export type TrainingDayExerciseUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    update: XOR<TrainingDayExerciseUpdateWithoutUserInput, TrainingDayExerciseUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingDayExerciseCreateWithoutUserInput, TrainingDayExerciseUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingDayExerciseUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    data: XOR<TrainingDayExerciseUpdateWithoutUserInput, TrainingDayExerciseUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrainingDayExerciseUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingDayExerciseScalarWhereInput
+    data: XOR<TrainingDayExerciseUpdateManyMutationInput, TrainingDayExerciseUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrainingDayExerciseScalarWhereInput = {
+    AND?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+    OR?: TrainingDayExerciseScalarWhereInput[]
+    NOT?: TrainingDayExerciseScalarWhereInput | TrainingDayExerciseScalarWhereInput[]
+    id?: StringFilter<"TrainingDayExercise"> | string
+    userId?: StringFilter<"TrainingDayExercise"> | string
+    dayId?: StringFilter<"TrainingDayExercise"> | string
+    exerciseId?: StringFilter<"TrainingDayExercise"> | string
+    order?: IntFilter<"TrainingDayExercise"> | number
+    sets?: IntFilter<"TrainingDayExercise"> | number
+    targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
+    targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    notes?: StringNullableFilter<"TrainingDayExercise"> | string | null
+  }
+
+  export type TrainingSessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrainingSessionWhereUniqueInput
+    update: XOR<TrainingSessionUpdateWithoutUserInput, TrainingSessionUncheckedUpdateWithoutUserInput>
+    create: XOR<TrainingSessionCreateWithoutUserInput, TrainingSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrainingSessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrainingSessionWhereUniqueInput
+    data: XOR<TrainingSessionUpdateWithoutUserInput, TrainingSessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrainingSessionUpdateManyWithWhereWithoutUserInput = {
+    where: TrainingSessionScalarWhereInput
+    data: XOR<TrainingSessionUpdateManyMutationInput, TrainingSessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrainingSessionScalarWhereInput = {
+    AND?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+    OR?: TrainingSessionScalarWhereInput[]
+    NOT?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+    id?: StringFilter<"TrainingSession"> | string
+    userId?: StringFilter<"TrainingSession"> | string
+    dayId?: StringNullableFilter<"TrainingSession"> | string | null
+    dayName?: StringFilter<"TrainingSession"> | string
+    date?: DateTimeFilter<"TrainingSession"> | Date | string
+    status?: StringFilter<"TrainingSession"> | string
+    durationSeconds?: IntNullableFilter<"TrainingSession"> | number | null
+    notes?: StringNullableFilter<"TrainingSession"> | string | null
+    createdAt?: DateTimeFilter<"TrainingSession"> | Date | string
+    updatedAt?: DateTimeFilter<"TrainingSession"> | Date | string
+  }
+
+  export type SetLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: SetLogWhereUniqueInput
+    update: XOR<SetLogUpdateWithoutUserInput, SetLogUncheckedUpdateWithoutUserInput>
+    create: XOR<SetLogCreateWithoutUserInput, SetLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type SetLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: SetLogWhereUniqueInput
+    data: XOR<SetLogUpdateWithoutUserInput, SetLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SetLogUpdateManyWithWhereWithoutUserInput = {
+    where: SetLogScalarWhereInput
+    data: XOR<SetLogUpdateManyMutationInput, SetLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SetLogScalarWhereInput = {
+    AND?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+    OR?: SetLogScalarWhereInput[]
+    NOT?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+    id?: StringFilter<"SetLog"> | string
+    userId?: StringFilter<"SetLog"> | string
+    sessionId?: StringFilter<"SetLog"> | string
+    exerciseId?: StringFilter<"SetLog"> | string
+    exerciseName?: StringFilter<"SetLog"> | string
+    setNumber?: IntFilter<"SetLog"> | number
+    reps?: IntNullableFilter<"SetLog"> | number | null
+    weight?: FloatNullableFilter<"SetLog"> | number | null
+    rpe?: FloatNullableFilter<"SetLog"> | number | null
+    restSeconds?: IntNullableFilter<"SetLog"> | number | null
+    durationSeconds?: IntNullableFilter<"SetLog"> | number | null
+    distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
+    completed?: BoolFilter<"SetLog"> | boolean
+    notes?: StringNullableFilter<"SetLog"> | string | null
+    order?: IntFilter<"SetLog"> | number
+  }
+
   export type UserCreateWithoutWeekTemplatesInput = {
     id?: string
     name?: string | null
@@ -36750,6 +49746,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -36757,6 +49754,12 @@ export namespace Prisma {
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekTemplatesInput = {
@@ -36774,6 +49777,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -36781,6 +49785,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekTemplatesInput = {
@@ -36814,6 +49824,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -36821,6 +49832,12 @@ export namespace Prisma {
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekTemplatesInput = {
@@ -36838,6 +49855,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -36845,6 +49863,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPushSubscriptionsInput = {
@@ -36862,6 +49886,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -36869,6 +49894,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -36886,6 +49917,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -36893,6 +49925,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -36926,6 +49964,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -36933,6 +49972,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -36950,6 +49995,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -36957,6 +50003,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -36973,6 +50025,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -36981,6 +50034,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -36997,6 +50056,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -37005,6 +50065,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -37037,6 +50103,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -37045,6 +50112,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -37061,6 +50134,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -37069,6 +50143,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -37086,6 +50166,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -37093,6 +50174,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -37110,6 +50197,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -37117,6 +50205,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -37150,6 +50244,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -37157,6 +50252,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -37174,6 +50275,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -37181,6 +50283,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCreateWithoutSphereInput = {
@@ -37196,8 +50304,14 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chain?: HabitChainCreateNestedOneWithoutHabitsInput
     user: UserCreateNestedOneWithoutHabitsInput
     completions?: HabitCompletionCreateNestedManyWithoutHabitInput
   }
@@ -37216,8 +50330,14 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chainId?: string | null
     completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
   }
 
@@ -37246,6 +50366,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -37253,6 +50374,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -37270,6 +50397,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -37277,6 +50405,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -37460,6 +50594,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -37467,6 +50602,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -37484,6 +50625,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -37491,6 +50633,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -37765,6 +50913,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -37772,6 +50921,12 @@ export namespace Prisma {
     sprints?: SprintCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -37789,6 +50944,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -37796,6 +50952,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -37990,6 +51152,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -37997,6 +51160,12 @@ export namespace Prisma {
     sprints?: SprintUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -38014,6 +51183,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -38021,6 +51191,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -38037,6 +51213,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -38045,6 +51222,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -38061,6 +51244,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -38069,6 +51253,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -38101,6 +51291,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -38109,6 +51300,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -38125,6 +51322,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -38133,6 +51331,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -38170,6 +51374,33 @@ export namespace Prisma {
     create: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
   }
 
+  export type HabitChainCreateWithoutHabitsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutHabitChainsInput
+  }
+
+  export type HabitChainUncheckedCreateWithoutHabitsInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HabitChainCreateOrConnectWithoutHabitsInput = {
+    where: HabitChainWhereUniqueInput
+    create: XOR<HabitChainCreateWithoutHabitsInput, HabitChainUncheckedCreateWithoutHabitsInput>
+  }
+
   export type UserCreateWithoutHabitsInput = {
     id?: string
     name?: string | null
@@ -38184,6 +51415,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -38192,6 +51424,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -38208,6 +51446,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -38216,6 +51455,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -38286,6 +51531,39 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
   }
 
+  export type HabitChainUpsertWithoutHabitsInput = {
+    update: XOR<HabitChainUpdateWithoutHabitsInput, HabitChainUncheckedUpdateWithoutHabitsInput>
+    create: XOR<HabitChainCreateWithoutHabitsInput, HabitChainUncheckedCreateWithoutHabitsInput>
+    where?: HabitChainWhereInput
+  }
+
+  export type HabitChainUpdateToOneWithWhereWithoutHabitsInput = {
+    where?: HabitChainWhereInput
+    data: XOR<HabitChainUpdateWithoutHabitsInput, HabitChainUncheckedUpdateWithoutHabitsInput>
+  }
+
+  export type HabitChainUpdateWithoutHabitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutHabitChainsNestedInput
+  }
+
+  export type HabitChainUncheckedUpdateWithoutHabitsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserUpsertWithoutHabitsInput = {
     update: XOR<UserUpdateWithoutHabitsInput, UserUncheckedUpdateWithoutHabitsInput>
     create: XOR<UserCreateWithoutHabitsInput, UserUncheckedCreateWithoutHabitsInput>
@@ -38311,6 +51589,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -38319,6 +51598,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -38335,6 +51620,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -38343,6 +51629,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -38371,6 +51663,222 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"HabitCompletion"> | Date | string
   }
 
+  export type UserCreateWithoutHabitChainsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutHabitChainsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutHabitChainsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutHabitChainsInput, UserUncheckedCreateWithoutHabitChainsInput>
+  }
+
+  export type HabitCreateWithoutChainInput = {
+    id?: string
+    name: string
+    type?: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    targetDaysPerWeek?: number
+    sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
+    user: UserCreateNestedOneWithoutHabitsInput
+    completions?: HabitCompletionCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitUncheckedCreateWithoutChainInput = {
+    id?: string
+    userId: string
+    name: string
+    type?: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    targetDaysPerWeek?: number
+    sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphereId?: string | null
+    completions?: HabitCompletionUncheckedCreateNestedManyWithoutHabitInput
+  }
+
+  export type HabitCreateOrConnectWithoutChainInput = {
+    where: HabitWhereUniqueInput
+    create: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput>
+  }
+
+  export type HabitCreateManyChainInputEnvelope = {
+    data: HabitCreateManyChainInput | HabitCreateManyChainInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutHabitChainsInput = {
+    update: XOR<UserUpdateWithoutHabitChainsInput, UserUncheckedUpdateWithoutHabitChainsInput>
+    create: XOR<UserCreateWithoutHabitChainsInput, UserUncheckedCreateWithoutHabitChainsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutHabitChainsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutHabitChainsInput, UserUncheckedUpdateWithoutHabitChainsInput>
+  }
+
+  export type UserUpdateWithoutHabitChainsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutHabitChainsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type HabitUpsertWithWhereUniqueWithoutChainInput = {
+    where: HabitWhereUniqueInput
+    update: XOR<HabitUpdateWithoutChainInput, HabitUncheckedUpdateWithoutChainInput>
+    create: XOR<HabitCreateWithoutChainInput, HabitUncheckedCreateWithoutChainInput>
+  }
+
+  export type HabitUpdateWithWhereUniqueWithoutChainInput = {
+    where: HabitWhereUniqueInput
+    data: XOR<HabitUpdateWithoutChainInput, HabitUncheckedUpdateWithoutChainInput>
+  }
+
+  export type HabitUpdateManyWithWhereWithoutChainInput = {
+    where: HabitScalarWhereInput
+    data: XOR<HabitUpdateManyMutationInput, HabitUncheckedUpdateManyWithoutChainInput>
+  }
+
   export type HabitCreateWithoutCompletionsInput = {
     id?: string
     name: string
@@ -38384,9 +51892,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphere?: LifeSphereCreateNestedOneWithoutHabitsInput
+    chain?: HabitChainCreateNestedOneWithoutHabitsInput
     user: UserCreateNestedOneWithoutHabitsInput
   }
 
@@ -38404,9 +51918,15 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
+    chainId?: string | null
   }
 
   export type HabitCreateOrConnectWithoutCompletionsInput = {
@@ -38438,9 +51958,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
+    chain?: HabitChainUpdateOneWithoutHabitsNestedInput
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
   }
 
@@ -38458,9 +51984,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateWithoutVisionsInput = {
@@ -38478,6 +52010,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -38485,6 +52018,12 @@ export namespace Prisma {
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -38502,6 +52041,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -38509,6 +52049,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -38542,6 +52088,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -38549,6 +52096,12 @@ export namespace Prisma {
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -38566,6 +52119,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -38573,6 +52127,12 @@ export namespace Prisma {
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -38589,6 +52149,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -38597,6 +52158,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -38613,6 +52180,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -38621,6 +52189,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -38653,6 +52227,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -38661,6 +52236,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -38677,6 +52258,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -38685,6 +52267,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -38737,6 +52325,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -38744,6 +52333,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -38761,6 +52356,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -38768,6 +52364,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -38842,6 +52444,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -38849,6 +52452,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -38866,6 +52475,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -38873,6 +52483,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -38924,6 +52540,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
     habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
     milestones?: MilestoneCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
@@ -38931,6 +52548,12 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -38948,6 +52571,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
     dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
     habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
     lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
@@ -38955,6 +52579,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -39038,6 +52668,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
     habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
@@ -39045,6 +52676,12 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -39062,6 +52699,7 @@ export namespace Prisma {
     annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
     dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
     habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
     lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
@@ -39069,6 +52707,12 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -39880,6 +53524,1588 @@ export namespace Prisma {
     objectives?: ObjectiveUncheckedUpdateManyWithoutSprintNestedInput
   }
 
+  export type UserCreateWithoutExercisesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutExercisesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutExercisesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExercisesInput, UserUncheckedCreateWithoutExercisesInput>
+  }
+
+  export type TrainingDayExerciseCreateWithoutExerciseInput = {
+    id?: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+    user: UserCreateNestedOneWithoutTrainingDayExercisesInput
+    day: TrainingDayCreateNestedOneWithoutExercisesInput
+  }
+
+  export type TrainingDayExerciseUncheckedCreateWithoutExerciseInput = {
+    id?: string
+    userId: string
+    dayId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingDayExerciseCreateOrConnectWithoutExerciseInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    create: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type TrainingDayExerciseCreateManyExerciseInputEnvelope = {
+    data: TrainingDayExerciseCreateManyExerciseInput | TrainingDayExerciseCreateManyExerciseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SetLogCreateWithoutExerciseInput = {
+    id?: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+    user: UserCreateNestedOneWithoutSetLogsInput
+    session: TrainingSessionCreateNestedOneWithoutSetLogsInput
+  }
+
+  export type SetLogUncheckedCreateWithoutExerciseInput = {
+    id?: string
+    userId: string
+    sessionId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogCreateOrConnectWithoutExerciseInput = {
+    where: SetLogWhereUniqueInput
+    create: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type SetLogCreateManyExerciseInputEnvelope = {
+    data: SetLogCreateManyExerciseInput | SetLogCreateManyExerciseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutExercisesInput = {
+    update: XOR<UserUpdateWithoutExercisesInput, UserUncheckedUpdateWithoutExercisesInput>
+    create: XOR<UserCreateWithoutExercisesInput, UserUncheckedCreateWithoutExercisesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExercisesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExercisesInput, UserUncheckedUpdateWithoutExercisesInput>
+  }
+
+  export type UserUpdateWithoutExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    update: XOR<TrainingDayExerciseUpdateWithoutExerciseInput, TrainingDayExerciseUncheckedUpdateWithoutExerciseInput>
+    create: XOR<TrainingDayExerciseCreateWithoutExerciseInput, TrainingDayExerciseUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type TrainingDayExerciseUpdateWithWhereUniqueWithoutExerciseInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    data: XOR<TrainingDayExerciseUpdateWithoutExerciseInput, TrainingDayExerciseUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type TrainingDayExerciseUpdateManyWithWhereWithoutExerciseInput = {
+    where: TrainingDayExerciseScalarWhereInput
+    data: XOR<TrainingDayExerciseUpdateManyMutationInput, TrainingDayExerciseUncheckedUpdateManyWithoutExerciseInput>
+  }
+
+  export type SetLogUpsertWithWhereUniqueWithoutExerciseInput = {
+    where: SetLogWhereUniqueInput
+    update: XOR<SetLogUpdateWithoutExerciseInput, SetLogUncheckedUpdateWithoutExerciseInput>
+    create: XOR<SetLogCreateWithoutExerciseInput, SetLogUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type SetLogUpdateWithWhereUniqueWithoutExerciseInput = {
+    where: SetLogWhereUniqueInput
+    data: XOR<SetLogUpdateWithoutExerciseInput, SetLogUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type SetLogUpdateManyWithWhereWithoutExerciseInput = {
+    where: SetLogScalarWhereInput
+    data: XOR<SetLogUpdateManyMutationInput, SetLogUncheckedUpdateManyWithoutExerciseInput>
+  }
+
+  export type UserCreateWithoutTrainingPlansInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingPlansInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingPlansInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingPlansInput, UserUncheckedCreateWithoutTrainingPlansInput>
+  }
+
+  export type TrainingDayCreateWithoutPlanInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingDaysInput
+    exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateWithoutPlanInput = {
+    id?: string
+    userId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayCreateOrConnectWithoutPlanInput = {
+    where: TrainingDayWhereUniqueInput
+    create: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput>
+  }
+
+  export type TrainingDayCreateManyPlanInputEnvelope = {
+    data: TrainingDayCreateManyPlanInput | TrainingDayCreateManyPlanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTrainingPlansInput = {
+    update: XOR<UserUpdateWithoutTrainingPlansInput, UserUncheckedUpdateWithoutTrainingPlansInput>
+    create: XOR<UserCreateWithoutTrainingPlansInput, UserUncheckedCreateWithoutTrainingPlansInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrainingPlansInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrainingPlansInput, UserUncheckedUpdateWithoutTrainingPlansInput>
+  }
+
+  export type UserUpdateWithoutTrainingPlansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrainingPlansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingDayUpsertWithWhereUniqueWithoutPlanInput = {
+    where: TrainingDayWhereUniqueInput
+    update: XOR<TrainingDayUpdateWithoutPlanInput, TrainingDayUncheckedUpdateWithoutPlanInput>
+    create: XOR<TrainingDayCreateWithoutPlanInput, TrainingDayUncheckedCreateWithoutPlanInput>
+  }
+
+  export type TrainingDayUpdateWithWhereUniqueWithoutPlanInput = {
+    where: TrainingDayWhereUniqueInput
+    data: XOR<TrainingDayUpdateWithoutPlanInput, TrainingDayUncheckedUpdateWithoutPlanInput>
+  }
+
+  export type TrainingDayUpdateManyWithWhereWithoutPlanInput = {
+    where: TrainingDayScalarWhereInput
+    data: XOR<TrainingDayUpdateManyMutationInput, TrainingDayUncheckedUpdateManyWithoutPlanInput>
+  }
+
+  export type UserCreateWithoutTrainingDaysInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingDaysInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingDaysInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingDaysInput, UserUncheckedCreateWithoutTrainingDaysInput>
+  }
+
+  export type TrainingPlanCreateWithoutDaysInput = {
+    id?: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingPlansInput
+  }
+
+  export type TrainingPlanUncheckedCreateWithoutDaysInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingPlanCreateOrConnectWithoutDaysInput = {
+    where: TrainingPlanWhereUniqueInput
+    create: XOR<TrainingPlanCreateWithoutDaysInput, TrainingPlanUncheckedCreateWithoutDaysInput>
+  }
+
+  export type TrainingDayExerciseCreateWithoutDayInput = {
+    id?: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+    user: UserCreateNestedOneWithoutTrainingDayExercisesInput
+    exercise: ExerciseCreateNestedOneWithoutDayExercisesInput
+  }
+
+  export type TrainingDayExerciseUncheckedCreateWithoutDayInput = {
+    id?: string
+    userId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingDayExerciseCreateOrConnectWithoutDayInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    create: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput>
+  }
+
+  export type TrainingDayExerciseCreateManyDayInputEnvelope = {
+    data: TrainingDayExerciseCreateManyDayInput | TrainingDayExerciseCreateManyDayInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrainingSessionCreateWithoutDayInput = {
+    id?: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingSessionsInput
+    setLogs?: SetLogCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionUncheckedCreateWithoutDayInput = {
+    id?: string
+    userId: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type TrainingSessionCreateOrConnectWithoutDayInput = {
+    where: TrainingSessionWhereUniqueInput
+    create: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput>
+  }
+
+  export type TrainingSessionCreateManyDayInputEnvelope = {
+    data: TrainingSessionCreateManyDayInput | TrainingSessionCreateManyDayInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTrainingDaysInput = {
+    update: XOR<UserUpdateWithoutTrainingDaysInput, UserUncheckedUpdateWithoutTrainingDaysInput>
+    create: XOR<UserCreateWithoutTrainingDaysInput, UserUncheckedCreateWithoutTrainingDaysInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrainingDaysInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrainingDaysInput, UserUncheckedUpdateWithoutTrainingDaysInput>
+  }
+
+  export type UserUpdateWithoutTrainingDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrainingDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingPlanUpsertWithoutDaysInput = {
+    update: XOR<TrainingPlanUpdateWithoutDaysInput, TrainingPlanUncheckedUpdateWithoutDaysInput>
+    create: XOR<TrainingPlanCreateWithoutDaysInput, TrainingPlanUncheckedCreateWithoutDaysInput>
+    where?: TrainingPlanWhereInput
+  }
+
+  export type TrainingPlanUpdateToOneWithWhereWithoutDaysInput = {
+    where?: TrainingPlanWhereInput
+    data: XOR<TrainingPlanUpdateWithoutDaysInput, TrainingPlanUncheckedUpdateWithoutDaysInput>
+  }
+
+  export type TrainingPlanUpdateWithoutDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingPlansNestedInput
+  }
+
+  export type TrainingPlanUncheckedUpdateWithoutDaysInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayExerciseUpsertWithWhereUniqueWithoutDayInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    update: XOR<TrainingDayExerciseUpdateWithoutDayInput, TrainingDayExerciseUncheckedUpdateWithoutDayInput>
+    create: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput>
+  }
+
+  export type TrainingDayExerciseUpdateWithWhereUniqueWithoutDayInput = {
+    where: TrainingDayExerciseWhereUniqueInput
+    data: XOR<TrainingDayExerciseUpdateWithoutDayInput, TrainingDayExerciseUncheckedUpdateWithoutDayInput>
+  }
+
+  export type TrainingDayExerciseUpdateManyWithWhereWithoutDayInput = {
+    where: TrainingDayExerciseScalarWhereInput
+    data: XOR<TrainingDayExerciseUpdateManyMutationInput, TrainingDayExerciseUncheckedUpdateManyWithoutDayInput>
+  }
+
+  export type TrainingSessionUpsertWithWhereUniqueWithoutDayInput = {
+    where: TrainingSessionWhereUniqueInput
+    update: XOR<TrainingSessionUpdateWithoutDayInput, TrainingSessionUncheckedUpdateWithoutDayInput>
+    create: XOR<TrainingSessionCreateWithoutDayInput, TrainingSessionUncheckedCreateWithoutDayInput>
+  }
+
+  export type TrainingSessionUpdateWithWhereUniqueWithoutDayInput = {
+    where: TrainingSessionWhereUniqueInput
+    data: XOR<TrainingSessionUpdateWithoutDayInput, TrainingSessionUncheckedUpdateWithoutDayInput>
+  }
+
+  export type TrainingSessionUpdateManyWithWhereWithoutDayInput = {
+    where: TrainingSessionScalarWhereInput
+    data: XOR<TrainingSessionUpdateManyMutationInput, TrainingSessionUncheckedUpdateManyWithoutDayInput>
+  }
+
+  export type UserCreateWithoutTrainingDayExercisesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingDayExercisesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingDayExercisesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingDayExercisesInput, UserUncheckedCreateWithoutTrainingDayExercisesInput>
+  }
+
+  export type TrainingDayCreateWithoutExercisesInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingDaysInput
+    plan: TrainingPlanCreateNestedOneWithoutDaysInput
+    sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateWithoutExercisesInput = {
+    id?: string
+    userId: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayCreateOrConnectWithoutExercisesInput = {
+    where: TrainingDayWhereUniqueInput
+    create: XOR<TrainingDayCreateWithoutExercisesInput, TrainingDayUncheckedCreateWithoutExercisesInput>
+  }
+
+  export type ExerciseCreateWithoutDayExercisesInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExercisesInput
+    setLogs?: SetLogCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseUncheckedCreateWithoutDayExercisesInput = {
+    id?: string
+    userId: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseCreateOrConnectWithoutDayExercisesInput = {
+    where: ExerciseWhereUniqueInput
+    create: XOR<ExerciseCreateWithoutDayExercisesInput, ExerciseUncheckedCreateWithoutDayExercisesInput>
+  }
+
+  export type UserUpsertWithoutTrainingDayExercisesInput = {
+    update: XOR<UserUpdateWithoutTrainingDayExercisesInput, UserUncheckedUpdateWithoutTrainingDayExercisesInput>
+    create: XOR<UserCreateWithoutTrainingDayExercisesInput, UserUncheckedCreateWithoutTrainingDayExercisesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrainingDayExercisesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrainingDayExercisesInput, UserUncheckedUpdateWithoutTrainingDayExercisesInput>
+  }
+
+  export type UserUpdateWithoutTrainingDayExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrainingDayExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingDayUpsertWithoutExercisesInput = {
+    update: XOR<TrainingDayUpdateWithoutExercisesInput, TrainingDayUncheckedUpdateWithoutExercisesInput>
+    create: XOR<TrainingDayCreateWithoutExercisesInput, TrainingDayUncheckedCreateWithoutExercisesInput>
+    where?: TrainingDayWhereInput
+  }
+
+  export type TrainingDayUpdateToOneWithWhereWithoutExercisesInput = {
+    where?: TrainingDayWhereInput
+    data: XOR<TrainingDayUpdateWithoutExercisesInput, TrainingDayUncheckedUpdateWithoutExercisesInput>
+  }
+
+  export type TrainingDayUpdateWithoutExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
+    plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
+    sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateWithoutExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+  }
+
+  export type ExerciseUpsertWithoutDayExercisesInput = {
+    update: XOR<ExerciseUpdateWithoutDayExercisesInput, ExerciseUncheckedUpdateWithoutDayExercisesInput>
+    create: XOR<ExerciseCreateWithoutDayExercisesInput, ExerciseUncheckedCreateWithoutDayExercisesInput>
+    where?: ExerciseWhereInput
+  }
+
+  export type ExerciseUpdateToOneWithWhereWithoutDayExercisesInput = {
+    where?: ExerciseWhereInput
+    data: XOR<ExerciseUpdateWithoutDayExercisesInput, ExerciseUncheckedUpdateWithoutDayExercisesInput>
+  }
+
+  export type ExerciseUpdateWithoutDayExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExercisesNestedInput
+    setLogs?: SetLogUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseUncheckedUpdateWithoutDayExercisesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setLogs?: SetLogUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type UserCreateWithoutTrainingSessionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrainingSessionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrainingSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrainingSessionsInput, UserUncheckedCreateWithoutTrainingSessionsInput>
+  }
+
+  export type TrainingDayCreateWithoutSessionsInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingDaysInput
+    plan: TrainingPlanCreateNestedOneWithoutDaysInput
+    exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateWithoutSessionsInput = {
+    id?: string
+    userId: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayCreateOrConnectWithoutSessionsInput = {
+    where: TrainingDayWhereUniqueInput
+    create: XOR<TrainingDayCreateWithoutSessionsInput, TrainingDayUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type SetLogCreateWithoutSessionInput = {
+    id?: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+    user: UserCreateNestedOneWithoutSetLogsInput
+    exercise: ExerciseCreateNestedOneWithoutSetLogsInput
+  }
+
+  export type SetLogUncheckedCreateWithoutSessionInput = {
+    id?: string
+    userId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogCreateOrConnectWithoutSessionInput = {
+    where: SetLogWhereUniqueInput
+    create: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SetLogCreateManySessionInputEnvelope = {
+    data: SetLogCreateManySessionInput | SetLogCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutTrainingSessionsInput = {
+    update: XOR<UserUpdateWithoutTrainingSessionsInput, UserUncheckedUpdateWithoutTrainingSessionsInput>
+    create: XOR<UserCreateWithoutTrainingSessionsInput, UserUncheckedCreateWithoutTrainingSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrainingSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrainingSessionsInput, UserUncheckedUpdateWithoutTrainingSessionsInput>
+  }
+
+  export type UserUpdateWithoutTrainingSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrainingSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingDayUpsertWithoutSessionsInput = {
+    update: XOR<TrainingDayUpdateWithoutSessionsInput, TrainingDayUncheckedUpdateWithoutSessionsInput>
+    create: XOR<TrainingDayCreateWithoutSessionsInput, TrainingDayUncheckedCreateWithoutSessionsInput>
+    where?: TrainingDayWhereInput
+  }
+
+  export type TrainingDayUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: TrainingDayWhereInput
+    data: XOR<TrainingDayUpdateWithoutSessionsInput, TrainingDayUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type TrainingDayUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
+    plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
+    exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+  }
+
+  export type SetLogUpsertWithWhereUniqueWithoutSessionInput = {
+    where: SetLogWhereUniqueInput
+    update: XOR<SetLogUpdateWithoutSessionInput, SetLogUncheckedUpdateWithoutSessionInput>
+    create: XOR<SetLogCreateWithoutSessionInput, SetLogUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SetLogUpdateWithWhereUniqueWithoutSessionInput = {
+    where: SetLogWhereUniqueInput
+    data: XOR<SetLogUpdateWithoutSessionInput, SetLogUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type SetLogUpdateManyWithWhereWithoutSessionInput = {
+    where: SetLogScalarWhereInput
+    data: XOR<SetLogUpdateManyMutationInput, SetLogUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type UserCreateWithoutSetLogsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSetLogsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSetLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSetLogsInput, UserUncheckedCreateWithoutSetLogsInput>
+  }
+
+  export type TrainingSessionCreateWithoutSetLogsInput = {
+    id?: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingSessionsInput
+    day?: TrainingDayCreateNestedOneWithoutSessionsInput
+  }
+
+  export type TrainingSessionUncheckedCreateWithoutSetLogsInput = {
+    id?: string
+    userId: string
+    dayId?: string | null
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingSessionCreateOrConnectWithoutSetLogsInput = {
+    where: TrainingSessionWhereUniqueInput
+    create: XOR<TrainingSessionCreateWithoutSetLogsInput, TrainingSessionUncheckedCreateWithoutSetLogsInput>
+  }
+
+  export type ExerciseCreateWithoutSetLogsInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExercisesInput
+    dayExercises?: TrainingDayExerciseCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseUncheckedCreateWithoutSetLogsInput = {
+    id?: string
+    userId: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type ExerciseCreateOrConnectWithoutSetLogsInput = {
+    where: ExerciseWhereUniqueInput
+    create: XOR<ExerciseCreateWithoutSetLogsInput, ExerciseUncheckedCreateWithoutSetLogsInput>
+  }
+
+  export type UserUpsertWithoutSetLogsInput = {
+    update: XOR<UserUpdateWithoutSetLogsInput, UserUncheckedUpdateWithoutSetLogsInput>
+    create: XOR<UserCreateWithoutSetLogsInput, UserUncheckedCreateWithoutSetLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSetLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSetLogsInput, UserUncheckedUpdateWithoutSetLogsInput>
+  }
+
+  export type UserUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingSessionUpsertWithoutSetLogsInput = {
+    update: XOR<TrainingSessionUpdateWithoutSetLogsInput, TrainingSessionUncheckedUpdateWithoutSetLogsInput>
+    create: XOR<TrainingSessionCreateWithoutSetLogsInput, TrainingSessionUncheckedCreateWithoutSetLogsInput>
+    where?: TrainingSessionWhereInput
+  }
+
+  export type TrainingSessionUpdateToOneWithWhereWithoutSetLogsInput = {
+    where?: TrainingSessionWhereInput
+    data: XOR<TrainingSessionUpdateWithoutSetLogsInput, TrainingSessionUncheckedUpdateWithoutSetLogsInput>
+  }
+
+  export type TrainingSessionUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingSessionsNestedInput
+    day?: TrainingDayUpdateOneWithoutSessionsNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExerciseUpsertWithoutSetLogsInput = {
+    update: XOR<ExerciseUpdateWithoutSetLogsInput, ExerciseUncheckedUpdateWithoutSetLogsInput>
+    create: XOR<ExerciseCreateWithoutSetLogsInput, ExerciseUncheckedCreateWithoutSetLogsInput>
+    where?: ExerciseWhereInput
+  }
+
+  export type ExerciseUpdateToOneWithWhereWithoutSetLogsInput = {
+    where?: ExerciseWhereInput
+    data: XOR<ExerciseUpdateWithoutSetLogsInput, ExerciseUncheckedUpdateWithoutSetLogsInput>
+  }
+
+  export type ExerciseUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExercisesNestedInput
+    dayExercises?: TrainingDayExerciseUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseUncheckedUpdateWithoutSetLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
   export type AccountCreateManyUserInput = {
     id?: string
     type: string
@@ -39951,9 +55177,25 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sphereId?: string | null
+    chainId?: string | null
+  }
+
+  export type HabitChainCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    archived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LifeSphereCreateManyUserInput = {
@@ -40046,6 +55288,83 @@ export namespace Prisma {
     dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type ExerciseCreateManyUserInput = {
+    id?: string
+    name: string
+    muscleGroup?: string | null
+    equipment?: string | null
+    trackingType?: string
+    notes?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingPlanCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    archived?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingDayCreateManyUserInput = {
+    id?: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingDayExerciseCreateManyUserInput = {
+    id?: string
+    dayId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingSessionCreateManyUserInput = {
+    id?: string
+    dayId?: string | null
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SetLogCreateManyUserInput = {
+    id?: string
+    sessionId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -40235,9 +55554,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
+    chain?: HabitChainUpdateOneWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
 
@@ -40254,9 +55579,15 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
@@ -40273,9 +55604,47 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type HabitChainUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    habits?: HabitUpdateManyWithoutChainNestedInput
+  }
+
+  export type HabitChainUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    habits?: HabitUncheckedUpdateManyWithoutChainNestedInput
+  }
+
+  export type HabitChainUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LifeSphereUpdateWithoutUserInput = {
@@ -40568,6 +55937,249 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ExerciseUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayExercises?: TrainingDayExerciseUpdateManyWithoutExerciseNestedInput
+    setLogs?: SetLogUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutExerciseNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type ExerciseUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    muscleGroup?: NullableStringFieldUpdateOperationsInput | string | null
+    equipment?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingType?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingPlanUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    days?: TrainingDayUpdateManyWithoutPlanNestedInput
+  }
+
+  export type TrainingPlanUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    days?: TrainingDayUncheckedUpdateManyWithoutPlanNestedInput
+  }
+
+  export type TrainingPlanUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
+    exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayExerciseUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    day?: TrainingDayUpdateOneRequiredWithoutExercisesNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutDayExercisesNestedInput
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingSessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    day?: TrainingDayUpdateOneWithoutSessionsNestedInput
+    setLogs?: SetLogUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setLogs?: SetLogUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayId?: NullableStringFieldUpdateOperationsInput | string | null
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SetLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    session?: TrainingSessionUpdateOneRequiredWithoutSetLogsNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutSetLogsNestedInput
+  }
+
+  export type SetLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
   export type HabitCreateManySphereInput = {
     id?: string
     userId: string
@@ -40582,8 +56194,14 @@ export namespace Prisma {
     targetDaysPerWeek?: number
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    chainId?: string | null
   }
 
   export type MilestoneCreateManySphereInput = {
@@ -40648,8 +56266,14 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chain?: HabitChainUpdateOneWithoutHabitsNestedInput
     user?: UserUpdateOneRequiredWithoutHabitsNestedInput
     completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
   }
@@ -40668,8 +56292,14 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
     completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
   }
 
@@ -40687,8 +56317,14 @@ export namespace Prisma {
     targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chainId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MilestoneUpdateWithoutSphereInput = {
@@ -40980,6 +56616,104 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HabitCreateManyChainInput = {
+    id?: string
+    userId: string
+    name: string
+    type?: string
+    anchor: string
+    action: string
+    celebration?: string | null
+    reminderTime?: string | null
+    order?: number
+    archived?: boolean
+    targetDaysPerWeek?: number
+    sphereLevel?: $Enums.SphereLevel | null
+    subcategory?: string | null
+    ifThenPlan?: string | null
+    frictionReduction?: string | null
+    identityStatement?: string | null
+    minimalThreshold?: string | null
+    copingPlan?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sphereId?: string | null
+  }
+
+  export type HabitUpdateWithoutChainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphere?: LifeSphereUpdateOneWithoutHabitsNestedInput
+    user?: UserUpdateOneRequiredWithoutHabitsNestedInput
+    completions?: HabitCompletionUpdateManyWithoutHabitNestedInput
+  }
+
+  export type HabitUncheckedUpdateWithoutChainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
+    completions?: HabitCompletionUncheckedUpdateManyWithoutHabitNestedInput
+  }
+
+  export type HabitUncheckedUpdateManyWithoutChainInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    anchor?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    celebration?: NullableStringFieldUpdateOperationsInput | string | null
+    reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    archived?: BoolFieldUpdateOperationsInput | boolean
+    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
+    subcategory?: NullableStringFieldUpdateOperationsInput | string | null
+    ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    frictionReduction?: NullableStringFieldUpdateOperationsInput | string | null
+    identityStatement?: NullableStringFieldUpdateOperationsInput | string | null
+    minimalThreshold?: NullableStringFieldUpdateOperationsInput | string | null
+    copingPlan?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ObjectiveCreateManySprintInput = {
@@ -41340,6 +57074,356 @@ export namespace Prisma {
     weekNumber?: IntFieldUpdateOperationsInput | number
     completed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayExerciseCreateManyExerciseInput = {
+    id?: string
+    userId: string
+    dayId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type SetLogCreateManyExerciseInput = {
+    id?: string
+    userId: string
+    sessionId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type TrainingDayExerciseUpdateWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutTrainingDayExercisesNestedInput
+    day?: TrainingDayUpdateOneRequiredWithoutExercisesNestedInput
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SetLogUpdateWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
+    session?: TrainingSessionUpdateOneRequiredWithoutSetLogsNestedInput
+  }
+
+  export type SetLogUncheckedUpdateWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutExerciseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrainingDayCreateManyPlanInput = {
+    id?: string
+    userId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingDayUpdateWithoutPlanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
+    exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateWithoutPlanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateManyWithoutPlanInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrainingDayExerciseCreateManyDayInput = {
+    id?: string
+    userId: string
+    exerciseId: string
+    order?: number
+    sets?: number
+    targetReps?: number | null
+    targetWeight?: number | null
+    targetRpe?: number | null
+    restSeconds?: number | null
+    targetDurationSeconds?: number | null
+    targetDistanceMeters?: number | null
+    notes?: string | null
+  }
+
+  export type TrainingSessionCreateManyDayInput = {
+    id?: string
+    userId: string
+    dayName: string
+    date?: Date | string
+    status?: string
+    durationSeconds?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TrainingDayExerciseUpdateWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutTrainingDayExercisesNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutDayExercisesNestedInput
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingDayExerciseUncheckedUpdateManyWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    sets?: IntFieldUpdateOperationsInput | number
+    targetReps?: NullableIntFieldUpdateOperationsInput | number | null
+    targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TrainingSessionUpdateWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingSessionsNestedInput
+    setLogs?: SetLogUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setLogs?: SetLogUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type TrainingSessionUncheckedUpdateManyWithoutDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayName?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SetLogCreateManySessionInput = {
+    id?: string
+    userId: string
+    exerciseId: string
+    exerciseName: string
+    setNumber: number
+    reps?: number | null
+    weight?: number | null
+    rpe?: number | null
+    restSeconds?: number | null
+    durationSeconds?: number | null
+    distanceMeters?: number | null
+    completed?: boolean
+    notes?: string | null
+    order?: number
+  }
+
+  export type SetLogUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
+    exercise?: ExerciseUpdateOneRequiredWithoutSetLogsNestedInput
+  }
+
+  export type SetLogUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SetLogUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    exerciseId?: StringFieldUpdateOperationsInput | string
+    exerciseName?: StringFieldUpdateOperationsInput | string
+    setNumber?: IntFieldUpdateOperationsInput | number
+    reps?: NullableIntFieldUpdateOperationsInput | number | null
+    weight?: NullableFloatFieldUpdateOperationsInput | number | null
+    rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
+    completed?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
   }
 
 

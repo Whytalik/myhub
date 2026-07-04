@@ -22,6 +22,7 @@ model User {
   annualCompasses         AnnualCompass[]
   dailyEntries            DailyEntry[]
   habits                  Habit[]
+  habitChains             HabitChain[]
   lifeSpheres             LifeSphere[]
   milestones              Milestone[]
   pushSubscriptions       PushSubscription[]
@@ -30,6 +31,12 @@ model User {
   tasks                   Task[]
   visions                 Vision[]
   weekTemplates           WeekTemplate[]
+  exercises               Exercise[]
+  trainingPlans           TrainingPlan[]
+  trainingDays            TrainingDay[]
+  trainingDayExercises    TrainingDayExercise[]
+  trainingSessions        TrainingSession[]
+  setLogs                 SetLog[]
 }
 
 model WeekTemplate {
@@ -212,15 +219,38 @@ model Habit {
   targetDaysPerWeek Int          @default(7)
   sphereLevel  SphereLevel?
   subcategory  String?
+  ifThenPlan        String?
+  frictionReduction String?
+  identityStatement String?
+  minimalThreshold  String?
+  copingPlan        String?
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   sphereId     String?
   sphere       LifeSphere?       @relation(fields: [sphereId], references: [id])
+  chainId      String?
+  chain        HabitChain?       @relation(fields: [chainId], references: [id], onDelete: SetNull)
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   completions  HabitCompletion[]
 
   @@index([userId])
   @@index([sphereId])
+  @@index([chainId])
+}
+
+model HabitChain {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  order       Int      @default(0)
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  habits      Habit[]
+
+  @@index([userId])
 }
 
 model HabitCompletion {
@@ -423,4 +453,123 @@ enum ObjectiveStatus {
 enum TacticFrequency {
   DAILY
   WEEKLY
+}
+
+model Exercise {
+  id           String                @id @default(cuid())
+  userId       String
+  name         String
+  muscleGroup  String?
+  equipment    String?
+  trackingType String                @default("weight_reps") // weight_reps | bodyweight | duration | cardio
+  notes        String?
+  archived     Boolean               @default(false)
+  order        Int                   @default(0)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dayExercises TrainingDayExercise[]
+  setLogs      SetLog[]
+
+  @@index([userId])
+}
+
+model TrainingPlan {
+  id          String        @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  archived    Boolean       @default(false)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days        TrainingDay[]
+
+  @@index([userId])
+}
+
+model TrainingDay {
+  id        String                @id @default(cuid())
+  userId    String
+  planId    String
+  name      String
+  notes     String?
+  order     Int                   @default(0)
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      TrainingPlan          @relation(fields: [planId], references: [id], onDelete: Cascade)
+  exercises TrainingDayExercise[]
+  sessions  TrainingSession[]
+
+  @@index([userId])
+  @@index([planId])
+}
+
+model TrainingDayExercise {
+  id                    String       @id @default(cuid())
+  userId                String
+  dayId                 String
+  exerciseId            String
+  order                 Int          @default(0)
+  sets                  Int          @default(3)
+  targetReps            Int?
+  targetWeight          Float?
+  targetRpe             Float?
+  restSeconds           Int?
+  targetDurationSeconds Int?
+  targetDistanceMeters  Float?
+  notes                 String?
+  user                  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day                   TrainingDay  @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  exercise              Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([dayId])
+  @@index([exerciseId])
+}
+
+model TrainingSession {
+  id              String           @id @default(cuid())
+  userId          String
+  dayId           String?
+  dayName         String
+  date            DateTime         @default(now())
+  status          String           @default("in_progress") // in_progress | completed
+  durationSeconds Int?
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day             TrainingDay?     @relation(fields: [dayId], references: [id], onDelete: SetNull)
+  setLogs         SetLog[]
+
+  @@index([userId])
+  @@index([dayId])
+}
+
+model SetLog {
+  id              String          @id @default(cuid())
+  userId          String
+  sessionId       String
+  exerciseId      String
+  exerciseName    String
+  setNumber       Int
+  reps            Int?
+  weight          Float?
+  rpe             Float?
+  restSeconds     Int?
+  durationSeconds Int?
+  distanceMeters  Float?
+  completed       Boolean         @default(false)
+  notes           String?
+  order           Int             @default(0)
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session         TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exercise        Exercise        @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([exerciseId])
 }

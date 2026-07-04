@@ -10,6 +10,7 @@ import {
   Zap,
   ClipboardList,
   ShoppingCart,
+  Dumbbell,
 } from "lucide-react";
 
 export interface SpaceLink {
@@ -52,6 +53,7 @@ export const DOMAINS: Domain[] = [
       { href: "/health/nutrition", label: "Daily", icon: Utensils },
       { href: "/health/meal-prep", label: "Meal Prep", icon: ClipboardList },
       { href: "/health/shopping-list", label: "Shopping List", icon: ShoppingCart },
+      { href: "/health/training", label: "Training", icon: Dumbbell },
     ],
   },
 ];

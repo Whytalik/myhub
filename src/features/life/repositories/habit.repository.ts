@@ -39,4 +39,16 @@ export const habitRepository = {
   deleteCompletion(id: string) {
     return prisma.habitCompletion.delete({ where: { id } });
   },
+
+  findManyByIds(ids: string[], userId: string) {
+    return prisma.habit.findMany({ where: { id: { in: ids }, userId } });
+  },
+
+  reorderInChain(userId: string, orderedHabitIds: string[]) {
+    return prisma.$transaction(
+      orderedHabitIds.map((id, index) =>
+        prisma.habit.update({ where: { id, userId }, data: { order: index } }),
+      ),
+    );
+  },
 };

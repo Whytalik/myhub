@@ -2,7 +2,11 @@ import { unstable_cache } from "next/cache";
 import { taskRepository } from "@/features/life/repositories/task.repository";
 import { sphereRepository } from "@/features/life/repositories/sphere.repository";
 import { habitRepository } from "@/features/life/repositories/habit.repository";
+import { habitChainRepository } from "@/features/life/repositories/habit-chain.repository";
 import { journalRepository } from "@/features/life/repositories/journal.repository";
+import { exerciseRepository } from "@/features/health/training/repositories/exercise.repository";
+import { trainingPlanRepository } from "@/features/health/training/repositories/training-plan.repository";
+import { trainingSessionRepository } from "@/features/health/training/repositories/training-session.repository";
 
 // ─── Tag Constants ────────────────────────────────────────────────────────────
 
@@ -10,8 +14,12 @@ export const cacheTags = {
   spheres: (userId: string) => `spheres:${userId}`,
   tasks: (userId: string) => `tasks:${userId}`,
   habits: (userId: string) => `habits:${userId}`,
+  habitChains: (userId: string) => `habit-chains:${userId}`,
   dailyEntry: (userId: string, dateStr: string) => `daily-entry:${userId}:${dateStr}`,
   dailyEntries: (userId: string) => `daily-entries:${userId}`,
+  exercises: (userId: string) => `exercises:${userId}`,
+  trainingPlans: (userId: string) => `training-plans:${userId}`,
+  trainingSessions: (userId: string) => `training-sessions:${userId}`,
 };
 
 // ─── Life Spheres ─────────────────────────────────────────────────────────────
@@ -70,6 +78,12 @@ export const getCachedHabitsForReview = unstable_cache(
   { tags: ["habits-review"] },
 );
 
+export const getCachedActiveHabitChains = unstable_cache(
+  (userId: string) => habitChainRepository.findAll(userId),
+  [],
+  { tags: ["habit-chains"] },
+);
+
 // ─── Journal / Daily Entries ──────────────────────────────────────────────────
 
 export const getCachedDailyEntry = unstable_cache(
@@ -82,4 +96,30 @@ export const getCachedAllEntries = unstable_cache(
   (userId: string) => journalRepository.findAll(userId),
   [],
   { tags: ["daily-entries"] },
+);
+
+// ─── Training ─────────────────────────────────────────────────────────────────
+
+export const getCachedExercises = unstable_cache(
+  (userId: string) => exerciseRepository.findAll(userId),
+  [],
+  { tags: ["exercises"] },
+);
+
+export const getCachedTrainingPlans = unstable_cache(
+  (userId: string) => trainingPlanRepository.findAll(userId),
+  [],
+  { tags: ["training-plans"] },
+);
+
+export const getCachedRecentSessions = unstable_cache(
+  (userId: string) => trainingSessionRepository.findRecent(userId),
+  [],
+  { tags: ["training-sessions"] },
+);
+
+export const getCachedSession = unstable_cache(
+  (userId: string, id: string) => trainingSessionRepository.findById(id),
+  [],
+  { tags: ["training-sessions"] },
 );

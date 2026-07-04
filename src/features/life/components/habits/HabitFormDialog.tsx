@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/dialog";
@@ -9,15 +9,100 @@ import { Input } from "@/components/ui/input";
 import { FormField } from "@/components/ui/form-field";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
-import type { HabitData, LifeSphereData, SphereLevel } from "@/features/life/types";
+import type { HabitData, HabitChainData, LifeSphereData, SphereLevel } from "@/features/life/types";
 import { toast } from "sonner";
-import { Anchor, Zap, PartyPopper, Bell, X, Sprout, ShieldOff } from "lucide-react";
+import {
+  Anchor,
+  Zap,
+  PartyPopper,
+  Bell,
+  X,
+  Sprout,
+  ShieldOff,
+  Link2,
+  ChevronDown,
+  ChevronUp,
+  Workflow,
+  Wind,
+  Fingerprint,
+  Gauge,
+  LifeBuoy,
+} from "lucide-react";
 import { TimePicker } from "@/components/ui/time-picker";
 
-const LEVEL_OPTIONS: { value: SphereLevel; label: string; description: string; color: string; border: string }[] = [
-  { value: "MINIMUM",  label: "Min",     description: "Floor — never skip",     color: "text-rose-500",    border: "border-rose-500/40 bg-rose-500/5" },
-  { value: "MEDIUM",   label: "Medium",  description: "Baseline steady rhythm", color: "text-amber-500",   border: "border-amber-500/40 bg-amber-500/5" },
-  { value: "DESIRED",  label: "Desired", description: "Optimal, full effort",   color: "text-emerald-500", border: "border-emerald-500/40 bg-emerald-500/5" },
+const BEHAVIOR_FIELDS: {
+  name:
+    "ifThenPlan" | "frictionReduction" | "identityStatement" | "minimalThreshold" | "copingPlan";
+  label: string;
+  hint: string;
+  placeholder: string;
+  icon: typeof Workflow;
+}[] = [
+  {
+    name: "ifThenPlan",
+    label: "If-then plan",
+    hint: "Tie the action to a concrete trigger",
+    placeholder: "e.g. If it's 21:00, I go for a walk",
+    icon: Workflow,
+  },
+  {
+    name: "frictionReduction",
+    label: "Friction reduction",
+    hint: "Make the action the easiest option",
+    placeholder: "e.g. Lay out workout clothes the night before",
+    icon: Wind,
+  },
+  {
+    name: "identityStatement",
+    label: "Identity statement",
+    hint: "Frame it as who you are, not what you want",
+    placeholder: "e.g. I am someone who trains",
+    icon: Fingerprint,
+  },
+  {
+    name: "minimalThreshold",
+    label: "Minimal threshold",
+    hint: "The smallest version that still counts",
+    placeholder: "e.g. Just one page",
+    icon: Gauge,
+  },
+  {
+    name: "copingPlan",
+    label: "Coping plan",
+    hint: "The fallback for when things go wrong",
+    placeholder: "e.g. If in a bad mood, 10 minutes instead of full session",
+    icon: LifeBuoy,
+  },
+];
+
+const LEVEL_OPTIONS: {
+  value: SphereLevel;
+  label: string;
+  description: string;
+  color: string;
+  border: string;
+}[] = [
+  {
+    value: "MINIMUM",
+    label: "Min",
+    description: "Floor — never skip",
+    color: "text-rose-500",
+    border: "border-rose-500/40 bg-rose-500/5",
+  },
+  {
+    value: "MEDIUM",
+    label: "Medium",
+    description: "Baseline steady rhythm",
+    color: "text-amber-500",
+    border: "border-amber-500/40 bg-amber-500/5",
+  },
+  {
+    value: "DESIRED",
+    label: "Desired",
+    description: "Optimal, full effort",
+    color: "text-emerald-500",
+    border: "border-emerald-500/40 bg-emerald-500/5",
+  },
 ];
 
 interface HabitFormDialogProps {
@@ -25,13 +110,35 @@ interface HabitFormDialogProps {
   onClose: () => void;
   habit?: HabitData | null;
   spheres?: LifeSphereData[];
+  chains?: HabitChainData[];
 }
 
-export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitFormDialogProps) {
+export function HabitFormDialog({
+  isOpen,
+  onClose,
+  habit,
+  spheres = [],
+  chains = [],
+}: HabitFormDialogProps) {
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
+  const [showBehaviorTools, setShowBehaviorTools] = useState(
+    !!(
+      habit?.ifThenPlan ||
+      habit?.frictionReduction ||
+      habit?.identityStatement ||
+      habit?.minimalThreshold ||
+      habit?.copingPlan
+    ),
+  );
 
-  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<HabitFormData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<HabitFormData>({
     resolver: zodResolver(habitSchema),
     defaultValues: {
       name: habit?.name ?? "",
@@ -45,6 +152,12 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
       sphereId: habit?.sphereId ?? null,
       sphereLevel: (habit?.sphereLevel as SphereLevel) ?? null,
       subcategory: habit?.subcategory ?? "",
+      chainId: habit?.chainId ?? null,
+      ifThenPlan: habit?.ifThenPlan ?? "",
+      frictionReduction: habit?.frictionReduction ?? "",
+      identityStatement: habit?.identityStatement ?? "",
+      minimalThreshold: habit?.minimalThreshold ?? "",
+      copingPlan: habit?.copingPlan ?? "",
     },
   });
 
@@ -69,6 +182,12 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
         sphereId: data.sphereId ?? null,
         sphereLevel: (data.sphereLevel as SphereLevel) ?? null,
         subcategory: data.subcategory?.trim() || null,
+        chainId: data.chainId ?? null,
+        ifThenPlan: data.ifThenPlan?.trim() || null,
+        frictionReduction: data.frictionReduction?.trim() || null,
+        identityStatement: data.identityStatement?.trim() || null,
+        minimalThreshold: data.minimalThreshold?.trim() || null,
+        copingPlan: data.copingPlan?.trim() || null,
       });
       if (result.success) {
         toast.success(isEditing ? "Habit updated" : "Habit created");
@@ -146,9 +265,11 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
             control={control}
             render={({ field }) => (
               <div className="space-y-2">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">Life Sphere (optional)</label>
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+                  Life Sphere (optional)
+                </label>
                 <div className="flex flex-wrap gap-2">
-                  {spheres.map(s => (
+                  {spheres.map((s) => (
                     <button
                       key={s.id}
                       type="button"
@@ -180,9 +301,11 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
             control={control}
             render={({ field }) => (
               <div className="space-y-2">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">Sphere Standard Level</label>
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+                  Sphere Standard Level
+                </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {LEVEL_OPTIONS.map(opt => (
+                  {LEVEL_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       type="button"
@@ -193,10 +316,14 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
                           : "border-border bg-surface hover:bg-raised"
                       }`}
                     >
-                      <span className={`text-note font-bold font-mono ${selectedLevel === opt.value ? opt.color : "text-text"}`}>
+                      <span
+                        className={`text-note font-bold font-mono ${selectedLevel === opt.value ? opt.color : "text-text"}`}
+                      >
                         {opt.label}
                       </span>
-                      <span className="text-[10px] text-muted leading-tight">{opt.description}</span>
+                      <span className="text-[10px] text-muted leading-tight">
+                        {opt.description}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -207,11 +334,40 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
 
         {/* Subcategory */}
         <FormField label="Subcategory (optional)" hint="e.g. body, mind, deep work">
-          <Input
-            {...register("subcategory")}
-            placeholder="e.g. body, mind, reading..."
-          />
+          <Input {...register("subcategory")} placeholder="e.g. body, mind, reading..." />
         </FormField>
+
+        {/* Chain selector */}
+        {chains.length > 0 && (
+          <Controller
+            name="chainId"
+            control={control}
+            render={({ field }) => (
+              <div className="space-y-2">
+                <label className="text-caption font-mono uppercase text-muted tracking-widest flex items-center gap-1.5">
+                  <Link2 size={12} />
+                  Habit Chain (optional)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {chains.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => field.onChange(field.value === c.id ? null : c.id)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                        field.value === c.id
+                          ? "border-accent bg-accent/10 text-accent"
+                          : "border-border text-muted bg-surface hover:opacity-80"
+                      }`}
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          />
+        )}
 
         {/* Frequency selector */}
         <Controller
@@ -220,7 +376,9 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
           render={({ field }) => (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">Частота</label>
+                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+                  Частота
+                </label>
                 <span className="text-note font-mono text-muted">
                   {field.value === 7 ? "Щодня" : `${field.value}× на тиждень`}
                 </span>
@@ -254,7 +412,9 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
             />
             <div className="flex flex-col">
               <span className="text-note font-bold text-text">Archive Habit</span>
-              <span className="text-label text-muted font-mono uppercase tracking-tight">Hide from active list without deleting</span>
+              <span className="text-label text-muted font-mono uppercase tracking-tight">
+                Hide from active list without deleting
+              </span>
             </div>
           </label>
         )}
@@ -262,14 +422,22 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
         <div className="grid grid-cols-1 gap-4">
           {isAvoidance ? (
             <>
-              <FormField label="Trigger (optional)" hint="When do you usually slip?" error={errors.anchor?.message}>
+              <FormField
+                label="Trigger (optional)"
+                hint="When do you usually slip?"
+                error={errors.anchor?.message}
+              >
                 <div className="flex items-center gap-2 mb-1">
                   <Anchor size={14} className="text-accent" />
                 </div>
                 <Input {...register("anchor")} placeholder="e.g. After lunch when I'm tired..." />
               </FormField>
 
-              <FormField label="Replacement (optional)" hint="What will you do instead?" error={errors.action?.message}>
+              <FormField
+                label="Replacement (optional)"
+                hint="What will you do instead?"
+                error={errors.action?.message}
+              >
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-amber-500" />
                 </div>
@@ -300,7 +468,11 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
             </div>
             <Input
               {...register("celebration")}
-              placeholder={isAvoidance ? "And then I will [say 'Still clean!']" : "And then I will [say 'Good job!']"}
+              placeholder={
+                isAvoidance
+                  ? "And then I will [say 'Still clean!']"
+                  : "And then I will [say 'Good job!']"
+              }
             />
           </FormField>
 
@@ -322,7 +494,11 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
                 name="reminderTime"
                 control={control}
                 render={({ field }) => (
-                  <TimePicker value={field.value ?? ""} onChange={field.onChange} className="w-full" />
+                  <TimePicker
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    className="w-full"
+                  />
                 )}
               />
               {!reminderTime && (
@@ -332,6 +508,30 @@ export function HabitFormDialog({ isOpen, onClose, habit, spheres = [] }: HabitF
               )}
             </div>
           </FormField>
+        </div>
+
+        {/* Behavior design tools — collapsible */}
+        <div className="border border-border rounded-xl overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowBehaviorTools((prev) => !prev)}
+            className="w-full flex items-center justify-between px-4 py-3 bg-raised text-note font-mono font-bold tracking-wide text-secondary hover:text-text transition-colors"
+          >
+            Behavior design (optional)
+            {showBehaviorTools ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+          {showBehaviorTools && (
+            <div className="p-4 flex flex-col gap-4 bg-surface/50">
+              {BEHAVIOR_FIELDS.map(({ name, label, hint, placeholder, icon: Icon }) => (
+                <FormField key={name} label={label} hint={hint}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon size={14} className="text-accent" />
+                  </div>
+                  <Input {...register(name)} placeholder={placeholder} />
+                </FormField>
+              ))}
+            </div>
+          )}
         </div>
       </form>
     </Dialog>

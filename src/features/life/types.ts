@@ -192,6 +192,12 @@ export interface HabitData {
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
   subcategory?: string | null;
+  chainId?: string | null;
+  ifThenPlan?: string | null;
+  frictionReduction?: string | null;
+  identityStatement?: string | null;
+  minimalThreshold?: string | null;
+  copingPlan?: string | null;
   completions: HabitCompletionData[];
   createdAt: Date;
   updatedAt: Date;
@@ -201,6 +207,32 @@ export interface HabitCompletionData {
   id: string;
   date: Date;
   habitId: string;
+}
+
+//
+// --- Habit Chain ---
+//
+export interface HabitChainData {
+  id: string;
+  name: string;
+  description?: string | null;
+  order: number;
+  archived: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface UpsertHabitChainInput {
+  id?: string;
+  name: string;
+  description?: string | null;
+  order?: number;
+  archived?: boolean;
+}
+
+export interface ReorderHabitsInput {
+  chainId: string;
+  orderedHabitIds: string[];
 }
 
 // --- Week Template ---
@@ -328,4 +360,10 @@ export interface UpsertHabitInput {
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
   subcategory?: string | null;
+  chainId?: string | null;
+  ifThenPlan?: string | null;
+  frictionReduction?: string | null;
+  identityStatement?: string | null;
+  minimalThreshold?: string | null;
+  copingPlan?: string | null;
 }
