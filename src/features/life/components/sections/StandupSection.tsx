@@ -25,29 +25,28 @@ export function StandupSection({
   onChange,
 }: Props) {
   const hasRecap = Boolean(yesterdayPlan) || yesterdayCompletedTasks.length > 0;
+  const sectionIconClass =
+    "flex items-center justify-center w-7 h-7 rounded-lg bg-accent/10 text-accent";
 
   return (
-    <div >
-      {}
-      <div >
-        <div >
-          <div >
+    <div className="flex flex-col gap-4">
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className={sectionIconClass}>
             <Target size={14} />
           </div>
-          <h3 >
-            Yesterday
-          </h3>
+          <h3 className="text-panel-title">Yesterday</h3>
         </div>
         {hasRecap && (
-          <div >
+          <div className="text-caption flex flex-col gap-1 bg-white/[0.02] rounded-lg p-2.5">
             {yesterdayPlan && (
               <p>
-                <span >Planned: </span>
+                <span className="text-zinc-400 font-medium">Planned: </span>
                 {yesterdayPlan}
               </p>
             )}
             {yesterdayCompletedTasks.length > 0 && (
-              <ul >
+              <ul className="list-disc list-inside">
                 {yesterdayCompletedTasks.map((title) => (
                   <li key={title}>{title}</li>
                 ))}
@@ -56,46 +55,40 @@ export function StandupSection({
           </div>
         )}
         <Textarea
-
           placeholder="What did I accomplish?"
           value={done ?? ""}
           onChange={(e) => onChange({ standupDone: e.target.value || null })}
+          rows={2}
         />
       </div>
 
-      {}
-      <div >
-        <div >
-          <div >
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className={sectionIconClass}>
             <Zap size={14} />
           </div>
-          <h3 >
-            Today
-          </h3>
+          <h3 className="text-panel-title">Today</h3>
         </div>
         <Textarea
-
           placeholder="What is my main focus?"
           value={plan ?? ""}
           onChange={(e) => onChange({ standupPlan: e.target.value || null })}
+          rows={2}
         />
       </div>
 
-      {}
-      <div >
-        <div >
-          <div >
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className={sectionIconClass}>
             <ShieldAlert size={14} />
           </div>
-          <h3 >
-            Blockers
-          </h3>
+          <h3 className="text-panel-title">Blockers</h3>
         </div>
         <Textarea
-
           placeholder="Any impediments?"
           value={blockers ?? ""}
           onChange={(e) => onChange({ standupBlockers: e.target.value || null })}
+          rows={2}
         />
       </div>
     </div>
