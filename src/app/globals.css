@@ -13,6 +13,11 @@
   --color-accent: var(--color-accent);
   --color-accent-muted: var(--color-accent-muted);
   
+  /* Space-Specific Accent Tokens */
+  --color-accent-life: #6fbfbf;
+  --color-accent-nutrition: #ff8c00;
+  --color-accent-training: #e87d88;
+  
   --font-sans: var(--font-inter), 'Geist Sans', 'Inter', 'system-ui', sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono', 'SF Mono', monospace;
 }

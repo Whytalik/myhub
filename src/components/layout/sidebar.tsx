@@ -14,6 +14,44 @@ const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta:
 const LABEL_TRANSITION = { duration: 0.14, ease: "easeOut" } as const;
 const SUBMENU_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
 
+function getSpaceStyles(label: string) {
+  const cleanLabel = label.toLowerCase();
+  if (cleanLabel.includes("operation") || cleanLabel.includes("life")) {
+    return {
+      accentText: "text-accent-life",
+      iconActive: "text-accent-life",
+      bgActive: "bg-accent-life",
+      containerActive: "bg-accent-life/[0.03] border-accent-life/10",
+      containerInactive: "border-transparent",
+    };
+  }
+  if (cleanLabel.includes("nutrition")) {
+    return {
+      accentText: "text-accent-nutrition",
+      iconActive: "text-accent-nutrition",
+      bgActive: "bg-accent-nutrition",
+      containerActive: "bg-accent-nutrition/[0.03] border-accent-nutrition/10",
+      containerInactive: "border-transparent",
+    };
+  }
+  if (cleanLabel.includes("training")) {
+    return {
+      accentText: "text-accent-training",
+      iconActive: "text-accent-training",
+      bgActive: "bg-accent-training",
+      containerActive: "bg-accent-training/[0.03] border-accent-training/10",
+      containerInactive: "border-transparent",
+    };
+  }
+  return {
+    accentText: "text-accent",
+    iconActive: "text-accent",
+    bgActive: "bg-accent",
+    containerActive: "bg-accent-muted/10 border-accent/20",
+    containerInactive: "border-transparent",
+  };
+}
+
 interface SidebarProps {
   user?: { name: string; email: string };
   initialOpenSections?: Record<string, boolean>;
@@ -149,9 +187,17 @@ export function Sidebar({ user }: SidebarProps) {
               const SpaceIcon = space.icon;
               const isOpen = openSpaces.has(space.label);
               const anyPageActive = space.pages.some(isPageActive);
+              const styles = getSpaceStyles(space.label);
 
               return (
-                <div key={space.label} className="w-full flex flex-col space-y-1">
+                <div
+                  key={space.label}
+                  className={`w-full flex flex-col space-y-1 rounded-lg p-1.5 transition-all duration-200 border ${
+                    anyPageActive
+                      ? styles.containerActive
+                      : styles.containerInactive
+                  }`}
+                >
                   <button
                     onClick={() => {
                       if (!isExpanded) {
@@ -164,12 +210,14 @@ export function Sidebar({ user }: SidebarProps) {
                         return next;
                       });
                     }}
-                    className="w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider transition-colors duration-150 text-zinc-500 hover:text-zinc-300"
+                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider transition-colors duration-150 ${
+                      anyPageActive ? styles.accentText : "text-zinc-500 hover:text-zinc-300"
+                    }`}
                   >
                     <SpaceIcon
                       size={12}
                       strokeWidth={2}
-                      className="text-zinc-500"
+                      className={anyPageActive ? styles.iconActive : "text-zinc-500"}
                     />
                     {isExpanded && (
                       <>
@@ -202,14 +250,14 @@ export function Sidebar({ user }: SidebarProps) {
                               href={page.href}
                               className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-[13px] transition-all duration-150 ${
                                 isActive
-                                  ? "text-zinc-150 bg-zinc-800/70 border border-zinc-700/50 shadow-sm font-medium"
+                                  ? `text-white font-medium ${styles.bgActive} shadow-sm`
                                   : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
                               }`}
                             >
                               <PageIcon
                                 size={13}
                                 strokeWidth={isActive ? 2.5 : 2}
-                                className={isActive ? "text-zinc-200" : "text-zinc-500"}
+                                className={isActive ? "text-white" : "text-zinc-500"}
                               />
                               <span className="truncate">{page.label}</span>
                             </Link>
