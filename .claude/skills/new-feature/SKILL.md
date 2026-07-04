@@ -111,7 +111,7 @@ Never call the repository directly from an action for a write — go through the
 
 ## 7. Components
 
-Follow the `design-system` skill for styling. Structural conventions:
+Follow the `[[design-system]]` skill for styling and the `[[component-structure]]` skill for internal ordering (hooks → derived values → handlers → early returns → JSX). Structural conventions:
 - `src/features/<domain>/components/<Name>PageClient.tsx` — `"use client"`, receives `initial<Name>` etc. as props from the page, owns local state, calls actions directly (Server Actions are callable from client components — no fetch wrapper needed), shows toasts (`sonner`) on action results.
 - Never call `input`/`textarea`/`select`/`button` raw — use the matching primitive from `src/components/ui/<category>/`.
 - Heavy/rarely-shown subviews (calendar, graph view) are lazy-loaded with `lazy(() => import(...))` + `Suspense`, matching `TasksPageClient.tsx`.

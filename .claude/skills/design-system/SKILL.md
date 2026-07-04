@@ -7,6 +7,8 @@ description: macOS Sonoma Minimalist design system rules (glass tokens, typograp
 
 Read `docs/design-system.md` in full before writing or editing any frontend component — it is the source of truth. `docs/design-system.html` is the visual showcase (buttons, badges, cards, all inputs); open it for concrete markup examples when the `.md` doesn't cover a case.
 
+This skill covers *which classes/tokens* to use. See `[[component-structure]]` for *where in the component* to compute them — token strings belong in a named variable above the `return`, never inline in JSX.
+
 The design system has been rewritten several times (Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS Sonoma Minimalist**, current). Always check `docs/design-system.md`'s H1 matches "macOS Sonoma Minimalist" before trusting this skill's cached values below — if it's changed again, re-derive this skill from the doc + `src/app/globals.css` rather than trusting stale notes.
 
 ## Tokens are live
