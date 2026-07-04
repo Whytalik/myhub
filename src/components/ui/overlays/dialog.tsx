@@ -3,6 +3,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
+import { Button } from "@/components/ui/actions/button";
 
 interface DialogProps {
   isOpen: boolean;
@@ -43,43 +44,28 @@ export function Dialog({
 
   if (!mounted || !isOpen) return null;
 
+  const contentStyle = { maxWidth: maxWidth ?? "420px" };
+  const bodyClass = `${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : "overflow-y-auto max-h-[85dvh]"}`;
+
   return createPortal(
     <div
-
+      className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center p-0 sm:p-4"
       onClick={(e) => e.stopPropagation()}
     >
-      {}
-      <div
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-        onClick={onClose}
-      />
-
-      {}
-      <div
-
-      >
-        <div >
-          <div >
+      <div className="relative w-full" style={contentStyle}>
+        <div className="glass-elevated overflow-hidden">
+          <div className={bodyClass}>
             {!bare && (
-              <div >
-                <div >
-                  {title && (
-                    <h3 >
-                      {title}
-                    </h3>
-                  )}
-                  {description && (
-                    <p >
-                      {description}
-                    </p>
-                  )}
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div className="space-y-1">
+                  {title && <h3 className="text-panel-title">{title}</h3>}
+                  {description && <p className="text-caption">{description}</p>}
                 </div>
-                <button
-                  onClick={onClose}
-
-                >
+                <Button variant="ghost" size="icon" onClick={onClose}>
                   <X size={18} />
-                </button>
+                </Button>
               </div>
             )}
 
@@ -87,14 +73,14 @@ export function Dialog({
           </div>
 
           {footer && (
-            <div >
+            <div className="bg-white/[0.02] border-t border-white/[0.06] p-4 flex justify-end gap-2">
               {footer}
             </div>
           )}
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
 
@@ -119,6 +105,11 @@ export function ConfirmationDialog({
   cancelLabel = "Cancel",
   variant = "primary",
 }: ConfirmationDialogProps) {
+  const handleConfirm = () => {
+    onConfirm();
+    onClose();
+  };
+
   return (
     <Dialog
       isOpen={isOpen}
@@ -127,26 +118,15 @@ export function ConfirmationDialog({
       description="Confirmation required"
       maxWidth="400px"
     >
-      <div >
-        <p >
-          {description}
-        </p>
-        <div >
-          <button
-            onClick={onClose}
-
-          >
+      <div className="flex flex-col gap-6">
+        <p className="text-body">{description}</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={onClose}>
             {cancelLabel}
-          </button>
-          <button
-            onClick={() => {
-              onConfirm();
-              onClose();
-            }}
-
-          >
+          </Button>
+          <Button variant={variant === "danger" ? "danger" : "primary"} onClick={handleConfirm}>
             {confirmLabel}
-          </button>
+          </Button>
         </div>
       </div>
     </Dialog>

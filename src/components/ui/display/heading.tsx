@@ -3,12 +3,12 @@ interface HeadingProps {
   className?: string;
 }
 
-export function Heading({ title, className = "text-heading md:text-title" }: HeadingProps) {
+export function Heading({ title, className = "" }: HeadingProps) {
+  const headingClass = `text-page-title ${className}`;
+
   return (
-    <div >
-      <h1 >
-        {title}
-      </h1>
+    <div>
+      <h1 className={headingClass}>{title}</h1>
     </div>
   );
 }

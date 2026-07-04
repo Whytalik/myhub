@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 interface BreadcrumbProps {
   items: { label: string; href?: string }[];
@@ -6,17 +6,19 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <div >
-      <Link href="/" >hub</Link>
+    <div className="flex items-center gap-1.5 text-label">
+      <Link href="/" className="hover:text-accent transition-colors">
+        hub
+      </Link>
       {items.map((item, index) => (
-        <span key={index} >
-          <span >/</span>
+        <span key={index} className="flex items-center gap-1.5">
+          <span className="text-zinc-700">/</span>
           {item.href ? (
-            <Link href={item.href} >
+            <Link href={item.href} className="hover:text-accent transition-colors">
               {item.label}
             </Link>
           ) : (
-            <span >{item.label}</span>
+            <span className="text-zinc-300">{item.label}</span>
           )}
         </span>
       ))}

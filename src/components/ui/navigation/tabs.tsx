@@ -25,10 +25,10 @@ export function Tabs({
   tabs,
   activeTab: controlledActiveTab,
   onTabChange,
-  className,
-  contentClassName,
-  size = "text-note md:text-body",
-  layoutId = "activeTab"
+  className = "",
+  contentClassName = "",
+  size = "text-sm",
+  layoutId = "activeTab",
 }: TabsProps) {
   const [internalActiveTab, setInternalActiveTab] = React.useState(tabs[0]?.id);
   const activeTab = controlledActiveTab ?? internalActiveTab;
@@ -37,7 +37,7 @@ export function Tabs({
 
   React.useEffect(() => {
     if (activeTab && !visitedTabs.has(activeTab)) {
-      setVisitedTabs(prev => new Set([...prev, activeTab]));
+      setVisitedTabs((prev) => new Set([...prev, activeTab]));
     }
   }, [activeTab, visitedTabs]);
 
@@ -52,26 +52,28 @@ export function Tabs({
     });
   };
 
+  const listClass = `flex w-full overflow-x-auto ${className}`;
+
   return (
-    <div >
-      <div >
-        <div >
+    <div className="flex flex-col w-full min-w-0 gap-4">
+      <div className={listClass}>
+        <div className="flex p-1 glass-card w-fit relative">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabClick(tab.id)}
+            const tabClass = `relative flex items-center gap-2 whitespace-nowrap px-4 py-2 rounded-lg ${size} font-medium transition-colors duration-150 z-10 ${
+              isActive ? "text-white" : "text-zinc-400 hover:text-zinc-100"
+            } ${isPending && isActive ? "opacity-70" : ""}`;
 
-              >
+            return (
+              <button key={tab.id} onClick={() => handleTabClick(tab.id)} className={tabClass}>
                 {isActive && (
                   <motion.div
                     layoutId={layoutId}
-
+                    className="absolute inset-0 bg-accent rounded-lg shadow-sm"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span >
+                <span className="relative z-10 flex items-center gap-2">
                   {tab.icon}
                   {tab.label}
                 </span>
@@ -81,18 +83,19 @@ export function Tabs({
         </div>
       </div>
 
-      <div >
+      <div className={`relative ${contentClassName}`}>
         {tabs.map((tab) => {
           const isVisited = visitedTabs.has(tab.id);
           const isActive = activeTab === tab.id;
 
           if (!isVisited || !tab.content) return null;
 
-          return (
-            <div
-              key={tab.id}
+          const contentClass = `w-full transition-opacity duration-150 ${
+            isActive ? "block opacity-100" : "hidden opacity-0"
+          }`;
 
-            >
+          return (
+            <div key={tab.id} className={contentClass}>
               {tab.content}
             </div>
           );

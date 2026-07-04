@@ -9,20 +9,25 @@ interface FormFieldProps {
   className?: string;
 }
 
-export function FormField({ label, error, hint, required, children, className }: FormFieldProps) {
+export function FormField({
+  label,
+  error,
+  hint,
+  required,
+  children,
+  className = "",
+}: FormFieldProps) {
+  const wrapperClass = `flex flex-col gap-1.5 ${className}`;
+
   return (
-    <div >
-      <label >
+    <div className={wrapperClass}>
+      <label className="text-label">
         {label}
-        {required && <span >*</span>}
+        {required && <span className="text-accent ml-1">*</span>}
       </label>
       {children}
-      {hint && !error && (
-        <p >{hint}</p>
-      )}
-      {error && (
-        <p >{error}</p>
-      )}
+      {hint && !error && <p className="text-caption">{hint}</p>}
+      {error && <p className="text-caption text-red-400">{error}</p>}
     </div>
   );
 }
