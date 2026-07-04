@@ -1,85 +1,72 @@
-# 🪐 "Cyber-Craft Acrylic" Design System Specification
+# 🪐 macOS Sonoma Desktop Design System Specification
 
-**myhub** is the user's personal digital environment. The **Cyber-Craft Acrylic** design system combines the high-contrast technical utility of developer command-line interfaces (inspired by Linear and Vercel) with the physical depth of macOS frosted glass (Glassmorphism) and the strict readability of technical terminal layouts (CLI).
+**myhub** is the user's personal digital environment. This design system is inspired by the clean, layered aesthetics of modern **macOS Sonoma/Sequoia**. It combines frosted glass panels (glassmorphism), neutral slate foundations, system traffic light details, and strict Human Interface Guidelines (HIG) standards.
 
 ---
 
-## 🎨 1. Glassmorphism & Color Palette (Color Tokens)
+## 🎨 1. Materials & Color Palette
 
-The system uses an **Acrylic Layering Model** to establish hierarchy. Surfaces are translucent, refracting underlying graphics (blurs) to create depth.
+The layout uses a window-layering hierarchy where active application areas are built of translucent materials.
 
 ### 🌑 Translucent Glass Surfaces
 
 | Token | CSS / Tailwind Classes | Description | Purpose |
 | :--- | :--- | :--- | :--- |
-| `bg-canvas` | `#08080a` (Solid) | Deep dark canvas | The primary background viewport. |
-| `glass-sidebar` | `bg-surface/20 backdrop-blur-xl border-r border-white/5` | High-blur frosted glass | Sidebar navigation shell (Finder style). |
-| `glass-card` | `bg-surface/45 backdrop-blur-md border border-white/8` | Standard frosted glass | Interactive widgets, content cards, and panels. |
-| `glass-elevated`| `bg-elevated/75 backdrop-blur-lg border border-white/12 shadow-2xl` | Elevated glass | Dropdowns, calendar overlays, and modal dialogs. |
-| `glass-input` | `bg-black/35 backdrop-blur-sm border border-white/8` | Hollow recessed glass | Inputs, select boxes, and textareas. |
+| `bg-canvas` | `#1e1e1e` (Solid Dark) / `#f5f5f7` (Solid Light) | Solid window background | Primary window backing canvas. |
+| `glass-sidebar` | `bg-neutral-900/40 backdrop-blur-3xl border-r border-white/5` | High-blur macOS sidebar | Left navigation sidebar. |
+| `glass-card` | `bg-neutral-800/50 border border-white/5 shadow-md` | Standard window panel | Cards, modules, content containers. |
+| `glass-elevated`| `bg-neutral-800/80 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/60` | Elevated material | Dropdowns, dialog popovers, context menus. |
+| `glass-input` | `bg-white/5 border border-white/10 rounded-md` | Recessed input well | Inputs, selects, checkbox backings. |
 
-### 🔵 Space-Specific System Accents
+### 🔵 System Accents (Apple HIG Colors)
+Accents are used for selection indicators, active toggles, and highlights. Default is Apple System Blue:
 
-Accent colors are applied to active highlights, focus rings, select borders, and space badges:
-
-| Space (Domain) | Token | Hex | Badge Style | Purpose |
-| :--- | :--- | :--- | :--- | :--- |
-| **Universal** | `color-blue` | `#007aff` | `bg-blue-500/10 text-blue-400` | Core action buttons, active navigation, input focus. |
-| **Health Space** | `color-emerald`| `#34c759` | `bg-emerald-500/10 text-emerald-400` | Training workouts, nutrition targets, completed metrics. |
-| **Life Space** | `color-orange` | `#ff9500` | `bg-orange-500/10 text-orange-400` | Tasks, routines, active trackers, and focus of the day. |
-| **Alert/Error** | `color-red` | `#ff3b30` | `bg-red-500/10 text-red-400` | Critical states, delete actions, overdue tasks. |
+| Accent Color | Hex (Dark) | Hex (Light) | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Blue** | `#0a84ff` | `#007aff` | Standard select highlights, focus rings, primary action buttons. |
+| **Green** | `#30d158` | `#34c759` | Completed habits, healthy calories, profit markers. |
+| **Orange** | `#ff9f0a` | `#ff9500` | Current tasks, reminders, warning states. |
+| **Red** | `#ff453a` | `#ff3b30` | Destructive actions, delete buttons, error alerts. |
 
 ---
 
 ## 🔠 2. Typography Scale
 
-1.  **Sans-Serif (Geist Sans / Inter / System-UI):** Default font for headings, text bodies, buttons, and reflections. Designed with a tight letter-spacing (`tracking-tight`) for a compact feel.
-2.  **Monospace (Geist Mono / JetBrains Mono):** Mandatory for numbers, durations, times, status tags, and progress meters.
+1.  **System Sans-Serif (`-apple-system, BlinkMacSystemFont, "SF Pro Text"`):** macOS system UI font stack for standard controls, navigation, and text bodies.
+2.  **System Monospace (`SFMono-Regular, SF Mono, Menlo`):** Mandatory for numeric counters, dates, indicators, and labels.
 
 ### Typography Hierarchy:
-*   `text-page-title` — `1.5rem (24px) | Bold | tracking-tight`
-*   `text-panel-title` — `1.125rem (18px) | SemiBold`
-*   `text-body` — `0.9375rem (15px) | Regular | line-height: 1.6`
-*   `text-caption` — `0.8125rem (13px) | Medium | text-text-secondary`
-*   `text-label` — `0.75rem (12px) | Bold | Monospace | uppercase`
+*   `text-page-title` — `1.375rem (22px) | Semibold | tracking-tight` (Window Title)
+*   `text-panel-title` — `1rem (16px) | Semibold` (List Section Header)
+*   `text-body` — `0.8125rem (13px) | Regular | line-height: 1.5` (macOS default UI body text)
+*   `text-caption` — `0.6875rem (11px) | Regular | text-zinc-500` (Subtitles/Metadata)
+*   `text-label` — `0.6875rem (11px) | Bold | Monospace | uppercase` (CLI labels)
 
 ---
 
-## 🧱 3. Form Input Elements Guide
+## 🧱 3. Form Input Elements
 
-All input components share a cohesive **recessed glass** appearance (`glass-input`). They feel hollow and sunken into the surface, becoming vibrant only upon focus.
+Inputs look like recessed wells sunken into the window material.
 
 ### 📝 Text & Number Inputs (`Input`)
-*   **Aesthetic:** `bg-black/35 backdrop-blur-sm border border-white/8 rounded-lg px-3 py-2 text-sm text-white transition-all`
-*   **Focus State:** Smooth border highlight to `border-[var(--current-accent)]` and a glowing shadow glow.
-*   **Number Variant:** Right-aligned numerical font (`font-mono text-right`).
-
-### 📐 Textarea (`Textarea`)
-*   **Aesthetic:** Same as text inputs, but with a multiline layout (`resize-none`). Line-height is adjusted (`leading-relaxed`).
-
-### 🗂 Select Elements (`Select`)
-*   **Standard Select:** A glass box with a custom caret arrow (`chevron-down`). Option lists render on an elevated glass container (`glass-elevated`).
-*   **Custom Select (Combobox):** Includes a search input inside a glass dropdown overlay, highlighting matched results on hover.
-
-### 📅 Date & Time Pickers
-*   **Date Picker:** Trigger displays a calendar icon, selected date, and a clear cross button. The popup calendar renders as a `glass-elevated` grid of day cells. Active selections have a solid accent background.
-*   **Date Range Picker:** Trigger displays start date and end date separated by a dash. Highlights dates in-between with a low-opacity accent background (`bg-[var(--current-accent-muted)]`).
-*   **Time Picker:** Trigger displays current time. The popover displays scrollable columns (hours and minutes) or preset chips (e.g. "Morning", "Evening").
+*   **Style:** `bg-white/5 border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-white transition-all`
+*   **Focus State:** Smooth border highlight using `border-accent` and a glowing shadow `shadow-[0_0_8px_rgba(var(--color-accent),0.15)]`.
+*   **Number Inputs:** Right-aligned numerical font (`font-mono text-right`).
 
 ### 🟦 Checkbox
-*   **Aesthetic:** A 20x20px square `bg-black/35 border border-white/8 rounded`.
-*   **Checked State:** Fills with `bg-[var(--current-accent)]` and reveals a clean checkmark icon.
+*   **Style:** `w-4 h-4 bg-white/5 border border-white/10 rounded-md transition-all`
+*   **Checked:** Fills with `bg-accent` showing a clean white checkmark.
 
 ---
 
 ## ⚠️ 4. Implementation Guidelines
 
 ✅ **DO:**
-*   Stack shadows on dropdowns to separate them from the glass surface underneath (`shadow-2xl shadow-black/60`).
-*   Use a translucent border `border-white/10` to define input boundaries.
-*   Enforce `backdrop-blur-md` on cards to maintain readability against high-contrast backgrounds.
+*   Implement traffic lights (red `#ff5f56`, yellow `#ffbd2e`, green `#27c93f` dots) in the window layout.
+*   Enforce a clean sidebar look with list rows using rounded corners of **8px** (`rounded-lg`).
+*   Set standard text sizes to **13px** (`text-[13px]`) for a native macOS desktop feel.
 
 ❌ **DON'T:**
-*   Use fully opaque backgrounds (`#ffffff` or `#121214`) for modals or sidebars.
-*   Set input borders to solid opaque colors unless focused.
-*   Animate text characters inside inputs—focus highlights must transition instantly or with a short delay (`duration-150`).
+*   Use fully black `#000000` or solid primary colors.
+*   Add neon glowing grids or high-contrast tech borders.
+*   Hardcode hex colors inline in JSX.

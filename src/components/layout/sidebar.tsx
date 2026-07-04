@@ -87,76 +87,78 @@ export function Sidebar({ user }: SidebarProps) {
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         } transition-transform duration-300 md:transition-none`}
       >
-        {/* Brand Header */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-white/5 flex-shrink-0">
-          <Link href="/life" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center border border-accent/20 shadow-[0_0_15px_var(--color-accent-muted)]">
-              <Sparkles size={18} />
-            </div>
+        {/* Brand Header & traffic lights */}
+        <div className="h-16 flex flex-col justify-center px-6 border-b border-white/5 flex-shrink-0">
+          {/* macOS Traffic Lights */}
+          <div className="flex items-center gap-1.5 mb-1.5 select-none">
+            <span className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e] flex-shrink-0"></span>
+            <span className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123] flex-shrink-0"></span>
+            <span className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29] flex-shrink-0"></span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Link href="/life" className="flex items-center gap-2">
+              <Sparkles size={14} className="text-accent" />
+              <AnimatePresence initial={false}>
+                {isExpanded && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -5 }}
+                    transition={LABEL_TRANSITION}
+                    className="text-xs font-semibold text-white tracking-tight"
+                  >
+                    MyHub
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </Link>
+
             <AnimatePresence initial={false}>
               {isExpanded && (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={LABEL_TRANSITION}
-                  className="flex flex-col"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="flex items-center gap-1"
                 >
-                  <h1 className="text-sm font-bold text-white tracking-tight leading-none">
-                    MyHub
-                  </h1>
-                  <p className="text-[10px] text-zinc-500 font-mono mt-1 font-bold">
-                    Personal OS
-                  </p>
+                  <button
+                    onClick={() => setIsMobileOpen(false)}
+                    className="md:hidden p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSidebar();
+                    }}
+                    className="hidden md:flex p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+                  >
+                    <motion.div
+                      animate={{ rotate: !isCollapsed ? 45 : 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                    >
+                      <Pin size={12} />
+                    </motion.div>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
-          </Link>
-
-          <AnimatePresence initial={false}>
-            {isExpanded && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-                className="flex items-center gap-1.5"
-              >
-                <button
-                  onClick={() => setIsMobileOpen(false)}
-                  className="md:hidden p-1.5 text-zinc-400 hover:text-white hover:bg-white/5 rounded-md transition-colors"
-                >
-                  <X size={16} />
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleSidebar();
-                  }}
-                  className="hidden md:flex p-1.5 text-zinc-400 hover:text-white hover:bg-white/5 rounded-md transition-colors"
-                >
-                  <motion.div
-                    animate={{ rotate: !isCollapsed ? 45 : 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                  >
-                    <Pin size={14} />
-                  </motion.div>
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          </div>
         </div>
 
         {/* Navigation Area */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 scrollbar-none">
-          <nav className="space-y-1">
+        <div className="flex-1 overflow-y-auto px-2 py-4 scrollbar-none">
+          <nav className="space-y-4">
             {domain.spaces.map((space) => {
               const SpaceIcon = space.icon;
               const isOpen = openSpaces.has(space.label);
               const anyPageActive = space.pages.some(isPageActive);
 
               return (
-                <div key={space.label} className="w-full flex flex-col">
+                <div key={space.label} className="w-full flex flex-col space-y-1">
                   <button
                     onClick={() => {
                       if (!isExpanded) {
@@ -169,16 +171,12 @@ export function Sidebar({ user }: SidebarProps) {
                         return next;
                       });
                     }}
-                    className={`w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors duration-150 ${
-                      anyPageActive
-                        ? "text-accent bg-accent-muted"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
-                    }`}
+                    className="w-full flex items-center justify-center md:justify-start gap-2 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider transition-colors duration-150 text-zinc-500 hover:text-zinc-300"
                   >
                     <SpaceIcon
-                      size={14}
-                      strokeWidth={anyPageActive ? 2.5 : 2}
-                      className={anyPageActive ? "text-accent" : "text-zinc-500"}
+                      size={12}
+                      strokeWidth={2}
+                      className="text-zinc-500"
                     />
                     {isExpanded && (
                       <>
@@ -187,7 +185,7 @@ export function Sidebar({ user }: SidebarProps) {
                           animate={{ rotate: isOpen ? 0 : -90 }}
                           transition={{ duration: 0.2, ease: "easeInOut" }}
                         >
-                          <ChevronDown size={12} className="text-zinc-500" />
+                          <ChevronDown size={11} className="text-zinc-500" />
                         </motion.div>
                       </>
                     )}
@@ -200,7 +198,7 @@ export function Sidebar({ user }: SidebarProps) {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.18, ease: "easeInOut" }}
-                        className="pl-6 pr-2 py-1 space-y-0.5 border-l border-white/5 ml-5 mt-1"
+                        className="pl-2 pr-1 py-0.5 space-y-0.5"
                       >
                         {space.pages.map((page) => {
                           const PageIcon = page.icon;
@@ -209,16 +207,16 @@ export function Sidebar({ user }: SidebarProps) {
                             <Link
                               key={page.href}
                               href={page.href}
-                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs transition-colors duration-150 ${
+                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-[13px] transition-colors duration-150 ${
                                 isActive
-                                  ? "text-accent font-medium bg-accent-muted"
-                                  : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
+                                  ? "text-white font-medium bg-accent shadow-sm"
+                                  : "text-zinc-300 hover:text-white hover:bg-white/10"
                               }`}
                             >
                               <PageIcon
-                                size={12}
+                                size={13}
                                 strokeWidth={isActive ? 2.5 : 2}
-                                className={isActive ? "text-accent" : "text-zinc-500"}
+                                className={isActive ? "text-white" : "text-zinc-400"}
                               />
                               <span className="truncate">{page.label}</span>
                             </Link>
@@ -234,11 +232,11 @@ export function Sidebar({ user }: SidebarProps) {
         </div>
 
         {/* Footer / User Profile */}
-        <div className="h-16 border-t border-white/5 px-4 flex items-center justify-between gap-3 flex-shrink-0 bg-white/[0.02]">
+        <div className="h-16 border-t border-white/5 px-4 flex items-center justify-between gap-3 flex-shrink-0 bg-white/[0.01]">
           {user && (
             <>
-              <Link href="/life" className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-80 transition-opacity">
-                <div className="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center border border-accent/20 text-xs font-semibold flex-shrink-0">
+              <Link href="/life" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+                <div className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center border border-white/10 text-[11px] font-semibold flex-shrink-0">
                   <span>
                     {user.name
                       ? user.name
@@ -259,7 +257,7 @@ export function Sidebar({ user }: SidebarProps) {
                       transition={LABEL_TRANSITION}
                       className="min-w-0"
                     >
-                      <p className="text-xs font-medium text-white truncate">
+                      <p className="text-[13px] font-medium text-white truncate">
                         {user.name}
                       </p>
                     </motion.div>
@@ -274,22 +272,22 @@ export function Sidebar({ user }: SidebarProps) {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-0.5"
                   >
                     <button
                       onClick={() => {
                         setIsSettingsOpen(true);
                         setIsMobileOpen(false);
                       }}
-                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-white/5 rounded-md transition-colors"
+                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
                     >
-                      <Settings2 size={14} />
+                      <Settings2 size={13} />
                     </button>
                     <button
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-white/5 rounded-md transition-colors"
+                      className="p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
                     >
-                      <LogOut size={14} />
+                      <LogOut size={13} />
                     </button>
                   </motion.div>
                 )}

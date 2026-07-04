@@ -2,19 +2,19 @@
 
 :root {
   --color-accent: #007aff;
-  --color-accent-muted: rgba(0, 122, 255, 0.1);
+  --color-accent-muted: rgba(0, 122, 255, 0.15);
 }
 
 @theme {
-  --color-canvas: #08080a;
-  --color-surface: #121214;
-  --color-elevated: #1a1a1e;
+  --color-canvas: #1e1e1e;
+  --color-surface: #2d2d2d;
+  --color-elevated: #323232;
   
   --color-accent: var(--color-accent);
   --color-accent-muted: var(--color-accent-muted);
   
-  --font-sans: var(--font-inter), 'Geist Sans', 'Inter', 'system-ui', sans-serif;
-  --font-mono: var(--font-geist-mono), 'Geist Mono', 'JetBrains Mono', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
 }
 
 /* Custom Scrollbar Hiding */
@@ -26,44 +26,44 @@ html, body {
   @apply bg-canvas text-zinc-100 font-sans overflow-x-hidden;
 }
 
-/* Glassmorphism Utilities */
+/* macOS Sonoma Surface Material Utilities */
 @utility glass-sidebar {
-  @apply bg-surface/20 backdrop-blur-xl border-r border-white/5;
+  @apply bg-neutral-900/40 backdrop-blur-3xl border-r border-white/5;
 }
 
 @utility glass-card {
-  @apply bg-surface/45 backdrop-blur-md border border-white/8;
+  @apply bg-neutral-800/50 border border-white/5 shadow-md;
 }
 
 @utility glass-elevated {
-  @apply bg-elevated/75 backdrop-blur-lg border border-white/12 shadow-2xl shadow-black/60;
+  @apply bg-neutral-800/80 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/60;
 }
 
 @utility glass-input {
-  @apply bg-black/35 backdrop-blur-sm border border-white/8 transition-all duration-150;
+  @apply bg-white/5 border border-white/10 rounded-md transition-all duration-150;
 }
 
 @utility glass-input-focus {
-  @apply border-accent bg-black/50 shadow-[0_0_8px_rgba(var(--color-accent),0.15)] outline-none;
+  @apply border-accent bg-white/8 shadow-[0_0_8px_rgba(var(--color-accent),0.15)] outline-none;
 }
 
-/* Typography Utilities */
+/* macOS Typography Utilities (HIG Compliant) */
 @utility text-page-title {
-  @apply text-2xl font-bold tracking-tight text-white;
+  @apply text-[22px] font-semibold tracking-tight text-white;
 }
 
 @utility text-panel-title {
-  @apply text-lg font-semibold text-white;
+  @apply text-[16px] font-semibold text-white;
 }
 
 @utility text-body {
-  @apply text-[15px] font-normal leading-relaxed text-zinc-300;
+  @apply text-[13px] font-normal leading-normal text-zinc-300;
 }
 
 @utility text-caption {
-  @apply text-[13px] font-medium text-zinc-400;
+  @apply text-[11px] font-normal text-zinc-500;
 }
 
 @utility text-label {
-  @apply text-xs font-bold font-mono uppercase tracking-wider text-zinc-400;
+  @apply text-[11px] font-bold font-mono uppercase tracking-wider text-zinc-400;
 }
