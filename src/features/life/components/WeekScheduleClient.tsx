@@ -19,7 +19,7 @@ const DAY_TYPES: {
     label: "Regular",
     labelShort: "REG",
     icon: User,
-    color: "border-border bg-raised/50 text-secondary",
+    color: "border-white/[0.08] bg-white/[0.03] text-zinc-400",
   },
   {
     id: "train_am",
@@ -77,39 +77,39 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
   };
 
   return (
-    <div >
-      {}
-      <div >
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {DAY_NAMES.map((name, dayOfWeek) => {
           const isToday = dayOfWeek === today;
           const currentType = templates[dayOfWeek] ?? "regular";
           const dayType = DAY_TYPES.find((t) => t.id === currentType) ?? DAY_TYPES[0];
           const DayIcon = dayType.icon;
+          const cardClass = `glass-card p-4 flex flex-col gap-3 border ${isToday ? "border-accent/30" : "border-white/[0.06]"}`;
 
           return (
-            <div
-              key={dayOfWeek}
-
-            >
-              {}
-              <div >
+            <div key={dayOfWeek} className={cardClass}>
+              <div className="flex items-center justify-between">
                 <span
-
+                  className={`text-sm font-semibold ${isToday ? "text-accent" : "text-zinc-200"}`}
                 >
                   {name}
                 </span>
-                <div >
+                <div
+                  className={`flex items-center justify-center w-7 h-7 rounded-lg border ${dayType.color}`}
+                >
                   <DayIcon size={14} />
                 </div>
               </div>
 
-              {}
-              <div >
+              <div className="flex items-center gap-1.5">
                 {DAY_TYPES.map((type) => {
                   const active = currentType === type.id;
                   const Icon = type.icon;
                   const isPending = pending === `${dayOfWeek}-${type.id}`;
                   const isDisabled = DISABLED_DAY_TYPES.includes(type.id) && !active;
+                  const buttonClass = `flex-1 flex items-center justify-center gap-1 h-8 rounded-lg border text-[10px] font-mono font-semibold transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed ${
+                    active ? type.color : "border-white/[0.08] text-zinc-500 hover:bg-white/5"
+                  } ${isPending ? "opacity-60" : ""}`;
 
                   return (
                     <button
@@ -117,38 +117,34 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
                       onClick={() => setDayType(dayOfWeek, type.id)}
                       disabled={!!pending || isDisabled}
                       title={isDisabled ? "No distinct routine yet — coming soon" : undefined}
-
+                      className={buttonClass}
                     >
                       <Icon size={12} />
-                      <span >{type.labelShort}</span>
+                      <span>{type.labelShort}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {}
-              <span
-
-              >
-                {dayType.label}
-              </span>
+              <span className="text-caption">{dayType.label}</span>
             </div>
           );
         })}
       </div>
 
-      {}
-      <div >
+      <div className="glass-card p-4 flex flex-col gap-2">
         {DAY_TYPES.map((type) => {
           const Icon = type.icon;
           return (
-            <div key={type.id} >
-              <div >
+            <div key={type.id} className="flex items-center gap-2.5">
+              <div
+                className={`flex items-center justify-center w-6 h-6 rounded-md border ${type.color}`}
+              >
                 <Icon size={11} />
               </div>
-              <span >{type.label}</span>
-              <span >—</span>
-              <span >
+              <span className="text-sm font-medium text-zinc-200">{type.label}</span>
+              <span className="text-zinc-600">—</span>
+              <span className="text-caption">
                 {type.id === "regular" && "Standard routine"}
                 {(type.id === "train_am" || type.id === "train_pm") &&
                   "Standard routine — custom variant coming soon"}

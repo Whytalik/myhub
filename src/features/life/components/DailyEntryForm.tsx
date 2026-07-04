@@ -53,6 +53,20 @@ interface Props {
   scheduledDayType?: DayType;
 }
 
+const EVENING_ENERGY_LABELS = [
+  "",
+  "Drained",
+  "Tired",
+  "Okay",
+  "Low",
+  "Meh",
+  "Fine",
+  "Good",
+  "Solid",
+  "Peak",
+  "Ultra",
+];
+
 export function DailyEntryForm({
   initialEntry,
   todayStr,
@@ -134,6 +148,8 @@ export function DailyEntryForm({
   const [isPending, startTransition] = useTransition();
   const [data, setData] = useState<Omit<UpsertDailyEntryInput, "date">>(computeInitialData);
 
+  const isToday = todayStr === new Date().toISOString().slice(0, 10);
+
   const patch = (update: Partial<typeof data>) => {
     if (!isToday) return;
     const next = { ...data, ...update };
@@ -175,13 +191,22 @@ export function DailyEntryForm({
     month: "long",
   });
 
-  const isToday = todayStr === new Date().toISOString().slice(0, 10);
-
   const todayISO = todayStr;
   const tasksDone = tasks.filter((t) => t.status === "DONE").length;
   const habitsDone = habits.filter((h) =>
     h.completions.some((c) => new Date(c.date).toISOString().slice(0, 10) === todayISO),
   ).length;
+
+  const suspenseFallback = (
+    <div className="flex items-center justify-center py-10">
+      <Loader2 size={20} className="animate-spin text-accent" />
+    </div>
+  );
+  const calendarSuspenseFallback = (
+    <div className="flex items-center justify-center py-16">
+      <Loader2 size={24} className="animate-spin text-accent" />
+    </div>
+  );
 
   if (dayView === "greeting") {
     return (
@@ -215,28 +240,28 @@ export function DailyEntryForm({
   }
 
   return (
-    <div >
+    <div className="flex flex-col gap-4">
       {!isToday && (
-        <div >
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10 text-amber-400 text-xs">
           <AlertCircle size={14} />
           Past entries are read-only.
         </div>
       )}
-      {}
-      <div >
-        <div >
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-caption">
           <Clock size={14} />
           <span>{dateLabel}</span>
         </div>
 
-        <div >
+        <div className="flex items-center gap-1.5 text-caption">
           {isPending ? (
             <>
-              <Loader2 size={12} /> Saving...
+              <Loader2 size={12} className="animate-spin" /> Saving...
             </>
           ) : savedAt ? (
             <>
-              <CheckCircle2 size={12} /> Saved at{" "}
+              <CheckCircle2 size={12} className="text-emerald-400" /> Saved at{" "}
               {savedAt.toLocaleTimeString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -247,314 +272,252 @@ export function DailyEntryForm({
         </div>
       </div>
 
-      <div >
-        <Tabs
-          tabs={[
-            {
-              id: "morning",
-              label: "Morning",
-              content: (
-                <div >
-                  {}
-                  <div >
-                    <SleepSection
-                      bedtime={data.sleepBedtime ?? null}
-                      wakeup={data.sleepWakeup ?? null}
-                      hours={data.sleepHours ?? null}
-                      quality={data.sleepQuality ?? null}
-                      note={data.sleepNote ?? null}
-                      onChange={patch}
-                    />
-                    <EnergySection
-                      energy={data.energy ?? null}
-                      mood={data.mood ?? null}
-                      note={data.energyNote ?? null}
-                      onChange={patch}
-                    />
-                  </div>
-
-                  {}
-                  <div >
-                    <span >
-                      Body
-                    </span>
-                    <div >
-                      <Weight size={12} />
-                      <span >
-                        Weight
-                      </span>
-                      <Input
-                        type="number"
-                        step="0.1"
-                        value={data.weight ?? ""}
-                        onChange={(e) =>
-                          patch({ weight: e.target.value ? parseFloat(e.target.value) : null })
-                        }
-                        placeholder="0.0 kg"
-
-                      />
-                    </div>
-                  </div>
-
-                  <EmotionsSection emotions={data.emotions ?? null} onChange={patch} />
-
-                  <div >
-                    <div >
-                      <div />
-                      <span >
-                        Daily Scrum Standup
-                      </span>
-                      <div />
-                    </div>
-                    <StandupSection
-                      done={data.standupDone ?? null}
-                      plan={data.standupPlan ?? null}
-                      blockers={data.standupBlockers ?? null}
-                      yesterdayPlan={yesterdayStandupPlan}
-                      yesterdayCompletedTasks={yesterdayCompletedTasks}
-                      onChange={patch}
-                    />
-                  </div>
-
-                  {}
-                  <div >
-                    <Suspense
-                      fallback={
-                        <div >
-                          <Loader2 size={20} />
-                        </div>
-                      }
-                    >
-                      <RoutineSection
-                        type="morning"
-                        routine={data.morningRoutine ?? null}
-                        scheduledDayType={scheduledDayType}
-                        onChange={patch}
-                      />
-                    </Suspense>
-                  </div>
-                </div>
-              ),
-            },
-            {
-              id: "habits",
-              label: `Habits (${habits.length})`,
-              content: (
-                <div >
-                  {habits.length === 0 ? (
-                    <div >
-                      <div >
-                        <SparklesIcon size={32} />
-                      </div>
-                      <p >No habits defined</p>
-                      <p >
-                        Configure your habits in the Habit Tracker to see them here.
-                      </p>
-                    </div>
-                  ) : (
-                    <div >
-                      {habits.map((habit) => (
-                        <HabitCard key={habit.id} habit={habit} date={new Date(todayStr)} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ),
-            },
-            {
-              id: "tasks",
-              label: `Tasks (${tasks.filter((t) => t.status === "DONE").length}/${tasks.length})`,
-              content: (
-                <div >
-                  <div >
-                    <Tabs
-                      tabs={[
-                        {
-                          id: "grid",
-                          label: "Grid",
-                          content: (
-                            <TaskGrid
-                              tasks={tasks}
-                              onEdit={handleEdit}
-                              onDuplicate={handleDuplicate}
-                              onAddChild={handleAddChild}
-                              allTasks={tasks}
-                            />
-                          ),
-                        },
-                        {
-                          id: "timeline",
-                          label: "Timeline",
-                          content: (
-                            <Suspense
-                              fallback={
-                                <div >
-                                  <Loader2 size={24} />
-                                </div>
-                              }
-                            >
-                              <TaskCalendar
-                                tasks={tasks}
-                                allTasks={tasks}
-                                spheres={spheres}
-                                defaultMode="day"
-                                hideControls
-                                onDuplicate={handleDuplicate}
-                                onDelete={() => {}}
-                              />
-                            </Suspense>
-                          ),
-                        },
-                      ]}
-                      activeTab={taskView}
-                      onTabChange={(id) => setTaskView(id as "grid" | "timeline")}
-
-                      layoutId="taskView"
-                    />
-                  </div>
-                </div>
-              ),
-            },
-            {
-              id: "evening",
-              label: "Evening",
-              content: (
-                <div >
-                  <div >
-                    {}
-                    <div >
-                      <NutritionSection
-                        nutrition={data.nutrition ?? null}
-                        note={data.nutritionNote ?? null}
-                        onChange={patch}
-                      />
-                      <div
-
-                      >
-                        <div >
-                          <div >
-                            <div
-
-                            >
-                              <Zap size={14} />
-                            </div>
-                            <h3
-
-                            >
-                              Evening Energy
-                            </h3>
-                          </div>
-                          {data.eveningEnergy !== null && (
-                            <span >
-                              {
-                                [
-                                  "",
-                                  "Drained",
-                                  "Tired",
-                                  "Okay",
-                                  "Low",
-                                  "Meh",
-                                  "Fine",
-                                  "Good",
-                                  "Solid",
-                                  "Peak",
-                                  "Ultra",
-                                ][data.eveningEnergy!]
-                              }
-                            </span>
-                          )}
-                        </div>
-                        <div >
-                          {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
-                            <button
-                              key={value}
-                              type="button"
-                              onClick={() =>
-                                patch({
-                                  eveningEnergy: data.eveningEnergy === value ? null : value,
-                                })
-                              }
-
-                            >
-                              {value}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {}
-                    <Suspense
-                      fallback={
-                        <div >
-                          <Loader2 size={20} />
-                        </div>
-                      }
-                    >
-                      <RoutineSection
-                        type="evening"
-                        routine={data.eveningRoutine ?? null}
-                        scheduledDayType={scheduledDayType}
-                        onChange={patch}
-                      />
-                    </Suspense>
-                  </div>
-
-                  <TaskReviewSection tasks={tasks} date={todayStr} />
-
-                  <Suspense
-                    fallback={
-                      <div >
-                        <Loader2 size={20} />
-                      </div>
-                    }
-                  >
-                    <TaskCalendar
-                      tasks={allTasks.filter((t) => t.status !== "DONE")}
-                      allTasks={allTasks}
-                      spheres={spheres}
-                      defaultMode="week"
-                      hideModeSwitch
-                      onDuplicate={handleDuplicate}
-                      onDelete={() => {}}
-                    />
-                  </Suspense>
-
-                  <ReflectionSection
-                    winToday={data.winToday ?? null}
-                    improveTomorrow={data.improveTomorrow ?? null}
-                    gratitude={data.gratitude ?? null}
-                    brainDump={data.brainDump ?? null}
+      <Tabs
+        tabs={[
+          {
+            id: "morning",
+            label: "Morning",
+            content: (
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <SleepSection
+                    bedtime={data.sleepBedtime ?? null}
+                    wakeup={data.sleepWakeup ?? null}
+                    hours={data.sleepHours ?? null}
+                    quality={data.sleepQuality ?? null}
+                    note={data.sleepNote ?? null}
                     onChange={patch}
                   />
-
-                  {isToday && (
-                    <div >
-                      <button
-                        type="button"
-                        onClick={handleCompleteDay}
-                        disabled={isCompletePending}
-
-                      >
-                        {isCompletePending ? (
-                          <Loader2 size={13} />
-                        ) : (
-                          <span>🌙</span>
-                        )}
-                        Завершити день
-                      </button>
-                    </div>
-                  )}
+                  <EnergySection
+                    energy={data.energy ?? null}
+                    mood={data.mood ?? null}
+                    note={data.energyNote ?? null}
+                    onChange={patch}
+                  />
                 </div>
-              ),
-            },
-          ]}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
 
-          size="text-caption"
-        />
-      </div>
+                <div className="glass-card p-4 flex items-center gap-3">
+                  <span className="text-label shrink-0">Body</span>
+                  <Weight size={12} className="text-zinc-500 shrink-0" />
+                  <span className="text-sm text-zinc-300 shrink-0">Weight</span>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    value={data.weight ?? ""}
+                    onChange={(e) =>
+                      patch({ weight: e.target.value ? parseFloat(e.target.value) : null })
+                    }
+                    placeholder="0.0 kg"
+                    className="max-w-[120px]"
+                  />
+                </div>
+
+                <EmotionsSection emotions={data.emotions ?? null} onChange={patch} />
+
+                <div className="glass-card p-4 flex flex-col gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-px bg-white/[0.06]" />
+                    <span className="text-label">Daily Scrum Standup</span>
+                    <div className="flex-1 h-px bg-white/[0.06]" />
+                  </div>
+                  <StandupSection
+                    done={data.standupDone ?? null}
+                    plan={data.standupPlan ?? null}
+                    blockers={data.standupBlockers ?? null}
+                    yesterdayPlan={yesterdayStandupPlan}
+                    yesterdayCompletedTasks={yesterdayCompletedTasks}
+                    onChange={patch}
+                  />
+                </div>
+
+                <Suspense fallback={suspenseFallback}>
+                  <RoutineSection
+                    type="morning"
+                    routine={data.morningRoutine ?? null}
+                    scheduledDayType={scheduledDayType}
+                    onChange={patch}
+                  />
+                </Suspense>
+              </div>
+            ),
+          },
+          {
+            id: "habits",
+            label: `Habits (${habits.length})`,
+            content: (
+              <div>
+                {habits.length === 0 ? (
+                  <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
+                    <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 text-accent">
+                      <SparklesIcon size={32} />
+                    </div>
+                    <p className="text-panel-title">No habits defined</p>
+                    <p className="text-caption max-w-sm">
+                      Configure your habits in the Habit Tracker to see them here.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {habits.map((habit) => (
+                      <HabitCard key={habit.id} habit={habit} date={new Date(todayStr)} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ),
+          },
+          {
+            id: "tasks",
+            label: `Tasks (${tasks.filter((t) => t.status === "DONE").length}/${tasks.length})`,
+            content: (
+              <div>
+                <Tabs
+                  tabs={[
+                    {
+                      id: "grid",
+                      label: "Grid",
+                      content: (
+                        <TaskGrid
+                          tasks={tasks}
+                          onEdit={handleEdit}
+                          onDuplicate={handleDuplicate}
+                          onAddChild={handleAddChild}
+                          allTasks={tasks}
+                        />
+                      ),
+                    },
+                    {
+                      id: "timeline",
+                      label: "Timeline",
+                      content: (
+                        <Suspense fallback={calendarSuspenseFallback}>
+                          <TaskCalendar
+                            tasks={tasks}
+                            allTasks={tasks}
+                            spheres={spheres}
+                            defaultMode="day"
+                            hideControls
+                            onDuplicate={handleDuplicate}
+                            onDelete={() => {}}
+                          />
+                        </Suspense>
+                      ),
+                    },
+                  ]}
+                  activeTab={taskView}
+                  onTabChange={(id) => setTaskView(id as "grid" | "timeline")}
+                  layoutId="taskView"
+                />
+              </div>
+            ),
+          },
+          {
+            id: "evening",
+            label: "Evening",
+            content: (
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <NutritionSection
+                    nutrition={data.nutrition ?? null}
+                    note={data.nutritionNote ?? null}
+                    onChange={patch}
+                  />
+                  <div className="glass-card p-4 flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400">
+                          <Zap size={14} />
+                        </div>
+                        <h3 className="text-panel-title">Evening Energy</h3>
+                      </div>
+                      {data.eveningEnergy !== null && (
+                        <span className="text-caption">
+                          {EVENING_ENERGY_LABELS[data.eveningEnergy!]}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
+                        const isActive = data.eveningEnergy === value;
+                        const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
+                          isActive
+                            ? "bg-accent text-white"
+                            : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
+                        }`;
+
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() =>
+                              patch({ eveningEnergy: data.eveningEnergy === value ? null : value })
+                            }
+                            className={levelClass}
+                          >
+                            {value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                <Suspense fallback={suspenseFallback}>
+                  <RoutineSection
+                    type="evening"
+                    routine={data.eveningRoutine ?? null}
+                    scheduledDayType={scheduledDayType}
+                    onChange={patch}
+                  />
+                </Suspense>
+
+                <TaskReviewSection tasks={tasks} date={todayStr} />
+
+                <Suspense fallback={suspenseFallback}>
+                  <TaskCalendar
+                    tasks={allTasks.filter((t) => t.status !== "DONE")}
+                    allTasks={allTasks}
+                    spheres={spheres}
+                    defaultMode="week"
+                    hideModeSwitch
+                    onDuplicate={handleDuplicate}
+                    onDelete={() => {}}
+                  />
+                </Suspense>
+
+                <ReflectionSection
+                  winToday={data.winToday ?? null}
+                  improveTomorrow={data.improveTomorrow ?? null}
+                  gratitude={data.gratitude ?? null}
+                  brainDump={data.brainDump ?? null}
+                  onChange={patch}
+                />
+
+                {isToday && (
+                  <div className="flex justify-center pt-2">
+                    <button
+                      type="button"
+                      onClick={handleCompleteDay}
+                      disabled={isCompletePending}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+                    >
+                      {isCompletePending ? (
+                        <Loader2 size={13} className="animate-spin" />
+                      ) : (
+                        <span>🌙</span>
+                      )}
+                      Завершити день
+                    </button>
+                  </div>
+                )}
+              </div>
+            ),
+          },
+        ]}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        size="text-caption"
+      />
 
       <TaskFormDialog
         key={`task-form-${editingTask?.id ?? "new"}`}

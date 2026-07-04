@@ -3,7 +3,16 @@
 import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
 import { Tabs } from "@/components/ui/navigation/tabs";
-import { Moon, Zap, Utensils, CheckCircle2, ChevronDown, Smile, Weight, Trash2 } from "lucide-react";
+import {
+  Moon,
+  Zap,
+  Utensils,
+  CheckCircle2,
+  ChevronDown,
+  Smile,
+  Weight,
+  Trash2,
+} from "lucide-react";
 import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/life/routine-items";
 import { deleteEntryAction } from "../actions/journal-actions";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
@@ -35,7 +44,7 @@ function routineScore(morning: unknown, evening: unknown): number | null {
   if (!morningMap && !eveningMap) return null;
 
   let done = 0;
-  ROUTINE_ITEMS.forEach(item => {
+  ROUTINE_ITEMS.forEach((item) => {
     if ((morningMap && morningMap[item.id]) || (eveningMap && eveningMap[item.id])) {
       done++;
     }
@@ -48,7 +57,7 @@ function getWeekNumber(d: Date) {
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return weekNo;
 }
 
@@ -70,7 +79,7 @@ export function JournalHistoryView({ entries }: Props) {
 
     const groups: Record<string, HistoryEntry[]> = {};
 
-    entries.forEach(e => {
+    entries.forEach((e) => {
       const date = new Date(e.date);
       let key = "";
 
@@ -98,34 +107,32 @@ export function JournalHistoryView({ entries }: Props) {
   const hasMore = groupKeys.length > visibleGroups;
 
   return (
-    <div >
-      <div >
-        <Tabs
-          tabs={[
-            { id: "all", label: "All" },
-            { id: "weeks", label: "Weeks" },
-            { id: "months", label: "Months" },
-            { id: "quarters", label: "Quarters" },
-            { id: "years", label: "Years" },
-          ]}
-          activeTab={activeTab}
-          onTabChange={(id) => {
-            setActiveTab(id);
-            setVisibleGroups(3);
-          }}
-        />
-      </div>
+    <div className="flex flex-col gap-6">
+      <Tabs
+        tabs={[
+          { id: "all", label: "All" },
+          { id: "weeks", label: "Weeks" },
+          { id: "months", label: "Months" },
+          { id: "quarters", label: "Quarters" },
+          { id: "years", label: "Years" },
+        ]}
+        activeTab={activeTab}
+        onTabChange={(id) => {
+          setActiveTab(id);
+          setVisibleGroups(3);
+        }}
+      />
 
-      <div >
-        {displayedKeys.map(key => (
-          <div key={key} >
-            <div >
-              <div />
-              <span >{key}</span>
-              <div />
+      <div className="flex flex-col gap-6">
+        {displayedKeys.map((key) => (
+          <div key={key} className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-white/[0.06]" />
+              <span className="text-label whitespace-nowrap">{key}</span>
+              <div className="flex-1 h-px bg-white/[0.06]" />
             </div>
 
-            <div >
+            <div className="flex flex-col gap-2">
               {groupedEntries[key].map((e) => {
                 const dateStr = e.date.toISOString().slice(0, 10);
                 const label = new Date(e.date).toLocaleDateString("en-US", {
@@ -136,59 +143,60 @@ export function JournalHistoryView({ entries }: Props) {
                 const score = routineScore(e.morningRoutine, e.eveningRoutine);
 
                 return (
-                  <div key={e.id} >
+                  <div
+                    key={e.id}
+                    className="glass-card p-3 flex items-center gap-3 hover:border-white/[0.12] transition-colors"
+                  >
                     <Link
                       href={`/life/journal?date=${dateStr}`}
-
+                      className="flex-1 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 min-w-0"
                     >
-                      <span >
+                      <span className="text-sm font-medium text-zinc-100 whitespace-nowrap">
                         {label}
                       </span>
 
-                        <div >
-                        <span title="Sleep">
+                      <div className="flex items-center gap-3 flex-wrap text-xs text-zinc-500">
+                        <span className="flex items-center gap-1" title="Sleep">
                           <Moon size={12} />
                           {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
                         </span>
-                        <span title="Energy">
+                        <span className="flex items-center gap-1" title="Energy">
                           <Zap size={12} />
                           {e.energy !== null ? `${e.energy}/10` : "—"}
                         </span>
-                        <span title="Mood">
+                        <span className="flex items-center gap-1" title="Mood">
                           <Smile size={12} />
                           {e.mood !== null ? `${e.mood}/10` : "—"}
                         </span>
                         {e.weight !== null && (
-                          <span title="Weight">
+                          <span className="flex items-center gap-1" title="Weight">
                             <Weight size={12} />
                             {e.weight}kg
                           </span>
                         )}
-                        <span title="Nutrition Adherence">
+                        <span className="flex items-center gap-1" title="Nutrition Adherence">
                           <Utensils size={12} />
                           {e.nutrition !== null ? `${e.nutrition}/5` : "—"}
                         </span>
-                        <span title="Routine Score">
+                        <span className="flex items-center gap-1" title="Routine Score">
                           <CheckCircle2 size={12} />
                           {score !== null ? `${score}%` : "—"}
                         </span>
                       </div>
 
                       {e.winToday && (
-                        <span >
+                        <span className="text-caption italic truncate flex-1">
                           &ldquo;{e.winToday}&rdquo;
                         </span>
                       )}
 
-                      <span >
-                        →
-                      </span>
+                      <span className="text-zinc-600 shrink-0">→</span>
                     </Link>
 
                     <button
                       onClick={() => setDeleteId(e.id)}
-
                       title="Delete Entry"
+                      className="p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors shrink-0"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -212,8 +220,8 @@ export function JournalHistoryView({ entries }: Props) {
 
       {hasMore && (
         <button
-          onClick={() => setVisibleGroups(prev => prev + 5)}
-
+          onClick={() => setVisibleGroups((prev) => prev + 5)}
+          className="flex items-center gap-1 mx-auto text-xs font-semibold text-accent hover:opacity-80 transition-opacity"
         >
           <ChevronDown size={14} />
           Show More Groups
