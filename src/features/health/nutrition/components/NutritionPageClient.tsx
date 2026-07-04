@@ -5,7 +5,6 @@ import { DayPlan } from "./DayPlan";
 import { WEEK_PLAN } from "../data";
 
 function todayIndex() {
-
   return (new Date().getDay() + 6) % 7;
 }
 
@@ -15,21 +14,22 @@ export function NutritionPageClient() {
   const day = WEEK_PLAN[activeIndex];
 
   return (
-    <div >
-      {}
-      <div >
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit overflow-x-auto">
         {WEEK_PLAN.map((d, i) => {
           const isActive = i === activeIndex;
           const isToday = i === todayIndex();
-          return (
-            <button
-              key={d.weekday}
-              onClick={() => setActiveIndex(i)}
+          const dayButtonClass = `relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 shrink-0 ${
+            isActive
+              ? "bg-accent-nutrition text-white"
+              : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+          }`;
 
-            >
+          return (
+            <button key={d.weekday} onClick={() => setActiveIndex(i)} className={dayButtonClass}>
               {d.labelShort}
               {isToday && !isActive && (
-                <span />
+                <span className="w-1 h-1 rounded-full bg-accent-nutrition" />
               )}
             </button>
           );

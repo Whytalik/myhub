@@ -45,7 +45,9 @@ const TOTAL_ITEMS = SHOPPING_LIST.reduce((sum, category) => sum + category.items
 export function ShoppingList() {
   const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const checkedCount = Object.entries(checked).filter(([id, val]) => val && !id.includes("-opt-")).length;
+  const checkedCount = Object.entries(checked).filter(
+    ([id, val]) => val && !id.includes("-opt-"),
+  ).length;
   const progress = TOTAL_ITEMS > 0 ? Math.round((checkedCount / TOTAL_ITEMS) * 100) : 0;
 
   const totalCost = SHOPPING_LIST.reduce((sum, category) => {
@@ -53,9 +55,12 @@ export function ShoppingList() {
   }, 0);
 
   const checkedCost = SHOPPING_LIST.reduce((sum, category) => {
-    return sum + category.items.reduce((itemSum, item) => {
-      return itemSum + (checked[item.id] ? (item.price || 0) : 0);
-    }, 0);
+    return (
+      sum +
+      category.items.reduce((itemSum, item) => {
+        return itemSum + (checked[item.id] ? item.price || 0 : 0);
+      }, 0)
+    );
   }, 0);
 
   const remainingCost = totalCost - checkedCost;
@@ -64,112 +69,104 @@ export function ShoppingList() {
   const reset = () => write({});
 
   return (
-    <div >
-      {}
-      <div >
-        <div >
-          <span >
+    <div className="flex flex-col gap-4">
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <span className="text-panel-title">
             {checkedCount} / {TOTAL_ITEMS} куплено
           </span>
           <button
             onClick={reset}
-
+            className="flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
           >
             <RotateCcw size={12} />
             Скинути
           </button>
         </div>
-        <div >
+        <div className="h-2 rounded-full bg-white/5 overflow-hidden">
           <div
-
+            className="h-full bg-accent-nutrition rounded-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
           />
         </div>
-        <div >
-          <div >
-            <span >
-              Бюджет: <span >{totalCost} ₴</span>
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-3 text-caption">
+            <span>
+              Бюджет: <span className="font-mono text-zinc-200">{totalCost} ₴</span>
             </span>
             {checkedCost > 0 && (
-              <span >
-                Куплено: <span >{checkedCost} ₴</span>
+              <span>
+                Куплено: <span className="font-mono text-accent-nutrition">{checkedCost} ₴</span>
               </span>
             )}
           </div>
           {remainingCost > 0 && remainingCost !== totalCost && (
-            <span >
-              Залишилось: <span >{remainingCost} ₴</span>
+            <span className="text-caption">
+              Залишилось: <span className="font-mono text-zinc-200">{remainingCost} ₴</span>
             </span>
           )}
         </div>
       </div>
 
-      {}
-      <div >
+      <div className="flex flex-col gap-4">
         {SHOPPING_LIST.map((category) => (
-          <div
-            key={category.id}
-
-          >
-            <span >
-              {category.title}
-            </span>
-            <ul >
+          <div key={category.id} className="glass-card p-4 flex flex-col gap-2">
+            <span className="text-label">{category.title}</span>
+            <ul className="flex flex-col gap-1">
               {category.items.map((item) => {
                 const isChecked = !!checked[item.id];
+                const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
+                  isChecked
+                    ? "bg-accent-nutrition border-accent-nutrition text-white"
+                    : "border-white/[0.15]"
+                }`;
+                const nameClass = `text-sm ${isChecked ? "text-zinc-500 line-through" : "text-zinc-200"}`;
+
                 return (
-                  <li key={item.id} >
+                  <li key={item.id} className="flex flex-col gap-1">
                     <button
                       onClick={() => toggle(item.id)}
-
+                      className="flex items-start gap-2.5 py-1.5 text-left w-full"
                     >
-                      <span
-
-                      >
+                      <span className={checkboxClass}>
                         {isChecked && <Check size={11} strokeWidth={3} />}
                       </span>
-                      <span >
-                        <span
-
-                        >
+                      <span className="flex flex-col min-w-0">
+                        <span className={nameClass}>
                           {item.name}
-                          {item.qty && (
-                            <span > — {item.qty}</span>
-                          )}
+                          {item.qty && <span className="text-zinc-500"> — {item.qty}</span>}
                           {item.price && (
-                            <span >
+                            <span className="font-mono text-xs text-zinc-500 ml-1.5">
                               ~{item.price} ₴
                             </span>
                           )}
                         </span>
-                        {item.note && (
-                          <span >
-                            {item.note}
-                          </span>
-                        )}
+                        {item.note && <span className="text-caption">{item.note}</span>}
                       </span>
                     </button>
 
                     {item.options && item.options.length > 0 && (
-                      <ul >
+                      <ul className="flex flex-col gap-1 pl-6">
                         {item.options.map((option, idx) => {
                           const optionId = `${item.id}-opt-${idx}`;
                           const isOptChecked = !!checked[optionId];
+                          const optCheckboxClass = `flex items-center justify-center w-3.5 h-3.5 rounded border shrink-0 transition-colors duration-150 ${
+                            isOptChecked
+                              ? "bg-accent-nutrition border-accent-nutrition text-white"
+                              : "border-white/[0.15]"
+                          }`;
+                          const optTextClass = `text-xs ${isOptChecked ? "text-zinc-500 line-through" : "text-zinc-400"}`;
+
                           return (
                             <li key={idx}>
                               <button
                                 onClick={() => toggle(optionId)}
-
+                                className="flex items-center gap-2 py-1 text-left"
                               >
-                                <span
-
-                                >
+                                <span className={optCheckboxClass}>
                                   {isOptChecked && <Check size={9} strokeWidth={3.5} />}
                                 </span>
-                                <span
-
-                                >
-                                  {option}
-                                </span>
+                                <span className={optTextClass}>{option}</span>
                               </button>
                             </li>
                           );
