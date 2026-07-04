@@ -87,15 +87,17 @@ export function SessionClient({ session }: SessionClientProps) {
     });
   };
 
-  return (
-    <div >
-      <div >
-        <span
+  const statusClass = `text-[10px] font-mono font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-md ${
+    isCompleted ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+  }`;
+  const numberInputClass = "w-16 text-center";
+  const notesInputClass = "flex-1 min-w-[100px]";
 
-        >
-          {isCompleted ? "Completed" : "In progress"}
-        </span>
-        <div >
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
+        <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={() => router.push("/health/training")}>
             Back to training
           </Button>
@@ -108,160 +110,166 @@ export function SessionClient({ session }: SessionClientProps) {
       </div>
 
       {groups.length === 0 ? (
-        <div >
-          <div >
+        <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent-training/10 text-accent-training">
             <Dumbbell size={32} />
           </div>
-          <p >No sets in this session</p>
+          <p className="text-panel-title">No sets in this session</p>
         </div>
       ) : (
-        <div >
+        <div className="flex flex-col gap-4">
           {groups.map((group) => {
             const isTimeBased = group.sets.every(
               (s) => s.durationSeconds != null || s.distanceMeters != null,
             );
+
             return (
-              <div
-                key={group.exerciseId}
-
-              >
-                <div >
-                  <span >{group.exerciseName}</span>
+              <div key={group.exerciseId} className="glass-card p-4 flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-panel-title">{group.exerciseName}</span>
                 </div>
-                <div >
-                  {group.sets.map((log) => (
-                    <div key={log.id} >
-                      <button
-                        onClick={() => toggleCompleted(log.id)}
-                        disabled={isCompleted}
+                <div className="flex flex-col gap-2">
+                  {group.sets.map((log) => {
+                    const setToggleClass = `flex items-center justify-center w-7 h-7 rounded-lg border shrink-0 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      log.completed
+                        ? "bg-emerald-500 border-emerald-500 text-white"
+                        : "border-white/[0.12] text-zinc-500 hover:bg-white/5"
+                    }`;
 
-                      >
-                        <Check size={14} />
-                      </button>
-                      <span >
-                        {log.setNumber}
-                      </span>
+                    return (
+                      <div key={log.id} className="flex items-center gap-2 flex-wrap">
+                        <button
+                          onClick={() => toggleCompleted(log.id)}
+                          disabled={isCompleted}
+                          className={setToggleClass}
+                        >
+                          <Check size={14} />
+                        </button>
+                        <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
+                          {log.setNumber}
+                        </span>
 
-                      {isTimeBased ? (
-                        <>
-                          <Input
-                            type="number"
-                            min={0}
-                            placeholder="sec"
+                        {isTimeBased ? (
+                          <>
+                            <Input
+                              type="number"
+                              min={0}
+                              placeholder="sec"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={log.durationSeconds ?? ""}
+                              onChange={(e) =>
+                                updateField(
+                                  log.id,
+                                  "durationSeconds",
+                                  e.target.value === "" ? null : Number(e.target.value),
+                                )
+                              }
+                              onBlur={() => persist(log.id)}
+                            />
+                            <Input
+                              type="number"
+                              min={0}
+                              step="0.1"
+                              placeholder="m"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={log.distanceMeters ?? ""}
+                              onChange={(e) =>
+                                updateField(
+                                  log.id,
+                                  "distanceMeters",
+                                  e.target.value === "" ? null : Number(e.target.value),
+                                )
+                              }
+                              onBlur={() => persist(log.id)}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Input
+                              type="number"
+                              min={0}
+                              placeholder="reps"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={log.reps ?? ""}
+                              onChange={(e) =>
+                                updateField(
+                                  log.id,
+                                  "reps",
+                                  e.target.value === "" ? null : Number(e.target.value),
+                                )
+                              }
+                              onBlur={() => persist(log.id)}
+                            />
+                            <Input
+                              type="number"
+                              min={0}
+                              step="0.5"
+                              placeholder="kg"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={log.weight ?? ""}
+                              onChange={(e) =>
+                                updateField(
+                                  log.id,
+                                  "weight",
+                                  e.target.value === "" ? null : Number(e.target.value),
+                                )
+                              }
+                              onBlur={() => persist(log.id)}
+                            />
+                          </>
+                        )}
 
-                            disabled={isCompleted}
-                            value={log.durationSeconds ?? ""}
-                            onChange={(e) =>
-                              updateField(
-                                log.id,
-                                "durationSeconds",
-                                e.target.value === "" ? null : Number(e.target.value),
-                              )
-                            }
-                            onBlur={() => persist(log.id)}
-                          />
-                          <Input
-                            type="number"
-                            min={0}
-                            step="0.1"
-                            placeholder="m"
+                        <Input
+                          type="number"
+                          min={1}
+                          max={10}
+                          step="0.5"
+                          placeholder="RPE"
+                          className={numberInputClass}
+                          disabled={isCompleted}
+                          value={log.rpe ?? ""}
+                          onChange={(e) =>
+                            updateField(
+                              log.id,
+                              "rpe",
+                              e.target.value === "" ? null : Number(e.target.value),
+                            )
+                          }
+                          onBlur={() => persist(log.id)}
+                        />
 
-                            disabled={isCompleted}
-                            value={log.distanceMeters ?? ""}
-                            onChange={(e) =>
-                              updateField(
-                                log.id,
-                                "distanceMeters",
-                                e.target.value === "" ? null : Number(e.target.value),
-                              )
-                            }
-                            onBlur={() => persist(log.id)}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Input
-                            type="number"
-                            min={0}
-                            placeholder="reps"
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="rest s"
+                          className={numberInputClass}
+                          disabled={isCompleted}
+                          value={log.restSeconds ?? ""}
+                          onChange={(e) =>
+                            updateField(
+                              log.id,
+                              "restSeconds",
+                              e.target.value === "" ? null : Number(e.target.value),
+                            )
+                          }
+                          onBlur={() => persist(log.id)}
+                        />
 
-                            disabled={isCompleted}
-                            value={log.reps ?? ""}
-                            onChange={(e) =>
-                              updateField(
-                                log.id,
-                                "reps",
-                                e.target.value === "" ? null : Number(e.target.value),
-                              )
-                            }
-                            onBlur={() => persist(log.id)}
-                          />
-                          <Input
-                            type="number"
-                            min={0}
-                            step="0.5"
-                            placeholder="kg"
-
-                            disabled={isCompleted}
-                            value={log.weight ?? ""}
-                            onChange={(e) =>
-                              updateField(
-                                log.id,
-                                "weight",
-                                e.target.value === "" ? null : Number(e.target.value),
-                              )
-                            }
-                            onBlur={() => persist(log.id)}
-                          />
-                        </>
-                      )}
-
-                      <Input
-                        type="number"
-                        min={1}
-                        max={10}
-                        step="0.5"
-                        placeholder="RPE"
-
-                        disabled={isCompleted}
-                        value={log.rpe ?? ""}
-                        onChange={(e) =>
-                          updateField(
-                            log.id,
-                            "rpe",
-                            e.target.value === "" ? null : Number(e.target.value),
-                          )
-                        }
-                        onBlur={() => persist(log.id)}
-                      />
-
-                      <Input
-                        type="number"
-                        min={0}
-                        placeholder="rest s"
-
-                        disabled={isCompleted}
-                        value={log.restSeconds ?? ""}
-                        onChange={(e) =>
-                          updateField(
-                            log.id,
-                            "restSeconds",
-                            e.target.value === "" ? null : Number(e.target.value),
-                          )
-                        }
-                        onBlur={() => persist(log.id)}
-                      />
-
-                      <Input
-                        placeholder="notes"
-
-                        disabled={isCompleted}
-                        value={log.notes ?? ""}
-                        onChange={(e) => updateField(log.id, "notes", e.target.value)}
-                        onBlur={() => persist(log.id)}
-                      />
-                    </div>
-                  ))}
+                        <Input
+                          placeholder="notes"
+                          className={notesInputClass}
+                          disabled={isCompleted}
+                          value={log.notes ?? ""}
+                          onChange={(e) => updateField(log.id, "notes", e.target.value)}
+                          onBlur={() => persist(log.id)}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             );

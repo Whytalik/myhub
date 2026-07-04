@@ -108,7 +108,7 @@ export function DayExerciseFormDialog({
       title={isEditing ? "Edit Prescription" : "Add Exercise to Day"}
       description="Set the sets/reps/weight target for this exercise in this day."
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -118,7 +118,7 @@ export function DayExerciseFormDialog({
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Exercise" error={errors.exerciseId?.message} required>
           <Controller
             name="exerciseId"
@@ -135,7 +135,7 @@ export function DayExerciseFormDialog({
           />
         </FormField>
 
-        <div >
+        <div className="grid grid-cols-2 gap-4">
           <FormField label="Sets">
             <Input type="number" min={1} max={20} {...register("sets", { valueAsNumber: true })} />
           </FormField>
@@ -160,7 +160,7 @@ export function DayExerciseFormDialog({
           )}
         </div>
 
-        <div >
+        <div className="grid grid-cols-2 gap-4">
           <FormField label={showDurationFields ? "Target distance (m)" : "Target weight (kg)"}>
             <Input
               type="number"

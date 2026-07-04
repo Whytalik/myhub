@@ -59,7 +59,7 @@ export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFo
       title={isEditing ? "Edit Plan" : "New Training Plan"}
       description="A plan groups training days together (e.g. Push / Pull / Legs)."
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -69,7 +69,7 @@ export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFo
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Plan name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Push Pull Legs" autoFocus />
         </FormField>

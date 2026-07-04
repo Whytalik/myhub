@@ -65,7 +65,7 @@ export function TrainingDayFormDialog({
       title={isEditing ? "Edit Training Day" : "New Training Day"}
       description="A day is a workout template (e.g. Push A) — add exercises to it next."
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -75,7 +75,7 @@ export function TrainingDayFormDialog({
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Day name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Push A" autoFocus />
         </FormField>

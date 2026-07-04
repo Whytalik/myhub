@@ -75,7 +75,7 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
       title={isEditing ? "Edit Exercise" : "New Exercise"}
       description="Add a reusable exercise to your library."
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -85,7 +85,7 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Exercise name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Barbell squat" autoFocus />
         </FormField>
@@ -117,17 +117,11 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
         </FormField>
 
         {isEditing && (
-          <label >
-            <Checkbox
-
-              {...register("archived")}
-
-            />
-            <div >
-              <span >Archive Exercise</span>
-              <span >
-                Hide from the library without deleting
-              </span>
+          <label className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] cursor-pointer">
+            <Checkbox {...register("archived")} />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-zinc-200">Archive Exercise</span>
+              <span className="text-caption">Hide from the library without deleting</span>
             </div>
           </label>
         )}
