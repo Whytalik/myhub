@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  Activity,
   BookText,
   CalendarDays,
   CheckCircle2,
@@ -45,39 +46,17 @@ export const DOMAINS: Domain[] = [
     accent: "#6fbfbf",
     spaces: [
       {
-        label: "Journal",
-        icon: BookText,
+        label: "Operation Space",
+        icon: Activity,
         accent: "#6fbfbf",
         href: "/life/journal",
-        pages: [{ href: "/life/journal", label: "Journal", icon: BookText }],
-      },
-      {
-        label: "Habits",
-        icon: Zap,
-        accent: "#6fbfbf",
-        href: "/life/habits",
-        pages: [{ href: "/life/habits", label: "Habits", icon: Zap }],
-      },
-      {
-        label: "Tasks",
-        icon: CheckCircle2,
-        accent: "#6fbfbf",
-        href: "/life/tasks",
-        pages: [{ href: "/life/tasks", label: "Tasks", icon: CheckCircle2 }],
-      },
-      {
-        label: "Week",
-        icon: CalendarDays,
-        accent: "#6fbfbf",
-        href: "/life/week",
-        pages: [{ href: "/life/week", label: "Week", icon: CalendarDays }],
-      },
-      {
-        label: "Review",
-        icon: LineChart,
-        accent: "#6fbfbf",
-        href: "/life/review",
-        pages: [{ href: "/life/review", label: "Review", icon: LineChart }],
+        pages: [
+          { href: "/life/journal", label: "Journal", icon: BookText },
+          { href: "/life/habits", label: "Habits", icon: Zap },
+          { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
+          { href: "/life/week", label: "Week", icon: CalendarDays },
+          { href: "/life/review", label: "Review", icon: LineChart },
+        ],
       },
     ],
   },

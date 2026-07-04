@@ -7,7 +7,7 @@ import { SettingsModal } from "./settings-modal";
 import { LogOut, Settings2, Sparkles, Pin, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getActiveDomain } from "@/lib/domains";
 
 const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
@@ -36,16 +36,35 @@ export function Sidebar({ user }: SidebarProps) {
     setOpenSpaces(new Set(domain.spaces.map((s) => s.label)));
   }
 
-  const isPageActive = (page: { href: string }) =>
+  const matchesPage = (page: { href: string }) =>
     pathname === page.href ||
     pathname.startsWith(page.href + "/") ||
     (page.href === "/life/journal" && pathname.startsWith("/life/history"));
 
-  // Auto-open space containing the active page
-  const targetSpace = domain.spaces.find((s) => s.pages.some(isPageActive));
-  if (targetSpace && !openSpaces.has(targetSpace.label)) {
-    setOpenSpaces((prev) => new Set([...prev, targetSpace.label]));
-  }
+  // Multiple pages can match a pathname (e.g. "/health/nutrition" is a
+  // prefix of "/health/nutrition/meal-prep") — only the most specific
+  // (longest href) match should be highlighted as active.
+  const allPages = domain.spaces.flatMap((s) => s.pages);
+  const activePage = allPages
+    .filter(matchesPage)
+    .reduce<(typeof allPages)[number] | undefined>(
+      (best, page) => (!best || page.href.length > best.href.length ? page : best),
+      undefined,
+    );
+  const isPageActive = (page: { href: string }) => activePage?.href === page.href;
+
+  // Auto-open the space containing the active page on navigation only —
+  // must not re-run on every render or a manual collapse click gets
+  // immediately reverted since the active page's space is still active.
+  useEffect(() => {
+    const targetSpace = domain.spaces.find((s) => s.pages.some((p) => p.href === activePage?.href));
+    if (targetSpace) {
+      setOpenSpaces((prev) =>
+        prev.has(targetSpace.label) ? prev : new Set([...prev, targetSpace.label]),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
 
