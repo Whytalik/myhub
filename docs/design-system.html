@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cyber-Craft Acrylic — Design System</title>
   
-  <!-- Tailwind CSS Play CDN (loaded with custom configurations) -->
+  <!-- Tailwind CSS Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <script>
@@ -18,9 +18,9 @@
             mono: ['Geist Mono', 'JetBrains Mono', 'monospace'],
           },
           colors: {
-            canvas: '#08080a',
+            canvas: '#050507',
             surface: '#121214',
-            elevated: '#1c1c1f',
+            elevated: '#1a1a1e',
             hoverBg: '#232327',
             strokeColor: 'rgba(255, 255, 255, 0.08)',
             accent: {
@@ -36,7 +36,6 @@
   </script>
 
   <style>
-    /* Base theme variables */
     :root {
       --current-accent: #007aff;
       --current-accent-muted: rgba(0, 122, 255, 0.1);
@@ -44,28 +43,54 @@
     }
 
     body {
-      background-color: #08080a;
+      background-color: #050507;
       color: #e4e4e7;
     }
 
-    /* Transition for accent switching */
     .accent-transition {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Frost Glassmorphism wrapper */
-    .glass-acrylic {
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(18, 18, 20, 0.5);
+    /* Premium Frosted Glassmorphism Styles */
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(15, 15, 17, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-panel:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .glass-elevated {
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      background: rgba(25, 25, 28, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    }
+
+    .glass-input {
+      background: rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: all 0.15s ease-in-out;
     }
 
-    .glass-acrylic:hover {
-      border-color: rgba(255, 255, 255, 0.15);
+    .glass-input:focus {
+      border-color: var(--current-accent);
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 0 2px var(--current-accent-muted);
     }
 
-    /* Custom scrollbar */
+    /* Custom Checkbox styles */
+    .custom-check:checked + .custom-check-box {
+      background-color: var(--current-accent);
+      border-color: var(--current-accent);
+    }
+
     ::-webkit-scrollbar {
       display: none;
     }
@@ -73,29 +98,30 @@
 </head>
 <body class="font-sans antialiased overflow-y-scroll pb-24 selection:bg-[var(--current-accent-muted)] selection:text-[var(--current-accent)]">
 
-  <!-- Interactive Background Mesh -->
+  <!-- Floating Background Mesh Elements -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
     <div id="glow-mesh-1" class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[var(--current-accent-muted)] opacity-30 blur-[120px] accent-transition"></div>
     <div id="glow-mesh-2" class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/5 opacity-20 blur-[120px]"></div>
+    <div id="glow-mesh-3" class="absolute top-[40%] right-[30%] w-[20%] h-[20%] rounded-full bg-[var(--current-accent-muted)] opacity-10 blur-[80px] accent-transition"></div>
   </div>
 
   <div class="relative max-w-6xl mx-auto px-6 pt-16 z-10">
     
-    <!-- Top Header -->
+    <!-- Header Section -->
     <header class="flex flex-col md:flex-row md:items-center justify-between pb-12 border-b border-strokeColor mb-12">
       <div>
         <div class="flex items-center gap-2 mb-2">
-          <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design system v1.0</span>
+          <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design system v1.1</span>
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
         <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Cyber-Craft Acrylic</h1>
-        <p class="text-zinc-400 mt-2 max-w-xl">
-          A dark minimalist design system. Combines the high-contrast layout of Linear and Vercel with macOS blur aesthetics and terminal-precise data alignment.
+        <p class="text-zinc-400 mt-2 max-w-xl text-sm">
+          A premium glassmorphic dark-first design system. Cards, dropdowns, and widgets render as frosted glass surfaces on a dark slate canvas.
         </p>
       </div>
 
-      <!-- Space Selector Widget -->
-      <div class="mt-6 md:mt-0 glass-acrylic rounded-2xl p-2 flex gap-1 self-start md:self-auto">
+      <!-- Spaces switcher widget -->
+      <div class="mt-6 md:mt-0 glass-panel rounded-2xl p-2 flex gap-1 self-start md:self-auto">
         <button onclick="setSpace('general')" id="btn-general" class="px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-bold accent-transition bg-[var(--current-accent)] text-black">
           General
         </button>
@@ -110,68 +136,67 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       
-      <!-- Sticky Navigation Sidebar -->
+      <!-- Left sidebar -->
       <nav class="lg:col-span-3 lg:sticky lg:top-8 h-fit hidden lg:flex flex-col gap-2">
-        <span class="font-mono text-xs uppercase tracking-widest text-zinc-500 font-bold mb-3">Contents</span>
-        <a href="#section-colors" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Color Tokens</a>
-        <a href="#section-typography" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Typography Scale</a>
-        <a href="#section-acrylic" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Frosted Acrylic Effect</a>
+        <span class="font-mono text-xs uppercase tracking-widest text-zinc-500 font-bold mb-3">Sections</span>
+        <a href="#section-colors" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Color & Acrylic</a>
+        <a href="#section-typography" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Typography</a>
+        <a href="#section-inputs" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">All Inputs Showcase</a>
         <a href="#section-buttons" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Buttons</a>
-        <a href="#section-inputs" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Form Inputs</a>
-        <a href="#section-layout" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Cards & Badges</a>
+        <a href="#section-cards" class="text-sm text-zinc-400 hover:text-[var(--current-accent)] accent-transition py-1.5 border-l-2 border-transparent hover:border-[var(--current-accent)] pl-3">Cards & Overlays</a>
       </nav>
 
-      <!-- Main Content Areas -->
+      <!-- Main viewport -->
       <main class="lg:col-span-9 flex flex-col gap-16">
 
-        <!-- 1. Color Tokens -->
+        <!-- 1. Colors & Glass -->
         <section id="section-colors" class="scroll-mt-8">
           <div class="flex items-center gap-2 mb-6">
             <span class="font-mono text-[var(--current-accent)] font-bold">01.</span>
-            <h2 class="text-xl font-bold text-white tracking-tight">Color Tokens</h2>
+            <h2 class="text-xl font-bold text-white tracking-tight">Colors & Acrylic Hierarchy</h2>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             
-            <div class="bg-surface border border-strokeColor rounded-2xl p-4 flex items-center justify-between">
+            <div class="glass-panel rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-[#08080a] border border-strokeColor"></div>
+                <div class="w-12 h-12 rounded-lg bg-[#050507] border border-strokeColor"></div>
                 <div>
                   <h3 class="font-bold text-sm text-white">bg-canvas</h3>
-                  <p class="text-xs text-zinc-500">Primary background</p>
+                  <p class="text-xs text-zinc-500">Solid deepest dark</p>
                 </div>
               </div>
-              <span class="font-mono text-xs text-zinc-400">#08080a</span>
+              <span class="font-mono text-xs text-zinc-400">#050507</span>
             </div>
 
-            <div class="bg-surface border border-strokeColor rounded-2xl p-4 flex items-center justify-between">
+            <div class="glass-panel rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-[#121214] border border-strokeColor"></div>
+                <div class="w-12 h-12 rounded-lg glass-panel"></div>
                 <div>
-                  <h3 class="font-bold text-sm text-white">bg-surface</h3>
-                  <p class="text-xs text-zinc-500">Panels and cards</p>
+                  <h3 class="font-bold text-sm text-white">glass-card</h3>
+                  <p class="text-xs text-zinc-500">Frosted glass surface</p>
                 </div>
               </div>
-              <span class="font-mono text-xs text-zinc-400">#121214</span>
+              <span class="font-mono text-xs text-zinc-400">bg-surface/45</span>
             </div>
 
-            <div class="bg-surface border border-strokeColor rounded-2xl p-4 flex items-center justify-between">
+            <div class="glass-panel rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-[#1c1c1f] border border-strokeColor"></div>
+                <div class="w-12 h-12 rounded-lg glass-elevated"></div>
                 <div>
-                  <h3 class="font-bold text-sm text-white">bg-elevated</h3>
-                  <p class="text-xs text-zinc-500">Dropdowns & modals</p>
+                  <h3 class="font-bold text-sm text-white">glass-elevated</h3>
+                  <p class="text-xs text-zinc-500">Overlay frosted glass</p>
                 </div>
               </div>
-              <span class="font-mono text-xs text-zinc-400">#1c1c1f</span>
+              <span class="font-mono text-xs text-zinc-400">bg-elevated/75</span>
             </div>
 
-            <div class="bg-surface border border-strokeColor rounded-2xl p-4 flex items-center justify-between">
+            <div class="glass-panel rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-4">
                 <div id="accent-preview-box" class="w-12 h-12 rounded-lg bg-[var(--current-accent)] accent-transition"></div>
                 <div>
                   <h3 class="font-bold text-sm text-white">color-accent</h3>
-                  <p class="text-xs text-zinc-500">Dynamic theme color</p>
+                  <p class="text-xs text-zinc-500">Active context accent</p>
                 </div>
               </div>
               <span id="accent-hex-value" class="font-mono text-xs text-zinc-400">#007aff</span>
@@ -187,25 +212,25 @@
             <h2 class="text-xl font-bold text-white tracking-tight">Typography Scale</h2>
           </div>
 
-          <div class="bg-surface border border-strokeColor rounded-2xl p-6 flex flex-col gap-6">
+          <div class="glass-panel rounded-2xl p-6 flex flex-col gap-6">
             <div>
               <span class="font-mono text-[10px] uppercase text-zinc-500 font-bold block mb-1">text-page-title (24px - Bold)</span>
               <h2 class="text-2xl font-bold text-white tracking-tight">Training History and Sessions</h2>
             </div>
 
-            <div class="border-t border-strokeColor/50 pt-4">
+            <div class="border-t border-strokeColor pt-4">
               <span class="font-mono text-[10px] uppercase text-zinc-500 font-bold block mb-1">text-panel-title (18px - SemiBold)</span>
               <h3 class="text-lg font-semibold text-zinc-200">Well-being Tracker Indicators</h3>
             </div>
 
-            <div class="border-t border-strokeColor/50 pt-4">
+            <div class="border-t border-strokeColor pt-4">
               <span class="font-mono text-[10px] uppercase text-zinc-500 font-bold block mb-1">text-body (15px - Regular)</span>
               <p class="text-[15px] text-zinc-400 leading-relaxed">
                 Felt a noticeable strength increase during weighted pull-ups today. Aiming for more sleep tomorrow.
               </p>
             </div>
 
-            <div class="border-t border-strokeColor/50 pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="border-t border-strokeColor pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <span class="font-mono text-[10px] uppercase text-zinc-500 font-bold block mb-1">text-label (12px - Monospace - Upper)</span>
                 <span class="font-mono text-xs uppercase tracking-wider font-bold text-zinc-400">active_session</span>
@@ -218,28 +243,177 @@
           </div>
         </section>
 
-        <!-- 3. Acrylic (Glassmorphism) -->
-        <section id="section-acrylic" class="scroll-mt-8">
+        <!-- 3. ALL INPUTS SHOWCASE -->
+        <section id="section-inputs" class="scroll-mt-8">
           <div class="flex items-center gap-2 mb-6">
             <span class="font-mono text-[var(--current-accent)] font-bold">03.</span>
-            <h2 class="text-xl font-bold text-white tracking-tight">Frosted Acrylic Effect (macOS Acrylic)</h2>
+            <h2 class="text-xl font-bold text-white tracking-tight">All Inputs Showcase</h2>
           </div>
 
-          <!-- Decorative gradient blob under glass card to show blur -->
-          <div class="relative p-8 bg-zinc-950 rounded-3xl border border-strokeColor overflow-hidden">
-            <div class="absolute top-[40%] left-[30%] w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 opacity-60 blur-2xl"></div>
-            <div class="absolute bottom-[20%] right-[20%] w-24 h-24 rounded-full bg-orange-500 opacity-40 blur-xl"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <div class="relative glass-acrylic rounded-2xl p-6 max-w-md mx-auto shadow-2xl transition-all duration-300">
-              <div class="flex items-center justify-between mb-4">
-                <span class="font-mono text-[10px] uppercase tracking-wider text-[var(--current-accent)] font-bold">acrylic_modal</span>
-                <span class="w-2.5 h-2.5 rounded-full bg-white/20"></span>
+            <!-- Group A: Core Inputs -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col gap-5">
+              <span class="font-mono text-xs text-[var(--current-accent)] font-bold block border-b border-strokeColor pb-2 uppercase tracking-wide">Core Inputs</span>
+              
+              <!-- 1. Text Input -->
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">1. Text Input</label>
+                <input type="text" placeholder="Enter task title..." class="h-10 w-full rounded-lg glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none">
               </div>
-              <h3 class="text-lg font-bold text-white mb-2">Navigation Sidebar or Modal Dialog</h3>
-              <p class="text-sm text-zinc-300 leading-relaxed">
-                Acrylic glass effects are used selectively. A 16px background blur (`backdrop-blur-md`) refracts underlying layers, blending them into a smooth gradient and focusing attention on the current task.
-              </p>
+
+              <!-- 2. Number Input -->
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">2. Number Input</label>
+                <input type="number" value="75.5" class="h-10 w-full rounded-lg glass-input px-3 py-2 text-sm font-mono text-right text-zinc-200 focus:outline-none">
+              </div>
+
+              <!-- 3. Textarea -->
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">3. Textarea</label>
+                <textarea rows="3" placeholder="Enter journal description..." class="w-full rounded-lg glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none resize-none leading-relaxed"></textarea>
+              </div>
+
+              <!-- 4. Checkbox -->
+              <div class="flex items-center gap-3 py-1">
+                <div class="relative flex items-center justify-center">
+                  <input type="checkbox" id="check-sh" class="custom-check peer opacity-0 absolute w-5 h-5 cursor-pointer">
+                  <div class="custom-check-box w-5 h-5 rounded border border-white/10 bg-black/45 flex items-center justify-center transition-all duration-150 pointer-events-none">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  </div>
+                </div>
+                <label for="check-sh" class="text-xs font-semibold text-zinc-300 select-none cursor-pointer uppercase tracking-wide">4. Custom Checkbox</label>
+              </div>
             </div>
+
+            <!-- Group B: Selectors & Overlays -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col gap-5">
+              <span class="font-mono text-xs text-[var(--current-accent)] font-bold block border-b border-strokeColor pb-2 uppercase tracking-wide">Selectors & Dropdowns</span>
+
+              <!-- 5. Standard Select -->
+              <div class="flex flex-col gap-1.5 relative">
+                <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">5. Select (Dropdown)</label>
+                <select class="h-10 w-full rounded-lg glass-input px-3 py-2 text-sm text-zinc-200 focus:outline-none appearance-none cursor-pointer">
+                  <option class="bg-zinc-950 text-zinc-300">LOW PRIORITY</option>
+                  <option class="bg-zinc-950 text-zinc-300">MEDIUM PRIORITY</option>
+                  <option class="bg-zinc-950 text-zinc-300">HIGH PRIORITY</option>
+                </select>
+                <div class="absolute right-3 top-[32px] pointer-events-none">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+              </div>
+
+              <!-- 6. Custom Select (Combobox overlay preview) -->
+              <div class="flex flex-col gap-1.5 relative">
+                <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">6. Custom Select (Combobox)</label>
+                <div class="h-10 w-full rounded-lg glass-input px-3 py-2 text-sm text-zinc-300 flex items-center justify-between cursor-pointer border-[var(--current-accent-border)]">
+                  <span>Search food items...</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                
+                <!-- Popover mock -->
+                <div class="glass-elevated rounded-xl p-2 flex flex-col gap-0.5 mt-1 shadow-2xl z-20">
+                  <input type="text" value="Oat" class="h-8 w-full rounded bg-black/60 border border-white/5 px-2 py-1 text-xs text-white focus:outline-none mb-1.5">
+                  <div class="px-2 py-1.5 rounded text-xs bg-[var(--current-accent-muted)] text-[var(--current-accent)] font-semibold cursor-pointer">Oatmeal (100g)</div>
+                  <div class="px-2 py-1.5 rounded text-xs text-zinc-400 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">Oat Bran (100g)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group C: Date & Time Pickers -->
+            <div class="glass-panel rounded-2xl p-6 md:col-span-2 flex flex-col gap-6">
+              <span class="font-mono text-xs text-[var(--current-accent)] font-bold block border-b border-strokeColor pb-2 uppercase tracking-wide">Date & Time Pickers</span>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- 7. Date Picker (Calendar dropdown render) -->
+                <div class="flex flex-col gap-2">
+                  <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">7. Date Picker (Calendar Popover)</label>
+                  
+                  <div class="h-10 rounded-lg glass-input px-3 py-2 text-sm text-zinc-300 flex items-center gap-2 cursor-pointer border-[var(--current-accent-border)]">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    <span>2026-07-04</span>
+                  </div>
+
+                  <!-- Calendar mock -->
+                  <div class="glass-elevated rounded-xl p-3 mt-1 max-w-[280px]">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-xs font-bold text-white">July 2026</span>
+                      <div class="flex gap-1">
+                        <button class="p-1 rounded hover:bg-white/5 text-zinc-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+                        <button class="p-1 rounded hover:bg-white/5 text-zinc-400"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-mono text-zinc-500 mb-1">
+                      <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs">
+                      <span class="p-1 text-zinc-700">29</span><span class="p-1 text-zinc-700">30</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer">1</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer">2</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer">3</span>
+                      <!-- Selected date -->
+                      <span class="p-1 rounded bg-[var(--current-accent)] text-black font-bold cursor-pointer">4</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer">5</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer font-bold border border-[var(--current-accent)]">6</span>
+                      <span class="p-1 text-zinc-400 hover:bg-white/5 rounded cursor-pointer">7</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 8. Date Range & 9. Time Pickers -->
+                <div class="flex flex-col gap-6">
+                  
+                  <!-- 8. Date Range Picker -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">8. Date Range Picker</label>
+                    <div class="h-10 rounded-lg glass-input px-3 py-2 text-sm text-zinc-300 flex items-center justify-between cursor-pointer">
+                      <div class="flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <span>Jul 4 - Jul 10, 2026</span>
+                      </div>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </div>
+                  </div>
+
+                  <!-- 9. Time Picker (Vertical Scrolling Popup) -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">9. Time Picker (Popover)</label>
+                    
+                    <div class="h-10 rounded-lg glass-input px-3 py-2 text-sm text-zinc-300 flex items-center gap-2 cursor-pointer border-[var(--current-accent-border)]">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-zinc-500"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      <span>12:00</span>
+                    </div>
+
+                    <!-- Time picker overlay -->
+                    <div class="glass-elevated rounded-xl p-3 flex flex-col gap-3 max-w-[180px] mt-1">
+                      <div class="flex items-center justify-center gap-2">
+                        <div class="flex flex-col items-center">
+                          <button class="text-zinc-600 hover:text-white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m18 15-6-6-6 6"/></svg></button>
+                          <span class="font-mono text-base font-bold my-1">12</span>
+                          <button class="text-zinc-600 hover:text-white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg></button>
+                        </div>
+                        <span class="font-bold">:</span>
+                        <div class="flex flex-col items-center">
+                          <button class="text-zinc-600 hover:text-white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m18 15-6-6-6 6"/></svg></button>
+                          <span class="font-mono text-base font-bold my-1">00</span>
+                          <button class="text-zinc-600 hover:text-white"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg></button>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-2 gap-1 border-t border-strokeColor pt-2">
+                        <button class="px-1.5 py-1 rounded bg-[var(--current-accent-muted)] text-[var(--current-accent)] font-mono text-[9px] font-bold uppercase tracking-wider">AM</button>
+                        <button class="px-1.5 py-1 rounded hover:bg-white/5 text-zinc-500 font-mono text-[9px] font-bold uppercase tracking-wider">PM</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
         </section>
 
@@ -250,7 +424,7 @@
             <h2 class="text-xl font-bold text-white tracking-tight">Buttons</h2>
           </div>
 
-          <div class="bg-surface border border-strokeColor rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="glass-panel rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <div class="flex flex-col gap-2">
               <span class="font-mono text-[10px] text-zinc-500 uppercase">Primary button</span>
@@ -273,75 +447,26 @@
               </button>
             </div>
 
-            <div class="flex flex-col gap-2">
-              <span class="font-mono text-[10px] text-zinc-500 uppercase">Ghost Button</span>
-              <button class="w-full h-10 px-4 rounded-lg bg-transparent text-zinc-400 text-sm font-semibold hover:bg-hoverBg hover:text-white transition-all duration-150">
-                View Details
-              </button>
-            </div>
-
-            <div class="flex flex-col gap-2">
-              <span class="font-mono text-[10px] text-zinc-500 uppercase">Icon Button</span>
-              <button class="w-10 h-10 rounded-lg bg-zinc-900 border border-strokeColor flex items-center justify-center hover:bg-hoverBg transition-all duration-150">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-
           </div>
         </section>
 
-        <!-- 5. Inputs & Textarea -->
-        <section id="section-inputs" class="scroll-mt-8">
+        <!-- 5. Cards & Overlays -->
+        <section id="section-cards" class="scroll-mt-8">
           <div class="flex items-center gap-2 mb-6">
             <span class="font-mono text-[var(--current-accent)] font-bold">05.</span>
-            <h2 class="text-xl font-bold text-white tracking-tight">Form Inputs & Custom Primitives</h2>
-          </div>
-
-          <div class="bg-surface border border-strokeColor rounded-2xl p-6 flex flex-col gap-6">
-            
-            <!-- Input text -->
-            <div class="flex flex-col gap-2">
-              <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Workout Plan Title</label>
-              <input type="text" placeholder="e.g. Pull A — Back & Biceps" class="h-10 w-full rounded-lg bg-zinc-950 border border-strokeColor px-3 py-2 text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-[var(--current-accent)] transition-all duration-150">
-            </div>
-
-            <!-- Custom Checkbox -->
-            <div class="flex items-center gap-3">
-              <div class="relative flex items-center justify-center">
-                <input type="checkbox" id="demo-check" class="peer opacity-0 absolute w-5 h-5 cursor-pointer">
-                <div class="w-5 h-5 rounded border border-strokeColor bg-zinc-950 peer-checked:bg-[var(--current-accent)] peer-checked:border-[var(--current-accent)] flex items-center justify-center transition-all duration-150 pointer-events-none">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hidden peer-checked:block"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-              </div>
-              <label for="demo-check" class="text-sm text-zinc-300 select-none cursor-pointer">Mark task as completed today</label>
-            </div>
-
-            <!-- Textarea -->
-            <div class="flex flex-col gap-2">
-              <label class="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Daily Reflection</label>
-              <textarea rows="3" placeholder="Write down your thoughts or notes..." class="w-full rounded-lg bg-zinc-950 border border-strokeColor px-3 py-2 text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-[var(--current-accent)] transition-all duration-150 resize-none"></textarea>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- 6. Card & Navigation Structures -->
-        <section id="section-layout" class="scroll-mt-8">
-          <div class="flex items-center gap-2 mb-6">
-            <span class="font-mono text-[var(--current-accent)] font-bold">06.</span>
-            <h2 class="text-xl font-bold text-white tracking-tight">Cards & Badges</h2>
+            <h2 class="text-xl font-bold text-white tracking-tight">Cards & Semantic Badges</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <!-- Standard Card Structure -->
-            <div class="bg-surface border border-strokeColor rounded-2xl p-6 flex flex-col gap-4">
-              <div class="flex items-center justify-between border-b border-strokeColor/50 pb-3">
+            <!-- Standard Glass Card -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-strokeColor pb-3">
                 <h3 class="font-bold text-sm text-white">Daily Journal Widget</h3>
-                <span class="font-mono text-[10px] text-zinc-500">Level 1 Elevation</span>
+                <span class="font-mono text-[10px] text-zinc-500">glass-card</span>
               </div>
               <p class="text-xs text-zinc-400">
-                This is standard card content. A 1px border and a `#121214` surface background separate this block from the main canvas.
+                A 1px catch-light border (`border-white/6`) and blurred translucent background (`bg-surface/45`) structure standard content.
               </p>
               <div class="flex gap-2 mt-2">
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-zinc-800 text-zinc-400">General</span>
@@ -349,8 +474,8 @@
               </div>
             </div>
 
-            <!-- Semantic Statuses -->
-            <div class="bg-surface border border-strokeColor rounded-2xl p-6 flex flex-col gap-3 justify-center">
+            <!-- Semantic Badges -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col gap-3 justify-center">
               <h4 class="font-bold text-xs uppercase tracking-wider text-zinc-500 mb-2">Semantic Badge Examples</h4>
               
               <div class="flex items-center justify-between">
@@ -378,7 +503,6 @@
   </div>
 
   <script>
-    // Interactive styling updates based on Space Switcher
     function setSpace(space) {
       const root = document.documentElement;
       const btnGeneral = document.getElementById('btn-general');
@@ -387,7 +511,6 @@
       const previewBox = document.getElementById('accent-preview-box');
       const hexVal = document.getElementById('accent-hex-value');
       
-      // Reset buttons styles
       const btns = [btnGeneral, btnLife, btnHealth];
       btns.forEach(btn => {
         btn.className = "px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-bold accent-transition text-zinc-400 hover:text-zinc-200";

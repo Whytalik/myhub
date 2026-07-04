@@ -4,99 +4,82 @@
 
 ---
 
-## 🎨 1. Color Palette (Color Tokens)
+## 🎨 1. Glassmorphism & Color Palette (Color Tokens)
 
-The design system is built upon an **Elevation Level** model. Instead of relying on traditional drop shadows (which disappear on dark backgrounds), depth in dark mode is achieved through stepped background brightness adjustments and fine catch-light borders.
+The system uses an **Acrylic Layering Model** to establish hierarchy. Surfaces are translucent, refracting underlying graphics (blurs) to create depth.
 
-### 🌑 Base Interface Surfaces
+### 🌑 Translucent Glass Surfaces
 
-| Token | Color (Hex / RGBA) | Description | Purpose |
+| Token | CSS / Tailwind Classes | Description | Purpose |
 | :--- | :--- | :--- | :--- |
-| `bg-canvas` | `#08080a` | Deep pure dark ("the void") | Primary background of the application viewport. |
-| `bg-surface` | `#121214` | Dark charcoal gray | Background for cards, sections, lists, and tables. |
-| `bg-elevated` | `#1c1c1f` | Medium gray | Dropdowns, popups, and modal dialog containers. |
-| `bg-hover` | `#232327` | Interactive lighter gray | Highlight background for interactive elements on hover. |
-| `border-stroke`| `rgba(255, 255, 255, 0.08)` | Semi-transparent white | 1px hairline borders separating content blocks. |
+| `bg-canvas` | `#08080a` (Solid) | Deep dark canvas | The primary background viewport. |
+| `glass-sidebar` | `bg-surface/20 backdrop-blur-xl border-r border-white/5` | High-blur frosted glass | Sidebar navigation shell (Finder style). |
+| `glass-card` | `bg-surface/45 backdrop-blur-md border border-white/8` | Standard frosted glass | Interactive widgets, content cards, and panels. |
+| `glass-elevated`| `bg-elevated/75 backdrop-blur-lg border border-white/12 shadow-2xl` | Elevated glass | Dropdowns, calendar overlays, and modal dialogs. |
+| `glass-input` | `bg-black/35 backdrop-blur-sm border border-white/8` | Hollow recessed glass | Inputs, select boxes, and textareas. |
 
-### 🧪 Frosted Acrylic (macOS Vibrancy)
+### 🔵 Space-Specific System Accents
 
-Applied **exclusively** to structural layout containers (sidebar, domain header, modal dialogs):
-
-*   **Acrylic Formula:** `backdrop-blur-md bg-surface/50 border border-white/8 shadow-2xl shadow-black/40`
-*   When hovering over glassmorphic elements, the border highlights to: `border-white/15`
-
-### 🔵 System Accents (Apple System Colors)
-
-Accent colors are applied sparingly to call-to-action buttons (CTAs), input focuses, and space-specific branding contexts:
+Accent colors are applied to active highlights, focus rings, select borders, and space badges:
 
 | Space (Domain) | Token | Hex | Badge Style | Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **Universal** | `color-blue` | `#007aff` | `bg-blue-500/10 text-blue-400` | Core action buttons, input focus rings, active navigation tabs. |
-| **Health Space** | `color-emerald`| `#34c759` | `bg-emerald-500/10 text-emerald-400` | Training workouts, nutrition targets, completed goals. |
+| **Universal** | `color-blue` | `#007aff` | `bg-blue-500/10 text-blue-400` | Core action buttons, active navigation, input focus. |
+| **Health Space** | `color-emerald`| `#34c759` | `bg-emerald-500/10 text-emerald-400` | Training workouts, nutrition targets, completed metrics. |
 | **Life Space** | `color-orange` | `#ff9500` | `bg-orange-500/10 text-orange-400` | Tasks, routines, active trackers, and focus of the day. |
-| **Destructive/Alert**| `color-red` | `#ff3b30` | `bg-red-500/10 text-red-400` | Delete buttons, overdue deadlines, system errors. |
+| **Alert/Error** | `color-red` | `#ff3b30` | `bg-red-500/10 text-red-400` | Critical states, delete actions, overdue tasks. |
 
 ---
 
 ## 🔠 2. Typography Scale
 
-Typography is split into two distinct font families to balance readability of long-form text with technical grid alignments:
+1.  **Sans-Serif (Geist Sans / Inter / System-UI):** Default font for headings, text bodies, buttons, and reflections. Designed with a tight letter-spacing (`tracking-tight`) for a compact feel.
+2.  **Monospace (Geist Mono / JetBrains Mono):** Mandatory for numbers, durations, times, status tags, and progress meters.
 
-1.  **Sans-Serif (Geist Sans / Inter / System-UI):** Default font for the user interface, headers, buttons, and journal reflections. It features tight letter-spacing (tracking) for a premium, compact look.
-2.  **Monospace (Geist Mono / JetBrains Mono):** Mandated for numerical data, durations, times, status tags, progress rings, and code logs.
-
-### Type Sizes Hierarchy:
-
-*   `text-page-title` — `1.5rem (24px) | Bold | tracking-tight` (Page headers)
-*   `text-panel-title` — `1.125rem (18px) | SemiBold` (Card headings)
-*   `text-body` — `0.9375rem (15px) | Regular | line-height: 1.6` (Main narrative content)
-*   `text-caption` — `0.8125rem (13px) | Medium | text-text-secondary` (Metadata, labels, hints)
-*   `text-label` — `0.75rem (12px) | Bold | Monospace | uppercase` (Status badges, tabs)
+### Typography Hierarchy:
+*   `text-page-title` — `1.5rem (24px) | Bold | tracking-tight`
+*   `text-panel-title` — `1.125rem (18px) | SemiBold`
+*   `text-body` — `0.9375rem (15px) | Regular | line-height: 1.6`
+*   `text-caption` — `0.8125rem (13px) | Medium | text-text-secondary`
+*   `text-label` — `0.75rem (12px) | Bold | Monospace | uppercase`
 
 ---
 
-## 📐 3. Spacing & Border Radii
+## 🧱 3. Form Input Elements Guide
 
-### Corner Rounding (Border Radius):
-*   `rounded-2xl` (16px) — Page cards, overlay dialog wrappers, dashboard blocks.
-*   `rounded-lg` (8px) — Buttons, form inputs, dropdown selectors.
-*   `rounded-full` (9999px) — Chips, status indicator dots, avatars.
+All input components share a cohesive **recessed glass** appearance (`glass-input`). They feel hollow and sunken into the surface, becoming vibrant only upon focus.
 
-### Spacing Grid:
-Based on a clean 4px step system:
-*   `space-1` (4px) / `space-2` (8px) — Micro-paddings (e.g. form label below input).
-*   `space-4` (16px) — Standard inner card paddings.
-*   `space-6` (24px) / `space-8` (32px) — Layout spacing between panels and columns.
+### 📝 Text & Number Inputs (`Input`)
+*   **Aesthetic:** `bg-black/35 backdrop-blur-sm border border-white/8 rounded-lg px-3 py-2 text-sm text-white transition-all`
+*   **Focus State:** Smooth border highlight to `border-[var(--current-accent)]` and a glowing shadow glow.
+*   **Number Variant:** Right-aligned numerical font (`font-mono text-right`).
 
----
+### 📐 Textarea (`Textarea`)
+*   **Aesthetic:** Same as text inputs, but with a multiline layout (`resize-none`). Line-height is adjusted (`leading-relaxed`).
 
-## 🧱 4. Component Rules
+### 🗂 Select Elements (`Select`)
+*   **Standard Select:** A glass box with a custom caret arrow (`chevron-down`). Option lists render on an elevated glass container (`glass-elevated`).
+*   **Custom Select (Combobox):** Includes a search input inside a glass dropdown overlay, highlighting matched results on hover.
 
-### 🔘 Button
-*   **Primary:** Solid accent background (`bg-blue-500 text-white`). Smooth scale-down transition on click (`active:scale-98`).
-*   **Secondary:** Muted base surface fill (`bg-surface`) with 1px border. Darker hover state.
-*   **Danger:** Low-opacity red background with matching border, highlighting only on destructive actions.
-*   **Ghost/Icon:** Completely borderless and transparent. Highlights with `bg-hover` solely on mouseover.
-
-### 📝 Form Fields (`Input` / `Textarea`)
-*   Designed with a deep, border-less aesthetic: `bg-canvas/50 border border-white/8 rounded-lg`.
-*   Focus transitions smoothly into the space's specific accent color with a subtle inner glow.
-*   Placeholder text uses low-contrast `text-text-muted` to stay out of focus.
+### 📅 Date & Time Pickers
+*   **Date Picker:** Trigger displays a calendar icon, selected date, and a clear cross button. The popup calendar renders as a `glass-elevated` grid of day cells. Active selections have a solid accent background.
+*   **Date Range Picker:** Trigger displays start date and end date separated by a dash. Highlights dates in-between with a low-opacity accent background (`bg-[var(--current-accent-muted)]`).
+*   **Time Picker:** Trigger displays current time. The popover displays scrollable columns (hours and minutes) or preset chips (e.g. "Morning", "Evening").
 
 ### 🟦 Checkbox
-*   Custom UI primitive. Unchecked state is a clean hollow square with a fine border.
-*   On check, it transitions to solid space-accent color with a clean glyph checkmark.
+*   **Aesthetic:** A 20x20px square `bg-black/35 border border-white/8 rounded`.
+*   **Checked State:** Fills with `bg-[var(--current-accent)]` and reveals a clean checkmark icon.
 
 ---
 
-## ⚠️ 5. Implementation Do's & Don'ts
+## ⚠️ 4. Implementation Guidelines
 
 ✅ **DO:**
-*   Use monospace font styles for representing progress counters (e.g. `font-mono 8/10`).
-*   Keep the canvas structured: `bg-canvas` -> `bg-surface` -> `bg-elevated`.
-*   Always include smooth hover transitions (`transition-all duration-150`).
+*   Stack shadows on dropdowns to separate them from the glass surface underneath (`shadow-2xl shadow-black/60`).
+*   Use a translucent border `border-white/10` to define input boundaries.
+*   Enforce `backdrop-blur-md` on cards to maintain readability against high-contrast backgrounds.
 
 ❌ **DON'T:**
-*   Use multi-colored icons (icons must always inherit text colors).
-*   Add heavy blurred drop-shadows around flat cards (rely on elevation levels and subtle borders).
-*   Mix more than two accent colors within a single panel.
+*   Use fully opaque backgrounds (`#ffffff` or `#121214`) for modals or sidebars.
+*   Set input borders to solid opaque colors unless focused.
+*   Animate text characters inside inputs—focus highlights must transition instantly or with a short delay (`duration-150`).
