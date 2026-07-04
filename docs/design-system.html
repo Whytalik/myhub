@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>macOS Sonoma — Design System</title>
+  <title>Linear Calm Density — Design System</title>
   
   <!-- Tailwind CSS Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,20 +14,20 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'sans-serif'],
-            mono: ['SFMono-Regular', 'SF Mono', 'Menlo', 'monospace'],
+            sans: ['Geist Sans', 'Inter', 'system-ui', 'sans-serif'],
+            mono: ['Geist Mono', 'SF Mono', 'monospace'],
           },
           colors: {
-            canvas: '#1e1e1e',
-            surface: '#2d2d2d',
-            elevated: '#323232',
-            hoverBg: '#3c3c3c',
-            strokeColor: 'rgba(255, 255, 255, 0.05)',
+            canvas: '#09090b',
+            surface: '#121215',
+            elevated: '#18181b',
+            hoverBg: 'rgba(255, 255, 255, 0.04)',
+            strokeColor: 'rgba(255, 255, 255, 0.08)',
             accent: {
-              blue: '#0a84ff',
-              emerald: '#30d158',
-              orange: '#ff9f0a',
-              red: '#ff453a',
+              blue: '#3b82f6',
+              emerald: '#22c55e',
+              orange: '#f97316',
+              red: '#ef4444',
             }
           }
         }
@@ -37,52 +37,46 @@
 
   <style>
     :root {
-      --current-accent: #0a84ff;
-      --current-accent-muted: rgba(10, 132, 255, 0.15);
-      --current-accent-border: rgba(10, 132, 255, 0.3);
+      --current-accent: #3b82f6;
+      --current-accent-muted: rgba(59, 130, 246, 0.1);
+      --current-accent-border: rgba(59, 130, 246, 0.2);
     }
 
     body {
-      background-color: #1e1e1e;
-      color: #f5f5f7;
+      background-color: #09090b;
+      color: #fafafa;
     }
 
     .accent-transition {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease-in-out;
     }
 
-    /* Premium Frosted Glassmorphism Styles */
+    /* Solid nesting panel style */
     .glass-panel {
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      background: rgba(38, 38, 38, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #121215;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .glass-panel:hover {
-      border-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.12);
     }
 
     .glass-elevated {
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(50, 50, 50, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background: #18181b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     }
 
     .glass-input {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: #09090b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.15s ease-in-out;
     }
 
     .glass-input:focus {
       border-color: var(--current-accent);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 0 2px var(--current-accent-muted);
+      background: #09090b;
+      outline: none;
     }
 
     /* Custom Checkbox styles */
@@ -100,8 +94,8 @@
 
   <!-- Floating Background Mesh Elements -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div id="glow-mesh-1" class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[var(--current-accent-muted)] opacity-20 blur-[120px] accent-transition"></div>
-    <div id="glow-mesh-2" class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/5 opacity-10 blur-[120px]"></div>
+    <div id="glow-mesh-1" class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[var(--current-accent-muted)] opacity-10 blur-[120px] accent-transition"></div>
+    <div id="glow-mesh-2" class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/5 opacity-5 blur-[120px]"></div>
     <div id="glow-mesh-3" class="absolute top-[40%] right-[30%] w-[20%] h-[20%] rounded-full bg-[var(--current-accent-muted)] opacity-5 blur-[80px] accent-transition"></div>
   </div>
 
@@ -111,12 +105,12 @@
     <header class="flex flex-col md:flex-row md:items-center justify-between pb-12 border-b border-strokeColor mb-12">
       <div>
         <div class="flex items-center gap-2 mb-2">
-          <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design system v1.2</span>
+          <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design system v1.3</span>
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
-        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white">macOS Sonoma</h1>
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Linear Calm Density</h1>
         <p class="text-zinc-400 mt-2 max-w-xl text-sm">
-          A premium macOS-inspired design system. Sidebar navigation, form inputs, dialogs, and panels styled like native desktop components.
+          A premium high-density developer-centric design system. Razor-thin borders, solid dark nesting, clean typography, and sparse accent highlights.
         </p>
       </div>
 

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --color-accent: #007aff;
-  --color-accent-muted: rgba(0, 122, 255, 0.15);
+  --color-accent: #3b82f6;
+  --color-accent-muted: rgba(59, 130, 246, 0.1);
 }
 
 @theme {
-  --color-canvas: #1e1e1e;
-  --color-surface: #2d2d2d;
-  --color-elevated: #323232;
+  --color-canvas: #09090b;
+  --color-surface: #121215;
+  --color-elevated: #18181b;
   
   --color-accent: var(--color-accent);
   --color-accent-muted: var(--color-accent-muted);
   
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  --font-sans: var(--font-inter), 'Geist Sans', 'Inter', 'system-ui', sans-serif;
+  --font-mono: var(--font-geist-mono), 'Geist Mono', 'SF Mono', monospace;
 }
 
 /* Custom Scrollbar Hiding */
@@ -23,47 +23,47 @@
 }
 
 html, body {
-  @apply bg-canvas text-zinc-100 font-sans overflow-x-hidden;
+  @apply bg-canvas text-zinc-200 font-sans overflow-x-hidden;
 }
 
-/* macOS Sonoma Surface Material Utilities */
+/* Linear Calm Density Nesting Utilities */
 @utility glass-sidebar {
-  @apply bg-neutral-900/40 backdrop-blur-3xl border-r border-white/5;
+  @apply bg-surface border-r border-zinc-800/80;
 }
 
 @utility glass-card {
-  @apply bg-neutral-800/50 border border-white/5 shadow-md;
+  @apply bg-surface border border-zinc-800/80 rounded-lg;
 }
 
 @utility glass-elevated {
-  @apply bg-neutral-800/80 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/60;
+  @apply bg-elevated border border-zinc-700/60 rounded-lg shadow-xl shadow-black/60;
 }
 
 @utility glass-input {
-  @apply bg-white/5 border border-white/10 rounded-md transition-all duration-150;
+  @apply bg-zinc-950 border border-zinc-800 rounded-md transition-all duration-150;
 }
 
 @utility glass-input-focus {
-  @apply border-accent bg-white/8 shadow-[0_0_8px_rgba(var(--color-accent),0.15)] outline-none;
+  @apply border-accent bg-zinc-950 outline-none;
 }
 
-/* macOS Typography Utilities (HIG Compliant) */
+/* Typography Utilities (HIG/SaaS Density Compliant) */
 @utility text-page-title {
-  @apply text-[22px] font-semibold tracking-tight text-white;
+  @apply text-xl font-semibold tracking-tight text-zinc-50;
 }
 
 @utility text-panel-title {
-  @apply text-[16px] font-semibold text-white;
+  @apply text-[15px] font-semibold text-zinc-100;
 }
 
 @utility text-body {
-  @apply text-[13px] font-normal leading-normal text-zinc-300;
+  @apply text-sm font-normal leading-relaxed text-zinc-300;
 }
 
 @utility text-caption {
-  @apply text-[11px] font-normal text-zinc-500;
+  @apply text-[13px] font-normal text-zinc-400;
 }
 
 @utility text-label {
-  @apply text-[11px] font-bold font-mono uppercase tracking-wider text-zinc-400;
+  @apply text-[11px] font-semibold font-mono uppercase tracking-wider text-zinc-500;
 }

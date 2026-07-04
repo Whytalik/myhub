@@ -1,72 +1,72 @@
-# 🪐 macOS Sonoma Desktop Design System Specification
+# 🪐 Linear Calm Density Design System Specification
 
-**myhub** is the user's personal digital environment. This design system is inspired by the clean, layered aesthetics of modern **macOS Sonoma/Sequoia**. It combines frosted glass panels (glassmorphism), neutral slate foundations, system traffic light details, and strict Human Interface Guidelines (HIG) standards.
+**myhub** is the user's personal digital environment. This design system is inspired by the structured, high-density, minimalist aesthetics of modern developer tools like **Linear** and **Vercel**. It focuses on razor-thin borders, solid dark nesting, clean sans-serif typography, and semantic, sparse accent highlights.
 
 ---
 
-## 🎨 1. Materials & Color Palette
+## 🎨 1. Hierarchy & Color Palette
 
-The layout uses a window-layering hierarchy where active application areas are built of translucent materials.
+Rather than using heavy frosted glass overlays, this system builds hierarchy using **solid nesting** (elevation colors) and **razor-thin borders**.
 
-### 🌑 Translucent Glass Surfaces
+### 🌑 Elevation Surfaces
 
 | Token | CSS / Tailwind Classes | Description | Purpose |
 | :--- | :--- | :--- | :--- |
-| `bg-canvas` | `#1e1e1e` (Solid Dark) / `#f5f5f7` (Solid Light) | Solid window background | Primary window backing canvas. |
-| `glass-sidebar` | `bg-neutral-900/40 backdrop-blur-3xl border-r border-white/5` | High-blur macOS sidebar | Left navigation sidebar. |
-| `glass-card` | `bg-neutral-800/50 border border-white/5 shadow-md` | Standard window panel | Cards, modules, content containers. |
-| `glass-elevated`| `bg-neutral-800/80 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/60` | Elevated material | Dropdowns, dialog popovers, context menus. |
-| `glass-input` | `bg-white/5 border border-white/10 rounded-md` | Recessed input well | Inputs, selects, checkbox backings. |
+| `bg-canvas` | `#09090b` (Solid) | Deep dark backing | Primary page viewport background. |
+| `bg-surface` | `#121215` (Solid) | Mid-tone surface | Sidebar navigation, main content panels. |
+| `bg-elevated`| `#18181b` (Solid) | Lighter elevated surface | Modals, context dropdowns, calendar pickers. |
+| `border-subtle`| `border-zinc-800/80` or `border-white/5` | Razor-thin border separator | Defines boundaries between panels. |
+| `bg-hover` | `bg-white/[0.04]` | Subtle row hover | Interactive items list hover background. |
 
-### 🔵 System Accents (Apple HIG Colors)
-Accents are used for selection indicators, active toggles, and highlights. Default is Apple System Blue:
+### 🔵 Dynamic System Accents
+Accents are used with extreme restraint (CTAs, focus rings, status indicators):
 
-| Accent Color | Hex (Dark) | Hex (Light) | Purpose |
+| Accent Color | Hex (Dark) | Badge Style | Purpose |
 | :--- | :--- | :--- | :--- |
-| **Blue** | `#0a84ff` | `#007aff` | Standard select highlights, focus rings, primary action buttons. |
-| **Green** | `#30d158` | `#34c759` | Completed habits, healthy calories, profit markers. |
-| **Orange** | `#ff9f0a` | `#ff9500` | Current tasks, reminders, warning states. |
-| **Red** | `#ff453a` | `#ff3b30` | Destructive actions, delete buttons, error alerts. |
+| **Blue (Default)**| `#3b82f6` | `bg-blue-500/10 text-blue-400` | Focus states, universal action buttons. |
+| **Green (Health)**| `#22c55e` | `bg-emerald-500/10 text-emerald-400`| Nutrition goals, completed metrics. |
+| **Orange (Life)** | `#f97316` | `bg-orange-500/10 text-orange-400` | Task reminders, routine highlights. |
+| **Red (Alert)**   | `#ef4444` | `bg-red-500/10 text-red-400`     | Destructive actions, warnings. |
 
 ---
 
 ## 🔠 2. Typography Scale
 
-1.  **System Sans-Serif (`-apple-system, BlinkMacSystemFont, "SF Pro Text"`):** macOS system UI font stack for standard controls, navigation, and text bodies.
-2.  **System Monospace (`SFMono-Regular, SF Mono, Menlo`):** Mandatory for numeric counters, dates, indicators, and labels.
+1.  **Sans-Serif (`Geist Sans / Inter / system-ui`):** Primary UI font stack. Designed with a tight letter-spacing (`tracking-tight`) for high density.
+2.  **Monospace (`Geist Mono / SF Mono`):** Mandatory for numeric counters, dates, indicators, and uppercase labels.
 
 ### Typography Hierarchy:
-*   `text-page-title` — `1.375rem (22px) | Semibold | tracking-tight` (Window Title)
-*   `text-panel-title` — `1rem (16px) | Semibold` (List Section Header)
-*   `text-body` — `0.8125rem (13px) | Regular | line-height: 1.5` (macOS default UI body text)
-*   `text-caption` — `0.6875rem (11px) | Regular | text-zinc-500` (Subtitles/Metadata)
-*   `text-label` — `0.6875rem (11px) | Bold | Monospace | uppercase` (CLI labels)
+*   `text-page-title` — `1.25rem (20px) | Semibold | tracking-tight` (Main Page Title)
+*   `text-panel-title` — `0.9375rem (15px) | Semibold` (Section/Card Title)
+*   `text-body` — `0.875rem (14px) | Regular | line-height: 1.6` (Paragraph body text)
+*   `text-caption` — `0.8125rem (13px) | Regular | text-zinc-400` (List navigation text, subtitles)
+*   `text-label` — `0.6875rem (11px) | Semibold | Monospace | uppercase | tracking-wider` (Metadata/Labels)
 
 ---
 
 ## 🧱 3. Form Input Elements
 
-Inputs look like recessed wells sunken into the window material.
+Inputs use flat well styling that fits seamlessly into the panel structures.
 
 ### 📝 Text & Number Inputs (`Input`)
-*   **Style:** `bg-white/5 border border-white/10 rounded-md px-2.5 py-1.5 text-xs text-white transition-all`
-*   **Focus State:** Smooth border highlight using `border-accent` and a glowing shadow `shadow-[0_0_8px_rgba(var(--color-accent),0.15)]`.
+*   **Style:** `bg-zinc-950 border border-zinc-800 rounded-md px-3 py-1.5 text-sm text-zinc-150 transition-all duration-150`
+*   **Focus State:** High-contrast border `border-accent/80` and zero glowing shadows (focus ring is clean and sharp).
 *   **Number Inputs:** Right-aligned numerical font (`font-mono text-right`).
 
 ### 🟦 Checkbox
-*   **Style:** `w-4 h-4 bg-white/5 border border-white/10 rounded-md transition-all`
-*   **Checked:** Fills with `bg-accent` showing a clean white checkmark.
+*   **Style:** `w-4 h-4 bg-zinc-950 border border-zinc-800 rounded`
+*   **Checked:** Fills with `bg-accent` containing a clean checkmark icon.
 
 ---
 
 ## ⚠️ 4. Implementation Guidelines
 
 ✅ **DO:**
-*   Implement traffic lights (red `#ff5f56`, yellow `#ffbd2e`, green `#27c93f` dots) in the window layout.
-*   Enforce a clean sidebar look with list rows using rounded corners of **8px** (`rounded-lg`).
-*   Set standard text sizes to **13px** (`text-[13px]`) for a native macOS desktop feel.
+*   Rely on sharp, razor-thin borders (`border-white/5` or `border-zinc-800`) to organize content.
+*   Enforce a clean, structured sidebar layout with solid backgrounds and sharp list elements.
+*   Use a default UI font size of **13px** (`text-[13px]`) for sidebar items and secondary copy to maintain calm density.
 
 ❌ **DON'T:**
-*   Use fully black `#000000` or solid primary colors.
-*   Add neon glowing grids or high-contrast tech borders.
+*   Use heavy blurred frosted glass overlays.
+*   Add drop shadows on dark surfaces (they look muddy).
 *   Hardcode hex colors inline in JSX.
