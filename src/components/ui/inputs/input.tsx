@@ -5,8 +5,18 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, variant, ...props }, ref) => {
-    return <input type={type} ref={ref} {...props} />;
+  ({ className = "", type, variant = "default", ...props }, ref) => {
+    const baseClass = "glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 w-full";
+    const variantClass = variant === "inline" ? "bg-transparent border-none focus:ring-0 p-0" : "";
+    
+    return (
+      <input
+        type={type}
+        ref={ref}
+        className={`${baseClass} ${variantClass} ${className}`}
+        {...props}
+      />
+    );
   }
 );
 
