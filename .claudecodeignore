@@ -1,0 +1,11 @@
+.next/
+node_modules/
+.git/
+.vercel/
+dist/
+build/
+.cache/
+tsconfig.tsbuildinfo
+pnpm-lock.yaml
+src/app/generated/prisma/
+docs/design-system.html
