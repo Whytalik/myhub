@@ -34,18 +34,20 @@ export default async function TasksPage({
   } catch (error) {
     console.error("Critical error in TasksPage:", error);
     return (
-      <div >
-        <h1 >Failed to load Tasks</h1>
-        <p >There was an internal error loading your data. Please check the logs.</p>
-        <div >
-          <code >{(error as Error).message}</code>
+      <div className="glass-card p-6 flex flex-col gap-3">
+        <h1 className="text-panel-title text-rose-400">Failed to load Tasks</h1>
+        <p className="text-caption">
+          There was an internal error loading your data. Please check the logs.
+        </p>
+        <div className="rounded-lg bg-black/25 border border-white/[0.08] p-3">
+          <code className="text-xs font-mono text-rose-400">{(error as Error).message}</code>
         </div>
       </div>
     );
   }
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "tasks" }]} />
       <TasksPageClient
         initialTasks={tasks}

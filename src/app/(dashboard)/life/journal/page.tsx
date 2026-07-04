@@ -81,8 +81,8 @@ export default async function JournalPage({
     : null;
 
   return (
-    <div>
-      <div >
+    <div className="flex flex-col gap-6">
+      <div className="flex items-start justify-between gap-4">
         <PageHeader
           breadcrumb={[
             { label: "life space", href: "/life" },
@@ -105,7 +105,7 @@ export default async function JournalPage({
         />
         <Link
           href="/life/history"
-
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-white/5 transition-colors shrink-0"
         >
           <History size={14} />
           History

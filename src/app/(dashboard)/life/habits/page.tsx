@@ -27,7 +27,7 @@ export default async function HabitsPage() {
   ]);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "habits" }]}
         title="Habit Tracker"

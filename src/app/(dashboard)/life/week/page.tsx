@@ -26,7 +26,7 @@ export default async function WeekSchedulePage() {
   }));
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "week template" }]}
         title="Week Template"

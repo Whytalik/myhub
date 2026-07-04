@@ -17,7 +17,7 @@ export default async function ReviewPage() {
   const { entries, habits, tasks } = await getReviewData(userId);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "review" }]}
         title="Weekly Review"

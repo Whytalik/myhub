@@ -18,7 +18,7 @@ export default async function JournalHistoryPage() {
   const entries = await getAllEntries(userId);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[
           { label: "life space", href: "/life" },
@@ -29,8 +29,8 @@ export default async function JournalHistoryPage() {
       />
 
       {entries.length === 0 ? (
-        <div >
-          No entries recorded yet
+        <div className="glass-card p-8 flex items-center justify-center">
+          <p className="text-caption">No entries recorded yet</p>
         </div>
       ) : (
         <JournalHistoryView entries={entries} />
