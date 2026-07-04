@@ -45,11 +45,11 @@ export function Dialog({
   if (!mounted || !isOpen) return null;
 
   const contentStyle = { maxWidth: maxWidth ?? "420px" };
-  const bodyClass = `${bare ? "" : "px-6 pt-5 pb-6"} ${noScroll ? "" : "overflow-y-auto max-h-[85dvh]"}`;
+  const bodyClass = `px-6 pt-5 pb-6 ${noScroll ? "" : "overflow-y-auto max-h-[85dvh]"}`;
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center p-0 sm:p-4"
+      className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center p-3 sm:p-4"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
