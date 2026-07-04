@@ -3,10 +3,10 @@
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
 import { toast } from "sonner";
 import { trainingPlanSchema, type TrainingPlanFormData } from "../schemas";
 import { upsertTrainingPlanAction } from "../actions/training-plan-actions";
@@ -59,7 +59,7 @@ export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFo
       title={isEditing ? "Edit Plan" : "New Training Plan"}
       description="A plan groups training days together (e.g. Push / Pull / Legs)."
       footer={
-        <div className="flex justify-end gap-2">
+        <div >
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -69,7 +69,7 @@ export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFo
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} >
         <FormField label="Plan name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Push Pull Legs" autoFocus />
         </FormField>

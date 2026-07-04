@@ -1,4 +1,4 @@
-import { getCachedExercises } from "@/lib/cache";
+import { getCachedExercises } from "@/lib/cache/cache";
 import { exerciseRepository } from "../repositories/exercise.repository";
 import type { UpsertExerciseInput } from "../types";
 

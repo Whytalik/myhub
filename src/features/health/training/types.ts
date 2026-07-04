@@ -1,5 +1,3 @@
-// ─── Exercise ──────────────────────────────────────────────────────────────
-
 export type TrackingType = "weight_reps" | "bodyweight" | "duration" | "cardio";
 
 export interface ExerciseData {
@@ -26,8 +24,6 @@ export interface UpsertExerciseInput {
   archived?: boolean;
   order?: number;
 }
-
-// ─── Training Day Exercise (prescription) ───────────────────────────────────
 
 export interface TrainingDayExerciseData {
   id: string;
@@ -61,8 +57,6 @@ export interface UpsertDayExerciseInput {
   notes?: string | null;
 }
 
-// ─── Training Day ────────────────────────────────────────────────────────────
-
 export interface TrainingDayData {
   id: string;
   userId: string;
@@ -83,8 +77,6 @@ export interface UpsertTrainingDayInput {
   order?: number;
 }
 
-// ─── Training Plan ───────────────────────────────────────────────────────────
-
 export interface TrainingPlanData {
   id: string;
   userId: string;
@@ -104,8 +96,6 @@ export interface UpsertTrainingPlanInput {
   archived?: boolean;
   order?: number;
 }
-
-// ─── Set Log ──────────────────────────────────────────────────────────────
 
 export interface SetLogData {
   id: string;
@@ -137,8 +127,6 @@ export interface UpdateSetLogInput {
   notes?: string | null;
 }
 
-// ─── Training Session ────────────────────────────────────────────────────────
-
 export type TrainingSessionStatus = "in_progress" | "completed";
 
 export interface TrainingSessionData {
@@ -155,7 +143,6 @@ export interface TrainingSessionData {
   setLogs: SetLogData[];
 }
 
-// Lightweight shape used for the history list — no nested set logs, just a count.
 export interface TrainingSessionSummaryData {
   id: string;
   userId: string;

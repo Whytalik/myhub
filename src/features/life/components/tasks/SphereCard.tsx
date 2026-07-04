@@ -6,11 +6,11 @@ import { SPHERE_ICONS } from "./lucide-icons-map";
 import { deleteSphereAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
 import { toast } from "sonner";
-import { ConfirmationDialog } from "@/components/ui/dialog";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 
 interface SphereCardProps {
-  sphere:  LifeSphereData;
-  onEdit:  (sphere: LifeSphereData) => void;
+  sphere: LifeSphereData;
+  onEdit: (sphere: LifeSphereData) => void;
 }
 
 export function SphereCard({ sphere, onEdit }: SphereCardProps) {
@@ -31,39 +31,37 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
 
   return (
     <div
-      className="group bg-surface border border-border rounded-xl p-5 flex flex-col gap-3 transition-all hover:border-border/80"
-      style={{ borderLeftColor: sphere.color, borderLeftWidth: "4px" }}
+
     >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2.5">
+      {}
+      <div >
+        <div >
           {Icon && (
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-              style={{ backgroundColor: `${sphere.color}18` }}
+
             >
-              <Icon size={16} style={{ color: sphere.color }} />
+              <Icon size={16} />
             </div>
           )}
           <div>
-            <p className="text-body font-semibold text-text leading-none">{sphere.name}</p>
-            <p className="text-caption font-mono text-muted mt-1">
+            <p >{sphere.name}</p>
+            <p >
               {sphere.taskCount} task{sphere.taskCount !== 1 ? "s" : ""}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div >
           <button
             onClick={() => onEdit(sphere)}
-            className="p-1.5 rounded-lg text-muted hover:text-secondary hover:bg-raised transition-colors"
+
             title="Edit sphere"
           >
             <Pencil size={13} />
           </button>
           <button
             onClick={() => setIsDeleteDialogOpen(true)}
-            className="p-1.5 rounded-lg text-muted hover:text-red-400 hover:bg-red-400/10 transition-colors"
+
             title="Delete sphere"
           >
             <Trash2 size={13} />
@@ -81,8 +79,8 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
         variant="danger"
       />
 
-      {/* Color swatch */}
-      <div className="h-1 rounded-full" style={{ backgroundColor: sphere.color, opacity: 0.4 }} />
+      {}
+      <div />
     </div>
   );
 }

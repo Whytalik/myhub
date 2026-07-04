@@ -13,10 +13,10 @@ interface UseDynamicPositioningOptions {
   offset?: number;
 }
 
-export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C extends HTMLElement = HTMLElement>({ 
-  contentHeight = 0, 
-  contentWidth = 0, 
-  offset = 8 
+export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C extends HTMLElement = HTMLElement>({
+  contentHeight = 0,
+  contentWidth = 0,
+  offset = 8
 }: UseDynamicPositioningOptions = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<PositionCoords | null>(null);
@@ -28,25 +28,24 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
       const rect = triggerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const windowWidth = window.innerWidth;
-      
-      // Measure actual content if available, fallback to options
+
+
       const h = contentRef.current?.offsetHeight ?? contentHeight;
       const w = contentRef.current?.offsetWidth ?? contentWidth;
-      
+
       const spaceBelow = windowHeight - rect.bottom;
       const spaceAbove = rect.top;
-      
-      // Determine vertical alignment: prefer bottom, flip to top if space below is insufficient 
-      // AND space above is better.
+
+
       let align: 'top' | 'bottom' = 'bottom';
-      
+
       if (spaceBelow < h + offset && spaceAbove > spaceBelow) {
         align = 'top';
       }
 
       const top = align === 'bottom' ? rect.bottom + offset : rect.top - offset;
-      
-      // Determine horizontal position (ensure it doesn't overflow window)
+
+
       let left = rect.left;
       if (left + w > windowWidth) {
         left = Math.max(8, windowWidth - w - 16);
@@ -56,7 +55,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
     }
   }, [contentHeight, contentWidth, offset]);
 
-  // Re-calculate when content height changes (e.g. after portal render)
+
   useEffect(() => {
     if (isOpen) {
       updateCoords();

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { getAllTemplates } from "@/features/life/services/schedule-service";
 import { WeekScheduleClient } from "@/features/life/components/WeekScheduleClient";
 import type { DayScheduleData, DayType } from "@/features/life/types";
@@ -26,7 +26,7 @@ export default async function WeekSchedulePage() {
   }));
 
   return (
-    <div className="px-8 py-8 flex flex-col gap-6">
+    <div >
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "week template" }]}
         title="Week Template"

@@ -18,53 +18,53 @@ export function DayPlan({ day }: { day: DayPlanType }) {
     });
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Macro strip — calculated from this day's actual meals, target shown for reference */}
-      <div className="flex flex-col gap-1.5">
+    <div >
+      {}
+      <div >
         {PROFILES.map((profile) => {
           const macros = actual[profile.id as keyof typeof actual];
           return (
             <div
               key={profile.id}
-              className="flex items-center gap-4 flex-wrap text-caption text-text-secondary"
+
             >
-              <span className="font-semibold text-text-primary w-16 shrink-0">{profile.name}</span>
-              <span className="font-medium text-text-primary">{macros.kcal} ккал/день</span>
-              <span className="text-text-muted">·</span>
+              <span >{profile.name}</span>
+              <span >{macros.kcal} ккал/день</span>
+              <span >·</span>
               <span>Б {macros.protein} г</span>
-              <span className="text-text-muted">·</span>
+              <span >·</span>
               <span>Ж {macros.fat} г</span>
-              <span className="text-text-muted">·</span>
+              <span >·</span>
               <span>В {macros.carbs} г</span>
-              <span className="text-text-muted/60">(ціль {profile.kcal} ккал)</span>
+              <span >(ціль {profile.kcal} ккал)</span>
             </div>
           );
         })}
       </div>
 
       {day.note && (
-        <p className="text-caption text-text-secondary leading-relaxed pl-3 border-l-2 border-border-strong">
+        <p >
           {day.note}
         </p>
       )}
 
-      {/* Meals */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {}
+      <div >
         {day.meals.map((meal) => (
           <MealCard key={meal.type} meal={meal} />
         ))}
       </div>
 
-      {/* Products for the Day */}
+      {}
       {dayIngredients.length > 0 && (
-        <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-3">
-          <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+        <div >
+          <span >
             Продукти на день
           </span>
-          <ul className="flex flex-col gap-1.5 pl-1">
+          <ul >
             {dayIngredients.map((ingredient, i) => (
-              <li key={i} className="text-caption text-text-secondary leading-relaxed flex gap-2">
-                <span className="text-accent shrink-0 font-bold font-mono">·</span>
+              <li key={i} >
+                <span >·</span>
                 <span>{ingredient}</span>
               </li>
             ))}
@@ -72,23 +72,23 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         </div>
       )}
 
-      {/* Preparation Algorithm */}
+      {}
       {day.prepSteps && day.prepSteps.length > 0 && (
-        <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
-          <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+        <div >
+          <span >
             Алгоритм приготування
           </span>
-          <div className="flex flex-col gap-4">
+          <div >
             {day.prepSteps.map((section, idx) => (
-              <div key={idx} className="flex flex-col gap-2">
-                <span className="text-caption font-semibold text-accent">{section.title}</span>
-                <ul className="flex flex-col gap-2 pl-1">
+              <div key={idx} >
+                <span >{section.title}</span>
+                <ul >
                   {section.steps.map((step, stepIdx) => (
                     <li
                       key={stepIdx}
-                      className="text-caption text-text-secondary leading-relaxed flex gap-2"
+
                     >
-                      <span className="text-accent shrink-0 font-mono font-bold">
+                      <span >
                         {stepIdx + 1}.
                       </span>
                       <span>{step}</span>

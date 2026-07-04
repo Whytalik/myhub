@@ -1,4 +1,4 @@
-import { getCachedDailyEntry, getCachedAllEntries } from "@/lib/cache";
+import { getCachedDailyEntry, getCachedAllEntries } from "@/lib/cache/cache";
 import { journalRepository } from "../repositories/journal.repository";
 import type { UpsertDailyEntryInput } from "../types";
 import { Prisma } from "@/app/generated/prisma";

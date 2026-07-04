@@ -3,10 +3,10 @@
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
 import { SPHERE_ICON_NAMES, ALL_ICONS } from "./lucide-icons-map";
 import { upsertSphereAction } from "@/features/life/actions/task-actions";
 import { IconPickerDialog } from "./IconPickerDialog";
@@ -36,7 +36,6 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
     },
   });
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const color = watch("color");
   const icon = watch("icon");
   const name = watch("name");
@@ -83,30 +82,30 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
         </>
       }
     >
-      <form id="sphere-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <form id="sphere-form" onSubmit={handleSubmit(onSubmit)} >
         <FormField label="Name" error={errors.name?.message} required>
           <Input
             {...register("name")}
             placeholder="e.g. Work, Health, Personal..."
             autoFocus
-            className="text-base font-bold h-9 px-4 rounded-xl"
+
           />
         </FormField>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div >
           <FormField label="Color" error={errors.color?.message}>
             <Controller
               name="color"
               control={control}
               render={({ field }) => (
-                <div className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl">
+                <div >
                   <input
                     type="color"
                     value={field.value}
                     onChange={field.onChange}
-                    className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-none"
+
                   />
-                  <span className="text-note font-mono text-secondary uppercase">{field.value}</span>
+                  <span >{field.value}</span>
                 </div>
               )}
             />
@@ -121,15 +120,15 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
                   <button
                     type="button"
                     onClick={() => setIconPickerOpen(true)}
-                    className="flex items-center gap-3 p-3 bg-surface/50 border border-border rounded-xl hover:border-accent transition-all group"
+
                   >
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${color}20` }}>
+                    <div >
                       {ALL_ICONS[field.value] ? (() => {
                         const Icon = ALL_ICONS[field.value];
-                        return <Icon size={18} style={{ color }} />;
-                      })() : <Palette size={18} className="text-muted" />}
+                        return <Icon size={18} />;
+                      })() : <Palette size={18} />}
                     </div>
-                    <Pencil size={12} className="text-muted group-hover:text-accent transition-colors" />
+                    <Pencil size={12} />
                   </button>
                   <IconPickerDialog
                     isOpen={iconPickerOpen}
@@ -145,26 +144,24 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
           </FormField>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-caption font-mono uppercase tracking-wider text-muted px-1 text-center">Preview</label>
+        <div >
+          <label >Preview</label>
           <div
-            className="flex items-center gap-4 p-5 rounded-xl border transition-all"
-            style={{ borderColor: `${color}40`, backgroundColor: `${color}08` }}
+
           >
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-black/20"
-              style={{ backgroundColor: `${color}25` }}
+
             >
               {ALL_ICONS[icon] && (() => {
                 const Icon = ALL_ICONS[icon];
-                return <Icon size={24} style={{ color }} />;
+                return <Icon size={24} />;
               })()}
             </div>
             <div>
-              <p className="text-[17px] font-black text-text leading-tight tracking-tight">
+              <p >
                 {name || "Sphere name"}
               </p>
-              <p className="text-caption font-mono text-muted uppercase tracking-[0.2em] mt-1">Life Area</p>
+              <p >Life Area</p>
             </div>
           </div>
         </div>

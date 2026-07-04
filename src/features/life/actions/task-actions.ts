@@ -1,8 +1,8 @@
 "use server";
 
 import * as taskService from "../services/task-service";
-import { invalidateTaskCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateTaskCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { taskRepository } from "../repositories/task.repository";
 import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority, TaskData } from "../types";
 

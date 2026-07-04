@@ -37,10 +37,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${geistMono.variable} h-full`}
+
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-bg text-text font-sans antialiased scrollbar-hide">
+      <body >
         {children}
         <Analytics />
         <SpeedInsights />

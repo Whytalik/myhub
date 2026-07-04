@@ -1,9 +1,7 @@
-import { getCachedAllTasks, getCachedCalendarTasks, getCachedTasksByDate, getCachedSpheres } from "@/lib/cache";
+import { getCachedAllTasks, getCachedCalendarTasks, getCachedTasksByDate, getCachedSpheres } from "@/lib/cache/cache";
 import { taskRepository, type TaskRow } from "../repositories/task.repository";
 import { sphereRepository } from "../repositories/sphere.repository";
 import type { TaskData, LifeSphereData, TaskStatus, TaskPriority, UpsertTaskInput, UpsertSphereInput } from "../types";
-
-// ─── Mapping ──────────────────────────────────────────────────────────────────
 
 function mapSphere(
   sphere: { id: string; name: string; color: string; icon: string; order: number; isActive: boolean; createdAt: Date; updatedAt: Date } | null,
@@ -47,8 +45,6 @@ function mapTask(task: TaskRow): TaskData {
   };
 }
 
-// ─── Sorting ──────────────────────────────────────────────────────────────────
-
 const PRIORITY_ORDER: Record<TaskPriority, number> = { URGENT: 3, HIGH: 2, MEDIUM: 1, LOW: 0 };
 const STATUS_SORT_ORDER: Record<TaskStatus, number> = { IN_PROGRESS: 0, TODO: 1, BACKLOG: 2, DONE: 3, CANCELLED: 4 };
 
@@ -68,8 +64,6 @@ function sortTasks(tasks: TaskData[]): TaskData[] {
     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
-
-// ─── Tasks: reads ─────────────────────────────────────────────────────────────
 
 export async function getAllTasks(userId: string): Promise<TaskData[]> {
   const tasks = await getCachedAllTasks(userId);
@@ -93,8 +87,6 @@ export async function getTasksByDate(userId: string, date: Date): Promise<TaskDa
   });
 }
 
-// ─── Tasks: writes ────────────────────────────────────────────────────────────
-
 async function resolveDepth(parentId: string | null | undefined): Promise<number> {
   if (!parentId) return 0;
   const parent = await taskRepository.findParentDepth(parentId);
@@ -110,10 +102,10 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     dueDate, hasDueTime, parentId, sphereId, projectId, carriedFromDate, carryOverReason,
   } = input;
 
-  const parsedPlannedDate    = plannedDate     !== undefined ? (plannedDate     ? new Date(plannedDate)     : null) : undefined;
-  const parsedPlannedEndDate = plannedEndDate  !== undefined ? (plannedEndDate  ? new Date(plannedEndDate)  : null) : undefined;
-  const parsedDueDate        = dueDate         !== undefined ? (dueDate         ? new Date(dueDate)         : null) : undefined;
-  const parsedCarriedFrom    = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
+  const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
+  const parsedPlannedEndDate = plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
+  const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
+  const parsedCarriedFrom = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
 
   const completedAt = status === "DONE" ? new Date() : status ? null : undefined;
 
@@ -135,8 +127,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       completedAt,
       carriedFromDate: parsedCarriedFrom !== undefined ? parsedCarriedFrom : undefined,
       carryOverReason: carryOverReason !== undefined ? carryOverReason ?? null : undefined,
-      parentId:  parentId  !== undefined ? (parentId  ?? null) : undefined,
-      sphereId:  sphereId  !== undefined ? (sphereId  ?? null) : undefined,
+      parentId: parentId !== undefined ? (parentId ?? null) : undefined,
+      sphereId: sphereId !== undefined ? (sphereId ?? null) : undefined,
       projectId: projectId !== undefined ? (projectId ?? null) : undefined,
     });
     return mapTask(saved);
@@ -222,8 +214,6 @@ export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
     await taskRepository.setFrogExclusive(userId, id);
   }
 }
-
-// ─── Spheres ──────────────────────────────────────────────────────────────────
 
 export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
   const spheres = await getCachedSpheres(userId);

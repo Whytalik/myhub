@@ -1,7 +1,7 @@
 "use client";
 
 import { Brain } from "lucide-react";
-import { MENTAL_STATES, EMOTIONAL_STATES, PHYSICAL_STATES } from "@/lib/emotion-taxonomy";
+import { MENTAL_STATES, EMOTIONAL_STATES, PHYSICAL_STATES } from "@/lib/life/emotion-taxonomy";
 
 interface Props {
   emotions: string[] | null;
@@ -16,11 +16,11 @@ interface EmotionColumnProps {
 }
 
 const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnProps) => (
-  <div className="flex flex-col gap-3 flex-1">
-    <span className="text-label font-mono uppercase text-muted font-bold tracking-widest px-1">
+  <div >
+    <span >
       {title}
     </span>
-    <div className="flex flex-wrap gap-1.5">
+    <div >
       {items.map((item) => {
         const active = emotions?.includes(item.label);
         const colorClass = item.positive
@@ -36,9 +36,7 @@ const EmotionColumn = ({ title, items, emotions, toggleEmotion }: EmotionColumnP
             key={item.label}
             type="button"
             onClick={() => toggleEmotion(item.label)}
-            className={`px-2 py-1 rounded-lg border text-caption font-medium transition-all ${colorClass} ${
-              !active ? "bg-raised border-border text-secondary hover:text-text" : ""
-            }`}
+
           >
             {item.label}
           </button>
@@ -61,21 +59,19 @@ export function EmotionsSection({ emotions, onChange }: Props) {
 
   return (
     <div
-      className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
-        hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-      }`}
+
     >
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2.5 px-1">
-          <Brain size={14} className="text-accent" />
+      <div >
+        <div >
+          <Brain size={14} />
           <h3
-            className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}
+
           >
             Емоції та стани
           </h3>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 relative">
+        <div >
           <EmotionColumn
             title="Ментальний стан"
             items={MENTAL_STATES}
@@ -83,7 +79,7 @@ export function EmotionsSection({ emotions, onChange }: Props) {
             toggleEmotion={toggleEmotion}
           />
 
-          <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
+          <div />
 
           <EmotionColumn
             title="Емоційний стан"
@@ -92,7 +88,7 @@ export function EmotionsSection({ emotions, onChange }: Props) {
             toggleEmotion={toggleEmotion}
           />
 
-          <div className="hidden md:block w-px bg-border/50 self-stretch mt-6" />
+          <div />
 
           <EmotionColumn
             title="Стрес та енергія"

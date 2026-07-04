@@ -1,4 +1,5 @@
 "use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Target, ShieldAlert, Zap } from "lucide-react";
 
@@ -26,27 +27,27 @@ export function StandupSection({
   const hasRecap = Boolean(yesterdayPlan) || yesterdayCompletedTasks.length > 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* Yesterday */}
-      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
+    <div >
+      {}
+      <div >
+        <div >
+          <div >
             <Target size={14} />
           </div>
-          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">
+          <h3 >
             Yesterday
           </h3>
         </div>
         {hasRecap && (
-          <div className="bg-raised/50 border border-border/60 rounded-lg p-3 flex flex-col gap-1.5 text-xs text-muted">
+          <div >
             {yesterdayPlan && (
               <p>
-                <span className="font-mono uppercase tracking-wider text-muted/70">Planned: </span>
+                <span >Planned: </span>
                 {yesterdayPlan}
               </p>
             )}
             {yesterdayCompletedTasks.length > 0 && (
-              <ul className="list-disc list-inside">
+              <ul >
                 {yesterdayCompletedTasks.map((title) => (
                   <li key={title}>{title}</li>
                 ))}
@@ -54,44 +55,44 @@ export function StandupSection({
             )}
           </div>
         )}
-        <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-emerald-500/40 transition-colors"
+        <Textarea
+
           placeholder="What did I accomplish?"
           value={done ?? ""}
           onChange={(e) => onChange({ standupDone: e.target.value || null })}
         />
       </div>
 
-      {/* Today */}
-      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-accent/10 text-accent">
+      {}
+      <div >
+        <div >
+          <div >
             <Zap size={14} />
           </div>
-          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">
+          <h3 >
             Today
           </h3>
         </div>
-        <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-accent/40 transition-colors"
+        <Textarea
+
           placeholder="What is my main focus?"
           value={plan ?? ""}
           onChange={(e) => onChange({ standupPlan: e.target.value || null })}
         />
       </div>
 
-      {/* Blockers */}
-      <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-500">
+      {}
+      <div >
+        <div >
+          <div >
             <ShieldAlert size={14} />
           </div>
-          <h3 className="text-caption font-mono font-bold uppercase tracking-widest text-text">
+          <h3 >
             Blockers
           </h3>
         </div>
-        <textarea
-          className="w-full bg-raised/50 border border-border rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-rose-500/40 transition-colors"
+        <Textarea
+
           placeholder="Any impediments?"
           value={blockers ?? ""}
           onChange={(e) => onChange({ standupBlockers: e.target.value || null })}

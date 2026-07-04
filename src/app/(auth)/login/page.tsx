@@ -20,29 +20,29 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
-        <div className="flex items-center gap-3 mb-10 justify-center">
-          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
-            <Sparkles size={20} className="text-bg" fill="currentColor" />
+    <div >
+      <div >
+        <div >
+          <div >
+            <Sparkles size={20} fill="currentColor" />
           </div>
-          <p className="font-heading text-base text-text leading-none tracking-tight">
-            My<span className="text-accent">Hub</span>
+          <p >
+            My<span >Hub</span>
           </p>
         </div>
 
-        <div className="bg-surface border border-border rounded-2xl p-8 shadow-2xl shadow-accent/5">
-          <h2 className="font-heading text-base text-text mb-1">Вхід</h2>
-          <p className="text-sm mb-6 text-text-muted">Доступ до вашого особистого хабу</p>
+        <div >
+          <h2 >Вхід</h2>
+          <p >Доступ до вашого особистого хабу</p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <form onSubmit={handleSubmit} >
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full bg-bg border border-border px-4 py-2.5 rounded-xl text-sm text-text outline-none focus:border-accent/40 transition-colors"
+
             />
             <input
               type="password"
@@ -50,15 +50,15 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full bg-bg border border-border px-4 py-2.5 rounded-xl text-sm text-text outline-none focus:border-accent/40 transition-colors"
+
             />
-            {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
+            {error && <p >{error}</p>}
             <button
               type="submit"
               disabled={isPending}
-              className="w-full bg-accent text-bg font-semibold py-2.5 px-4 rounded-xl text-sm transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-1"
+
             >
-              {isPending && <Loader2 size={16} className="animate-spin" />}
+              {isPending && <Loader2 size={16} />}
               Увійти
             </button>
           </form>

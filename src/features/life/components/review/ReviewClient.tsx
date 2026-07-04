@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/navigation/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   getWeekRange,
@@ -50,22 +50,22 @@ export function ReviewClient({ entries, habits, tasks }: Props) {
   const patterns = useMemo(() => extractPatterns(entries, habits), [entries, habits]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex items-center gap-2 bg-surface border border-border rounded-xl px-2 py-1.5 w-fit">
+    <div >
+      <div >
         <button
           onClick={() => setWeekOffset((v) => v - 1)}
-          className="p-1.5 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+
           title="Previous week"
         >
           <ChevronLeft size={16} />
         </button>
-        <span className="text-body font-mono text-text px-2 min-w-[9rem] text-center">
+        <span >
           {formatRange(currentRange)}
         </span>
         <button
           onClick={() => setWeekOffset((v) => Math.min(0, v + 1))}
           disabled={weekOffset >= 0}
-          className="p-1.5 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-muted"
+
           title="Next week"
         >
           <ChevronRight size={16} />
@@ -73,7 +73,7 @@ export function ReviewClient({ entries, habits, tasks }: Props) {
         {weekOffset !== 0 && (
           <button
             onClick={() => setWeekOffset(0)}
-            className="ml-1 px-2 py-1 rounded-lg text-caption font-mono uppercase tracking-wider text-accent hover:bg-accent/10 transition-colors"
+
           >
             This week
           </button>

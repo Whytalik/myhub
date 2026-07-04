@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { TrainingExercisesClient } from "@/features/health/training/components/TrainingExercisesClient";
 import * as exerciseService from "@/features/health/training/services/exercise-service";
 import type { ExerciseData } from "@/features/health/training/types";
@@ -21,7 +21,7 @@ export default async function TrainingExercisesPage() {
   const exercises = await exerciseService.getExercises(userId);
 
   return (
-    <div className="px-8 py-8">
+    <div >
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },
@@ -30,7 +30,7 @@ export default async function TrainingExercisesPage() {
         ]}
         title="Exercises"
       />
-      <div className="flex flex-col gap-6">
+      <div >
         <TrainingExercisesClient initialExercises={exercises as unknown as ExerciseData[]} />
       </div>
     </div>

@@ -1,8 +1,8 @@
 "use server";
 
 import * as exerciseService from "../services/exercise-service";
-import { invalidateExerciseCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateExerciseCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertExerciseInput } from "../types";
 
 export async function upsertExerciseAction(

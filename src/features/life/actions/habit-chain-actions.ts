@@ -1,8 +1,8 @@
 "use server";
 
 import * as habitChainService from "../services/habit-chain-service";
-import { invalidateHabitChainCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateHabitChainCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertHabitChainInput } from "../types";
 
 export async function upsertHabitChainAction(

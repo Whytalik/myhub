@@ -42,7 +42,7 @@ model User {
 model WeekTemplate {
   id        String   @id @default(cuid())
   userId    String
-  dayOfWeek Int // 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun
+  dayOfWeek Int
   dayType   String   @default("regular")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -461,7 +461,7 @@ model Exercise {
   name         String
   muscleGroup  String?
   equipment    String?
-  trackingType String                @default("weight_reps") // weight_reps | bodyweight | duration | cardio
+  trackingType String                @default("weight_reps")
   notes        String?
   archived     Boolean               @default(false)
   order        Int                   @default(0)
@@ -536,7 +536,7 @@ model TrainingSession {
   dayId           String?
   dayName         String
   date            DateTime     @default(now())
-  status          String       @default("in_progress") // in_progress | completed
+  status          String       @default("in_progress")
   durationSeconds Int?
   notes           String?
   createdAt       DateTime     @default(now())

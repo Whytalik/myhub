@@ -11,9 +11,9 @@ interface Props {
 
 function getGreeting(): { text: string; emoji: string } {
   const h = new Date().getHours();
-  if (h >= 5 && h < 12)  return { text: "Доброго ранку",  emoji: "☀️" };
-  if (h >= 12 && h < 18) return { text: "Доброго дня",    emoji: "🌤️" };
-  return                          { text: "Добрий вечір",  emoji: "🌙" };
+  if (h >= 5 && h < 12) return { text: "Доброго ранку", emoji: "☀️" };
+  if (h >= 12 && h < 18) return { text: "Доброго дня", emoji: "🌤️" };
+  return { text: "Добрий вечір", emoji: "🌙" };
 }
 
 function formatDate(dateStr: string): string {
@@ -38,42 +38,42 @@ export function DayGreeting({ dateStr, yesterdayBrainDump, onStart }: Props) {
   };
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center py-12">
-      <div className="flex flex-col items-center gap-8 max-w-lg w-full text-center">
+    <div >
+      <div >
 
-        {/* Date */}
-        <span className="text-caption font-mono text-muted uppercase tracking-[0.3em]">
+        {}
+        <span >
           {dateLabel}
         </span>
 
-        {/* Greeting */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-5xl">{emoji}</span>
-          <h1 className="text-[2rem] font-bold tracking-tight text-text-primary leading-tight">
+        {}
+        <div >
+          <span >{emoji}</span>
+          <h1 >
             {text}!
           </h1>
         </div>
 
-        {/* Yesterday's brain dump */}
+        {}
         {yesterdayBrainDump && (
-          <div className="w-full bg-surface border border-border rounded-xl p-5 text-left">
-            <p className="text-caption font-mono text-muted uppercase tracking-wider mb-3">
+          <div >
+            <p >
               Вчорашні думки
             </p>
-            <p className="text-body text-text-secondary leading-relaxed whitespace-pre-wrap line-clamp-6">
+            <p >
               {yesterdayBrainDump}
             </p>
           </div>
         )}
 
-        {/* Start button */}
+        {}
         <button
           onClick={handleStart}
           disabled={isPending}
-          className="inline-flex items-center gap-2.5 h-12 px-8 rounded-xl bg-accent text-bg font-semibold text-body hover:brightness-110 active:scale-[0.98] transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
+
         >
           {isPending ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size={16} />
           ) : (
             <>
               Розпочати день

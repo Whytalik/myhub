@@ -4,7 +4,7 @@ export default function JournalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="px-8 py-8">
+    <div >
       {children}
     </div>
   );

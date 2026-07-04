@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Тепер це стабільна опція на верхньому рівні
+
   cacheComponents: true,
   experimental: {
     viewTransition: true,

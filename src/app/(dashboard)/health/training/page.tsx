@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { TrainingPlansClient } from "@/features/health/training/components/TrainingPlansClient";
 import * as exerciseService from "@/features/health/training/services/exercise-service";
 import * as trainingPlanService from "@/features/health/training/services/training-plan-service";
@@ -25,12 +25,12 @@ export default async function TrainingPlansPage() {
   ]);
 
   return (
-    <div className="px-8 py-8">
+    <div >
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "training" }]}
         title="Plans"
       />
-      <div className="flex flex-col gap-6">
+      <div >
         <TrainingPlansClient
           initialPlans={plans as unknown as TrainingPlanData[]}
           initialExercises={exercises as unknown as ExerciseData[]}

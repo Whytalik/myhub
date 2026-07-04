@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/prisma";
 
 export const scheduleRepository = {
   findByDayOfWeek(userId: string, dayOfWeek: number) {

@@ -1,4 +1,5 @@
-﻿"use client";
+"use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Zap, Smile, FileText, Info } from "lucide-react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
@@ -17,15 +18,15 @@ interface Props {
 }
 
 const LEVELS = [
-  { value: 1,  label: "1" },
-  { value: 2,  label: "2" },
-  { value: 3,  label: "3" },
-  { value: 4,  label: "4" },
-  { value: 5,  label: "5" },
-  { value: 6,  label: "6" },
-  { value: 7,  label: "7" },
-  { value: 8,  label: "8" },
-  { value: 9,  label: "9" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+  { value: 5, label: "5" },
+  { value: 6, label: "6" },
+  { value: 7, label: "7" },
+  { value: 8, label: "8" },
+  { value: 9, label: "9" },
   { value: 10, label: "10" },
 ];
 
@@ -43,7 +44,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
   const hasValue = energy !== null || mood !== null || !!note;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea
+
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -55,38 +56,32 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
 
   const ScaleHint = ({ type }: { type: "energy" | "mood" }) => {
     const { isOpen, coords, triggerRef, contentRef, open, close } = useDynamicPositioning({
-      contentWidth: 288, // w-72 = 18rem = 288px
+      contentWidth: 288,
       offset: 12
     });
 
     return (
-      <div className="flex items-center">
-        <div 
+      <div >
+        <div
           ref={triggerRef as React.RefObject<HTMLDivElement>}
           onMouseEnter={open}
           onMouseLeave={close}
-          className="cursor-help flex items-center"
+
         >
-          <Info size={13} className="text-muted hover:text-accent transition-colors" />
+          <Info size={13} />
         </div>
-        
+
         {isOpen && coords && typeof document !== "undefined" && createPortal(
-          <div 
+          <div
             ref={contentRef as React.RefObject<HTMLDivElement>}
-            className={`fixed z-[9999] w-72 p-4 bg-surface border border-border rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200 ${
-              coords.align === 'top' ? 'origin-bottom' : 'origin-top'
-            }`}
-            style={{ 
-              top: coords.align === 'top' ? 'auto' : coords.top,
-              bottom: coords.align === 'top' ? (window.innerHeight - coords.top) : 'auto',
-              left: coords.left
-            }}
+
+
           >
-            <div className="flex flex-col gap-3 text-note leading-relaxed">
-              <p className="font-bold text-text border-b border-border pb-2">
+            <div >
+              <p >
                 {type === "energy" ? "Як оцінити енергію" : "Як оцінити настрій"}
               </p>
-              <div className="flex flex-col gap-2 text-secondary">
+              <div >
                 {type === "energy" ? (
                   <>
                     <p><strong>1–2:</strong> Виснажений. Важко встати і виконати мінімум.</p>
@@ -105,7 +100,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
                   </>
                 )}
               </div>
-              <p className="italic text-muted pt-2 border-t border-border">
+              <p >
                 {type === "energy"
                   ? "Підказка: якщо важко визначити — оцінюй вранці до початку роботи"
                   : "Підказка: це не оцінка дня, а поточний емоційний стан"}
@@ -119,42 +114,34 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
   };
 
   return (
-    <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
-      hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-    }`}>
-      <div className="flex items-center gap-2 pb-1 border-b border-border/40">
-        <span className="text-caption font-mono uppercase tracking-widest text-muted">Morning Energy & Mood</span>
+    <div >
+      <div >
+        <span >Morning Energy & Mood</span>
       </div>
-      {/* Energy Row */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className={`p-1.5 rounded-lg transition-colors ${energy !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
+      {}
+      <div >
+        <div >
+          <div >
+            <div >
               <Zap size={14} />
             </div>
-            <h3 className={`text-body font-medium transition-colors ${energy !== null ? "text-accent" : "text-text"}`}>Energy</h3>
+            <h3 >Energy</h3>
             <ScaleHint type="energy" />
           </div>
           {energy !== null && (
-            <span className="text-note font-mono text-muted uppercase tracking-wider">
+            <span >
               {ENERGY_DESCS[energy]}
             </span>
           )}
         </div>
 
-        <div className="flex gap-1 h-9 -mx-1 px-1">
+        <div >
           {LEVELS.map(({ value }) => (
             <button
               key={value}
               type="button"
               onClick={() => onChange({ energy: energy === value ? null : value })}
-              className={`flex-1 w-full rounded-lg border text-caption font-mono transition-all ${
-                energy === value
-                  ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                  : energy !== null && value <= energy
-                  ? "bg-accent-muted/40 border-accent/20 text-accent/60"
-                  : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
-              }`}
+
             >
               {value}
             </button>
@@ -162,36 +149,30 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
         </div>
       </div>
 
-      {/* Mood Row */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className={`p-1.5 rounded-lg transition-colors ${mood !== null ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
+      {}
+      <div >
+        <div >
+          <div >
+            <div >
               <Smile size={14} />
             </div>
-            <h3 className={`text-body font-medium transition-colors ${mood !== null ? "text-accent" : "text-text"}`}>Mood</h3>
+            <h3 >Mood</h3>
             <ScaleHint type="mood" />
           </div>
           {mood !== null && (
-            <span className="text-note font-mono text-muted uppercase tracking-wider">
+            <span >
               {MOOD_DESCS[mood]}
             </span>
           )}
         </div>
 
-        <div className="flex gap-1 h-9 -mx-1 px-1">
+        <div >
           {LEVELS.map(({ value }) => (
             <button
               key={value}
               type="button"
               onClick={() => onChange({ mood: mood === value ? null : value })}
-              className={`flex-1 w-full rounded-lg border text-caption font-mono transition-all ${
-                mood === value
-                  ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                  : mood !== null && value <= mood
-                  ? "bg-accent-muted/40 border-accent/20 text-accent/60"
-                  : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
-              }`}
+
             >
               {value}
             </button>
@@ -199,22 +180,18 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 px-1 h-4">
-          <FileText size={12} className="text-muted" />
-          <span className="text-caption font-mono uppercase tracking-wider text-muted">Notes</span>
+      <div >
+        <div >
+          <FileText size={12} />
+          <span >Notes</span>
         </div>
-        <textarea
+        <Textarea
           ref={textareaRef}
           value={note ?? ""}
           onChange={(e) => onChange({ energyNote: e.target.value || null })}
           placeholder="Mood/energy notes..."
           rows={1}
-          className={`bg-raised/50 border rounded-xl px-4 py-2 text-sm transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
-            note
-              ? "border-accent/50 text-text bg-accent/[0.02]"
-              : "border-border text-secondary placeholder:text-muted/50 focus:border-accent/40"
-          }`}
+
         />
       </div>
     </div>

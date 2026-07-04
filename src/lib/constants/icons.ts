@@ -90,11 +90,11 @@ export const ICON_LIBRARY = {
 export type IconName = keyof typeof ICON_LIBRARY;
 
 export const ICON_SIZES = {
-  XS:  10,
-  SM:  12,
-  MD:  14,
-  LG:  16,
-  XL:  18,
+  XS: 10,
+  SM: 12,
+  MD: 14,
+  LG: 16,
+  XL: 18,
   XXL: 20,
   HUG: 24,
 } as const;

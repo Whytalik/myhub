@@ -2,15 +2,15 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { getEntryByDate } from "@/features/life/services/journal-service";
 import * as taskService from "@/features/life/services/task-service";
 import * as habitService from "@/features/life/services/habit-service";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
 import type { DailyEntryData, HabitData, DayType } from "@/features/life/types";
-import type { RoutineMap } from "@/lib/routine-items";
-import { invalidateTaskCache } from "@/lib/revalidate";
+import type { RoutineMap } from "@/lib/life/routine-items";
+import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { History } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -43,13 +43,11 @@ export default async function JournalPage({
   const dateStr = dateParam && isValidDateStr(dateParam) ? dateParam : todayStr;
   const isPast = dateStr !== todayStr;
 
-  // Auto-carry incomplete tasks from yesterday when viewing today
   if (!isPast) {
     const carried = await taskService.autoCarryOverYesterdayTasks(userId, dateStr);
     if (carried > 0) invalidateTaskCache(userId);
   }
 
-  // Create UTC date from YYYY-MM-DD to match database storage
   const date = new Date(dateStr);
   const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
@@ -75,17 +73,16 @@ export default async function JournalPage({
         ...raw,
         morningRoutine: (raw.morningRoutine as RoutineMap | null) ?? null,
         eveningRoutine: (raw.eveningRoutine as RoutineMap | null) ?? null,
-        // Fields added in migration — present after pnpm prisma migrate dev
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         startedAt: ((raw as any).startedAt as Date | null) ?? null,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         completedAt: ((raw as any).completedAt as Date | null) ?? null,
       }
     : null;
 
   return (
     <div>
-      <div className="relative">
+      <div >
         <PageHeader
           breadcrumb={[
             { label: "life space", href: "/life" },
@@ -108,7 +105,7 @@ export default async function JournalPage({
         />
         <Link
           href="/life/history"
-          className="absolute top-0 right-0 z-20 inline-flex items-center gap-2 h-8 px-5 rounded-xl text-note font-mono uppercase tracking-wider border border-border bg-transparent hover:bg-raised text-secondary hover:text-text transition-all"
+
         >
           <History size={14} />
           History

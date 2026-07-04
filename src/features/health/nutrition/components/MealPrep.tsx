@@ -107,35 +107,35 @@ export function MealPrep() {
   ];
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Overview Card */}
-      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">
+    <div >
+      {}
+      <div >
+        <div >
+          <div >
             <ClipboardList size={16} />
           </div>
           <div>
-            <h3 className="text-note font-semibold text-text-primary">Підготовка їжі (Міл-преп)</h3>
-            <p className="text-caption text-text-muted">В неділю здійснюється закупка і підготовка білкових продуктів на весь тиждень</p>
+            <h3 >Підготовка їжі (Міл-преп)</h3>
+            <p >В неділю здійснюється закупка і підготовка білкових продуктів на весь тиждень</p>
           </div>
         </div>
 
-        {/* Meat Prep Table */}
-        <div className="mt-2 border border-border/50 rounded-lg overflow-hidden">
-          <table className="w-full text-caption text-left border-collapse">
+        {}
+        <div >
+          <table >
             <thead>
-              <tr className="bg-surface-hover border-b border-border/50 text-text-secondary font-medium">
-                <th className="p-3">М'ясо</th>
-                <th className="p-3 text-right">Кількість</th>
-                <th className="p-3">Маринад</th>
+              <tr >
+                <th >М'ясо</th>
+                <th >Кількість</th>
+                <th >Маринад</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/30 text-text-secondary">
+            <tbody >
               {prepTable.map((row, idx) => (
-                <tr key={idx} className="hover:bg-surface-hover/20">
-                  <td className="p-3 font-medium text-text-primary">{row.name}</td>
-                  <td className="p-3 text-right font-mono">{row.qty}</td>
-                  <td className="p-3 text-accent font-medium">{row.marinade}</td>
+                <tr key={idx} >
+                  <td >{row.name}</td>
+                  <td >{row.qty}</td>
+                  <td >{row.marinade}</td>
                 </tr>
               ))}
             </tbody>
@@ -143,87 +143,87 @@ export function MealPrep() {
         </div>
       </div>
 
-      {/* Products list for Prep */}
-      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center shrink-0">
+      {}
+      <div >
+        <div >
+          <div >
             <Apple size={16} />
           </div>
           <div>
-            <h3 className="text-note font-semibold text-text-primary">Продукти для підготовки</h3>
-            <p className="text-caption text-text-muted">Необхідні інгредієнти для міл-препу та заготовок</p>
+            <h3 >Продукти для підготовки</h3>
+            <p >Необхідні інгредієнти для міл-препу та заготовок</p>
           </div>
         </div>
 
-        <div className="h-px bg-border/50" />
+        <div />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-caption">
+        <div >
           <div>
-            <span className="font-semibold text-text-primary uppercase tracking-wider font-mono text-[11px] block mb-2 text-accent">
+            <span >
               М'ясо та білки
             </span>
-            <ul className="flex flex-col gap-1.5 pl-1 text-text-secondary">
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+            <ul >
+              <li >
+                <span >·</span>
                 <span>Куряче стегно або філе — 1.48 кг</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Куряче філе — 1.2 кг</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Курячі серця — 600 г</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Свиняча відбивна — 600 г (~4 шт)</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Творог 5–9% — 500 г (для сирників)</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Яйце — 1 шт (для сирників)</span>
               </li>
             </ul>
           </div>
           <div>
-            <span className="font-semibold text-text-primary uppercase tracking-wider font-mono text-[11px] block mb-2 text-accent">
+            <span >
               Маринади та спеції
             </span>
-            <ul className="flex flex-col gap-1.5 pl-1 text-text-secondary">
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+            <ul >
+              <li >
+                <span >·</span>
                 <span>Грецький йогурт — 150 г</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Лимон — 1.5 шт, Апельсин — 1 шт</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Часник — 10 зубчиків</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Соєвий соус — 6 ст.л., Томатна паста — 1 ст.л.</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Мед — 1 ст.л., Гірчиця — 2 ст.л.</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Оливкова олія — ~9 ст.л.</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Борошно — 5–6 ст.л., Цукор — 3 ст.л., Ванільний цукор</span>
               </li>
-              <li className="flex gap-2">
-                <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+              <li >
+                <span >·</span>
                 <span>Розмарин, чебрець, паприка, прованські трави, сіль, перець</span>
               </li>
             </ul>
@@ -231,22 +231,22 @@ export function MealPrep() {
         </div>
       </div>
 
-      {/* Algorithm */}
-      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-5">
-        <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+      {}
+      <div >
+        <span >
           Алгоритм неділі (~40 хв активно)
         </span>
-        <div className="flex flex-col gap-5">
+        <div >
           {algorithm.map((block, idx) => (
-            <div key={idx} className="flex flex-col gap-3">
-              <span className="text-caption font-semibold text-accent flex items-center gap-1.5">
-                <Flame size={13} className="shrink-0" />
+            <div key={idx} >
+              <span >
+                <Flame size={13} />
                 {block.title}
               </span>
-              <ol className="flex flex-col gap-2.5 pl-1">
+              <ol >
                 {block.steps.map((step, stepIdx) => (
-                  <li key={stepIdx} className="text-caption text-text-secondary leading-relaxed flex gap-2">
-                    <span className="text-text-muted shrink-0 font-mono font-bold">{stepIdx + 1}.</span>
+                  <li key={stepIdx} >
+                    <span >{stepIdx + 1}.</span>
                     <span>{step}</span>
                   </li>
                 ))}
@@ -256,30 +256,30 @@ export function MealPrep() {
         </div>
       </div>
 
-      {/* Marinades */}
-      <div className="bg-surface border border-border rounded-xl p-5 flex flex-col gap-4">
-        <span className="text-caption font-semibold text-text-primary uppercase tracking-wider font-mono">
+      {}
+      <div >
+        <span >
           Рецепти маринадів
         </span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div >
           {marinades.map((m, idx) => (
-            <div key={idx} className="border border-border/40 rounded-xl p-4 flex flex-col gap-2 bg-surface/50">
-              <span className="text-caption font-semibold text-accent">
+            <div key={idx} >
+              <span >
                 {m.title}
               </span>
-              <p className="text-caption text-text-muted italic mb-1">
+              <p >
                 {m.for}
               </p>
-              <ul className="flex flex-col gap-1 pl-1">
+              <ul >
                 {m.ingredients.map((ing, ingIdx) => (
-                  <li key={ingIdx} className="text-caption text-text-secondary leading-relaxed flex gap-2">
-                    <span className="text-accent/60 shrink-0 font-bold font-mono">·</span>
+                  <li key={ingIdx} >
+                    <span >·</span>
                     <span>{ing}</span>
                   </li>
                 ))}
               </ul>
               {m.note && (
-                <p className="text-caption text-text-muted mt-2 border-t border-border/20 pt-2 leading-relaxed">
+                <p >
                   {m.note}
                 </p>
               )}

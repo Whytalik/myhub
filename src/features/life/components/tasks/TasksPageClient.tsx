@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/actions/button";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Heading } from "@/components/ui/display/heading";
 import { instantDuplicateTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
 import { CheckCircle2, Layers, Loader2, Plus } from "lucide-react";
@@ -92,23 +92,23 @@ export function TasksPageClient({
   }, [initialTasks, hideDoneSubtasks]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
-          <div className="flex flex-col gap-1">
+    <div >
+      <div >
+        <div >
+          <div >
             <Heading title="Tasks" />
-            <p className="text-subtitle text-text-secondary leading-relaxed pl-3 border-l-2 border-border-strong">
+            <p >
               Organize your goals, projects, and daily work.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5 p-1 bg-surface border border-border rounded-xl w-full sm:w-auto">
+          <div >
+            <div >
               <Button
                 variant={view === "gallery" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("gallery")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
+
               >
                 Gallery
               </Button>
@@ -116,7 +116,7 @@ export function TasksPageClient({
                 variant={view === "calendar" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("calendar")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
+
               >
                 Calendar
               </Button>
@@ -124,24 +124,24 @@ export function TasksPageClient({
                 variant={view === "graph" ? "primary" : "ghost"}
                 size="sm"
                 onClick={() => setView("graph")}
-                className="flex-1 sm:flex-none rounded-lg px-4 h-8 text-note whitespace-nowrap"
+
               >
                 Graph
               </Button>
             </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div >
               {view === "graph" && (
                 <Button
                   variant={hideDoneSubtasks ? "primary" : "outline"}
                   size="sm"
                   onClick={() => setHideDoneSubtasks(!hideDoneSubtasks)}
-                  className="rounded-xl px-4 h-10 sm:h-9 text-note font-bold transition-all"
+
                   title="Toggle completed subtasks"
                 >
                   <CheckCircle2
                     size={14}
-                    className={hideDoneSubtasks ? "mr-2" : "mr-2 text-muted/50"}
+
                   />
                   {hideDoneSubtasks ? "Showing Active" : "Hide Done"}
                 </Button>
@@ -151,9 +151,9 @@ export function TasksPageClient({
                 variant="outline"
                 size="sm"
                 onClick={() => setSpheresOpen(true)}
-                className="flex-1 sm:flex-none rounded-xl px-4 h-10 sm:h-9 text-note font-bold"
+
               >
-                <Layers size={14} className="mr-2" />
+                <Layers size={14} />
                 Life Spheres
               </Button>
 
@@ -161,9 +161,9 @@ export function TasksPageClient({
                 variant="primary"
                 size="sm"
                 onClick={handleAddNew}
-                className="flex-1 sm:flex-none rounded-xl px-6 h-10 sm:h-9 text-note font-bold"
+
               >
-                <Plus size={16} className="mr-2" />
+                <Plus size={16} />
                 New Task
               </Button>
             </div>
@@ -172,17 +172,17 @@ export function TasksPageClient({
       </div>
 
       {isActionPending && (
-        <div className="fixed inset-0 z-[9999] bg-bg/20 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
-          <div className="bg-surface border border-border p-4 rounded-xl shadow-elevated flex items-center gap-3">
-            <Loader2 size={20} className="text-accent animate-spin" />
-            <span className="text-note font-mono uppercase tracking-widest text-muted">
+        <div >
+          <div >
+            <Loader2 size={20} />
+            <span >
               Updating...
             </span>
           </div>
         </div>
       )}
 
-      <div className="animate-in fade-in duration-500">
+      <div >
         {view === "gallery" && (
           <TaskTree
             tasks={initialTasks}
@@ -197,8 +197,8 @@ export function TasksPageClient({
         {view === "calendar" && (
           <Suspense
             fallback={
-              <div className="flex items-center justify-center py-20">
-                <Loader2 size={24} className="text-accent animate-spin" />
+              <div >
+                <Loader2 size={24} />
               </div>
             }
           >
@@ -215,8 +215,8 @@ export function TasksPageClient({
         {view === "graph" && (
           <Suspense
             fallback={
-              <div className="flex items-center justify-center py-20">
-                <Loader2 size={24} className="text-accent animate-spin" />
+              <div >
+                <Loader2 size={24} />
               </div>
             }
           >

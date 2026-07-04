@@ -1,4 +1,4 @@
-import { getCachedActiveHabitChains } from "@/lib/cache";
+import { getCachedActiveHabitChains } from "@/lib/cache/cache";
 import { habitChainRepository } from "../repositories/habit-chain.repository";
 import { habitRepository } from "../repositories/habit.repository";
 import type { UpsertHabitChainInput } from "../types";

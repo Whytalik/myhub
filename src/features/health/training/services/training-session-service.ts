@@ -1,4 +1,4 @@
-import { getCachedRecentSessions, getCachedSession } from "@/lib/cache";
+import { getCachedRecentSessions, getCachedSession } from "@/lib/cache/cache";
 import { trainingSessionRepository } from "../repositories/training-session.repository";
 import { trainingDayRepository } from "../repositories/training-day.repository";
 import type { Prisma } from "@/app/generated/prisma";

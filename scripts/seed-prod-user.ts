@@ -1,8 +1,3 @@
-/**
- * Clears the entire database and seeds a single user via Supabase REST API.
- * Run: npx tsx scripts/seed-prod-user.ts
- */
-
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 
@@ -36,7 +31,6 @@ async function del(table: string, filter = "id=not.is.null") {
 async function main() {
   console.log("⚠️  Clearing database...");
 
-  // Legacy tables from removed domains (may or may not exist — errors are ignored)
   const legacy = [
     "NutritionPerson", "WeekPlan", "DayPlan", "ShoppingList", "ShoppingListItem",
     "Dish", "DishIngredient", "Product", "DishProduct",
@@ -49,7 +43,6 @@ async function main() {
   ];
   for (const t of legacy) await del(t);
 
-  // Current schema — FK-safe order: children before parents
   await del("TacticCompletion");
   await del("Tactic");
   await del("KeyResult");
@@ -75,7 +68,6 @@ async function main() {
 
   const hash = await bcrypt.hash(PASSWORD, 12);
 
-  // PATCH existing user (avoids FK issues if delete failed)
   const patch = await fetch(
     `${SUPABASE_URL}/rest/v1/User?email=eq.hanmaster05%40gmail.com`,
     {
@@ -99,7 +91,6 @@ async function main() {
     }
   }
 
-  // User doesn't exist — create fresh
   const post = await fetch(`${SUPABASE_URL}/rest/v1/User`, {
     method: "POST",
     headers: { ...headers, Prefer: "return=representation" },

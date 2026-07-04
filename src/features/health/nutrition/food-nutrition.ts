@@ -1,6 +1,3 @@
-// Reference macros per 100g (or 100ml for liquids), generic USDA-style values.
-// Branded/prepared items (protein powder, syrniki, mayo, soy sauce) are rough
-// estimates — swap in real label values if you have the exact product.
 export interface FoodMacros {
   kcal: number;
   protein: number;

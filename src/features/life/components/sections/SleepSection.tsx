@@ -1,36 +1,37 @@
-﻿"use client";
+"use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Moon, Bed, Sun, Star, FileText, Info } from "lucide-react";
-import { TimePicker } from "@/components/ui/time-picker";
+import { TimePicker } from "@/components/ui/inputs/time-picker";
 import { useEffect, useRef } from "react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { createPortal } from "react-dom";
 
 interface Props {
-  bedtime: string | null; // ISO string
-  wakeup: string | null;  // ISO string
+  bedtime: string | null;
+  wakeup: string | null;
   hours: number | null;
   quality: number | null;
   note: string | null;
-  onChange: (patch: { 
-    sleepBedtime?: string | null; 
-    sleepWakeup?: string | null; 
-    sleepHours?: number | null; 
-    sleepQuality?: number | null; 
-    sleepNote?: string | null 
+  onChange: (patch: {
+    sleepBedtime?: string | null;
+    sleepWakeup?: string | null;
+    sleepHours?: number | null;
+    sleepQuality?: number | null;
+    sleepNote?: string | null
   }) => void;
 }
 
 const LEVELS = [
-  { value: 1,  label: "1" },
-  { value: 2,  label: "2" },
-  { value: 3,  label: "3" },
-  { value: 4,  label: "4" },
-  { value: 5,  label: "5" },
-  { value: 6,  label: "6" },
-  { value: 7,  label: "7" },
-  { value: 8,  label: "8" },
-  { value: 9,  label: "9" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+  { value: 5, label: "5" },
+  { value: 6, label: "6" },
+  { value: 7, label: "7" },
+  { value: 8, label: "8" },
+  { value: 9, label: "9" },
   { value: 10, label: "10" },
 ];
 
@@ -43,7 +44,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
   const hasValue = bedtime !== null || wakeup !== null || quality !== null || !!note;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea
+
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -53,7 +54,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
     }
   }, [note]);
 
-  // Calculate hours whenever bedtime or wakeup changes
+
   useEffect(() => {
     if (bedtime && wakeup) {
       const start = new Date(bedtime);
@@ -99,40 +100,34 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
     });
 
     return (
-      <div className="flex items-center">
-        <div 
+      <div >
+        <div
           ref={triggerRef as React.RefObject<HTMLDivElement>}
           onMouseEnter={open}
           onMouseLeave={close}
-          className="cursor-help flex items-center"
+
         >
-          <Info size={13} className="text-muted hover:text-accent transition-colors" />
+          <Info size={13} />
         </div>
-        
+
         {isOpen && coords && typeof document !== "undefined" && createPortal(
-          <div 
+          <div
             ref={contentRef as React.RefObject<HTMLDivElement>}
-            className={`fixed z-[9999] w-72 p-4 bg-surface border border-border rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200 ${
-              coords.align === 'top' ? 'origin-bottom' : 'origin-top'
-            }`}
-            style={{ 
-              top: coords.align === 'top' ? 'auto' : coords.top,
-              bottom: coords.align === 'top' ? (window.innerHeight - coords.top) : 'auto',
-              left: coords.left
-            }}
+
+
           >
-            <div className="flex flex-col gap-3 text-note leading-relaxed">
-              <p className="font-bold text-text border-b border-border pb-2">
+            <div >
+              <p >
                 Як оцінити якість сну
               </p>
-              <div className="flex flex-col gap-2 text-secondary">
+              <div >
                 <p><strong>1–2:</strong> Жахливо. Майже немає сну (&gt;60 хв засипання), часті прокидання, відчуття повної знесиленості.</p>
                 <p><strong>3–4:</strong> Погано. Переривчастий або недостатній сон, часті прокидання, важкий підйом.</p>
                 <p><strong>5–6:</strong> Нормально. 1–2 прокидання за ніч, відносно відновлений після достатньої кількості годин.</p>
                 <p><strong>7–8:</strong> Добре. Безперервний сон, прокинувся бадьорим, відчуття відновлення та готовності.</p>
                 <p><strong>9–10:</strong> Чудово. Абсолютно відновлений сон, легке прокидання, повний запас сил на день.</p>
               </div>
-              <p className="italic text-muted pt-2 border-t border-border">
+              <p >
                 Підказка: орієнтуйся на те наскільки відновленим ти почуваєшся після підйому з ліжка
               </p>
             </div>
@@ -144,79 +139,71 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
   };
 
   return (
-    <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
-      hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-    }`}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className={`p-1.5 rounded-lg transition-colors ${hasValue ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
+    <div >
+      <div >
+        <div >
+          <div >
             <Moon size={14} />
           </div>
-          <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Sleep</h3>
+          <h3 >Sleep</h3>
         </div>
-        <div className="flex items-center gap-4">
+        <div >
           {hours !== null && (
-            <span className="text-note font-mono text-accent font-bold bg-accent/10 px-2 py-0.5 rounded-lg">
+            <span >
               {hours} hours
             </span>
           )}
           {quality !== null && (
-            <span className="text-note font-mono text-muted uppercase tracking-wider">
+            <span >
               {SLEEP_DESCS[quality]}
             </span>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-5">
-        {/* Row 1: Bedtime & Wakeup */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 px-1 h-4">
-              <Bed size={12} className="text-muted" />
-              <label className="text-caption font-mono uppercase tracking-wider text-muted">Bedtime</label>
+      <div >
+        {}
+        <div >
+          <div >
+            <div >
+              <Bed size={12} />
+              <label >Bedtime</label>
             </div>
-            <TimePicker 
-              value={getTimeValue(bedtime)} 
+            <TimePicker
+              value={getTimeValue(bedtime)}
               onChange={(val) => handleTimeChange('sleepBedtime', val)}
               presets={[{ label: "22:00", value: "22:00" }]}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 px-1 h-4">
-              <Sun size={12} className="text-muted" />
-              <label className="text-caption font-mono uppercase tracking-wider text-muted">Wakeup</label>
+          <div >
+            <div >
+              <Sun size={12} />
+              <label >Wakeup</label>
             </div>
-            <TimePicker 
-              value={getTimeValue(wakeup)} 
+            <TimePicker
+              value={getTimeValue(wakeup)}
               onChange={(val) => handleTimeChange('sleepWakeup', val)}
               presets={[{ label: "08:00", value: "08:00" }]}
             />
           </div>
         </div>
 
-        {/* Row 2: Quality */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between gap-2 px-1 h-4">
-            <div className="flex items-center gap-2">
-              <Star size={12} className="text-muted" />
-              <label className="text-caption font-mono uppercase tracking-wider text-muted">Quality</label>
+        {}
+        <div >
+          <div >
+            <div >
+              <Star size={12} />
+              <label >Quality</label>
             </div>
             <ScaleHint />
           </div>
-          <div className="flex gap-1 h-9">
+          <div >
             {LEVELS.map(({ value }) => (
               <button
                 key={value}
                 type="button"
                 onClick={() => onChange({ sleepQuality: quality === value ? null : value })}
-                className={`flex-1 rounded-lg border text-caption font-mono transition-all ${
-                  quality === value
-                    ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                    : quality !== null && value <= quality
-                    ? "bg-accent-muted/40 border-accent/20 text-accent/60"
-                    : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
-                }`}
+
               >
                 {value}
               </button>
@@ -224,23 +211,19 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
           </div>
         </div>
 
-        {/* Row 3: Notes */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 px-1 h-4">
-            <FileText size={12} className="text-muted" />
-            <label className="text-caption font-mono uppercase tracking-wider text-muted">Notes</label>
+        {}
+        <div >
+          <div >
+            <FileText size={12} />
+            <label >Notes</label>
           </div>
-          <textarea
+          <Textarea
             ref={textareaRef}
             value={note ?? ""}
             onChange={(e) => onChange({ sleepNote: e.target.value || null })}
             placeholder="Sleep details..."
             rows={1}
-            className={`bg-raised/50 border rounded-xl px-4 py-2 text-sm transition-all resize-none outline-none leading-relaxed min-h-[36px] overflow-hidden ${
-              note 
-                ? "border-accent/50 text-text bg-accent/[0.02]" 
-                : "border-border text-secondary placeholder:text-muted/50 focus:border-accent/40"
-            }`}
+
           />
         </div>
       </div>

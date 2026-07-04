@@ -51,7 +51,7 @@ export const WEEK_PLAN: DayPlan[] = [
           "Вершкове масло — 30 г",
           "Для салату: помідори 4 шт (~520 г), огірок 2 шт (~400 г), перець солодкий 1 шт (~170 г), червона цибуля ½ шт (~60 г), бринза 150 г, олія 4 ч.л., орегано",
         ],
-        // Totals below cover lunch + dinner combined (dinner is the leftover portion).
+
         macroItems: [
           { food: "chickenMarinated", vitalii: 320, olesia: 480 },
           { food: "potato", vitalii: 400, olesia: 600 },
@@ -70,7 +70,7 @@ export const WEEK_PLAN: DayPlan[] = [
         label: "Вечеря",
         title: "Курячі шашлички + Картопляне пюре + Грецький салат",
         ingredients: ["Друга порція обідньої страви"],
-        macroItems: [], // already counted in lunch — same batch, eaten twice
+        macroItems: [],
       },
       {
         type: "snack",
@@ -511,7 +511,7 @@ export const WEEK_PLAN: DayPlan[] = [
           "Вода або молоко — 400 мл (по 200 мл кожному)",
           "Банан (для Олесі) — 1 шт (~120 г)",
         ],
-        // Assumes water as the shake base (0 kcal) — swap to "milk" food item if made with milk.
+
         macroItems: [
           { food: "proteinPowder", vitalii: 30, olesia: 30 },
           { food: "banana", vitalii: 0, olesia: 120 },

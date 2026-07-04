@@ -1,10 +1,6 @@
-// Pure, framework-free aggregation for the Weekly Review page.
-// No DB/React imports — every function here takes plain data and plain data back,
-// so it can be unit-tested in isolation.
-
 import { getWeekStart, getStartOfDay } from "./habit-utils";
-import { MORNING_ROUTINE, EVENING_ROUTINE, type RoutineMap } from "@/lib/routine-items";
-import { EMOTION_POLARITY } from "@/lib/emotion-taxonomy";
+import { MORNING_ROUTINE, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
+import { EMOTION_POLARITY } from "@/lib/life/emotion-taxonomy";
 import type {
   ReviewEntryData,
   WeekRange,
@@ -21,8 +17,6 @@ import type {
 
 const DAY_MS = 86400000;
 const MIN_PATTERN_SAMPLE = 10;
-
-// ─── Week ranges ────────────────────────────────────────────────────────────
 
 export function getWeekRange(ref: Date = new Date()): WeekRange {
   const start = getWeekStart(ref);
@@ -43,8 +37,6 @@ export function filterToRange<T extends { date: Date }>(items: T[], range: WeekR
   return items.filter((item) => isInRange(item.date, range));
 }
 
-// ─── Numeric helpers ────────────────────────────────────────────────────────
-
 function average(values: (number | null | undefined)[]): number | null {
   const nums = values.filter((v): v is number => v !== null && v !== undefined);
   if (nums.length === 0) return null;
@@ -54,8 +46,6 @@ function average(values: (number | null | undefined)[]): number | null {
 function round1(value: number | null): number | null {
   return value === null ? null : Math.round(value * 10) / 10;
 }
-
-// ─── Routine completion ─────────────────────────────────────────────────────
 
 function itemsCompletionPct(map: unknown, items: readonly { id: string }[]): number | null {
   if (!map || items.length === 0) return null;
@@ -84,8 +74,6 @@ export function eveningRoutinePct(entry: Pick<ReviewEntryData, "eveningRoutine">
 export function recoveryRoutinePct(entry: Pick<ReviewEntryData, "recoveryRoutine">): number | null {
   return genericMapCompletionPct(entry.recoveryRoutine);
 }
-
-// ─── Emotions ───────────────────────────────────────────────────────────────
 
 export function emotionBalance(entries: Pick<ReviewEntryData, "emotions">[]): EmotionBalance {
   const counts = new Map<string, number>();
@@ -116,8 +104,6 @@ export function emotionBalance(entries: Pick<ReviewEntryData, "emotions">[]): Em
   };
 }
 
-// ─── Habits ─────────────────────────────────────────────────────────────────
-
 function activeHabits(habits: HabitData[]): HabitData[] {
   return habits.filter((h) => !h.archived);
 }
@@ -136,7 +122,6 @@ export function habitsAdherencePct(habits: HabitData[], range: WeekRange): numbe
   return Math.min(100, (completions / target) * 100);
 }
 
-/** Share of active habits completed on each day (0-100), keyed by yyyy-mm-dd — used for correlations. */
 function dailyHabitAdherenceMap(habits: HabitData[]): Map<string, number> {
   const active = activeHabits(habits);
   const map = new Map<string, number>();
@@ -155,8 +140,6 @@ function dailyHabitAdherenceMap(habits: HabitData[]): Map<string, number> {
   return map;
 }
 
-// ─── Tasks ──────────────────────────────────────────────────────────────────
-
 function flattenTasks(tasks: TaskData[]): TaskData[] {
   const flat: TaskData[] = [];
   const walk = (list: TaskData[]) => {
@@ -168,8 +151,6 @@ function flattenTasks(tasks: TaskData[]): TaskData[] {
   walk(tasks);
   return flat;
 }
-
-// ─── Week summary ───────────────────────────────────────────────────────────
 
 export function summarizeWeek(
   allEntries: ReviewEntryData[],
@@ -217,8 +198,6 @@ export function summarizeWeek(
   };
 }
 
-// ─── Week-over-week comparison ──────────────────────────────────────────────
-
 type NumericWeekMetricKey =
   | "avgMood"
   | "avgEnergy"
@@ -264,8 +243,6 @@ export function compareWeeks(current: WeekSummary, previous: WeekSummary): Metri
   });
 }
 
-// ─── Trends ─────────────────────────────────────────────────────────────────
-
 export function weeklyTrend(
   allEntries: ReviewEntryData[],
   selector: (entry: ReviewEntryData) => number | null,
@@ -281,12 +258,6 @@ export function weeklyTrend(
   }
   return points;
 }
-
-// ─── Correlations / patterns ────────────────────────────────────────────────
-//
-// A week has ~7 points — far too few for statistics. So correlations are
-// computed over ALL available history (gated behind a minimum sample size)
-// and are always framed as "patterns to notice", never causation.
 
 export function pearson(pairs: [number, number][]): number | null {
   const n = pairs.length;
@@ -345,7 +316,6 @@ const METRICS: CandidateMetric[] = [
   },
 ];
 
-// Curated pairs, not a combinatorial dump — avoids surfacing spurious noise.
 const CANDIDATE_PAIRS: [string, string][] = [
   ["mood", "sleepQuality"],
   ["mood", "sleepHours"],

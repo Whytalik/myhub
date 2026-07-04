@@ -64,90 +64,85 @@ export function ShoppingList() {
   const reset = () => write({});
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Progress */}
-      <div className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-2.5">
-        <div className="flex items-center justify-between">
-          <span className="text-note font-medium text-text-primary">
+    <div >
+      {}
+      <div >
+        <div >
+          <span >
             {checkedCount} / {TOTAL_ITEMS} куплено
           </span>
           <button
             onClick={reset}
-            className="inline-flex items-center gap-1.5 text-caption font-medium text-text-muted hover:text-text-primary transition-colors duration-200"
+
           >
             <RotateCcw size={12} />
             Скинути
           </button>
         </div>
-        <div className="h-1.5 w-full bg-border-dim rounded-full overflow-hidden">
+        <div >
           <div
-            className="h-full bg-accent rounded-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
+
           />
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-y-2 pt-2.5 border-t border-border mt-1">
-          <div className="flex items-center gap-4">
-            <span className="text-caption text-text-muted">
-              Бюджет: <span className="font-mono text-text-primary font-semibold">{totalCost} ₴</span>
+        <div >
+          <div >
+            <span >
+              Бюджет: <span >{totalCost} ₴</span>
             </span>
             {checkedCost > 0 && (
-              <span className="text-caption text-text-muted">
-                Куплено: <span className="font-mono text-accent font-semibold">{checkedCost} ₴</span>
+              <span >
+                Куплено: <span >{checkedCost} ₴</span>
               </span>
             )}
           </div>
           {remainingCost > 0 && remainingCost !== totalCost && (
-            <span className="text-caption text-text-muted">
-              Залишилось: <span className="font-mono text-text-secondary font-semibold">{remainingCost} ₴</span>
+            <span >
+              Залишилось: <span >{remainingCost} ₴</span>
             </span>
           )}
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {}
+      <div >
         {SHOPPING_LIST.map((category) => (
           <div
             key={category.id}
-            className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-2"
+
           >
-            <span className="text-caption font-mono uppercase tracking-wider text-text-muted px-1">
+            <span >
               {category.title}
             </span>
-            <ul className="flex flex-col gap-0.5">
+            <ul >
               {category.items.map((item) => {
                 const isChecked = !!checked[item.id];
                 return (
-                  <li key={item.id} className="flex flex-col gap-1">
+                  <li key={item.id} >
                     <button
                       onClick={() => toggle(item.id)}
-                      className="w-full flex items-start gap-2.5 px-1 py-1.5 rounded-lg text-left hover:bg-surface-hover transition-colors duration-150"
+
                     >
                       <span
-                        className={`mt-0.5 shrink-0 w-4 h-4 rounded-[4px] border flex items-center justify-center transition-all duration-150 ${
-                          isChecked ? "bg-accent border-accent" : "border-border-strong"
-                        }`}
+
                       >
-                        {isChecked && <Check size={11} className="text-bg" strokeWidth={3} />}
+                        {isChecked && <Check size={11} strokeWidth={3} />}
                       </span>
-                      <span className="flex flex-col min-w-0">
+                      <span >
                         <span
-                          className={`text-caption leading-snug transition-colors duration-150 ${
-                            isChecked ? "text-text-muted line-through" : "text-text-primary"
-                          }`}
+
                         >
                           {item.name}
                           {item.qty && (
-                            <span className="text-text-secondary font-medium"> — {item.qty}</span>
+                            <span > — {item.qty}</span>
                           )}
                           {item.price && (
-                            <span className={`ml-1.5 font-mono text-[11px] font-medium transition-colors duration-150 ${isChecked ? "text-text-muted" : "text-accent"}`}>
+                            <span >
                               ~{item.price} ₴
                             </span>
                           )}
                         </span>
                         {item.note && (
-                          <span className="text-label text-text-muted leading-snug">
+                          <span >
                             {item.note}
                           </span>
                         )}
@@ -155,7 +150,7 @@ export function ShoppingList() {
                     </button>
 
                     {item.options && item.options.length > 0 && (
-                      <ul className="flex flex-col gap-0.5 mt-0.5 ml-[26px]">
+                      <ul >
                         {item.options.map((option, idx) => {
                           const optionId = `${item.id}-opt-${idx}`;
                           const isOptChecked = !!checked[optionId];
@@ -163,19 +158,15 @@ export function ShoppingList() {
                             <li key={idx}>
                               <button
                                 onClick={() => toggle(optionId)}
-                                className="w-full flex items-center gap-2 px-1 py-1 rounded-md text-left hover:bg-surface-hover/50 transition-colors duration-150"
+
                               >
                                 <span
-                                  className={`shrink-0 w-3.5 h-3.5 rounded-[3px] border flex items-center justify-center transition-all duration-150 ${
-                                    isOptChecked ? "bg-accent border-accent" : "border-border-strong/70"
-                                  }`}
+
                                 >
-                                  {isOptChecked && <Check size={9} className="text-bg" strokeWidth={3.5} />}
+                                  {isOptChecked && <Check size={9} strokeWidth={3.5} />}
                                 </span>
                                 <span
-                                  className={`text-label transition-colors duration-150 ${
-                                    isOptChecked ? "text-text-muted line-through" : "text-text-secondary"
-                                  }`}
+
                                 >
                                   {option}
                                 </span>

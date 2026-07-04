@@ -31,7 +31,6 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", nextUrl));
   }
 
-  // All authorized users have full access to all modules
   return NextResponse.next();
 });
 

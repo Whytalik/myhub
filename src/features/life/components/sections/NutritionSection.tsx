@@ -1,9 +1,10 @@
 "use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Utensils, CheckCircle2, AlertTriangle, XCircle, FileText } from "lucide-react";
 
 interface Props {
-  nutrition: number | null; // 5: Yes, 3: Partially, 1: No
+  nutrition: number | null;
   note: string | null;
   onChange: (patch: { nutrition?: number | null; nutritionNote?: string | null }) => void;
 }
@@ -19,22 +20,20 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
   const showNote = nutrition === 1 || nutrition === 3;
 
   return (
-    <div className={`bg-surface border rounded-xl p-6 flex flex-col gap-6 transition-all ${
-      hasValue ? "border-accent/20 shadow-[0_0_15px_rgba(192,132,252,0.03)]" : "border-border"
-    }`}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className={`p-1.5 rounded-lg transition-colors ${hasValue ? "bg-accent text-bg" : "bg-accent-muted text-accent"}`}>
+    <div >
+      <div >
+        <div >
+          <div >
             <Utensils size={14} />
           </div>
-          <div className="flex flex-col">
-            <h3 className={`text-body font-medium transition-colors ${hasValue ? "text-accent" : "text-text"}`}>Nutrition Plan</h3>
-            <span className="text-caption text-muted">Did you stick to the plan today?</span>
+          <div >
+            <h3 >Nutrition Plan</h3>
+            <span >Did you stick to the plan today?</span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div >
         {OPTIONS.map((opt) => {
           const Icon = opt.icon;
           const active = nutrition === opt.value;
@@ -43,15 +42,11 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
               key={opt.value}
               type="button"
               onClick={() => onChange({ nutrition: active ? null : opt.value })}
-              className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all gap-1.5 ${
-                active
-                  ? `${opt.bg} ${opt.border} ${opt.color} shadow-sm font-bold`
-                  : "bg-raised/30 border-border text-muted hover:border-border-hover hover:text-secondary"
-              }`}
+
             >
               <Icon size={16} />
-              <div className="flex flex-col items-center">
-                <span className="text-note leading-none">{opt.label}</span>
+              <div >
+                <span >{opt.label}</span>
               </div>
             </button>
           );
@@ -59,19 +54,19 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
       </div>
 
       {showNote && (
-        <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="flex items-center gap-2 px-1 h-4">
-            <FileText size={12} className="text-muted" />
-            <label className="text-caption font-mono uppercase tracking-wider text-muted">
+        <div >
+          <div >
+            <FileText size={12} />
+            <label >
               What went wrong? (Pattern detection)
             </label>
           </div>
-          <textarea
+          <Textarea
             value={note ?? ""}
             onChange={(e) => onChange({ nutritionNote: e.target.value || null })}
             placeholder="One sentence: what was the trigger or reason?"
             rows={1}
-            className={`bg-raised/50 border rounded-xl px-4 py-2 text-sm transition-all resize-none outline-none leading-relaxed h-10 flex items-center border-border text-secondary focus:border-accent/40`}
+
           />
         </div>
       )}

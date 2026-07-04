@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
 import { toast } from "sonner";
 import { Check, Dumbbell } from "lucide-react";
 import type { SetLogData, TrainingSessionData } from "../types";
@@ -88,16 +88,14 @@ export function SessionClient({ session }: SessionClientProps) {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex justify-between items-center">
+    <div >
+      <div >
         <span
-          className={`text-label font-mono uppercase px-2.5 py-1 rounded-full ${
-            isCompleted ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
-          }`}
+
         >
           {isCompleted ? "Completed" : "In progress"}
         </span>
-        <div className="flex gap-2">
+        <div >
           <Button variant="ghost" size="sm" onClick={() => router.push("/health/training")}>
             Back to training
           </Button>
@@ -110,14 +108,14 @@ export function SessionClient({ session }: SessionClientProps) {
       </div>
 
       {groups.length === 0 ? (
-        <div className="bg-surface/30 border border-dashed border-border/40 rounded-xl p-16 flex flex-col items-center justify-center text-center gap-4">
-          <div className="w-16 h-16 rounded-xl bg-raised flex items-center justify-center border border-border">
-            <Dumbbell size={32} className="text-muted/40" />
+        <div >
+          <div >
+            <Dumbbell size={32} />
           </div>
-          <p className="text-base font-bold text-text">No sets in this session</p>
+          <p >No sets in this session</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
+        <div >
           {groups.map((group) => {
             const isTimeBased = group.sets.every(
               (s) => s.durationSeconds != null || s.distanceMeters != null,
@@ -125,26 +123,22 @@ export function SessionClient({ session }: SessionClientProps) {
             return (
               <div
                 key={group.exerciseId}
-                className="border border-border rounded-xl bg-surface/30 overflow-hidden"
+
               >
-                <div className="px-4 py-3 border-b border-border/40">
-                  <span className="text-note font-bold text-text">{group.exerciseName}</span>
+                <div >
+                  <span >{group.exerciseName}</span>
                 </div>
-                <div className="flex flex-col divide-y divide-border/30">
+                <div >
                   {group.sets.map((log) => (
-                    <div key={log.id} className="flex items-center gap-3 p-3">
+                    <div key={log.id} >
                       <button
                         onClick={() => toggleCompleted(log.id)}
                         disabled={isCompleted}
-                        className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${
-                          log.completed
-                            ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-500"
-                            : "border-border text-muted hover:border-accent/40"
-                        } disabled:opacity-50`}
+
                       >
                         <Check size={14} />
                       </button>
-                      <span className="w-6 text-caption font-mono text-muted shrink-0">
+                      <span >
                         {log.setNumber}
                       </span>
 
@@ -154,7 +148,7 @@ export function SessionClient({ session }: SessionClientProps) {
                             type="number"
                             min={0}
                             placeholder="sec"
-                            className="w-20"
+
                             disabled={isCompleted}
                             value={log.durationSeconds ?? ""}
                             onChange={(e) =>
@@ -171,7 +165,7 @@ export function SessionClient({ session }: SessionClientProps) {
                             min={0}
                             step="0.1"
                             placeholder="m"
-                            className="w-20"
+
                             disabled={isCompleted}
                             value={log.distanceMeters ?? ""}
                             onChange={(e) =>
@@ -190,7 +184,7 @@ export function SessionClient({ session }: SessionClientProps) {
                             type="number"
                             min={0}
                             placeholder="reps"
-                            className="w-20"
+
                             disabled={isCompleted}
                             value={log.reps ?? ""}
                             onChange={(e) =>
@@ -207,7 +201,7 @@ export function SessionClient({ session }: SessionClientProps) {
                             min={0}
                             step="0.5"
                             placeholder="kg"
-                            className="w-20"
+
                             disabled={isCompleted}
                             value={log.weight ?? ""}
                             onChange={(e) =>
@@ -228,7 +222,7 @@ export function SessionClient({ session }: SessionClientProps) {
                         max={10}
                         step="0.5"
                         placeholder="RPE"
-                        className="w-16"
+
                         disabled={isCompleted}
                         value={log.rpe ?? ""}
                         onChange={(e) =>
@@ -245,7 +239,7 @@ export function SessionClient({ session }: SessionClientProps) {
                         type="number"
                         min={0}
                         placeholder="rest s"
-                        className="w-20"
+
                         disabled={isCompleted}
                         value={log.restSeconds ?? ""}
                         onChange={(e) =>
@@ -260,7 +254,7 @@ export function SessionClient({ session }: SessionClientProps) {
 
                       <Input
                         placeholder="notes"
-                        className="flex-1 min-w-0"
+
                         disabled={isCompleted}
                         value={log.notes ?? ""}
                         onChange={(e) => updateField(log.id, "notes", e.target.value)}

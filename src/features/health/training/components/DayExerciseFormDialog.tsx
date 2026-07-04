@@ -3,11 +3,11 @@
 import { useTransition } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
-import { CustomSelect } from "@/components/ui/custom-select";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
+import { CustomSelect } from "@/components/ui/inputs/custom-select";
 import { toast } from "sonner";
 import { dayExerciseSchema, type DayExerciseFormData } from "../schemas";
 import { upsertDayExerciseAction } from "../actions/training-plan-actions";
@@ -108,7 +108,7 @@ export function DayExerciseFormDialog({
       title={isEditing ? "Edit Prescription" : "Add Exercise to Day"}
       description="Set the sets/reps/weight target for this exercise in this day."
       footer={
-        <div className="flex justify-end gap-2">
+        <div >
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -118,7 +118,7 @@ export function DayExerciseFormDialog({
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} >
         <FormField label="Exercise" error={errors.exerciseId?.message} required>
           <Controller
             name="exerciseId"
@@ -135,7 +135,7 @@ export function DayExerciseFormDialog({
           />
         </FormField>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div >
           <FormField label="Sets">
             <Input type="number" min={1} max={20} {...register("sets", { valueAsNumber: true })} />
           </FormField>
@@ -160,7 +160,7 @@ export function DayExerciseFormDialog({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div >
           <FormField label={showDurationFields ? "Target distance (m)" : "Target weight (kg)"}>
             <Input
               type="number"

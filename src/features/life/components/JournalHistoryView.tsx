@@ -2,11 +2,11 @@
 
 import { useState, useMemo, useTransition } from "react";
 import Link from "next/link";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/navigation/tabs";
 import { Moon, Zap, Utensils, CheckCircle2, ChevronDown, Smile, Weight, Trash2 } from "lucide-react";
-import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/routine-items";
+import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/life/routine-items";
 import { deleteEntryAction } from "../actions/journal-actions";
-import { ConfirmationDialog } from "@/components/ui/dialog";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 
 interface HistoryEntry {
   id: string;
@@ -98,8 +98,8 @@ export function JournalHistoryView({ entries }: Props) {
   const hasMore = groupKeys.length > visibleGroups;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex justify-start">
+    <div >
+      <div >
         <Tabs
           tabs={[
             { id: "all", label: "All" },
@@ -116,16 +116,16 @@ export function JournalHistoryView({ entries }: Props) {
         />
       </div>
 
-      <div className="flex flex-col gap-12">
+      <div >
         {displayedKeys.map(key => (
-          <div key={key} className="flex flex-col gap-6">
-            <div className="flex items-center gap-3">
-              <div className="h-px flex-1 bg-border-dim" />
-              <span className="text-note font-mono text-muted uppercase tracking-wider px-4">{key}</span>
-              <div className="h-px flex-1 bg-border-dim" />
+          <div key={key} >
+            <div >
+              <div />
+              <span >{key}</span>
+              <div />
             </div>
 
-            <div className="flex flex-col gap-4">
+            <div >
               {groupedEntries[key].map((e) => {
                 const dateStr = e.date.toISOString().slice(0, 10);
                 const label = new Date(e.date).toLocaleDateString("en-US", {
@@ -136,58 +136,58 @@ export function JournalHistoryView({ entries }: Props) {
                 const score = routineScore(e.morningRoutine, e.eveningRoutine);
 
                 return (
-                  <div key={e.id} className="relative group/row">
+                  <div key={e.id} >
                     <Link
                       href={`/life/journal?date=${dateStr}`}
-                      className="flex items-center gap-6 bg-surface rounded-xl px-6 py-4 hover:bg-surface-hover transition-all group shadow-sm"
+
                     >
-                      <span className="text-body font-medium text-text group-hover:text-accent transition-colors capitalize w-48 shrink-0">
+                      <span >
                         {label}
                       </span>
 
-                        <div className="flex items-center gap-4 text-body font-mono text-muted">
-                        <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Sleep">
-                          <Moon size={12} className="text-accent/60" />
+                        <div >
+                        <span title="Sleep">
+                          <Moon size={12} />
                           {e.sleepHours !== null ? `${e.sleepHours}h` : "—"}
                         </span>
-                        <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Energy">
-                          <Zap size={12} className="text-accent/60" />
+                        <span title="Energy">
+                          <Zap size={12} />
                           {e.energy !== null ? `${e.energy}/10` : "—"}
                         </span>
-                        <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Mood">
-                          <Smile size={12} className="text-accent/60" />
+                        <span title="Mood">
+                          <Smile size={12} />
                           {e.mood !== null ? `${e.mood}/10` : "—"}
                         </span>
                         {e.weight !== null && (
-                          <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Weight">
-                            <Weight size={12} className="text-accent/60" />
+                          <span title="Weight">
+                            <Weight size={12} />
                             {e.weight}kg
                           </span>
                         )}
-                        <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Nutrition Adherence">
-                          <Utensils size={12} className="text-accent/60" />
+                        <span title="Nutrition Adherence">
+                          <Utensils size={12} />
                           {e.nutrition !== null ? `${e.nutrition}/5` : "—"}
                         </span>
-                        <span className="flex items-center gap-1.5 px-2 py-1 bg-surface-hover rounded-md text-caption" title="Routine Score">
-                          <CheckCircle2 size={12} className="text-accent/60" />
+                        <span title="Routine Score">
+                          <CheckCircle2 size={12} />
                           {score !== null ? `${score}%` : "—"}
                         </span>
                       </div>
 
                       {e.winToday && (
-                        <span className="text-body text-secondary truncate flex-1 italic">
+                        <span >
                           &ldquo;{e.winToday}&rdquo;
                         </span>
                       )}
 
-                      <span className="text-note font-mono text-muted/50 group-hover:text-accent/60 transition-colors shrink-0 mr-8">
+                      <span >
                         →
                       </span>
                     </Link>
 
                     <button
                       onClick={() => setDeleteId(e.id)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-lg text-muted hover:text-danger hover:bg-danger/10 opacity-0 group-hover/row:opacity-100 transition-all z-10"
+
                       title="Delete Entry"
                     >
                       <Trash2 size={14} />
@@ -213,9 +213,9 @@ export function JournalHistoryView({ entries }: Props) {
       {hasMore && (
         <button
           onClick={() => setVisibleGroups(prev => prev + 5)}
-          className="mx-auto flex items-center gap-2 px-8 py-3 bg-surface-hover rounded-xl text-body font-mono uppercase tracking-wider hover:text-accent transition-all group"
+
         >
-          <ChevronDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
+          <ChevronDown size={14} />
           Show More Groups
         </button>
       )}

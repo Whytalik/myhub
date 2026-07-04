@@ -29,23 +29,23 @@ const TREND_METRICS: {
 
 export function TrendsTab({ entries, latestWeekStart }: Props) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div >
       {TREND_METRICS.map((metric) => {
         const points = weeklyTrend(entries, metric.selector, latestWeekStart, WEEKS_SHOWN);
         const latest = [...points].reverse().find((p) => p.value !== null)?.value ?? null;
         return (
           <div
             key={metric.key}
-            className="bg-surface border border-border rounded-xl p-4 flex items-center justify-between gap-4"
+
           >
-            <div className="flex flex-col gap-1 min-w-0">
-              <span className="text-caption font-mono uppercase tracking-wider text-muted">
+            <div >
+              <span >
                 {metric.label}
               </span>
-              <span className="text-heading font-bold text-text">
+              <span >
                 {latest !== null ? `${latest}${metric.unit ?? ""}` : "—"}
               </span>
-              <span className="text-caption text-muted">Last {WEEKS_SHOWN} weeks</span>
+              <span >Last {WEEKS_SHOWN} weeks</span>
             </div>
             <Sparkline points={points.map((p) => p.value)} />
           </div>

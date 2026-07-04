@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { SessionClient } from "@/features/health/training/components/SessionClient";
 import * as trainingSessionService from "@/features/health/training/services/training-session-service";
 import type { TrainingSessionData } from "@/features/health/training/types";
@@ -27,7 +27,7 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
   }
 
   return (
-    <div className="px-8 py-8">
+    <div >
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },

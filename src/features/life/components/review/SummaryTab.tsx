@@ -31,7 +31,7 @@ const ICONS: Record<string, typeof Moon> = {
 
 function DeltaBadge({ comparison }: { comparison: MetricComparison }) {
   if (comparison.delta === null) {
-    return <span className="text-caption font-mono text-muted">—</span>;
+    return <span >—</span>;
   }
   const Icon =
     comparison.direction === "up"
@@ -47,7 +47,7 @@ function DeltaBadge({ comparison }: { comparison: MetricComparison }) {
         : "text-rose-500";
   const sign = comparison.delta > 0 ? "+" : "";
   return (
-    <span className={`flex items-center gap-1 text-caption font-mono ${color}`}>
+    <span >
       <Icon size={12} />
       {sign}
       {comparison.delta}
@@ -58,21 +58,21 @@ function DeltaBadge({ comparison }: { comparison: MetricComparison }) {
 
 export function SummaryTab({ summary, comparisons }: Props) {
   return (
-    <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div >
+      <div >
         {comparisons.map((c) => {
           const Icon = ICONS[c.key] ?? CheckCircle2;
           return (
             <div
               key={c.key}
-              className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-2"
+
             >
-              <div className="flex items-center gap-2 text-muted">
-                <Icon size={14} className="text-accent/60" />
-                <span className="text-caption font-mono uppercase tracking-wider">{c.label}</span>
+              <div >
+                <Icon size={14} />
+                <span >{c.label}</span>
               </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-title font-bold text-text">
+              <div >
+                <span >
                   {c.current !== null ? `${c.current}${c.unit ?? ""}` : "—"}
                 </span>
                 <DeltaBadge comparison={c} />
@@ -82,37 +82,37 @@ export function SummaryTab({ summary, comparisons }: Props) {
         })}
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
-          <span className="text-caption font-mono uppercase tracking-wider text-muted">
+      <div >
+        <div >
+          <span >
             Days logged
           </span>
-          <span className="text-heading font-bold text-text">{summary.daysLogged}/7</span>
+          <span >{summary.daysLogged}/7</span>
         </div>
-        <div className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
-          <span className="text-caption font-mono uppercase tracking-wider text-muted">
+        <div >
+          <span >
             Tasks completed
           </span>
-          <span className="text-heading font-bold text-text">{summary.tasksCompleted}</span>
+          <span >{summary.tasksCompleted}</span>
         </div>
-        <div className="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
-          <span className="text-caption font-mono uppercase tracking-wider text-muted">
+        <div >
+          <span >
             Frogs done
           </span>
-          <span className="text-heading font-bold text-text">{summary.frogsCompleted}</span>
+          <span >{summary.frogsCompleted}</span>
         </div>
       </div>
 
       {summary.wins.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <span className="text-caption font-mono uppercase tracking-wider text-muted flex items-center gap-2">
-            <ListChecks size={14} className="text-accent/60" /> Wins this week
+        <div >
+          <span >
+            <ListChecks size={14} /> Wins this week
           </span>
-          <div className="flex flex-col gap-2">
+          <div >
             {summary.wins.map((win, i) => (
               <p
                 key={i}
-                className="bg-surface border border-border rounded-xl px-4 py-3 text-body text-secondary italic"
+
               >
                 &ldquo;{win}&rdquo;
               </p>
@@ -122,7 +122,7 @@ export function SummaryTab({ summary, comparisons }: Props) {
       )}
 
       {summary.daysLogged === 0 && (
-        <div className="bg-surface border border-border rounded-xl p-12 text-center text-muted text-body italic">
+        <div >
           No entries logged for this week yet.
         </div>
       )}

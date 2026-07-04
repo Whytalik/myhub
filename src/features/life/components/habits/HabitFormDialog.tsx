@@ -1,12 +1,13 @@
 "use client";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 import { useState, useTransition } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
 import type { HabitData, HabitChainData, LifeSphereData, SphereLevel } from "@/features/life/types";
@@ -28,7 +29,7 @@ import {
   Gauge,
   LifeBuoy,
 } from "lucide-react";
-import { TimePicker } from "@/components/ui/time-picker";
+import { TimePicker } from "@/components/ui/inputs/time-picker";
 
 const BEHAVIOR_FIELDS: {
   name:
@@ -209,7 +210,7 @@ export function HabitFormDialog({
           : "Define your habit using the Tiny Habits methodology: After I [Anchor], I will [Action]."
       }
       footer={
-        <div className="flex justify-end gap-2">
+        <div >
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -219,18 +220,14 @@ export function HabitFormDialog({
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        {/* Type toggle */}
+      <form onSubmit={handleSubmit(onSubmit)} >
+        {}
         {!isEditing && (
-          <div className="grid grid-cols-2 gap-2 p-1 bg-raised rounded-xl border border-border">
+          <div >
             <button
               type="button"
               onClick={() => setValue("type", "positive")}
-              className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-note font-mono font-bold tracking-wide transition-all ${
-                !isAvoidance
-                  ? "bg-surface border border-emerald-500/30 text-emerald-600 shadow-sm"
-                  : "text-muted hover:text-text"
-              }`}
+
             >
               <Sprout size={14} />
               Build
@@ -238,11 +235,7 @@ export function HabitFormDialog({
             <button
               type="button"
               onClick={() => setValue("type", "avoidance")}
-              className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-note font-mono font-bold tracking-wide transition-all ${
-                isAvoidance
-                  ? "bg-surface border border-amber-500/30 text-amber-600 shadow-sm"
-                  : "text-muted hover:text-text"
-              }`}
+
             >
               <ShieldOff size={14} />
               Break
@@ -258,17 +251,17 @@ export function HabitFormDialog({
           />
         </FormField>
 
-        {/* Sphere selector */}
+        {}
         {spheres.length > 0 && (
           <Controller
             name="sphereId"
             control={control}
             render={({ field }) => (
-              <div className="space-y-2">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+              <div >
+                <label >
                   Life Sphere (optional)
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div >
                   {spheres.map((s) => (
                     <button
                       key={s.id}
@@ -278,12 +271,7 @@ export function HabitFormDialog({
                         field.onChange(next);
                         if (!next) setValue("sphereLevel", null);
                       }}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                        field.value === s.id
-                          ? "border-transparent text-white"
-                          : "border-border text-muted bg-surface hover:opacity-80"
-                      }`}
-                      style={field.value === s.id ? { backgroundColor: s.color } : {}}
+
                     >
                       {s.name}
                     </button>
@@ -294,34 +282,30 @@ export function HabitFormDialog({
           />
         )}
 
-        {/* Sphere level selector — only when sphere is selected */}
+        {}
         {selectedSphereId && (
           <Controller
             name="sphereLevel"
             control={control}
             render={({ field }) => (
-              <div className="space-y-2">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+              <div >
+                <label >
                   Sphere Standard Level
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div >
                   {LEVEL_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       type="button"
                       onClick={() => field.onChange(field.value === opt.value ? null : opt.value)}
-                      className={`flex flex-col items-center gap-1 p-3 rounded-xl border text-center transition-all ${
-                        selectedLevel === opt.value
-                          ? opt.border
-                          : "border-border bg-surface hover:bg-raised"
-                      }`}
+
                     >
                       <span
-                        className={`text-note font-bold font-mono ${selectedLevel === opt.value ? opt.color : "text-text"}`}
+
                       >
                         {opt.label}
                       </span>
-                      <span className="text-[10px] text-muted leading-tight">
+                      <span >
                         {opt.description}
                       </span>
                     </button>
@@ -332,33 +316,29 @@ export function HabitFormDialog({
           />
         )}
 
-        {/* Subcategory */}
+        {}
         <FormField label="Subcategory (optional)" hint="e.g. body, mind, deep work">
           <Input {...register("subcategory")} placeholder="e.g. body, mind, reading..." />
         </FormField>
 
-        {/* Chain selector */}
+        {}
         {chains.length > 0 && (
           <Controller
             name="chainId"
             control={control}
             render={({ field }) => (
-              <div className="space-y-2">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest flex items-center gap-1.5">
+              <div >
+                <label >
                   <Link2 size={12} />
                   Habit Chain (optional)
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div >
                   {chains.map((c) => (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => field.onChange(field.value === c.id ? null : c.id)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                        field.value === c.id
-                          ? "border-accent bg-accent/10 text-accent"
-                          : "border-border text-muted bg-surface hover:opacity-80"
-                      }`}
+
                     >
                       {c.name}
                     </button>
@@ -369,31 +349,27 @@ export function HabitFormDialog({
           />
         )}
 
-        {/* Frequency selector */}
+        {}
         <Controller
           name="targetDaysPerWeek"
           control={control}
           render={({ field }) => (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-caption font-mono uppercase text-muted tracking-widest">
+            <div >
+              <div >
+                <label >
                   Частота
                 </label>
-                <span className="text-note font-mono text-muted">
+                <span >
                   {field.value === 7 ? "Щодня" : `${field.value}× на тиждень`}
                 </span>
               </div>
-              <div className="flex gap-1">
+              <div >
                 {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                   <button
                     key={n}
                     type="button"
                     onClick={() => field.onChange(n)}
-                    className={`flex-1 h-9 rounded-lg border text-note font-mono transition-all ${
-                      field.value === n
-                        ? "bg-accent border-accent text-bg font-bold shadow-[0_0_10px_rgba(192,132,252,0.2)]"
-                        : "bg-raised border-border text-muted hover:border-accent/40 hover:text-text"
-                    }`}
+
                   >
                     {n}
                   </button>
@@ -404,22 +380,22 @@ export function HabitFormDialog({
         />
 
         {isEditing && (
-          <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">
-            <input
-              type="checkbox"
+          <label >
+            <Checkbox
+
               {...register("archived")}
-              className="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-bg"
+
             />
-            <div className="flex flex-col">
-              <span className="text-note font-bold text-text">Archive Habit</span>
-              <span className="text-label text-muted font-mono uppercase tracking-tight">
+            <div >
+              <span >Archive Habit</span>
+              <span >
                 Hide from active list without deleting
               </span>
             </div>
           </label>
         )}
 
-        <div className="grid grid-cols-1 gap-4">
+        <div >
           {isAvoidance ? (
             <>
               <FormField
@@ -427,8 +403,8 @@ export function HabitFormDialog({
                 hint="When do you usually slip?"
                 error={errors.anchor?.message}
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <Anchor size={14} className="text-accent" />
+                <div >
+                  <Anchor size={14} />
                 </div>
                 <Input {...register("anchor")} placeholder="e.g. After lunch when I'm tired..." />
               </FormField>
@@ -438,8 +414,8 @@ export function HabitFormDialog({
                 hint="What will you do instead?"
                 error={errors.action?.message}
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <Zap size={14} className="text-amber-500" />
+                <div >
+                  <Zap size={14} />
                 </div>
                 <Input {...register("action")} placeholder="e.g. I will drink sparkling water..." />
               </FormField>
@@ -447,15 +423,15 @@ export function HabitFormDialog({
           ) : (
             <>
               <FormField label="The Anchor (Trigger)" error={errors.anchor?.message} required>
-                <div className="flex items-center gap-2 mb-1">
-                  <Anchor size={14} className="text-accent" />
+                <div >
+                  <Anchor size={14} />
                 </div>
                 <Input {...register("anchor")} placeholder="After I [wash my face]..." />
               </FormField>
 
               <FormField label="The Action (New habit)" error={errors.action?.message} required>
-                <div className="flex items-center gap-2 mb-1">
-                  <Zap size={14} className="text-amber-500" />
+                <div >
+                  <Zap size={14} />
                 </div>
                 <Input {...register("action")} placeholder="I will [do 5 pushups]..." />
               </FormField>
@@ -463,8 +439,8 @@ export function HabitFormDialog({
           )}
 
           <FormField label="Celebration" hint="Optional — what reward follows?">
-            <div className="flex items-center gap-2 mb-1">
-              <PartyPopper size={14} className="text-emerald-500" />
+            <div >
+              <PartyPopper size={14} />
             </div>
             <Input
               {...register("celebration")}
@@ -477,19 +453,19 @@ export function HabitFormDialog({
           </FormField>
 
           <FormField label="Daily Reminder" hint="Optional">
-            <div className="flex items-center justify-between mb-1">
-              <Bell size={14} className="text-blue-500" />
+            <div >
+              <Bell size={14} />
               {reminderTime && (
                 <button
                   type="button"
                   onClick={() => setValue("reminderTime", "")}
-                  className="text-label font-mono text-muted hover:text-red-500 transition-colors flex items-center gap-1"
+
                 >
                   <X size={10} /> Clear
                 </button>
               )}
             </div>
-            <div className="relative">
+            <div >
               <Controller
                 name="reminderTime"
                 control={control}
@@ -497,35 +473,35 @@ export function HabitFormDialog({
                   <TimePicker
                     value={field.value ?? ""}
                     onChange={field.onChange}
-                    className="w-full"
+
                   />
                 )}
               />
               {!reminderTime && (
-                <div className="absolute right-12 top-1/2 -translate-y-1/2 pointer-events-none z-10">
-                  <span className="text-label text-muted font-mono uppercase">Auto (3x day)</span>
+                <div >
+                  <span >Auto (3x day)</span>
                 </div>
               )}
             </div>
           </FormField>
         </div>
 
-        {/* Behavior design tools — collapsible */}
-        <div className="border border-border rounded-xl overflow-hidden">
+        {}
+        <div >
           <button
             type="button"
             onClick={() => setShowBehaviorTools((prev) => !prev)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-raised text-note font-mono font-bold tracking-wide text-secondary hover:text-text transition-colors"
+
           >
             Behavior design (optional)
             {showBehaviorTools ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
           {showBehaviorTools && (
-            <div className="p-4 flex flex-col gap-4 bg-surface/50">
+            <div >
               {BEHAVIOR_FIELDS.map(({ name, label, hint, placeholder, icon: Icon }) => (
                 <FormField key={name} label={label} hint={hint}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon size={14} className="text-accent" />
+                  <div >
+                    <Icon size={14} />
                   </div>
                   <Input {...register(name)} placeholder={placeholder} />
                 </FormField>

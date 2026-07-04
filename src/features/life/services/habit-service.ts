@@ -1,4 +1,4 @@
-import { getCachedActiveHabits } from "@/lib/cache";
+import { getCachedActiveHabits } from "@/lib/cache/cache";
 import { habitRepository } from "../repositories/habit.repository";
 import type { UpsertHabitInput } from "../types";
 import { getStartOfDay } from "../logic/habit-utils";

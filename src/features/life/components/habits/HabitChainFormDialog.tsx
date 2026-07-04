@@ -1,12 +1,13 @@
 "use client";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
 import { upsertHabitChainAction } from "@/features/life/actions/habit-chain-actions";
 import { habitChainSchema, type HabitChainFormData } from "@/features/life/schemas";
 import type { HabitChainData } from "@/features/life/types";
@@ -59,7 +60,7 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
       title={isEditing ? "Edit Chain" : "New Chain"}
       description="Stack habits into a named ritual — after one, the next follows."
       footer={
-        <div className="flex justify-end gap-2">
+        <div >
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -69,7 +70,7 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} >
         <FormField label="Chain name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Morning ritual" autoFocus />
         </FormField>
@@ -82,15 +83,15 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
         </FormField>
 
         {isEditing && (
-          <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">
-            <input
-              type="checkbox"
+          <label >
+            <Checkbox
+
               {...register("archived")}
-              className="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-bg"
+
             />
-            <div className="flex flex-col">
-              <span className="text-note font-bold text-text">Archive Chain</span>
-              <span className="text-label text-muted font-mono uppercase tracking-tight">
+            <div >
+              <span >Archive Chain</span>
+              <span >
                 Hide from active list without deleting
               </span>
             </div>

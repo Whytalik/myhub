@@ -1,13 +1,14 @@
 "use client";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FormField } from "@/components/ui/form-field";
-import { CustomSelect } from "@/components/ui/custom-select";
+import { Dialog } from "@/components/ui/overlays/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { Input } from "@/components/ui/inputs/input";
+import { FormField } from "@/components/ui/display/form-field";
+import { CustomSelect } from "@/components/ui/inputs/custom-select";
 import { toast } from "sonner";
 import { exerciseSchema, type ExerciseFormData } from "../schemas";
 import { upsertExerciseAction } from "../actions/exercise-actions";
@@ -74,7 +75,7 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
       title={isEditing ? "Edit Exercise" : "New Exercise"}
       description="Add a reusable exercise to your library."
       footer={
-        <div className="flex justify-end gap-2">
+        <div >
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -84,7 +85,7 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} >
         <FormField label="Exercise name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Barbell squat" autoFocus />
         </FormField>
@@ -116,15 +117,15 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
         </FormField>
 
         {isEditing && (
-          <label className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface/50 cursor-pointer hover:bg-raised transition-colors">
-            <input
-              type="checkbox"
+          <label >
+            <Checkbox
+
               {...register("archived")}
-              className="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-bg"
+
             />
-            <div className="flex flex-col">
-              <span className="text-note font-bold text-text">Archive Exercise</span>
-              <span className="text-label text-muted font-mono uppercase tracking-tight">
+            <div >
+              <span >Archive Exercise</span>
+              <span >
                 Hide from the library without deleting
               </span>
             </div>

@@ -1,8 +1,8 @@
 "use server";
 
 import * as habitService from "../services/habit-service";
-import { invalidateHabitCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateHabitCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertHabitInput } from "../types";
 
 export async function upsertHabitAction(data: UpsertHabitInput): Promise<ActionResult<Awaited<ReturnType<typeof habitService.upsertHabit>>>> {

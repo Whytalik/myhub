@@ -3,19 +3,13 @@ import type {
   TaskPriority as PrismaTaskPriority,
   Prisma,
 } from "@/app/generated/prisma";
-import type { RoutineMap } from "@/lib/routine-items";
+import type { RoutineMap } from "@/lib/life/routine-items";
 
 type JsonValue = Prisma.JsonValue;
 
-//
-// --- Base Enums ---
-//
 export type TaskStatus = PrismaTaskStatus;
 export type TaskPriority = PrismaTaskPriority;
 
-//
-// --- Life Sphere ---
-//
 export interface LifeSphereData {
   id: string;
   name: string;
@@ -36,9 +30,6 @@ export interface UpsertSphereInput {
   order?: number;
 }
 
-//
-// --- Task ---
-//
 export interface TaskData {
   id: string;
   title: string;
@@ -95,34 +86,31 @@ export interface UpsertTaskInput {
   carryOverReason?: string | null;
 }
 
-//
-// --- Daily Journal Entry ---
-//
 export interface DailyEntryData {
   id: string;
   date: Date;
-  // Sleep
+
   sleepBedtime: Date | null;
   sleepWakeup: Date | null;
   sleepHours: number | null;
   sleepQuality: number | null;
   sleepNote: string | null;
-  // Energy
+
   energy: number | null;
   mood: number | null;
   emotions: JsonValue | null;
   weight: number | null;
   energyNote: string | null;
-  // Evening Energy
+
   eveningEnergy: number | null;
-  // Nutrition
+
   nutrition: number | null;
   nutritionNote: string | null;
-  // Routines
+
   morningRoutine: JsonValue | null;
   eveningRoutine: JsonValue | null;
   routineNote: string | null;
-  // Reflection
+
   winToday: string | null;
   improveTomorrow: string | null;
   gratitude: string | null;
@@ -130,38 +118,38 @@ export interface DailyEntryData {
   standupDone: string | null;
   standupPlan: string | null;
   standupBlockers: string | null;
-  // Day lifecycle
+
   startedAt: Date | null;
   completedAt: Date | null;
-  // Timestamps
+
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface UpsertDailyEntryInput {
   date: string;
-  // Sleep
+
   sleepBedtime?: string | null;
   sleepWakeup?: string | null;
   sleepHours?: number | null;
   sleepQuality?: number | null;
   sleepNote?: string | null;
-  // Energy
+
   energy?: number | null;
   mood?: number | null;
   emotions?: string[] | null;
   weight?: number | null;
   energyNote?: string | null;
-  // Evening Energy
+
   eveningEnergy?: number | null;
-  // Nutrition
+
   nutrition?: number | null;
   nutritionNote?: string | null;
-  // Routines
+
   morningRoutine?: RoutineMap | null;
   eveningRoutine?: RoutineMap | null;
   routineNote?: string | null;
-  // Reflection
+
   winToday?: string | null;
   improveTomorrow?: string | null;
   gratitude?: string | null;
@@ -171,9 +159,6 @@ export interface UpsertDailyEntryInput {
   standupBlockers?: string | null;
 }
 
-//
-// --- Habit ---
-//
 export type SphereLevel = "MINIMUM" | "MEDIUM" | "DESIRED";
 
 export interface HabitData {
@@ -209,9 +194,6 @@ export interface HabitCompletionData {
   habitId: string;
 }
 
-//
-// --- Habit Chain ---
-//
 export interface HabitChainData {
   id: string;
   name: string;
@@ -235,25 +217,21 @@ export interface ReorderHabitsInput {
   orderedHabitIds: string[];
 }
 
-// --- Week Template ---
 export type DayType = "regular" | "train_am" | "train_pm";
 
 export interface DayScheduleData {
   id: string;
-  dayOfWeek: number; // 0=Mon..6=Sun
+  dayOfWeek: number;
   dayType: DayType;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface UpsertDayScheduleInput {
-  dayOfWeek: number; // 0=Mon..6=Sun
+  dayOfWeek: number;
   dayType: DayType;
 }
 
-//
-// --- Weekly Review ---
-//
 export interface ReviewEntryData {
   id: string;
   date: Date;
@@ -277,13 +255,13 @@ export interface ReviewEntryData {
 
 export interface WeekRange {
   start: Date;
-  end: Date; // exclusive
+  end: Date;
 }
 
 export interface EmotionBalance {
   positiveCount: number;
   negativeCount: number;
-  ratio: number | null; // positive / (positive + negative)
+  ratio: number | null;
   top: { label: string; count: number; positive: boolean }[];
 }
 
@@ -341,9 +319,6 @@ export interface WeeklyTrendPoint {
   value: number | null;
 }
 
-//
-// --- Habit ---
-//
 export interface UpsertHabitInput {
   id?: string;
   name: string;

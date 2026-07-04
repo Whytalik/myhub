@@ -19,11 +19,11 @@ export const TaskNode = memo((props: NodeProps<TaskNodeType>) => {
   const { task, allTasks, onEdit, onDuplicate, onAddChild } = props.data;
 
   return (
-    <div className="relative group min-w-[280px] max-w-[320px]">
+    <div >
       <Handle
         type="target"
         position={Position.Left}
-        className="!w-2 !h-2 !bg-accent !border-none"
+
       />
 
       <TaskCardBase
@@ -32,13 +32,13 @@ export const TaskNode = memo((props: NodeProps<TaskNodeType>) => {
         onEdit={onEdit}
         onDuplicate={onDuplicate}
         onAddChild={onAddChild}
-        className="shadow-xl"
+
       />
 
       <Handle
         type="source"
         position={Position.Right}
-        className="!w-2 !h-2 !bg-accent !border-none"
+
       />
     </div>
   );

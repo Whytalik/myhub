@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { getAllEntries } from "@/features/life/services/journal-service";
 import { JournalHistoryView } from "@/features/life/components/JournalHistoryView";
 
@@ -18,7 +18,7 @@ export default async function JournalHistoryPage() {
   const entries = await getAllEntries(userId);
 
   return (
-    <div className="px-8 py-8">
+    <div >
       <PageHeader
         breadcrumb={[
           { label: "life space", href: "/life" },
@@ -29,7 +29,7 @@ export default async function JournalHistoryPage() {
       />
 
       {entries.length === 0 ? (
-        <div className="bg-surface border border-border rounded-xl p-20 text-center text-muted text-body italic">
+        <div >
           No entries recorded yet
         </div>
       ) : (

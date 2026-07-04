@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ConfirmationDialog } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/actions/button";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { toast } from "sonner";
 import {
   Plus,
@@ -121,73 +121,73 @@ export function TrainingPlansClient({
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex justify-end">
+    <div >
+      <div >
         <Button
           variant="primary"
           size="sm"
-          className="rounded-xl px-5"
+
           onClick={() => {
             setSelectedPlan(null);
             setIsPlanFormOpen(true);
           }}
         >
-          <Plus size={16} className="mr-1.5" />
+          <Plus size={16} />
           New plan
         </Button>
       </div>
 
       {initialPlans.length === 0 ? (
-        <div className="bg-surface/30 border border-dashed border-border/40 rounded-xl p-16 flex flex-col items-center justify-center text-center gap-4">
-          <div className="w-16 h-16 rounded-xl bg-raised flex items-center justify-center border border-border">
-            <ClipboardList size={32} className="text-muted/40" />
+        <div >
+          <div >
+            <ClipboardList size={32} />
           </div>
-          <div className="flex flex-col gap-1">
-            <p className="text-base font-bold text-text">No training plans yet</p>
-            <p className="text-note text-muted max-w-[280px]">
+          <div >
+            <p >No training plans yet</p>
+            <p >
               Create a plan, add training days, then prescribe exercises to each day.
             </p>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div >
           {initialPlans.map((plan) => {
             const isExpanded = expandedPlans.has(plan.id);
             return (
               <div
                 key={plan.id}
-                className="border border-border rounded-xl bg-surface/30 overflow-hidden"
+
               >
-                <div className="flex items-center justify-between gap-3 p-4">
+                <div >
                   <button
-                    className="flex items-center gap-3 flex-1 text-left"
+
                     onClick={() => toggleSet(setExpandedPlans, plan.id)}
                   >
                     {isExpanded ? (
-                      <ChevronUp size={16} className="text-muted" />
+                      <ChevronUp size={16} />
                     ) : (
-                      <ChevronDown size={16} className="text-muted" />
+                      <ChevronDown size={16} />
                     )}
-                    <div className="flex flex-col">
-                      <span className="text-note font-bold text-text">{plan.name}</span>
+                    <div >
+                      <span >{plan.name}</span>
                       {plan.description && (
-                        <span className="text-caption text-muted">{plan.description}</span>
+                        <span >{plan.description}</span>
                       )}
                     </div>
                   </button>
-                  <div className="flex items-center gap-1">
+                  <div >
                     <button
                       onClick={() => {
                         setSelectedPlan(plan);
                         setIsPlanFormOpen(true);
                       }}
-                      className="p-2 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+
                     >
                       <Edit2 size={14} />
                     </button>
                     <button
                       onClick={() => setPlanToDelete(plan.id)}
-                      className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+
                     >
                       <Trash2 size={14} />
                     </button>
@@ -195,39 +195,39 @@ export function TrainingPlansClient({
                 </div>
 
                 {isExpanded && (
-                  <div className="border-t border-border/40 p-4 flex flex-col gap-4">
+                  <div >
                     {plan.days.map((day) => {
                       const isDayExpanded = expandedDays.has(day.id);
                       return (
-                        <div key={day.id} className="border border-border/60 rounded-lg bg-bg/40">
-                          <div className="flex items-center justify-between gap-3 p-3">
+                        <div key={day.id} >
+                          <div >
                             <button
-                              className="flex items-center gap-2 flex-1 text-left"
+
                               onClick={() => toggleSet(setExpandedDays, day.id)}
                             >
                               {isDayExpanded ? (
-                                <ChevronUp size={14} className="text-muted" />
+                                <ChevronUp size={14} />
                               ) : (
-                                <ChevronDown size={14} className="text-muted" />
+                                <ChevronDown size={14} />
                               )}
-                              <div className="flex flex-col">
-                                <span className="text-note font-semibold text-text">
+                              <div >
+                                <span >
                                   {day.name}
                                 </span>
                                 {day.notes && (
-                                  <span className="text-caption text-muted">{day.notes}</span>
+                                  <span >{day.notes}</span>
                                 )}
                               </div>
                             </button>
-                            <div className="flex items-center gap-1">
+                            <div >
                               <Button
                                 variant="secondary"
                                 size="sm"
                                 disabled={isStarting || day.exercises.length === 0}
                                 onClick={() => handleStartSession(day.id)}
-                                className="rounded-lg"
+
                               >
-                                <Play size={14} className="mr-1.5" />
+                                <Play size={14} />
                                 Start
                               </Button>
                               <button
@@ -235,13 +235,13 @@ export function TrainingPlansClient({
                                   setDayFormPlanId(plan.id);
                                   setSelectedDay(day);
                                 }}
-                                className="p-2 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+
                               >
                                 <Edit2 size={14} />
                               </button>
                               <button
                                 onClick={() => setDayToDelete(day.id)}
-                                className="p-2 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+
                               >
                                 <Trash2 size={14} />
                               </button>
@@ -249,40 +249,40 @@ export function TrainingPlansClient({
                           </div>
 
                           {isDayExpanded && (
-                            <div className="border-t border-border/40 p-3 flex flex-col gap-2">
+                            <div >
                               {day.exercises.length === 0 ? (
-                                <p className="text-caption text-muted">
+                                <p >
                                   No exercises prescribed yet.
                                 </p>
                               ) : (
                                 day.exercises.map((de) => (
                                   <div
                                     key={de.id}
-                                    className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-surface/50"
+
                                   >
-                                    <div className="flex flex-col">
-                                      <span className="text-note font-medium text-text">
+                                    <div >
+                                      <span >
                                         {de.exercise.name}
                                       </span>
-                                      <span className="text-caption text-muted font-mono">
+                                      <span >
                                         {formatPrescription(de)}
                                         {de.targetRpe ? ` · RPE ${de.targetRpe}` : ""}
                                         {de.restSeconds ? ` · rest ${de.restSeconds}s` : ""}
                                       </span>
                                     </div>
-                                    <div className="flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity">
+                                    <div >
                                       <button
                                         onClick={() => {
                                           setDayExerciseFormDayId(day.id);
                                           setSelectedDayExercise(de);
                                         }}
-                                        className="p-1.5 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors"
+
                                       >
                                         <Edit2 size={12} />
                                       </button>
                                       <button
                                         onClick={() => setDayExerciseToDelete(de.id)}
-                                        className="p-1.5 rounded-lg text-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+
                                       >
                                         <Trash2 size={12} />
                                       </button>
@@ -293,13 +293,13 @@ export function TrainingPlansClient({
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="self-start mt-1"
+
                                 onClick={() => {
                                   setDayExerciseFormDayId(day.id);
                                   setSelectedDayExercise(null);
                                 }}
                               >
-                                <Plus size={14} className="mr-1.5" />
+                                <Plus size={14} />
                                 Add exercise
                               </Button>
                             </div>
@@ -311,13 +311,13 @@ export function TrainingPlansClient({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="self-start"
+
                       onClick={() => {
                         setDayFormPlanId(plan.id);
                         setSelectedDay(null);
                       }}
                     >
-                      <Plus size={14} className="mr-1.5" />
+                      <Plus size={14} />
                       New day
                     </Button>
                   </div>

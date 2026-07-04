@@ -13,7 +13,7 @@ import {
   Sun,
   PenLine,
 } from "lucide-react";
-import type { SpaceKey } from "@/lib/spaces";
+import type { SpaceKey } from "@/lib/spaces/spaces";
 
 export interface GuideSection {
   id: string;
@@ -30,23 +30,23 @@ export interface SpaceGuide {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-6">
-      <h3 className="text-body font-semibold text-text-primary mb-2">{title}</h3>
-      <div className="text-body text-text-secondary leading-relaxed space-y-2">{children}</div>
+    <div >
+      <h3 >{title}</h3>
+      <div >{children}</div>
     </div>
   );
 }
 
 function RatingTable({ rows }: { rows: { value: string; label: string; description: string }[] }) {
   return (
-    <div className="border border-border rounded-xl overflow-hidden mt-3">
+    <div >
       {rows.map((row, i) => (
-        <div key={row.value} className={`flex gap-4 px-4 py-3 ${i !== rows.length - 1 ? "border-b border-border" : ""}`}>
-          <span className="text-accent font-mono font-bold text-note w-8 shrink-0">{row.value}</span>
+        <div key={row.value} >
+          <span >{row.value}</span>
           <div>
-            <span className="text-note font-semibold text-text-primary">{row.label}</span>
+            <span >{row.label}</span>
             {row.description && (
-              <p className="text-caption text-text-muted mt-0.5">{row.description}</p>
+              <p >{row.description}</p>
             )}
           </div>
         </div>
@@ -57,10 +57,10 @@ function RatingTable({ rows }: { rows: { value: string; label: string; descripti
 
 function List({ items }: { items: string[] }) {
   return (
-    <ul className="space-y-1.5 mt-2">
+    <ul >
       {items.map((item, i) => (
-        <li key={i} className="flex gap-2 text-body text-text-secondary">
-          <span className="text-accent shrink-0 mt-0.5">–</span>
+        <li key={i} >
+          <span >–</span>
           <span>{item}</span>
         </li>
       ))}

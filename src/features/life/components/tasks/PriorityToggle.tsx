@@ -1,8 +1,8 @@
 ﻿"use client";
 
 import { useState, useTransition } from "react";
-import { 
-  ChevronDown 
+import {
+  ChevronDown
 } from "lucide-react";
 import { toast } from "sonner";
 import { updateTaskPriorityAction } from "@/features/life/actions/task-actions";
@@ -20,7 +20,7 @@ interface PriorityToggleProps {
 export function PriorityToggle({ taskId, priority: initialPriority, size = "default" }: PriorityToggleProps) {
   const [currentPriority, setCurrentPriority] = useState<TaskPriority>(initialPriority);
   const [isPending, startTransition] = useTransition();
-  
+
   const { isOpen, coords, triggerRef, contentRef, toggle, close } = useDynamicPositioning<HTMLButtonElement>({
     contentWidth: 160,
     offset: 8
@@ -31,10 +31,10 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
       close();
       return;
     }
-    
+
     setCurrentPriority(newPriority);
     close();
-    
+
     startTransition(async () => {
       const result = await updateTaskPriorityAction(taskId, newPriority);
       if (!result.success) {
@@ -49,54 +49,40 @@ export function PriorityToggle({ taskId, priority: initialPriority, size = "defa
   const isCompact = size === "sm";
 
   return (
-    <div className="relative inline-block" onClick={(e) => e.stopPropagation()}>
+    <div onClick={(e) => e.stopPropagation()}>
       <button
         ref={triggerRef}
         onClick={toggle}
         disabled={isPending}
-        className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all hover:brightness-125 active:scale-95 ${
-          isCompact ? 'text-[9px] md:text-[10px]' : 'px-2 rounded-xl text-label'
-        }`}
-        style={{ 
-          backgroundColor: `${config.color}15`, 
-          borderColor: `${config.color}40`, 
-          color: config.color 
-        }}
+
+
       >
         <Icon size={isCompact ? 6 : 10} strokeWidth={3} />
         {config.label}
-        {!isCompact && <ChevronDown size={8} className="ml-0.5 opacity-40" />}
+        {!isCompact && <ChevronDown size={8} />}
       </button>
 
       {isOpen && coords && typeof document !== "undefined" && createPortal(
-        <div 
+        <div
           ref={contentRef as React.RefObject<HTMLDivElement>}
-          className={`fixed z-[9999] w-40 p-1.5 bg-surface border border-border rounded-xl shadow-elevated animate-in fade-in zoom-in-95 duration-200 ${
-            coords.align === 'top' ? 'origin-bottom' : 'origin-top'
-          }`}
-          style={{ 
-            top: coords.align === 'top' ? 'auto' : coords.top,
-            bottom: coords.align === 'top' ? (window.innerHeight - coords.top) : 'auto',
-            left: coords.left
-          }}
+
+
         >
-          <div className="flex flex-col gap-0.5">
+          <div >
             {(Object.keys(PRIORITY_CONFIG) as TaskPriority[]).map((p) => {
               const cfg = PRIORITY_CONFIG[p];
               const PIcon = cfg.icon;
               const active = p === currentPriority;
-              
+
               return (
                 <button
                   key={p}
                   onClick={() => handlePrioritySelect(p)}
-                  className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-caption font-bold uppercase tracking-wider transition-colors ${
-                    active ? "bg-accent/10 text-accent" : "text-secondary hover:bg-raised hover:text-text"
-                  }`}
+
                 >
-                  <div 
-                    className="p-1 rounded-md" 
-                    style={{ backgroundColor: `${cfg.color}15`, color: cfg.color }}
+                  <div
+
+
                   >
                     <PIcon size={10} strokeWidth={3} />
                   </div>

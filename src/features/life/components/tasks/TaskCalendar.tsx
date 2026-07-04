@@ -33,8 +33,8 @@ import {
   ChevronRight,
   Flag,
 } from "lucide-react";
-import { 
-  DndContext, 
+import {
+  DndContext,
   PointerSensor,
   useSensor,
   useSensors,
@@ -66,10 +66,10 @@ interface TaskCalendarProps {
   onDelete?: () => void;
 }
 
-function TaskCalendarCard({ 
-  task, 
-  onEdit, 
-  onDuplicate, 
+function TaskCalendarCard({
+  task,
+  onEdit,
+  onDuplicate,
   onAddChild,
   onDelete,
   allTasks,
@@ -109,8 +109,8 @@ function TaskCalendarCard({
   onHeightChange?: (id: string, height: number) => void,
   fixedHeight?: number,
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ 
-    id: task.id, 
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: task.id,
     data: task,
     disabled: !isDraggable
   });
@@ -179,8 +179,8 @@ function TaskCalendarCard({
         setNodeRef(node);
         if (ref) ref.current = node;
       }}
-      className={isOverlay ? "absolute px-1 pointer-events-auto group/card" : undefined}
-      style={isOverlay ? overlayStyle : undefined}
+
+
     >
       <TaskCardBase
         task={task}
@@ -188,20 +188,20 @@ function TaskCalendarCard({
         isDragging={isDragging}
         listeners={listeners}
         attributes={attributes}
-        style={isDraggable ? dragStyle : undefined}
+
         onEdit={onEdit}
         onDuplicate={onDuplicate}
         onAddChild={onAddChild}
         onDelete={onDelete}
         allTasks={allTasks}
-        className={isOverlay ? "!mb-0 shadow-xl border-accent/20 bg-surface/95 backdrop-blur-sm" : undefined}
+
       />
       {showResizeHandle && (
         <div
-          className="absolute right-0 top-0 bottom-0 w-3 cursor-e-resize z-30 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-end"
+
           onMouseDown={handleResizeStart}
         >
-          <div className="w-1 h-6 bg-accent/60 rounded-full mr-0.5" />
+          <div />
         </div>
       )}
     </div>
@@ -237,8 +237,8 @@ function DayTimelineCardWrapper({
   return (
     <div
       ref={setNodeRef}
-      className="group/day absolute pointer-events-auto box-border h-full"
-      style={dragStyle}
+
+
       {...attributes}
       {...listeners}
     >
@@ -247,16 +247,16 @@ function DayTimelineCardWrapper({
   );
 }
 
-function CalendarDayCell({ 
-  day, 
-  currentMonth, 
+function CalendarDayCell({
+  day,
+  currentMonth,
   onAdd,
   mode,
   tasksForDay = [],
   minHeight,
-}: { 
-  day: Date, 
-  currentMonth: Date, 
+}: {
+  day: Date,
+  currentMonth: Date,
   onAdd?: (date: Date) => void,
   isDraggingAny: boolean,
   mode: "month" | "week" | "day",
@@ -280,31 +280,23 @@ function CalendarDayCell({
   return (
     <div
       ref={setNodeRef}
-      style={minHeight ? { minHeight: `${minHeight}px` } : undefined}
-      className={`
-        p-1 md:p-2 border-r border-b border-white/[0.03] transition-colors flex flex-col gap-1 group/cell
-        ${mode === 'month' ? (minHeight ? '' : 'min-h-[120px] md:min-h-[200px]') : (minHeight ? '' : 'min-h-[350px] md:min-h-[500px] flex-1')}
-        ${!isCurrentMonth && mode === 'month' ? "bg-bg/40 opacity-20" : isWeekend ? "bg-[#11100e]" : "bg-[#141414]"}
-        ${isOver ? "bg-accent/[0.05] border-accent/20" : ""}
-      `}
+
+
     >
-      <div className="flex justify-between items-start mb-1 md:mb-2">
-        <div className="flex flex-col">
+      <div >
+        <div >
            {mode === 'week' && (
-              <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted/40 mb-1">
+              <span >
                 {format(day, "EEEE")}
               </span>
            )}
-           <span className={`
-            text-caption md:text-xs font-mono font-black w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-all
-            ${isTodayDate ? "bg-accent text-bg shadow-lg shadow-accent/20" : isCurrentMonth || mode === 'week' ? "text-muted" : "text-muted/30"}
-          `}>
+           <span >
             {format(day, "d")}
           </span>
           {timesForDay.length > 0 && (
-            <div className="flex flex-wrap gap-0.5 mt-1">
+            <div >
               {timesForDay.map((time, i) => (
-                <span key={i} className="text-[9px] md:text-[10px] font-mono font-bold text-accent/60">
+                <span key={i} >
                   {time}
                 </span>
               ))}
@@ -315,10 +307,10 @@ function CalendarDayCell({
         {onAdd && (
           <button
             onClick={() => onAdd(day)}
-            className="p-1 rounded-lg text-muted/30 hover:text-accent hover:bg-accent/10 transition-all opacity-0 group-hover/cell:opacity-100"
+
             title="Add task to this day"
           >
-            <Plus size={12} className="md:w-[14px] md:h-[14px]" />
+            <Plus size={12} />
           </button>
         )}
       </div>
@@ -326,8 +318,8 @@ function CalendarDayCell({
   );
 }
 
-export function TaskCalendar({ 
-  tasks: initialTasks, 
+export function TaskCalendar({
+  tasks: initialTasks,
   allTasks,
   spheres,
   defaultMode = "week",
@@ -348,7 +340,7 @@ export function TaskCalendar({
   const [resizingTaskId, setResizingTaskId] = useState<string | null>(null);
   const [taskHeights, setTaskHeights] = useState<Record<string, number>>({});
   const [resizingTimeline, setResizingTimeline] = useState<{ id: string, delta: number, edge: 'start' | 'end' } | null>(null);
-  
+
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
 
@@ -525,13 +517,13 @@ export function TaskCalendar({
 
     const originalStart = new Date(task.plannedDate!);
     const newStart = addMinutes(originalStart, minutesDelta);
-    const durationMs = task.plannedEndDate 
+    const durationMs = task.plannedEndDate
       ? new Date(task.plannedEndDate).getTime() - originalStart.getTime()
       : 3600000;
     const newEnd = new Date(newStart.getTime() + durationMs);
 
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t => 
+    setLocalTasks(prev => prev.map(t =>
       t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t
     ));
 
@@ -569,7 +561,7 @@ export function TaskCalendar({
     }
 
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t => 
+    setLocalTasks(prev => prev.map(t =>
       t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t
     ));
 
@@ -584,11 +576,11 @@ export function TaskCalendar({
 
   const allTasksWithLevels = useMemo(() => {
     const levelsByRow: Record<number, { taskId: string, startIdx: number, endIdx: number, level: number }[]> = {};
-    
-    // 1. Get unique tasks that actually have a planned date (exclude project-level tasks)
+
+
     const tasksWithDates = calendarTasks.filter(t => t.plannedDate);
-    
-    // 2. Sort tasks by start date, then title for stability
+
+
     const sortedTasks = [...tasksWithDates].sort((a, b) => {
       const aStart = new Date(a.plannedDate!).getTime();
       const bStart = new Date(b.plannedDate!).getTime();
@@ -599,17 +591,17 @@ export function TaskCalendar({
     return sortedTasks.flatMap(task => {
       const start = new Date(task.plannedDate!);
       const end = task.plannedEndDate ? new Date(task.plannedEndDate) : start;
-      
+
       const startKey = format(start, "yyyy-MM-dd");
       const endKey = format(end, "yyyy-MM-dd");
-      
+
       let startIdxTotal = days.findIndex(d => format(d, "yyyy-MM-dd") === startKey);
       let endIdxTotal = days.findIndex(d => format(d, "yyyy-MM-dd") === endKey);
-      
+
       const viewStart = days[0];
       const viewEnd = days[days.length - 1];
-      
-      // Handle tasks partially outside the current view
+
+
       if (startIdxTotal === -1) {
         if (start < viewStart && end >= viewStart) startIdxTotal = 0;
         else return [];
@@ -630,7 +622,7 @@ export function TaskCalendar({
         const e = Math.min(endIdxTotal, rowEnd);
         if (!levelsByRow[r]) levelsByRow[r] = [];
 
-        // Find minimum available level independently per row
+
         let level = 0;
         while (levelsByRow[r].some(l => l.level === level && !(e < l.startIdx || s > l.endIdx))) {
           level++;
@@ -661,19 +653,19 @@ export function TaskCalendar({
       if (!task) return;
 
       if (task.plannedDate && format(new Date(task.plannedDate), 'yyyy-MM-dd') === newDateStr) return;
-      
+
       const newStartDate = new Date(newDateStr);
       if (task.plannedDate) {
         const oldDate = new Date(task.plannedDate);
         newStartDate.setHours(oldDate.getHours(), oldDate.getMinutes(), oldDate.getSeconds());
       }
-      
+
       let newEndDate = null;
       if (task.plannedDate && task.plannedEndDate) {
         const durationMs = new Date(task.plannedEndDate).getTime() - new Date(task.plannedDate).getTime();
         newEndDate = new Date(newStartDate.getTime() + durationMs);
       }
-      
+
       const originalTasks = [...localTasks];
       setLocalTasks(prev => prev.map(t => {
         if (t.id === taskId) {
@@ -695,13 +687,13 @@ export function TaskCalendar({
   const handleResize = async (taskId: string, daysDelta: number) => {
     const originalTask = localTasks.find(t => t.id === taskId);
     if (!originalTask || !originalTask.plannedDate) return;
-    
+
     const currentStart = new Date(originalTask.plannedDate);
     const currentEnd = originalTask.plannedEndDate ? new Date(originalTask.plannedEndDate) : new Date(currentStart);
-    
+
     const newEnd = new Date(currentEnd);
     newEnd.setDate(newEnd.getDate() + daysDelta);
-    
+
     const startTs = new Date(currentStart).setHours(0, 0, 0, 0);
     const newEndTs = new Date(newEnd).setHours(0, 0, 0, 0);
 
@@ -709,14 +701,14 @@ export function TaskCalendar({
 
     const isSameDayVal = startTs === newEndTs;
     const finalEnd = isSameDayVal ? null : newEnd;
-    
+
     const originalTasks = [...localTasks];
-    setLocalTasks(prev => prev.map(t => 
-      t.id === taskId 
+    setLocalTasks(prev => prev.map(t =>
+      t.id === taskId
         ? { ...t, plannedDate: currentStart, plannedEndDate: finalEnd }
         : t
     ));
-    
+
     const result = await updateTaskRangeAction(taskId, currentStart.toISOString(), finalEnd?.toISOString() ?? null);
     if (result.success) {
       toast.success("Task duration updated");
@@ -751,12 +743,12 @@ export function TaskCalendar({
     const minCellHeight = mode === 'month' ? 200 : 500;
 
     const rowCount = Math.ceil(days.length / 7);
-    
+
     for (let r = 0; r < rowCount; r++) {
       let total = baseTop;
       const rowSegments = allTasksWithLevels.filter(s => s.rowIdx === r);
       const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map(s => s.level)) : -1;
-      
+
       if (maxLevel >= 0) {
         total += (maxLevel + 1) * (maxTaskHeight + padding);
       }
@@ -794,25 +786,25 @@ export function TaskCalendar({
   }, [calendarTasks, days]);
 
   const renderGridBody = () => (
-    <div className="overflow-x-auto scrollbar-hide">
-      <div className="min-w-[800px]">
-        <div className="grid grid-cols-7 border-b border-white/[0.03] bg-white/[0.01]">
+    <div >
+      <div >
+        <div >
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
-            <div key={day} className={`py-3 md:py-5 text-center text-[10px] md:text-xs font-black uppercase tracking-[0.2em] md:tracking-[0.4em] ${i >= 5 ? "text-amber-500/30" : "text-muted/20"}`}>
+            <div key={day} >
               {day}
             </div>
           ))}
         </div>
 
-        <div className="relative min-w-full flex flex-col border-l border-white/[0.03]">
+        <div >
           {weeks.map((week, weekIdx) => (
-            <div key={weekIdx} className="relative">
-              <div className="grid grid-cols-7">
+            <div key={weekIdx} >
+              <div >
                 {week.map((day, dayIdx) => (
-                  <CalendarDayCell 
-                    key={dayIdx} 
-                    day={day} 
-                    currentMonth={currentDate} 
+                  <CalendarDayCell
+                    key={dayIdx}
+                    day={day}
+                    currentMonth={currentDate}
                     onAdd={(date) => {
                       setEditingTask({ plannedDate: date } as TaskData);
                       setParentTask(null);
@@ -828,8 +820,8 @@ export function TaskCalendar({
                 ))}
               </div>
 
-              <div className="absolute inset-0 pointer-events-none grid grid-cols-7">
-                {/* Deadline markers for project tasks */}
+              <div >
+                {}
                 {days.slice(weekIdx * 7, weekIdx * 7 + 7).map((_, dayOffset) => {
                   const globalIdx = weekIdx * 7 + dayOffset;
                   const deadlines = deadlinesByDayIndex[globalIdx];
@@ -841,24 +833,14 @@ export function TaskCalendar({
                       <button
                         key={`deadline-${task.id}`}
                         onClick={() => handleEdit(task)}
-                        className="absolute pointer-events-auto flex items-center gap-1 px-1.5 rounded border transition-all hover:opacity-80"
-                        style={{
-                          gridColumnStart: dayOffset + 1,
-                          gridColumnEnd: dayOffset + 2,
-                          bottom: `${4 + di * 22}px`,
-                          left: '4px',
-                          right: '4px',
-                          height: '18px',
-                          backgroundColor: isOverdue ? 'rgba(239,68,68,0.12)' : task.sphere ? `${task.sphere.color}18` : 'rgba(251,191,36,0.12)',
-                          borderColor: isOverdue ? 'rgba(239,68,68,0.35)' : task.sphere ? `${task.sphere.color}50` : 'rgba(251,191,36,0.35)',
-                          zIndex: 40,
-                        }}
+
+
                       >
-                        <Flag size={8} className={isOverdue ? 'text-red-400 shrink-0' : 'text-rose-400/70 shrink-0'} />
-                        {Icon && <Icon size={8} className="shrink-0 opacity-60" style={{ color: isOverdue ? '#f87171' : task.sphere?.color }} />}
+                        <Flag size={8} />
+                        {Icon && <Icon size={8} />}
                         <span
-                          className="text-[9px] font-mono font-bold uppercase tracking-tight truncate"
-                          style={{ color: isOverdue ? '#f87171' : task.sphere?.color || '#fbbf24' }}
+
+
                         >
                           {task.isPrivate ? 'Private' : task.title}
                         </span>
@@ -892,9 +874,7 @@ export function TaskCalendar({
                       isDraggable
                       onHeightChange={handleHeightChange}
                       fixedHeight={maxTaskHeight}
-                      style={{
-                        top: `${calculateTop(seg.level)}px`,
-                      }}
+
                     />
                   ))}
               </div>
@@ -906,51 +886,51 @@ export function TaskCalendar({
   );
 
   return (
-    <DndContext 
-      sensors={sensors} 
+    <DndContext
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col bg-surface border border-border rounded-xl md:rounded-xl overflow-hidden shadow-2xl animate-in fade-in duration-700 min-w-0">
-        {/* Header Controls */}
-        {!hideControls && <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 md:p-6 lg:p-8 border-b border-white/[0.03] bg-white/[0.01] gap-4 lg:gap-6">
-          <div className="flex items-center justify-between lg:justify-start gap-4 lg:gap-8">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-accent/10 rounded-xl shrink-0">
-                <CalendarIcon size={20} className="text-accent md:w-5 md:h-5 w-4 h-4" />
+      <div >
+        {}
+        {!hideControls && <div >
+          <div >
+            <div >
+              <div >
+                <CalendarIcon size={20} />
               </div>
-              <div className="flex flex-col min-w-0">
-                <h2 className="text-sm md:text-base font-black tracking-tighter text-text truncate">
-                  {mode === 'day' 
-                    ? format(currentDate, "MMMM d, yyyy") 
-                    : mode === 'month' 
-                      ? format(currentDate, "MMMM yyyy") 
+              <div >
+                <h2 >
+                  {mode === 'day'
+                    ? format(currentDate, "MMMM d, yyyy")
+                    : mode === 'month'
+                      ? format(currentDate, "MMMM yyyy")
                       : format(currentDate, "'Week' w, MMMM yyyy")}
                 </h2>
-                <p className="text-[10px] md:text-caption font-mono text-muted uppercase tracking-[0.2em] mt-0.5 truncate">
+                <p >
                   {mode === 'month' ? 'Monthly overview' : mode === 'week' ? 'Weekly focus' : 'Daily timeline'}
                 </p>
               </div>
             </div>
 
-            {/* Navigation arrows (desktop) */}
-            <div className="hidden md:flex items-center gap-1 bg-surface/50 border border-border/50 rounded-xl p-1 shadow-inner">
+            {}
+            <div >
               <button
                 onClick={() => navigate(-1)}
-                className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+
                 title="Previous"
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 onClick={() => setCurrentDate(new Date())}
-                className="px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider hover:bg-raised rounded-lg text-muted hover:text-text transition-all border-x border-border/30 mx-0.5"
+
               >
                 Today
               </button>
               <button
                 onClick={() => navigate(1)}
-                className="p-1.5 hover:bg-raised rounded-lg text-muted hover:text-text transition-all"
+
                 title="Next"
               >
                 <ChevronRight size={16} />
@@ -958,36 +938,33 @@ export function TaskCalendar({
             </div>
           </div>
 
-          <div className="flex items-center justify-between lg:justify-end gap-3 md:gap-6">
-            {/* Navigation arrows (mobile) */}
-            <div className="flex md:hidden items-center gap-1 bg-surface/50 border border-border/50 rounded-xl p-1 shadow-inner">
-              <button onClick={() => navigate(-1)} className="p-1.5 hover:bg-raised rounded-lg text-muted"><ChevronLeft size={14} /></button>
-              <button onClick={() => setCurrentDate(new Date())} className="px-2 py-1 text-[9px] font-bold text-muted">Today</button>
-              <button onClick={() => navigate(1)} className="p-1.5 hover:bg-raised rounded-lg text-muted"><ChevronRight size={14} /></button>
+          <div >
+            {}
+            <div >
+              <button onClick={() => navigate(-1)} ><ChevronLeft size={14} /></button>
+              <button onClick={() => setCurrentDate(new Date())} >Today</button>
+              <button onClick={() => navigate(1)} ><ChevronRight size={14} /></button>
             </div>
 
-            {/* View switcher */}
+            {}
             {!hideModeSwitch && (
-              <div className="flex p-1 bg-surface border border-border/50 rounded-xl shadow-sm w-fit relative overflow-hidden shrink-0">
+              <div >
                 {["month", "week", "day"].map((id) => {
                   const isActive = mode === id;
                   return (
                     <button
                       key={id}
                       onClick={() => setMode(id as "month" | "week" | "day")}
-                      className={`
-                        relative flex items-center gap-2 whitespace-nowrap px-3 md:px-5 lg:px-6 py-1.5 md:py-2 rounded-xl text-[10px] md:text-caption font-mono font-bold uppercase tracking-widest transition-all duration-200 z-10
-                        ${isActive ? "text-bg" : "text-secondary hover:text-text"}
-                      `}
+
                     >
                       {isActive && (
                         <motion.div
                           layoutId="activeViewTab"
-                          className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
+
                           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                         />
                       )}
-                      <span className="relative z-10">{id}</span>
+                      <span >{id}</span>
                     </button>
                   );
                 })}
@@ -996,11 +973,11 @@ export function TaskCalendar({
           </div>
         </div>}
 
-        {/* Active Projects Panel */}
+        {}
         {projectTasks.length > 0 && (
-          <div className="border-t border-white/[0.03] bg-surface/30 px-4 md:px-6 py-2.5 flex items-center gap-3 overflow-x-auto scrollbar-hide">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-muted/40 shrink-0">Projects</span>
-            <div className="flex items-center gap-2">
+          <div >
+            <span >Projects</span>
+            <div >
               {projectTasks.map(task => {
                 const completed = task.children.filter(c => c.status === 'DONE').length;
                 const total = task.children.length;
@@ -1011,23 +988,23 @@ export function TaskCalendar({
                   <button
                     key={task.id}
                     onClick={() => handleEdit(task)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border/40 bg-raised/20 hover:bg-raised/60 hover:border-accent/30 transition-all shrink-0 group/proj"
+
                   >
                     {task.sphere && (
-                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: task.sphere.color }} />
+                      <div />
                     )}
-                    {Icon && <Icon size={11} className="text-muted/50 shrink-0" />}
-                    <span className="text-label font-bold text-text/80 max-w-[140px] truncate">{task.isPrivate ? "Private" : task.title}</span>
-                    <div className="flex items-center gap-1.5 ml-1">
-                      <div className="w-12 h-1 rounded-full bg-border/40 overflow-hidden">
-                        <div className="h-full rounded-full bg-accent/60 transition-all" style={{ width: `${progress}%` }} />
+                    {Icon && <Icon size={11} />}
+                    <span >{task.isPrivate ? "Private" : task.title}</span>
+                    <div >
+                      <div >
+                        <div />
                       </div>
-                      <span className="text-[9px] font-mono text-muted/40">{completed}/{total}</span>
+                      <span >{completed}/{total}</span>
                     </div>
                     {task.dueDate && (
-                      <div className={`flex items-center gap-0.5 ml-0.5 ${isOverdue ? 'text-red-400' : 'text-muted/40'}`}>
+                      <div >
                         <Flag size={9} />
-                        <span className="text-[9px] font-mono">{format(new Date(task.dueDate), 'MMM d')}</span>
+                        <span >{format(new Date(task.dueDate), 'MMM d')}</span>
                       </div>
                     )}
                   </button>
@@ -1037,58 +1014,58 @@ export function TaskCalendar({
           </div>
         )}
 
-        {/* Content Body */}
-        <div className="flex-1">
+        {}
+        <div >
           {mode === 'day' ? (
-            <div className="flex flex-col h-[600px]">
+            <div >
               {unscheduledTasks.length > 0 && (
-                <div className="flex flex-wrap gap-2 px-4 py-2.5 border-b border-white/[0.03] bg-surface/50 shrink-0">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-muted/40 self-center mr-1">Unscheduled</span>
+                <div >
+                  <span >Unscheduled</span>
                   {unscheduledTasks.map(task => (
                     <button
                       key={task.id}
                       onClick={() => handleEdit(task)}
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/40 bg-raised/20 hover:bg-raised/60 hover:border-accent/30 transition-all text-left"
+
                     >
                       {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-accent/50 shrink-0" })}
-                      <span className="text-label font-bold text-text/80 truncate max-w-[160px]">{task.isPrivate ? "Private" : task.title}</span>
-                      {task.sphere && <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: task.sphere.color }} />}
+                      <span >{task.isPrivate ? "Private" : task.title}</span>
+                      {task.sphere && <div />}
                     </button>
                   ))}
                 </div>
               )}
               <div
                 ref={timelineContainerRef}
-                className="relative flex-1 overflow-auto border border-white/[0.03] rounded-none bg-bg/30 scrollbar-show"
+
               >
-                <div 
-                  className="relative min-h-full" 
-                  style={{ width: TOTAL_WIDTH }}
+                <div
+
+
                 >
-                  <div className="sticky top-0 z-20 flex h-8 border-b border-white/[0.03] bg-surface/80 backdrop-blur-md">
+                  <div >
                     {hours.map((hour, i) => (
-                      <div 
-                        key={i} 
-                        className="flex-none border-r border-white/[0.03] last:border-0 flex flex-col justify-end px-2"
-                        style={{ width: HOUR_WIDTH }}
+                      <div
+                        key={i}
+
+
                       >
-                        <span className="text-label font-mono font-bold text-muted/50 uppercase">
+                        <span >
                           {format(hour, "HH:mm")}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="absolute inset-0 pointer-events-none flex">
+                  <div >
                     {hours.map((_, i) => (
-                      <div 
-                        key={i} 
-                        className="flex-none border-r border-white/[0.03] h-full relative"
-                        style={{ width: HOUR_WIDTH }}
+                      <div
+                        key={i}
+
+
                       >
-                        <div className="absolute right-3/4 top-0 bottom-0 border-r border-white/[0.015]" />
-                        <div className="absolute right-2/4 top-0 bottom-0 border-r border-white/[0.015]" />
-                        <div className="absolute right-1/4 top-0 bottom-0 border-r border-white/[0.015]" />
+                        <div />
+                        <div />
+                        <div />
                       </div>
                     ))}
                   </div>
@@ -1098,36 +1075,36 @@ export function TaskCalendar({
                     const dayStartMin = DAY_START * 60;
                     if (nowMin >= dayStartMin && nowMin <= DAY_END * 60) {
                       return (
-                        <div 
-                          className="absolute top-0 bottom-0 z-10 w-[2px] bg-accent pointer-events-none"
-                          style={{ left: `${((nowMin - dayStartMin) / 60) * HOUR_WIDTH}px` }}
+                        <div
+
+
                         >
-                          <div className="absolute -left-[5px] top-8 w-3 h-3 bg-accent rounded-full border-2 border-bg" />
+                          <div />
                         </div>
                       );
                     }
                     return null;
                   })()}
 
-                  <DndContext 
-                    sensors={sensors} 
+                  <DndContext
+                    sensors={sensors}
                     onDragStart={handleTimelineDragStart}
                     onDragMove={handleTimelineDragMove}
                     onDragEnd={handleTimelineDragEnd}
                   >
-                    <div className="relative py-2 flex flex-col gap-2 min-h-[300px]">
+                    <div >
                       {timelineRows.map((rowTasks, rowIdx) => (
-                        <div key={rowIdx} className="relative h-[120px] w-full" style={{ paddingTop: `${rowIdx * 16}px` }}>
+                        <div key={rowIdx} >
                           {rowTasks.map(task => {
                             const isResizingThis = resizingTimeline?.id === task.id;
                             const isDraggingThis = draggingTimeline?.id === task.id;
-                            
+
                             const resDelta = isResizingThis ? Math.round(resizingTimeline!.delta / 5) * 5 : 0;
                             const drgDelta = isDraggingThis ? Math.round((draggingTimeline!.deltaX / HOUR_WIDTH) * 60 / 5) * 5 : 0;
-                            
+
                             let start = new Date(task.plannedDate!);
                             let end = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(start, 60);
-                            
+
                             if (isResizingThis) {
                               if (resizingTimeline!.edge === 'start') {
                                 start = addMinutes(start, resDelta);
@@ -1149,43 +1126,35 @@ export function TaskCalendar({
                             const dStartMin = DAY_START * 60;
                             const leftPos = ((startMin - dStartMin) / 60) * HOUR_WIDTH;
                             const widthVal = ((endMin - startMin) / 60) * HOUR_WIDTH;
-                            
+
                             const pCfg = PRIORITY_CONFIG[task.priority];
-                            
+
                             return (
                               <DayTimelineCardWrapper
                                 key={task.id}
                                 task={task}
                                 isResizing={isResizingThis}
-                                style={{
-                                  left: `${leftPos}px`,
-                                  width: `${Math.max(widthVal, HOUR_WIDTH)}px`,
-                                  zIndex: isResizingThis || isDraggingThis ? 50 : 10,
-                                }}
+
                               >
                                 <div
-                                  className={`flex flex-col gap-1.5 rounded-xl border p-2.5 overflow-hidden cursor-grab active:cursor-grabbing h-full ${
-                                    isDraggingThis || isResizingThis
-                                      ? 'shadow-elevated ring-2 ring-accent border-accent bg-elevated'
-                                      : 'shadow-md border-accent/20 bg-surface/95 backdrop-blur-sm hover:border-accent/40'
-                                  }`}
+
                                   onClick={() => {
                                     if (!isDraggingAny) handleEdit(task);
                                   }}
                                 >
-                                  <div className="flex items-center justify-between pointer-events-none">
-                                    <span className="text-caption font-mono font-black text-accent tracking-tighter">
+                                  <div >
+                                    <span >
                                       {format(start, "HH:mm")} — {format(end, "HH:mm")}
                                     </span>
                                     {task.icon && ALL_ICONS[task.icon] && React.createElement(ALL_ICONS[task.icon], { size: 10, className: "text-muted/40" })}
                                   </div>
 
-                                  <h4 className="text-note font-black leading-tight text-text line-clamp-2 uppercase tracking-tight pointer-events-none">
+                                  <h4 >
                                     {task.title}
                                   </h4>
 
-                                  <div className="flex items-center gap-2 mt-auto pt-1.5 border-t border-white/[0.03]">
-                                    <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+                                  <div >
+                                    <div onClick={(e) => e.stopPropagation()} >
                                       <StatusToggle
                                         taskId={task.id}
                                         status={task.status}
@@ -1195,33 +1164,33 @@ export function TaskCalendar({
                                       />
                                     </div>
 
-                                    <div className="w-px h-3 bg-white/5 shrink-0" />
+                                    <div />
 
-                                    <div className="flex items-center gap-2 min-w-0 pointer-events-none">
+                                    <div >
                                       {task.isFrog && (
-                                        <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-green-500/15 text-green-400 text-[10px] font-black uppercase tracking-tighter border border-green-500/25 shrink-0">
+                                        <span >
                                           <span role="img" aria-label="frog">🐸</span>
                                         </span>
                                       )}
                                       {task.sphere && (
-                                        <div className="flex items-center gap-1 min-w-0">
-                                          <div 
-                                            className="w-1.5 h-1.5 rounded-full shrink-0" 
-                                            style={{ backgroundColor: task.sphere.color }} 
+                                        <div >
+                                          <div
+
+
                                           />
-                                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted truncate">
+                                          <span >
                                             {task.sphere.name}
                                           </span>
                                         </div>
                                       )}
-                                      <div className="flex items-center gap-1 shrink-0">
-                                        {React.createElement(pCfg.icon, { 
-                                          size: 10, 
-                                          style: { color: pCfg.color } 
+                                      <div >
+                                        {React.createElement(pCfg.icon, {
+                                          size: 10,
+                                          style: { color: pCfg.color }
                                         })}
-                                        <span 
-                                          className="text-[10px] font-mono font-black uppercase tracking-tighter"
-                                          style={{ color: pCfg.color }}
+                                        <span
+
+
                                         >
                                           {pCfg.label}
                                         </span>
@@ -1229,13 +1198,13 @@ export function TaskCalendar({
                                     </div>
                                   </div>
                                 </div>
-                                <div 
-                                  className="absolute right-0 top-0 bottom-0 w-3 cursor-e-resize z-30 opacity-0 group-hover/day:opacity-100 transition-opacity flex items-center justify-end pr-0.5"
+                                <div
+
                                   onMouseDown={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                     const sX = e.clientX;
-                                    
+
                                     const hMouseMove = (mv: MouseEvent) => {
                                       const dX = mv.clientX - sX;
                                       const minDelta = (dX / HOUR_WIDTH) * 60;
@@ -1245,10 +1214,10 @@ export function TaskCalendar({
                                     const hMouseUp = (ev: MouseEvent) => {
                                       document.removeEventListener("mousemove", hMouseMove);
                                       document.removeEventListener("mouseup", hMouseUp);
-                                      
+
                                       const dX = ev.clientX - sX;
                                       const minDelta = Math.round(((dX / HOUR_WIDTH) * 60) / 5) * 5;
-                                      
+
                                       if (minDelta !== 0) {
                                         const cDur = differenceInMinutes(end, start);
                                         if (cDur + minDelta < 60) {
@@ -1259,23 +1228,23 @@ export function TaskCalendar({
                                       }
                                       setResizingTimeline(null);
                                     };
-                                    
+
                                     document.addEventListener("mousemove", hMouseMove);
                                     document.addEventListener("mouseup", hMouseUp);
                                   }}
                                 >
-                                  <div className="w-1 h-6 bg-accent/40 rounded-full" />
+                                  <div />
                                 </div>
                               </DayTimelineCardWrapper>
                             );
                           })}
                         </div>
                       ))}
-                      
+
                       {timelineRows.length === 0 && unscheduledTasks.length === 0 && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-muted/20">
+                        <div >
                           <Clock size={48} strokeWidth={1} />
-                          <p className="text-caption font-mono uppercase tracking-[0.2em] mt-4">No tasks scheduled for this day</p>
+                          <p >No tasks scheduled for this day</p>
                         </div>
                       )}
                     </div>

@@ -1,8 +1,8 @@
 "use server";
 
 import * as journalService from "../services/journal-service";
-import { invalidateJournalCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateJournalCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { journalRepository } from "../repositories/journal.repository";
 import type { UpsertDailyEntryInput } from "../types";
 

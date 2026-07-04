@@ -8,7 +8,7 @@ import { carryOverTaskAction } from "@/features/life/actions/task-actions";
 
 interface Props {
   tasks: TaskData[];
-  date: string; // "YYYY-MM-DD"
+  date: string;
 }
 
 const PRESETS = [
@@ -75,64 +75,62 @@ export function TaskReviewSection({ tasks, date }: Props) {
   if (total === 0) return null;
 
   return (
-    <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-5">
-      {/* Header */}
-      <div className="flex items-center gap-2.5">
-        <div className="h-px flex-1 bg-border/40" />
-        <span className="text-note font-mono text-muted uppercase tracking-[0.3em]">Task Review</span>
-        <div className="h-px flex-1 bg-border/40" />
+    <div >
+      {}
+      <div >
+        <div />
+        <span >Task Review</span>
+        <div />
       </div>
 
-      {/* Stats bar */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-1.5 bg-white/[0.05] rounded-full overflow-hidden">
+      {}
+      <div >
+        <div >
+          <div >
             <div
-              className="h-full rounded-full bg-emerald-500 transition-all duration-700"
-              style={{ width: `${pct}%` }}
+
             />
           </div>
-          <span className="text-[11px] font-mono text-muted tabular-nums shrink-0">
+          <span >
             {done} / {total} виконано
           </span>
         </div>
         {carriedTaskIds.length > 0 && (
-          <div className="flex items-center gap-1.5">
-            <RefreshCw size={10} className="text-accent/50" />
-            <span className="text-note text-accent/60 font-mono">
+          <div >
+            <RefreshCw size={10} />
+            <span >
               {carriedTaskIds.length} перенесено на завтра
             </span>
           </div>
         )}
       </div>
 
-      {/* Done tasks (collapsible) */}
+      {}
       {doneTasks.length > 0 && (
-        <div className="flex flex-col gap-1">
+        <div >
           <button
             type="button"
             onClick={() => setShowDone((v) => !v)}
-            className="flex items-center gap-2 text-note text-muted/60 hover:text-muted transition-colors w-fit"
+
           >
             {showDone ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-            <span className="font-mono uppercase tracking-wider">
+            <span >
               Виконано ({doneTasks.length})
             </span>
           </button>
           {showDone && (
-            <div className="flex flex-col gap-1 mt-1">
+            <div >
               {doneTasks.map((task) => (
-                <div key={task.id} className="flex items-center gap-2.5 py-1 opacity-50">
-                  <div className="w-4 h-4 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0">
-                    <Check size={9} className="text-emerald-400" />
+                <div key={task.id} >
+                  <div >
+                    <Check size={9} />
                   </div>
                   {task.sphere && (
                     <div
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: task.sphere.color }}
+
                     />
                   )}
-                  <span className="text-body text-muted line-through truncate">{task.title}</span>
+                  <span >{task.title}</span>
                 </div>
               ))}
             </div>
@@ -140,25 +138,24 @@ export function TaskReviewSection({ tasks, date }: Props) {
         </div>
       )}
 
-      {/* Incomplete tasks */}
+      {}
       {incompleteTasks.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div >
           {incompleteTasks.map((task) => (
-            <div key={task.id} className="flex flex-col gap-0">
-              <div className="flex items-center gap-2.5 py-1.5 group">
-                <div className="w-4 h-4 rounded-full border border-border/60 shrink-0" />
+            <div key={task.id} >
+              <div >
+                <div />
                 {task.sphere && (
                   <div
-                    className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: task.sphere.color }}
+
                   />
                 )}
-                <span className="text-body text-text truncate flex-1">{task.title}</span>
-                <div className="flex items-center gap-1.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span >{task.title}</span>
+                <div >
                   <button
                     type="button"
                     onClick={() => handleOpenReason(task.id)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-note font-mono text-accent/70 hover:text-accent hover:bg-accent/10 transition-all border border-accent/20 hover:border-accent/40"
+
                   >
                     <RefreshCw size={10} />
                     Перенести
@@ -166,7 +163,7 @@ export function TaskReviewSection({ tasks, date }: Props) {
                   <button
                     type="button"
                     onClick={() => handleDismiss(task.id)}
-                    className="flex items-center justify-center w-6 h-6 rounded-md text-muted/40 hover:text-muted hover:bg-raised transition-all"
+
                     title="Відкласти"
                   >
                     <X size={12} />
@@ -174,23 +171,19 @@ export function TaskReviewSection({ tasks, date }: Props) {
                 </div>
               </div>
 
-              {/* Inline reason picker */}
+              {}
               {expandedId === task.id && (
-                <div className="ml-7 mb-2 flex flex-col gap-2 p-3 rounded-lg bg-raised border border-border/60 animate-in slide-in-from-top-1 duration-150">
-                  <span className="text-note font-mono text-muted/60 uppercase tracking-wider">
+                <div >
+                  <span >
                     Чому не виконав?
                   </span>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div >
                     {PRESETS.map((preset) => (
                       <button
                         key={preset}
                         type="button"
                         onClick={() => setSelectedPreset((p) => (p === preset ? null : preset))}
-                        className={`px-2.5 py-1 rounded-md text-note font-mono transition-all border ${
-                          selectedPreset === preset
-                            ? "bg-accent/20 border-accent/50 text-accent"
-                            : "bg-raised border-border/60 text-muted hover:border-border hover:text-text"
-                        }`}
+
                       >
                         {preset}
                       </button>
@@ -204,13 +197,13 @@ export function TaskReviewSection({ tasks, date }: Props) {
                       if (e.target.value) setSelectedPreset(null);
                     }}
                     placeholder="Інша причина..."
-                    className="w-full bg-bg border border-border/60 rounded-md px-3 py-1.5 text-body text-text placeholder:text-muted/40 focus:outline-none focus:border-accent/40 transition-colors"
+
                   />
-                  <div className="flex items-center gap-2 justify-end">
+                  <div >
                     <button
                       type="button"
                       onClick={() => setExpandedId(null)}
-                      className="px-3 py-1.5 text-note font-mono text-muted hover:text-text transition-colors"
+
                     >
                       Скасувати
                     </button>
@@ -218,9 +211,9 @@ export function TaskReviewSection({ tasks, date }: Props) {
                       type="button"
                       onClick={() => handleConfirm(task.id)}
                       disabled={isPending}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-accent/20 border border-accent/40 text-note font-mono text-accent hover:bg-accent/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+
                     >
-                      <RefreshCw size={10} className={isPending ? "animate-spin" : ""} />
+                      <RefreshCw size={10} />
                       Підтвердити
                     </button>
                   </div>
@@ -230,9 +223,9 @@ export function TaskReviewSection({ tasks, date }: Props) {
           ))}
         </div>
       ) : (
-        <div className="flex items-center gap-2 py-1 text-body text-muted/60">
-          <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-            <Check size={11} className="text-emerald-400" />
+        <div >
+          <div >
+            <Check size={11} />
           </div>
           Всі завдання виконані
         </div>

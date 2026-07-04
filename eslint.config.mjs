@@ -7,14 +7,14 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   prettier,
-  // Override default ignores of eslint-config-next.
+
   globalIgnores([
-    // Default ignores of eslint-config-next:
+
     ".next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Auto-generated Prisma client files — do not lint
+
     "src/app/generated/**",
   ]),
   {

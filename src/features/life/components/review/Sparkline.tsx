@@ -5,14 +5,12 @@ interface Props {
   width?: number;
 }
 
-/** Minimal hand-built SVG sparkline — no charting library in this project. */
 export function Sparkline({ points, color = "#60a5fa", height = 36, width = 140 }: Props) {
   const valid = points.filter((p): p is number => p !== null);
   if (valid.length < 2) {
     return (
       <div
-        className="flex items-center justify-center text-caption text-muted shrink-0"
-        style={{ height, width }}
+
       >
         Not enough data
       </div>
@@ -43,7 +41,7 @@ export function Sparkline({ points, color = "#60a5fa", height = 36, width = 140 
   }
 
   return (
-    <svg width={width} height={height} className="overflow-visible shrink-0">
+    <svg width={width} height={height} >
       <path
         d={path.trim()}
         fill="none"

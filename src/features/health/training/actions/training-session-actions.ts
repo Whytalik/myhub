@@ -1,8 +1,8 @@
 "use server";
 
 import * as trainingSessionService from "../services/training-session-service";
-import { invalidateTrainingSessionCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateTrainingSessionCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { StartSessionInput, UpdateSetLogInput, CompleteSessionInput } from "../types";
 
 export async function startSessionAction(

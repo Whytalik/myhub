@@ -1,4 +1,4 @@
-import { getCachedTrainingPlans } from "@/lib/cache";
+import { getCachedTrainingPlans } from "@/lib/cache/cache";
 import { trainingPlanRepository } from "../repositories/training-plan.repository";
 import { trainingDayRepository } from "../repositories/training-day.repository";
 import { trainingDayExerciseRepository } from "../repositories/training-day-exercise.repository";

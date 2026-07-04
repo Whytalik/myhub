@@ -4,8 +4,8 @@ export function getStartOfDay(date: Date = new Date()): Date {
 
 export function getWeekStart(date: Date = new Date()): Date {
   const d = getStartOfDay(date);
-  const day = d.getDay(); // 0=Sun, 1=Mon, ...6=Sat
-  const diff = day === 0 ? -6 : 1 - day; // shift back to Monday
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
   return new Date(d.getTime() + diff * 86400000);
 }
 
@@ -16,7 +16,7 @@ export function calculateStreak(
   if (completions.length === 0) return 0;
 
   if (targetDaysPerWeek >= 7) {
-    // Daily streak — original logic with yesterday grace period
+
     const today = getStartOfDay();
     const completionDates = new Set(completions.map(c => new Date(c.date).setHours(0, 0, 0, 0)));
     let streak = 0;
@@ -31,7 +31,6 @@ export function calculateStreak(
     return streak;
   }
 
-  // Weekly streak — count consecutive weeks where completions >= target
   const ONE_WEEK_MS = 7 * 86400000;
 
   const weekCounts = new Map<number, number>();
@@ -42,7 +41,6 @@ export function calculateStreak(
 
   let checkWeek = getWeekStart().getTime();
 
-  // Grace period: if current week target not met yet, start from last week
   if ((weekCounts.get(checkWeek) ?? 0) < targetDaysPerWeek) {
     checkWeek -= ONE_WEEK_MS;
   }

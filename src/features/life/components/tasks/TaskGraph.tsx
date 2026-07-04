@@ -176,7 +176,7 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
   }, [layoutedNodes, layoutedEdges, setNodes, setEdges]);
 
   return (
-    <div className="w-full h-[85vh] min-h-[700px] bg-[#141414] border border-border rounded-[2.5rem] overflow-hidden relative">
+    <div >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -201,9 +201,9 @@ export function TaskGraph({ tasks, onEdit, onDuplicate, onAddChild }: TaskGraphP
       >
         <Background color="#2a2a2a" gap={24} size={1} />
       </ReactFlow>
-      
-      <div className="absolute top-6 left-6 z-10 pointer-events-none">
-        <p className="text-caption font-mono text-muted uppercase tracking-[0.4em] bg-[#1a1a1a]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/50">
+
+      <div >
+        <p >
           Mind Map — Horizontal
         </p>
       </div>

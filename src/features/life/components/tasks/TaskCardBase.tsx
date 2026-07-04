@@ -5,35 +5,35 @@ import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw } from
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
-import { ConfirmationDialog } from "@/components/ui/dialog";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { StatusToggle } from "./StatusToggle";
 import { PriorityToggle } from "./PriorityToggle";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 
 export interface TaskCardBaseProps {
-  task:         TaskData;
-  onEdit:       (task: TaskData) => void;
+  task: TaskData;
+  onEdit: (task: TaskData) => void;
   onDuplicate?: (task: TaskData) => void;
-  onAddChild?:  (parent: TaskData) => void;
-  onDelete?:    () => void;
-  allTasks?:     TaskData[];
-  variant?:     "default" | "compact";
-  isDragging?:  boolean;
-  className?:   string;
-  style?:       React.CSSProperties;
-  listeners?:   DraggableSyntheticListeners;
-  attributes?:  DraggableAttributes;
-  setNodeRef?:  (node: HTMLElement | null) => void;
+  onAddChild?: (parent: TaskData) => void;
+  onDelete?: () => void;
+  allTasks?: TaskData[];
+  variant?: "default" | "compact";
+  isDragging?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  listeners?: DraggableSyntheticListeners;
+  attributes?: DraggableAttributes;
+  setNodeRef?: (node: HTMLElement | null) => void;
 }
 
-export function TaskCardBase({ 
-  task, 
-  onEdit, 
-  onDuplicate, 
-  onAddChild, 
+export function TaskCardBase({
+  task,
+  onEdit,
+  onDuplicate,
+  onAddChild,
   onDelete,
-  allTasks = [], 
+  allTasks = [],
   variant = "default",
   isDragging = false,
   className = "••••••••",
@@ -75,10 +75,10 @@ export function TaskCardBase({
   const formatDateTime = useCallback((date: Date | null, hasTime: boolean) => {
     if (!date) return null;
     const d = new Date(date);
-    const options: Intl.DateTimeFormatOptions = variant === "compact" 
+    const options: Intl.DateTimeFormatOptions = variant === "compact"
       ? { month: "short", day: "numeric" }
       : { month: "long", day: "numeric", year: "numeric" };
-      
+
     if (hasTime) {
       options.hour = "2-digit";
       options.minute = "2-digit";
@@ -97,7 +97,7 @@ export function TaskCardBase({
   }, [task.plannedDate, task.hasPlannedTime, task.plannedEndDate, task.hasPlannedEndTime, formatDateTime]);
 
   const dueLabel = formatDateTime(task.dueDate, task.hasDueTime);
-  
+
   const isOverdue =
     task.dueDate &&
     task.status !== "DONE" &&
@@ -135,45 +135,27 @@ export function TaskCardBase({
   return (
     <div
       ref={setNodeRef}
-      style={style}
+
       {...listeners}
       {...attributes}
       onClick={() => {
         if (style?.transform) return;
         onEdit(task);
       }}
-className={`
-         group relative flex flex-col transition-all cursor-grab active:cursor-grabbing
-         ${isCompact ? 'gap-1 md:gap-1.5 p-1.5 md:p-2 rounded-lg md:rounded-xl border w-full mb-1.5 md:mb-2 last:mb-0' : 'gap-3 p-4 pt-5 rounded-2xl border h-full'}
-         ${isDragging
-           ? 'shadow-2xl ring-2 ring-accent border-accent bg-[#1a1a1a] z-[1000] scale-[1.02]'
-           : isDone
-             ? 'bg-surface/30 border-border/40 opacity-70'
-             : task.isPrivate
-               ? 'bg-amber-500/[0.05] !border-amber-500/80 ring-1 ring-amber-500/20 shadow-md shadow-amber-500/5'
-               : task.isFrog
-                 ? 'bg-green-500/[0.04] !border-green-500/60 ring-1 ring-green-500/20 shadow-md shadow-green-500/5 hover:shadow-green-500/10'
-                 : 'bg-surface border-border shadow-md hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5'
-         }
-         ${className}
-       `}
+
     >
-      <div className={`absolute ${isCompact ? 'top-1 right-1' : 'top-3 right-3'} flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20`}>
+      <div >
         <button
           onClick={(e) => { e.stopPropagation(); handleToggleFrog(); }}
-          className={`${isCompact ? 'p-1' : 'p-1.5'} rounded-lg transition-colors backdrop-blur-sm border ${
-            task.isFrog
-              ? 'text-green-400 bg-green-500/10 border-green-500/40 hover:bg-green-500/20'
-              : 'text-muted hover:text-green-400 hover:bg-green-400/10 bg-surface/80 border-border/50'
-          }`}
+
           title={task.isFrog ? "Зняти жабу" : "Зробити жабою"}
         >
-          <span className={isCompact ? 'text-[10px]' : 'text-xs'} role="img" aria-label="frog">🐸</span>
+          <span role="img" aria-label="frog">🐸</span>
         </button>
         {onDuplicate && (
           <button
             onClick={(e) => { e.stopPropagation(); onDuplicate(task); }}
-            className={`${isCompact ? 'p-1' : 'p-1.5'} rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors bg-surface/80 backdrop-blur-sm border border-border/50`}
+
             title="Duplicate task"
           >
             <Copy size={isCompact ? 10 : 12} />
@@ -182,7 +164,7 @@ className={`
         {onAddChild && (
           <button
             onClick={(e) => { e.stopPropagation(); onAddChild(task); }}
-            className={`${isCompact ? 'p-1' : 'p-1.5'} rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors bg-surface/80 backdrop-blur-sm border border-border/50`}
+
             title="Add subtask"
           >
             <Plus size={isCompact ? 10 : 12} />
@@ -190,75 +172,75 @@ className={`
         )}
         <button
           onClick={(e) => { e.stopPropagation(); setIsDeleteDialogOpen(true); }}
-          className={`${isCompact ? 'p-1' : 'p-1.5'} rounded-lg text-muted hover:text-red-400 hover:bg-red-400/10 transition-colors bg-surface/80 backdrop-blur-sm border border-border/50`}
+
           title="Delete task"
         >
           <Trash2 size={isCompact ? 10 : 12} />
         </button>
       </div>
 
-      {/* 1. TOP ROW: Breadcrumb only */}
+      {}
       {task.parentId && (
-        <div 
+        <div
           onClick={handleParentClick}
-          className={`flex items-center gap-1.5 font-bold text-muted/40 tracking-widest uppercase whitespace-nowrap overflow-hidden hover:text-accent transition-colors cursor-pointer group/parent mb-0.5 ${isCompact ? 'text-[10px] md:text-caption pr-10' : 'text-label pr-20'}`}
+
         >
-          <ArrowUp size={isCompact ? 8 : 8} className="shrink-0 group-hover/parent:-translate-y-0.5 transition-transform" />
+          <ArrowUp size={isCompact ? 8 : 8} />
           {task.parentIcon && ALL_ICONS[task.parentIcon] && (() => {
              const PIcon = ALL_ICONS[task.parentIcon];
-             return <PIcon size={isCompact ? 8 : 10} className="shrink-0 opacity-40" />;
+             return <PIcon size={isCompact ? 8 : 10} />;
           })()}
-          <span className="truncate underline decoration-dotted underline-offset-2">
+          <span >
             {task.isPrivate ? "��������" : (task.parentTitle || 'Parent Task')}
           </span>
         </div>
       )}
 
-      {/* 2. MAIN CONTENT */}
-      <div className={`flex flex-col ${isCompact ? 'gap-1 md:gap-1.5' : 'gap-2.5 flex-1'}`}>
-        <div className={`flex items-start gap-2.5 min-w-0 ${isCompact ? 'gap-1' : ''}`}>
+      {}
+      <div >
+        <div >
           {task.icon && SPHERE_ICONS[task.icon] ? (() => {
             const Icon = SPHERE_ICONS[task.icon];
-            return <Icon size={isCompact ? 10 : 16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />;
+            return <Icon size={isCompact ? 10 : 16} strokeWidth={2.5} />;
           })() : (
-            <FileText size={isCompact ? 10 : 16} className="text-accent/40 shrink-0 mt-0.5" strokeWidth={2.5} />
+            <FileText size={isCompact ? 10 : 16} strokeWidth={2.5} />
           )}
-          <h3 
-            className={`font-bold tracking-tight leading-tight transition-colors ${isCompact ? 'text-caption md:text-base' : 'text-base'} ${isDone ? 'text-muted/50 line-through' : 'text-text'}`}
+          <h3
+
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "��������" : task.title) }}
             title={task.isPrivate ? "Private Task" : task.title}
           />
           {task.isFrog && (
-            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 text-[10px] font-black uppercase tracking-tighter border border-green-500/25 whitespace-nowrap h-fit mt-0.5">
+            <span >
               <span role="img" aria-label="frog">🐸</span> Frog
             </span>
           )}
           {task.isPrivate && (
-             <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 text-[10px] font-black uppercase tracking-tighter border border-amber-500/20 whitespace-nowrap h-fit mt-0.5">
+             <span >
                Private
              </span>
           )}
         </div>
 
-        {/* Metadata Row */}
-        <div className="flex items-center gap-1 flex-wrap min-w-0">
-          <StatusToggle 
-            taskId={task.id} 
-            status={task.status} 
-            variant="badge" 
-            size={isCompact ? "sm" : "default"} 
-          />
-          
-          <PriorityToggle 
+        {}
+        <div >
+          <StatusToggle
             taskId={task.id}
-            priority={task.priority} 
-            size={isCompact ? "sm" : "default"} 
+            status={task.status}
+            variant="badge"
+            size={isCompact ? "sm" : "default"}
           />
-          
+
+          <PriorityToggle
+            taskId={task.id}
+            priority={task.priority}
+            size={isCompact ? "sm" : "default"}
+          />
+
           {task.sphere && (
-             <div 
-               className={`flex items-center gap-1 px-1 py-0.5 rounded border font-mono font-bold uppercase tracking-wider whitespace-nowrap ${isCompact ? 'text-[9px] md:text-[10px]' : 'px-2 rounded-xl text-label'}`}
-               style={{ backgroundColor: `${task.sphere.color}15`, borderColor: `${task.sphere.color}40`, color: task.sphere.color }}
+             <div
+
+
              >
                {(() => {
                  const SphereIcon = SPHERE_ICONS[task.sphere.icon] || FileText;
@@ -270,52 +252,52 @@ className={`
         </div>
 
         {!isCompact && task.description && (
-          <div 
-            className={`text-base leading-relaxed text-[#d1d1d1] font-medium whitespace-pre-wrap mt-1 ${isDone ? 'text-muted/40' : ''}`}
+          <div
+
             dangerouslySetInnerHTML={{ __html: formatText(task.isPrivate ? "Content is hidden" : task.description) }}
           />
         )}
       </div>
 
-      {/* 3. BOTTOM ROW */}
-      <div className={`mt-2 flex flex-col ${isCompact ? 'gap-1 md:gap-1.5' : 'gap-2.5'}`}>
+      {}
+      <div >
         {hasChildren && (() => {
           const pct = Math.round((completedSubtasks / task.children.length) * 100);
           return (
-            <div className="flex items-center gap-2.5">
-              <div className="flex-1 h-1 bg-white/[0.05] rounded-full overflow-hidden">
-                <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: `${pct}%` }} />
+            <div >
+              <div >
+                <div />
               </div>
-              <span className="text-[10px] font-mono text-muted/50 shrink-0 tabular-nums">{pct}%</span>
+              <span >{pct}%</span>
             </div>
           );
         })()}
-        
-        <div className={`pt-1 md:pt-1.5 border-t border-white/[0.03] flex items-center gap-3 flex-wrap ${isCompact ? '' : 'pt-2.5 gap-5'}`}>
+
+        <div >
             {plannedLabel && (
-              <div className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`} title="Planned for">
-                <Calendar size={isCompact ? 8 : 11} className="text-accent/40" />
-                <span className="text-text font-black leading-none">{plannedLabel}</span>
+              <div title="Planned for">
+                <Calendar size={isCompact ? 8 : 11} />
+                <span >{plannedLabel}</span>
               </div>
             )}
 
             {dueLabel && (
               <div
-                className={`flex items-center gap-1 text-mono leading-none ${isOverdue ? "text-rose-400 font-bold" : "text-muted"} ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`}
+
                 title="Deadline"
               >
-                <Flag size={isCompact ? 8 : 11} className={`${isOverdue ? "text-rose-500 fill-rose-500/10 animate-pulse" : "text-rose-500/60"} shrink-0`} />
-                <span className={`${isOverdue ? "text-rose-500" : "text-rose-400"} leading-none font-black`}>{dueLabel}</span>
+                <Flag size={isCompact ? 8 : 11} />
+                <span >{dueLabel}</span>
               </div>
             )}
 
             {task.carriedFromDate && (
               <div
-                className={`flex items-center gap-1 text-mono text-muted leading-none ${isCompact ? 'text-[10px] md:text-caption' : 'text-caption gap-1.5'}`}
+
                 title={`Перенесено з ${new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}`}
               >
-                <RefreshCw size={isCompact ? 8 : 11} className="text-accent/40" />
-                <span className="text-accent/60 font-black leading-none">
+                <RefreshCw size={isCompact ? 8 : 11} />
+                <span >
                   від {new Date(task.carriedFromDate).toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' })}
                 </span>
               </div>

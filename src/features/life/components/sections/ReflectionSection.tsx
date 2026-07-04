@@ -1,4 +1,5 @@
 "use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Trophy, RefreshCw, Heart, Trash2 } from "lucide-react";
 
@@ -46,32 +47,28 @@ export function ReflectionSection({ winToday, improveTomorrow, gratitude, brainD
   const values = { winToday, improveTomorrow, gratitude, brainDump };
 
   return (
-    <div className="bg-surface border border-border rounded-xl p-6 flex flex-col gap-5">
-      <div className="flex items-center gap-2.5">
-        <div className="h-px flex-1 bg-border/40" />
-        <span className="text-note font-mono text-muted uppercase tracking-[0.3em]">Reflection</span>
-        <div className="h-px flex-1 bg-border/40" />
+    <div >
+      <div >
+        <div />
+        <span >Reflection</span>
+        <div />
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div >
         {PROMPTS.map(({ key, icon: Icon, label, placeholder }) => {
           const hasValue = !!values[key];
           return (
-            <div key={key} className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Icon size={13} className={hasValue ? "text-accent" : "text-muted"} />
-                <label className={`text-base font-medium ${hasValue ? "text-accent" : "text-text"}`}>{label}</label>
+            <div key={key} >
+              <div >
+                <Icon size={13} />
+                <label >{label}</label>
               </div>
-              <textarea
+              <Textarea
                 value={values[key] ?? ""}
                 onChange={(e) => onChange({ [key]: e.target.value || null })}
                 placeholder={placeholder}
                 rows={2}
-                className={`bg-raised/50 border rounded-xl px-3 py-2.5 text-base transition-all resize-none leading-relaxed outline-none ${
-                  hasValue 
-                    ? "border-accent/40 text-text shadow-[0_0_15px_rgba(192,132,252,0.05)]" 
-                    : "border-border text-secondary placeholder:text-muted/40 focus:border-accent/40"
-                }`}
+
               />
             </div>
           );

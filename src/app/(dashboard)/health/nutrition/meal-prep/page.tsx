@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { MealPrep } from "@/features/health/nutrition/components/MealPrep";
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function NutritionMealPrepPage() {
   return (
-    <div className="px-8 py-8">
+    <div >
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },
@@ -17,7 +17,7 @@ export default function NutritionMealPrepPage() {
         ]}
         title="Meal Prep"
       />
-      <div className="flex flex-col gap-6">
+      <div >
         <MealPrep />
       </div>
     </div>

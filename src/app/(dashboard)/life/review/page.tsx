@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { getReviewData } from "@/features/life/services/review-service";
 import { ReviewClient } from "@/features/life/components/review/ReviewClient";
 
@@ -17,7 +17,7 @@ export default async function ReviewPage() {
   const { entries, habits, tasks } = await getReviewData(userId);
 
   return (
-    <div className="px-8 py-8 flex flex-col gap-6">
+    <div >
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "review" }]}
         title="Weekly Review"

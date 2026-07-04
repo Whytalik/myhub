@@ -5,7 +5,6 @@ import { User, Dumbbell, Sun } from "lucide-react";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import type { DayScheduleData, DayType } from "../types";
 
-// Train AM/PM are disabled for now — there's no distinct routine content behind them yet.
 const DISABLED_DAY_TYPES: DayType[] = ["train_am", "train_pm"];
 
 const DAY_TYPES: {
@@ -40,7 +39,6 @@ const DAY_TYPES: {
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-// JS getDay(): 0=Sun..6=Sat → Mon=0..Sun=6
 function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
 }
@@ -79,9 +77,9 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Day cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+    <div >
+      {}
+      <div >
         {DAY_NAMES.map((name, dayOfWeek) => {
           const isToday = dayOfWeek === today;
           const currentType = templates[dayOfWeek] ?? "regular";
@@ -91,26 +89,22 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
           return (
             <div
               key={dayOfWeek}
-              className={`flex flex-col gap-3 p-4 rounded-2xl border transition-all ${
-                isToday
-                  ? "border-accent/40 bg-accent/[0.03] shadow-[0_0_20px_rgba(192,132,252,0.06)]"
-                  : "border-border bg-surface"
-              }`}
+
             >
-              {/* Day header */}
-              <div className="flex items-center justify-between">
+              {}
+              <div >
                 <span
-                  className={`text-note font-mono font-bold tracking-widest uppercase ${isToday ? "text-accent" : "text-muted"}`}
+
                 >
                   {name}
                 </span>
-                <div className={`p-1.5 rounded-lg ${dayType.color}`}>
+                <div >
                   <DayIcon size={14} />
                 </div>
               </div>
 
-              {/* Type selector */}
-              <div className="grid grid-cols-2 gap-1.5">
+              {}
+              <div >
                 {DAY_TYPES.map((type) => {
                   const active = currentType === type.id;
                   const Icon = type.icon;
@@ -123,22 +117,18 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
                       onClick={() => setDayType(dayOfWeek, type.id)}
                       disabled={!!pending || isDisabled}
                       title={isDisabled ? "No distinct routine yet — coming soon" : undefined}
-                      className={`flex flex-col items-center gap-1 py-2 px-1 rounded-xl border text-center transition-all ${
-                        active
-                          ? type.color
-                          : "border-border/60 bg-raised/30 text-muted hover:border-border hover:text-secondary"
-                      } ${isPending ? "opacity-60" : ""} ${isDisabled ? "opacity-40 cursor-not-allowed hover:border-border/60 hover:text-muted" : ""}`}
+
                     >
                       <Icon size={12} />
-                      <span className="text-label font-bold leading-none">{type.labelShort}</span>
+                      <span >{type.labelShort}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Active label */}
+              {}
               <span
-                className={`text-label font-mono text-center leading-none ${isToday ? "text-accent/60" : "text-muted/60"}`}
+
               >
                 {dayType.label}
               </span>
@@ -147,18 +137,18 @@ export function WeekScheduleClient({ initialTemplates }: Props) {
         })}
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-4 pt-2 border-t border-border">
+      {}
+      <div >
         {DAY_TYPES.map((type) => {
           const Icon = type.icon;
           return (
-            <div key={type.id} className="flex items-center gap-2">
-              <div className={`p-1 rounded-md border ${type.color}`}>
+            <div key={type.id} >
+              <div >
                 <Icon size={11} />
               </div>
-              <span className="text-note text-secondary">{type.label}</span>
-              <span className="text-note text-muted">—</span>
-              <span className="text-note text-muted/70">
+              <span >{type.label}</span>
+              <span >—</span>
+              <span >
                 {type.id === "regular" && "Standard routine"}
                 {(type.id === "train_am" || type.id === "train_pm") &&
                   "Standard routine — custom variant coming soon"}

@@ -1,8 +1,8 @@
 "use server";
 
 import * as trainingPlanService from "../services/training-plan-service";
-import { invalidateTrainingPlanCache } from "@/lib/revalidate";
-import { withAction, ActionResult } from "@/lib/action-utils";
+import { invalidateTrainingPlanCache } from "@/lib/cache/revalidate";
+import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type {
   UpsertTrainingPlanInput,
   UpsertTrainingDayInput,
