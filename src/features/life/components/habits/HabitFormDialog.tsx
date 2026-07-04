@@ -87,21 +87,21 @@ const LEVEL_OPTIONS: {
     value: "MINIMUM",
     label: "Min",
     description: "Floor — never skip",
-    color: "text-rose-500",
+    color: "text-rose-400",
     border: "border-rose-500/40 bg-rose-500/5",
   },
   {
     value: "MEDIUM",
     label: "Medium",
     description: "Baseline steady rhythm",
-    color: "text-amber-500",
+    color: "text-amber-400",
     border: "border-amber-500/40 bg-amber-500/5",
   },
   {
     value: "DESIRED",
     label: "Desired",
     description: "Optimal, full effort",
-    color: "text-emerald-500",
+    color: "text-emerald-400",
     border: "border-emerald-500/40 bg-emerald-500/5",
   },
 ];
@@ -165,7 +165,6 @@ export function HabitFormDialog({
   const reminderTime = useWatch({ control, name: "reminderTime" });
   const habitType = useWatch({ control, name: "type" });
   const selectedSphereId = useWatch({ control, name: "sphereId" });
-  const selectedLevel = useWatch({ control, name: "sphereLevel" });
   const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
@@ -199,18 +198,36 @@ export function HabitFormDialog({
     });
   };
 
+  const dialogDescription = isAvoidance
+    ? "Define what you want to avoid. Track daily resistance to build the streak."
+    : "Define your habit using the Tiny Habits methodology: After I [Anchor], I will [Action].";
+  const typeButtonBaseClass =
+    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150";
+  const buildButtonClass = `${typeButtonBaseClass} ${
+    habitType === "positive"
+      ? "bg-emerald-500 text-white"
+      : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+  }`;
+  const breakButtonClass = `${typeButtonBaseClass} ${
+    habitType === "avoidance"
+      ? "bg-amber-500 text-white"
+      : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+  }`;
+  const chipBaseClass =
+    "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors duration-150";
+  const inactiveChipClass =
+    "text-zinc-400 border-white/[0.08] hover:text-zinc-200 hover:bg-white/5";
+  const activeChipClass = "bg-accent/15 text-accent border-accent/30";
+  const iconInputWrapClass = "glass-input flex items-center gap-2 px-3";
+
   return (
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
       title={isEditing ? "Edit Habit" : "New Habit"}
-      description={
-        isAvoidance
-          ? "Define what you want to avoid. Track daily resistance to build the streak."
-          : "Define your habit using the Tiny Habits methodology: After I [Anchor], I will [Action]."
-      }
+      description={dialogDescription}
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -220,14 +237,13 @@ export function HabitFormDialog({
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
-        {}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         {!isEditing && (
-          <div >
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit">
             <button
               type="button"
               onClick={() => setValue("type", "positive")}
-
+              className={buildButtonClass}
             >
               <Sprout size={14} />
               Build
@@ -235,7 +251,7 @@ export function HabitFormDialog({
             <button
               type="button"
               onClick={() => setValue("type", "avoidance")}
-
+              className={breakButtonClass}
             >
               <ShieldOff size={14} />
               Break
@@ -251,151 +267,157 @@ export function HabitFormDialog({
           />
         </FormField>
 
-        {}
         {spheres.length > 0 && (
           <Controller
             name="sphereId"
             control={control}
             render={({ field }) => (
-              <div >
-                <label >
-                  Life Sphere (optional)
-                </label>
-                <div >
-                  {spheres.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => {
-                        const next = field.value === s.id ? null : s.id;
-                        field.onChange(next);
-                        if (!next) setValue("sphereLevel", null);
-                      }}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-label">Life Sphere (optional)</label>
+                <div className="flex flex-wrap gap-2">
+                  {spheres.map((s) => {
+                    const isSelected = field.value === s.id;
+                    const chipClass = `${chipBaseClass} ${isSelected ? activeChipClass : inactiveChipClass}`;
 
-                    >
-                      {s.name}
-                    </button>
-                  ))}
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => {
+                          const next = field.value === s.id ? null : s.id;
+                          field.onChange(next);
+                          if (!next) setValue("sphereLevel", null);
+                        }}
+                        className={chipClass}
+                      >
+                        {s.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
           />
         )}
 
-        {}
         {selectedSphereId && (
           <Controller
             name="sphereLevel"
             control={control}
             render={({ field }) => (
-              <div >
-                <label >
-                  Sphere Standard Level
-                </label>
-                <div >
-                  {LEVEL_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => field.onChange(field.value === opt.value ? null : opt.value)}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-label">Sphere Standard Level</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {LEVEL_OPTIONS.map((opt) => {
+                    const isSelected = field.value === opt.value;
+                    const optionClass = `flex flex-col items-start gap-0.5 p-2.5 rounded-lg border text-left transition-colors duration-150 ${
+                      isSelected ? opt.border : "border-white/[0.08] hover:bg-white/5"
+                    }`;
+                    const labelClass = `text-xs font-semibold ${isSelected ? opt.color : "text-zinc-300"}`;
 
-                    >
-                      <span
-
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => field.onChange(field.value === opt.value ? null : opt.value)}
+                        className={optionClass}
                       >
-                        {opt.label}
-                      </span>
-                      <span >
-                        {opt.description}
-                      </span>
-                    </button>
-                  ))}
+                        <span className={labelClass}>{opt.label}</span>
+                        <span className="text-[10px] text-zinc-500">{opt.description}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
           />
         )}
 
-        {}
         <FormField label="Subcategory (optional)" hint="e.g. body, mind, deep work">
           <Input {...register("subcategory")} placeholder="e.g. body, mind, reading..." />
         </FormField>
 
-        {}
         {chains.length > 0 && (
           <Controller
             name="chainId"
             control={control}
             render={({ field }) => (
-              <div >
-                <label >
+              <div className="flex flex-col gap-1.5">
+                <label className="text-label flex items-center gap-1.5">
                   <Link2 size={12} />
                   Habit Chain (optional)
                 </label>
-                <div >
-                  {chains.map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => field.onChange(field.value === c.id ? null : c.id)}
+                <div className="flex flex-wrap gap-2">
+                  {chains.map((c) => {
+                    const isSelected = field.value === c.id;
+                    const chipClass = `${chipBaseClass} ${isSelected ? activeChipClass : inactiveChipClass}`;
 
-                    >
-                      {c.name}
-                    </button>
-                  ))}
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => field.onChange(field.value === c.id ? null : c.id)}
+                        className={chipClass}
+                      >
+                        {c.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
           />
         )}
 
-        {}
         <Controller
           name="targetDaysPerWeek"
           control={control}
-          render={({ field }) => (
-            <div >
-              <div >
-                <label >
-                  Частота
-                </label>
-                <span >
-                  {field.value === 7 ? "Щодня" : `${field.value}× на тиждень`}
-                </span>
-              </div>
-              <div >
-                {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => field.onChange(n)}
+          render={({ field }) => {
+            const frequencyLabel = field.value === 7 ? "Щодня" : `${field.value}× на тиждень`;
 
-                  >
-                    {n}
-                  </button>
-                ))}
+            return (
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-label">Частота</label>
+                  <span className="text-caption">{frequencyLabel}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {[1, 2, 3, 4, 5, 6, 7].map((n) => {
+                    const isSelected = field.value === n;
+                    const dayButtonClass = `flex-1 h-8 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
+                      isSelected
+                        ? "bg-accent text-white"
+                        : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
+                    }`;
+
+                    return (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => field.onChange(n)}
+                        className={dayButtonClass}
+                      >
+                        {n}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          }}
         />
 
         {isEditing && (
-          <label >
-            <Checkbox
-
-              {...register("archived")}
-
-            />
-            <div >
-              <span >Archive Habit</span>
-              <span >
-                Hide from active list without deleting
-              </span>
+          <label className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] cursor-pointer">
+            <Checkbox {...register("archived")} />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-zinc-200">Archive Habit</span>
+              <span className="text-caption">Hide from active list without deleting</span>
             </div>
           </label>
         )}
 
-        <div >
+        <div className="flex flex-col gap-4">
           {isAvoidance ? (
             <>
               <FormField
@@ -403,10 +425,15 @@ export function HabitFormDialog({
                 hint="When do you usually slip?"
                 error={errors.anchor?.message}
               >
-                <div >
-                  <Anchor size={14} />
+                <div className={iconInputWrapClass}>
+                  <Anchor size={14} className="text-zinc-500 shrink-0" />
+                  <Input
+                    {...register("anchor")}
+                    placeholder="e.g. After lunch when I'm tired..."
+                    variant="inline"
+                    className="flex-1"
+                  />
                 </div>
-                <Input {...register("anchor")} placeholder="e.g. After lunch when I'm tired..." />
               </FormField>
 
               <FormField
@@ -414,96 +441,113 @@ export function HabitFormDialog({
                 hint="What will you do instead?"
                 error={errors.action?.message}
               >
-                <div >
-                  <Zap size={14} />
+                <div className={iconInputWrapClass}>
+                  <Zap size={14} className="text-zinc-500 shrink-0" />
+                  <Input
+                    {...register("action")}
+                    placeholder="e.g. I will drink sparkling water..."
+                    variant="inline"
+                    className="flex-1"
+                  />
                 </div>
-                <Input {...register("action")} placeholder="e.g. I will drink sparkling water..." />
               </FormField>
             </>
           ) : (
             <>
               <FormField label="The Anchor (Trigger)" error={errors.anchor?.message} required>
-                <div >
-                  <Anchor size={14} />
+                <div className={iconInputWrapClass}>
+                  <Anchor size={14} className="text-zinc-500 shrink-0" />
+                  <Input
+                    {...register("anchor")}
+                    placeholder="After I [wash my face]..."
+                    variant="inline"
+                    className="flex-1"
+                  />
                 </div>
-                <Input {...register("anchor")} placeholder="After I [wash my face]..." />
               </FormField>
 
               <FormField label="The Action (New habit)" error={errors.action?.message} required>
-                <div >
-                  <Zap size={14} />
+                <div className={iconInputWrapClass}>
+                  <Zap size={14} className="text-zinc-500 shrink-0" />
+                  <Input
+                    {...register("action")}
+                    placeholder="I will [do 5 pushups]..."
+                    variant="inline"
+                    className="flex-1"
+                  />
                 </div>
-                <Input {...register("action")} placeholder="I will [do 5 pushups]..." />
               </FormField>
             </>
           )}
 
           <FormField label="Celebration" hint="Optional — what reward follows?">
-            <div >
-              <PartyPopper size={14} />
+            <div className={iconInputWrapClass}>
+              <PartyPopper size={14} className="text-zinc-500 shrink-0" />
+              <Input
+                {...register("celebration")}
+                placeholder={
+                  isAvoidance
+                    ? "And then I will [say 'Still clean!']"
+                    : "And then I will [say 'Good job!']"
+                }
+                variant="inline"
+                className="flex-1"
+              />
             </div>
-            <Input
-              {...register("celebration")}
-              placeholder={
-                isAvoidance
-                  ? "And then I will [say 'Still clean!']"
-                  : "And then I will [say 'Good job!']"
-              }
-            />
           </FormField>
 
           <FormField label="Daily Reminder" hint="Optional">
-            <div >
-              <Bell size={14} />
+            <div className="flex items-center gap-2">
+              <Bell size={14} className="text-zinc-500 shrink-0" />
               {reminderTime && (
                 <button
                   type="button"
                   onClick={() => setValue("reminderTime", "")}
-
+                  className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-200 transition-colors"
                 >
                   <X size={10} /> Clear
                 </button>
               )}
             </div>
-            <div >
+            <div className="flex items-center gap-2">
               <Controller
                 name="reminderTime"
                 control={control}
                 render={({ field }) => (
-                  <TimePicker
-                    value={field.value ?? ""}
-                    onChange={field.onChange}
-
-                  />
+                  <TimePicker value={field.value ?? ""} onChange={field.onChange} />
                 )}
               />
               {!reminderTime && (
-                <div >
-                  <span >Auto (3x day)</span>
+                <div className="text-caption">
+                  <span>Auto (3x day)</span>
                 </div>
               )}
             </div>
           </FormField>
         </div>
 
-        {}
-        <div >
+        <div className="flex flex-col gap-3 pt-2 border-t border-white/[0.06]">
           <button
             type="button"
             onClick={() => setShowBehaviorTools((prev) => !prev)}
-
+            className="flex items-center justify-between text-sm font-medium text-zinc-300 hover:text-zinc-100 transition-colors"
           >
             Behavior design (optional)
             {showBehaviorTools ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
           {showBehaviorTools && (
-            <div >
+            <div className="flex flex-col gap-4">
               {BEHAVIOR_FIELDS.map(({ name, label, hint, placeholder, icon: Icon }) => (
                 <FormField key={name} label={label} hint={hint}>
-                  <div >
-                    <Icon size={14} />
+                  <div className={iconInputWrapClass}>
+                    <Icon size={14} className="text-zinc-500 shrink-0" />
+                    <Input
+                      {...register(name)}
+                      placeholder={placeholder}
+                      variant="inline"
+                      className="flex-1"
+                    />
                   </div>
-                  <Input {...register(name)} placeholder={placeholder} />
                 </FormField>
               ))}
             </div>

@@ -60,7 +60,7 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
       title={isEditing ? "Edit Chain" : "New Chain"}
       description="Stack habits into a named ritual — after one, the next follows."
       footer={
-        <div >
+        <div className="flex justify-end gap-2">
           <Button variant="ghost" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
@@ -70,7 +70,7 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
         </div>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Chain name" error={errors.name?.message} required>
           <Input {...register("name")} placeholder="e.g. Morning ritual" autoFocus />
         </FormField>
@@ -83,17 +83,11 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
         </FormField>
 
         {isEditing && (
-          <label >
-            <Checkbox
-
-              {...register("archived")}
-
-            />
-            <div >
-              <span >Archive Chain</span>
-              <span >
-                Hide from active list without deleting
-              </span>
+          <label className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] cursor-pointer">
+            <Checkbox {...register("archived")} />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-zinc-200">Archive Chain</span>
+              <span className="text-caption">Hide from active list without deleting</span>
             </div>
           </label>
         )}

@@ -45,11 +45,11 @@ const BEHAVIOR_DETAILS: {
 ];
 
 const SPHERE_LEVEL_CONFIG: Record<SphereLevel, { label: string; classes: string }> = {
-  MINIMUM: { label: "Min", classes: "bg-rose-500/10 border-rose-500/20 text-rose-600" },
-  MEDIUM: { label: "Medium", classes: "bg-amber-500/10 border-amber-500/20 text-amber-600" },
+  MINIMUM: { label: "Min", classes: "bg-rose-500/10 border-rose-500/20 text-rose-400" },
+  MEDIUM: { label: "Medium", classes: "bg-amber-500/10 border-amber-500/20 text-amber-400" },
   DESIRED: {
     label: "Desired",
-    classes: "bg-emerald-500/10 border-emerald-500/20 text-emerald-600",
+    classes: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
   },
 };
 
@@ -105,185 +105,178 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   const completedBorder = isAvoidance
     ? "border-amber-500/30 bg-amber-500/5"
     : "border-emerald-500/30 bg-emerald-500/5";
-  const completedText = isAvoidance ? "text-amber-500" : "text-emerald-500";
+  const completedText = isAvoidance ? "text-amber-400" : "text-emerald-400";
   const activeDot = isAvoidance ? "bg-amber-500" : "bg-emerald-500 animate-pulse";
-  const activeLabel = isAvoidance ? "text-amber-600" : "text-emerald-600";
+  const activeLabel = isAvoidance ? "text-amber-400" : "text-emerald-400";
   const completedButton = isAvoidance
     ? "bg-amber-500 text-white shadow-sm"
     : "bg-emerald-500 text-white shadow-sm";
 
   const cardCompleted = isWeekly ? isWeeklyTargetMet : isCompletedOnDate;
 
+  const cardClass = `glass-card p-4 flex flex-col gap-4 border transition-colors duration-150 ${
+    cardCompleted ? completedBorder : "border-white/[0.06]"
+  }`;
+  const titleClass = `text-panel-title ${cardCompleted ? completedText : ""}`;
+  const activeDotClass = `w-1.5 h-1.5 rounded-full ${activeDot}`;
+  const activeLabelClass = `text-[10px] font-mono uppercase tracking-wide ${activeLabel}`;
+  const metaChipClass =
+    "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide";
+  const sphereChipClass = habit.sphereLevel
+    ? `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono uppercase tracking-wide ${SPHERE_LEVEL_CONFIG[habit.sphereLevel].classes}`
+    : "";
+  const iconActionClass =
+    "p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
+  const deleteActionClass =
+    "p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
+  const toggleButtonClass = `flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
+    isCompletedOnDate ? completedButton : "bg-white/5 text-zinc-300 hover:bg-white/10"
+  }`;
+  const noteIconWrapClass =
+    "flex items-center justify-center w-7 h-7 rounded-lg bg-white/5 text-zinc-400 shrink-0";
+  const noteCardClass = "flex items-start gap-2.5 p-2.5 rounded-lg bg-white/[0.02]";
+
   return (
-    <div
-
-    >
-      <div >
-        <div >
-          <h3
-
-          >
-            {habit.name}
-          </h3>
-          <div >
-            <div >
-              <div />
-              <span
-
-              >
+    <div className={cardClass}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-2 min-w-0">
+          <h3 className={titleClass}>{habit.name}</h3>
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <div className={activeDotClass} />
+              <span className={activeLabelClass}>
                 {habit.archived ? "Archived" : isAvoidance ? "Avoidance" : "Active habit"}
               </span>
             </div>
 
-            {}
             {isWeekly && (
-              <div
-
-              >
+              <div className={metaChipClass}>
                 <CalendarDays size={10} />
-                <span >
+                <span>
                   {thisWeekCount}/{habit.targetDaysPerWeek} цього тижня
                 </span>
               </div>
             )}
 
             {streak > 0 && (
-              <div >
+              <div className={metaChipClass}>
                 <Flame size={10} />
-                <span >
+                <span>
                   {streak} {isWeekly ? "тиж." : "day"} streak
                 </span>
               </div>
             )}
             {habit.reminderTime && (
-              <div >
+              <div className={metaChipClass}>
                 <Bell size={10} />
-                <span >
-                  {habit.reminderTime}
-                </span>
+                <span>{habit.reminderTime}</span>
               </div>
             )}
             {habit.sphereLevel && (
-              <div
-
-              >
+              <div className={sphereChipClass}>
                 <TrendingUp size={10} />
-                <span >
-                  {SPHERE_LEVEL_CONFIG[habit.sphereLevel].label}
-                </span>
+                <span>{SPHERE_LEVEL_CONFIG[habit.sphereLevel].label}</span>
               </div>
             )}
             {habit.subcategory && (
-              <div >
-                <span >
-                  {habit.subcategory}
-                </span>
+              <div className={metaChipClass}>
+                <span>{habit.subcategory}</span>
               </div>
             )}
           </div>
         </div>
 
-        <div >
+        <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={handleArchive}
             title={habit.archived ? "Restore" : "Archive"}
-
+            className={iconActionClass}
           >
             <Archive size={14} />
           </button>
           {onEdit && (
-            <button
-              onClick={() => onEdit(habit)}
-
-            >
+            <button onClick={() => onEdit(habit)} className={iconActionClass}>
               <Edit2 size={14} />
             </button>
           )}
           {onDelete && (
-            <button
-              onClick={() => onDelete(habit.id)}
-
-            >
+            <button onClick={() => onDelete(habit.id)} className={deleteActionClass}>
               <Trash2 size={14} />
             </button>
           )}
         </div>
       </div>
 
-      <div >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {habit.anchor && (
-          <div >
-            <div >
+          <div className={noteCardClass}>
+            <div className={noteIconWrapClass}>
               <Anchor size={14} />
             </div>
-            <div >
-              <span >
-                {isAvoidance ? "Trigger" : "Anchor"}
-              </span>
-              <p >&quot;{habit.anchor}&quot;</p>
+            <div className="min-w-0">
+              <span className="text-label">{isAvoidance ? "Trigger" : "Anchor"}</span>
+              <p className="text-caption italic truncate">&quot;{habit.anchor}&quot;</p>
             </div>
           </div>
         )}
 
         {habit.action && (
-          <div >
-            <div >
+          <div className={noteCardClass}>
+            <div className={noteIconWrapClass}>
               <Zap size={14} />
             </div>
-            <div >
-              <span >
-                {isAvoidance ? "Replacement" : "Action"}
-              </span>
-              <p >&quot;{habit.action}&quot;</p>
+            <div className="min-w-0">
+              <span className="text-label">{isAvoidance ? "Replacement" : "Action"}</span>
+              <p className="text-caption italic truncate">&quot;{habit.action}&quot;</p>
             </div>
           </div>
         )}
 
         {!habit.anchor && !habit.action && isAvoidance && (
-          <div >
-            <div >
+          <div className={noteCardClass}>
+            <div className={noteIconWrapClass}>
               <Shield size={14} />
             </div>
-            <div >
-              <span >Strategy</span>
-              <p >Avoid and log daily resistance</p>
+            <div className="min-w-0">
+              <span className="text-label">Strategy</span>
+              <p className="text-caption italic">Avoid and log daily resistance</p>
             </div>
           </div>
         )}
 
         {habit.celebration && (
-          <div >
-            <div >
+          <div className={noteCardClass}>
+            <div className={noteIconWrapClass}>
               <PartyPopper size={14} />
             </div>
-            <div >
-              <span >Celebration</span>
-              <p >&quot;{habit.celebration}&quot;</p>
+            <div className="min-w-0">
+              <span className="text-label">Celebration</span>
+              <p className="text-caption italic truncate">&quot;{habit.celebration}&quot;</p>
             </div>
           </div>
         )}
       </div>
 
       {behaviorDetails.length > 0 && (
-        <div >
+        <div className="flex flex-col gap-2 pt-2 border-t border-white/[0.06]">
           <button
             type="button"
             onClick={() => setShowDetails((prev) => !prev)}
-
+            className="flex items-center gap-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors w-fit"
           >
             {showDetails ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
             {showDetails ? "Hide" : "Show"} behavior design ({behaviorDetails.length})
           </button>
           {showDetails && (
-            <div >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {behaviorDetails.map(({ key, label, icon: Icon }) => (
-                <div key={key} >
-                  <div >
+                <div key={key} className={noteCardClass}>
+                  <div className={noteIconWrapClass}>
                     <Icon size={14} />
                   </div>
-                  <div >
-                    <span >{label}</span>
-                    <p >&quot;{habit[key]}&quot;</p>
+                  <div className="min-w-0">
+                    <span className="text-label">{label}</span>
+                    <p className="text-caption italic truncate">&quot;{habit[key]}&quot;</p>
                   </div>
                 </div>
               ))}
@@ -292,11 +285,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
         </div>
       )}
 
-      <button
-        onClick={handleToggle}
-        disabled={isPending}
-
-      >
+      <button onClick={handleToggle} disabled={isPending} className={toggleButtonClass}>
         {isCompletedOnDate ? (
           <>
             <ShieldCheck size={18} strokeWidth={2.5} />
