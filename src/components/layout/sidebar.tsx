@@ -21,8 +21,8 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-life",
       iconActive: "text-accent-life",
       bgActive: "bg-accent-life/15 text-accent-life border border-accent-life/20",
-      containerActive: "bg-accent-life/[0.04] border-accent-life/15 rounded-2xl",
-      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
+      containerActive: "bg-accent-life/[0.04] border-accent-life/15",
+      containerInactive: "bg-white/[0.01] border-white/[0.04]",
     };
   }
   if (cleanLabel.includes("nutrition")) {
@@ -30,8 +30,8 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-nutrition",
       iconActive: "text-accent-nutrition",
       bgActive: "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20",
-      containerActive: "bg-accent-nutrition/[0.04] border-accent-nutrition/15 rounded-2xl",
-      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
+      containerActive: "bg-accent-nutrition/[0.04] border-accent-nutrition/15",
+      containerInactive: "bg-white/[0.01] border-white/[0.04]",
     };
   }
   if (cleanLabel.includes("training")) {
@@ -39,16 +39,16 @@ function getSpaceStyles(label: string) {
       accentText: "text-accent-training",
       iconActive: "text-accent-training",
       bgActive: "bg-accent-training/15 text-accent-training border border-accent-training/20",
-      containerActive: "bg-accent-training/[0.04] border-accent-training/15 rounded-2xl",
-      containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
+      containerActive: "bg-accent-training/[0.04] border-accent-training/15",
+      containerInactive: "bg-white/[0.01] border-white/[0.04]",
     };
   }
   return {
     accentText: "text-accent",
     iconActive: "text-accent",
     bgActive: "bg-accent/15 text-accent border border-accent/20",
-    containerActive: "bg-accent-muted/10 border-accent/20 rounded-2xl",
-    containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
+    containerActive: "bg-accent-muted/10 border-accent/20",
+    containerInactive: "bg-white/[0.01] border-white/[0.04]",
   };
 }
 
@@ -248,9 +248,9 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
               const styles = getSpaceStyles(space.label);
 
               return (
-                <div
+                 <div
                   key={space.label}
-                  className={`w-full flex flex-col space-y-1 rounded-lg p-1.5 transition-all duration-200 border ${
+                  className={`w-full flex flex-col space-y-1 rounded-2xl p-1.5 transition-all duration-300 ease-in-out border ${
                     anyPageActive
                       ? styles.containerActive
                       : styles.containerInactive
@@ -280,7 +280,7 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                         return next;
                       });
                     }}
-                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider outline-none focus:outline-none transition-colors duration-150 ${
+                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider outline-none focus:outline-none transition-colors duration-300 ease-in-out ${
                       anyPageActive ? styles.accentText : "text-zinc-500 hover:text-zinc-300"
                     }`}
                   >
@@ -318,10 +318,10 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                             <Link
                               key={page.href}
                               href={page.href}
-                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-150 ${
+                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-300 ease-in-out ${
                                 isActive
                                   ? `font-medium ${styles.bgActive} shadow-sm`
-                                  : "text-zinc-350 hover:text-white hover:bg-white/10"
+                                  : "text-zinc-350 hover:text-white hover:bg-white/10 border border-transparent"
                               }`}
                             >
                               <PageIcon
