@@ -27,7 +27,13 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
   const [isPending, startTransition] = useTransition();
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
-  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<SphereFormData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<SphereFormData>({
     resolver: zodResolver(sphereSchema),
     defaultValues: {
       name: sphere?.name ?? "",
@@ -70,42 +76,31 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
           <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isPending}>
             Cancel
           </Button>
-          <Button
-            type="submit"
-            form="sphere-form"
-            variant="primary"
-            size="sm"
-            disabled={isPending}
-          >
+          <Button type="submit" form="sphere-form" variant="primary" size="sm" disabled={isPending}>
             {isPending ? "Saving..." : isEditing ? "Save Changes" : "Create Sphere"}
           </Button>
         </>
       }
     >
-      <form id="sphere-form" onSubmit={handleSubmit(onSubmit)} >
+      <form id="sphere-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <FormField label="Name" error={errors.name?.message} required>
-          <Input
-            {...register("name")}
-            placeholder="e.g. Work, Health, Personal..."
-            autoFocus
-
-          />
+          <Input {...register("name")} placeholder="e.g. Work, Health, Personal..." autoFocus />
         </FormField>
 
-        <div >
+        <div className="grid grid-cols-2 gap-4">
           <FormField label="Color" error={errors.color?.message}>
             <Controller
               name="color"
               control={control}
               render={({ field }) => (
-                <div >
+                <div className="glass-input flex items-center gap-2 px-3 py-2">
                   <input
                     type="color"
                     value={field.value}
                     onChange={field.onChange}
-
+                    className="w-6 h-6 rounded cursor-pointer bg-transparent border-none p-0"
                   />
-                  <span >{field.value}</span>
+                  <span className="text-sm font-mono text-zinc-300 uppercase">{field.value}</span>
                 </div>
               )}
             />
@@ -120,21 +115,27 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
                   <button
                     type="button"
                     onClick={() => setIconPickerOpen(true)}
-
+                    className="glass-input flex items-center justify-between gap-2 w-full px-3 py-2 cursor-pointer"
                   >
-                    <div >
-                      {ALL_ICONS[field.value] ? (() => {
-                        const Icon = ALL_ICONS[field.value];
-                        return <Icon size={18} />;
-                      })() : <Palette size={18} />}
+                    <div className="flex items-center justify-center text-zinc-300">
+                      {ALL_ICONS[field.value] ? (
+                        (() => {
+                          const Icon = ALL_ICONS[field.value];
+                          return <Icon size={18} />;
+                        })()
+                      ) : (
+                        <Palette size={18} />
+                      )}
                     </div>
-                    <Pencil size={12} />
+                    <Pencil size={12} className="text-zinc-500" />
                   </button>
                   <IconPickerDialog
                     isOpen={iconPickerOpen}
                     onClose={() => setIconPickerOpen(false)}
                     value={field.value}
-                    onChange={(val) => { if (val) field.onChange(val); }}
+                    onChange={(val) => {
+                      if (val) field.onChange(val);
+                    }}
                     color={color}
                     title="Sphere Icon"
                   />
@@ -144,24 +145,22 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
           </FormField>
         </div>
 
-        <div >
-          <label >Preview</label>
-          <div
-
-          >
+        <div className="flex flex-col gap-1.5">
+          <label className="text-label">Preview</label>
+          <div className="glass-card p-3 flex items-center gap-3">
             <div
-
+              className="flex items-center justify-center w-11 h-11 rounded-xl shrink-0"
+              style={{ backgroundColor: `${color}1a`, color }}
             >
-              {ALL_ICONS[icon] && (() => {
-                const Icon = ALL_ICONS[icon];
-                return <Icon size={24} />;
-              })()}
+              {ALL_ICONS[icon] &&
+                (() => {
+                  const Icon = ALL_ICONS[icon];
+                  return <Icon size={24} />;
+                })()}
             </div>
             <div>
-              <p >
-                {name || "Sphere name"}
-              </p>
-              <p >Life Area</p>
+              <p className="text-sm font-medium text-zinc-100">{name || "Sphere name"}</p>
+              <p className="text-caption">Life Area</p>
             </div>
           </div>
         </div>
