@@ -17,19 +17,16 @@ function Section({
   empty: string;
 }) {
   return (
-    <div >
-      <span >
+    <div className="glass-card p-4 flex flex-col gap-2">
+      <span className="text-panel-title flex items-center gap-2">
         <Icon size={14} /> {title}
       </span>
       {items.length === 0 ? (
-        <p >{empty}</p>
+        <p className="text-caption">{empty}</p>
       ) : (
-        <div >
+        <div className="flex flex-col gap-1.5">
           {items.map((item, i) => (
-            <p
-              key={i}
-
-            >
+            <p key={i} className="text-sm text-zinc-300 italic">
               &ldquo;{item}&rdquo;
             </p>
           ))}
@@ -41,9 +38,10 @@ function Section({
 
 export function RecapTab({ summary }: Props) {
   const { emotionBalance } = summary;
+  const positivePct = emotionBalance.ratio !== null ? Math.round(emotionBalance.ratio * 100) : 0;
 
   return (
-    <div >
+    <div className="flex flex-col gap-3">
       <Section
         icon={Sparkles}
         title="Wins"
@@ -63,24 +61,23 @@ export function RecapTab({ summary }: Props) {
         empty="No improvement notes this week."
       />
 
-      <div >
-        <span >
-          Emotion balance
-        </span>
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <span className="text-panel-title">Emotion balance</span>
         {emotionBalance.ratio === null ? (
-          <p >No emotions logged this week.</p>
+          <p className="text-caption">No emotions logged this week.</p>
         ) : (
-          <div >
-            <div >
+          <div className="flex flex-col gap-3">
+            <div className="h-2 rounded-full bg-rose-500/20 overflow-hidden">
               <div
-
+                className="h-full bg-emerald-500 rounded-full"
+                style={{ width: `${positivePct}%` }}
               />
             </div>
-            <div >
+            <div className="flex flex-wrap gap-2">
               {emotionBalance.top.map((e) => (
                 <span
                   key={e.label}
-
+                  className="inline-flex items-center px-2 py-1 rounded-md bg-white/5 text-caption"
                 >
                   {e.label} × {e.count}
                 </span>

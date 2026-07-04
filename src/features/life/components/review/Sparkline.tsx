@@ -9,9 +9,7 @@ export function Sparkline({ points, color = "#60a5fa", height = 36, width = 140 
   const valid = points.filter((p): p is number => p !== null);
   if (valid.length < 2) {
     return (
-      <div
-
-      >
+      <div className="flex items-center justify-center text-caption" style={{ height, width }}>
         Not enough data
       </div>
     );
@@ -41,7 +39,7 @@ export function Sparkline({ points, color = "#60a5fa", height = 36, width = 140 
   }
 
   return (
-    <svg width={width} height={height} >
+    <svg width={width} height={height} className="overflow-visible">
       <path
         d={path.trim()}
         fill="none"
