@@ -55,12 +55,11 @@ export function MobileBottomNav() {
     return () => scrollContainer.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navVisibilityClass = isVisible ? "translate-y-0" : "translate-y-full";
+  const navClass = `md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/90 backdrop-blur-2xl border-t border-white/[0.06] transition-transform duration-300 ${navVisibilityClass}`;
+
   return (
-    <nav
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/90 backdrop-blur-2xl border-t border-white/[0.06] transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "translate-y-full"
-      }`}
-    >
+    <nav className={navClass}>
       {/* Domain Switcher */}
       <div className="flex items-center gap-1 px-3 pt-2 pb-1">
         {DOMAINS.map((domain) => {
@@ -70,17 +69,18 @@ export function MobileBottomNav() {
             domain.id === "life"
               ? "bg-accent-life/15 text-accent-life border border-accent-life/20"
               : "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20";
+          const domainLinkClass = `flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-150 ${
+            isActive ? domainAccentClass : "text-zinc-500 hover:text-zinc-300"
+          }`;
+          const domainIconStrokeWidth = isActive ? 2.5 : 2;
+
           return (
             <Link
               key={domain.id}
               href={domain.spaces[0]?.pages[0]?.href ?? domain.href}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-150 ${
-                isActive
-                  ? domainAccentClass
-                  : "text-zinc-500 hover:text-zinc-300"
-              }`}
+              className={domainLinkClass}
             >
-              <Icon size={12} strokeWidth={isActive ? 2.5 : 2} />
+              <Icon size={12} strokeWidth={domainIconStrokeWidth} />
               <span>{domain.label}</span>
             </Link>
           );
@@ -92,20 +92,16 @@ export function MobileBottomNav() {
         {activePages.map((item) => {
           const Icon = item.icon;
           const isActive = activePage?.href === item.href;
+          const pageLinkClass = `flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors duration-150 ${
+            isActive ? "text-accent" : "text-zinc-500 hover:text-zinc-300"
+          }`;
+          const pageIconStrokeWidth = isActive ? 2.5 : 2;
 
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors duration-150 ${
-                isActive ? "text-accent" : "text-zinc-500 hover:text-zinc-300"
-              }`}
-            >
+            <Link key={item.href} href={item.href} className={pageLinkClass}>
               <div className="flex items-center justify-center relative w-6 h-6">
-                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
-                {isActive && (
-                  <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-accent" />
-                )}
+                <Icon size={18} strokeWidth={pageIconStrokeWidth} />
+                {isActive && <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-accent" />}
               </div>
               <span className="text-[10px] font-medium tracking-tight mt-1 font-sans">
                 {item.label}
@@ -116,5 +112,4 @@ export function MobileBottomNav() {
       </div>
     </nav>
   );
-
 }

@@ -9,17 +9,17 @@ import { Skeleton } from "@/components/ui/display/skeleton";
 
 function DashboardSkeleton() {
   return (
-    <div >
-      <div >
+    <div className="min-h-screen flex bg-canvas">
+      <div className="hidden md:flex w-[280px] flex-shrink-0 h-screen glass-sidebar flex-col gap-2 p-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <Skeleton key={i} />
+          <Skeleton key={i} className="h-9 w-full rounded-lg" />
         ))}
       </div>
-      <div >
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
+      <div className="flex-1 flex flex-col gap-4 p-8">
+        <Skeleton className="h-8 w-48 rounded-lg" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
+        <Skeleton className="h-40 w-full rounded-2xl" />
       </div>
     </div>
   );
@@ -35,17 +35,23 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
 
   let initialOrder: string[] | undefined = undefined;
   if (orderCookie) {
-    try { initialOrder = JSON.parse(orderCookie.value); } catch {}
+    try {
+      initialOrder = JSON.parse(orderCookie.value);
+    } catch {}
   }
 
   let initialCustomizations: Record<string, { icon?: string; color?: string }> = {};
   if (customizationsCookie) {
-    try { initialCustomizations = JSON.parse(customizationsCookie.value); } catch {}
+    try {
+      initialCustomizations = JSON.parse(customizationsCookie.value);
+    } catch {}
   }
 
   let initialOpenSections: Record<string, boolean> = {};
   if (openSectionsCookie) {
-    try { initialOpenSections = JSON.parse(openSectionsCookie.value); } catch {}
+    try {
+      initialOpenSections = JSON.parse(openSectionsCookie.value);
+    } catch {}
   }
 
   const initialCollapsed = collapsedCookie?.value === "true";
@@ -60,10 +66,14 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
           initialOrder={initialOrder}
           initialCustomizations={initialCustomizations}
           initialOpenSections={initialOpenSections}
-          user={session.user ? {
-            name: session.user.name || "",
-            email: session.user.email || ""
-          } : undefined}
+          user={
+            session.user
+              ? {
+                  name: session.user.name || "",
+                  email: session.user.email || "",
+                }
+              : undefined
+          }
         >
           {children}
         </DashboardUIWrapper>
@@ -72,16 +82,10 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback={<DashboardSkeleton />}>
-      <DashboardDataLayer>
-        {children}
-      </DashboardDataLayer>
+      <DashboardDataLayer>{children}</DashboardDataLayer>
     </Suspense>
   );
 }

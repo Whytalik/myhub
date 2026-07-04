@@ -25,9 +25,7 @@ export function DomainHeader() {
           <div className="w-5.5 h-5.5 rounded bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
             <Sparkles size={11} className="text-accent" />
           </div>
-          <span className="text-xs font-semibold text-zinc-100 tracking-tight">
-            MyHub
-          </span>
+          <span className="text-xs font-semibold text-zinc-100 tracking-tight">MyHub</span>
         </Link>
 
         <button
@@ -44,23 +42,22 @@ export function DomainHeader() {
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
           const isActive = activeDomainId === domain.id;
+          const isLifeDomain = domain.id === "life";
+          const domainAccentClass = isLifeDomain ? "text-accent-life" : "text-accent-nutrition";
+          const domainActiveClass = isLifeDomain
+            ? "text-zinc-50 bg-accent-life/20 border border-accent-life/30 shadow-sm"
+            : "text-zinc-50 bg-accent-nutrition/20 border border-accent-nutrition/30 shadow-sm";
+          const domainLinkClass = `flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
+            isActive
+              ? domainActiveClass
+              : "text-zinc-400 hover:text-zinc-250 hover:bg-white/5 border border-transparent"
+          }`;
+          const domainIconClass = isActive ? domainAccentClass : "text-zinc-500";
+          const domainIconStrokeWidth = isActive ? 2.5 : 2;
+
           return (
-            <Link
-              key={domain.id}
-              href={domain.href}
-              className={`flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
-                isActive
-                  ? domain.id === "life"
-                    ? "text-zinc-50 bg-accent-life/20 border border-accent-life/30 shadow-sm"
-                    : "text-zinc-50 bg-accent-nutrition/20 border border-accent-nutrition/30 shadow-sm"
-                  : "text-zinc-400 hover:text-zinc-250 hover:bg-white/5 border border-transparent"
-              }`}
-            >
-              <Icon
-                size={13}
-                strokeWidth={isActive ? 2.5 : 2}
-                className={isActive ? (domain.id === "life" ? "text-accent-life" : "text-accent-nutrition") : "text-zinc-500"}
-              />
+            <Link key={domain.id} href={domain.href} className={domainLinkClass}>
+              <Icon size={13} strokeWidth={domainIconStrokeWidth} className={domainIconClass} />
               <span>{domain.label}</span>
             </Link>
           );
@@ -83,5 +80,4 @@ export function DomainHeader() {
       <GuideModal isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </header>
   );
-
 }

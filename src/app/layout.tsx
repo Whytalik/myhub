@@ -31,16 +31,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html
-      lang="en"
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const fontVariablesClass = `${dmSans.variable} ${geistMono.variable}`;
 
-      suppressHydrationWarning
-    >
-      <body >
+  return (
+    <html lang="en" className={fontVariablesClass} suppressHydrationWarning>
+      <body className="antialiased">
         {children}
         <Analytics />
         <SpeedInsights />
@@ -49,11 +45,11 @@ export default function RootLayout({
           position="top-right"
           toastOptions={{
             style: {
-              background: '#1a1712',
-              border: '1px solid #2c271f',
-              color: '#ffffff',
-              fontFamily: 'var(--font-inter)',
-            }
+              background: "#1a1712",
+              border: "1px solid #2c271f",
+              color: "#ffffff",
+              fontFamily: "var(--font-inter)",
+            },
           }}
         />
       </body>

@@ -130,33 +130,50 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
       setOpenSpaces((prev) => {
         if (prev.has(targetSpace.label)) return prev;
         const next = new Set(prev).add(targetSpace.label);
-        
+
         // Update cookie
         if (typeof document !== "undefined") {
           let existing: Record<string, boolean> = {};
           const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
           if (match) {
-            try { existing = JSON.parse(decodeURIComponent(match[2])); } catch {}
+            try {
+              existing = JSON.parse(decodeURIComponent(match[2]));
+            } catch {}
           }
           const updated = { ...existing, [targetSpace.label]: true };
           document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
         }
-        
+
         return next;
       });
     }
   }, [pathname, mounted]);
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
+  const collapsedWidth = isCollapsed ? 72 : 280;
 
   if (!mounted) {
     return (
       <aside
-        style={{ width: isCollapsed ? 72 : 280 }}
+        style={{ width: collapsedWidth }}
         className="fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-30 h-screen glass-sidebar flex flex-col justify-between overflow-hidden select-none opacity-0 flex-shrink-0"
       />
     );
   }
+
+  const asideWidth = isMobileOpen ? 288 : isExpanded ? 280 : 72;
+  const asideTranslateClass = isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0";
+  const asideClass = `fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-30 h-screen glass-sidebar flex flex-col justify-between overflow-hidden select-none ${asideTranslateClass} transition-transform duration-300 md:transition-none`;
+  const userInitials = user
+    ? user.name
+      ? user.name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase()
+          .slice(0, 2)
+      : user.email.slice(0, 2).toUpperCase()
+    : "";
 
   return (
     <>
@@ -176,12 +193,10 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
       <motion.aside
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        animate={{ width: isMobileOpen ? 288 : isExpanded ? 280 : 72 }}
+        animate={{ width: asideWidth }}
         initial={false}
         transition={SIDEBAR_SPRING}
-        className={`fixed md:sticky top-0 bottom-0 left-0 z-50 md:z-30 h-screen glass-sidebar flex flex-col justify-between overflow-hidden select-none ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        } transition-transform duration-300 md:transition-none`}
+        className={asideClass}
       >
         {/* Brand Header */}
         <div className="h-12 flex items-center justify-between px-5 border-b border-zinc-800/60 flex-shrink-0">
@@ -246,16 +261,17 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
               const isOpen = openSpaces.has(space.label);
               const anyPageActive = space.pages.some(isPageActive);
               const styles = getSpaceStyles(space.label);
+              const containerClass = `w-full flex flex-col space-y-1 rounded-2xl p-1.5 transition-all duration-300 ease-in-out border ${
+                anyPageActive ? styles.containerActive : styles.containerInactive
+              }`;
+              const spaceButtonTextClass = anyPageActive
+                ? styles.accentText
+                : "text-zinc-500 hover:text-zinc-300";
+              const spaceButtonClass = `w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider outline-none focus:outline-none transition-colors duration-300 ease-in-out ${spaceButtonTextClass}`;
+              const spaceIconClass = anyPageActive ? styles.iconActive : "text-zinc-500";
 
               return (
-                 <div
-                  key={space.label}
-                  className={`w-full flex flex-col space-y-1 rounded-2xl p-1.5 transition-all duration-300 ease-in-out border ${
-                    anyPageActive
-                      ? styles.containerActive
-                      : styles.containerInactive
-                  }`}
-                >
+                <div key={space.label} className={containerClass}>
                   <button
                     onClick={() => {
                       if (!isExpanded) {
@@ -265,30 +281,26 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                         const next = new Set(prev);
                         if (next.has(space.label)) next.delete(space.label);
                         else next.add(space.label);
-                        
+
                         // Update cookie
                         if (typeof document !== "undefined") {
                           let existing: Record<string, boolean> = {};
                           const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
                           if (match) {
-                            try { existing = JSON.parse(decodeURIComponent(match[2])); } catch {}
+                            try {
+                              existing = JSON.parse(decodeURIComponent(match[2]));
+                            } catch {}
                           }
                           const updated = { ...existing, [space.label]: next.has(space.label) };
                           document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
                         }
-                        
+
                         return next;
                       });
                     }}
-                    className={`w-full flex items-center justify-center md:justify-start gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-semibold uppercase tracking-wider outline-none focus:outline-none transition-colors duration-300 ease-in-out ${
-                      anyPageActive ? styles.accentText : "text-zinc-500 hover:text-zinc-300"
-                    }`}
+                    className={spaceButtonClass}
                   >
-                    <SpaceIcon
-                      size={12}
-                      strokeWidth={2}
-                      className={anyPageActive ? styles.iconActive : "text-zinc-500"}
-                    />
+                    <SpaceIcon size={12} strokeWidth={2} className={spaceIconClass} />
                     {isExpanded && (
                       <>
                         <span className="flex-1 text-left truncate">{space.label}</span>
@@ -314,20 +326,20 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                         {space.pages.map((page) => {
                           const PageIcon = page.icon;
                           const isActive = isPageActive(page);
+                          const pageLinkClass = `flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-300 ease-in-out ${
+                            isActive
+                              ? `font-medium ${styles.bgActive} shadow-sm`
+                              : "text-zinc-350 hover:text-white hover:bg-white/10 border border-transparent"
+                          }`;
+                          const pageIconClass = isActive ? styles.iconActive : "text-zinc-500";
+                          const pageIconStrokeWidth = isActive ? 2.5 : 2;
+
                           return (
-                            <Link
-                              key={page.href}
-                              href={page.href}
-                              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-300 ease-in-out ${
-                                isActive
-                                  ? `font-medium ${styles.bgActive} shadow-sm`
-                                  : "text-zinc-350 hover:text-white hover:bg-white/10 border border-transparent"
-                              }`}
-                            >
+                            <Link key={page.href} href={page.href} className={pageLinkClass}>
                               <PageIcon
                                 size={13}
-                                strokeWidth={isActive ? 2.5 : 2}
-                                className={isActive ? styles.iconActive : "text-zinc-500"}
+                                strokeWidth={pageIconStrokeWidth}
+                                className={pageIconClass}
                               />
                               <span className="truncate">{page.label}</span>
                             </Link>
@@ -346,18 +358,12 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
         <div className="h-16 border-t border-zinc-800/60 px-4 flex items-center justify-between gap-3 flex-shrink-0 bg-white/[0.01]">
           {user && (
             <>
-              <Link href="/life" className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+              <Link
+                href="/life"
+                className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity"
+              >
                 <div className="w-7 h-7 rounded-full bg-zinc-850 text-zinc-300 flex items-center justify-center border border-zinc-800 text-[11px] font-semibold flex-shrink-0">
-                  <span>
-                    {user.name
-                      ? user.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .toUpperCase()
-                          .slice(0, 2)
-                      : user.email.slice(0, 2).toUpperCase()}
-                  </span>
+                  <span>{userInitials}</span>
                 </div>
                 <AnimatePresence initial={false}>
                   {isExpanded && (
@@ -368,9 +374,7 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                       transition={LABEL_TRANSITION}
                       className="min-w-0"
                     >
-                      <p className="text-[13px] font-medium text-zinc-300 truncate">
-                        {user.name}
-                      </p>
+                      <p className="text-[13px] font-medium text-zinc-300 truncate">{user.name}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -406,7 +410,6 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
             </>
           )}
         </div>
-
       </motion.aside>
 
       <SettingsModal
