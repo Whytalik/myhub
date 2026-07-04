@@ -52,13 +52,17 @@ export function MobileBottomNav() {
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
           const isActive = activeDomain.id === domain.id;
+          const domainAccentClass =
+            domain.id === "life"
+              ? "bg-accent-life/15 text-accent-life border border-accent-life/20"
+              : "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20";
           return (
             <Link
               key={domain.id}
               href={domain.spaces[0]?.pages[0]?.href ?? domain.href}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-150 ${
                 isActive
-                  ? "bg-white/10 text-zinc-100"
+                  ? domainAccentClass
                   : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
