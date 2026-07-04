@@ -30,24 +30,24 @@ export interface SpaceGuide {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div >
-      <h3 >{title}</h3>
-      <div >{children}</div>
+    <div className="flex flex-col gap-2 mb-6 last:mb-0">
+      <h3 className="text-panel-title">{title}</h3>
+      <div className="text-body">{children}</div>
     </div>
   );
 }
 
 function RatingTable({ rows }: { rows: { value: string; label: string; description: string }[] }) {
   return (
-    <div >
-      {rows.map((row, i) => (
-        <div key={row.value} >
-          <span >{row.value}</span>
-          <div>
-            <span >{row.label}</span>
-            {row.description && (
-              <p >{row.description}</p>
-            )}
+    <div className="flex flex-col gap-1.5">
+      {rows.map((row) => (
+        <div key={row.value} className="glass-card p-3 flex items-start gap-3">
+          <span className="font-mono text-xs font-semibold text-accent shrink-0 w-10">
+            {row.value}
+          </span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm font-medium text-zinc-100">{row.label}</span>
+            {row.description && <p className="text-caption">{row.description}</p>}
           </div>
         </div>
       ))}
@@ -57,10 +57,10 @@ function RatingTable({ rows }: { rows: { value: string; label: string; descripti
 
 function List({ items }: { items: string[] }) {
   return (
-    <ul >
+    <ul className="flex flex-col gap-1.5">
       {items.map((item, i) => (
-        <li key={i} >
-          <span >–</span>
+        <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
+          <span className="text-zinc-600 shrink-0">–</span>
           <span>{item}</span>
         </li>
       ))}
@@ -127,11 +127,31 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
             <Block title="Критерії оцінки якості (Sleep Quality)">
               <RatingTable
                 rows={[
-                  { value: "1–3", label: "Погано", description: "Майже не спав, часто прокидався, відчуваю себе розбитим" },
-                  { value: "4–5", label: "Задовільно", description: "Спав, але неглибоко або мало годин, втома є" },
-                  { value: "6–7", label: "Нормально", description: "Достатньо годин, відчуваю себе більш-менш бадьоро" },
-                  { value: "8–9", label: "Добре", description: "Якісний сон, прокинувся сам або без важкості" },
-                  { value: "10", label: "Ідеально", description: "Відпочив повністю, відчуваю себе 100%" },
+                  {
+                    value: "1–3",
+                    label: "Погано",
+                    description: "Майже не спав, часто прокидався, відчуваю себе розбитим",
+                  },
+                  {
+                    value: "4–5",
+                    label: "Задовільно",
+                    description: "Спав, але неглибоко або мало годин, втома є",
+                  },
+                  {
+                    value: "6–7",
+                    label: "Нормально",
+                    description: "Достатньо годин, відчуваю себе більш-менш бадьоро",
+                  },
+                  {
+                    value: "8–9",
+                    label: "Добре",
+                    description: "Якісний сон, прокинувся сам або без важкості",
+                  },
+                  {
+                    value: "10",
+                    label: "Ідеально",
+                    description: "Відпочив повністю, відчуваю себе 100%",
+                  },
                 ]}
               />
             </Block>
@@ -159,22 +179,62 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
             <Block title="Критерії оцінки Energy (1–10)">
               <RatingTable
                 rows={[
-                  { value: "1–2", label: "Виснажений", description: "Важко встати, все дається з великим зусиллям" },
-                  { value: "3–4", label: "Низька", description: "Сонний, мало ресурсу, продуктивність мінімальна" },
-                  { value: "5–6", label: "Середня", description: "Функціоную нормально, але без запасу" },
-                  { value: "7–8", label: "Висока", description: "Є драйв, легко концентруюсь, хочеться діяти" },
-                  { value: "9–10", label: "Пікова", description: "Максимальний ресурс, відчуваю силу та мотивацію" },
+                  {
+                    value: "1–2",
+                    label: "Виснажений",
+                    description: "Важко встати, все дається з великим зусиллям",
+                  },
+                  {
+                    value: "3–4",
+                    label: "Низька",
+                    description: "Сонний, мало ресурсу, продуктивність мінімальна",
+                  },
+                  {
+                    value: "5–6",
+                    label: "Середня",
+                    description: "Функціоную нормально, але без запасу",
+                  },
+                  {
+                    value: "7–8",
+                    label: "Висока",
+                    description: "Є драйв, легко концентруюсь, хочеться діяти",
+                  },
+                  {
+                    value: "9–10",
+                    label: "Пікова",
+                    description: "Максимальний ресурс, відчуваю силу та мотивацію",
+                  },
                 ]}
               />
             </Block>
             <Block title="Критерії оцінки Mood (1–10)">
               <RatingTable
                 rows={[
-                  { value: "1–2", label: "Дуже погано", description: "Депресивний стан, тривога, апатія" },
-                  { value: "3–4", label: "Погано", description: "Подразливість, смуток, незадоволення" },
-                  { value: "5–6", label: "Нейтрально", description: "Ні добре ні погано, рівний стан" },
-                  { value: "7–8", label: "Добре", description: "Позитивний настрій, спокій, задоволення" },
-                  { value: "9–10", label: "Відмінно", description: "Радість, натхнення, внутрішній підйом" },
+                  {
+                    value: "1–2",
+                    label: "Дуже погано",
+                    description: "Депресивний стан, тривога, апатія",
+                  },
+                  {
+                    value: "3–4",
+                    label: "Погано",
+                    description: "Подразливість, смуток, незадоволення",
+                  },
+                  {
+                    value: "5–6",
+                    label: "Нейтрально",
+                    description: "Ні добре ні погано, рівний стан",
+                  },
+                  {
+                    value: "7–8",
+                    label: "Добре",
+                    description: "Позитивний настрій, спокій, задоволення",
+                  },
+                  {
+                    value: "9–10",
+                    label: "Відмінно",
+                    description: "Радість, натхнення, внутрішній підйом",
+                  },
                 ]}
               />
             </Block>
@@ -198,11 +258,31 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
             <Block title="Критерії оцінки Nutrition (1–10)">
               <RatingTable
                 rows={[
-                  { value: "1–3", label: "Погано", description: "Їв багато шкідливого, пропускав прийоми їжі, переїдав" },
-                  { value: "4–5", label: "Задовільно", description: "Їв не за планом, але без серйозних порушень" },
-                  { value: "6–7", label: "Нормально", description: "Більш-менш дотримувався плану, невеликі відхилення" },
-                  { value: "8–9", label: "Добре", description: "Дотримався плану, всі прийоми їжі, норма КБЖУ" },
-                  { value: "10", label: "Ідеально", description: "Повне дотримання плану, жодних відхилень" },
+                  {
+                    value: "1–3",
+                    label: "Погано",
+                    description: "Їв багато шкідливого, пропускав прийоми їжі, переїдав",
+                  },
+                  {
+                    value: "4–5",
+                    label: "Задовільно",
+                    description: "Їв не за планом, але без серйозних порушень",
+                  },
+                  {
+                    value: "6–7",
+                    label: "Нормально",
+                    description: "Більш-менш дотримувався плану, невеликі відхилення",
+                  },
+                  {
+                    value: "8–9",
+                    label: "Добре",
+                    description: "Дотримався плану, всі прийоми їжі, норма КБЖУ",
+                  },
+                  {
+                    value: "10",
+                    label: "Ідеально",
+                    description: "Повне дотримання плану, жодних відхилень",
+                  },
                 ]}
               />
             </Block>
@@ -217,7 +297,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Morning & Evening Routine">
               <p>
-                Рутини — це чеклісти фіксованих дій зранку та ввечері. Кожен пункт відмічається як виконаний або ні.
+                Рутини — це чеклісти фіксованих дій зранку та ввечері. Кожен пункт відмічається як
+                виконаний або ні.
               </p>
             </Block>
             <Block title="Типи днів">
@@ -262,8 +343,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
             </Block>
             <Block title="Рекомендація">
               <p>
-                Заповнюй рефлексію ввечері, не раніше 21:00. Win Today — конкретна дія або результат,
-                не абстрактне &quot;добре попрацював&quot;.
+                Заповнюй рефлексію ввечері, не раніше 21:00. Win Today — конкретна дія або
+                результат, не абстрактне &quot;добре попрацював&quot;.
               </p>
             </Block>
           </div>
@@ -285,7 +366,10 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
               />
             </Block>
             <Block title="Workflow">
-              <p>Заповнюй задачі на день зранку або ввечері напередодні. Плейсхолдер для детального опису.</p>
+              <p>
+                Заповнюй задачі на день зранку або ввечері напередодні. Плейсхолдер для детального
+                опису.
+              </p>
             </Block>
           </div>
         ),
@@ -321,8 +405,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Що таке Week?">
               <p>
-                Week — планування типів днів на тиждень наперед.
-                Визначає який Morning Routine і які активності очікуються в кожен день.
+                Week — планування типів днів на тиждень наперед. Визначає який Morning Routine і які
+                активності очікуються в кожен день.
               </p>
             </Block>
             <Block title="Типи днів">
@@ -346,8 +430,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Що таке Nutrition Space?">
               <p>
-                Nutrition Space — система планування харчування. Мета — прибрати щоденні рішення
-                що їсти та мати контроль над макросами.
+                Nutrition Space — система планування харчування. Мета — прибрати щоденні рішення що
+                їсти та мати контроль над макросами.
               </p>
             </Block>
             <Block title="Основний workflow">
@@ -371,7 +455,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Що таке Products?">
               <p>
-                Products — база всіх продуктів які ти їси, з макронутрієнтами на 100г або на одиницю.
+                Products — база всіх продуктів які ти їси, з макронутрієнтами на 100г або на
+                одиницю.
               </p>
             </Block>
             <Block title="Що заповнювати">
@@ -427,8 +512,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Що таке Plan?">
               <p>
-                Plan — тижневий план харчування. Комбінуєш страви по прийомах їжі,
-                система показує загальні макроси дня.
+                Plan — тижневий план харчування. Комбінуєш страви по прийомах їжі, система показує
+                загальні макроси дня.
               </p>
             </Block>
             <Block title="Як заповнювати">
@@ -452,8 +537,8 @@ export const GUIDE_DATA: Partial<Record<SpaceKey, SpaceGuide>> = {
           <div>
             <Block title="Що таке Shopping?">
               <p>
-                Shopping — автоматично генерований список покупок на основі активних планів.
-                Агрегує всі потрібні продукти з кількостями.
+                Shopping — автоматично генерований список покупок на основі активних планів. Агрегує
+                всі потрібні продукти з кількостями.
               </p>
             </Block>
             <Block title="Workflow">
