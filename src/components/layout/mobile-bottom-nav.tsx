@@ -26,6 +26,20 @@ export function MobileBottomNav() {
     [activeSpace, activeDomain],
   );
 
+  const activePage = useMemo(() => {
+    const matchesPage = (page: { href: string }) =>
+      pathname === page.href ||
+      pathname.startsWith(page.href + "/") ||
+      (page.href === "/life/journal" && pathname.startsWith("/life/history"));
+
+    return activePages
+      .filter(matchesPage)
+      .reduce<(typeof activePages)[number] | undefined>(
+        (best, page) => (!best || page.href.length > best.href.length ? page : best),
+        undefined,
+      );
+  }, [pathname, activePages]);
+
   useEffect(() => {
     const scrollContainer = document.querySelector("main");
     if (!scrollContainer) return;
@@ -77,10 +91,7 @@ export function MobileBottomNav() {
       <div className="flex items-center justify-around px-2 h-14 pb-safe">
         {activePages.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            pathname === item.href ||
-            pathname.startsWith(item.href + "/") ||
-            (item.href === "/life/journal" && pathname.startsWith("/life/history"));
+          const isActive = activePage?.href === item.href;
 
           return (
             <Link
