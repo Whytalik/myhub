@@ -18,12 +18,12 @@ export function DomainHeader() {
   const activeDomainId = getActiveDomain(pathname).id;
 
   return (
-    <header className="h-16 border-b border-zinc-800/60 px-4 md:px-8 flex items-center justify-between flex-shrink-0 bg-surface sticky top-0 z-30 select-none w-full">
+    <header className="h-12 border-b border-zinc-800/60 px-4 md:px-8 flex items-center justify-between flex-shrink-0 bg-surface sticky top-0 z-30 select-none w-full">
       {/* Mobile Brand & Hamburger */}
       <div className="flex md:hidden items-center justify-between w-full">
         <Link href="/life" className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
-            <Sparkles size={13} className="text-accent" />
+          <div className="w-5.5 h-5.5 rounded bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
+            <Sparkles size={11} className="text-accent" />
           </div>
           <span className="text-xs font-semibold text-zinc-100 tracking-tight">
             MyHub
@@ -32,10 +32,10 @@ export function DomainHeader() {
 
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850 rounded-md transition-colors"
+          className="p-1 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850 rounded-md transition-colors"
           aria-label="Toggle menu"
         >
-          {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
+          {isMobileOpen ? <X size={16} /> : <Menu size={16} />}
         </button>
       </div>
 
@@ -48,13 +48,19 @@ export function DomainHeader() {
             <Link
               key={domain.id}
               href={domain.href}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
+              className={`flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
                 isActive
-                  ? "text-zinc-100 bg-zinc-800/60 border border-zinc-700/50 shadow-sm"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 border border-transparent"
+                  ? domain.id === "life"
+                    ? "text-zinc-50 bg-accent-life/20 border border-accent-life/30 shadow-sm"
+                    : "text-zinc-50 bg-accent-nutrition/20 border border-accent-nutrition/30 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-250 hover:bg-white/5 border border-transparent"
               }`}
             >
-              <Icon size={13} strokeWidth={isActive ? 2.5 : 2} className={isActive ? "text-zinc-200" : "text-zinc-500"} />
+              <Icon
+                size={13}
+                strokeWidth={isActive ? 2.5 : 2}
+                className={isActive ? (domain.id === "life" ? "text-accent-life" : "text-accent-nutrition") : "text-zinc-500"}
+              />
               <span>{domain.label}</span>
             </Link>
           );

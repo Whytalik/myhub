@@ -20,7 +20,7 @@ function getSpaceStyles(label: string) {
     return {
       accentText: "text-accent-life",
       iconActive: "text-accent-life",
-      bgActive: "bg-accent-life",
+      bgActive: "bg-accent-life/15 text-accent-life border border-accent-life/20",
       containerActive: "bg-accent-life/[0.04] border-accent-life/15 rounded-2xl",
       containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
@@ -29,7 +29,7 @@ function getSpaceStyles(label: string) {
     return {
       accentText: "text-accent-nutrition",
       iconActive: "text-accent-nutrition",
-      bgActive: "bg-accent-nutrition",
+      bgActive: "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20",
       containerActive: "bg-accent-nutrition/[0.04] border-accent-nutrition/15 rounded-2xl",
       containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
@@ -38,7 +38,7 @@ function getSpaceStyles(label: string) {
     return {
       accentText: "text-accent-training",
       iconActive: "text-accent-training",
-      bgActive: "bg-accent-training",
+      bgActive: "bg-accent-training/15 text-accent-training border border-accent-training/20",
       containerActive: "bg-accent-training/[0.04] border-accent-training/15 rounded-2xl",
       containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
     };
@@ -46,7 +46,7 @@ function getSpaceStyles(label: string) {
   return {
     accentText: "text-accent",
     iconActive: "text-accent",
-    bgActive: "bg-accent",
+    bgActive: "bg-accent/15 text-accent border border-accent/20",
     containerActive: "bg-accent-muted/10 border-accent/20 rounded-2xl",
     containerInactive: "bg-white/[0.01] border-white/[0.04] rounded-2xl",
   };
@@ -184,10 +184,10 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
         } transition-transform duration-300 md:transition-none`}
       >
         {/* Brand Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-zinc-800/60 flex-shrink-0">
+        <div className="h-12 flex items-center justify-between px-5 border-b border-zinc-800/60 flex-shrink-0">
           <Link href="/life" className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-md bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
-              <Sparkles size={13} />
+            <div className="w-5.5 h-5.5 rounded bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
+              <Sparkles size={11} />
             </div>
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -320,14 +320,14 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
                               href={page.href}
                               className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-150 ${
                                 isActive
-                                  ? `text-white font-medium ${styles.bgActive} shadow-sm`
+                                  ? `font-medium ${styles.bgActive} shadow-sm`
                                   : "text-zinc-350 hover:text-white hover:bg-white/10"
                               }`}
                             >
                               <PageIcon
                                 size={13}
                                 strokeWidth={isActive ? 2.5 : 2}
-                                className={isActive ? "text-white" : "text-zinc-500"}
+                                className={isActive ? styles.iconActive : "text-zinc-500"}
                               />
                               <span className="truncate">{page.label}</span>
                             </Link>
