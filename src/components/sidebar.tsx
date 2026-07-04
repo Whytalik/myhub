@@ -4,10 +4,10 @@ import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "./sidebar-provider";
 import { SettingsModal } from "./settings-modal";
-import { LogOut, Settings2, Sparkles, Pin, X, ChevronRight } from "lucide-react";
+import { LogOut, Settings2, Sparkles, Pin, X, ChevronRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { getActiveDomain } from "@/lib/domains";
 
 const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
@@ -25,6 +25,7 @@ export function Sidebar({ user }: SidebarProps) {
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [openSpaces, setOpenSpaces] = useState<Set<string>>(new Set());
 
   const domain = getActiveDomain(pathname);
   const [isOpen, setIsOpen] = useState(true);
@@ -33,6 +34,15 @@ export function Sidebar({ user }: SidebarProps) {
   if (domain.id !== lastDomainId) {
     setLastDomainId(domain.id);
     setIsOpen(true);
+    setOpenSpaces(new Set());
+  }
+
+  // Auto-open space containing the active page
+  const targetSpace = domain.spaces.find(
+    (s) => s.pages.length > 1 && s.pages.some((p) => pathname === p.href || pathname.startsWith(p.href + "/")),
+  );
+  if (targetSpace && !openSpaces.has(targetSpace.label)) {
+    setOpenSpaces((prev) => new Set([...prev, targetSpace.label]));
   }
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
@@ -216,31 +226,113 @@ export function Sidebar({ user }: SidebarProps) {
                     className="h-px mb-1 transition-colors duration-500"
                     style={{ backgroundColor: color.borderActive }}
                   />
-                  {domain.spaces.map((item) => {
-                    const Icon = item.icon;
-                    const isActive =
-                      pathname === item.href ||
-                      pathname.startsWith(item.href + "/") ||
-                      (item.href === "/life/journal" && pathname.startsWith("/life/history"));
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 relative ${
-                          isActive
-                            ? "font-medium text-text-primary"
-                            : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                        }`}
-                        style={{ color: isActive ? color.text : undefined }}
-                      >
-                        <Icon
-                          size={13}
+                  {domain.spaces.map((space) => {
+                    const SpaceIcon = space.icon;
+                    if (space.pages.length === 1) {
+                      const page = space.pages[0];
+                      const PageIcon = page.icon;
+                      const isActive =
+                        pathname === page.href ||
+                        pathname.startsWith(page.href + "/") ||
+                        (page.href === "/life/journal" && pathname.startsWith("/life/history"));
+                      return (
+                        <Link
+                          key={page.href}
+                          href={page.href}
+                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 relative ${
+                            isActive
+                              ? "font-medium text-text-primary"
+                              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                          }`}
                           style={{ color: isActive ? color.text : undefined }}
-                          strokeWidth={isActive ? 2.5 : 2}
-                          className="shrink-0"
-                        />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
+                        >
+                          <PageIcon
+                            size={13}
+                            style={{ color: isActive ? color.text : undefined }}
+                            strokeWidth={isActive ? 2.5 : 2}
+                            className="shrink-0"
+                          />
+                          <span className="truncate">{page.label}</span>
+                        </Link>
+                      );
+                    }
+
+                    const anyPageActive = space.pages.some(
+                      (p) => pathname === p.href || pathname.startsWith(p.href + "/"),
+                    );
+                    return (
+                      <div key={space.label} className="flex flex-col">
+                        <button
+                          onClick={() =>
+                            setOpenSpaces((prev) => {
+                              const next = new Set(prev);
+                              if (next.has(space.label)) next.delete(space.label);
+                              else next.add(space.label);
+                              return next;
+                            })
+                          }
+                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 w-full text-left ${
+                            anyPageActive
+                              ? "font-medium text-text-primary"
+                              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                          }`}
+                          style={{ color: anyPageActive ? color.text : undefined }}
+                        >
+                          <SpaceIcon
+                            size={13}
+                            style={{ color: anyPageActive ? color.text : undefined }}
+                            strokeWidth={anyPageActive ? 2.5 : 2}
+                            className="shrink-0"
+                          />
+                          <span className="truncate flex-1">{space.label}</span>
+                          <motion.div
+                            animate={{ rotate: openSpaces.has(space.label) ? 0 : -90 }}
+                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                          >
+                            <ChevronDown size={12} className="text-text-muted shrink-0" />
+                          </motion.div>
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {openSpaces.has(space.label) && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.18, ease: "easeInOut" }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col gap-0.5 pl-2 pb-1">
+                                {space.pages.map((page) => {
+                                  const PageIcon = page.icon;
+                                  const isActive =
+                                    pathname === page.href ||
+                                    pathname.startsWith(page.href + "/");
+                                  return (
+                                    <Link
+                                      key={page.href}
+                                      href={page.href}
+                                      className={`flex items-center gap-3 px-3 py-1.5 rounded-md text-caption transition-colors duration-200 relative ${
+                                        isActive
+                                          ? "font-medium text-text-primary"
+                                          : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                                      }`}
+                                      style={{ color: isActive ? color.text : undefined }}
+                                    >
+                                      <PageIcon
+                                        size={11}
+                                        style={{ color: isActive ? color.text : undefined }}
+                                        strokeWidth={isActive ? 2.5 : 2}
+                                        className="shrink-0"
+                                      />
+                                      <span className="truncate">{page.label}</span>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     );
                   })}
                 </div>

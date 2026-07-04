@@ -8,13 +8,21 @@ import {
   Sparkles,
   Utensils,
   Zap,
+  ClipboardList,
+  ShoppingCart,
   Dumbbell,
 } from "lucide-react";
 
-export interface SpaceLink {
+export interface PageLink {
   href: string;
   label: string;
   icon: LucideIcon;
+}
+
+export interface Space {
+  label: string;
+  icon: LucideIcon;
+  pages: PageLink[];
 }
 
 export interface Domain {
@@ -23,7 +31,7 @@ export interface Domain {
   href: string;
   icon: LucideIcon;
   accent: string;
-  spaces: SpaceLink[];
+  spaces: Space[];
 }
 
 export const DOMAINS: Domain[] = [
@@ -34,11 +42,31 @@ export const DOMAINS: Domain[] = [
     icon: Sparkles,
     accent: "#6fbfbf",
     spaces: [
-      { href: "/life/journal", label: "Journal", icon: BookText },
-      { href: "/life/habits", label: "Habits", icon: Zap },
-      { href: "/life/tasks", label: "Tasks", icon: CheckCircle2 },
-      { href: "/life/week", label: "Week", icon: CalendarDays },
-      { href: "/life/review", label: "Review", icon: LineChart },
+      {
+        label: "Journal",
+        icon: BookText,
+        pages: [{ href: "/life/journal", label: "Journal", icon: BookText }],
+      },
+      {
+        label: "Habits",
+        icon: Zap,
+        pages: [{ href: "/life/habits", label: "Habits", icon: Zap }],
+      },
+      {
+        label: "Tasks",
+        icon: CheckCircle2,
+        pages: [{ href: "/life/tasks", label: "Tasks", icon: CheckCircle2 }],
+      },
+      {
+        label: "Week",
+        icon: CalendarDays,
+        pages: [{ href: "/life/week", label: "Week", icon: CalendarDays }],
+      },
+      {
+        label: "Review",
+        icon: LineChart,
+        pages: [{ href: "/life/review", label: "Review", icon: LineChart }],
+      },
     ],
   },
   {
@@ -48,8 +76,24 @@ export const DOMAINS: Domain[] = [
     icon: Heart,
     accent: "#ff8c00",
     spaces: [
-      { href: "/health/nutrition", label: "Nutrition", icon: Utensils },
-      { href: "/health/training", label: "Training", icon: Dumbbell },
+      {
+        label: "Nutrition Space",
+        icon: Utensils,
+        pages: [
+          { href: "/health/nutrition", label: "Daily", icon: Utensils },
+          { href: "/health/nutrition/meal-prep", label: "Meal Prep", icon: ClipboardList },
+          { href: "/health/nutrition/shopping-list", label: "Shopping List", icon: ShoppingCart },
+        ],
+      },
+      {
+        label: "Training Space",
+        icon: Dumbbell,
+        pages: [
+          { href: "/health/training", label: "Plans", icon: ClipboardList },
+          { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
+          { href: "/health/training/history", label: "History", icon: LineChart },
+        ],
+      },
     ],
   },
 ];

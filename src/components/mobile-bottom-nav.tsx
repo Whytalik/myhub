@@ -10,7 +10,7 @@ export function MobileBottomNav() {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  const activeNav = getActiveDomain(pathname).spaces;
+  const activeNav = getActiveDomain(pathname).spaces.flatMap((s) => s.pages);
 
   useEffect(() => {
     const scrollContainer = document.querySelector("main");

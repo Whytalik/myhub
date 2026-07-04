@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function ShoppingListPage() {
-  redirect("/health/nutrition");
+  redirect("/health/nutrition/shopping-list");
 }
