@@ -3,14 +3,15 @@
 :root {
   --color-accent: #007aff;
   --color-accent-muted: rgba(0, 122, 255, 0.1);
-  --current-accent: var(--color-accent);
-  --current-accent-muted: var(--color-accent-muted);
 }
 
 @theme {
   --color-canvas: #08080a;
   --color-surface: #121214;
   --color-elevated: #1a1a1e;
+  
+  --color-accent: var(--color-accent);
+  --color-accent-muted: var(--color-accent-muted);
   
   --font-sans: var(--font-inter), 'Geist Sans', 'Inter', 'system-ui', sans-serif;
   --font-mono: var(--font-geist-mono), 'Geist Mono', 'JetBrains Mono', monospace;
@@ -22,81 +23,47 @@
 }
 
 html, body {
-  background-color: var(--color-canvas);
-  color: #e4e4e7;
-  font-family: var(--font-sans);
-  overflow-x: hidden;
+  @apply bg-canvas text-zinc-100 font-sans overflow-x-hidden;
 }
 
 /* Glassmorphism Utilities */
 @utility glass-sidebar {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  background: rgba(18, 18, 20, 0.20);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  @apply bg-surface/20 backdrop-blur-xl border-r border-white/5;
 }
 
 @utility glass-card {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(18, 18, 20, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  @apply bg-surface/45 backdrop-blur-md border border-white/8;
 }
 
 @utility glass-elevated {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(26, 26, 30, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  @apply bg-elevated/75 backdrop-blur-lg border border-white/12 shadow-2xl shadow-black/60;
 }
 
 @utility glass-input {
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.15s ease-in-out;
+  @apply bg-black/35 backdrop-blur-sm border border-white/8 transition-all duration-150;
 }
 
 @utility glass-input-focus {
-  border-color: var(--current-accent);
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 0 2px var(--current-accent-muted);
+  @apply border-accent bg-black/50 shadow-[0_0_8px_rgba(var(--color-accent),0.15)] outline-none;
 }
 
 /* Typography Utilities */
 @utility text-page-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: #ffffff;
+  @apply text-2xl font-bold tracking-tight text-white;
 }
 
 @utility text-panel-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #ffffff;
+  @apply text-lg font-semibold text-white;
 }
 
 @utility text-body {
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.6;
-  color: #d1d5db;
+  @apply text-[15px] font-normal leading-relaxed text-zinc-300;
 }
 
 @utility text-caption {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: #9ca3af;
+  @apply text-[13px] font-medium text-zinc-400;
 }
 
 @utility text-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  font-family: var(--font-geist-mono), monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #9ca3af;
+  @apply text-xs font-bold font-mono uppercase tracking-wider text-zinc-400;
 }

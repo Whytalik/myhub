@@ -45,13 +45,13 @@ export function MobileBottomNav() {
             key={item.href}
             href={item.href}
             className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors duration-150 ${
-              isActive ? "text-[var(--current-accent)]" : "text-zinc-500 hover:text-zinc-300"
+              isActive ? "text-accent" : "text-zinc-500 hover:text-zinc-300"
             }`}
           >
             <div className="flex items-center justify-center relative w-6 h-6">
               <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
               {isActive && (
-                <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-[var(--current-accent)]" />
+                <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-accent" />
               )}
             </div>
             <span className="text-[10px] font-medium tracking-tight mt-1 font-sans">

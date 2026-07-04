@@ -18,7 +18,7 @@ export function DashboardUIWrapper({
 }) {
 
   return (
-    <div className="min-h-screen flex bg-canvas text-white font-sans selection:bg-[var(--current-accent-muted)] selection:text-[var(--current-accent)]">
+    <div className="min-h-screen flex bg-canvas text-white font-sans selection:bg-accent-muted selection:text-accent">
       {/* Left Sidebar */}
       <Sidebar
         initialOrder={initialOrder}

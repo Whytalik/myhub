@@ -90,7 +90,7 @@ export function Sidebar({ user }: SidebarProps) {
         {/* Brand Header */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-white/5 flex-shrink-0">
           <Link href="/life" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[var(--current-accent)]/10 text-[var(--current-accent)] flex items-center justify-center border border-[var(--current-accent)]/20 shadow-[0_0_15px_rgba(0,122,255,0.15)]">
+            <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center border border-accent/20 shadow-[0_0_15px_var(--color-accent-muted)]">
               <Sparkles size={18} />
             </div>
             <AnimatePresence initial={false}>
@@ -171,14 +171,14 @@ export function Sidebar({ user }: SidebarProps) {
                     }}
                     className={`w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors duration-150 ${
                       anyPageActive
-                        ? "text-[var(--current-accent)] bg-[var(--current-accent-muted)]/10"
+                        ? "text-accent bg-accent-muted"
                         : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
                     }`}
                   >
                     <SpaceIcon
                       size={14}
                       strokeWidth={anyPageActive ? 2.5 : 2}
-                      className={anyPageActive ? "text-[var(--current-accent)]" : "text-zinc-500"}
+                      className={anyPageActive ? "text-accent" : "text-zinc-500"}
                     />
                     {isExpanded && (
                       <>
@@ -211,14 +211,14 @@ export function Sidebar({ user }: SidebarProps) {
                               href={page.href}
                               className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs transition-colors duration-150 ${
                                 isActive
-                                  ? "text-[var(--current-accent)] font-medium bg-[var(--current-accent-muted)]/10"
+                                  ? "text-accent font-medium bg-accent-muted"
                                   : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
                               }`}
                             >
                               <PageIcon
                                 size={12}
                                 strokeWidth={isActive ? 2.5 : 2}
-                                className={isActive ? "text-[var(--current-accent)]" : "text-zinc-500"}
+                                className={isActive ? "text-accent" : "text-zinc-500"}
                               />
                               <span className="truncate">{page.label}</span>
                             </Link>
@@ -238,7 +238,7 @@ export function Sidebar({ user }: SidebarProps) {
           {user && (
             <>
               <Link href="/life" className="flex items-center gap-3 min-w-0 flex-1 hover:opacity-80 transition-opacity">
-                <div className="w-8 h-8 rounded-full bg-[var(--current-accent)]/10 text-[var(--current-accent)] flex items-center justify-center border border-[var(--current-accent)]/20 text-xs font-semibold flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center border border-accent/20 text-xs font-semibold flex-shrink-0">
                   <span>
                     {user.name
                       ? user.name

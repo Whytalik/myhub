@@ -22,8 +22,8 @@ export function DomainHeader() {
       {/* Mobile Brand & Hamburger */}
       <div className="flex md:hidden items-center justify-between w-full">
         <Link href="/life" className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-md bg-[var(--current-accent)]/10 text-[var(--current-accent)] flex items-center justify-center border border-[var(--current-accent)]/20">
-            <Sparkles size={14} className="text-[var(--current-accent)]" />
+          <div className="w-7 h-7 rounded-md bg-accent/10 text-accent flex items-center justify-center border border-accent/20">
+            <Sparkles size={14} className="text-accent" />
           </div>
           <span className="text-sm font-bold text-white tracking-tight">
             MyHub
@@ -50,11 +50,11 @@ export function DomainHeader() {
               href={domain.href}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium tracking-tight transition-all duration-150 ${
                 isActive
-                  ? "text-[var(--current-accent)] bg-[var(--current-accent-muted)]/10 border border-[var(--current-accent)]/20"
+                  ? "text-accent bg-accent-muted border border-accent/20"
                   : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border border-transparent"
               }`}
             >
-              <Icon size={14} strokeWidth={isActive ? 2.5 : 2} className={isActive ? "text-[var(--current-accent)]" : "text-zinc-500"} />
+              <Icon size={14} strokeWidth={isActive ? 2.5 : 2} className={isActive ? "text-accent" : "text-zinc-500"} />
               <span>{domain.label}</span>
             </Link>
           );
