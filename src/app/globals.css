@@ -1,1 +1,102 @@
 @import "tailwindcss";
+
+:root {
+  --color-accent: #007aff;
+  --color-accent-muted: rgba(0, 122, 255, 0.1);
+  --current-accent: var(--color-accent);
+  --current-accent-muted: var(--color-accent-muted);
+}
+
+@theme {
+  --color-canvas: #08080a;
+  --color-surface: #121214;
+  --color-elevated: #1a1a1e;
+  
+  --font-sans: var(--font-inter), 'Geist Sans', 'Inter', 'system-ui', sans-serif;
+  --font-mono: var(--font-geist-mono), 'Geist Mono', 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbar Hiding */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html, body {
+  background-color: var(--color-canvas);
+  color: #e4e4e7;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utilities */
+@utility glass-sidebar {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(18, 18, 20, 0.20);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@utility glass-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(18, 18, 20, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility glass-elevated {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(26, 26, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+@utility glass-input {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.15s ease-in-out;
+}
+
+@utility glass-input-focus {
+  border-color: var(--current-accent);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px var(--current-accent-muted);
+}
+
+/* Typography Utilities */
+@utility text-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+}
+
+@utility text-panel-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+@utility text-body {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+@utility text-caption {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+@utility text-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-geist-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+}

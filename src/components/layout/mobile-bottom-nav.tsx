@@ -29,7 +29,9 @@ export function MobileBottomNav() {
 
   return (
     <nav
-
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-40 h-16 bg-surface/20 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-2 pb-safe transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "translate-y-full"
+      }`}
     >
       {activeNav.map((item) => {
         const Icon = item.icon;
@@ -42,16 +44,17 @@ export function MobileBottomNav() {
           <Link
             key={item.href}
             href={item.href}
-
+            className={`flex flex-col items-center justify-center flex-1 h-full py-1 transition-colors duration-150 ${
+              isActive ? "text-[var(--current-accent)]" : "text-zinc-500 hover:text-zinc-300"
+            }`}
           >
-            <div
-
-            >
-              <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+            <div className="flex items-center justify-center relative w-6 h-6">
+              <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+              {isActive && (
+                <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-[var(--current-accent)]" />
+              )}
             </div>
-            <span
-
-            >
+            <span className="text-[10px] font-medium tracking-tight mt-1 font-sans">
               {item.label}
             </span>
           </Link>
@@ -59,4 +62,5 @@ export function MobileBottomNav() {
       })}
     </nav>
   );
+
 }

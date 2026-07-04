@@ -18,27 +18,28 @@ export function DashboardUIWrapper({
 }) {
 
   return (
-    <div >
-      {}
+    <div className="min-h-screen flex bg-canvas text-white font-sans selection:bg-[var(--current-accent-muted)] selection:text-[var(--current-accent)]">
+      {/* Left Sidebar */}
       <Sidebar
         initialOrder={initialOrder}
         initialOpenSections={initialOpenSections}
         user={user}
       />
 
-      {}
-      <div >
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 relative h-screen overflow-hidden">
         <DomainHeader />
 
-        <main >
-          <div >
+        <main className="flex-1 overflow-y-auto relative pb-24 md:pb-8 focus:outline-none">
+          <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8 w-full">
             {children}
           </div>
         </main>
 
-        {}
+        {/* Mobile Bottom Navigation */}
         <MobileBottomNav />
       </div>
     </div>
   );
 }
+
