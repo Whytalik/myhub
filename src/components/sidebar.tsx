@@ -25,20 +25,24 @@ export function Sidebar({ user }: SidebarProps) {
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [openSpaces, setOpenSpaces] = useState<Set<string>>(new Set());
-
   const domain = getActiveDomain(pathname);
+  const [openSpaces, setOpenSpaces] = useState<Set<string>>(
+    () => new Set(domain.spaces.map((s) => s.label)),
+  );
   const [lastDomainId, setLastDomainId] = useState(domain.id);
 
   if (domain.id !== lastDomainId) {
     setLastDomainId(domain.id);
-    setOpenSpaces(new Set());
+    setOpenSpaces(new Set(domain.spaces.map((s) => s.label)));
   }
 
+  const isPageActive = (page: { href: string }) =>
+    pathname === page.href ||
+    pathname.startsWith(page.href + "/") ||
+    (page.href === "/life/journal" && pathname.startsWith("/life/history"));
+
   // Auto-open space containing the active page
-  const targetSpace = domain.spaces.find(
-    (s) => s.pages.length > 1 && s.pages.some((p) => pathname === p.href || pathname.startsWith(p.href + "/")),
-  );
+  const targetSpace = domain.spaces.find((s) => s.pages.some(isPageActive));
   if (targetSpace && !openSpaces.has(targetSpace.label)) {
     setOpenSpaces((prev) => new Set([...prev, targetSpace.label]));
   }
@@ -149,64 +153,27 @@ export function Sidebar({ user }: SidebarProps) {
               transition={SUBMENU_TRANSITION}
               style={{ overflow: "hidden" }}
             >
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-2">
                 {domain.spaces.map((space) => {
                   const SpaceIcon = space.icon;
                   const accent = space.accent;
                   const color = {
                     text: accent,
-                    bgActive: `${accent}12`,
-                    borderActive: `${accent}30`,
+                    bg: `${accent}0d`,
+                    border: `${accent}22`,
                   };
+                  const isOpen = openSpaces.has(space.label);
+                  const anyPageActive = space.pages.some(isPageActive);
 
-                  if (space.pages.length === 1) {
-                    const page = space.pages[0];
-                    const PageIcon = page.icon;
-                    const isActive =
-                      pathname === page.href ||
-                      pathname.startsWith(page.href + "/") ||
-                      (page.href === "/life/journal" && pathname.startsWith("/life/history"));
-
-                    return (
-                      <div key={page.href} className="relative">
-                        {isActive && (
-                          <div
-                            className="absolute left-0 top-2 w-0.5 h-5 rounded-r-full"
-                            style={{ backgroundColor: color.text }}
-                          />
-                        )}
-                        <Link
-                          href={page.href}
-                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 ${
-                            isActive
-                              ? "font-medium"
-                              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                          }`}
-                          style={{ color: isActive ? color.text : undefined }}
-                        >
-                          <PageIcon
-                            size={13}
-                            style={{ color: isActive ? color.text : undefined }}
-                            strokeWidth={isActive ? 2.5 : 2}
-                            className="shrink-0"
-                          />
-                          <span className="truncate">{page.label}</span>
-                        </Link>
-                      </div>
-                    );
-                  }
-
-                  const anyPageActive = space.pages.some(
-                    (p) => pathname === p.href || pathname.startsWith(p.href + "/"),
-                  );
                   return (
-                    <div key={space.label} className="flex flex-col relative">
-                      {anyPageActive && (
-                        <div
-                          className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full"
-                          style={{ backgroundColor: color.text }}
-                        />
-                      )}
+                    <div
+                      key={space.label}
+                      className="flex flex-col rounded-lg overflow-hidden relative"
+                      style={{
+                        backgroundColor: color.bg,
+                        border: `1px solid ${color.border}`,
+                      }}
+                    >
                       <button
                         onClick={() =>
                           setOpenSpaces((prev) => {
@@ -216,25 +183,29 @@ export function Sidebar({ user }: SidebarProps) {
                             return next;
                           })
                         }
-                        className="flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 w-full text-left"
-                        style={{ color: anyPageActive ? color.text : undefined }}
+                        className="flex items-center gap-3 px-3 py-2 text-caption transition-colors duration-200 w-full text-left"
+                        style={{ color: color.text }}
                       >
                         <SpaceIcon
                           size={13}
-                          style={{ color: anyPageActive ? color.text : undefined }}
+                          style={{ color: color.text }}
                           strokeWidth={anyPageActive ? 2.5 : 2}
                           className="shrink-0"
                         />
-                        <span className="truncate flex-1">{space.label}</span>
+                        <span className="truncate flex-1 font-medium">{space.label}</span>
                         <motion.div
-                          animate={{ rotate: openSpaces.has(space.label) ? 0 : -90 }}
+                          animate={{ rotate: isOpen ? 0 : -90 }}
                           transition={{ duration: 0.2, ease: "easeInOut" }}
                         >
-                          <ChevronDown size={12} className="text-text-muted shrink-0" />
+                          <ChevronDown
+                            size={12}
+                            style={{ color: color.text }}
+                            className="shrink-0"
+                          />
                         </motion.div>
                       </button>
                       <AnimatePresence initial={false}>
-                        {openSpaces.has(space.label) && (
+                        {isOpen && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
@@ -242,19 +213,17 @@ export function Sidebar({ user }: SidebarProps) {
                             transition={{ duration: 0.18, ease: "easeInOut" }}
                             className="overflow-hidden"
                           >
-                            <div className="flex flex-col gap-0.5 pl-2 pb-1">
+                            <div className="flex flex-col gap-0.5 px-2 pb-2">
                               {space.pages.map((page) => {
                                 const PageIcon = page.icon;
-                                const isActive =
-                                  pathname === page.href ||
-                                  pathname.startsWith(page.href + "/");
+                                const isActive = isPageActive(page);
                                 return (
                                   <Link
                                     key={page.href}
                                     href={page.href}
-                                    className={`flex items-center gap-3 px-3 py-1.5 rounded-md text-caption transition-colors duration-200 ${
+                                    className={`flex items-center gap-3 px-2 py-1.5 rounded-md text-caption transition-colors duration-200 ${
                                       isActive
-                                        ? "font-medium"
+                                        ? "font-medium bg-surface"
                                         : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                                     }`}
                                     style={{ color: isActive ? color.text : undefined }}

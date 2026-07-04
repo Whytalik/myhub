@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/page-header";
-import { NutritionSpaceTabs } from "@/features/health/nutrition/components/NutritionSpaceTabs";
 import { ShoppingList } from "@/features/health/nutrition/components/ShoppingList";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default function NutritionShoppingListPage() {
         title="Shopping List"
       />
       <div className="flex flex-col gap-6">
-        <NutritionSpaceTabs />
         <ShoppingList />
       </div>
     </div>

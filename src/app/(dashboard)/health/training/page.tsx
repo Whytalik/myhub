@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/page-header";
-import { TrainingSpaceTabs } from "@/features/health/training/components/TrainingSpaceTabs";
 import { TrainingPlansClient } from "@/features/health/training/components/TrainingPlansClient";
 import * as exerciseService from "@/features/health/training/services/exercise-service";
 import * as trainingPlanService from "@/features/health/training/services/training-plan-service";
@@ -32,7 +31,6 @@ export default async function TrainingPlansPage() {
         title="Plans"
       />
       <div className="flex flex-col gap-6">
-        <TrainingSpaceTabs />
         <TrainingPlansClient
           initialPlans={plans as unknown as TrainingPlanData[]}
           initialExercises={exercises as unknown as ExerciseData[]}

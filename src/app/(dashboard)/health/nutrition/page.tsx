@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/page-header";
-import { NutritionSpaceTabs } from "@/features/health/nutrition/components/NutritionSpaceTabs";
 import { NutritionPageClient } from "@/features/health/nutrition/components/NutritionPageClient";
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export default function NutritionDailyPage() {
         title="Nutrition"
       />
       <div className="flex flex-col gap-6">
-        <NutritionSpaceTabs />
         <NutritionPageClient />
       </div>
     </div>

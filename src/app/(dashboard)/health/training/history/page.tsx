@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/page-header";
-import { TrainingSpaceTabs } from "@/features/health/training/components/TrainingSpaceTabs";
 import { TrainingHistoryClient } from "@/features/health/training/components/TrainingHistoryClient";
 import * as trainingSessionService from "@/features/health/training/services/training-session-service";
 import type { TrainingSessionSummaryData } from "@/features/health/training/types";
@@ -32,7 +31,6 @@ export default async function TrainingHistoryPage() {
         title="History"
       />
       <div className="flex flex-col gap-6">
-        <TrainingSpaceTabs />
         <TrainingHistoryClient
           initialSessions={sessions as unknown as TrainingSessionSummaryData[]}
         />
