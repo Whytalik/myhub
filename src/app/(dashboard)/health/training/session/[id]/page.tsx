@@ -27,7 +27,7 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
   }
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },

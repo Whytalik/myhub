@@ -8,14 +8,12 @@ export const metadata: Metadata = {
 
 export default function NutritionDailyPage() {
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "nutrition" }]}
         title="Nutrition"
       />
-      <div >
-        <NutritionPageClient />
-      </div>
+      <NutritionPageClient />
     </div>
   );
 }

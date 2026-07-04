@@ -21,7 +21,7 @@ export default async function TrainingHistoryPage() {
   const sessions = await trainingSessionService.getRecentSessions(userId);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },
@@ -30,11 +30,9 @@ export default async function TrainingHistoryPage() {
         ]}
         title="History"
       />
-      <div >
-        <TrainingHistoryClient
-          initialSessions={sessions as unknown as TrainingSessionSummaryData[]}
-        />
-      </div>
+      <TrainingHistoryClient
+        initialSessions={sessions as unknown as TrainingSessionSummaryData[]}
+      />
     </div>
   );
 }

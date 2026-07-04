@@ -25,17 +25,15 @@ export default async function TrainingPlansPage() {
   ]);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "training" }]}
         title="Plans"
       />
-      <div >
-        <TrainingPlansClient
-          initialPlans={plans as unknown as TrainingPlanData[]}
-          initialExercises={exercises as unknown as ExerciseData[]}
-        />
-      </div>
+      <TrainingPlansClient
+        initialPlans={plans as unknown as TrainingPlanData[]}
+        initialExercises={exercises as unknown as ExerciseData[]}
+      />
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default async function TrainingExercisesPage() {
   const exercises = await exerciseService.getExercises(userId);
 
   return (
-    <div >
+    <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[
           { label: "health space", href: "/health" },
@@ -30,9 +30,7 @@ export default async function TrainingExercisesPage() {
         ]}
         title="Exercises"
       />
-      <div >
-        <TrainingExercisesClient initialExercises={exercises as unknown as ExerciseData[]} />
-      </div>
+      <TrainingExercisesClient initialExercises={exercises as unknown as ExerciseData[]} />
     </div>
   );
 }
