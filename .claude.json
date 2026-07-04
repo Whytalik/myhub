@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "prisma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@prisma/mcp@latest"
+      ]
+    }
+  },
+  "autoApprove": [
+    "git status",
+    "git diff",
+    "git log",
+    "find",
+    "npx tsc --noEmit"
+  ]
+}
