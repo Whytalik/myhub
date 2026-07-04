@@ -11,9 +11,19 @@ export function MobileBottomNav() {
   const lastScrollY = useRef(0);
 
   const activeDomain = useMemo(() => getActiveDomain(pathname), [pathname]);
+
+  const activeSpace = useMemo(() => {
+    return activeDomain.spaces.find(
+      (s) =>
+        pathname.startsWith(s.href + "/") ||
+        pathname === s.href ||
+        s.pages.some((p) => pathname.startsWith(p.href + "/") || pathname === p.href),
+    );
+  }, [pathname, activeDomain]);
+
   const activePages = useMemo(
-    () => activeDomain.spaces.flatMap((s) => s.pages),
-    [activeDomain],
+    () => activeSpace?.pages ?? activeDomain.spaces[0]?.pages ?? [],
+    [activeSpace, activeDomain],
   );
 
   useEffect(() => {
@@ -45,7 +55,7 @@ export function MobileBottomNav() {
           return (
             <Link
               key={domain.id}
-              href={domain.href}
+              href={domain.spaces[0]?.pages[0]?.href ?? domain.href}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-150 ${
                 isActive
                   ? "bg-white/10 text-zinc-100"
