@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "./sidebar-provider";
 import { SettingsModal } from "./settings-modal";
-import { LogOut, Settings2, Sparkles, Pin, X, ChevronRight, ChevronDown } from "lucide-react";
+import { LogOut, Settings2, Sparkles, Pin, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
@@ -28,12 +28,10 @@ export function Sidebar({ user }: SidebarProps) {
   const [openSpaces, setOpenSpaces] = useState<Set<string>>(new Set());
 
   const domain = getActiveDomain(pathname);
-  const [isOpen, setIsOpen] = useState(true);
   const [lastDomainId, setLastDomainId] = useState(domain.id);
 
   if (domain.id !== lastDomainId) {
     setLastDomainId(domain.id);
-    setIsOpen(true);
     setOpenSpaces(new Set());
   }
 
@@ -46,13 +44,6 @@ export function Sidebar({ user }: SidebarProps) {
   }
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
-
-  const DomainIcon = domain.icon;
-  const color = {
-    text: domain.accent,
-    bgActive: `${domain.accent}12`,
-    borderActive: `${domain.accent}30`,
-  };
 
   return (
     <>
@@ -149,99 +140,46 @@ export function Sidebar({ user }: SidebarProps) {
         {/* Navigation — spaces of the active domain */}
         <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col scroll-smooth px-3 pt-4">
           <nav className="flex flex-col gap-1.5 w-full">
-            <div
-              className={`flex flex-col transition-all duration-200 overflow-hidden rounded-lg relative ${
-                pathname.startsWith(domain.href) ? "bg-[var(--item-bg)]" : "hover:bg-surface-hover"
-              }`}
-              style={{ "--item-bg": color.bgActive } as React.CSSProperties}
+            <motion.div
+              initial={false}
+              animate={{
+                height: isExpanded ? "auto" : 0,
+                opacity: isExpanded ? 1 : 0,
+              }}
+              transition={SUBMENU_TRANSITION}
+              style={{ overflow: "hidden" }}
             >
-              {pathname.startsWith(domain.href) && (
-                <div
-                  className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full"
-                  style={{ backgroundColor: color.text }}
-                />
-              )}
-              <div className="flex items-center w-full">
-                <Link href={domain.href} className="flex-1 flex items-center h-11">
-                  <motion.div
-                    initial={false}
-                    animate={{ paddingLeft: isExpanded ? 12 : 10 }}
-                    transition={SIDEBAR_SPRING}
-                    className="flex items-center w-full h-full"
-                  >
-                    <div className="w-9 h-9 flex items-center justify-center shrink-0 rounded-lg">
-                      <DomainIcon
-                        size={18}
-                        style={{ color: color.text }}
-                        strokeWidth={2.5}
-                        className="transition-colors duration-200"
-                      />
-                    </div>
-                    <motion.div
-                      initial={false}
-                      animate={{ opacity: isExpanded ? 1 : 0, x: isExpanded ? 0 : -8 }}
-                      transition={LABEL_TRANSITION}
-                      className="ml-3 overflow-hidden flex items-center gap-2"
-                      style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-                    >
-                      <span
-                        className="text-note font-medium whitespace-nowrap text-caption uppercase tracking-wider font-mono"
-                        style={{ color: color.text }}
-                      >
-                        {domain.label} Space
-                      </span>
-                    </motion.div>
-                  </motion.div>
-                </Link>
+              <div className="flex flex-col gap-0.5">
+                {domain.spaces.map((space) => {
+                  const SpaceIcon = space.icon;
+                  const accent = space.accent;
+                  const color = {
+                    text: accent,
+                    bgActive: `${accent}12`,
+                    borderActive: `${accent}30`,
+                  };
 
-                <motion.button
-                  initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0 }}
-                  transition={{ duration: 0.15 }}
-                  onClick={() => setIsOpen((v) => !v)}
-                  className="p-2 transition-colors duration-200 text-text-muted hover:text-text-primary"
-                  style={{ pointerEvents: isExpanded ? "auto" : "none" }}
-                >
-                  <motion.div
-                    initial={false}
-                    animate={{ rotate: isOpen ? 90 : 0 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                  >
-                    <ChevronRight size={14} />
-                  </motion.div>
-                </motion.button>
-              </div>
+                  if (space.pages.length === 1) {
+                    const page = space.pages[0];
+                    const PageIcon = page.icon;
+                    const isActive =
+                      pathname === page.href ||
+                      pathname.startsWith(page.href + "/") ||
+                      (page.href === "/life/journal" && pathname.startsWith("/life/history"));
 
-              <motion.div
-                initial={false}
-                animate={{
-                  height: isExpanded && isOpen ? "auto" : 0,
-                  opacity: isExpanded && isOpen ? 1 : 0,
-                }}
-                transition={SUBMENU_TRANSITION}
-                style={{ overflow: "hidden" }}
-              >
-                <div className="flex flex-col gap-0.5 pl-3 pr-2 pb-2 pt-1">
-                  <div
-                    className="h-px mb-1 transition-colors duration-500"
-                    style={{ backgroundColor: color.borderActive }}
-                  />
-                  {domain.spaces.map((space) => {
-                    const SpaceIcon = space.icon;
-                    if (space.pages.length === 1) {
-                      const page = space.pages[0];
-                      const PageIcon = page.icon;
-                      const isActive =
-                        pathname === page.href ||
-                        pathname.startsWith(page.href + "/") ||
-                        (page.href === "/life/journal" && pathname.startsWith("/life/history"));
-                      return (
+                    return (
+                      <div key={page.href} className="relative">
+                        {isActive && (
+                          <div
+                            className="absolute left-0 top-2 w-0.5 h-5 rounded-r-full"
+                            style={{ backgroundColor: color.text }}
+                          />
+                        )}
                         <Link
-                          key={page.href}
                           href={page.href}
-                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 relative ${
+                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 ${
                             isActive
-                              ? "font-medium text-text-primary"
+                              ? "font-medium"
                               : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                           }`}
                           style={{ color: isActive ? color.text : undefined }}
@@ -254,90 +192,92 @@ export function Sidebar({ user }: SidebarProps) {
                           />
                           <span className="truncate">{page.label}</span>
                         </Link>
-                      );
-                    }
-
-                    const anyPageActive = space.pages.some(
-                      (p) => pathname === p.href || pathname.startsWith(p.href + "/"),
-                    );
-                    return (
-                      <div key={space.label} className="flex flex-col">
-                        <button
-                          onClick={() =>
-                            setOpenSpaces((prev) => {
-                              const next = new Set(prev);
-                              if (next.has(space.label)) next.delete(space.label);
-                              else next.add(space.label);
-                              return next;
-                            })
-                          }
-                          className={`flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 w-full text-left ${
-                            anyPageActive
-                              ? "font-medium text-text-primary"
-                              : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                          }`}
-                          style={{ color: anyPageActive ? color.text : undefined }}
-                        >
-                          <SpaceIcon
-                            size={13}
-                            style={{ color: anyPageActive ? color.text : undefined }}
-                            strokeWidth={anyPageActive ? 2.5 : 2}
-                            className="shrink-0"
-                          />
-                          <span className="truncate flex-1">{space.label}</span>
-                          <motion.div
-                            animate={{ rotate: openSpaces.has(space.label) ? 0 : -90 }}
-                            transition={{ duration: 0.2, ease: "easeInOut" }}
-                          >
-                            <ChevronDown size={12} className="text-text-muted shrink-0" />
-                          </motion.div>
-                        </button>
-                        <AnimatePresence initial={false}>
-                          {openSpaces.has(space.label) && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.18, ease: "easeInOut" }}
-                              className="overflow-hidden"
-                            >
-                              <div className="flex flex-col gap-0.5 pl-2 pb-1">
-                                {space.pages.map((page) => {
-                                  const PageIcon = page.icon;
-                                  const isActive =
-                                    pathname === page.href ||
-                                    pathname.startsWith(page.href + "/");
-                                  return (
-                                    <Link
-                                      key={page.href}
-                                      href={page.href}
-                                      className={`flex items-center gap-3 px-3 py-1.5 rounded-md text-caption transition-colors duration-200 relative ${
-                                        isActive
-                                          ? "font-medium text-text-primary"
-                                          : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-                                      }`}
-                                      style={{ color: isActive ? color.text : undefined }}
-                                    >
-                                      <PageIcon
-                                        size={11}
-                                        style={{ color: isActive ? color.text : undefined }}
-                                        strokeWidth={isActive ? 2.5 : 2}
-                                        className="shrink-0"
-                                      />
-                                      <span className="truncate">{page.label}</span>
-                                    </Link>
-                                  );
-                                })}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </div>
                     );
-                  })}
-                </div>
-              </motion.div>
-            </div>
+                  }
+
+                  const anyPageActive = space.pages.some(
+                    (p) => pathname === p.href || pathname.startsWith(p.href + "/"),
+                  );
+                  return (
+                    <div key={space.label} className="flex flex-col relative">
+                      {anyPageActive && (
+                        <div
+                          className="absolute left-0 top-2.5 w-0.5 h-6 rounded-r-full"
+                          style={{ backgroundColor: color.text }}
+                        />
+                      )}
+                      <button
+                        onClick={() =>
+                          setOpenSpaces((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(space.label)) next.delete(space.label);
+                            else next.add(space.label);
+                            return next;
+                          })
+                        }
+                        className="flex items-center gap-3 px-3 py-2 rounded-md text-caption transition-colors duration-200 w-full text-left"
+                        style={{ color: anyPageActive ? color.text : undefined }}
+                      >
+                        <SpaceIcon
+                          size={13}
+                          style={{ color: anyPageActive ? color.text : undefined }}
+                          strokeWidth={anyPageActive ? 2.5 : 2}
+                          className="shrink-0"
+                        />
+                        <span className="truncate flex-1">{space.label}</span>
+                        <motion.div
+                          animate={{ rotate: openSpaces.has(space.label) ? 0 : -90 }}
+                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                        >
+                          <ChevronDown size={12} className="text-text-muted shrink-0" />
+                        </motion.div>
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {openSpaces.has(space.label) && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.18, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="flex flex-col gap-0.5 pl-2 pb-1">
+                              {space.pages.map((page) => {
+                                const PageIcon = page.icon;
+                                const isActive =
+                                  pathname === page.href ||
+                                  pathname.startsWith(page.href + "/");
+                                return (
+                                  <Link
+                                    key={page.href}
+                                    href={page.href}
+                                    className={`flex items-center gap-3 px-3 py-1.5 rounded-md text-caption transition-colors duration-200 ${
+                                      isActive
+                                        ? "font-medium"
+                                        : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                                    }`}
+                                    style={{ color: isActive ? color.text : undefined }}
+                                  >
+                                    <PageIcon
+                                      size={11}
+                                      style={{ color: isActive ? color.text : undefined }}
+                                      strokeWidth={isActive ? 2.5 : 2}
+                                      className="shrink-0"
+                                    />
+                                    <span className="truncate">{page.label}</span>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
           </nav>
         </div>
 

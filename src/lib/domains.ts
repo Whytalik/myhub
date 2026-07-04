@@ -22,6 +22,8 @@ export interface PageLink {
 export interface Space {
   label: string;
   icon: LucideIcon;
+  accent: string;
+  href: string;
   pages: PageLink[];
 }
 
@@ -45,26 +47,36 @@ export const DOMAINS: Domain[] = [
       {
         label: "Journal",
         icon: BookText,
+        accent: "#6fbfbf",
+        href: "/life/journal",
         pages: [{ href: "/life/journal", label: "Journal", icon: BookText }],
       },
       {
         label: "Habits",
         icon: Zap,
+        accent: "#6fbfbf",
+        href: "/life/habits",
         pages: [{ href: "/life/habits", label: "Habits", icon: Zap }],
       },
       {
         label: "Tasks",
         icon: CheckCircle2,
+        accent: "#6fbfbf",
+        href: "/life/tasks",
         pages: [{ href: "/life/tasks", label: "Tasks", icon: CheckCircle2 }],
       },
       {
         label: "Week",
         icon: CalendarDays,
+        accent: "#6fbfbf",
+        href: "/life/week",
         pages: [{ href: "/life/week", label: "Week", icon: CalendarDays }],
       },
       {
         label: "Review",
         icon: LineChart,
+        accent: "#6fbfbf",
+        href: "/life/review",
         pages: [{ href: "/life/review", label: "Review", icon: LineChart }],
       },
     ],
@@ -79,6 +91,8 @@ export const DOMAINS: Domain[] = [
       {
         label: "Nutrition Space",
         icon: Utensils,
+        accent: "#ff8c00",
+        href: "/health/nutrition",
         pages: [
           { href: "/health/nutrition", label: "Daily", icon: Utensils },
           { href: "/health/nutrition/meal-prep", label: "Meal Prep", icon: ClipboardList },
@@ -88,6 +102,8 @@ export const DOMAINS: Domain[] = [
       {
         label: "Training Space",
         icon: Dumbbell,
+        accent: "#e87d88",
+        href: "/health/training",
         pages: [
           { href: "/health/training", label: "Plans", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
