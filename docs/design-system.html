@@ -3,56 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>myhub Design System Sandbox — 5 Focus Aesthetics</title>
-  
+  <title>myhub Design System — macOS Sonoma Minimalist</title>
+
   <!-- Tailwind CSS Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Dynamic Font Loader Helpers -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            accent: {
-              blue: '#3b82f6',
-              emerald: '#22c55e',
-              orange: '#f97316',
-              red: '#ef4444',
-            }
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
-    /* CSS custom properties driving the entire design system dynamically */
+    /* macOS Sonoma Minimalist -- the chosen design system. See docs/design-system.md
+       for the written spec and src/app/globals.css for the real Tailwind v4 tokens
+       this showcase mirrors. */
     :root {
-      --current-accent: #3b82f6;
-      --current-accent-muted: rgba(59, 130, 246, 0.08);
-      --font-sans: 'Geist Sans', 'Inter', 'system-ui', sans-serif;
-      --font-mono: 'Geist Mono', 'SF Mono', monospace;
-      
-      --bg-canvas: #09090b;
-      --bg-surface: #121215;
-      --bg-elevated: #18181b;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --border-radius-card: 8px;
-      --border-radius-control: 6px;
-      --shadow: none;
-      --focus-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
-      
-      --bg-accent-life: #6fbfbf;
-      --bg-accent-nutrition: #ff8c00;
-      --bg-accent-training: #e87d88;
-    }
-
-    /* 1. macOS Sonoma Theme */
-    body.theme-macos {
+      --current-accent: #007aff;
+      --current-accent-muted: rgba(0, 122, 255, 0.08);
       --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
       --font-mono: SFMono-Regular, SF Mono, Menlo, monospace;
+
       --bg-canvas: #1c1c1e;
       --bg-surface: rgba(30, 30, 30, 0.45);
       --bg-elevated: rgba(45, 45, 45, 0.85);
@@ -62,88 +27,12 @@
       --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
       --focus-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
       --backdrop-blur: blur(25px);
-    }
-    body.theme-macos .glass-panel {
-      background: rgba(30, 30, 30, 0.5) !important;
-      backdrop-filter: blur(25px) !important;
-      -webkit-backdrop-filter: blur(25px) !important;
-      border-color: rgba(255, 255, 255, 0.08) !important;
-    }
-    body.theme-macos .glass-elevated {
-      background: rgba(45, 45, 45, 0.85) !important;
-      backdrop-filter: blur(25px) !important;
-      -webkit-backdrop-filter: blur(25px) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.6) !important;
+
+      --bg-accent-life: #6fbfbf;
+      --bg-accent-nutrition: #ff8c00;
+      --bg-accent-training: #e87d88;
     }
 
-    /* 2. Nordic Cold Theme */
-    body.theme-nordic {
-      --font-sans: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --bg-canvas: #0b0f17;
-      --bg-surface: #0f172a;
-      --bg-elevated: #1e293b;
-      --border-color: #334155;
-      --border-radius-card: 6px;
-      --border-radius-control: 4px;
-      --shadow: 0 4px 12px rgba(0,0,0,0.4);
-      --focus-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
-    }
-    body.theme-nordic .glass-panel {
-      background: #0f172a !important;
-      border-color: #334155 !important;
-    }
-    body.theme-nordic .glass-elevated {
-      background: #1e293b !important;
-      border-color: #475569 !important;
-    }
-
-    /* 3. Slate Minimalist (Monochrome Focus) */
-    body.theme-slate {
-      --font-sans: 'Inter', sans-serif;
-      --font-mono: 'Geist Mono', monospace;
-      --bg-canvas: #0f172a;
-      --bg-surface: #1e293b;
-      --bg-elevated: #334155;
-      --border-color: rgba(255, 255, 255, 0.05);
-      --border-radius-card: 8px;
-      --border-radius-control: 6px;
-      --shadow: none;
-      --focus-shadow: 0 0 0 2px rgba(148, 163, 184, 0.2);
-    }
-    body.theme-slate .glass-panel {
-      background: #1e293b !important;
-      border-color: rgba(255, 255, 255, 0.05) !important;
-    }
-    body.theme-slate .glass-elevated {
-      background: #334155 !important;
-      border-color: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    /* 4. Warm Cozy Dark Theme */
-    body.theme-warm {
-      --font-sans: 'Outfit', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --bg-canvas: #12100e;
-      --bg-surface: #1c1917;
-      --bg-elevated: #292524;
-      --border-color: rgba(214, 211, 209, 0.08);
-      --border-radius-card: 10px;
-      --border-radius-control: 8px;
-      --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-      --focus-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
-    }
-    body.theme-warm .glass-panel {
-      background: #1c1917 !important;
-      border-color: rgba(214, 211, 209, 0.08) !important;
-    }
-    body.theme-warm .glass-elevated {
-      background: #292524 !important;
-      border-color: rgba(214, 211, 209, 0.12) !important;
-    }
-
-    /* Font Family Overrides */
     .font-sans, body {
       font-family: var(--font-sans) !important;
     }
@@ -151,73 +40,24 @@
       font-family: var(--font-mono) !important;
     }
 
-    /* Border Radius Overrides */
-    body.theme-linear .rounded-2xl, body.theme-linear .rounded-xl, body.theme-linear .rounded-lg {
-      border-radius: 8px !important;
-    }
-    body.theme-linear .rounded, body.theme-linear .rounded-md {
-      border-radius: 6px !important;
-    }
-
-    body.theme-macos .rounded-2xl {
-      border-radius: 16px !important;
-    }
-    body.theme-macos .rounded-xl, body.theme-macos .rounded-lg {
-      border-radius: 12px !important;
-    }
-    body.theme-macos .rounded, body.theme-macos .rounded-md {
-      border-radius: 8px !important;
-    }
-
-    body.theme-nordic .rounded-2xl, body.theme-nordic .rounded-xl, body.theme-nordic .rounded-lg {
-      border-radius: 6px !important;
-    }
-    body.theme-nordic .rounded, body.theme-nordic .rounded-md {
-      border-radius: 4px !important;
-    }
-
-    body.theme-slate .rounded-2xl, body.theme-slate .rounded-xl, body.theme-slate .rounded-lg {
-      border-radius: 8px !important;
-    }
-    body.theme-slate .rounded, body.theme-slate .rounded-md {
-      border-radius: 6px !important;
-    }
-
-    body.theme-warm .rounded-2xl {
-      border-radius: 12px !important;
-    }
-    body.theme-warm .rounded-xl, body.theme-warm .rounded-lg {
-      border-radius: 10px !important;
-    }
-    body.theme-warm .rounded, body.theme-warm .rounded-md {
-      border-radius: 8px !important;
-    }
-
-    /* Layout application styles */
     body {
       background-color: var(--bg-canvas);
       color: #e4e4e7;
       font-family: var(--font-sans);
-      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     .accent-transition {
       transition: all 0.2s ease-in-out;
     }
 
-    /* Theme Dynamic Panels */
     .glass-panel {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-card);
       box-shadow: var(--shadow);
-      backdrop-filter: var(--backdrop-blur, none);
-      -webkit-backdrop-filter: var(--backdrop-blur, none);
+      backdrop-filter: var(--backdrop-blur);
+      -webkit-backdrop-filter: var(--backdrop-blur);
       transition: all 0.2s ease;
-    }
-
-    .glass-panel:hover {
-      border-color: var(--border-color);
     }
 
     .glass-elevated {
@@ -225,8 +65,8 @@
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-card);
       box-shadow: var(--shadow);
-      backdrop-filter: var(--backdrop-blur, none);
-      -webkit-backdrop-filter: var(--backdrop-blur, none);
+      backdrop-filter: var(--backdrop-blur);
+      -webkit-backdrop-filter: var(--backdrop-blur);
       transition: all 0.2s ease;
     }
 
@@ -244,7 +84,6 @@
       box-shadow: var(--focus-shadow);
     }
 
-    /* Custom Checkbox styles */
     .custom-check:checked + .custom-check-box {
       background-color: var(--current-accent);
       border-color: var(--current-accent);
@@ -264,22 +103,23 @@
   </div>
 
   <div class="relative max-w-7xl mx-auto px-6 pt-16 z-10">
-    
-    <!-- Top Control Bar (Style & Space Swappers) -->
+
+    <!-- Header -->
     <header class="flex flex-col gap-6 pb-8 border-b border-[var(--border-color)] mb-12">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design sandbox v2.1</span>
+            <span class="font-mono text-xs uppercase tracking-widest text-zinc-500">myhub design system</span>
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           </div>
-          <h1 class="text-3xl font-extrabold tracking-tight text-white">Interactive Aesthetics Sandbox</h1>
-          <p id="theme-description" class="text-zinc-400 mt-1 max-w-xl text-sm">
-            Select one of the 5 aesthetics below to transform the typography, layout, borders, buttons, and high-fidelity sidebar mockup.
+          <h1 class="text-3xl font-extrabold tracking-tight text-white">macOS Sonoma Minimalist</h1>
+          <p class="text-zinc-400 mt-1 max-w-xl text-sm">
+            Warm dark slate backdrops, frosted glass panels, spacious rounded layouts, and elegant system typography.
+            See <span class="font-mono text-zinc-300">docs/design-system.md</span> for the full written spec.
           </p>
         </div>
 
-        <!-- Space Context Accent Swappers -->
+        <!-- Space Context Accent Swapper -->
         <div class="glass-panel p-2 flex gap-1 self-start">
           <button onclick="setSpace('general')" id="btn-general" class="px-3 py-1.5 rounded-lg font-mono text-[10px] uppercase tracking-wider font-bold accent-transition bg-[var(--current-accent)] text-black">
             General
@@ -292,33 +132,13 @@
           </button>
         </div>
       </div>
-
-      <!-- Theme Switcher Buttons -->
-      <div class="flex flex-wrap gap-2 items-center border-t border-[var(--border-color)] pt-6">
-        <span class="text-xs font-mono font-semibold text-zinc-500 mr-2 uppercase tracking-wide">Choose Style:</span>
-        <button onclick="switchTheme('linear')" id="theme-btn-linear" class="px-4 py-2 rounded-md text-xs font-semibold border-2 border-accent-blue bg-accent-blue/10 text-white transition-all">
-          1. Linear Calm Density
-        </button>
-        <button onclick="switchTheme('macos')" id="theme-btn-macos" class="px-4 py-2 rounded-md text-xs font-semibold border border-zinc-700 bg-zinc-800/40 text-zinc-400 hover:text-zinc-200 transition-all">
-          2. macOS Sonoma
-        </button>
-        <button onclick="switchTheme('nordic')" id="theme-btn-nordic" class="px-4 py-2 rounded-md text-xs font-semibold border border-zinc-700 bg-zinc-800/40 text-zinc-400 hover:text-zinc-200 transition-all">
-          3. Nordic Cold
-        </button>
-        <button onclick="switchTheme('slate')" id="theme-btn-slate" class="px-4 py-2 rounded-md text-xs font-semibold border border-zinc-700 bg-zinc-800/40 text-zinc-400 hover:text-zinc-200 transition-all">
-          4. Slate Minimalist
-        </button>
-        <button onclick="switchTheme('warm')" id="theme-btn-warm" class="px-4 py-2 rounded-md text-xs font-semibold border border-zinc-700 bg-zinc-800/40 text-zinc-400 hover:text-zinc-200 transition-all">
-          5. Warm Cozy Dark
-        </button>
-      </div>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      
+
       <!-- Left sidebar (High Fidelity App Sidebar Preview) -->
       <aside class="lg:col-span-4 glass-panel flex flex-col justify-between overflow-hidden select-none" style="height: 600px;">
-        
+
         <!-- Brand Header -->
         <div class="h-16 flex items-center justify-between px-5 border-b border-[var(--border-color)] flex-shrink-0">
           <div class="flex items-center gap-2.5">
@@ -332,7 +152,7 @@
 
         <!-- Navigation / Collapsible Spaces Mock -->
         <div class="flex-1 overflow-y-auto px-3 py-4 space-y-3">
-          
+
           <!-- 1. Operations/Life Space container -->
           <div class="flex flex-col space-y-1 rounded-lg p-1.5 border border-[var(--border-color)] bg-white/[0.01]">
             <div class="flex items-center justify-between px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--bg-accent-life)]">
@@ -411,7 +231,7 @@
           <div class="flex items-center gap-2 mb-6">
             <span class="font-mono text-[var(--current-accent)] font-bold text-xs uppercase tracking-wider">Aesthetic Colors</span>
           </div>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="glass-panel p-4 flex items-center justify-between">
               <div class="flex items-center gap-4">
@@ -499,10 +319,10 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             <div class="glass-panel p-6 flex flex-col gap-4">
               <span class="font-mono text-[10px] text-[var(--current-accent)] font-bold block border-b border-[var(--border-color)] pb-2 uppercase tracking-wide">Fields</span>
-              
+
               <div class="flex flex-col gap-1.5">
                 <label class="text-[10px] font-bold text-zinc-400 uppercase tracking-wide">Task Title</label>
                 <input type="text" placeholder="Buy fresh greens..." class="h-9 w-full glass-input px-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-650 focus:outline-none">
@@ -546,7 +366,7 @@
                 <div class="h-9 w-full glass-input px-3 py-1.5 text-xs text-zinc-300 flex items-center justify-between cursor-pointer">
                   <span>Search food...</span>
                 </div>
-                
+
                 <div class="glass-elevated p-2 flex flex-col gap-0.5 mt-1 shadow-xl z-20">
                   <div class="px-2 py-1.5 rounded text-[11px] bg-[var(--current-accent-muted)] text-[var(--current-accent)] font-semibold cursor-pointer">Oats (100g)</div>
                   <div class="px-2 py-1.5 rounded text-[11px] text-zinc-400 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">Banana (1pc)</div>
@@ -592,82 +412,22 @@
   </div>
 
   <script>
-    // Style settings mappings for each of the 5 aesthetics
-    const THEME_INFO = {
-      linear: {
-        description: "1. Linear Calm Density: Solid dark surfaces, sharp 1px borders, compact sans-serif typography, high content density.",
-        fonts: { sans: "'Geist Sans', 'Inter', sans-serif", url: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" }
-      },
-      macos: {
-        description: "2. macOS Sonoma: Warmer dark slate shades, spacious rounded layouts, translucent overlays, elegant system typography.",
-        fonts: { sans: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", url: "" }
-      },
-      nordic: {
-        description: "3. Nordic Cold (Ice & Steel): Slate-blue background tones, light border outlines, Outfit fonts, cyan focus points.",
-        fonts: { sans: "'Outfit', sans-serif", url: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" }
-      },
-      slate: {
-        description: "4. Slate Minimalist: Muted dark slate tones (#0f172a / #1e293b), extremely calm monochrome layout, minimal distraction.",
-        fonts: { sans: "'Inter', sans-serif", url: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" }
-      },
-      warm: {
-        description: "5. Warm Cozy Dark: Cozy Stone/Warm Amber scheme (#12100e / #1c1917), soft warm borders, extremely relaxing for night-time reviews.",
-        fonts: { sans: "'Outfit', sans-serif", url: "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" }
-      }
-    };
-
-    function loadGoogleFont(url) {
-      if (!url) return;
-      if (!document.querySelector(`link[href="${url}"]`)) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = url;
-        document.head.appendChild(link);
-      }
-    }
-
-    function switchTheme(theme) {
-      // Clear theme classes on body
-      document.body.classList.remove('theme-linear', 'theme-macos', 'theme-nordic', 'theme-slate', 'theme-warm');
-      if (theme !== 'linear') {
-        document.body.classList.add('theme-' + theme);
-      }
-
-      // Load font if needed
-      const info = THEME_INFO[theme];
-      if (info.fonts.url) {
-        loadGoogleFont(info.fonts.url);
-      }
-
-      // Update text descriptions
-      document.getElementById('theme-description').innerText = info.description;
-
-      // Update button highlights
-      const themes = ['linear', 'macos', 'nordic', 'slate', 'warm'];
-      themes.forEach(t => {
-        const btn = document.getElementById('theme-btn-' + t);
-        if (t === theme) {
-          btn.className = "px-4 py-2 rounded-md text-xs font-semibold border-2 border-accent-blue bg-accent-blue/10 text-white transition-all";
-        } else {
-          btn.className = "px-4 py-2 rounded-md text-xs font-semibold border border-zinc-700 bg-zinc-800/40 text-zinc-400 hover:text-zinc-200 transition-all";
-        }
-      });
-    }
-
+    // Space accent swapper -- demonstrates the per-domain accent tokens
+    // (accent-life / accent-nutrition / accent-training in src/app/globals.css).
     function setSpace(space) {
       const root = document.documentElement;
       const btnGeneral = document.getElementById('btn-general');
       const btnLife = document.getElementById('btn-life');
       const btnHealth = document.getElementById('btn-health');
-      
+
       const btns = [btnGeneral, btnLife, btnHealth];
       btns.forEach(btn => {
         btn.className = "px-3 py-1.5 rounded-lg font-mono text-[10px] uppercase tracking-wider font-bold accent-transition text-zinc-400 hover:text-zinc-200";
       });
 
       if (space === 'general') {
-        root.style.setProperty('--current-accent', '#3b82f6');
-        root.style.setProperty('--current-accent-muted', 'rgba(59, 130, 246, 0.08)');
+        root.style.setProperty('--current-accent', '#007aff');
+        root.style.setProperty('--current-accent-muted', 'rgba(0, 122, 255, 0.08)');
         btnGeneral.className = "px-3 py-1.5 rounded-lg font-mono text-[10px] uppercase tracking-wider font-bold accent-transition bg-blue-500 text-black";
       } else if (space === 'life') {
         root.style.setProperty('--current-accent', '#6fbfbf');

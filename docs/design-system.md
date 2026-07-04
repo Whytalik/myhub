@@ -2,6 +2,8 @@
 
 **myhub** is the user's personal digital environment. This design system is inspired by the premium, spacious, translucent glassmorphism aesthetics of **macOS Sonoma**. It features warm dark slate backdrops, frosted glass panels, spacious rounded layout systems, and elegant system typography.
 
+> Visual showcase: `docs/design-system.html` (open in a browser). It renders exactly this system — no other aesthetic variants. Real Tailwind v4 tokens live in `src/app/globals.css`; this doc and the HTML showcase should stay in sync with that file.
+
 ---
 
 ## 🎨 1. Hierarchy & Color Palette
