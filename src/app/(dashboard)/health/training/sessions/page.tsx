@@ -7,7 +7,7 @@ import * as trainingSessionService from "@/features/health/training/services/tra
 import type { TrainingSessionSummaryData } from "@/features/health/training/types";
 
 export const metadata: Metadata = {
-  title: "Training — History",
+  title: "Training — Sessions",
 };
 
 export default async function TrainingHistoryPage() {
@@ -26,9 +26,9 @@ export default async function TrainingHistoryPage() {
         breadcrumb={[
           { label: "health space", href: "/health" },
           { label: "training", href: "/health/training" },
-          { label: "history" },
+          { label: "sessions" },
         ]}
-        title="History"
+        title="Sessions"
       />
       <TrainingHistoryClient
         initialSessions={sessions as unknown as TrainingSessionSummaryData[]}

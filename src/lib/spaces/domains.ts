@@ -86,7 +86,7 @@ export const DOMAINS: Domain[] = [
         pages: [
           { href: "/health/training", label: "Plan", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
-          { href: "/health/training/sessions", label: "History", icon: LineChart },
+          { href: "/health/training/sessions", label: "Sessions", icon: LineChart },
         ],
       },
     ],
