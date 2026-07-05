@@ -84,9 +84,9 @@ export const DOMAINS: Domain[] = [
         accent: "#e87d88",
         href: "/health/training",
         pages: [
-          { href: "/health/training", label: "Plans", icon: ClipboardList },
+          { href: "/health/training", label: "Plan", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
-          { href: "/health/training/history", label: "History", icon: LineChart },
+          { href: "/health/training/sessions", label: "History", icon: LineChart },
         ],
       },
     ],
