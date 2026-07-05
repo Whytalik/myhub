@@ -10,6 +10,7 @@ DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 FIVE_H=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 WEEK=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+EMAIL=$(claude auth status 2>/dev/null | jq -r '.email // empty')
 
 GREEN='\033[32m'; YELLOW='\033[33m'; RED='\033[31m'; CYAN='\033[36m'; GRAY='\033[90m'; RESET='\033[0m'
 
@@ -26,7 +27,9 @@ render_bar() {
   printf "${GRAY}%3s${RESET} ${color}%s${RESET} %3d%%\n" "$label" "$bar" "$rounded"
 }
 
-echo -e "${CYAN}[$MODEL]${RESET} 📁 ${DIR##*/}"
+EMAIL_SUFFIX=""
+[ -n "$EMAIL" ] && EMAIL_SUFFIX=" ${GRAY}${EMAIL}${RESET}"
+echo -e "${CYAN}[$MODEL]${RESET} 📁 ${DIR##*/}${EMAIL_SUFFIX}"
 render_bar "ctx" "$PCT"
 [ -n "$FIVE_H" ] && render_bar "5h" "$FIVE_H"
 [ -n "$WEEK" ] && render_bar "7d" "$WEEK"
