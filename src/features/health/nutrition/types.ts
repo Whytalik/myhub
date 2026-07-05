@@ -31,6 +31,8 @@ export interface DayPlan {
   note?: string;
 }
 
+export type ShoppingDay = "sun" | "wed";
+
 export interface ShoppingItem {
   id: string;
   name: string;
@@ -38,6 +40,7 @@ export interface ShoppingItem {
   note?: string;
   options?: string[];
   price?: number;
+  buyDay: ShoppingDay;
 }
 
 export interface ShoppingCategory {

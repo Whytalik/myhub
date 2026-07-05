@@ -3,8 +3,25 @@
 import { useSyncExternalStore } from "react";
 import { Check, RotateCcw } from "lucide-react";
 import { SHOPPING_LIST } from "../data";
+import type { ShoppingCategory, ShoppingDay } from "../types";
 
 const STORAGE_KEY = "nutrition-shopping-v1";
+
+const TRIPS: { day: ShoppingDay; title: string; hint: string }[] = [
+  {
+    day: "sun",
+    title: "Неділя",
+    hint: "Закупка перед міл-препом — м'ясо на весь тиждень + непсувні товари",
+  },
+  { day: "wed", title: "Середа", hint: "Свіжі продукти на другу половину тижня" },
+];
+
+function categoriesForDay(day: ShoppingDay): ShoppingCategory[] {
+  return SHOPPING_LIST.map((category) => ({
+    ...category,
+    items: category.items.filter((item) => item.buyDay === day),
+  })).filter((category) => category.items.length > 0);
+}
 
 type CheckedMap = Record<string, boolean>;
 
@@ -41,6 +58,99 @@ function write(next: CheckedMap) {
 }
 
 const TOTAL_ITEMS = SHOPPING_LIST.reduce((sum, category) => sum + category.items.length, 0);
+
+function categoryCost(categories: ShoppingCategory[]): number {
+  return categories.reduce(
+    (sum, category) =>
+      sum + category.items.reduce((itemSum, item) => itemSum + (item.price || 0), 0),
+    0,
+  );
+}
+
+function CategoryList({
+  categories,
+  checked,
+  onToggle,
+}: {
+  categories: ShoppingCategory[];
+  checked: CheckedMap;
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-4">
+      {categories.map((category) => (
+        <div key={category.id} className="glass-card p-4 flex flex-col gap-2">
+          <span className="text-label">{category.title}</span>
+          <ul className="flex flex-col gap-1">
+            {category.items.map((item) => {
+              const isChecked = !!checked[item.id];
+              const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
+                isChecked
+                  ? "bg-accent-nutrition border-accent-nutrition text-white"
+                  : "border-white/[0.15]"
+              }`;
+              const nameClass = `text-sm ${isChecked ? "text-zinc-500 line-through" : "text-zinc-200"}`;
+
+              return (
+                <li key={item.id} className="flex flex-col gap-1">
+                  <button
+                    onClick={() => onToggle(item.id)}
+                    className="flex items-start gap-2.5 py-1.5 text-left w-full"
+                  >
+                    <span className={checkboxClass}>
+                      {isChecked && <Check size={11} strokeWidth={3} />}
+                    </span>
+                    <span className="flex flex-col min-w-0">
+                      <span className={nameClass}>
+                        {item.name}
+                        {item.qty && <span className="text-zinc-500"> — {item.qty}</span>}
+                        {item.price && (
+                          <span className="font-mono text-xs text-zinc-500 ml-1.5">
+                            ~{item.price} ₴
+                          </span>
+                        )}
+                      </span>
+                      {item.note && <span className="text-caption">{item.note}</span>}
+                    </span>
+                  </button>
+
+                  {item.options && item.options.length > 0 && (
+                    <ul className="flex flex-col gap-1 pl-6">
+                      {item.options.map((option, idx) => {
+                        const optionId = `${item.id}-opt-${idx}`;
+                        const isOptChecked = !!checked[optionId];
+                        const optCheckboxClass = `flex items-center justify-center w-3.5 h-3.5 rounded border shrink-0 transition-colors duration-150 ${
+                          isOptChecked
+                            ? "bg-accent-nutrition border-accent-nutrition text-white"
+                            : "border-white/[0.15]"
+                        }`;
+                        const optTextClass = `text-xs ${isOptChecked ? "text-zinc-500 line-through" : "text-zinc-400"}`;
+
+                        return (
+                          <li key={idx}>
+                            <button
+                              onClick={() => onToggle(optionId)}
+                              className="flex items-center gap-2 py-1 text-left"
+                            >
+                              <span className={optCheckboxClass}>
+                                {isOptChecked && <Check size={9} strokeWidth={3.5} />}
+                              </span>
+                              <span className={optTextClass}>{option}</span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function ShoppingList() {
   const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -108,78 +218,23 @@ export function ShoppingList() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
-        {SHOPPING_LIST.map((category) => (
-          <div key={category.id} className="glass-card p-4 flex flex-col gap-2">
-            <span className="text-label">{category.title}</span>
-            <ul className="flex flex-col gap-1">
-              {category.items.map((item) => {
-                const isChecked = !!checked[item.id];
-                const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
-                  isChecked
-                    ? "bg-accent-nutrition border-accent-nutrition text-white"
-                    : "border-white/[0.15]"
-                }`;
-                const nameClass = `text-sm ${isChecked ? "text-zinc-500 line-through" : "text-zinc-200"}`;
+      {TRIPS.map(({ day, title, hint }) => {
+        const categories = categoriesForDay(day);
+        const tripCost = categoryCost(categories);
 
-                return (
-                  <li key={item.id} className="flex flex-col gap-1">
-                    <button
-                      onClick={() => toggle(item.id)}
-                      className="flex items-start gap-2.5 py-1.5 text-left w-full"
-                    >
-                      <span className={checkboxClass}>
-                        {isChecked && <Check size={11} strokeWidth={3} />}
-                      </span>
-                      <span className="flex flex-col min-w-0">
-                        <span className={nameClass}>
-                          {item.name}
-                          {item.qty && <span className="text-zinc-500"> — {item.qty}</span>}
-                          {item.price && (
-                            <span className="font-mono text-xs text-zinc-500 ml-1.5">
-                              ~{item.price} ₴
-                            </span>
-                          )}
-                        </span>
-                        {item.note && <span className="text-caption">{item.note}</span>}
-                      </span>
-                    </button>
-
-                    {item.options && item.options.length > 0 && (
-                      <ul className="flex flex-col gap-1 pl-6">
-                        {item.options.map((option, idx) => {
-                          const optionId = `${item.id}-opt-${idx}`;
-                          const isOptChecked = !!checked[optionId];
-                          const optCheckboxClass = `flex items-center justify-center w-3.5 h-3.5 rounded border shrink-0 transition-colors duration-150 ${
-                            isOptChecked
-                              ? "bg-accent-nutrition border-accent-nutrition text-white"
-                              : "border-white/[0.15]"
-                          }`;
-                          const optTextClass = `text-xs ${isOptChecked ? "text-zinc-500 line-through" : "text-zinc-400"}`;
-
-                          return (
-                            <li key={idx}>
-                              <button
-                                onClick={() => toggle(optionId)}
-                                className="flex items-center gap-2 py-1 text-left"
-                              >
-                                <span className={optCheckboxClass}>
-                                  {isOptChecked && <Check size={9} strokeWidth={3.5} />}
-                                </span>
-                                <span className={optTextClass}>{option}</span>
-                              </button>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+        return (
+          <div key={day} className="flex flex-col gap-3">
+            <div className="flex items-baseline justify-between gap-2 px-1">
+              <div>
+                <span className="text-panel-title">{title}</span>
+                <p className="text-caption">{hint}</p>
+              </div>
+              <span className="font-mono text-xs text-zinc-500 shrink-0">~{tripCost} ₴</span>
+            </div>
+            <CategoryList categories={categories} checked={checked} onToggle={toggle} />
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
