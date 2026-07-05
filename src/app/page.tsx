@@ -1,13 +1,22 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { Sparkles } from "lucide-react";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/actions/button";
 
-export default async function RootPage() {
+async function AuthGate() {
   const session = await auth();
   if (session?.user) redirect("/life");
 
+  return (
+    <Link href="/login" className="w-full">
+      <Button className="w-full shadow-md">Увійти</Button>
+    </Link>
+  );
+}
+
+export default function RootPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-canvas relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -27,9 +36,9 @@ export default async function RootPage() {
 
         <p className="text-sm text-zinc-400">Особистий простір для життя, звичок і харчування.</p>
 
-        <Link href="/login" className="w-full">
-          <Button className="w-full shadow-md">Увійти</Button>
-        </Link>
+        <Suspense fallback={<div className="h-10 w-full" />}>
+          <AuthGate />
+        </Suspense>
       </div>
     </div>
   );
