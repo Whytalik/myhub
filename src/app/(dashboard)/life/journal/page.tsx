@@ -8,7 +8,7 @@ import * as taskService from "@/features/life/services/task-service";
 import * as habitService from "@/features/life/services/habit-service";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
-import type { DailyEntryData, HabitData, DayType } from "@/features/life/types";
+import type { DailyEntryData, HabitData } from "@/features/life/types";
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { History } from "lucide-react";
@@ -124,7 +124,7 @@ export default async function JournalPage({
         allTasks={allTasks}
         spheres={spheres}
         habits={habits as unknown as HabitData[]}
-        scheduledDayType={schedule ? (schedule.dayType as DayType) : undefined}
+        scheduledTrainingDayName={schedule?.trainingDay?.name ?? undefined}
       />
     </div>
   );

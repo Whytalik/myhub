@@ -137,7 +137,7 @@ exports.Prisma.WeekTemplateScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   dayOfWeek: 'dayOfWeek',
-  dayType: 'dayType',
+  trainingDayId: 'trainingDayId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -4,6 +4,7 @@ export const scheduleRepository = {
   findByDayOfWeek(userId: string, dayOfWeek: number) {
     return prisma.weekTemplate.findUnique({
       where: { userId_dayOfWeek: { userId, dayOfWeek } },
+      include: { trainingDay: true },
     });
   },
 
@@ -11,14 +12,16 @@ export const scheduleRepository = {
     return prisma.weekTemplate.findMany({
       where: { userId },
       orderBy: { dayOfWeek: "asc" },
+      include: { trainingDay: true },
     });
   },
 
-  upsert(userId: string, dayOfWeek: number, dayType: string) {
+  upsert(userId: string, dayOfWeek: number, trainingDayId: string | null) {
     return prisma.weekTemplate.upsert({
       where: { userId_dayOfWeek: { userId, dayOfWeek } },
-      create: { userId, dayOfWeek, dayType },
-      update: { dayType },
+      create: { userId, dayOfWeek, trainingDayId },
+      update: { trainingDayId },
+      include: { trainingDay: true },
     });
   },
 };

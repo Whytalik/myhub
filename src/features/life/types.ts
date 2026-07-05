@@ -217,19 +217,18 @@ export interface ReorderHabitsInput {
   orderedHabitIds: string[];
 }
 
-export type DayType = "regular" | "train_am" | "train_pm";
-
 export interface DayScheduleData {
   id: string;
   dayOfWeek: number;
-  dayType: DayType;
+  trainingDayId: string | null;
+  trainingDayName: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface UpsertDayScheduleInput {
   dayOfWeek: number;
-  dayType: DayType;
+  trainingDayId: string | null;
 }
 
 export interface ReviewEntryData {

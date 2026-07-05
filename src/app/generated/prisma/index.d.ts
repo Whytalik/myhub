@@ -4015,11 +4015,13 @@ export namespace Prisma {
   export type TrainingDayCountOutputType = {
     exercises: number
     sessions: number
+    weekTemplates: number
   }
 
   export type TrainingDayCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exercises?: boolean | TrainingDayCountOutputTypeCountExercisesArgs
     sessions?: boolean | TrainingDayCountOutputTypeCountSessionsArgs
+    weekTemplates?: boolean | TrainingDayCountOutputTypeCountWeekTemplatesArgs
   }
 
   // Custom InputTypes
@@ -4045,6 +4047,13 @@ export namespace Prisma {
    */
   export type TrainingDayCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TrainingSessionWhereInput
+  }
+
+  /**
+   * TrainingDayCountOutputType without action
+   */
+  export type TrainingDayCountOutputTypeCountWeekTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeekTemplateWhereInput
   }
 
 
@@ -5751,7 +5760,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     dayOfWeek: number | null
-    dayType: string | null
+    trainingDayId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5760,7 +5769,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     dayOfWeek: number | null
-    dayType: string | null
+    trainingDayId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5769,7 +5778,7 @@ export namespace Prisma {
     id: number
     userId: number
     dayOfWeek: number
-    dayType: number
+    trainingDayId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5788,7 +5797,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     dayOfWeek?: true
-    dayType?: true
+    trainingDayId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5797,7 +5806,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     dayOfWeek?: true
-    dayType?: true
+    trainingDayId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5806,7 +5815,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     dayOfWeek?: true
-    dayType?: true
+    trainingDayId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5902,7 +5911,7 @@ export namespace Prisma {
     id: string
     userId: string
     dayOfWeek: number
-    dayType: string
+    trainingDayId: string | null
     createdAt: Date
     updatedAt: Date
     _count: WeekTemplateCountAggregateOutputType | null
@@ -5930,62 +5939,69 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     dayOfWeek?: boolean
-    dayType?: boolean
+    trainingDayId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }, ExtArgs["result"]["weekTemplate"]>
 
   export type WeekTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     dayOfWeek?: boolean
-    dayType?: boolean
+    trainingDayId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }, ExtArgs["result"]["weekTemplate"]>
 
   export type WeekTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
     dayOfWeek?: boolean
-    dayType?: boolean
+    trainingDayId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }, ExtArgs["result"]["weekTemplate"]>
 
   export type WeekTemplateSelectScalar = {
     id?: boolean
     userId?: boolean
     dayOfWeek?: boolean
-    dayType?: boolean
+    trainingDayId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WeekTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "dayType" | "createdAt" | "updatedAt", ExtArgs["result"]["weekTemplate"]>
+  export type WeekTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "trainingDayId" | "createdAt" | "updatedAt", ExtArgs["result"]["weekTemplate"]>
   export type WeekTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }
   export type WeekTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }
   export type WeekTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
   }
 
   export type $WeekTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WeekTemplate"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      trainingDay: Prisma.$TrainingDayPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
       dayOfWeek: number
-      dayType: string
+      trainingDayId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["weekTemplate"]>
@@ -6383,6 +6399,7 @@ export namespace Prisma {
   export interface Prisma__WeekTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    trainingDay<T extends WeekTemplate$trainingDayArgs<ExtArgs> = {}>(args?: Subset<T, WeekTemplate$trainingDayArgs<ExtArgs>>): Prisma__TrainingDayClient<$Result.GetResult<Prisma.$TrainingDayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6415,7 +6432,7 @@ export namespace Prisma {
     readonly id: FieldRef<"WeekTemplate", 'String'>
     readonly userId: FieldRef<"WeekTemplate", 'String'>
     readonly dayOfWeek: FieldRef<"WeekTemplate", 'Int'>
-    readonly dayType: FieldRef<"WeekTemplate", 'String'>
+    readonly trainingDayId: FieldRef<"WeekTemplate", 'String'>
     readonly createdAt: FieldRef<"WeekTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"WeekTemplate", 'DateTime'>
   }
@@ -6816,6 +6833,25 @@ export namespace Prisma {
      * Limit how many WeekTemplates to delete.
      */
     limit?: number
+  }
+
+  /**
+   * WeekTemplate.trainingDay
+   */
+  export type WeekTemplate$trainingDayArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrainingDay
+     */
+    select?: TrainingDaySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrainingDay
+     */
+    omit?: TrainingDayOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrainingDayInclude<ExtArgs> | null
+    where?: TrainingDayWhereInput
   }
 
   /**
@@ -33019,6 +33055,7 @@ export namespace Prisma {
     plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
     exercises?: boolean | TrainingDay$exercisesArgs<ExtArgs>
     sessions?: boolean | TrainingDay$sessionsArgs<ExtArgs>
+    weekTemplates?: boolean | TrainingDay$weekTemplatesArgs<ExtArgs>
     _count?: boolean | TrainingDayCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["trainingDay"]>
 
@@ -33065,6 +33102,7 @@ export namespace Prisma {
     plan?: boolean | TrainingPlanDefaultArgs<ExtArgs>
     exercises?: boolean | TrainingDay$exercisesArgs<ExtArgs>
     sessions?: boolean | TrainingDay$sessionsArgs<ExtArgs>
+    weekTemplates?: boolean | TrainingDay$weekTemplatesArgs<ExtArgs>
     _count?: boolean | TrainingDayCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TrainingDayIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -33083,6 +33121,7 @@ export namespace Prisma {
       plan: Prisma.$TrainingPlanPayload<ExtArgs>
       exercises: Prisma.$TrainingDayExercisePayload<ExtArgs>[]
       sessions: Prisma.$TrainingSessionPayload<ExtArgs>[]
+      weekTemplates: Prisma.$WeekTemplatePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -33491,6 +33530,7 @@ export namespace Prisma {
     plan<T extends TrainingPlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TrainingPlanDefaultArgs<ExtArgs>>): Prisma__TrainingPlanClient<$Result.GetResult<Prisma.$TrainingPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     exercises<T extends TrainingDay$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDay$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends TrainingDay$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDay$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    weekTemplates<T extends TrainingDay$weekTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, TrainingDay$weekTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -33974,6 +34014,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TrainingSessionScalarFieldEnum | TrainingSessionScalarFieldEnum[]
+  }
+
+  /**
+   * TrainingDay.weekTemplates
+   */
+  export type TrainingDay$weekTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WeekTemplate
+     */
+    select?: WeekTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WeekTemplate
+     */
+    omit?: WeekTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WeekTemplateInclude<ExtArgs> | null
+    where?: WeekTemplateWhereInput
+    orderBy?: WeekTemplateOrderByWithRelationInput | WeekTemplateOrderByWithRelationInput[]
+    cursor?: WeekTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WeekTemplateScalarFieldEnum | WeekTemplateScalarFieldEnum[]
   }
 
   /**
@@ -37764,7 +37828,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     dayOfWeek: 'dayOfWeek',
-    dayType: 'dayType',
+    trainingDayId: 'trainingDayId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -38564,20 +38628,22 @@ export namespace Prisma {
     id?: StringFilter<"WeekTemplate"> | string
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
-    dayType?: StringFilter<"WeekTemplate"> | string
+    trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    trainingDay?: XOR<TrainingDayNullableScalarRelationFilter, TrainingDayWhereInput> | null
   }
 
   export type WeekTemplateOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
     dayOfWeek?: SortOrder
-    dayType?: SortOrder
+    trainingDayId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    trainingDay?: TrainingDayOrderByWithRelationInput
   }
 
   export type WeekTemplateWhereUniqueInput = Prisma.AtLeast<{
@@ -38588,17 +38654,18 @@ export namespace Prisma {
     NOT?: WeekTemplateWhereInput | WeekTemplateWhereInput[]
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
-    dayType?: StringFilter<"WeekTemplate"> | string
+    trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    trainingDay?: XOR<TrainingDayNullableScalarRelationFilter, TrainingDayWhereInput> | null
   }, "id" | "userId_dayOfWeek">
 
   export type WeekTemplateOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     dayOfWeek?: SortOrder
-    dayType?: SortOrder
+    trainingDayId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WeekTemplateCountOrderByAggregateInput
@@ -38615,7 +38682,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"WeekTemplate"> | string
     userId?: StringWithAggregatesFilter<"WeekTemplate"> | string
     dayOfWeek?: IntWithAggregatesFilter<"WeekTemplate"> | number
-    dayType?: StringWithAggregatesFilter<"WeekTemplate"> | string
+    trainingDayId?: StringNullableWithAggregatesFilter<"WeekTemplate"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
   }
@@ -40522,6 +40589,7 @@ export namespace Prisma {
     plan?: XOR<TrainingPlanScalarRelationFilter, TrainingPlanWhereInput>
     exercises?: TrainingDayExerciseListRelationFilter
     sessions?: TrainingSessionListRelationFilter
+    weekTemplates?: WeekTemplateListRelationFilter
   }
 
   export type TrainingDayOrderByWithRelationInput = {
@@ -40537,6 +40605,7 @@ export namespace Prisma {
     plan?: TrainingPlanOrderByWithRelationInput
     exercises?: TrainingDayExerciseOrderByRelationAggregateInput
     sessions?: TrainingSessionOrderByRelationAggregateInput
+    weekTemplates?: WeekTemplateOrderByRelationAggregateInput
   }
 
   export type TrainingDayWhereUniqueInput = Prisma.AtLeast<{
@@ -40555,6 +40624,7 @@ export namespace Prisma {
     plan?: XOR<TrainingPlanScalarRelationFilter, TrainingPlanWhereInput>
     exercises?: TrainingDayExerciseListRelationFilter
     sessions?: TrainingSessionListRelationFilter
+    weekTemplates?: WeekTemplateListRelationFilter
   }, "id">
 
   export type TrainingDayOrderByWithAggregationInput = {
@@ -41061,17 +41131,17 @@ export namespace Prisma {
   export type WeekTemplateCreateInput = {
     id?: string
     dayOfWeek: number
-    dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekTemplatesInput
+    trainingDay?: TrainingDayCreateNestedOneWithoutWeekTemplatesInput
   }
 
   export type WeekTemplateUncheckedCreateInput = {
     id?: string
     userId: string
     dayOfWeek: number
-    dayType?: string
+    trainingDayId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41079,17 +41149,17 @@ export namespace Prisma {
   export type WeekTemplateUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekTemplatesNestedInput
+    trainingDay?: TrainingDayUpdateOneWithoutWeekTemplatesNestedInput
   }
 
   export type WeekTemplateUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
+    trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41098,7 +41168,7 @@ export namespace Prisma {
     id?: string
     userId: string
     dayOfWeek: number
-    dayType?: string
+    trainingDayId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41106,7 +41176,6 @@ export namespace Prisma {
   export type WeekTemplateUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41115,7 +41184,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
+    trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -43208,6 +43277,7 @@ export namespace Prisma {
     plan: TrainingPlanCreateNestedOneWithoutDaysInput
     exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUncheckedCreateInput = {
@@ -43221,6 +43291,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUpdateInput = {
@@ -43234,6 +43305,7 @@ export namespace Prisma {
     plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
     exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateInput = {
@@ -43247,6 +43319,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayCreateManyInput = {
@@ -43988,6 +44061,11 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type TrainingDayNullableScalarRelationFilter = {
+    is?: TrainingDayWhereInput | null
+    isNot?: TrainingDayWhereInput | null
+  }
+
   export type WeekTemplateUserIdDayOfWeekCompoundUniqueInput = {
     userId: string
     dayOfWeek: number
@@ -43997,7 +44075,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     dayOfWeek?: SortOrder
-    dayType?: SortOrder
+    trainingDayId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -44010,7 +44088,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     dayOfWeek?: SortOrder
-    dayType?: SortOrder
+    trainingDayId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -44019,7 +44097,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     dayOfWeek?: SortOrder
-    dayType?: SortOrder
+    trainingDayId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -45564,11 +45642,6 @@ export namespace Prisma {
     targetDistanceMeters?: SortOrder
   }
 
-  export type TrainingDayNullableScalarRelationFilter = {
-    is?: TrainingDayWhereInput | null
-    isNot?: TrainingDayWhereInput | null
-  }
-
   export type TrainingSessionCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -46521,6 +46594,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type TrainingDayCreateNestedOneWithoutWeekTemplatesInput = {
+    create?: XOR<TrainingDayCreateWithoutWeekTemplatesInput, TrainingDayUncheckedCreateWithoutWeekTemplatesInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutWeekTemplatesInput
+    connect?: TrainingDayWhereUniqueInput
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -46535,6 +46614,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutWeekTemplatesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWeekTemplatesInput, UserUpdateWithoutWeekTemplatesInput>, UserUncheckedUpdateWithoutWeekTemplatesInput>
+  }
+
+  export type TrainingDayUpdateOneWithoutWeekTemplatesNestedInput = {
+    create?: XOR<TrainingDayCreateWithoutWeekTemplatesInput, TrainingDayUncheckedCreateWithoutWeekTemplatesInput>
+    connectOrCreate?: TrainingDayCreateOrConnectWithoutWeekTemplatesInput
+    upsert?: TrainingDayUpsertWithoutWeekTemplatesInput
+    disconnect?: TrainingDayWhereInput | boolean
+    delete?: TrainingDayWhereInput | boolean
+    connect?: TrainingDayWhereUniqueInput
+    update?: XOR<XOR<TrainingDayUpdateToOneWithWhereWithoutWeekTemplatesInput, TrainingDayUpdateWithoutWeekTemplatesInput>, TrainingDayUncheckedUpdateWithoutWeekTemplatesInput>
   }
 
   export type UserCreateNestedOneWithoutPushSubscriptionsInput = {
@@ -47742,6 +47831,13 @@ export namespace Prisma {
     connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
   }
 
+  export type WeekTemplateCreateNestedManyWithoutTrainingDayInput = {
+    create?: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput> | WeekTemplateCreateWithoutTrainingDayInput[] | WeekTemplateUncheckedCreateWithoutTrainingDayInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutTrainingDayInput | WeekTemplateCreateOrConnectWithoutTrainingDayInput[]
+    createMany?: WeekTemplateCreateManyTrainingDayInputEnvelope
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+  }
+
   export type TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput = {
     create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
     connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
@@ -47754,6 +47850,13 @@ export namespace Prisma {
     connectOrCreate?: TrainingSessionCreateOrConnectWithoutDayInput | TrainingSessionCreateOrConnectWithoutDayInput[]
     createMany?: TrainingSessionCreateManyDayInputEnvelope
     connect?: TrainingSessionWhereUniqueInput | TrainingSessionWhereUniqueInput[]
+  }
+
+  export type WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput = {
+    create?: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput> | WeekTemplateCreateWithoutTrainingDayInput[] | WeekTemplateUncheckedCreateWithoutTrainingDayInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutTrainingDayInput | WeekTemplateCreateOrConnectWithoutTrainingDayInput[]
+    createMany?: WeekTemplateCreateManyTrainingDayInputEnvelope
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutTrainingDaysNestedInput = {
@@ -47800,6 +47903,20 @@ export namespace Prisma {
     deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
   }
 
+  export type WeekTemplateUpdateManyWithoutTrainingDayNestedInput = {
+    create?: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput> | WeekTemplateCreateWithoutTrainingDayInput[] | WeekTemplateUncheckedCreateWithoutTrainingDayInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutTrainingDayInput | WeekTemplateCreateOrConnectWithoutTrainingDayInput[]
+    upsert?: WeekTemplateUpsertWithWhereUniqueWithoutTrainingDayInput | WeekTemplateUpsertWithWhereUniqueWithoutTrainingDayInput[]
+    createMany?: WeekTemplateCreateManyTrainingDayInputEnvelope
+    set?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    disconnect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    delete?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    update?: WeekTemplateUpdateWithWhereUniqueWithoutTrainingDayInput | WeekTemplateUpdateWithWhereUniqueWithoutTrainingDayInput[]
+    updateMany?: WeekTemplateUpdateManyWithWhereWithoutTrainingDayInput | WeekTemplateUpdateManyWithWhereWithoutTrainingDayInput[]
+    deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
+  }
+
   export type TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput = {
     create?: XOR<TrainingDayExerciseCreateWithoutDayInput, TrainingDayExerciseUncheckedCreateWithoutDayInput> | TrainingDayExerciseCreateWithoutDayInput[] | TrainingDayExerciseUncheckedCreateWithoutDayInput[]
     connectOrCreate?: TrainingDayExerciseCreateOrConnectWithoutDayInput | TrainingDayExerciseCreateOrConnectWithoutDayInput[]
@@ -47826,6 +47943,20 @@ export namespace Prisma {
     update?: TrainingSessionUpdateWithWhereUniqueWithoutDayInput | TrainingSessionUpdateWithWhereUniqueWithoutDayInput[]
     updateMany?: TrainingSessionUpdateManyWithWhereWithoutDayInput | TrainingSessionUpdateManyWithWhereWithoutDayInput[]
     deleteMany?: TrainingSessionScalarWhereInput | TrainingSessionScalarWhereInput[]
+  }
+
+  export type WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput = {
+    create?: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput> | WeekTemplateCreateWithoutTrainingDayInput[] | WeekTemplateUncheckedCreateWithoutTrainingDayInput[]
+    connectOrCreate?: WeekTemplateCreateOrConnectWithoutTrainingDayInput | WeekTemplateCreateOrConnectWithoutTrainingDayInput[]
+    upsert?: WeekTemplateUpsertWithWhereUniqueWithoutTrainingDayInput | WeekTemplateUpsertWithWhereUniqueWithoutTrainingDayInput[]
+    createMany?: WeekTemplateCreateManyTrainingDayInputEnvelope
+    set?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    disconnect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    delete?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    connect?: WeekTemplateWhereUniqueInput | WeekTemplateWhereUniqueInput[]
+    update?: WeekTemplateUpdateWithWhereUniqueWithoutTrainingDayInput | WeekTemplateUpdateWithWhereUniqueWithoutTrainingDayInput[]
+    updateMany?: WeekTemplateUpdateManyWithWhereWithoutTrainingDayInput | WeekTemplateUpdateManyWithWhereWithoutTrainingDayInput[]
+    deleteMany?: WeekTemplateScalarWhereInput | WeekTemplateScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTrainingDayExercisesInput = {
@@ -48852,15 +48983,15 @@ export namespace Prisma {
   export type WeekTemplateCreateWithoutUserInput = {
     id?: string
     dayOfWeek: number
-    dayType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    trainingDay?: TrainingDayCreateNestedOneWithoutWeekTemplatesInput
   }
 
   export type WeekTemplateUncheckedCreateWithoutUserInput = {
     id?: string
     dayOfWeek: number
-    dayType?: string
+    trainingDayId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -48957,6 +49088,7 @@ export namespace Prisma {
     plan: TrainingPlanCreateNestedOneWithoutDaysInput
     exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUncheckedCreateWithoutUserInput = {
@@ -48969,6 +49101,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayCreateOrConnectWithoutUserInput = {
@@ -49540,7 +49673,7 @@ export namespace Prisma {
     id?: StringFilter<"WeekTemplate"> | string
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
-    dayType?: StringFilter<"WeekTemplate"> | string
+    trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
   }
@@ -49809,6 +49942,37 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
   }
 
+  export type TrainingDayCreateWithoutWeekTemplatesInput = {
+    id?: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTrainingDaysInput
+    plan: TrainingPlanCreateNestedOneWithoutDaysInput
+    exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayUncheckedCreateWithoutWeekTemplatesInput = {
+    id?: string
+    userId: string
+    planId: string
+    name: string
+    notes?: string | null
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+    sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+  }
+
+  export type TrainingDayCreateOrConnectWithoutWeekTemplatesInput = {
+    where: TrainingDayWhereUniqueInput
+    create: XOR<TrainingDayCreateWithoutWeekTemplatesInput, TrainingDayUncheckedCreateWithoutWeekTemplatesInput>
+  }
+
   export type UserUpsertWithoutWeekTemplatesInput = {
     update: XOR<UserUpdateWithoutWeekTemplatesInput, UserUncheckedUpdateWithoutWeekTemplatesInput>
     create: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
@@ -49880,6 +50044,43 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TrainingDayUpsertWithoutWeekTemplatesInput = {
+    update: XOR<TrainingDayUpdateWithoutWeekTemplatesInput, TrainingDayUncheckedUpdateWithoutWeekTemplatesInput>
+    create: XOR<TrainingDayCreateWithoutWeekTemplatesInput, TrainingDayUncheckedCreateWithoutWeekTemplatesInput>
+    where?: TrainingDayWhereInput
+  }
+
+  export type TrainingDayUpdateToOneWithWhereWithoutWeekTemplatesInput = {
+    where?: TrainingDayWhereInput
+    data: XOR<TrainingDayUpdateWithoutWeekTemplatesInput, TrainingDayUncheckedUpdateWithoutWeekTemplatesInput>
+  }
+
+  export type TrainingDayUpdateWithoutWeekTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
+    plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
+    exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+  }
+
+  export type TrainingDayUncheckedUpdateWithoutWeekTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    planId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+    sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
   }
 
   export type UserCreateWithoutPushSubscriptionsInput = {
@@ -53868,6 +54069,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutTrainingDaysInput
     exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUncheckedCreateWithoutPlanInput = {
@@ -53880,6 +54082,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
     sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayCreateOrConnectWithoutPlanInput = {
@@ -54151,6 +54354,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type WeekTemplateCreateWithoutTrainingDayInput = {
+    id?: string
+    dayOfWeek: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutWeekTemplatesInput
+  }
+
+  export type WeekTemplateUncheckedCreateWithoutTrainingDayInput = {
+    id?: string
+    userId: string
+    dayOfWeek: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WeekTemplateCreateOrConnectWithoutTrainingDayInput = {
+    where: WeekTemplateWhereUniqueInput
+    create: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput>
+  }
+
+  export type WeekTemplateCreateManyTrainingDayInputEnvelope = {
+    data: WeekTemplateCreateManyTrainingDayInput | WeekTemplateCreateManyTrainingDayInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutTrainingDaysInput = {
     update: XOR<UserUpdateWithoutTrainingDaysInput, UserUncheckedUpdateWithoutTrainingDaysInput>
     create: XOR<UserCreateWithoutTrainingDaysInput, UserUncheckedCreateWithoutTrainingDaysInput>
@@ -54289,6 +54518,22 @@ export namespace Prisma {
     data: XOR<TrainingSessionUpdateManyMutationInput, TrainingSessionUncheckedUpdateManyWithoutDayInput>
   }
 
+  export type WeekTemplateUpsertWithWhereUniqueWithoutTrainingDayInput = {
+    where: WeekTemplateWhereUniqueInput
+    update: XOR<WeekTemplateUpdateWithoutTrainingDayInput, WeekTemplateUncheckedUpdateWithoutTrainingDayInput>
+    create: XOR<WeekTemplateCreateWithoutTrainingDayInput, WeekTemplateUncheckedCreateWithoutTrainingDayInput>
+  }
+
+  export type WeekTemplateUpdateWithWhereUniqueWithoutTrainingDayInput = {
+    where: WeekTemplateWhereUniqueInput
+    data: XOR<WeekTemplateUpdateWithoutTrainingDayInput, WeekTemplateUncheckedUpdateWithoutTrainingDayInput>
+  }
+
+  export type WeekTemplateUpdateManyWithWhereWithoutTrainingDayInput = {
+    where: WeekTemplateScalarWhereInput
+    data: XOR<WeekTemplateUpdateManyMutationInput, WeekTemplateUncheckedUpdateManyWithoutTrainingDayInput>
+  }
+
   export type UserCreateWithoutTrainingDayExercisesInput = {
     id?: string
     name?: string | null
@@ -54366,6 +54611,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutTrainingDaysInput
     plan: TrainingPlanCreateNestedOneWithoutDaysInput
     sessions?: TrainingSessionCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUncheckedCreateWithoutExercisesInput = {
@@ -54378,6 +54624,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sessions?: TrainingSessionUncheckedCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayCreateOrConnectWithoutExercisesInput = {
@@ -54514,6 +54761,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
     plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
     sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateWithoutExercisesInput = {
@@ -54526,6 +54774,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type ExerciseUpsertWithoutDayExercisesInput = {
@@ -54646,6 +54895,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutTrainingDaysInput
     plan: TrainingPlanCreateNestedOneWithoutDaysInput
     exercises?: TrainingDayExerciseCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayUncheckedCreateWithoutSessionsInput = {
@@ -54658,6 +54908,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     exercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutDayInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutTrainingDayInput
   }
 
   export type TrainingDayCreateOrConnectWithoutSessionsInput = {
@@ -54803,6 +55054,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
     plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
     exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateWithoutSessionsInput = {
@@ -54815,6 +55067,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type SetLogUpsertWithWhereUniqueWithoutSessionInput = {
@@ -55296,7 +55549,7 @@ export namespace Prisma {
   export type WeekTemplateCreateManyUserInput = {
     id?: string
     dayOfWeek: number
-    dayType?: string
+    trainingDayId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55927,15 +56180,15 @@ export namespace Prisma {
   export type WeekTemplateUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    trainingDay?: TrainingDayUpdateOneWithoutWeekTemplatesNestedInput
   }
 
   export type WeekTemplateUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
+    trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55943,7 +56196,7 @@ export namespace Prisma {
   export type WeekTemplateUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
-    dayType?: StringFieldUpdateOperationsInput | string
+    trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56033,6 +56286,7 @@ export namespace Prisma {
     plan?: TrainingPlanUpdateOneRequiredWithoutDaysNestedInput
     exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateWithoutUserInput = {
@@ -56045,6 +56299,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateManyWithoutUserInput = {
@@ -57235,6 +57490,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutTrainingDaysNestedInput
     exercises?: TrainingDayExerciseUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateWithoutPlanInput = {
@@ -57247,6 +57503,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     exercises?: TrainingDayExerciseUncheckedUpdateManyWithoutDayNestedInput
     sessions?: TrainingSessionUncheckedUpdateManyWithoutDayNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutTrainingDayNestedInput
   }
 
   export type TrainingDayUncheckedUpdateManyWithoutPlanInput = {
@@ -57282,6 +57539,14 @@ export namespace Prisma {
     status?: string
     durationSeconds?: number | null
     notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WeekTemplateCreateManyTrainingDayInput = {
+    id?: string
+    userId: string
+    dayOfWeek: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57365,6 +57630,30 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeekTemplateUpdateWithoutTrainingDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWeekTemplatesNestedInput
+  }
+
+  export type WeekTemplateUncheckedUpdateWithoutTrainingDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WeekTemplateUncheckedUpdateManyWithoutTrainingDayInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

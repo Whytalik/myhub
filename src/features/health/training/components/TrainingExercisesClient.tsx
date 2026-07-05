@@ -2,12 +2,30 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/actions/button";
+import { SectionHeader } from "@/components/ui/display/section-header";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { toast } from "sonner";
 import { Plus, Dumbbell, Edit2, Trash2 } from "lucide-react";
 import type { ExerciseData } from "../types";
 import { deleteExerciseAction } from "../actions/exercise-actions";
 import { ExerciseFormDialog } from "./ExerciseFormDialog";
+
+const UNGROUPED_LABEL = "Ungrouped";
+
+function groupByMuscle(exercises: ExerciseData[]): [string, ExerciseData[]][] {
+  const groups = new Map<string, ExerciseData[]>();
+  for (const exercise of exercises) {
+    const key = exercise.muscleGroup?.trim() || UNGROUPED_LABEL;
+    const group = groups.get(key);
+    if (group) group.push(exercise);
+    else groups.set(key, [exercise]);
+  }
+  return [...groups.entries()].sort(([a], [b]) => {
+    if (a === UNGROUPED_LABEL) return 1;
+    if (b === UNGROUPED_LABEL) return -1;
+    return a.localeCompare(b);
+  });
+}
 
 interface TrainingExercisesClientProps {
   initialExercises: ExerciseData[];
@@ -31,6 +49,7 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
   };
 
   const displayed = [...activeExercises, ...(showArchived ? archivedExercises : [])];
+  const groupedExercises = groupByMuscle(displayed);
 
   return (
     <div className="flex flex-col gap-4">
@@ -71,40 +90,49 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {displayed.map((ex) => (
-            <div key={ex.id} className="glass-card p-3 flex flex-col gap-1.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-sm font-medium text-zinc-100 truncate">{ex.name}</span>
-                <div className="flex items-center gap-0.5 shrink-0">
-                  <button
-                    onClick={() => {
-                      setSelected(ex);
-                      setIsFormOpen(true);
-                    }}
-                    className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
-                  >
-                    <Edit2 size={12} />
-                  </button>
-                  <button
-                    onClick={() => setToDelete(ex.id)}
-                    className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
-                  >
-                    <Trash2 size={12} />
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {ex.muscleGroup && (
-                  <span className="text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400">
-                    {ex.muscleGroup}
-                  </span>
-                )}
-                {ex.equipment && (
-                  <span className="text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400">
-                    {ex.equipment}
-                  </span>
-                )}
+        <div className="flex flex-col gap-5">
+          {groupedExercises.map(([muscleGroup, exercises]) => (
+            <div key={muscleGroup} className="flex flex-col gap-2">
+              <SectionHeader icon={Dumbbell} label={muscleGroup}>
+                <span className="text-label">{exercises.length}</span>
+              </SectionHeader>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {exercises.map((ex) => (
+                  <div key={ex.id} className="glass-card p-3 flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-medium text-zinc-100 truncate">{ex.name}</span>
+                      <div className="flex items-center gap-0.5 shrink-0">
+                        <button
+                          onClick={() => {
+                            setSelected(ex);
+                            setIsFormOpen(true);
+                          }}
+                          className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
+                        >
+                          <Edit2 size={12} />
+                        </button>
+                        <button
+                          onClick={() => setToDelete(ex.id)}
+                          className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {ex.equipment && (
+                        <span className="text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400">
+                          {ex.equipment}
+                        </span>
+                      )}
+                      {ex.archived && (
+                        <span className="text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-500">
+                          archived
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

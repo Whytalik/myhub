@@ -26,7 +26,6 @@ import type {
   TaskData,
   LifeSphereData,
   HabitData,
-  DayType,
 } from "../types";
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -50,7 +49,7 @@ interface Props {
   allTasks: TaskData[];
   spheres: LifeSphereData[];
   habits: HabitData[];
-  scheduledDayType?: DayType;
+  scheduledTrainingDayName?: string;
 }
 
 const EVENING_ENERGY_LABELS = [
@@ -78,7 +77,7 @@ export function DailyEntryForm({
   allTasks,
   spheres,
   habits,
-  scheduledDayType,
+  scheduledTrainingDayName,
 }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
   const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
@@ -334,7 +333,7 @@ export function DailyEntryForm({
                   <RoutineSection
                     type="morning"
                     routine={data.morningRoutine ?? null}
-                    scheduledDayType={scheduledDayType}
+                    scheduledTrainingDayName={scheduledTrainingDayName}
                     onChange={patch}
                   />
                 </Suspense>
@@ -466,7 +465,7 @@ export function DailyEntryForm({
                   <RoutineSection
                     type="evening"
                     routine={data.eveningRoutine ?? null}
-                    scheduledDayType={scheduledDayType}
+                    scheduledTrainingDayName={scheduledTrainingDayName}
                     onChange={patch}
                   />
                 </Suspense>

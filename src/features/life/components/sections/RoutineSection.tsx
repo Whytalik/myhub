@@ -13,7 +13,6 @@ import {
   PhoneOff,
 } from "lucide-react";
 import { MORNING_ROUTINE, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
-import type { DayType } from "@/features/life/types";
 
 const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   AlarmClock,
@@ -30,14 +29,14 @@ const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; classNa
 interface Props {
   type: "morning" | "evening";
   routine: RoutineMap | null;
-  scheduledDayType?: DayType;
+  scheduledTrainingDayName?: string;
   onChange: (patch: {
     morningRoutine?: RoutineMap | null;
     eveningRoutine?: RoutineMap | null;
   }) => void;
 }
 
-export function RoutineSection({ type, routine, scheduledDayType, onChange }: Props) {
+export function RoutineSection({ type, routine, scheduledTrainingDayName, onChange }: Props) {
   const map: RoutineMap = routine ?? ({} as RoutineMap);
   const items = type === "morning" ? MORNING_ROUTINE : EVENING_ROUTINE;
 
@@ -47,9 +46,7 @@ export function RoutineSection({ type, routine, scheduledDayType, onChange }: Pr
   const isComplete = total > 0 && done === total;
   const hasValue = done > 0;
 
-  const isTrainingScheduled =
-    (type === "morning" && scheduledDayType === "train_am") ||
-    (type === "evening" && scheduledDayType === "train_pm");
+  const isTrainingScheduled = !!scheduledTrainingDayName;
 
   const toggle = (id: string) => {
     const next = { ...map, [id]: !map[id] };
@@ -81,7 +78,7 @@ export function RoutineSection({ type, routine, scheduledDayType, onChange }: Pr
       {isTrainingScheduled && (
         <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-accent-training/10 text-accent-training text-xs">
           <Dumbbell size={12} />
-          <span>Training day scheduled — custom routine coming soon</span>
+          <span>Training day: {scheduledTrainingDayName}</span>
         </div>
       )}
 
