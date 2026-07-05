@@ -5,16 +5,13 @@ export default auth((req) => {
   const isAuth = !!req.auth;
   const { nextUrl } = req;
 
-  if (nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL(isAuth ? "/life" : "/login", nextUrl));
-  }
-
   if (nextUrl.pathname.startsWith("/home")) {
     return NextResponse.redirect(new URL(isAuth ? "/life" : "/login", nextUrl));
   }
 
   const isAuthRoute = nextUrl.pathname.startsWith("/login");
   const isPublicRoute =
+    nextUrl.pathname === "/" ||
     nextUrl.pathname === "/favicon.ico" ||
     nextUrl.pathname.startsWith("/api/auth");
 
@@ -37,4 +34,3 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
-
