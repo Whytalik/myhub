@@ -115,7 +115,7 @@ export function habitsAdherencePct(habits: HabitData[], range: WeekRange): numbe
   let completions = 0;
   let target = 0;
   for (const habit of active) {
-    target += habit.targetDaysPerWeek;
+    target += habit.scheduledWeekdays.length;
     completions += habit.completions.filter((c) => isInRange(c.date, range)).length;
   }
   if (target === 0) return null;

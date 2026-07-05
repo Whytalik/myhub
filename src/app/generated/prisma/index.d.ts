@@ -15360,12 +15360,12 @@ export namespace Prisma {
 
   export type HabitAvgAggregateOutputType = {
     order: number | null
-    targetDaysPerWeek: number | null
+    scheduledWeekdays: number | null
   }
 
   export type HabitSumAggregateOutputType = {
     order: number | null
-    targetDaysPerWeek: number | null
+    scheduledWeekdays: number[]
   }
 
   export type HabitMinAggregateOutputType = {
@@ -15379,7 +15379,6 @@ export namespace Prisma {
     reminderTime: string | null
     order: number | null
     archived: boolean | null
-    targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
     ifThenPlan: string | null
@@ -15404,7 +15403,6 @@ export namespace Prisma {
     reminderTime: string | null
     order: number | null
     archived: boolean | null
-    targetDaysPerWeek: number | null
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
     ifThenPlan: string | null
@@ -15429,7 +15427,7 @@ export namespace Prisma {
     reminderTime: number
     order: number
     archived: number
-    targetDaysPerWeek: number
+    scheduledWeekdays: number
     sphereLevel: number
     subcategory: number
     ifThenPlan: number
@@ -15447,12 +15445,12 @@ export namespace Prisma {
 
   export type HabitAvgAggregateInputType = {
     order?: true
-    targetDaysPerWeek?: true
+    scheduledWeekdays?: true
   }
 
   export type HabitSumAggregateInputType = {
     order?: true
-    targetDaysPerWeek?: true
+    scheduledWeekdays?: true
   }
 
   export type HabitMinAggregateInputType = {
@@ -15466,7 +15464,6 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
-    targetDaysPerWeek?: true
     sphereLevel?: true
     subcategory?: true
     ifThenPlan?: true
@@ -15491,7 +15488,6 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
-    targetDaysPerWeek?: true
     sphereLevel?: true
     subcategory?: true
     ifThenPlan?: true
@@ -15516,7 +15512,7 @@ export namespace Prisma {
     reminderTime?: true
     order?: true
     archived?: true
-    targetDaysPerWeek?: true
+    scheduledWeekdays?: true
     sphereLevel?: true
     subcategory?: true
     ifThenPlan?: true
@@ -15628,7 +15624,7 @@ export namespace Prisma {
     reminderTime: string | null
     order: number
     archived: boolean
-    targetDaysPerWeek: number
+    scheduledWeekdays: number[]
     sphereLevel: $Enums.SphereLevel | null
     subcategory: string | null
     ifThenPlan: string | null
@@ -15672,7 +15668,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
-    targetDaysPerWeek?: boolean
+    scheduledWeekdays?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
     ifThenPlan?: boolean
@@ -15702,7 +15698,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
-    targetDaysPerWeek?: boolean
+    scheduledWeekdays?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
     ifThenPlan?: boolean
@@ -15730,7 +15726,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
-    targetDaysPerWeek?: boolean
+    scheduledWeekdays?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
     ifThenPlan?: boolean
@@ -15758,7 +15754,7 @@ export namespace Prisma {
     reminderTime?: boolean
     order?: boolean
     archived?: boolean
-    targetDaysPerWeek?: boolean
+    scheduledWeekdays?: boolean
     sphereLevel?: boolean
     subcategory?: boolean
     ifThenPlan?: boolean
@@ -15772,7 +15768,7 @@ export namespace Prisma {
     chainId?: boolean
   }
 
-  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "targetDaysPerWeek" | "sphereLevel" | "subcategory" | "ifThenPlan" | "frictionReduction" | "identityStatement" | "minimalThreshold" | "copingPlan" | "createdAt" | "updatedAt" | "sphereId" | "chainId", ExtArgs["result"]["habit"]>
+  export type HabitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "type" | "anchor" | "action" | "celebration" | "reminderTime" | "order" | "archived" | "scheduledWeekdays" | "sphereLevel" | "subcategory" | "ifThenPlan" | "frictionReduction" | "identityStatement" | "minimalThreshold" | "copingPlan" | "createdAt" | "updatedAt" | "sphereId" | "chainId", ExtArgs["result"]["habit"]>
   export type HabitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sphere?: boolean | Habit$sphereArgs<ExtArgs>
     chain?: boolean | Habit$chainArgs<ExtArgs>
@@ -15810,7 +15806,7 @@ export namespace Prisma {
       reminderTime: string | null
       order: number
       archived: boolean
-      targetDaysPerWeek: number
+      scheduledWeekdays: number[]
       sphereLevel: $Enums.SphereLevel | null
       subcategory: string | null
       ifThenPlan: string | null
@@ -16259,7 +16255,7 @@ export namespace Prisma {
     readonly reminderTime: FieldRef<"Habit", 'String'>
     readonly order: FieldRef<"Habit", 'Int'>
     readonly archived: FieldRef<"Habit", 'Boolean'>
-    readonly targetDaysPerWeek: FieldRef<"Habit", 'Int'>
+    readonly scheduledWeekdays: FieldRef<"Habit", 'Int[]'>
     readonly sphereLevel: FieldRef<"Habit", 'SphereLevel'>
     readonly subcategory: FieldRef<"Habit", 'String'>
     readonly ifThenPlan: FieldRef<"Habit", 'String'>
@@ -37922,7 +37918,7 @@ export namespace Prisma {
     reminderTime: 'reminderTime',
     order: 'order',
     archived: 'archived',
-    targetDaysPerWeek: 'targetDaysPerWeek',
+    scheduledWeekdays: 'scheduledWeekdays',
     sphereLevel: 'sphereLevel',
     subcategory: 'subcategory',
     ifThenPlan: 'ifThenPlan',
@@ -39345,7 +39341,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
-    targetDaysPerWeek?: IntFilter<"Habit"> | number
+    scheduledWeekdays?: IntNullableListFilter<"Habit">
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
     ifThenPlan?: StringNullableFilter<"Habit"> | string | null
@@ -39374,7 +39370,7 @@ export namespace Prisma {
     reminderTime?: SortOrderInput | SortOrder
     order?: SortOrder
     archived?: SortOrder
-    targetDaysPerWeek?: SortOrder
+    scheduledWeekdays?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
     ifThenPlan?: SortOrderInput | SortOrder
@@ -39406,7 +39402,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
-    targetDaysPerWeek?: IntFilter<"Habit"> | number
+    scheduledWeekdays?: IntNullableListFilter<"Habit">
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
     ifThenPlan?: StringNullableFilter<"Habit"> | string | null
@@ -39435,7 +39431,7 @@ export namespace Prisma {
     reminderTime?: SortOrderInput | SortOrder
     order?: SortOrder
     archived?: SortOrder
-    targetDaysPerWeek?: SortOrder
+    scheduledWeekdays?: SortOrder
     sphereLevel?: SortOrderInput | SortOrder
     subcategory?: SortOrderInput | SortOrder
     ifThenPlan?: SortOrderInput | SortOrder
@@ -39468,7 +39464,7 @@ export namespace Prisma {
     reminderTime?: StringNullableWithAggregatesFilter<"Habit"> | string | null
     order?: IntWithAggregatesFilter<"Habit"> | number
     archived?: BoolWithAggregatesFilter<"Habit"> | boolean
-    targetDaysPerWeek?: IntWithAggregatesFilter<"Habit"> | number
+    scheduledWeekdays?: IntNullableListFilter<"Habit">
     sphereLevel?: EnumSphereLevelNullableWithAggregatesFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableWithAggregatesFilter<"Habit"> | string | null
     ifThenPlan?: StringNullableWithAggregatesFilter<"Habit"> | string | null
@@ -41943,7 +41939,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -41970,7 +41966,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -41995,7 +41991,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42022,7 +42018,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42048,7 +42044,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -42072,7 +42068,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42095,7 +42091,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44620,6 +44616,14 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableListFilter<$PrismaModel = never> = {
+    equals?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    has?: number | IntFieldRefInput<$PrismaModel> | null
+    hasEvery?: number[] | ListIntFieldRefInput<$PrismaModel>
+    hasSome?: number[] | ListIntFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type EnumSphereLevelNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.SphereLevel | EnumSphereLevelFieldRefInput<$PrismaModel> | null
     in?: $Enums.SphereLevel[] | ListEnumSphereLevelFieldRefInput<$PrismaModel> | null
@@ -44653,7 +44657,7 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
-    targetDaysPerWeek?: SortOrder
+    scheduledWeekdays?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
     ifThenPlan?: SortOrder
@@ -44669,7 +44673,7 @@ export namespace Prisma {
 
   export type HabitAvgOrderByAggregateInput = {
     order?: SortOrder
-    targetDaysPerWeek?: SortOrder
+    scheduledWeekdays?: SortOrder
   }
 
   export type HabitMaxOrderByAggregateInput = {
@@ -44683,7 +44687,6 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
-    targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
     ifThenPlan?: SortOrder
@@ -44708,7 +44711,6 @@ export namespace Prisma {
     reminderTime?: SortOrder
     order?: SortOrder
     archived?: SortOrder
-    targetDaysPerWeek?: SortOrder
     sphereLevel?: SortOrder
     subcategory?: SortOrder
     ifThenPlan?: SortOrder
@@ -44724,7 +44726,7 @@ export namespace Prisma {
 
   export type HabitSumOrderByAggregateInput = {
     order?: SortOrder
-    targetDaysPerWeek?: SortOrder
+    scheduledWeekdays?: SortOrder
   }
 
   export type EnumSphereLevelNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -46905,6 +46907,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailyEntriesInput, UserUpdateWithoutDailyEntriesInput>, UserUncheckedUpdateWithoutDailyEntriesInput>
   }
 
+  export type HabitCreatescheduledWeekdaysInput = {
+    set: number[]
+  }
+
   export type LifeSphereCreateNestedOneWithoutHabitsInput = {
     create?: XOR<LifeSphereCreateWithoutHabitsInput, LifeSphereUncheckedCreateWithoutHabitsInput>
     connectOrCreate?: LifeSphereCreateOrConnectWithoutHabitsInput
@@ -46935,6 +46941,11 @@ export namespace Prisma {
     connectOrCreate?: HabitCompletionCreateOrConnectWithoutHabitInput | HabitCompletionCreateOrConnectWithoutHabitInput[]
     createMany?: HabitCompletionCreateManyHabitInputEnvelope
     connect?: HabitCompletionWhereUniqueInput | HabitCompletionWhereUniqueInput[]
+  }
+
+  export type HabitUpdatescheduledWeekdaysInput = {
+    set?: number[]
+    push?: number | number[]
   }
 
   export type NullableEnumSphereLevelFieldUpdateOperationsInput = {
@@ -48504,7 +48515,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -48529,7 +48540,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -49238,7 +49249,7 @@ export namespace Prisma {
     reminderTime?: StringNullableFilter<"Habit"> | string | null
     order?: IntFilter<"Habit"> | number
     archived?: BoolFilter<"Habit"> | boolean
-    targetDaysPerWeek?: IntFilter<"Habit"> | number
+    scheduledWeekdays?: IntNullableListFilter<"Habit">
     sphereLevel?: EnumSphereLevelNullableFilter<"Habit"> | $Enums.SphereLevel | null
     subcategory?: StringNullableFilter<"Habit"> | string | null
     ifThenPlan?: StringNullableFilter<"Habit"> | string | null
@@ -50301,7 +50312,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -50327,7 +50338,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -51740,7 +51751,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -51766,7 +51777,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -51889,7 +51900,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -51915,7 +51926,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -51955,7 +51966,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51981,7 +51992,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55174,7 +55185,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -55551,7 +55562,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55576,7 +55587,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55601,7 +55612,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56191,7 +56202,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -56263,7 +56274,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56289,7 +56300,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56314,7 +56325,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56629,7 +56640,7 @@ export namespace Prisma {
     reminderTime?: string | null
     order?: number
     archived?: boolean
-    targetDaysPerWeek?: number
+    scheduledWeekdays?: HabitCreatescheduledWeekdaysInput | number[]
     sphereLevel?: $Enums.SphereLevel | null
     subcategory?: string | null
     ifThenPlan?: string | null
@@ -56652,7 +56663,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56678,7 +56689,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56703,7 +56714,7 @@ export namespace Prisma {
     reminderTime?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     archived?: BoolFieldUpdateOperationsInput | boolean
-    targetDaysPerWeek?: IntFieldUpdateOperationsInput | number
+    scheduledWeekdays?: HabitUpdatescheduledWeekdaysInput | number[]
     sphereLevel?: NullableEnumSphereLevelFieldUpdateOperationsInput | $Enums.SphereLevel | null
     subcategory?: NullableStringFieldUpdateOperationsInput | string | null
     ifThenPlan?: NullableStringFieldUpdateOperationsInput | string | null

@@ -173,7 +173,7 @@ export interface HabitData {
   reminderTime?: string | null;
   archived: boolean;
   order: number;
-  targetDaysPerWeek: number;
+  scheduledWeekdays: number[];
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
   subcategory?: string | null;
@@ -331,7 +331,7 @@ export interface UpsertHabitInput {
   reminderTime?: string | null;
   order?: number;
   archived?: boolean;
-  targetDaysPerWeek?: number;
+  scheduledWeekdays?: number[];
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
   subcategory?: string | null;

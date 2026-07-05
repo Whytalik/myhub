@@ -9,7 +9,7 @@ export const habitSchema = z
     celebration: z.string().optional(),
     reminderTime: z.string().optional(),
     archived: z.boolean().optional(),
-    targetDaysPerWeek: z.number().int().min(1).max(7).optional(),
+    scheduledWeekdays: z.array(z.number().int().min(0).max(6)).min(1).optional(),
     sphereId: z.string().nullable().optional(),
     sphereLevel: z.enum(["MINIMUM", "MEDIUM", "DESIRED"]).nullable().optional(),
     subcategory: z.string().optional(),

@@ -267,7 +267,7 @@ exports.Prisma.HabitScalarFieldEnum = {
   reminderTime: 'reminderTime',
   order: 'order',
   archived: 'archived',
-  targetDaysPerWeek: 'targetDaysPerWeek',
+  scheduledWeekdays: 'scheduledWeekdays',
   sphereLevel: 'sphereLevel',
   subcategory: 'subcategory',
   ifThenPlan: 'ifThenPlan',

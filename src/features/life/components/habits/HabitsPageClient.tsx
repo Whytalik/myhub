@@ -36,10 +36,18 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   const archivedHabits = initialHabits.filter((h) => h.archived);
   const activeChains = initialChains.filter((c) => !c.archived);
 
-  const chainGroups = activeChains.map((chain) => ({
-    chain,
-    habits: activeHabits.filter((h) => h.chainId === chain.id).sort((a, b) => a.order - b.order),
-  }));
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isCompletedToday = (habit: HabitData) =>
+    habit.completions.some((c) => new Date(c.date).getTime() === today.getTime());
+
+  const chainGroups = activeChains.map((chain) => {
+    const habits = activeHabits
+      .filter((h) => h.chainId === chain.id)
+      .sort((a, b) => a.order - b.order);
+    const nextStepIndex = habits.findIndex((h) => !isCompletedToday(h));
+    return { chain, habits, nextStepIndex };
+  });
   const chainedHabitIds = new Set(chainGroups.flatMap((g) => g.habits.map((h) => h.id)));
   const ungroupedHabits = activeHabits.filter((h) => !chainedHabitIds.has(h.id));
 
@@ -165,7 +173,7 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
           </div>
         ) : (
           <div className="flex flex-col gap-5">
-            {chainGroups.map(({ chain, habits }) => (
+            {chainGroups.map(({ chain, habits, nextStepIndex }) => (
               <div key={chain.id} className="glass-card p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -224,7 +232,15 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <HabitCard habit={habit} onEdit={handleEdit} onDelete={handleDelete} />
+                          <HabitCard
+                            habit={habit}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            isNextInChain={index === nextStepIndex}
+                            nextHabitName={
+                              index === nextStepIndex ? habits[index + 1]?.name : undefined
+                            }
+                          />
                         </div>
                       </div>
                     ))}

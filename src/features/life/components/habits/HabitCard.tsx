@@ -5,7 +5,13 @@ import {
   toggleHabitCompletionAction,
   toggleHabitArchivedAction,
 } from "@/features/life/actions/habit-actions";
-import { calculateStreak, getThisWeekCount } from "@/features/life/logic/habit-utils";
+import {
+  calculateStreak,
+  getThisWeekCount,
+  getScheduledCountThisWeek,
+  WEEKDAY_ORDER,
+  WEEKDAY_LABELS,
+} from "@/features/life/logic/habit-utils";
 import type { HabitData } from "@/features/life/types";
 import { toast } from "sonner";
 import {
@@ -29,6 +35,7 @@ import {
   Fingerprint,
   Gauge,
   LifeBuoy,
+  Link2,
 } from "lucide-react";
 import type { SphereLevel } from "@/features/life/types";
 
@@ -58,9 +65,18 @@ interface HabitCardProps {
   onEdit?: (habit: HabitData) => void;
   onDelete?: (id: string) => void;
   date?: Date;
+  isNextInChain?: boolean;
+  nextHabitName?: string;
 }
 
-export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
+export function HabitCard({
+  habit,
+  onEdit,
+  onDelete,
+  date,
+  isNextInChain,
+  nextHabitName,
+}: HabitCardProps) {
   const [isPending, startTransition] = useTransition();
   const [showDetails, setShowDetails] = useState(false);
 
@@ -70,15 +86,19 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
   activeDate.setHours(0, 0, 0, 0);
 
   const isAvoidance = habit.type === "avoidance";
-  const isWeekly = habit.targetDaysPerWeek < 7;
+  const isWeekly = habit.scheduledWeekdays.length < 7;
+  const scheduledDaysLabel = WEEKDAY_ORDER.filter((d) => habit.scheduledWeekdays.includes(d))
+    .map((d) => WEEKDAY_LABELS[d])
+    .join(" ");
 
   const isCompletedOnDate = habit.completions.some(
     (c) => new Date(c.date).getTime() === activeDate.getTime(),
   );
 
-  const streak = calculateStreak(habit.completions, habit.targetDaysPerWeek);
+  const streak = calculateStreak(habit.completions, habit.scheduledWeekdays);
+  const scheduledCountThisWeek = isWeekly ? getScheduledCountThisWeek(habit.scheduledWeekdays) : 0;
   const thisWeekCount = isWeekly ? getThisWeekCount(habit.completions) : 0;
-  const isWeeklyTargetMet = isWeekly && thisWeekCount >= habit.targetDaysPerWeek;
+  const isWeeklyTargetMet = isWeekly && thisWeekCount >= scheduledCountThisWeek;
 
   const handleToggle = () => {
     startTransition(async () => {
@@ -86,7 +106,11 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
       if (result.success) {
         if (!isCompletedOnDate) {
           toast.success(
-            isAvoidance ? "Still clean. Keep going." : "Great job! Keep the streak alive.",
+            isAvoidance
+              ? "Still clean. Keep going."
+              : nextHabitName
+                ? `Great job! Next: ${nextHabitName}`
+                : "Great job! Keep the streak alive.",
           );
         }
       } else {
@@ -113,9 +137,14 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
     : "bg-emerald-500 text-white shadow-sm";
 
   const cardCompleted = isWeekly ? isWeeklyTargetMet : isCompletedOnDate;
+  const showNextBadge = isNextInChain && !cardCompleted;
 
   const cardClass = `glass-card p-4 flex flex-col gap-4 border transition-colors duration-150 ${
-    cardCompleted ? completedBorder : "border-white/[0.06]"
+    cardCompleted
+      ? completedBorder
+      : showNextBadge
+        ? "border-accent/40 ring-1 ring-accent/30"
+        : "border-white/[0.06]"
   }`;
   const titleClass = `text-panel-title ${cardCompleted ? completedText : ""}`;
   const activeDotClass = `w-1.5 h-1.5 rounded-full ${activeDot}`;
@@ -149,11 +178,18 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
               </span>
             </div>
 
+            {showNextBadge && (
+              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-accent/15 text-accent text-[10px] font-mono uppercase tracking-wide">
+                <Link2 size={10} />
+                <span>Next up</span>
+              </div>
+            )}
+
             {isWeekly && (
               <div className={metaChipClass}>
                 <CalendarDays size={10} />
                 <span>
-                  {thisWeekCount}/{habit.targetDaysPerWeek} цього тижня
+                  {thisWeekCount}/{scheduledCountThisWeek} цього тижня ({scheduledDaysLabel})
                 </span>
               </div>
             )}
@@ -161,9 +197,7 @@ export function HabitCard({ habit, onEdit, onDelete, date }: HabitCardProps) {
             {streak > 0 && (
               <div className={metaChipClass}>
                 <Flame size={10} />
-                <span>
-                  {streak} {isWeekly ? "тиж." : "day"} streak
-                </span>
+                <span>{streak} day streak</span>
               </div>
             )}
             {habit.reminderTime && (
