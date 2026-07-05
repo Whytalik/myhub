@@ -33,6 +33,10 @@ import { TrainingPlanFormDialog } from "./TrainingPlanFormDialog";
 import { TrainingDayFormDialog } from "./TrainingDayFormDialog";
 import { DayExerciseFormDialog } from "./DayExerciseFormDialog";
 
+function todayDayOfWeek(): number {
+  return (new Date().getDay() + 6) % 7;
+}
+
 const WEEKDAY_LETTERS = ["M", "T", "W", "T", "F", "S", "S"];
 const WEEKDAY_NAMES = [
   "Monday",
@@ -115,6 +119,7 @@ export function TrainingPlansClient({
 
   const [weekAssignments, setWeekAssignments] =
     useState<Record<number, string | null>>(initialWeekAssignments);
+  const today = todayDayOfWeek();
 
   const [expandedDays, setExpandedDays] = useState<Set<string>>(
     new Set(plan?.days.slice(0, 1).map((d) => d.id) ?? []),
@@ -269,10 +274,14 @@ export function TrainingPlansClient({
               <div className="flex flex-col gap-3">
                 {plan.days.map((day) => {
                   const isDayExpanded = expandedDays.has(day.id);
+                  const isTrainingToday = weekAssignments[today] === day.id;
+                  const dayCardClass = `glass-card p-4 flex flex-col gap-3 border ${
+                    isTrainingToday ? "border-accent-training/40" : "border-white/[0.06]"
+                  }`;
 
                   return (
-                    <div key={day.id} className="glass-card p-4 flex flex-col gap-3">
-                      <div className="flex items-center justify-between gap-3">
+                    <div key={day.id} className={dayCardClass}>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <button
                           onClick={() => toggleDay(day.id)}
                           className="flex items-center gap-3 min-w-0 flex-1 text-left"
@@ -281,8 +290,15 @@ export function TrainingPlansClient({
                             <Dumbbell size={16} />
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-sm font-semibold text-zinc-100 truncate">
-                              {day.name}
+                            <span className="flex items-center gap-1.5">
+                              <span className="text-sm font-semibold text-zinc-100 truncate">
+                                {day.name}
+                              </span>
+                              {isTrainingToday && (
+                                <span className="text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md bg-accent-training/15 text-accent-training shrink-0">
+                                  Today
+                                </span>
+                              )}
                             </span>
                             <span className="text-caption truncate">
                               {day.exercises.length}{" "}
