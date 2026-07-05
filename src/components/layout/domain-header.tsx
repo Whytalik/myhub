@@ -1,20 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useSidebar } from "@/components/providers/sidebar-provider";
-import { Menu, X, Sparkles, BookOpen } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getSpaceFromPath } from "@/lib/spaces/spaces";
 import { DOMAINS, getActiveDomain } from "@/lib/spaces/domains";
-import { GUIDE_DATA } from "@/lib/guide-data";
-import { GuideModal } from "@/components/layout/guide-drawer";
 
 export function DomainHeader() {
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
   const pathname = usePathname();
-  const [guideOpen, setGuideOpen] = useState(false);
-  const hasGuide = !!GUIDE_DATA[getSpaceFromPath(pathname)];
   const activeDomainId = getActiveDomain(pathname).id;
 
   return (
@@ -65,19 +59,7 @@ export function DomainHeader() {
       </div>
 
       {/* Right side Actions (Desktop) */}
-      <div className="hidden md:flex items-center gap-3">
-        {hasGuide && (
-          <button
-            onClick={() => setGuideOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-zinc-400 hover:text-zinc-250 border border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-900/60 outline-none focus:outline-none transition-all duration-150 cursor-pointer shadow-sm"
-          >
-            <BookOpen size={13} className="text-zinc-500" />
-            Guide
-          </button>
-        )}
-      </div>
-
-      <GuideModal isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
+      <div className="hidden md:flex items-center gap-3" />
     </header>
   );
 }
