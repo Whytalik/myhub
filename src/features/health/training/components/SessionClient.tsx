@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
@@ -25,10 +25,45 @@ export function SessionClient({ session }: SessionClientProps) {
   const [status, setStatus] = useState(session.status);
   const [isFinishing, startFinishTransition] = useTransition();
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string } | null>(null);
+  const isCompleted = status === "completed";
+
   const [collapsedExercises, setCollapsedExercises] = useState<Record<string, boolean>>({});
   const [warmupCollapsed, setWarmupCollapsed] = useState(true);
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
 
-  const isCompleted = status === "completed";
+  useEffect(() => {
+    if (isCompleted) {
+      setElapsedSeconds(session.durationSeconds || 0);
+      return;
+    }
+
+    const initialElapsed = Math.max(
+      0,
+      Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000)
+    );
+    setElapsedSeconds(initialElapsed);
+
+    const interval = setInterval(() => {
+      setElapsedSeconds((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isCompleted, session.createdAt, session.durationSeconds]);
+
+  const formatDuration = (totalSeconds: number) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const parts = [];
+    if (hours > 0) {
+      parts.push(hours.toString().padStart(2, "0"));
+    }
+    parts.push(minutes.toString().padStart(2, "0"));
+    parts.push(seconds.toString().padStart(2, "0"));
+
+    return parts.join(":");
+  };
 
   const groups = useMemo(() => {
     const result: { exerciseId: string; exerciseName: string; sets: SetLogData[] }[] = [];
@@ -130,7 +165,13 @@ export function SessionClient({ session }: SessionClientProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-3">
-        <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
+        <div className="flex items-center gap-2.5">
+          <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
+          <span className="text-xs font-mono font-semibold text-zinc-300 flex items-center gap-1.5 bg-white/5 border border-white/[0.06] px-2.5 py-0.5 rounded-md">
+            <span className={`w-1.5 h-1.5 rounded-full ${isCompleted ? "bg-zinc-500" : "bg-emerald-500 animate-pulse"}`}></span>
+            {formatDuration(elapsedSeconds)}
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={() => router.push("/health/training")}>
             Back to training

@@ -6,7 +6,8 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className = "", type, variant = "default", ...props }, ref) => {
-    const baseClass = "glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 w-full [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]";
+    const hasWidth = className.split(" ").some(c => c.startsWith("w-") || c === "flex-1");
+    const baseClass = `glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 ${hasWidth ? "" : "w-full"} [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]`;
     const variantClass = variant === "inline" ? "bg-transparent border-none focus:ring-0 p-0" : "";
     
     return (

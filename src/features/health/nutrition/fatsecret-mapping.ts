@@ -33,6 +33,20 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   mayo: { foodId: "34194", servingId: "56925", servingGrams: 100 },
 
   // TODO: brand/recipe-dependent — fill in manually (uncomment + replace values).
+  //
+  // Raw, not cooked: all portion grams in data.ts are as-purchased/pre-cook weight
+  // (confirmed by cross-checking SHOPPING_LIST totals against macroItems sums — they
+  // match exactly on raw purchase weight). Cooking loses ~20-30% water weight while
+  // total calories stay roughly the same, so a "cooked" FatSecret entry applied to a
+  // raw gram amount overcounts calories. Pick the plain "raw"/no-cook-descriptor food
+  // entry for chickenMarinated / friedChicken / chickenHearts / porkChop — not
+  // "cooked"/"roasted"/"baked"/"broiled" variants.
+  //
+  // Marinade: don't add anything extra for it. Only ~10-30% of marinade liquid is
+  // actually absorbed (rest is discarded), and data.ts already separately tracks the
+  // parts that are fully eaten as their own macroItems/mapping entries (e.g. the
+  // soy-honey glaze for chickenHearts is tracked via soySauce+honey, not baked into
+  // the meat's own macros) — so map these meats as plain unmarinated raw meat.
   // chickenMarinated: { foodId: "", servingId: "", servingGrams: 100 },
   // friedChicken: { foodId: "", servingId: "", servingGrams: 100 },
   // chickenHearts: { foodId: "", servingId: "", servingGrams: 100 },
