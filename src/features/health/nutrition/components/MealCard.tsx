@@ -1,5 +1,4 @@
 import { Coffee, Soup, UtensilsCrossed, Apple } from "lucide-react";
-import { highlightProductMentions } from "../highlight-products";
 import type { Meal, MealType } from "../types";
 
 const MEAL_ICON: Record<MealType, typeof Coffee> = {
@@ -19,9 +18,7 @@ export function MealCard({ meal }: { meal: Meal }) {
       </div>
       <div className="flex flex-col min-w-0">
         <span className="text-label">{meal.label}</span>
-        <span className="text-sm text-zinc-200 truncate">
-          {highlightProductMentions(meal.title)}
-        </span>
+        <span className="text-sm text-zinc-200 truncate">{meal.title}</span>
       </div>
     </div>
   );

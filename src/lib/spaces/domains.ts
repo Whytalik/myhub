@@ -12,6 +12,8 @@ import {
   ClipboardList,
   ShoppingCart,
   Dumbbell,
+  TrendingUp,
+  Scale,
 } from "lucide-react";
 
 export interface PageLink {
@@ -76,6 +78,7 @@ export const DOMAINS: Domain[] = [
           { href: "/health/nutrition", label: "Daily", icon: Utensils },
           { href: "/health/nutrition/meal-prep", label: "Meal Prep", icon: ClipboardList },
           { href: "/health/nutrition/shopping-list", label: "Shopping List", icon: ShoppingCart },
+          { href: "/health/nutrition/profiles", label: "Profiles", icon: Scale },
         ],
       },
       {
@@ -87,6 +90,7 @@ export const DOMAINS: Domain[] = [
           { href: "/health/training", label: "Plan", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
           { href: "/health/training/sessions", label: "Sessions", icon: LineChart },
+          { href: "/health/training/review", label: "Weekly Review", icon: TrendingUp },
         ],
       },
     ],

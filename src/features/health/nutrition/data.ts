@@ -46,6 +46,7 @@ export const WEEK_PLAN: DayPlan[] = [
         title: "Курячі шашлички + Картопляне пюре + Грецький салат",
         ingredients: [
           "Курячі шашлички (вже замариновані) — 800 г (порівну: Віталій — 400 г, Олеся — 400 г)",
+          "Йогуртово-лимонний маринад запікається на м'ясі — ~1/3 засвоюється (по 25 г йогурту + 2 г олії кожному)",
           "Гірчиця — для подачі до шашликів (по 5 г кожному)",
           "Картопля — 600 г (Віталій 270 г, Олеся 330 г — реалістична порція гарніру на 2 прийоми)",
           "Молоко тепле — 120 мл",
@@ -55,6 +56,8 @@ export const WEEK_PLAN: DayPlan[] = [
 
         macroItems: [
           { food: "chickenMarinated", vitalii: 400, olesia: 400, component: "Курячі шашлички" },
+          { food: "yogurtGreek", vitalii: 25, olesia: 25, component: "Маринад (~1/3 засвоюється)" },
+          { food: "oil", vitalii: 2, olesia: 2, component: "Маринад (~1/3 засвоюється)" },
           { food: "mustardDijon", vitalii: 5, olesia: 5, component: "Курячі шашлички" },
           { food: "potato", vitalii: 220, olesia: 350, component: "Картопляне пюре" },
           { food: "milk", vitalii: 60, olesia: 60, component: "Картопляне пюре" },
@@ -119,15 +122,10 @@ export const WEEK_PLAN: DayPlan[] = [
       {
         type: "breakfast",
         label: "Сніданок",
-        title: "Вівсянка з протеїном + фрукти",
-        ingredients: [
-          "Вівсянка — 170 г (Віталій 75г, Олеся 95г)",
-          "Протеїн — 2 мірні ложки",
-          "Фрукти",
-        ],
+        title: "Вівсянка з фруктами",
+        ingredients: ["Вівсянка — 170 г (Віталій 75г, Олеся 95г)", "Фрукти"],
         macroItems: [
           { food: "oats", vitalii: 75, olesia: 95 },
-          { food: "proteinPowder", vitalii: 30, olesia: 30 },
           { food: "fruitMix", vitalii: 75, olesia: 75 },
         ],
       },
