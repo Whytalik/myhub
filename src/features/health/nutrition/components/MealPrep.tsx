@@ -1,4 +1,35 @@
 import { ClipboardList, Flame, Apple } from "lucide-react";
+import { getProductKind } from "../nutrition-coverage";
+import { ProductBadge } from "@/components/ui/display/product-badge";
+
+const proteinIngredients: { label: string; key?: string }[] = [
+  { label: "Куряче стегно або філе — 1.48 кг", key: "chickenMarinated" },
+  { label: "Куряче філе — 1.1 кг", key: "chickenMarinated" },
+  { label: "Курячі серця — 600 г", key: "chickenHearts" },
+  { label: "Свиняча відбивна — 600 г (~4 шт)", key: "porkChop" },
+  { label: "Творог 5–9% — 500 г (для сирників)", key: "cottageCheese" },
+  { label: "Яйце — 1 шт (для сирників)", key: "eggs" },
+];
+
+const marinadeIngredients: { label: string; key?: string }[] = [
+  { label: "Грецький йогурт — 150 г", key: "yogurtGreek" },
+  { label: "Лимон — ½ шт", key: "lemon" },
+  { label: "Часник — 10 зубчиків", key: "garlic" },
+  { label: "Соєвий соус — 6 ст.л.", key: "soySauce" },
+  { label: "Томатна паста — 1 ст.л.", key: "tomatoPaste" },
+  { label: "Мед — 1 ст.л.", key: "honey" },
+  { label: "Гірчиця — 2 ст.л.", key: "mustardDijon" },
+  { label: "Оливкова олія — ~6 ст.л.", key: "oil" },
+  { label: "Борошно — 5–6 ст.л.", key: "flour" },
+  { label: "Цукор — 3 ст.л.", key: "sugar" },
+  { label: "Ванільний цукор — 1 пакетик", key: "vanillaSugar" },
+  { label: "Розмарин", key: "rosemary" },
+  { label: "Чебрець", key: "thyme" },
+  { label: "Паприка", key: "paprika" },
+  { label: "Прованські трави", key: "provencalHerbs" },
+  { label: "Сіль", key: "salt" },
+  { label: "Чорний перець", key: "blackPepper" },
+];
 
 export function MealPrep() {
   const prepTable = [
@@ -166,67 +197,29 @@ export function MealPrep() {
           <div>
             <span className="text-label block mb-2">М&apos;ясо та білки</span>
             <ul className="flex flex-col gap-1.5">
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Куряче стегно або філе — 1.48 кг</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Куряче філе — 1.1 кг</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Курячі серця — 600 г</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Свиняча відбивна — 600 г (~4 шт)</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Творог 5–9% — 500 г (для сирників)</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Яйце — 1 шт (для сирників)</span>
-              </li>
+              {proteinIngredients.map((ing, idx) => (
+                <li key={idx} className={ingredientItemClass}>
+                  <span className="text-zinc-600">·</span>
+                  <span className="flex items-center gap-1.5 flex-wrap">
+                    <span>{ing.label}</span>
+                    {ing.key && <ProductBadge status={getProductKind(ing.key)} />}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <span className="text-label block mb-2">Маринади та спеції</span>
             <ul className="flex flex-col gap-1.5">
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Грецький йогурт — 150 г</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Лимон — ½ шт</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Часник — 10 зубчиків</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Соєвий соус — 6 ст.л., Томатна паста — 1 ст.л.</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Мед — 1 ст.л., Гірчиця — 2 ст.л.</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Оливкова олія — ~6 ст.л.</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Борошно — 5–6 ст.л., Цукор — 3 ст.л., Ванільний цукор</span>
-              </li>
-              <li className={ingredientItemClass}>
-                <span className="text-zinc-600">·</span>
-                <span>Розмарин, чебрець, паприка, прованські трави, сіль, перець</span>
-              </li>
+              {marinadeIngredients.map((ing, idx) => (
+                <li key={idx} className={ingredientItemClass}>
+                  <span className="text-zinc-600">·</span>
+                  <span className="flex items-center gap-1.5 flex-wrap">
+                    <span>{ing.label}</span>
+                    {ing.key && <ProductBadge status={getProductKind(ing.key)} />}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

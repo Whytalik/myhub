@@ -1,4 +1,4 @@
-import { FOOD_NUTRITION } from "./food-nutrition";
+import { PRODUCTS } from "./products";
 import type { DayPlan, MacroItem } from "./types";
 
 export interface DayMacros {
@@ -13,7 +13,7 @@ const ZERO: DayMacros = { kcal: 0, protein: 0, fat: 0, carbs: 0 };
 function addItem(totals: DayMacros, item: MacroItem, person: "vitalii" | "olesia"): DayMacros {
   const grams = person === "vitalii" ? item.vitalii : item.olesia;
   if (grams <= 0) return totals;
-  const macros = FOOD_NUTRITION[item.food];
+  const macros = PRODUCTS[item.food]?.macros;
   if (!macros) return totals;
   const factor = grams / 100;
   return {

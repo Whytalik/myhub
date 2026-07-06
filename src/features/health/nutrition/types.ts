@@ -41,6 +41,8 @@ export interface ShoppingItem {
   options?: string[];
   price?: number;
   buyDay: ShoppingDay;
+  /** Ключі продуктів (з реєстру `products.ts`), які покриває ця позиція. */
+  foodKeys?: string[];
 }
 
 export interface ShoppingCategory {

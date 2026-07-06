@@ -2,7 +2,9 @@
 
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
+import { getProductKind, getProductName } from "../nutrition-coverage";
 import { MealCard } from "./MealCard";
+import { ProductBadge } from "@/components/ui/display/product-badge";
 import type { DayPlan as DayPlanType } from "../types";
 
 export function DayPlan({ day }: { day: DayPlanType }) {
@@ -17,6 +19,10 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       const lower = ing.toLowerCase();
       return !lower.includes("друга порція") && !lower.includes("обідньої страви");
     });
+
+  const dayProductKeys = [
+    ...new Set(day.meals.flatMap((m) => (m.macroItems ?? []).map((item) => item.food))),
+  ];
 
   return (
     <div className="flex flex-col gap-4">
@@ -58,6 +64,20 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               <li key={i} className="flex items-start gap-1.5 text-sm text-zinc-300">
                 <span className="text-zinc-600">·</span>
                 <span>{ingredient}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {dayProductKeys.length > 0 && (
+        <div className="glass-card p-4 flex flex-col gap-2">
+          <span className="text-label">Статус продуктів у системі</span>
+          <ul className="flex flex-wrap gap-2">
+            {dayProductKeys.map((key) => (
+              <li key={key} className="flex items-center gap-1.5 text-sm text-zinc-300">
+                <span>{getProductName(key)}</span>
+                <ProductBadge status={getProductKind(key)} />
               </li>
             ))}
           </ul>
