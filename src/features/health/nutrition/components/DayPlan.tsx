@@ -5,15 +5,74 @@ import { calculateDayMacros } from "../nutrition-calc";
 import { getProductName } from "../products";
 import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
-import type { DayPlan as DayPlanType, MacroItem } from "../types";
+import type { DayPlan as DayPlanType, Meal } from "../types";
 
-function formatPortion(item: MacroItem): string {
+function formatPortion(item: { vitalii: number; olesia: number }): string {
   if (item.vitalii > 0 && item.olesia > 0) {
     return `Віталій ${item.vitalii} г · Олеся ${item.olesia} г`;
   }
   if (item.vitalii > 0) return `Тільки Віталій — ${item.vitalii} г`;
   if (item.olesia > 0) return `Тільки Олеся — ${item.olesia} г`;
   return "";
+}
+
+function isRepeatPortion(meal: Meal): boolean {
+  return (
+    (meal.macroItems ?? []).length === 0 &&
+    meal.ingredients.some((ing) => {
+      const lower = ing.toLowerCase();
+      return lower.includes("друга порція") || lower.includes("обідньої страви");
+    })
+  );
+}
+
+interface ServingGroup {
+  label: string;
+  vitalii: number;
+  olesia: number;
+}
+
+interface ServingEntry {
+  labels: string[];
+  title: string;
+  groups: ServingGroup[];
+}
+
+/**
+ * Об'єднує прийоми їжі в блоки для сервування: "друга порція" (той самий
+ * приготований обсяг, з'їдений за два рази) зливається з попереднім
+ * прийомом, а не показується як ще одна повна порція зверху — інакше
+ * реальна кількість подвоюється проти того, що фактично приготовано.
+ * Продукти всередині прийому групуються за `component` (складова страви,
+ * напр. "Грецький салат"), щоб показати порцію страви, а не кожен
+ * інгредієнт окремо.
+ */
+function buildServingEntries(meals: Meal[]): ServingEntry[] {
+  const entries: ServingEntry[] = [];
+
+  for (const meal of meals) {
+    if (isRepeatPortion(meal) && entries.length > 0) {
+      entries[entries.length - 1].labels.push(meal.label);
+      continue;
+    }
+
+    const groups = new Map<string, ServingGroup>();
+    for (const item of meal.macroItems ?? []) {
+      if (item.vitalii <= 0 && item.olesia <= 0) continue;
+      const label = item.component ?? getProductName(item.food);
+      const existing = groups.get(label);
+      if (existing) {
+        existing.vitalii += item.vitalii;
+        existing.olesia += item.olesia;
+      } else {
+        groups.set(label, { label, vitalii: item.vitalii, olesia: item.olesia });
+      }
+    }
+
+    entries.push({ labels: [meal.label], title: meal.title, groups: [...groups.values()] });
+  }
+
+  return entries;
 }
 
 export function DayPlan({ day }: { day: DayPlanType }) {
@@ -61,39 +120,39 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         ))}
       </div>
 
-      <div className="glass-card p-4 flex flex-col gap-3">
+      <div className="glass-card p-4 flex flex-col gap-4">
         <span className="text-label">Сервування — порції на сьогодні</span>
-        <div className="flex flex-col gap-3">
-          {day.meals.map((meal) => {
-            const items = (meal.macroItems ?? []).filter(
-              (item) => item.vitalii > 0 || item.olesia > 0,
-            );
-
-            return (
-              <div key={meal.type} className="flex flex-col gap-1.5">
-                <span className="text-sm font-semibold text-zinc-200">
-                  {meal.label} · {meal.title}
-                </span>
-                {items.length > 0 ? (
-                  <ul className="flex flex-col gap-1">
-                    {items.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center justify-between gap-3 text-sm text-zinc-300"
-                      >
-                        <span>{getProductName(item.food)}</span>
-                        <span className="font-mono text-xs text-zinc-400 shrink-0">
-                          {formatPortion(item)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-caption italic">Порції — як на обід (друга порція)</p>
-                )}
-              </div>
-            );
-          })}
+        <div className="flex flex-col gap-4">
+          {buildServingEntries(day.meals).map((entry, idx) => (
+            <div key={idx} className="flex flex-col gap-2">
+              <span className="text-sm font-semibold text-zinc-200 text-center">
+                {entry.labels.join(" + ")} · {entry.title}
+              </span>
+              {entry.labels.length > 1 && (
+                <p className="text-caption text-center italic">
+                  Разом на {entry.labels.length.toString()} прийоми — ділити приблизно порівну
+                </p>
+              )}
+              <div className="h-px bg-white/[0.06]" />
+              {entry.groups.length > 0 ? (
+                <ul className="flex flex-col gap-1">
+                  {entry.groups.map((group, groupIdx) => (
+                    <li
+                      key={groupIdx}
+                      className="flex items-center justify-between gap-3 text-sm text-zinc-300"
+                    >
+                      <span>{group.label}</span>
+                      <span className="font-mono text-xs text-zinc-400 shrink-0">
+                        {formatPortion(group)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 

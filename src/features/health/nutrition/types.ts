@@ -6,6 +6,9 @@ export interface MacroItem {
   food: string;
   vitalii: number;
   olesia: number;
+  /** Назва сервірувального компонента (напр. "Грецький салат"), якщо цей
+   *  інгредієнт — частина складеної страви, а не окрема позиція на тарілці. */
+  component?: string;
 }
 
 export interface Meal {
