@@ -1,5 +1,6 @@
 "use client";
 
+import { Scale, ClipboardList, Flame } from "lucide-react";
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
 import { getProductName } from "../products";
@@ -75,6 +76,16 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
   return entries;
 }
 
+/** Розбиває вільнотекстовий рядок на "назва" / "кількість" по першому тире — формат, послідовно вжитий у даних плану. */
+function splitIngredientLine(ingredient: string): { name: string; qty: string } {
+  const separatorIndex = ingredient.indexOf(" — ");
+  if (separatorIndex === -1) return { name: ingredient, qty: "" };
+  return {
+    name: ingredient.slice(0, separatorIndex),
+    qty: ingredient.slice(separatorIndex + 3),
+  };
+}
+
 export function DayPlan({ day }: { day: DayPlanType }) {
   const actual = {
     vitalii: calculateDayMacros(day, "vitalii"),
@@ -88,6 +99,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       return !lower.includes("друга порція") && !lower.includes("обідньої страви");
     });
 
+  const sectionIconClass =
+    "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
+
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -97,14 +111,14 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           return (
             <div key={profile.id} className="glass-card p-3 flex flex-col gap-2">
               <span className="text-sm font-semibold text-zinc-100">{profile.name}</span>
-              <table className="w-full text-sm">
+              <table className="w-full text-sm table-fixed">
                 <thead>
                   <tr className="border-b border-white/[0.06]">
-                    <th className="text-label text-left py-1.5 pr-2"></th>
-                    <th className="text-label text-right py-1.5 px-2">Ккал</th>
-                    <th className="text-label text-right py-1.5 px-2">Б</th>
-                    <th className="text-label text-right py-1.5 px-2">Ж</th>
-                    <th className="text-label text-right py-1.5">В</th>
+                    <th className="text-label text-left py-1.5 pr-2 w-14"></th>
+                    <th className="text-label text-right py-1.5 px-2 w-16">Ккал</th>
+                    <th className="text-label text-right py-1.5 px-2 w-14">Б</th>
+                    <th className="text-label text-right py-1.5 px-2 w-14">Ж</th>
+                    <th className="text-label text-right py-1.5 w-14">В</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -123,7 +137,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                       {profile.macros.carbs}
                     </td>
                   </tr>
-                  <tr>
+                  <tr className="bg-accent-nutrition/5">
                     <td className="py-1.5 pr-2 text-caption">Факт</td>
                     <td className="py-1.5 px-2 text-right font-mono text-accent-nutrition">
                       {macros.kcal}
@@ -150,8 +164,13 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       </div>
 
       <div className="glass-card p-4 flex flex-col gap-4">
-        <span className="text-label">Сервування — порції на сьогодні</span>
-        <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className={sectionIconClass}>
+            <Scale size={16} />
+          </div>
+          <span className="text-panel-title">Сервування — порції на сьогодні</span>
+        </div>
+        <div className="flex flex-col gap-6">
           {buildServingEntries(day.meals).map((entry, idx) => (
             <div key={idx} className="flex flex-col gap-2">
               <div className="flex items-center justify-between gap-3">
@@ -168,12 +187,12 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               <div className="h-px bg-white/[0.06]" />
               {entry.groups.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-sm table-fixed">
                     <thead>
                       <tr className="border-b border-white/[0.06]">
                         <th className="text-label text-left py-2 pr-3">Продукт</th>
-                        <th className="text-label text-right py-2 pr-3">Віталій</th>
-                        <th className="text-label text-right py-2">Олеся</th>
+                        <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
+                        <th className="text-label text-right py-2 w-24">Олеся</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -200,16 +219,35 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       </div>
 
       {dayIngredients.length > 0 && (
-        <div className="glass-card p-4 flex flex-col gap-2">
-          <span className="text-label">Продукти на день</span>
+        <div className="glass-card p-4 flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <div className={sectionIconClass}>
+              <ClipboardList size={16} />
+            </div>
+            <span className="text-panel-title">Продукти на день</span>
+          </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm table-fixed">
+              <thead>
+                <tr className="border-b border-white/[0.06]">
+                  <th className="text-label text-left py-2 pr-3 w-2/5">Продукт</th>
+                  <th className="text-label text-left py-2">Кількість</th>
+                </tr>
+              </thead>
               <tbody>
-                {dayIngredients.map((ingredient, i) => (
-                  <tr key={i} className="border-b border-white/[0.03] last:border-0">
-                    <td className="py-2 text-zinc-300">{highlightProductMentions(ingredient)}</td>
-                  </tr>
-                ))}
+                {dayIngredients.map((ingredient, i) => {
+                  const { name, qty } = splitIngredientLine(ingredient);
+                  return (
+                    <tr key={i} className="border-b border-white/[0.03] last:border-0">
+                      <td className="py-2 pr-3 align-top text-zinc-200">
+                        {highlightProductMentions(name)}
+                      </td>
+                      <td className="py-2 align-top text-zinc-400">
+                        {qty ? highlightProductMentions(qty) : "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -218,7 +256,12 @@ export function DayPlan({ day }: { day: DayPlanType }) {
 
       {day.prepSteps && day.prepSteps.length > 0 && (
         <div className="glass-card p-4 flex flex-col gap-3">
-          <span className="text-label">Алгоритм приготування</span>
+          <div className="flex items-center gap-3">
+            <div className={sectionIconClass}>
+              <Flame size={16} />
+            </div>
+            <span className="text-panel-title">Алгоритм приготування</span>
+          </div>
           <div className="flex flex-col gap-3">
             {day.prepSteps.map((section, idx) => (
               <div key={idx} className="flex flex-col gap-1.5">
