@@ -5,7 +5,8 @@ import { calculateDayMacros } from "../nutrition-calc";
 import { getProductName } from "../products";
 import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
-import type { DayPlan as DayPlanType, Meal } from "../types";
+import { PushToFatSecretButton } from "./PushToFatSecretButton";
+import type { DayPlan as DayPlanType, Meal, MacroItem, MealType } from "../types";
 
 function formatPortion(item: { vitalii: number; olesia: number }): string {
   if (item.vitalii > 0 && item.olesia > 0) {
@@ -35,7 +36,9 @@ interface ServingGroup {
 interface ServingEntry {
   labels: string[];
   title: string;
+  mealType: MealType;
   groups: ServingGroup[];
+  rawMacroItems: MacroItem[];
 }
 
 /**
@@ -69,7 +72,13 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
       }
     }
 
-    entries.push({ labels: [meal.label], title: meal.title, groups: [...groups.values()] });
+    entries.push({
+      labels: [meal.label],
+      title: meal.title,
+      mealType: meal.type,
+      groups: [...groups.values()],
+      rawMacroItems: meal.macroItems ?? [],
+    });
   }
 
   return entries;
@@ -151,6 +160,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               ) : (
                 <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
               )}
+              <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
             </div>
           ))}
         </div>

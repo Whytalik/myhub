@@ -152,6 +152,15 @@ exports.Prisma.PushSubscriptionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.FatSecretAccountScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  accessToken: 'accessToken',
+  accessTokenSecret: 'accessTokenSecret',
+  linkedAt: 'linkedAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -568,6 +577,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   WeekTemplate: 'WeekTemplate',
   PushSubscription: 'PushSubscription',
+  FatSecretAccount: 'FatSecretAccount',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
