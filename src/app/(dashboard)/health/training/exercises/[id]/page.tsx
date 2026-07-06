@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
-import { Button } from "@/components/ui/actions/button";
 import * as exerciseService from "@/features/health/training/services/exercise-service";
 import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
-import { ArrowLeft, Dumbbell, Activity, Video, AlignLeft, Info, ListChecks, CheckCircle } from "lucide-react";
+import { Dumbbell, Activity, Video, AlignLeft, Info, ListChecks, CheckCircle } from "lucide-react";
 
 interface ExerciseDetailPageProps {
   params: Promise<{ id: string }>;
@@ -42,15 +40,8 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
   const details = EXERCISE_DETAILS[exercise.name];
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl mx-auto pb-12">
-      <div className="flex items-center gap-3">
-        <Link href="/health/training/exercises" passHref>
-          <Button variant="ghost" size="sm" className="h-8 px-2.5">
-            <ArrowLeft size={16} />
-            <span>Назад до списку</span>
-          </Button>
-        </Link>
-      </div>
+    <div className="flex flex-col gap-6 pb-12">
+
 
       <PageHeader
         breadcrumb={[
