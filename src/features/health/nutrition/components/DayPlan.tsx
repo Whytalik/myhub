@@ -76,14 +76,36 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
   return entries;
 }
 
-/** Розбиває вільнотекстовий рядок на "назва" / "кількість" по першому тире — формат, послідовно вжитий у даних плану. */
-function splitIngredientLine(ingredient: string): { name: string; qty: string } {
-  const separatorIndex = ingredient.indexOf(" — ");
-  if (separatorIndex === -1) return { name: ingredient, qty: "" };
-  return {
-    name: ingredient.slice(0, separatorIndex),
-    qty: ingredient.slice(separatorIndex + 3),
-  };
+interface DayProductTotal {
+  name: string;
+  vitalii: number;
+  olesia: number;
+}
+
+/**
+ * Підсумовує кожен продукт за весь день напряму з `macroItems` (структуровані
+ * дані), а не з вільнотекстових `ingredients` — деякі рядки тексту описують
+ * одразу кілька продуктів в одному реченні (напр. "Для салату: помідори...,
+ * огірок..., перець...") і не розбиваються чисто на "продукт" + "кількість".
+ */
+function buildDayProductTotals(meals: Meal[]): DayProductTotal[] {
+  const totals = new Map<string, DayProductTotal>();
+
+  for (const meal of meals) {
+    for (const item of meal.macroItems ?? []) {
+      if (item.vitalii <= 0 && item.olesia <= 0) continue;
+      const name = getProductName(item.food);
+      const existing = totals.get(item.food);
+      if (existing) {
+        existing.vitalii += item.vitalii;
+        existing.olesia += item.olesia;
+      } else {
+        totals.set(item.food, { name, vitalii: item.vitalii, olesia: item.olesia });
+      }
+    }
+  }
+
+  return [...totals.values()];
 }
 
 export function DayPlan({ day }: { day: DayPlanType }) {
@@ -92,12 +114,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
     olesia: calculateDayMacros(day, "olesia"),
   };
 
-  const dayIngredients = day.meals
-    .flatMap((m) => m.ingredients)
-    .filter((ing) => {
-      const lower = ing.toLowerCase();
-      return !lower.includes("друга порція") && !lower.includes("обідньої страви");
-    });
+  const dayProductTotals = buildDayProductTotals(day.meals);
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
@@ -218,7 +235,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         </div>
       </div>
 
-      {dayIngredients.length > 0 && (
+      {dayProductTotals.length > 0 && (
         <div className="glass-card p-4 flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <div className={sectionIconClass}>
@@ -230,24 +247,23 @@ export function DayPlan({ day }: { day: DayPlanType }) {
             <table className="w-full text-sm table-fixed">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="text-label text-left py-2 pr-3 w-2/5">Продукт</th>
-                  <th className="text-label text-left py-2">Кількість</th>
+                  <th className="text-label text-left py-2 pr-3">Продукт</th>
+                  <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
+                  <th className="text-label text-right py-2 w-24">Олеся</th>
                 </tr>
               </thead>
               <tbody>
-                {dayIngredients.map((ingredient, i) => {
-                  const { name, qty } = splitIngredientLine(ingredient);
-                  return (
-                    <tr key={i} className="border-b border-white/[0.03] last:border-0">
-                      <td className="py-2 pr-3 align-top text-zinc-200">
-                        {highlightProductMentions(name)}
-                      </td>
-                      <td className="py-2 align-top text-zinc-400">
-                        {qty ? highlightProductMentions(qty) : "—"}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {dayProductTotals.map((total, i) => (
+                  <tr key={i} className="border-b border-white/[0.03] last:border-0">
+                    <td className="py-2 pr-3 text-zinc-200">{total.name}</td>
+                    <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                      {total.vitalii > 0 ? `${total.vitalii} г` : "—"}
+                    </td>
+                    <td className="py-2 text-right font-mono text-xs text-zinc-400">
+                      {total.olesia > 0 ? `${total.olesia} г` : "—"}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

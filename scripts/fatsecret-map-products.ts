@@ -18,7 +18,6 @@ import { searchFoods, getFood, type FoodServing } from "../src/lib/fatsecret/cli
 const SEARCH_QUERY: Record<string, string> = {
   eggs: "egg",
   bread: "whole wheat bread",
-  freshVeg: "mixed vegetables",
   oil: "olive oil",
   chickenMarinated: "chicken thigh",
   friedChicken: "fried chicken thigh",

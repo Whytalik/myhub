@@ -58,7 +58,6 @@ function pantry(
 export const PRODUCTS: Record<string, Product> = {
   eggs: tracked("eggs", "Яйця", { kcal: 155, protein: 13, fat: 11, carbs: 1.1 }),
   bread: tracked("bread", "Цільнозерновий хліб", { kcal: 250, protein: 10, fat: 3.5, carbs: 43 }),
-  freshVeg: tracked("freshVeg", "Свіжі овочі", { kcal: 20, protein: 1, fat: 0.2, carbs: 4 }),
   oil: tracked("oil", "Олія", { kcal: 884, protein: 0, fat: 100, carbs: 0 }),
   chickenMarinated: tracked(
     "chickenMarinated",
