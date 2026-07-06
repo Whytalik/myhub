@@ -1,11 +1,17 @@
 import crypto from "crypto";
 import OAuth from "oauth-1.0a";
+import { fatsecretFetch } from "./proxy-fetch";
 
 function getOAuth(): OAuth {
-  const key = process.env.FATSECRET_CONSUMER_KEY;
-  const secret = process.env.FATSECRET_CONSUMER_SECRET;
+  // Separate from FATSECRET_CONSUMER_KEY/SECRET (used for OAuth2 client-credentials
+  // search) — FatSecret issues a distinct OAuth 1.0 Consumer Key/Secret pair
+  // specifically for signing 3-legged requests.
+  const key = process.env.FATSECRET_OAUTH1_CONSUMER_KEY;
+  const secret = process.env.FATSECRET_OAUTH1_CONSUMER_SECRET;
   if (!key || !secret) {
-    throw new Error("FATSECRET_CONSUMER_KEY / FATSECRET_CONSUMER_SECRET not configured");
+    throw new Error(
+      "FATSECRET_OAUTH1_CONSUMER_KEY / FATSECRET_OAUTH1_CONSUMER_SECRET not configured",
+    );
   }
 
   return new OAuth({
@@ -33,13 +39,12 @@ export async function signedFetch(
 ): Promise<string> {
   const oauth = getOAuth();
   const requestData = { url, method: "POST", data: params };
-  const authorized = oauth.authorize(requestData, token);
-  const body = new URLSearchParams({ ...params, ...pickOAuthParams(authorized) });
+  const authHeader = oauth.toHeader(oauth.authorize(requestData, token));
 
-  const response = await fetch(url, {
+  const response = await fatsecretFetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: body.toString(),
+    headers: { "Content-Type": "application/x-www-form-urlencoded", ...authHeader },
+    body: new URLSearchParams(params).toString(),
   });
 
   const text = await response.text();
@@ -47,9 +52,4 @@ export async function signedFetch(
     throw new Error(`FatSecret OAuth1 request failed (${response.status}): ${text}`);
   }
   return text;
-}
-
-function pickOAuthParams(authorized: OAuth.Authorization): Record<string, string> {
-  const entries = Object.entries(authorized).filter(([k]) => k.startsWith("oauth_"));
-  return Object.fromEntries(entries.map(([k, v]) => [k, String(v)]));
 }

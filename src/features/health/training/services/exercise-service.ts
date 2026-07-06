@@ -17,3 +17,12 @@ export async function upsertExercise(userId: string, input: UpsertExerciseInput)
 export async function deleteExercise(userId: string, id: string) {
   return exerciseRepository.delete(id, userId);
 }
+
+export async function getExercise(userId: string, id: string) {
+  const exercise = await exerciseRepository.findById(id);
+  if (!exercise || exercise.userId !== userId) {
+    return null;
+  }
+  return exercise;
+}
+

@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { SectionHeader } from "@/components/ui/display/section-header";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
@@ -360,9 +361,12 @@ export function TrainingPlansClient({
                                 className="flex items-center justify-between gap-2 py-1.5"
                               >
                                 <div className="flex flex-col min-w-0 gap-1">
-                                  <span className="text-sm text-zinc-200 truncate">
+                                  <Link
+                                    href={`/health/training/exercises/${de.exerciseId}`}
+                                    className="text-sm text-zinc-200 hover:text-accent-training transition-colors duration-150 truncate"
+                                  >
                                     {de.exercise.name}
-                                  </span>
+                                  </Link>
                                   <div className="flex items-center gap-1.5 flex-wrap">
                                     <span className={badgeClass}>{formatPrescription(de)}</span>
                                     {de.targetRpe ? (

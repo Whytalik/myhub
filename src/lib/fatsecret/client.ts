@@ -1,4 +1,5 @@
 import { signedFetch, type OAuth1Token } from "./oauth1";
+import { fatsecretFetch } from "./proxy-fetch";
 
 const REQUEST_TOKEN_URL = "https://authentication.fatsecret.com/oauth/request_token";
 const AUTHORIZE_URL = "https://authentication.fatsecret.com/oauth/authorize";
@@ -107,7 +108,7 @@ async function getOAuth2Token(): Promise<string> {
     throw new Error("FATSECRET_CONSUMER_KEY / FATSECRET_CONSUMER_SECRET not configured");
   }
 
-  const response = await fetch(OAUTH2_TOKEN_URL, {
+  const response = await fatsecretFetch(OAUTH2_TOKEN_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -134,6 +135,13 @@ export interface FoodSearchResultItem {
   food_description?: string;
 }
 
+function assertNoFatSecretError(data: unknown): void {
+  const error = (data as { error?: { message?: string; code?: number } } | undefined)?.error;
+  if (error) {
+    throw new Error(`FatSecret API error ${error.code ?? "?"}: ${error.message ?? "unknown"}`);
+  }
+}
+
 /** Read-only food search (OAuth2 client-credentials, no per-user auth needed). */
 export async function searchFoods(query: string): Promise<FoodSearchResultItem[]> {
   const token = await getOAuth2Token();
@@ -142,12 +150,13 @@ export async function searchFoods(query: string): Promise<FoodSearchResultItem[]
   url.searchParams.set("format", "json");
   url.searchParams.set("search_expression", query);
 
-  const response = await fetch(url.toString(), {
+  const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = (await response.json()) as {
     foods?: { food?: FoodSearchResultItem | FoodSearchResultItem[] };
   };
+  assertNoFatSecretError(data);
   const food = data.foods?.food;
   if (!food) return [];
   return Array.isArray(food) ? food : [food];
@@ -174,9 +183,11 @@ export async function getFood(foodId: string): Promise<FoodDetail> {
   url.searchParams.set("format", "json");
   url.searchParams.set("food_id", foodId);
 
-  const response = await fetch(url.toString(), {
+  const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const data = (await response.json()) as { food: FoodDetail };
+  const data = (await response.json()) as { food?: FoodDetail };
+  assertNoFatSecretError(data);
+  if (!data.food) throw new Error(`FatSecret food.get returned no food for id ${foodId}`);
   return data.food;
 }

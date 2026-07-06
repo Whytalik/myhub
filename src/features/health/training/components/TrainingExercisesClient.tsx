@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
@@ -56,7 +57,12 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
       {exercises.map((ex) => (
         <div key={ex.id} className="glass-card p-3 flex flex-col gap-1.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-sm font-medium text-zinc-100 truncate">{ex.name}</span>
+            <Link
+              href={`/health/training/exercises/${ex.id}`}
+              className="text-sm font-medium text-zinc-100 hover:text-accent-training transition-colors duration-150 truncate"
+            >
+              {ex.name}
+            </Link>
             <div className="flex items-center gap-0.5 shrink-0">
               <button
                 onClick={() => {

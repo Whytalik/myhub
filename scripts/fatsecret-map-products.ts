@@ -74,9 +74,10 @@ async function main() {
       continue;
     }
 
+    console.log(`\n=== ${product.key} (${product.nameUk}) — query: "${query}" ===`);
+
     try {
       const results = await searchFoods(query);
-      console.log(`\n=== ${product.key} (${product.nameUk}) — query: "${query}" ===`);
 
       if (results.length === 0) {
         console.log("  no matches found");
@@ -84,20 +85,22 @@ async function main() {
       }
 
       for (const candidate of results.slice(0, 3)) {
-        const detail = await getFood(candidate.food_id);
-        const gramServings = findGramServings(detail.servings.serving);
-        const servingInfo = gramServings.length
-          ? gramServings
-              .map((s) => `serving_id=${s.serving_id} (${s.metric_serving_amount}g)`)
-              .join(", ")
-          : "no gram-based serving found";
-
         console.log(`  food_id=${candidate.food_id}  "${candidate.food_name}"`);
-        console.log(`    ${servingInfo}`);
+        try {
+          const detail = await getFood(candidate.food_id);
+          const gramServings = findGramServings(detail.servings.serving);
+          const servingInfo = gramServings.length
+            ? gramServings
+                .map((s) => `serving_id=${s.serving_id} (${s.metric_serving_amount}g)`)
+                .join(", ")
+            : "no gram-based serving found";
+          console.log(`    ${servingInfo}`);
+        } catch (error) {
+          console.log(`    ERROR: ${error instanceof Error ? error.message : error}`);
+        }
+        // FatSecret rate-limits — small delay between calls to stay well under it.
+        await new Promise((resolve) => setTimeout(resolve, 300));
       }
-
-      // FatSecret rate-limits — small delay between products to stay well under it.
-      await new Promise((resolve) => setTimeout(resolve, 300));
     } catch (error) {
       console.log(`  ERROR: ${error instanceof Error ? error.message : error}`);
     }
