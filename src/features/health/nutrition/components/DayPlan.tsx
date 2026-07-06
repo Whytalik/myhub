@@ -128,45 +128,49 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           return (
             <div key={profile.id} className="glass-card p-3 flex flex-col gap-2">
               <span className="text-sm font-semibold text-zinc-100">{profile.name}</span>
-              <table className="w-full text-sm table-fixed">
-                <thead>
-                  <tr className="border-b border-white/[0.06]">
-                    <th className="text-label text-left py-1.5 pr-2 w-14"></th>
-                    <th className="text-label text-right py-1.5 px-2 w-16">Ккал</th>
-                    <th className="text-label text-right py-1.5 px-2 w-14">Б</th>
-                    <th className="text-label text-right py-1.5 px-2 w-14">Ж</th>
-                    <th className="text-label text-right py-1.5 w-14">В</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-white/[0.03]">
-                    <td className="py-1.5 pr-2 text-caption">План</td>
-                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
-                      {profile.kcal}
-                    </td>
-                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
-                      {profile.macros.protein}
-                    </td>
-                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
-                      {profile.macros.fat}
-                    </td>
-                    <td className="py-1.5 text-right font-mono text-zinc-300">
-                      {profile.macros.carbs}
-                    </td>
-                  </tr>
-                  <tr className="bg-accent-nutrition/5">
-                    <td className="py-1.5 pr-2 text-caption">Факт</td>
-                    <td className="py-1.5 px-2 text-right font-mono text-accent-nutrition">
-                      {macros.kcal}
-                    </td>
-                    <td className="py-1.5 px-2 text-right font-mono text-zinc-100">
-                      {macros.protein}
-                    </td>
-                    <td className="py-1.5 px-2 text-right font-mono text-zinc-100">{macros.fat}</td>
-                    <td className="py-1.5 text-right font-mono text-zinc-100">{macros.carbs}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="rounded-xl bg-white/[0.02] px-2">
+                <table className="w-full text-sm table-fixed">
+                  <thead>
+                    <tr className="border-b border-white/[0.06] bg-white/[0.03]">
+                      <th className="text-label text-left py-1.5 pr-2 w-14"></th>
+                      <th className="text-label text-right py-1.5 px-2 w-16">Ккал</th>
+                      <th className="text-label text-right py-1.5 px-2 w-14">Б</th>
+                      <th className="text-label text-right py-1.5 px-2 w-14">Ж</th>
+                      <th className="text-label text-right py-1.5 w-14">В</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-white/[0.03]">
+                      <td className="py-1.5 pr-2 text-caption">План</td>
+                      <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                        {profile.kcal}
+                      </td>
+                      <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                        {profile.macros.protein}
+                      </td>
+                      <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                        {profile.macros.fat}
+                      </td>
+                      <td className="py-1.5 text-right font-mono text-zinc-300">
+                        {profile.macros.carbs}
+                      </td>
+                    </tr>
+                    <tr className="bg-accent-nutrition/5">
+                      <td className="py-1.5 pr-2 text-caption">Факт</td>
+                      <td className="py-1.5 px-2 text-right font-mono text-accent-nutrition">
+                        {macros.kcal}
+                      </td>
+                      <td className="py-1.5 px-2 text-right font-mono text-zinc-100">
+                        {macros.protein}
+                      </td>
+                      <td className="py-1.5 px-2 text-right font-mono text-zinc-100">
+                        {macros.fat}
+                      </td>
+                      <td className="py-1.5 text-right font-mono text-zinc-100">{macros.carbs}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           );
         })}
@@ -203,10 +207,10 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               )}
               <div className="h-px bg-white/[0.06]" />
               {entry.groups.length > 0 ? (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto rounded-xl bg-white/[0.02] px-3">
                   <table className="w-full text-sm table-fixed">
                     <thead>
-                      <tr className="border-b border-white/[0.06]">
+                      <tr className="border-b border-white/[0.06] bg-white/[0.03]">
                         <th className="text-label text-left py-2 pr-3">Продукт</th>
                         <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
                         <th className="text-label text-right py-2 w-24">Олеся</th>
@@ -243,10 +247,10 @@ export function DayPlan({ day }: { day: DayPlanType }) {
             </div>
             <span className="text-panel-title">Продукти на день</span>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-xl bg-white/[0.02] px-3">
             <table className="w-full text-sm table-fixed">
               <thead>
-                <tr className="border-b border-white/[0.06]">
+                <tr className="border-b border-white/[0.06] bg-white/[0.03]">
                   <th className="text-label text-left py-2 pr-3">Продукт</th>
                   <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
                   <th className="text-label text-right py-2 w-24">Олеся</th>
