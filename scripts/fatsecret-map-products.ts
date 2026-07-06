@@ -98,8 +98,8 @@ async function main() {
         } catch (error) {
           console.log(`    ERROR: ${error instanceof Error ? error.message : error}`);
         }
-        // FatSecret rate-limits — small delay between calls to stay well under it.
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        // FatSecret rate-limits — delay between calls to stay well under it.
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     } catch (error) {
       console.log(`  ERROR: ${error instanceof Error ? error.message : error}`);

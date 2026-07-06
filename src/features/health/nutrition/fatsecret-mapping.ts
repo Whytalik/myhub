@@ -11,4 +11,6 @@ export interface FatSecretMapping {
  * see that script's header comment for why this isn't auto-generated.
  * Products missing here are silently skipped by `pushMealToFatSecretAction`.
  */
-export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {};
+export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
+  potato: { foodId: "5718", servingId: "54398", servingGrams: 100 },
+};
