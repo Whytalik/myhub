@@ -633,38 +633,6 @@ export const WEEK_PLAN: DayPlan[] = [
   },
 ];
 
-/**
- * Ключі продуктів (з реєстру `products.ts`), які споживає недільний
- * міл-преп (`MealPrep.tsx`) — маринади, спеції, заготовки. `macroItems`
- * покриває лише страви тижня; ця константа доповнює її для звірки
- * покриття списку покупок (`nutrition-coverage.ts`).
- */
-export const PREP_PRODUCTS: string[] = [
-  "chickenMarinated",
-  "chickenHearts",
-  "friedChicken",
-  "porkChop",
-  "cottageCheese",
-  "eggs",
-  "yogurtGreek",
-  "lemon",
-  "garlic",
-  "soySauce",
-  "tomatoPaste",
-  "honey",
-  "mustardDijon",
-  "oil",
-  "flour",
-  "sugar",
-  "vanillaSugar",
-  "rosemary",
-  "thyme",
-  "paprika",
-  "provencalHerbs",
-  "salt",
-  "blackPepper",
-];
-
 export const SHOPPING_LIST: ShoppingCategory[] = [
   {
     id: "meat",
@@ -677,7 +645,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "800г шашлики Пн + 680г смажена Чт + 1100г запечене Пт+Цезар Сб — маринується й заморожується в Нд",
         price: 413,
         buyDay: "sun",
-        foodKeys: ["chickenMarinated", "friedChicken"],
       },
       {
         id: "meat-1",
@@ -686,7 +653,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Вт — маринуються й заморожуються в Нд",
         price: 66,
         buyDay: "sun",
-        foodKeys: ["chickenHearts"],
       },
       {
         id: "meat-2",
@@ -695,7 +661,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "~4 шт, Нд",
         price: 132,
         buyDay: "sun",
-        foodKeys: ["porkChop"],
       },
       {
         id: "meat-3",
@@ -704,7 +669,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср — вже заморожена, береться в Нд і лежить у морозилці",
         price: 77,
         buyDay: "sun",
-        foodKeys: ["mackerel"],
       },
     ],
   },
@@ -719,7 +683,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср вечеря — консерви, не псуються",
         price: 200,
         buyDay: "sun",
-        foodKeys: ["tunaCanned"],
       },
       {
         id: "canned-1",
@@ -728,7 +691,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "~300 г, потрібно ~150 г",
         price: 35,
         buyDay: "sun",
-        foodKeys: ["cornCanned"],
       },
       {
         id: "canned-2",
@@ -737,7 +699,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринад Вт — готується в Нд",
         price: 5,
         buyDay: "sun",
-        foodKeys: ["tomatoPaste"],
       },
     ],
   },
@@ -752,7 +713,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Нд 4шт + Пн 4шт + 1шт сирники (мілпреп)",
         price: 45,
         buyDay: "sun",
-        foodKeys: ["eggs"],
       },
       {
         id: "dairy-0-wed",
@@ -761,7 +721,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср 4шт варені + Чт 4шт",
         price: 40,
         buyDay: "wed",
-        foodKeys: ["eggs"],
       },
       {
         id: "dairy-1-sun",
@@ -770,7 +729,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Нд+Пн+Вт перекус (300г/день) + 150г маринад шашлику Пн (мілпреп)",
         price: 137,
         buyDay: "sun",
-        foodKeys: ["yogurtGreek"],
       },
       {
         id: "dairy-1-wed",
@@ -779,7 +737,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср+Чт+Пт перекус (300г/день) — Сб замість йогурту протеїновий шейк",
         price: 117,
         buyDay: "wed",
-        foodKeys: ["yogurtGreek"],
       },
       {
         id: "dairy-2-sun",
@@ -788,7 +745,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сирники (мілпреп Нд)",
         price: 90,
         buyDay: "sun",
-        foodKeys: ["cottageCheese"],
       },
       {
         id: "dairy-2-wed",
@@ -797,7 +753,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сніданок Ср",
         price: 90,
         buyDay: "wed",
-        foodKeys: ["cottageCheese"],
       },
       {
         id: "dairy-3",
@@ -806,7 +761,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "120мл пюре Пн + 60мл омлет Нд + 300мл протеїновий шейк Сб",
         price: 23,
         buyDay: "sun",
-        foodKeys: ["milk"],
       },
       {
         id: "dairy-4",
@@ -815,7 +769,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "соус Нд",
         price: 44,
         buyDay: "sun",
-        foodKeys: ["cream"],
       },
       {
         id: "dairy-5",
@@ -824,7 +777,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "20г пюре Пн + запас",
         price: 22,
         buyDay: "sun",
-        foodKeys: ["butter"],
       },
       {
         id: "dairy-6",
@@ -833,7 +785,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький салат: 135г Пн + 150г Нд",
         price: 71,
         buyDay: "sun",
-        foodKeys: ["brynza"],
       },
       {
         id: "dairy-7",
@@ -842,7 +793,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Капрезе Чт — розсільний сир, довго зберігається",
         price: 80,
         buyDay: "sun",
-        foodKeys: ["suluguni"],
       },
       {
         id: "dairy-8",
@@ -851,7 +801,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "105г Рукола Вт + 130г Цезар Сб",
         price: 141,
         buyDay: "sun",
-        foodKeys: ["hardCheese"],
       },
     ],
   },
@@ -866,7 +815,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "170г Вт + 180г Пт + запас",
         price: 17,
         buyDay: "sun",
-        foodKeys: ["oats"],
       },
       {
         id: "grains-1",
@@ -875,7 +823,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Вт — реалістична порція гарніру (по 80г кожному)",
         price: 11,
         buyDay: "sun",
-        foodKeys: ["buckwheat"],
       },
       {
         id: "grains-2",
@@ -884,7 +831,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "160г Чт + 80г Нд + 80г Сб — реалістична порція гарніру",
         price: 19,
         buyDay: "sun",
-        foodKeys: ["rice"],
       },
       {
         id: "grains-3",
@@ -893,7 +839,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сирники Нд",
         price: 5,
         buyDay: "sun",
-        foodKeys: ["flour"],
       },
       {
         id: "grains-4-sun",
@@ -902,7 +847,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Нд + Пн сніданки",
         price: 20,
         buyDay: "sun",
-        foodKeys: ["bread"],
       },
       {
         id: "grains-4-wed",
@@ -911,7 +855,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср сніданок+вечеря + Чт/Пт/Сб добавки Олесі",
         price: 42,
         buyDay: "wed",
-        foodKeys: ["bread"],
       },
       {
         id: "grains-5",
@@ -920,7 +863,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сирники",
         price: 8,
         buyDay: "sun",
-        foodKeys: ["vanillaSugar"],
       },
       {
         id: "grains-6",
@@ -929,7 +871,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сирники 3 ст.л. + морква 1 ст.л.",
         price: 2,
         buyDay: "sun",
-        foodKeys: ["sugar"],
       },
     ],
   },
@@ -944,7 +885,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Пюре Пн (570г) + Ср відварна (320г) + Пт запечена (580г) — реалістична порція гарніру",
         price: 37,
         buyDay: "sun",
-        foodKeys: ["potato"],
       },
       {
         id: "vegetables-0-sun",
@@ -953,7 +893,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький Пн+Нд, Рукола Вт",
         price: 165,
         buyDay: "sun",
-        foodKeys: ["tomato"],
       },
       {
         id: "vegetables-0-wed",
@@ -962,7 +901,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "яєчня Чт, Капрезе Чт",
         price: 110,
         buyDay: "wed",
-        foodKeys: ["tomato"],
       },
       {
         id: "vegetables-1-sun",
@@ -971,7 +909,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький Пн+Нд, сніданки",
         price: 25,
         buyDay: "sun",
-        foodKeys: ["cucumber"],
       },
       {
         id: "vegetables-1-wed",
@@ -980,7 +917,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Свіжий Ср, сніданки",
         price: 21,
         buyDay: "wed",
-        foodKeys: ["cucumber"],
       },
       {
         id: "vegetables-2-sun",
@@ -989,7 +925,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький Пн+Нд, сніданки",
         price: 12,
         buyDay: "sun",
-        foodKeys: ["pepper"],
       },
       {
         id: "vegetables-2-wed",
@@ -998,7 +933,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "сніданки",
         price: 10,
         buyDay: "wed",
-        foodKeys: ["pepper"],
       },
       {
         id: "vegetables-3",
@@ -1007,7 +941,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький Пн+Нд",
         price: 4,
         buyDay: "sun",
-        foodKeys: ["onion"],
       },
       {
         id: "vegetables-4",
@@ -1016,7 +949,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Соус Нд + до страв",
         price: 10,
         buyDay: "sun",
-        foodKeys: ["onion"],
       },
       {
         id: "vegetables-5",
@@ -1025,7 +957,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Корейська морква Пт",
         price: 8,
         buyDay: "sun",
-        foodKeys: ["carrot"],
       },
       {
         id: "vegetables-6",
@@ -1034,7 +965,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Маринади + соуси + Цезар",
         price: 16,
         buyDay: "sun",
-        foodKeys: ["garlic"],
       },
       {
         id: "vegetables-7",
@@ -1043,7 +973,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "салат Вт",
         price: 45,
         buyDay: "sun",
-        foodKeys: ["arugula"],
       },
       {
         id: "vegetables-8",
@@ -1052,7 +981,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Цезар Сб",
         price: 50,
         buyDay: "wed",
-        foodKeys: ["icebergLettuce"],
       },
       {
         id: "vegetables-9",
@@ -1061,7 +989,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Маринад шашлику Пн + Ср скумбрія + Цезар (свинину тепер готуємо на сухій базі, без цитрусових)",
         price: 54,
         buyDay: "sun",
-        foodKeys: ["lemon"],
       },
       {
         id: "vegetables-11-sun",
@@ -1078,7 +1005,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         ],
         price: 20,
         buyDay: "sun",
-        foodKeys: ["freshVeg"],
       },
       {
         id: "vegetables-11-wed",
@@ -1095,7 +1021,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         ],
         price: 10,
         buyDay: "wed",
-        foodKeys: ["freshVeg"],
       },
     ],
   },
@@ -1111,7 +1036,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
         price: 144,
         buyDay: "sun",
-        foodKeys: ["berries"],
       },
       {
         id: "fruits-1",
@@ -1121,7 +1045,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         options: ["банани", "яблука", "груші", "апельсини"],
         price: 26,
         buyDay: "sun",
-        foodKeys: ["fruitMix"],
       },
       {
         id: "fruits-2-sun",
@@ -1130,7 +1053,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Нд–Вт перекус Олесі",
         price: 38,
         buyDay: "sun",
-        foodKeys: ["banana"],
       },
       {
         id: "fruits-2-wed",
@@ -1139,7 +1061,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Ср–Сб перекус Олесі",
         price: 28,
         buyDay: "wed",
-        foodKeys: ["banana"],
       },
     ],
   },
@@ -1192,7 +1113,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринади + заправки (свинина тепер без олії — суха база; заправки на оцті)",
         price: 65,
         buyDay: "sun",
-        foodKeys: ["oil"],
       },
       {
         id: "oils-1",
@@ -1201,7 +1121,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "смаження",
         price: 10,
         buyDay: "sun",
-        foodKeys: ["oil"],
       },
       {
         id: "oils-2",
@@ -1224,7 +1143,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринади + глазур",
         price: 32,
         buyDay: "sun",
-        foodKeys: ["soySauce"],
       },
       {
         id: "sauces-1",
@@ -1233,7 +1151,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринад Пт (мілпреп Нд) + глазур Вт",
         price: 20,
         buyDay: "sun",
-        foodKeys: ["honey"],
       },
       {
         id: "sauces-2",
@@ -1242,7 +1159,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринад Пт (мілпреп Нд) + соус Цезар",
         price: 24,
         buyDay: "sun",
-        foodKeys: ["mustardDijon"],
       },
       {
         id: "sauces-3",
@@ -1251,7 +1167,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "соус Цезар Сб",
         price: 17,
         buyDay: "sun",
-        foodKeys: ["mayo"],
       },
     ],
   },
@@ -1266,7 +1181,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "вівсянка Вт+Пт + перекус Сб",
         price: 140,
         buyDay: "sun",
-        foodKeys: ["proteinPowder"],
       },
     ],
   },
@@ -1281,7 +1195,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "суха трав'яна база для свинини (мілпреп Нд)",
         price: 25,
         buyDay: "sun",
-        foodKeys: ["rosemary"],
       },
       {
         id: "spices-1",
@@ -1290,7 +1203,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "суха трав'яна база для свинини (мілпреп Нд)",
         price: 25,
         buyDay: "sun",
-        foodKeys: ["thyme"],
       },
       {
         id: "spices-2",
@@ -1299,7 +1211,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "маринади (мілпреп Нд) + запечена картопля Пт + корейська морква Пт",
         price: 22,
         buyDay: "sun",
-        foodKeys: ["paprika"],
       },
       {
         id: "spices-3",
@@ -1308,7 +1219,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "йогуртово-лимонний та соєво-томатний маринади (мілпреп Нд)",
         price: 28,
         buyDay: "sun",
-        foodKeys: ["provencalHerbs"],
       },
       {
         id: "spices-4",
@@ -1317,7 +1227,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Грецький салат Пн + Нд",
         price: 24,
         buyDay: "sun",
-        foodKeys: ["oregano"],
       },
       {
         id: "spices-5",
@@ -1326,7 +1235,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Корейська морква Пт",
         price: 22,
         buyDay: "sun",
-        foodKeys: ["coriander"],
       },
       {
         id: "spices-6",
@@ -1335,7 +1243,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "цибулево-вершковий соус Нд",
         price: 30,
         buyDay: "sun",
-        foodKeys: ["nutmeg"],
       },
       {
         id: "spices-7",
@@ -1344,7 +1251,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "базова спеція — присутня майже в кожній страві тижня",
         price: 15,
         buyDay: "sun",
-        foodKeys: ["salt"],
       },
       {
         id: "spices-8",
@@ -1353,7 +1259,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "базова спеція — присутня майже в кожній страві тижня",
         price: 25,
         buyDay: "sun",
-        foodKeys: ["blackPepper"],
       },
     ],
   },

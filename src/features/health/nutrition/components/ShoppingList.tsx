@@ -1,9 +1,8 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { Check, RotateCcw, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Check, RotateCcw } from "lucide-react";
 import { SHOPPING_LIST } from "../data";
-import { getCoverageReport } from "../nutrition-coverage";
 import type { ShoppingCategory, ShoppingDay } from "../types";
 
 const STORAGE_KEY = "nutrition-shopping-v1";
@@ -153,71 +152,6 @@ function CategoryList({
   );
 }
 
-function CoveragePanel() {
-  const { missingFromShopping, notInRegistry, unusedOnShopping } = getCoverageReport();
-  const isClean = missingFromShopping.length === 0 && notInRegistry.length === 0;
-
-  return (
-    <div className="glass-card p-4 flex flex-col gap-3">
-      <span className="text-panel-title">Покриття продуктів</span>
-
-      {isClean ? (
-        <div className="flex items-center gap-2 text-sm text-emerald-400">
-          <CheckCircle2 size={14} />
-          <span>Список повний — усі використані продукти враховано</span>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {missingFromShopping.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-400">
-                <AlertTriangle size={12} />
-                Використовується, але немає в списку покупок
-              </span>
-              <ul className="flex flex-col gap-1 pl-1">
-                {missingFromShopping.map((product) => (
-                  <li key={product.key} className="text-sm text-zinc-300">
-                    · {product.nameUk}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {notInRegistry.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-rose-400">
-                <AlertTriangle size={12} />
-                Використовується, але нема такого продукту в реєстрі
-              </span>
-              <ul className="flex flex-col gap-1 pl-1">
-                {notInRegistry.map((key) => (
-                  <li key={key} className="font-mono text-sm text-zinc-300">
-                    · {key}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-
-      {unusedOnShopping.length > 0 && (
-        <div className="flex flex-col gap-1.5 pt-1 border-t border-white/[0.06]">
-          <span className="text-label">Куплено, але не задіяно в плані/мілпрепі</span>
-          <ul className="flex flex-wrap gap-x-3 gap-y-1 pl-1">
-            {unusedOnShopping.map((product) => (
-              <li key={product.key} className="text-caption">
-                {product.nameUk}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function ShoppingList() {
   const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
@@ -283,8 +217,6 @@ export function ShoppingList() {
           )}
         </div>
       </div>
-
-      <CoveragePanel />
 
       {TRIPS.map(({ day, title, hint }) => {
         const categories = categoriesForDay(day);

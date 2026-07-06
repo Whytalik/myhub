@@ -1,34 +1,24 @@
 import { ClipboardList, Flame, Apple } from "lucide-react";
-import { getProductKind } from "../nutrition-coverage";
-import { ProductBadge } from "@/components/ui/display/product-badge";
+import { highlightProductMentions } from "../highlight-products";
 
-const proteinIngredients: { label: string; key?: string }[] = [
-  { label: "Куряче стегно або філе — 1.48 кг", key: "chickenMarinated" },
-  { label: "Куряче філе — 1.1 кг", key: "chickenMarinated" },
-  { label: "Курячі серця — 600 г", key: "chickenHearts" },
-  { label: "Свиняча відбивна — 600 г (~4 шт)", key: "porkChop" },
-  { label: "Творог 5–9% — 500 г (для сирників)", key: "cottageCheese" },
-  { label: "Яйце — 1 шт (для сирників)", key: "eggs" },
+const proteinIngredients = [
+  "Куряче стегно або філе — 1.48 кг",
+  "Куряче філе — 1.1 кг",
+  "Курячі серця — 600 г",
+  "Свиняча відбивна — 600 г (~4 шт)",
+  "Творог 5–9% — 500 г (для сирників)",
+  "Яйце — 1 шт (для сирників)",
 ];
 
-const marinadeIngredients: { label: string; key?: string }[] = [
-  { label: "Грецький йогурт — 150 г", key: "yogurtGreek" },
-  { label: "Лимон — ½ шт", key: "lemon" },
-  { label: "Часник — 10 зубчиків", key: "garlic" },
-  { label: "Соєвий соус — 6 ст.л.", key: "soySauce" },
-  { label: "Томатна паста — 1 ст.л.", key: "tomatoPaste" },
-  { label: "Мед — 1 ст.л.", key: "honey" },
-  { label: "Гірчиця — 2 ст.л.", key: "mustardDijon" },
-  { label: "Оливкова олія — ~6 ст.л.", key: "oil" },
-  { label: "Борошно — 5–6 ст.л.", key: "flour" },
-  { label: "Цукор — 3 ст.л.", key: "sugar" },
-  { label: "Ванільний цукор — 1 пакетик", key: "vanillaSugar" },
-  { label: "Розмарин", key: "rosemary" },
-  { label: "Чебрець", key: "thyme" },
-  { label: "Паприка", key: "paprika" },
-  { label: "Прованські трави", key: "provencalHerbs" },
-  { label: "Сіль", key: "salt" },
-  { label: "Чорний перець", key: "blackPepper" },
+const marinadeIngredients = [
+  "Грецький йогурт — 150 г",
+  "Лимон — ½ шт",
+  "Часник — 10 зубчиків",
+  "Соєвий соус — 6 ст.л., Томатна паста — 1 ст.л.",
+  "Мед — 1 ст.л., Гірчиця — 2 ст.л.",
+  "Оливкова олія — ~6 ст.л.",
+  "Борошно — 5–6 ст.л., Цукор — 3 ст.л., Ванільний цукор",
+  "Розмарин, чебрець, паприка, прованські трави, сіль, перець",
 ];
 
 export function MealPrep() {
@@ -170,9 +160,9 @@ export function MealPrep() {
             <tbody>
               {prepTable.map((row, idx) => (
                 <tr key={idx} className="border-b border-white/[0.03] last:border-0">
-                  <td className="py-2 pr-3 text-zinc-200">{row.name}</td>
+                  <td className="py-2 pr-3 text-zinc-200">{highlightProductMentions(row.name)}</td>
                   <td className="py-2 pr-3 font-mono text-zinc-300">{row.qty}</td>
-                  <td className="py-2 text-zinc-400">{row.marinade}</td>
+                  <td className="py-2 text-zinc-400">{highlightProductMentions(row.marinade)}</td>
                 </tr>
               ))}
             </tbody>
@@ -200,10 +190,7 @@ export function MealPrep() {
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span className="flex items-center gap-1.5 flex-wrap">
-                    <span>{ing.label}</span>
-                    {ing.key && <ProductBadge status={getProductKind(ing.key)} />}
-                  </span>
+                  <span>{highlightProductMentions(ing)}</span>
                 </li>
               ))}
             </ul>
@@ -214,10 +201,7 @@ export function MealPrep() {
               {marinadeIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span className="flex items-center gap-1.5 flex-wrap">
-                    <span>{ing.label}</span>
-                    {ing.key && <ProductBadge status={getProductKind(ing.key)} />}
-                  </span>
+                  <span>{highlightProductMentions(ing)}</span>
                 </li>
               ))}
             </ul>
@@ -238,7 +222,7 @@ export function MealPrep() {
                 {block.steps.map((step, stepIdx) => (
                   <li key={stepIdx} className="flex items-start gap-2 text-sm text-zinc-300">
                     <span className="font-mono text-xs text-zinc-500 shrink-0">{stepIdx + 1}.</span>
-                    <span>{step}</span>
+                    <span>{highlightProductMentions(step)}</span>
                   </li>
                 ))}
               </ol>
@@ -253,16 +237,16 @@ export function MealPrep() {
           {marinades.map((m, idx) => (
             <div key={idx} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.02]">
               <span className="text-sm font-semibold text-zinc-100">{m.title}</span>
-              <p className="text-caption">{m.for}</p>
+              <p className="text-caption">{highlightProductMentions(m.for)}</p>
               <ul className="flex flex-col gap-1">
                 {m.ingredients.map((ing, ingIdx) => (
                   <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
                     <span className="text-zinc-600">·</span>
-                    <span>{ing}</span>
+                    <span>{highlightProductMentions(ing)}</span>
                   </li>
                 ))}
               </ul>
-              {m.note && <p className="text-caption italic">{m.note}</p>}
+              {m.note && <p className="text-caption italic">{highlightProductMentions(m.note)}</p>}
             </div>
           ))}
         </div>

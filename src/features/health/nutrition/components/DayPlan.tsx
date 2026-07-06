@@ -2,10 +2,19 @@
 
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
-import { getProductKind, getProductName } from "../nutrition-coverage";
+import { getProductName } from "../products";
+import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
-import { ProductBadge } from "@/components/ui/display/product-badge";
-import type { DayPlan as DayPlanType } from "../types";
+import type { DayPlan as DayPlanType, MacroItem } from "../types";
+
+function formatPortion(item: MacroItem): string {
+  if (item.vitalii > 0 && item.olesia > 0) {
+    return `Віталій ${item.vitalii} г · Олеся ${item.olesia} г`;
+  }
+  if (item.vitalii > 0) return `Тільки Віталій — ${item.vitalii} г`;
+  if (item.olesia > 0) return `Тільки Олеся — ${item.olesia} г`;
+  return "";
+}
 
 export function DayPlan({ day }: { day: DayPlanType }) {
   const actual = {
@@ -19,10 +28,6 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       const lower = ing.toLowerCase();
       return !lower.includes("друга порція") && !lower.includes("обідньої страви");
     });
-
-  const dayProductKeys = [
-    ...new Set(day.meals.flatMap((m) => (m.macroItems ?? []).map((item) => item.food))),
-  ];
 
   return (
     <div className="flex flex-col gap-4">
@@ -48,12 +53,48 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         })}
       </div>
 
-      {day.note && <p className="text-caption italic">{day.note}</p>}
+      {day.note && <p className="text-caption italic">{highlightProductMentions(day.note)}</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {day.meals.map((meal) => (
           <MealCard key={meal.type} meal={meal} />
         ))}
+      </div>
+
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <span className="text-label">Сервування — порції на сьогодні</span>
+        <div className="flex flex-col gap-3">
+          {day.meals.map((meal) => {
+            const items = (meal.macroItems ?? []).filter(
+              (item) => item.vitalii > 0 || item.olesia > 0,
+            );
+
+            return (
+              <div key={meal.type} className="flex flex-col gap-1.5">
+                <span className="text-sm font-semibold text-zinc-200">
+                  {meal.label} · {meal.title}
+                </span>
+                {items.length > 0 ? (
+                  <ul className="flex flex-col gap-1">
+                    {items.map((item, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-center justify-between gap-3 text-sm text-zinc-300"
+                      >
+                        <span>{getProductName(item.food)}</span>
+                        <span className="font-mono text-xs text-zinc-400 shrink-0">
+                          {formatPortion(item)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-caption italic">Порції — як на обід (друга порція)</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {dayIngredients.length > 0 && (
@@ -63,21 +104,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
             {dayIngredients.map((ingredient, i) => (
               <li key={i} className="flex items-start gap-1.5 text-sm text-zinc-300">
                 <span className="text-zinc-600">·</span>
-                <span>{ingredient}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {dayProductKeys.length > 0 && (
-        <div className="glass-card p-4 flex flex-col gap-2">
-          <span className="text-label">Статус продуктів у системі</span>
-          <ul className="flex flex-wrap gap-2">
-            {dayProductKeys.map((key) => (
-              <li key={key} className="flex items-center gap-1.5 text-sm text-zinc-300">
-                <span>{getProductName(key)}</span>
-                <ProductBadge status={getProductKind(key)} />
+                <span>{highlightProductMentions(ingredient)}</span>
               </li>
             ))}
           </ul>
@@ -97,7 +124,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                       <span className="font-mono text-xs text-zinc-500 shrink-0">
                         {stepIdx + 1}.
                       </span>
-                      <span>{step}</span>
+                      <span>{highlightProductMentions(step)}</span>
                     </li>
                   ))}
                 </ul>
