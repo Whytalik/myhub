@@ -4,6 +4,7 @@ export interface ExerciseInfo {
   equipment: string;
   videoUrl: string;
   scientificInsight: string;
+  progression?: string;
 }
 
 export const EXERCISE_DETAILS: Record<string, ExerciseInfo> = {

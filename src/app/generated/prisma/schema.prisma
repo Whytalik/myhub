@@ -481,6 +481,7 @@ model Exercise {
   technique         String?
   videoUrl          String?
   scientificInsight String?
+  progression       String?
   archived          Boolean               @default(false)
   order             Int                   @default(0)
   createdAt         DateTime              @default(now())

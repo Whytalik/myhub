@@ -18,19 +18,16 @@ import {
   Edit2,
   Save,
   XCircle,
+  TrendingUp,
 } from "lucide-react";
 import type { ExerciseData } from "../types";
 import { upsertExerciseAction } from "../actions/exercise-actions";
 
+import type { ExerciseInfo } from "../data/exercise-details";
+
 interface ExerciseDetailClientProps {
   exercise: ExerciseData;
-  staticDetails?: {
-    explanation: string;
-    technique: string;
-    equipment: string;
-    videoUrl: string;
-    scientificInsight: string;
-  };
+  staticDetails?: ExerciseInfo;
 }
 
 export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetailClientProps) {
@@ -45,6 +42,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
   const [scientificInsight, setScientificInsight] = useState(exercise.scientificInsight || staticDetails?.scientificInsight || "");
   const [technique, setTechnique] = useState(exercise.technique || staticDetails?.technique || "");
   const [videoUrl, setVideoUrl] = useState(exercise.videoUrl || staticDetails?.videoUrl || "");
+  const [progression, setProgression] = useState(exercise.progression || staticDetails?.progression || "");
   const [notes, setNotes] = useState(exercise.notes || "");
 
   const handleCancel = () => {
@@ -55,6 +53,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
     setScientificInsight(exercise.scientificInsight || staticDetails?.scientificInsight || "");
     setTechnique(exercise.technique || staticDetails?.technique || "");
     setVideoUrl(exercise.videoUrl || staticDetails?.videoUrl || "");
+    setProgression(exercise.progression || staticDetails?.progression || "");
     setNotes(exercise.notes || "");
     setIsEditing(false);
   };
@@ -75,6 +74,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
         scientificInsight: scientificInsight || null,
         technique: technique || null,
         videoUrl: videoUrl || null,
+        progression: progression || null,
         notes: notes || null,
       });
 
@@ -189,6 +189,20 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                 />
               </div>
             </div>
+
+            {/* Progression Input */}
+            <div className="glass-card p-6 flex flex-col gap-4">
+              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Стратегія прогресу</h2>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Правила прогресії</label>
+                <textarea
+                  className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[120px] rounded-lg"
+                  value={progression}
+                  onChange={(e) => setProgression(e.target.value)}
+                  placeholder="Вкажіть, як прогресувати в цій вправі (напр., крок збільшення ваги, діапазони повторень)..."
+                />
+              </div>
+            </div>
           </div>
 
           {/* EDIT MODE: Right Column */}
@@ -287,6 +301,90 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Progression Strategy */}
+            <div className="glass-card p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-2.5 border-b border-white/[0.06] pb-3">
+                <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+                  <TrendingUp size={18} />
+                </div>
+                <h2 className="text-panel-title">Стратегія прогресу (Прогресивне перевантаження)</h2>
+              </div>
+
+              {progression ? (
+                <div className="text-body text-zinc-300 whitespace-pre-line leading-relaxed">
+                  {progression}
+                </div>
+              ) : exercise.trackingType === "weight_reps" ? (
+                <div className="flex flex-col gap-4 text-body text-zinc-300">
+                  <p className="leading-relaxed">
+                    Для ефективного росту сили та м'язової маси використовуйте метод <strong>подвійної прогресії</strong>:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        1. Закріплення ваги
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        Використовуйте стабільну вагу та намагайтеся досягти верхньої межі цільового діапазону повторень (наприклад, 12 повторень) в усіх запланованих підходах.
+                      </p>
+                    </div>
+
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        2. Крок вгору
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        Коли всі підходи виконані на максимум із запасом RPE 8-9, на наступному тренуванні додайте вагу (+1-2.5 кг для верхньої частини тіла, +2.5-5 кг для нижньої).
+                      </p>
+                    </div>
+
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        3. Новий цикл
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        З новою вагою кількість повторень знизиться до нижньої межі (наприклад, 8 повторень). Поступово збільшуйте їх від тренування до тренування, повторюючи цикл.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4 text-body text-zinc-300">
+                  <p className="leading-relaxed">
+                    Для вправ із трекінгом за часом використовуйте метод <strong>прогресії часу під навантаженням (Time under Tension)</strong>:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        1. Збільшення часу
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        Намагайтеся збільшувати тривалість виконання вправи на 2–5 секунд у кожному підході на кожному тренуванні (наприклад, планка від 45 до 60 секунд).
+                      </p>
+                    </div>
+
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        2. Ускладнення
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        Досягнувши цільового часу, ускладніть вправу (додайте жилет-обважнювач, змініть кут нахилу або робіть статичні паузи у найважчій точці).
+                      </p>
+                    </div>
+
+                    <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
+                      <div className="font-semibold text-zinc-200 flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-amber-400">
+                        3. Контроль форми
+                      </div>
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        Збільшення часу не повинно шкодити техніці. Якщо спина прогинається або тіло тремтить надмірно, поверніться на попередній рівень часу.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

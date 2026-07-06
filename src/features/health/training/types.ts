@@ -12,6 +12,7 @@ export interface ExerciseData {
   technique: string | null;
   videoUrl: string | null;
   scientificInsight: string | null;
+  progression: string | null;
   archived: boolean;
   order: number;
   createdAt: Date;
@@ -29,6 +30,7 @@ export interface UpsertExerciseInput {
   technique?: string | null;
   videoUrl?: string | null;
   scientificInsight?: string | null;
+  progression?: string | null;
   archived?: boolean;
   order?: number;
 }

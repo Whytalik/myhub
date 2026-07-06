@@ -429,6 +429,7 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   technique: 'technique',
   videoUrl: 'videoUrl',
   scientificInsight: 'scientificInsight',
+  progression: 'progression',
   archived: 'archived',
   order: 'order',
   createdAt: 'createdAt',
