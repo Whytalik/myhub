@@ -8,6 +8,10 @@ export interface ExerciseData {
   equipment: string | null;
   trackingType: TrackingType;
   notes: string | null;
+  explanation: string | null;
+  technique: string | null;
+  videoUrl: string | null;
+  scientificInsight: string | null;
   archived: boolean;
   order: number;
   createdAt: Date;
@@ -21,6 +25,10 @@ export interface UpsertExerciseInput {
   equipment?: string | null;
   trackingType?: TrackingType;
   notes?: string | null;
+  explanation?: string | null;
+  technique?: string | null;
+  videoUrl?: string | null;
+  scientificInsight?: string | null;
   archived?: boolean;
   order?: number;
 }

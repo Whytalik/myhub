@@ -31562,6 +31562,10 @@ export namespace Prisma {
     equipment: string | null
     trackingType: string | null
     notes: string | null
+    explanation: string | null
+    technique: string | null
+    videoUrl: string | null
+    scientificInsight: string | null
     archived: boolean | null
     order: number | null
     createdAt: Date | null
@@ -31576,6 +31580,10 @@ export namespace Prisma {
     equipment: string | null
     trackingType: string | null
     notes: string | null
+    explanation: string | null
+    technique: string | null
+    videoUrl: string | null
+    scientificInsight: string | null
     archived: boolean | null
     order: number | null
     createdAt: Date | null
@@ -31590,6 +31598,10 @@ export namespace Prisma {
     equipment: number
     trackingType: number
     notes: number
+    explanation: number
+    technique: number
+    videoUrl: number
+    scientificInsight: number
     archived: number
     order: number
     createdAt: number
@@ -31614,6 +31626,10 @@ export namespace Prisma {
     equipment?: true
     trackingType?: true
     notes?: true
+    explanation?: true
+    technique?: true
+    videoUrl?: true
+    scientificInsight?: true
     archived?: true
     order?: true
     createdAt?: true
@@ -31628,6 +31644,10 @@ export namespace Prisma {
     equipment?: true
     trackingType?: true
     notes?: true
+    explanation?: true
+    technique?: true
+    videoUrl?: true
+    scientificInsight?: true
     archived?: true
     order?: true
     createdAt?: true
@@ -31642,6 +31662,10 @@ export namespace Prisma {
     equipment?: true
     trackingType?: true
     notes?: true
+    explanation?: true
+    technique?: true
+    videoUrl?: true
+    scientificInsight?: true
     archived?: true
     order?: true
     createdAt?: true
@@ -31743,6 +31767,10 @@ export namespace Prisma {
     equipment: string | null
     trackingType: string
     notes: string | null
+    explanation: string | null
+    technique: string | null
+    videoUrl: string | null
+    scientificInsight: string | null
     archived: boolean
     order: number
     createdAt: Date
@@ -31776,6 +31804,10 @@ export namespace Prisma {
     equipment?: boolean
     trackingType?: boolean
     notes?: boolean
+    explanation?: boolean
+    technique?: boolean
+    videoUrl?: boolean
+    scientificInsight?: boolean
     archived?: boolean
     order?: boolean
     createdAt?: boolean
@@ -31794,6 +31826,10 @@ export namespace Prisma {
     equipment?: boolean
     trackingType?: boolean
     notes?: boolean
+    explanation?: boolean
+    technique?: boolean
+    videoUrl?: boolean
+    scientificInsight?: boolean
     archived?: boolean
     order?: boolean
     createdAt?: boolean
@@ -31809,6 +31845,10 @@ export namespace Prisma {
     equipment?: boolean
     trackingType?: boolean
     notes?: boolean
+    explanation?: boolean
+    technique?: boolean
+    videoUrl?: boolean
+    scientificInsight?: boolean
     archived?: boolean
     order?: boolean
     createdAt?: boolean
@@ -31824,13 +31864,17 @@ export namespace Prisma {
     equipment?: boolean
     trackingType?: boolean
     notes?: boolean
+    explanation?: boolean
+    technique?: boolean
+    videoUrl?: boolean
+    scientificInsight?: boolean
     archived?: boolean
     order?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "muscleGroup" | "equipment" | "trackingType" | "notes" | "archived" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["exercise"]>
+  export type ExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "muscleGroup" | "equipment" | "trackingType" | "notes" | "explanation" | "technique" | "videoUrl" | "scientificInsight" | "archived" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["exercise"]>
   export type ExerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     dayExercises?: boolean | Exercise$dayExercisesArgs<ExtArgs>
@@ -31859,6 +31903,10 @@ export namespace Prisma {
       equipment: string | null
       trackingType: string
       notes: string | null
+      explanation: string | null
+      technique: string | null
+      videoUrl: string | null
+      scientificInsight: string | null
       archived: boolean
       order: number
       createdAt: Date
@@ -32296,6 +32344,10 @@ export namespace Prisma {
     readonly equipment: FieldRef<"Exercise", 'String'>
     readonly trackingType: FieldRef<"Exercise", 'String'>
     readonly notes: FieldRef<"Exercise", 'String'>
+    readonly explanation: FieldRef<"Exercise", 'String'>
+    readonly technique: FieldRef<"Exercise", 'String'>
+    readonly videoUrl: FieldRef<"Exercise", 'String'>
+    readonly scientificInsight: FieldRef<"Exercise", 'String'>
     readonly archived: FieldRef<"Exercise", 'Boolean'>
     readonly order: FieldRef<"Exercise", 'Int'>
     readonly createdAt: FieldRef<"Exercise", 'DateTime'>
@@ -39286,6 +39338,10 @@ export namespace Prisma {
     equipment: 'equipment',
     trackingType: 'trackingType',
     notes: 'notes',
+    explanation: 'explanation',
+    technique: 'technique',
+    videoUrl: 'videoUrl',
+    scientificInsight: 'scientificInsight',
     archived: 'archived',
     order: 'order',
     createdAt: 'createdAt',
@@ -41589,6 +41645,10 @@ export namespace Prisma {
     equipment?: StringNullableFilter<"Exercise"> | string | null
     trackingType?: StringFilter<"Exercise"> | string
     notes?: StringNullableFilter<"Exercise"> | string | null
+    explanation?: StringNullableFilter<"Exercise"> | string | null
+    technique?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    scientificInsight?: StringNullableFilter<"Exercise"> | string | null
     archived?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -41606,6 +41666,10 @@ export namespace Prisma {
     equipment?: SortOrderInput | SortOrder
     trackingType?: SortOrder
     notes?: SortOrderInput | SortOrder
+    explanation?: SortOrderInput | SortOrder
+    technique?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    scientificInsight?: SortOrderInput | SortOrder
     archived?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
@@ -41626,6 +41690,10 @@ export namespace Prisma {
     equipment?: StringNullableFilter<"Exercise"> | string | null
     trackingType?: StringFilter<"Exercise"> | string
     notes?: StringNullableFilter<"Exercise"> | string | null
+    explanation?: StringNullableFilter<"Exercise"> | string | null
+    technique?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    scientificInsight?: StringNullableFilter<"Exercise"> | string | null
     archived?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -41643,6 +41711,10 @@ export namespace Prisma {
     equipment?: SortOrderInput | SortOrder
     trackingType?: SortOrder
     notes?: SortOrderInput | SortOrder
+    explanation?: SortOrderInput | SortOrder
+    technique?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    scientificInsight?: SortOrderInput | SortOrder
     archived?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
@@ -41665,6 +41737,10 @@ export namespace Prisma {
     equipment?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     trackingType?: StringWithAggregatesFilter<"Exercise"> | string
     notes?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    explanation?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    technique?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
+    scientificInsight?: StringNullableWithAggregatesFilter<"Exercise"> | string | null
     archived?: BoolWithAggregatesFilter<"Exercise"> | boolean
     order?: IntWithAggregatesFilter<"Exercise"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Exercise"> | Date | string
@@ -44324,6 +44400,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -44341,6 +44421,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -44356,6 +44440,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44373,6 +44461,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44389,6 +44481,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -44402,6 +44498,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44416,6 +44516,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46696,6 +46800,10 @@ export namespace Prisma {
     equipment?: SortOrder
     trackingType?: SortOrder
     notes?: SortOrder
+    explanation?: SortOrder
+    technique?: SortOrder
+    videoUrl?: SortOrder
+    scientificInsight?: SortOrder
     archived?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
@@ -46714,6 +46822,10 @@ export namespace Prisma {
     equipment?: SortOrder
     trackingType?: SortOrder
     notes?: SortOrder
+    explanation?: SortOrder
+    technique?: SortOrder
+    videoUrl?: SortOrder
+    scientificInsight?: SortOrder
     archived?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
@@ -46728,6 +46840,10 @@ export namespace Prisma {
     equipment?: SortOrder
     trackingType?: SortOrder
     notes?: SortOrder
+    explanation?: SortOrder
+    technique?: SortOrder
+    videoUrl?: SortOrder
+    scientificInsight?: SortOrder
     archived?: SortOrder
     order?: SortOrder
     createdAt?: SortOrder
@@ -50276,6 +50392,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -50291,6 +50411,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -50968,6 +51092,10 @@ export namespace Prisma {
     equipment?: StringNullableFilter<"Exercise"> | string | null
     trackingType?: StringFilter<"Exercise"> | string
     notes?: StringNullableFilter<"Exercise"> | string | null
+    explanation?: StringNullableFilter<"Exercise"> | string | null
+    technique?: StringNullableFilter<"Exercise"> | string | null
+    videoUrl?: StringNullableFilter<"Exercise"> | string | null
+    scientificInsight?: StringNullableFilter<"Exercise"> | string | null
     archived?: BoolFilter<"Exercise"> | boolean
     order?: IntFilter<"Exercise"> | number
     createdAt?: DateTimeFilter<"Exercise"> | Date | string
@@ -55902,6 +56030,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -55918,6 +56050,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -56058,6 +56194,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56074,6 +56214,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56454,6 +56598,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -56470,6 +56618,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -56610,6 +56762,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56626,6 +56782,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56824,6 +56984,10 @@ export namespace Prisma {
     equipment?: string | null
     trackingType?: string
     notes?: string | null
+    explanation?: string | null
+    technique?: string | null
+    videoUrl?: string | null
+    scientificInsight?: string | null
     archived?: boolean
     order?: number
     createdAt?: Date | string
@@ -57471,6 +57635,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57486,6 +57654,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57501,6 +57673,10 @@ export namespace Prisma {
     equipment?: NullableStringFieldUpdateOperationsInput | string | null
     trackingType?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    technique?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    scientificInsight?: NullableStringFieldUpdateOperationsInput | string | null
     archived?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
