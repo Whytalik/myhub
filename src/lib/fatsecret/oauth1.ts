@@ -31,6 +31,14 @@ export interface OAuth1Token {
 /**
  * Signs and executes a FatSecret OAuth 1.0a request (3-legged: request token,
  * access token exchange, and delegated diary writes all go through this).
+ *
+ * FatSecret ignores oauth_* parameters sent via the `Authorization` header
+ * (fails with "Missing required parameter: oauth_consumer_key") and rejects
+ * them sent via query string with an otherwise-correctly-computed signature
+ * ("Invalid signature") — confirmed against a from-scratch RFC 5849 base
+ * string/signature computation, which matched the library exactly. The only
+ * transmission FatSecret actually accepts is all oauth_* params merged into
+ * the POST form body alongside the business params (confirmed working live).
  */
 export async function signedFetch(
   url: string,
@@ -39,12 +47,16 @@ export async function signedFetch(
 ): Promise<string> {
   const oauth = getOAuth();
   const requestData = { url, method: "POST", data: params };
-  const authHeader = oauth.toHeader(oauth.authorize(requestData, token));
+  const authorized = oauth.authorize(requestData, token);
+  const stringified = Object.fromEntries(
+    Object.entries(authorized).map(([k, v]) => [k, String(v)]),
+  );
+  const body = new URLSearchParams({ ...params, ...stringified });
 
   const response = await fatsecretFetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded", ...authHeader },
-    body: new URLSearchParams(params).toString(),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
   });
 
   const text = await response.text();
