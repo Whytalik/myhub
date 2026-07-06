@@ -20,8 +20,10 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
   }
 
   let trainingSession;
+  let pastLogs = {};
   try {
     trainingSession = await trainingSessionService.getSession(userId, id);
+    pastLogs = await trainingSessionService.getPastLogsForSession(userId, id);
   } catch {
     notFound();
   }
@@ -41,7 +43,10 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
           day: "numeric",
         })}
       />
-      <SessionClient session={trainingSession as unknown as TrainingSessionData} />
+      <SessionClient 
+        session={trainingSession as unknown as TrainingSessionData} 
+        pastLogs={pastLogs as any}
+      />
     </div>
   );
 }

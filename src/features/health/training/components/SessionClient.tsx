@@ -14,12 +14,22 @@ import { updateSetLogAction, completeSessionAction } from "../actions/training-s
 
 interface SessionClientProps {
   session: TrainingSessionData;
+  pastLogs?: Record<
+    string,
+    {
+      reps: number | null;
+      weight: number | null;
+      rpe: number | null;
+      durationSeconds: number | null;
+      distanceMeters: number | null;
+    }[]
+  >;
 }
 
 type EditableField =
   "reps" | "weight" | "rpe" | "restSeconds" | "durationSeconds" | "distanceMeters" | "notes";
 
-export function SessionClient({ session }: SessionClientProps) {
+export function SessionClient({ session, pastLogs }: SessionClientProps) {
   const router = useRouter();
   const [setLogs, setSetLogs] = useState<SetLogData[]>(session.setLogs);
   const [status, setStatus] = useState(session.status);
@@ -328,105 +338,109 @@ export function SessionClient({ session }: SessionClientProps) {
                           : "border-white/[0.12] text-zinc-500 hover:bg-white/5"
                       }`;
 
+                      const exercisePastLogs = pastLogs?.[group.exerciseId];
+                      const pastSet = exercisePastLogs?.[log.setNumber - 1];
+
                       return (
-                        <div key={log.id} className="flex items-center gap-2 flex-nowrap w-full min-w-0">
-                          <button
-                            onClick={() => toggleCompleted(log.id)}
-                            disabled={isCompleted}
-                            className={setToggleClass}
-                          >
-                            <Check size={14} />
-                          </button>
-                          <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
-                            {log.setNumber}
-                          </span>
+                        <div key={log.id} className="flex flex-col gap-1 w-full border-b border-white/[0.02] pb-1.5 last:border-b-0 last:pb-0">
+                          <div className="flex items-center gap-2 flex-nowrap w-full min-w-0">
+                            <button
+                              onClick={() => toggleCompleted(log.id)}
+                              disabled={isCompleted}
+                              className={setToggleClass}
+                            >
+                              <Check size={14} />
+                            </button>
+                            <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
+                              {log.setNumber}
+                            </span>
 
-                          {isTimeBased ? (
-                            <>
-                              <Input
-                                type="number"
-                                min={0}
-                                placeholder="—"
-                                className={numberInputClass}
-                                disabled={isCompleted}
-                                value={log.durationSeconds ?? ""}
-                                onChange={(e) =>
-                                  updateField(
-                                    log.id,
-                                    "durationSeconds",
-                                    e.target.value === "" ? null : Number(e.target.value),
-                                  )
-                                }
-                                onBlur={() => persist(log.id)}
-                              />
-                              <Input
-                                type="number"
-                                min={0}
-                                step="0.1"
-                                placeholder="—"
-                                className={numberInputClass}
-                                disabled={isCompleted}
-                                value={log.distanceMeters ?? ""}
-                                onChange={(e) =>
-                                  updateField(
-                                    log.id,
-                                    "distanceMeters",
-                                    e.target.value === "" ? null : Number(e.target.value),
-                                  )
-                                }
-                                onBlur={() => persist(log.id)}
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <Input
-                                type="number"
-                                min={0}
-                                placeholder="—"
-                                className={numberInputClass}
-                                disabled={isCompleted}
-                                value={log.reps ?? ""}
-                                onChange={(e) =>
-                                  updateField(
-                                    log.id,
-                                    "reps",
-                                    e.target.value === "" ? null : Number(e.target.value),
-                                  )
-                                }
-                                onBlur={() => persist(log.id)}
-                              />
-                              <Input
-                                type="number"
-                                min={0}
-                                step="0.5"
-                                placeholder="—"
-                                className={numberInputClass}
-                                disabled={isCompleted}
-                                value={log.weight ?? ""}
-                                onChange={(e) =>
-                                  updateField(
-                                    log.id,
-                                    "weight",
-                                    e.target.value === "" ? null : Number(e.target.value),
-                                  )
-                                }
-                                onBlur={() => persist(log.id)}
-                              />
-                            </>
-                          )}
+                            {isTimeBased ? (
+                              <>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  placeholder="—"
+                                  className={numberInputClass}
+                                  disabled={isCompleted}
+                                  value={log.durationSeconds ?? ""}
+                                  onChange={(e) =>
+                                    updateField(
+                                      log.id,
+                                      "durationSeconds",
+                                      e.target.value === "" ? null : Number(e.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(log.id)}
+                                />
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  step="0.1"
+                                  placeholder="—"
+                                  className={numberInputClass}
+                                  disabled={isCompleted}
+                                  value={log.distanceMeters ?? ""}
+                                  onChange={(e) =>
+                                    updateField(
+                                      log.id,
+                                      "distanceMeters",
+                                      e.target.value === "" ? null : Number(e.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(log.id)}
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  placeholder="—"
+                                  className={numberInputClass}
+                                  disabled={isCompleted}
+                                  value={log.reps ?? ""}
+                                  onChange={(e) =>
+                                    updateField(
+                                      log.id,
+                                      "reps",
+                                      e.target.value === "" ? null : Number(e.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(log.id)}
+                                />
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  step="0.5"
+                                  placeholder="—"
+                                  className={numberInputClass}
+                                  disabled={isCompleted}
+                                  value={log.weight ?? ""}
+                                  onChange={(e) =>
+                                    updateField(
+                                      log.id,
+                                      "weight",
+                                      e.target.value === "" ? null : Number(e.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(log.id)}
+                                />
+                              </>
+                            )}
 
-                          <Input
-                            type="number"
-                            min={1}
-                            max={10}
-                            step="0.5"
-                            placeholder="—"
-                            className={numberInputClass}
-                            disabled={isCompleted}
-                            value={log.rpe ?? ""}
-                            onChange={(e) =>
-                              updateField(
-                                log.id,
+                            <Input
+                              type="number"
+                              min={1}
+                              max={10}
+                              step="0.5"
+                              placeholder="—"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={log.rpe ?? ""}
+                              onChange={(e) =>
+                                updateField(
+                                  log.id,
                                   "rpe",
                                   e.target.value === "" ? null : Number(e.target.value),
                                 )
@@ -460,8 +474,28 @@ export function SessionClient({ session }: SessionClientProps) {
                               onBlur={() => persist(log.id)}
                             />
                           </div>
-                        );
-                      })}
+
+                          {pastSet && (
+                            <div className="flex items-center gap-1.5 pl-13 text-[10px] text-zinc-500 font-mono select-none">
+                              <span>Минулого разу:</span>
+                              {isTimeBased ? (
+                                <span className="text-zinc-400">
+                                  {pastSet.durationSeconds ? `${pastSet.durationSeconds}с` : "—"}
+                                  {pastSet.distanceMeters ? ` / ${pastSet.distanceMeters}м` : ""}
+                                </span>
+                              ) : (
+                                <span className="text-zinc-400 font-bold">
+                                  {pastSet.weight !== null ? `${pastSet.weight}кг` : "—"}
+                                  {" х "}
+                                  {pastSet.reps !== null ? `${pastSet.reps}` : "—"}
+                                </span>
+                              )}
+                              {pastSet.rpe && <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                     </div>
                   )}
                 </div>

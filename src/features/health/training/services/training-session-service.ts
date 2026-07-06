@@ -4,6 +4,7 @@ import { trainingDayRepository } from "../repositories/training-day.repository";
 import type { Prisma } from "@/app/generated/prisma";
 import type { StartSessionInput, UpdateSetLogInput, CompleteSessionInput } from "../types";
 import { setLogRepository } from "../repositories/set-log.repository";
+import { prisma } from "@/lib/db/prisma";
 
 export async function getRecentSessions(userId: string) {
   return getCachedRecentSessions(userId);
@@ -60,4 +61,65 @@ export async function completeSession(userId: string, input: CompleteSessionInpu
 
 export async function deleteSession(userId: string, id: string) {
   return trainingSessionRepository.delete(id, userId);
+}
+
+export async function getPastLogsForSession(userId: string, sessionId: string) {
+  const session = await trainingSessionRepository.findById(sessionId);
+  if (!session || session.userId !== userId) return {};
+
+  const exerciseIds = Array.from(new Set(session.setLogs.map((l) => l.exerciseId)));
+  const pastLogs: Record<
+    string,
+    {
+      reps: number | null;
+      weight: number | null;
+      rpe: number | null;
+      durationSeconds: number | null;
+      distanceMeters: number | null;
+    }[]
+  > = {};
+
+  for (const exerciseId of exerciseIds) {
+    const latestCompletedSessionWithExercise = await prisma.trainingSession.findFirst({
+      where: {
+        userId,
+        status: "completed",
+        date: {
+          lt: session.date,
+        },
+        setLogs: {
+          some: {
+            exerciseId,
+            completed: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+      include: {
+        setLogs: {
+          where: {
+            exerciseId,
+            completed: true,
+          },
+          orderBy: {
+            order: "asc",
+          },
+        },
+      },
+    });
+
+    if (latestCompletedSessionWithExercise) {
+      pastLogs[exerciseId] = latestCompletedSessionWithExercise.setLogs.map((l) => ({
+        reps: l.reps,
+        weight: l.weight,
+        rpe: l.rpe,
+        durationSeconds: l.durationSeconds,
+        distanceMeters: l.distanceMeters,
+      }));
+    }
+  }
+
+  return pastLogs;
 }
