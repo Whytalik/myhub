@@ -75,10 +75,10 @@ export const DOMAINS: Domain[] = [
         accent: "#ff8c00",
         href: "/health/nutrition",
         pages: [
+          { href: "/health/nutrition/profiles", label: "Profiles", icon: Scale },
           { href: "/health/nutrition", label: "Daily", icon: Utensils },
           { href: "/health/nutrition/meal-prep", label: "Meal Prep", icon: ClipboardList },
           { href: "/health/nutrition/shopping-list", label: "Shopping List", icon: ShoppingCart },
-          { href: "/health/nutrition/profiles", label: "Profiles", icon: Scale },
         ],
       },
       {

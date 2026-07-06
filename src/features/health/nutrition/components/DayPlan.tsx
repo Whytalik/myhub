@@ -8,15 +8,6 @@ import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
 import type { DayPlan as DayPlanType, Meal, MacroItem, MealType } from "../types";
 
-function formatPortion(item: { vitalii: number; olesia: number }): string {
-  if (item.vitalii > 0 && item.olesia > 0) {
-    return `Віталій ${item.vitalii} г · Олеся ${item.olesia} г`;
-  }
-  if (item.vitalii > 0) return `Тільки Віталій — ${item.vitalii} г`;
-  if (item.olesia > 0) return `Тільки Олеся — ${item.olesia} г`;
-  return "";
-}
-
 function isRepeatPortion(meal: Meal): boolean {
   return (
     (meal.macroItems ?? []).length === 0 &&
@@ -104,18 +95,47 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           const macros = actual[profile.id as keyof typeof actual];
 
           return (
-            <div key={profile.id} className="glass-card p-3 flex flex-wrap items-baseline gap-1.5">
+            <div key={profile.id} className="glass-card p-3 flex flex-col gap-2">
               <span className="text-sm font-semibold text-zinc-100">{profile.name}</span>
-              <span className="font-mono text-sm text-accent-nutrition">
-                {macros.kcal} ккал/день
-              </span>
-              <span className="text-zinc-600">·</span>
-              <span className="text-caption">Б {macros.protein} г</span>
-              <span className="text-zinc-600">·</span>
-              <span className="text-caption">Ж {macros.fat} г</span>
-              <span className="text-zinc-600">·</span>
-              <span className="text-caption">В {macros.carbs} г</span>
-              <span className="text-caption">(ціль {profile.kcal} ккал)</span>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/[0.06]">
+                    <th className="text-label text-left py-1.5 pr-2"></th>
+                    <th className="text-label text-right py-1.5 px-2">Ккал</th>
+                    <th className="text-label text-right py-1.5 px-2">Б</th>
+                    <th className="text-label text-right py-1.5 px-2">Ж</th>
+                    <th className="text-label text-right py-1.5">В</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-white/[0.03]">
+                    <td className="py-1.5 pr-2 text-caption">План</td>
+                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                      {profile.kcal}
+                    </td>
+                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                      {profile.macros.protein}
+                    </td>
+                    <td className="py-1.5 px-2 text-right font-mono text-zinc-300">
+                      {profile.macros.fat}
+                    </td>
+                    <td className="py-1.5 text-right font-mono text-zinc-300">
+                      {profile.macros.carbs}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-1.5 pr-2 text-caption">Факт</td>
+                    <td className="py-1.5 px-2 text-right font-mono text-accent-nutrition">
+                      {macros.kcal}
+                    </td>
+                    <td className="py-1.5 px-2 text-right font-mono text-zinc-100">
+                      {macros.protein}
+                    </td>
+                    <td className="py-1.5 px-2 text-right font-mono text-zinc-100">{macros.fat}</td>
+                    <td className="py-1.5 text-right font-mono text-zinc-100">{macros.carbs}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           );
         })}
@@ -134,33 +154,46 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         <div className="flex flex-col gap-4">
           {buildServingEntries(day.meals).map((entry, idx) => (
             <div key={idx} className="flex flex-col gap-2">
-              <span className="text-sm font-semibold text-zinc-200 text-center">
-                {entry.labels.join(" + ")} · {entry.title}
-              </span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-zinc-200">
+                  {entry.labels.join(" + ")} · {entry.title}
+                </span>
+                <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
+              </div>
               {entry.labels.length > 1 && (
-                <p className="text-caption text-center italic">
+                <p className="text-caption italic">
                   Разом на {entry.labels.length.toString()} прийоми — ділити приблизно порівну
                 </p>
               )}
               <div className="h-px bg-white/[0.06]" />
               {entry.groups.length > 0 ? (
-                <ul className="flex flex-col gap-1">
-                  {entry.groups.map((group, groupIdx) => (
-                    <li
-                      key={groupIdx}
-                      className="flex items-center justify-between gap-3 text-sm text-zinc-300"
-                    >
-                      <span>{group.label}</span>
-                      <span className="font-mono text-xs text-zinc-400 shrink-0">
-                        {formatPortion(group)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/[0.06]">
+                        <th className="text-label text-left py-2 pr-3">Продукт</th>
+                        <th className="text-label text-right py-2 pr-3">Віталій</th>
+                        <th className="text-label text-right py-2">Олеся</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {entry.groups.map((group, groupIdx) => (
+                        <tr key={groupIdx} className="border-b border-white/[0.03] last:border-0">
+                          <td className="py-2 pr-3 text-zinc-200">{group.label}</td>
+                          <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                            {group.vitalii > 0 ? `${group.vitalii} г` : "—"}
+                          </td>
+                          <td className="py-2 text-right font-mono text-xs text-zinc-400">
+                            {group.olesia > 0 ? `${group.olesia} г` : "—"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               ) : (
                 <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
               )}
-              <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
             </div>
           ))}
         </div>
@@ -169,14 +202,17 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       {dayIngredients.length > 0 && (
         <div className="glass-card p-4 flex flex-col gap-2">
           <span className="text-label">Продукти на день</span>
-          <ul className="flex flex-col gap-1">
-            {dayIngredients.map((ingredient, i) => (
-              <li key={i} className="flex items-start gap-1.5 text-sm text-zinc-300">
-                <span className="text-zinc-600">·</span>
-                <span>{highlightProductMentions(ingredient)}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <tbody>
+                {dayIngredients.map((ingredient, i) => (
+                  <tr key={i} className="border-b border-white/[0.03] last:border-0">
+                    <td className="py-2 text-zinc-300">{highlightProductMentions(ingredient)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

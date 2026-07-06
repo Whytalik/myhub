@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 }
 
 function redirectWithStatus(request: NextRequest, status: string, detail: string) {
-  const url = new URL("/health/nutrition", request.url);
+  const url = new URL("/health/nutrition/profiles", request.url);
   url.searchParams.set("fatsecret", status);
   url.searchParams.set("profile", detail);
   return NextResponse.redirect(url);
