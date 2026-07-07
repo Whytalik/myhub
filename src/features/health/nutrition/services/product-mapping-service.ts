@@ -24,6 +24,7 @@ export interface UpsertMappingInput {
   servingId: string;
   servingDescription: string;
   servingGrams: number;
+  macroGrams: number;
   kcal: number;
   protein: number;
   fat: number;
@@ -91,7 +92,7 @@ export async function getMappingOverview(): Promise<ProductMappingOverviewItem[]
             row.protein,
             row.fat,
             row.carbs,
-            row.servingGrams,
+            row.macroGrams,
           ),
           source: row.source,
         };
@@ -118,6 +119,7 @@ export async function upsertMapping(input: UpsertMappingInput) {
     servingId: input.servingId,
     servingDescription: input.servingDescription,
     servingGrams: input.servingGrams,
+    macroGrams: input.macroGrams,
     kcal: input.kcal,
     protein: input.protein,
     fat: input.fat,

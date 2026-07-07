@@ -89,7 +89,10 @@ model ProductFatSecretMapping {
   foodName           String
   servingId          String
   servingDescription String
+  /** Множник для food_entry.create (numberOfUnits = grams / servingGrams) — 1 для "g"/"ml" servings (FatSecret тоді трактує number_of_units як грами напряму), інакше = macroGrams. НЕ перевикористовувати для розрахунку макросів. */
   servingGrams       Float         @default(1)
+  /** Скільки грамів представляють збережені kcal/protein/fat/carbs (metric_serving_amount) — база для перерахунку на 100г. */
+  macroGrams         Float         @default(0)
   /** Макроси serving'у, як повернув FatSecret на момент мапування — для порівняння з ціллю. */
   kcal               Float         @default(0)
   protein            Float         @default(0)

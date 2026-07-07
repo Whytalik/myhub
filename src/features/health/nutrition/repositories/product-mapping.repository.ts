@@ -7,6 +7,7 @@ export interface ProductMappingFields {
   servingId: string;
   servingDescription: string;
   servingGrams: number;
+  macroGrams: number;
   kcal: number;
   protein: number;
   fat: number;

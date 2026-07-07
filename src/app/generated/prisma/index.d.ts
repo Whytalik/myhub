@@ -9183,6 +9183,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgAggregateOutputType = {
     servingGrams: number | null
+    macroGrams: number | null
     kcal: number | null
     protein: number | null
     fat: number | null
@@ -9191,6 +9192,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingSumAggregateOutputType = {
     servingGrams: number | null
+    macroGrams: number | null
     kcal: number | null
     protein: number | null
     fat: number | null
@@ -9205,6 +9207,7 @@ export namespace Prisma {
     servingId: string | null
     servingDescription: string | null
     servingGrams: number | null
+    macroGrams: number | null
     kcal: number | null
     protein: number | null
     fat: number | null
@@ -9222,6 +9225,7 @@ export namespace Prisma {
     servingId: string | null
     servingDescription: string | null
     servingGrams: number | null
+    macroGrams: number | null
     kcal: number | null
     protein: number | null
     fat: number | null
@@ -9239,6 +9243,7 @@ export namespace Prisma {
     servingId: number
     servingDescription: number
     servingGrams: number
+    macroGrams: number
     kcal: number
     protein: number
     fat: number
@@ -9252,6 +9257,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgAggregateInputType = {
     servingGrams?: true
+    macroGrams?: true
     kcal?: true
     protein?: true
     fat?: true
@@ -9260,6 +9266,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingSumAggregateInputType = {
     servingGrams?: true
+    macroGrams?: true
     kcal?: true
     protein?: true
     fat?: true
@@ -9274,6 +9281,7 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    macroGrams?: true
     kcal?: true
     protein?: true
     fat?: true
@@ -9291,6 +9299,7 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    macroGrams?: true
     kcal?: true
     protein?: true
     fat?: true
@@ -9308,6 +9317,7 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    macroGrams?: true
     kcal?: true
     protein?: true
     fat?: true
@@ -9412,6 +9422,7 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams: number
+    macroGrams: number
     kcal: number
     protein: number
     fat: number
@@ -9448,6 +9459,7 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    macroGrams?: boolean
     kcal?: boolean
     protein?: boolean
     fat?: boolean
@@ -9465,6 +9477,7 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    macroGrams?: boolean
     kcal?: boolean
     protein?: boolean
     fat?: boolean
@@ -9482,6 +9495,7 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    macroGrams?: boolean
     kcal?: boolean
     protein?: boolean
     fat?: boolean
@@ -9499,6 +9513,7 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    macroGrams?: boolean
     kcal?: boolean
     protein?: boolean
     fat?: boolean
@@ -9508,7 +9523,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProductFatSecretMappingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productKey" | "foodId" | "foodName" | "servingId" | "servingDescription" | "servingGrams" | "kcal" | "protein" | "fat" | "carbs" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["productFatSecretMapping"]>
+  export type ProductFatSecretMappingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productKey" | "foodId" | "foodName" | "servingId" | "servingDescription" | "servingGrams" | "macroGrams" | "kcal" | "protein" | "fat" | "carbs" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["productFatSecretMapping"]>
 
   export type $ProductFatSecretMappingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProductFatSecretMapping"
@@ -9520,7 +9535,14 @@ export namespace Prisma {
       foodName: string
       servingId: string
       servingDescription: string
+      /**
+       * * Множник для food_entry.create (numberOfUnits = grams / servingGrams) — 1 для "g"/"ml" servings (FatSecret тоді трактує number_of_units як грами напряму), інакше = macroGrams. НЕ перевикористовувати для розрахунку макросів.
+       */
       servingGrams: number
+      /**
+       * * Скільки грамів представляють збережені kcal/protein/fat/carbs (metric_serving_amount) — база для перерахунку на 100г.
+       */
+      macroGrams: number
       /**
        * * Макроси serving'у, як повернув FatSecret на момент мапування — для порівняння з ціллю.
        */
@@ -9961,6 +9983,7 @@ export namespace Prisma {
     readonly servingId: FieldRef<"ProductFatSecretMapping", 'String'>
     readonly servingDescription: FieldRef<"ProductFatSecretMapping", 'String'>
     readonly servingGrams: FieldRef<"ProductFatSecretMapping", 'Float'>
+    readonly macroGrams: FieldRef<"ProductFatSecretMapping", 'Float'>
     readonly kcal: FieldRef<"ProductFatSecretMapping", 'Float'>
     readonly protein: FieldRef<"ProductFatSecretMapping", 'Float'>
     readonly fat: FieldRef<"ProductFatSecretMapping", 'Float'>
@@ -40311,6 +40334,7 @@ export namespace Prisma {
     servingId: 'servingId',
     servingDescription: 'servingDescription',
     servingGrams: 'servingGrams',
+    macroGrams: 'macroGrams',
     kcal: 'kcal',
     protein: 'protein',
     fat: 'fat',
@@ -41313,6 +41337,7 @@ export namespace Prisma {
     servingId?: StringFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatFilter<"ProductFatSecretMapping"> | number
+    macroGrams?: FloatFilter<"ProductFatSecretMapping"> | number
     kcal?: FloatFilter<"ProductFatSecretMapping"> | number
     protein?: FloatFilter<"ProductFatSecretMapping"> | number
     fat?: FloatFilter<"ProductFatSecretMapping"> | number
@@ -41330,6 +41355,7 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -41350,6 +41376,7 @@ export namespace Prisma {
     servingId?: StringFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatFilter<"ProductFatSecretMapping"> | number
+    macroGrams?: FloatFilter<"ProductFatSecretMapping"> | number
     kcal?: FloatFilter<"ProductFatSecretMapping"> | number
     protein?: FloatFilter<"ProductFatSecretMapping"> | number
     fat?: FloatFilter<"ProductFatSecretMapping"> | number
@@ -41367,6 +41394,7 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -41392,6 +41420,7 @@ export namespace Prisma {
     servingId?: StringWithAggregatesFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringWithAggregatesFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
+    macroGrams?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
     kcal?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
     protein?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
     fat?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
@@ -44003,6 +44032,7 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    macroGrams?: number
     kcal?: number
     protein?: number
     fat?: number
@@ -44020,6 +44050,7 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    macroGrams?: number
     kcal?: number
     protein?: number
     fat?: number
@@ -44037,6 +44068,7 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    macroGrams?: FloatFieldUpdateOperationsInput | number
     kcal?: FloatFieldUpdateOperationsInput | number
     protein?: FloatFieldUpdateOperationsInput | number
     fat?: FloatFieldUpdateOperationsInput | number
@@ -44054,6 +44086,7 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    macroGrams?: FloatFieldUpdateOperationsInput | number
     kcal?: FloatFieldUpdateOperationsInput | number
     protein?: FloatFieldUpdateOperationsInput | number
     fat?: FloatFieldUpdateOperationsInput | number
@@ -44071,6 +44104,7 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    macroGrams?: number
     kcal?: number
     protein?: number
     fat?: number
@@ -44088,6 +44122,7 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    macroGrams?: FloatFieldUpdateOperationsInput | number
     kcal?: FloatFieldUpdateOperationsInput | number
     protein?: FloatFieldUpdateOperationsInput | number
     fat?: FloatFieldUpdateOperationsInput | number
@@ -44105,6 +44140,7 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    macroGrams?: FloatFieldUpdateOperationsInput | number
     kcal?: FloatFieldUpdateOperationsInput | number
     protein?: FloatFieldUpdateOperationsInput | number
     fat?: FloatFieldUpdateOperationsInput | number
@@ -47096,6 +47132,7 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -47107,6 +47144,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgOrderByAggregateInput = {
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -47121,6 +47159,7 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -47138,6 +47177,7 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder
@@ -47149,6 +47189,7 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingSumOrderByAggregateInput = {
     servingGrams?: SortOrder
+    macroGrams?: SortOrder
     kcal?: SortOrder
     protein?: SortOrder
     fat?: SortOrder

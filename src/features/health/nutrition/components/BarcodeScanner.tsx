@@ -2,26 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CameraOff } from "lucide-react";
+import { BarcodeDetector } from "barcode-detector/pure";
 import { Input } from "@/components/ui/inputs/input";
 import { Button } from "@/components/ui/actions/button";
-
-interface BarcodeDetectorResult {
-  rawValue: string;
-}
-
-interface BarcodeDetectorLike {
-  detect(source: CanvasImageSource): Promise<BarcodeDetectorResult[]>;
-}
-
-interface BarcodeDetectorConstructor {
-  new (options?: { formats: string[] }): BarcodeDetectorLike;
-}
-
-function getBarcodeDetectorCtor(): BarcodeDetectorConstructor | null {
-  return (
-    (window as unknown as { BarcodeDetector?: BarcodeDetectorConstructor }).BarcodeDetector ?? null
-  );
-}
 
 interface BarcodeScannerProps {
   onDetected: (barcode: string) => void;
@@ -30,19 +13,18 @@ interface BarcodeScannerProps {
 export function BarcodeScanner({ onDetected }: BarcodeScannerProps) {
   // 1. Hooks
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [error, setError] = useState<string | null>(null);
+  const onDetectedRef = useRef(onDetected);
+  onDetectedRef.current = onDetected;
+  const [cameraError, setCameraError] = useState<string | null>(null);
   const [manualCode, setManualCode] = useState("");
-  const isSupported = typeof window !== "undefined" && getBarcodeDetectorCtor() !== null;
 
   useEffect(() => {
-    if (!isSupported) return;
-
     let stream: MediaStream | null = null;
     let rafId: number;
     let stopped = false;
-    const DetectorCtor = getBarcodeDetectorCtor();
-    if (!DetectorCtor) return;
-    const detector = new DetectorCtor({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
+    // Ponyfill: uses the native BarcodeDetector where available, falls back to a
+    // WASM decoder (zxing-wasm) on browsers without it — notably Safari/iOS.
+    const detector = new BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
 
     async function start() {
       try {
@@ -59,7 +41,7 @@ export function BarcodeScanner({ onDetected }: BarcodeScannerProps) {
         }
         scan();
       } catch {
-        setError("Немає доступу до камери. Введіть код вручну.");
+        setCameraError("Немає доступу до камери. Введіть код вручну.");
       }
     }
 
@@ -68,7 +50,7 @@ export function BarcodeScanner({ onDetected }: BarcodeScannerProps) {
       try {
         const results = await detector.detect(videoRef.current);
         if (results[0]?.rawValue) {
-          onDetected(results[0].rawValue);
+          onDetectedRef.current(results[0].rawValue);
           return;
         }
       } catch {
@@ -84,21 +66,20 @@ export function BarcodeScanner({ onDetected }: BarcodeScannerProps) {
       cancelAnimationFrame(rafId);
       stream?.getTracks().forEach((track) => track.stop());
     };
+    // Mount-once: camera/detector setup shouldn't restart on every onDetected identity change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSupported]);
+  }, []);
 
   // 3. Handlers
   const handleManualSubmit = () => {
     if (manualCode.trim()) onDetected(manualCode.trim());
   };
 
-  if (!isSupported) {
+  if (cameraError) {
     return (
       <div className="flex flex-col gap-3 items-center p-6 text-center">
         <CameraOff size={24} className="text-zinc-500" />
-        <p className="text-caption">
-          Цей браузер не підтримує сканування камерою. Введіть штрихкод вручну.
-        </p>
+        <p className="text-caption">{cameraError}</p>
         <div className="flex gap-2 w-full">
           <Input
             type="text"
@@ -122,7 +103,6 @@ export function BarcodeScanner({ onDetected }: BarcodeScannerProps) {
         <video ref={videoRef} muted playsInline className="w-full h-full object-cover" />
         <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 h-16 border-2 border-accent-nutrition/70 rounded-lg" />
       </div>
-      {error && <p className="text-caption text-rose-400">{error}</p>}
       <p className="text-caption text-center">Наведіть камеру на штрихкод продукту</p>
     </div>
   );

@@ -167,6 +167,10 @@ export interface FoodServing {
   serving_description: string;
   metric_serving_amount?: string;
   metric_serving_unit?: string;
+  /** "g"/"ml" for continuous gram/millilitre servings — FatSecret then treats
+   *  food_entry.create's number_of_units as the raw quantity, not a multiple
+   *  of metric_serving_amount. Anything else (oz, cup, serving...) is discrete. */
+  measurement_description?: string;
   calories?: string;
   protein?: string;
   fat?: string;

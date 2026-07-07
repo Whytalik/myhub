@@ -26,11 +26,23 @@ interface FoodMapperDialogProps {
   productNameUk: string;
 }
 
+/** Grams the serving's macro figures correspond to (metric_serving_amount) — always the macro basis. */
 function servingGramsOf(serving: FoodServing): number | null {
   if (serving.metric_serving_unit === "g" && serving.metric_serving_amount) {
     return Number(serving.metric_serving_amount);
   }
   return null;
+}
+
+/**
+ * Push multiplier for food_entry.create (numberOfUnits = grams / this value).
+ * FatSecret treats "g"/"ml" servings as continuous — number_of_units IS the raw
+ * gram/ml quantity there, so the multiplier is 1, not metric_serving_amount.
+ * Confirmed by an earlier gram-logging fix (see git history on fatsecret-mapping.ts).
+ */
+function pushServingGramsOf(serving: FoodServing, metricGrams: number): number {
+  const measurement = serving.measurement_description?.toLowerCase();
+  return measurement === "g" || measurement === "ml" ? 1 : metricGrams;
 }
 
 function servingMacrosLabel(serving: FoodServing): string | null {
@@ -114,11 +126,14 @@ export function FoodMapperDialog({
   const handleSaveServing = async (serving: FoodServing) => {
     if (!selectedFood) return;
     const autoGrams = servingGramsOf(serving);
-    const grams = autoGrams ?? Number(manualGrams);
-    if (!grams || grams <= 0) {
+    const macroGrams = autoGrams ?? Number(manualGrams);
+    if (!macroGrams || macroGrams <= 0) {
       toast.error("Вкажіть кількість грамів для цієї порції");
       return;
     }
+    // Without metric data we can't tell "g"-type from discrete servings — manual entry
+    // falls back to a 1:1 push multiplier, matching how the static seed file treats them.
+    const pushGrams = autoGrams ? pushServingGramsOf(serving, autoGrams) : macroGrams;
 
     setIsSaving(true);
     const response = await upsertProductMappingAction({
@@ -127,7 +142,8 @@ export function FoodMapperDialog({
       foodName: selectedFood.food_name,
       servingId: serving.serving_id,
       servingDescription: serving.serving_description,
-      servingGrams: grams,
+      servingGrams: pushGrams,
+      macroGrams,
       kcal: Number(serving.calories ?? 0),
       protein: Number(serving.protein ?? 0),
       fat: Number(serving.fat ?? 0),
