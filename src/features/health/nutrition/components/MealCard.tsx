@@ -32,20 +32,32 @@ export function MealCard({ meal }: { meal: Meal }) {
         <div className="flex flex-col gap-1 text-[11px] border-t sm:border-t-0 sm:border-l border-white/[0.06] pt-2 sm:pt-0 sm:pl-3 shrink-0">
           <div className="flex items-center gap-1.5">
             <span className="text-zinc-500 font-semibold w-3">В:</span>
-            <span className="font-mono text-zinc-300 w-16 text-right">{vitaliiMacros.kcal} ккал</span>
-            <span className="text-zinc-500 font-mono">
-              Б<span className="text-zinc-300">{vitaliiMacros.protein}</span> 
-              Ж<span className="text-zinc-300">{vitaliiMacros.fat}</span> 
-              В<span className="text-zinc-300">{vitaliiMacros.carbs}</span>
+            <span className="font-mono text-zinc-300 inline-block w-14 text-right shrink-0">
+              {vitaliiMacros.kcal}
+            </span>
+            <span className="text-zinc-500 font-mono text-right w-8 shrink-0">ккал</span>
+            <span className="text-zinc-500 font-mono flex items-center gap-1.5">
+              <span>·</span>
+              <span>Б <span className="text-zinc-100">{vitaliiMacros.protein}г</span></span>
+              <span>·</span>
+              <span>Ж <span className="text-zinc-100">{vitaliiMacros.fat}г</span></span>
+              <span>·</span>
+              <span>В <span className="text-zinc-100">{vitaliiMacros.carbs}г</span></span>
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="text-zinc-500 font-semibold w-3">О:</span>
-            <span className="font-mono text-zinc-300 w-16 text-right">{olesiaMacros.kcal} ккал</span>
-            <span className="text-zinc-500 font-mono">
-              Б<span className="text-zinc-300">{olesiaMacros.protein}</span> 
-              Ж<span className="text-zinc-300">{olesiaMacros.fat}</span> 
-              В<span className="text-zinc-300">{olesiaMacros.carbs}</span>
+            <span className="font-mono text-zinc-300 inline-block w-14 text-right shrink-0">
+              {olesiaMacros.kcal}
+            </span>
+            <span className="text-zinc-500 font-mono text-right w-8 shrink-0">ккал</span>
+            <span className="text-zinc-500 font-mono flex items-center gap-1.5">
+              <span>·</span>
+              <span>Б <span className="text-zinc-100">{olesiaMacros.protein}г</span></span>
+              <span>·</span>
+              <span>Ж <span className="text-zinc-100">{olesiaMacros.fat}г</span></span>
+              <span>·</span>
+              <span>В <span className="text-zinc-100">{olesiaMacros.carbs}г</span></span>
             </span>
           </div>
         </div>
