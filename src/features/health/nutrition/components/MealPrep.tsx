@@ -1,12 +1,20 @@
 import { ClipboardList, Flame, Apple } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
+import { getProductName } from "../products";
 
-const proteinIngredients = [
-  "Куряче філе — 2.31 кг",
-  "Курячі серця — 600 г",
-  "Свиняча відбивна — 600 г (~4 шт)",
-  "Творог 5–9% — 500 г (для сирників)",
-  "Яйце — 1 шт (для сирників)",
+/** Base name always comes from products.ts — `qualifier` adds prep-specific
+ *  context (day, fat %, dish) that products.ts has no reason to track. */
+function productLabel(food: string, qualifier?: string): string {
+  const base = getProductName(food);
+  return qualifier ? `${base} (${qualifier})` : base;
+}
+
+const proteinIngredients: { food: string; qualifier?: string; qty: string }[] = [
+  { food: "chickenMarinated", qty: "2.31 кг" },
+  { food: "chickenHearts", qty: "600 г" },
+  { food: "porkChop", qty: "600 г (~4 шт)" },
+  { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
+  { food: "eggs", qty: "1 шт, для сирників" },
 ];
 
 const marinadeIngredients = [
@@ -22,15 +30,26 @@ const marinadeIngredients = [
 
 export function MealPrep() {
   const prepTable = [
-    { name: "Куряче філе (шашлики — Пн)", qty: "530 г", marinade: "Йогуртово-лимонний" },
-    { name: "Курячі серця (Вт)", qty: "600 г", marinade: "Соєво-томатний" },
     {
-      name: "Куряче філе (смажена курка — Чт)",
+      food: "chickenMarinated",
+      qualifier: "шашлики — Пн",
+      qty: "530 г",
+      marinade: "Йогуртово-лимонний",
+    },
+    { food: "chickenHearts", qualifier: "Вт", qty: "600 г", marinade: "Соєво-томатний" },
+    {
+      food: "chickenMarinated",
+      qualifier: "смажена курка — Чт",
       qty: "680 г",
       marinade: "Соєво-часниковий",
     },
-    { name: "Куряче філе (запечене — Пт + Цезар Сб)", qty: "1100 г", marinade: "Медово-гірчичний" },
-    { name: "Свиняча відбивна (Нд)", qty: "600 г (~4 шт)", marinade: "Суха трав'яна база" },
+    {
+      food: "chickenMarinated",
+      qualifier: "запечене — Пт + Цезар Сб",
+      qty: "1100 г",
+      marinade: "Медово-гірчичний",
+    },
+    { food: "porkChop", qualifier: "Нд", qty: "600 г (~4 шт)", marinade: "Суха трав'яна база" },
   ];
 
   const algorithm = [
@@ -159,7 +178,9 @@ export function MealPrep() {
             <tbody>
               {prepTable.map((row, idx) => (
                 <tr key={idx} className="border-b border-white/[0.03] last:border-0">
-                  <td className="py-2 pr-3 text-zinc-200">{highlightProductMentions(row.name)}</td>
+                  <td className="py-2 pr-3 text-zinc-200">
+                    {productLabel(row.food, row.qualifier)}
+                  </td>
                   <td className="py-2 pr-3 font-mono text-zinc-300">{row.qty}</td>
                   <td className="py-2 text-zinc-400">{highlightProductMentions(row.marinade)}</td>
                 </tr>
@@ -189,7 +210,9 @@ export function MealPrep() {
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span>{highlightProductMentions(ing)}</span>
+                  <span>
+                    {productLabel(ing.food, ing.qualifier)} — {ing.qty}
+                  </span>
                 </li>
               ))}
             </ul>

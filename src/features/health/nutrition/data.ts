@@ -123,11 +123,16 @@ export const WEEK_PLAN: DayPlan[] = [
       {
         type: "breakfast",
         label: "Сніданок",
-        title: "Вівсянка з фруктами",
-        ingredients: ["Вівсянка — 170 г (Віталій 75г, Олеся 95г)", "Фрукти"],
+        title: "Вівсянка з йогуртом і чорницями",
+        ingredients: [
+          "Вівсянка — 170 г (Віталій 75г, Олеся 95г)",
+          "Грецький йогурт — 200 г (по 100 г)",
+          "Чорниці — 100 г (по 50 г)",
+        ],
         macroItems: [
           { food: "oats", vitalii: 75, olesia: 95 },
-          { food: "fruitMix", vitalii: 75, olesia: 75 },
+          { food: "yogurtGreek", vitalii: 100, olesia: 100 },
+          { food: "berries", vitalii: 50, olesia: 50 },
         ],
       },
       {
@@ -183,9 +188,9 @@ export const WEEK_PLAN: DayPlan[] = [
       {
         title: "Сніданок (~10 хв)",
         steps: [
-          "Зварити вівсянку у воді або молоці (5–7 хв).",
-          "Зняти з вогню, дати трішки охолонути, потім ретельно вмішати протеїн, щоб не згорнувся.",
-          "Підготувати фрукти: банан нарізати кружальцями, інші фрукти — дрібними кубиками. Прикрасити вівсянку перед подачею.",
+          "Зварити вівсянку у воді (5–7 хв).",
+          "Зняти з вогню, дати трішки охолонути.",
+          "Вмішати або викласти зверху грецький йогурт, прикрасити чорницями перед подачею.",
         ],
       },
       {
@@ -670,7 +675,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "meat-0",
-        name: "Куряче філе",
+        food: "chickenMarinated",
         qty: "2310 г",
         note: "530г шашлики Пн (підігнано під макроси) + 680г смажена Чт + 1100г запечене Пт+Цезар Сб — маринується й заморожується в Нд",
         price: 370,
@@ -678,7 +683,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "meat-1",
-        name: "Курячі серця",
+        food: "chickenHearts",
         qty: "600 г",
         note: "Вт — маринуються й заморожуються в Нд",
         price: 66,
@@ -686,7 +691,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "meat-2",
-        name: "Свиняча відбивна",
+        food: "porkChop",
         qty: "600 г",
         note: "~4 шт, Нд",
         price: 132,
@@ -694,7 +699,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "meat-3",
-        name: "Скумбрія свіжоморожена",
+        food: "mackerel",
+        qualifier: "свіжоморожена",
         qty: "2 шт (~590 г)",
         note: "Ср — вже заморожена, береться в Нд і лежить у морозилці",
         price: 77,
@@ -708,7 +714,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "canned-0",
-        name: "Тунець у власному соку",
+        food: "tunaCanned",
+        qualifier: "у власному соку",
         qty: "2 банки (по 180 г)",
         note: "Ср вечеря — консерви, не псуються",
         price: 200,
@@ -716,7 +723,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "canned-1",
-        name: "Кукурудза консервована",
+        food: "cornCanned",
         qty: "1 банка",
         note: "~300 г, потрібно ~150 г",
         price: 35,
@@ -724,7 +731,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "canned-2",
-        name: "Томатна паста",
+        food: "tomatoPaste",
         qty: "20 г",
         note: "маринад Вт — готується в Нд",
         price: 5,
@@ -738,7 +745,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "dairy-0-sun",
-        name: "Яйця",
+        food: "eggs",
         qty: "9 шт",
         note: "Нд 4шт + Пн 4шт + 1шт сирники (мілпреп)",
         price: 45,
@@ -746,7 +753,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-0-wed",
-        name: "Яйця",
+        food: "eggs",
         qty: "8 шт",
         note: "Ср 4шт варені + Чт 4шт",
         price: 40,
@@ -754,15 +761,15 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-1-sun",
-        name: "Грецький йогурт",
-        qty: "1050 г",
-        note: "Нд+Пн+Вт перекус (300г/день) + 150г маринад шашлику Пн (мілпреп)",
-        price: 137,
+        food: "yogurtGreek",
+        qty: "1250 г",
+        note: "Нд+Пн+Вт перекус (300г/день) + сніданок Вт (200г) + 150г маринад шашлику Пн (мілпреп)",
+        price: 163,
         buyDay: "sun",
       },
       {
         id: "dairy-1-wed",
-        name: "Грецький йогурт",
+        food: "yogurtGreek",
         qty: "900 г",
         note: "Ср+Чт+Пт перекус (300г/день) — Сб замість йогурту протеїновий шейк",
         price: 117,
@@ -770,7 +777,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-2-sun",
-        name: "Творог 5–9%",
+        food: "cottageCheese",
+        qualifier: "5–9%",
         qty: "500 г",
         note: "сирники (мілпреп Нд)",
         price: 90,
@@ -778,7 +786,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-2-wed",
-        name: "Творог 5–9%",
+        food: "cottageCheese",
+        qualifier: "5–9%",
         qty: "500 г",
         note: "сніданок Ср",
         price: 90,
@@ -786,7 +795,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-3",
-        name: "Молоко",
+        food: "milk",
         qty: "500 мл",
         note: "120мл пюре Пн + 60мл омлет Нд + 300мл протеїновий шейк Сб",
         price: 23,
@@ -794,7 +803,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-4",
-        name: "Вершки 10–15%",
+        food: "cream",
+        qualifier: "10–15%",
         qty: "145 мл",
         note: "соус Нд",
         price: 44,
@@ -802,7 +812,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-5",
-        name: "Вершкове масло",
+        food: "butter",
         qty: "40 г",
         note: "20г пюре Пн + запас",
         price: 22,
@@ -810,7 +820,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-6",
-        name: "Бринза",
+        food: "brynza",
         qty: "285 г",
         note: "Грецький салат: 135г Пн + 150г Нд",
         price: 71,
@@ -818,7 +828,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-7",
-        name: "Сулугуні",
+        food: "suluguni",
         qty: "200 г",
         note: "Капрезе Чт — розсільний сир, довго зберігається",
         price: 80,
@@ -826,7 +836,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "dairy-8",
-        name: "Твердий сир",
+        food: "hardCheese",
         qty: "235 г",
         note: "105г Рукола Вт + 130г Цезар Сб",
         price: 141,
@@ -840,7 +850,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "grains-0",
-        name: "Вівсянка",
+        food: "oats",
         qty: "370 г",
         note: "170г Вт + 180г Пт + запас",
         price: 17,
@@ -848,7 +858,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-1",
-        name: "Гречка",
+        food: "buckwheat",
         qty: "240 г",
         note: "Вт — підігнано під макроси (Віталій 80г, Олеся 160г)",
         price: 17,
@@ -856,7 +866,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-2",
-        name: "Рис",
+        food: "rice",
         qty: "320 г",
         note: "160г Чт + 80г Нд + 80г Сб — реалістична порція гарніру",
         price: 19,
@@ -864,7 +874,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-3",
-        name: "Борошно",
+        food: "flour",
         qty: "150 г",
         note: "сирники Нд",
         price: 5,
@@ -872,7 +882,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-4-sun",
-        name: "Хліб цільнозерновий",
+        food: "bread",
         qty: "~215 г",
         note: "Нд + Пн сніданки",
         price: 20,
@@ -880,7 +890,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-4-wed",
-        name: "Хліб цільнозерновий",
+        food: "bread",
         qty: "~460 г",
         note: "Ср сніданок+вечеря + Чт/Пт/Сб добавки Олесі",
         price: 42,
@@ -888,7 +898,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-5",
-        name: "Ванільний цукор",
+        food: "vanillaSugar",
         qty: "1 пакетик",
         note: "сирники",
         price: 8,
@@ -896,7 +906,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "grains-6",
-        name: "Цукор",
+        food: "sugar",
         qty: "50 г",
         note: "сирники 3 ст.л. + морква 1 ст.л.",
         price: 2,
@@ -910,7 +920,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "vegetables-potato",
-        name: "Картопля",
+        food: "potato",
         qty: "1.59 кг",
         note: "Пюре Пн (955г, збільшено під макроси) + Ср відварна (320г) + Пт запечена (315г, зменшено через медово-гірчичний соус) — реалістична порція гарніру",
         price: 39,
@@ -918,7 +928,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-0-sun",
-        name: "Помідори",
+        food: "tomato",
         qty: "~1.63 кг (12 шт)",
         note: "Грецький Пн+Нд, Рукола Вт, сніданки Пн+Нд",
         price: 179,
@@ -926,7 +936,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-0-wed",
-        name: "Помідори",
+        food: "tomato",
         qty: "~1.05 кг (8 шт)",
         note: "яєчня Чт, Капрезе Чт, сніданки Чт",
         price: 116,
@@ -934,7 +944,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-1-sun",
-        name: "Огірки",
+        food: "cucumber",
         qty: "~820 г",
         note: "Грецький Пн+Нд, сніданки Пн+Нд",
         price: 29,
@@ -942,7 +952,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-1-wed",
-        name: "Огірки",
+        food: "cucumber",
         qty: "~650 г",
         note: "Свіжий Ср, сніданки Чт",
         price: 23,
@@ -950,7 +960,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-2-sun",
-        name: "Болгарський перець",
+        food: "pepper",
         qty: "~220 г",
         note: "Грецький Пн+Нд",
         price: 12,
@@ -958,7 +968,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-3",
-        name: "Червона цибуля",
+        food: "onion",
+        qualifier: "червона",
         qty: "~150 г",
         note: "Грецький Пн+Нд",
         price: 4,
@@ -966,7 +977,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-4",
-        name: "Цибуля звичайна",
+        food: "onion",
+        qualifier: "звичайна",
         qty: "~400 г",
         note: "Соус Нд + до страв",
         price: 10,
@@ -974,7 +986,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-5",
-        name: "Морква",
+        food: "carrot",
         qty: "400 г",
         note: "Корейська морква Пт",
         price: 8,
@@ -982,7 +994,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-6",
-        name: "Часник",
+        food: "garlic",
         qty: "~80 г",
         note: "Маринади + соуси + Цезар",
         price: 16,
@@ -990,7 +1002,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-7",
-        name: "Рукола",
+        food: "arugula",
         qty: "150 г",
         note: "салат Вт",
         price: 45,
@@ -998,7 +1010,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-8",
-        name: "Айсберг",
+        food: "icebergLettuce",
         qty: "250 г",
         note: "Цезар Сб",
         price: 50,
@@ -1006,7 +1018,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "vegetables-9",
-        name: "Лимони",
+        food: "lemon",
         qty: "3 шт (~360 г)",
         note: "Маринад шашлику Пн + Ср скумбрія + Цезар (свинину тепер готуємо на сухій базі, без цитрусових)",
         price: 54,
@@ -1020,25 +1032,25 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "fruits-0",
-        name: "Ягоди",
-        qty: "~800 г",
-        note: "перекус щодня + сніданок Пт + сирники",
+        food: "berries",
+        qty: "~900 г",
+        note: "перекус щодня + сніданок Вт (100г) + сніданок Пт + сирники",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
-        price: 144,
+        price: 162,
         buyDay: "sun",
       },
       {
         id: "fruits-1",
-        name: "Фрукти",
-        qty: "~400 г",
-        note: "сніданок Вт + перекус Ср",
+        food: "fruitMix",
+        qty: "~250 г",
+        note: "перекус Ср",
         options: ["банани", "яблука", "груші", "апельсини"],
-        price: 26,
+        price: 16,
         buyDay: "sun",
       },
       {
         id: "fruits-2-sun",
-        name: "Банани",
+        food: "banana",
         qty: "4 шт",
         note: "Нд–Вт перекус Олесі",
         price: 38,
@@ -1046,7 +1058,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "fruits-2-wed",
-        name: "Банани",
+        food: "banana",
         qty: "3 шт",
         note: "Ср–Сб перекус Олесі",
         price: 28,
@@ -1128,7 +1140,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "sauces-0",
-        name: "Соєвий соус",
+        food: "soySauce",
         qty: "200 мл",
         note: "маринади + глазур",
         price: 32,
@@ -1136,7 +1148,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "sauces-1",
-        name: "Мед",
+        food: "honey",
         qty: "100 г",
         note: "маринад Пт (мілпреп Нд) + глазур Вт",
         price: 20,
@@ -1144,7 +1156,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "sauces-2",
-        name: "Гірчиця діжонська",
+        food: "mustardDijon",
         qty: "80 г",
         note: "маринад Пт (мілпреп Нд) + соус Цезар + подача до шашликів Пн",
         price: 24,
@@ -1152,7 +1164,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "sauces-3",
-        name: "Майонез",
+        food: "mayo",
         qty: "110 г",
         note: "соус Цезар Сб",
         price: 17,
@@ -1166,7 +1178,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "protein-0",
-        name: "Протеїновий порошок",
+        food: "proteinPowder",
         qty: "~200 г",
         note: "вівсянка Вт+Пт + перекус Сб",
         price: 140,
@@ -1180,7 +1192,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "spices-0",
-        name: "Розмарин сушений",
+        food: "rosemary",
+        qualifier: "сушений",
         qty: "1 упаковка",
         note: "суха трав'яна база для свинини (мілпреп Нд)",
         price: 25,
@@ -1188,7 +1201,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-1",
-        name: "Чебрець сушений",
+        food: "thyme",
+        qualifier: "сушений",
         qty: "1 упаковка",
         note: "суха трав'яна база для свинини (мілпреп Нд)",
         price: 25,
@@ -1196,7 +1210,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-2",
-        name: "Паприка",
+        food: "paprika",
         qty: "1 упаковка",
         note: "маринади (мілпреп Нд) + запечена картопля Пт + корейська морква Пт",
         price: 22,
@@ -1204,7 +1218,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-3",
-        name: "Прованські трави",
+        food: "provencalHerbs",
         qty: "1 упаковка",
         note: "йогуртово-лимонний та соєво-томатний маринади (мілпреп Нд)",
         price: 28,
@@ -1212,7 +1226,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-4",
-        name: "Орегано",
+        food: "oregano",
         qty: "1 упаковка",
         note: "Грецький салат Пн + Нд",
         price: 24,
@@ -1220,7 +1234,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-5",
-        name: "Коріандр мелений",
+        food: "coriander",
+        qualifier: "мелений",
         qty: "1 упаковка",
         note: "Корейська морква Пт",
         price: 22,
@@ -1228,7 +1243,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-6",
-        name: "Мускатний горіх",
+        food: "nutmeg",
         qty: "1 упаковка",
         note: "цибулево-вершковий соус Нд",
         price: 30,
@@ -1236,7 +1251,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-7",
-        name: "Сіль",
+        food: "salt",
         qty: "1 упаковка",
         note: "базова спеція — присутня майже в кожній страві тижня",
         price: 15,
@@ -1244,7 +1259,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-8",
-        name: "Чорний перець мелений",
+        food: "blackPepper",
+        qualifier: "мелений",
         qty: "1 упаковка",
         note: "базова спеція — присутня майже в кожній страві тижня",
         price: 25,

@@ -75,11 +75,14 @@ export const PRODUCTS: Record<string, Product> = {
   ),
   oil: tracked("oil", "Олія", { kcal: 884, protein: 0, fat: 100, carbs: 0 }, "other"),
   chickenMarinated: tracked(
+    // Назва — сира/базова форма (те, що купується): цей ключ покриває і
+    // маринований, і запечений варіант, обидва готуються з того самого філе.
+    // "Смажена курка" (friedChicken) — окремий ключ лише тому, що смаження в
+    // олії дає інший макропрофіль, не через іншу сировину.
     "chickenMarinated",
-    "Куряче філе (мариноване)",
+    "Куряче філе",
     { kcal: 180, protein: 29, fat: 6, carbs: 2 },
     "meat",
-    // Дефолтний корінь узяв би останнє слово nameUk ("мариноване") — беремо "куряче".
     { searchTerm: "куряче" },
   ),
   friedChicken: tracked(

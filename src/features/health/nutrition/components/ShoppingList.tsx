@@ -3,7 +3,19 @@
 import { useSyncExternalStore } from "react";
 import { Check, RotateCcw } from "lucide-react";
 import { SHOPPING_LIST } from "../data";
-import type { ShoppingCategory, ShoppingDay } from "../types";
+import { getProductName } from "../products";
+import { highlightProductMentions } from "../highlight-products";
+import type { ShoppingCategory, ShoppingDay, ShoppingItem } from "../types";
+
+/** Base name always comes from products.ts when `food` is set — `qualifier` layers
+ *  on buy-specific detail (fat %, fresh-frozen...) that products.ts has no reason to track. */
+function displayNameOf(item: ShoppingItem): string {
+  if (item.food) {
+    const base = getProductName(item.food);
+    return item.qualifier ? `${base} ${item.qualifier}` : base;
+  }
+  return item.name ?? "?";
+}
 
 const STORAGE_KEY = "nutrition-shopping-v1";
 
@@ -102,7 +114,7 @@ function CategoryList({
                     </span>
                     <span className="flex flex-col min-w-0">
                       <span className={nameClass}>
-                        {item.name}
+                        {highlightProductMentions(displayNameOf(item))}
                         {item.qty && <span className="text-zinc-500"> — {item.qty}</span>}
                         {item.price && (
                           <span className="font-mono text-xs text-zinc-500 ml-1.5">
@@ -110,7 +122,9 @@ function CategoryList({
                           </span>
                         )}
                       </span>
-                      {item.note && <span className="text-caption">{item.note}</span>}
+                      {item.note && (
+                        <span className="text-caption">{highlightProductMentions(item.note)}</span>
+                      )}
                     </span>
                   </button>
 

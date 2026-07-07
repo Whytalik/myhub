@@ -38,7 +38,14 @@ export type ShoppingDay = "sun" | "wed";
 
 export interface ShoppingItem {
   id: string;
-  name: string;
+  /** Product key from `products.ts` — when set, the display name derives from
+   *  `getProductName(food)` instead of `name`, so a rename only happens once. */
+  food?: string;
+  /** Buy-spec detail that products.ts has no reason to track (fat %, fresh-frozen,
+   *  in own juice...) — appended after the derived name when `food` is set. */
+  qualifier?: string;
+  /** Full override name — required when `food` isn't set (item has no PRODUCTS entry). */
+  name?: string;
   qty: string;
   note?: string;
   options?: string[];
