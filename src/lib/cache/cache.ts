@@ -7,6 +7,7 @@ import { journalRepository } from "@/features/life/repositories/journal.reposito
 import { exerciseRepository } from "@/features/health/training/repositories/exercise.repository";
 import { trainingPlanRepository } from "@/features/health/training/repositories/training-plan.repository";
 import { trainingSessionRepository } from "@/features/health/training/repositories/training-session.repository";
+import { productMappingRepository } from "@/features/health/nutrition/repositories/product-mapping.repository";
 
 export const cacheTags = {
   spheres: (userId: string) => `spheres:${userId}`,
@@ -108,4 +109,10 @@ export const getCachedSession = unstable_cache(
   (userId: string, id: string) => trainingSessionRepository.findById(id),
   [],
   { tags: ["training-sessions"] },
+);
+
+export const getCachedProductMappings = unstable_cache(
+  () => productMappingRepository.findAll(),
+  [],
+  { tags: ["product-mapping"] },
 );

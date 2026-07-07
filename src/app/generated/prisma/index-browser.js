@@ -161,6 +161,19 @@ exports.Prisma.FatSecretAccountScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProductFatSecretMappingScalarFieldEnum = {
+  id: 'id',
+  productKey: 'productKey',
+  foodId: 'foodId',
+  foodName: 'foodName',
+  servingId: 'servingId',
+  servingDescription: 'servingDescription',
+  servingGrams: 'servingGrams',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -537,6 +550,11 @@ exports.SystemStatus = exports.$Enums.SystemStatus = {
   CRISIS_RE_ENTRY: 'CRISIS_RE_ENTRY'
 };
 
+exports.MappingSource = exports.$Enums.MappingSource = {
+  MANUAL: 'MANUAL',
+  BARCODE: 'BARCODE'
+};
+
 exports.TaskStatus = exports.$Enums.TaskStatus = {
   BACKLOG: 'BACKLOG',
   TODO: 'TODO',
@@ -583,6 +601,7 @@ exports.Prisma.ModelName = {
   WeekTemplate: 'WeekTemplate',
   PushSubscription: 'PushSubscription',
   FatSecretAccount: 'FatSecretAccount',
+  ProductFatSecretMapping: 'ProductFatSecretMapping',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',

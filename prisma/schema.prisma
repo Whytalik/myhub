@@ -79,6 +79,27 @@ model FatSecretAccount {
   updatedAt         DateTime @updatedAt
 }
 
+// Also not user-owned — see FatSecretAccount comment above. Maps internal
+// PRODUCTS keys (src/features/health/nutrition/products.ts) to FatSecret
+// food/serving ids, overriding the static seed in fatsecret-mapping.ts.
+model ProductFatSecretMapping {
+  id                 String        @id @default(cuid())
+  productKey         String        @unique
+  foodId             String
+  foodName           String
+  servingId          String
+  servingDescription String
+  servingGrams       Float         @default(1)
+  source             MappingSource @default(MANUAL)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+enum MappingSource {
+  MANUAL
+  BARCODE
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String

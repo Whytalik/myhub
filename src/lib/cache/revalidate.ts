@@ -55,3 +55,7 @@ export function invalidateTrainingSessionCache(userId: string) {
   revalidateTag(cacheTags.trainingSessions(userId), INVALIDATE_PROFILE);
   revalidateTag("training-sessions", INVALIDATE_PROFILE);
 }
+
+export function invalidateProductMappingCache() {
+  revalidateTag("product-mapping", INVALIDATE_PROFILE);
+}

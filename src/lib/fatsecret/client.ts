@@ -191,3 +191,21 @@ export async function getFood(foodId: string): Promise<FoodDetail> {
   if (!data.food) throw new Error(`FatSecret food.get returned no food for id ${foodId}`);
   return data.food;
 }
+
+/** Resolves a scanned barcode (EAN-8/13, UPC-A) to a FatSecret food_id, or null if unknown. */
+export async function findFoodIdByBarcode(barcode: string): Promise<string | null> {
+  const token = await getOAuth2Token();
+  const url = new URL(REST_API_URL);
+  url.searchParams.set("method", "food.find_id_for_barcode");
+  url.searchParams.set("format", "json");
+  // FatSecret expects a 13-digit GTIN — shorter codes (e.g. 12-digit UPC-A) are zero-padded.
+  url.searchParams.set("barcode", barcode.padStart(13, "0"));
+
+  const response = await fatsecretFetch(url.toString(), {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = (await response.json()) as { food_id?: { value?: string } };
+  assertNoFatSecretError(data);
+  const id = data.food_id?.value;
+  return id && id !== "0" ? id : null;
+}

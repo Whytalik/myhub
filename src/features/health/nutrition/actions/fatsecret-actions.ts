@@ -2,8 +2,23 @@
 
 import { prisma } from "@/lib/db/prisma";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
-import { createFoodEntry, type FatSecretMealType } from "@/lib/fatsecret/client";
-import { FATSECRET_MAPPING } from "../fatsecret-mapping";
+import { invalidateProductMappingCache } from "@/lib/cache/revalidate";
+import {
+  createFoodEntry,
+  searchFoods,
+  getFood,
+  findFoodIdByBarcode,
+  type FatSecretMealType,
+  type FoodSearchResultItem,
+  type FoodDetail,
+} from "@/lib/fatsecret/client";
+import {
+  getMergedMappings,
+  getMappingOverview,
+  upsertMapping,
+  deleteMapping,
+  type UpsertMappingInput,
+} from "../services/product-mapping-service";
 import { getProductName } from "../products";
 import { PROFILES } from "../data";
 import type { MacroItem, MealType } from "../types";
@@ -30,6 +45,47 @@ export interface PushMealResult {
   entries: PushEntryResult[];
 }
 
+export interface PushPreviewEntry {
+  profile: ProfileId;
+  food: string;
+  grams: number;
+  numberOfUnits: number | null;
+  mapped: boolean;
+  accountLinked: boolean;
+}
+
+/** Computes what pushMealToFatSecretAction would send, without calling FatSecret. */
+export async function previewFatSecretPushAction(
+  mealType: MealType,
+  macroItems: MacroItem[],
+): Promise<ActionResult<PushPreviewEntry[]>> {
+  return withAction(async () => {
+    const accounts = await prisma.fatSecretAccount.findMany();
+    const linkedProfileIds = new Set(accounts.map((a) => a.profileId));
+    const mappings = await getMergedMappings();
+    const entries: PushPreviewEntry[] = [];
+
+    for (const profile of PROFILES) {
+      const itemsForProfile = macroItems.filter((item) => item[profile.id as ProfileId] > 0);
+
+      for (const item of itemsForProfile) {
+        const grams = item[profile.id as ProfileId];
+        const mapping = mappings[item.food];
+        entries.push({
+          profile: profile.id as ProfileId,
+          food: getProductName(item.food),
+          grams,
+          numberOfUnits: mapping ? grams / mapping.servingGrams : null,
+          mapped: Boolean(mapping),
+          accountLinked: linkedProfileIds.has(profile.id),
+        });
+      }
+    }
+
+    return entries;
+  });
+}
+
 export async function pushMealToFatSecretAction(
   mealType: MealType,
   macroItems: MacroItem[],
@@ -37,6 +93,7 @@ export async function pushMealToFatSecretAction(
   return withAction(async () => {
     const accounts = await prisma.fatSecretAccount.findMany();
     const accountByProfile = new Map(accounts.map((a) => [a.profileId, a]));
+    const mappings = await getMergedMappings();
     const fatSecretMeal = MEAL_TYPE_MAP[mealType];
     const entries: PushEntryResult[] = [];
 
@@ -57,7 +114,7 @@ export async function pushMealToFatSecretAction(
           continue;
         }
 
-        const mapping = FATSECRET_MAPPING[item.food];
+        const mapping = mappings[item.food];
         if (!mapping) {
           entries.push({
             profile: profile.id as ProfileId,
@@ -92,5 +149,45 @@ export async function pushMealToFatSecretAction(
     }
 
     return { entries };
+  });
+}
+
+export async function getMappingOverviewAction() {
+  return withAction(async () => getMappingOverview());
+}
+
+export async function searchFatSecretFoodsAction(
+  query: string,
+): Promise<ActionResult<FoodSearchResultItem[]>> {
+  return withAction(async () => searchFoods(query));
+}
+
+export async function getFatSecretFoodAction(foodId: string): Promise<ActionResult<FoodDetail>> {
+  return withAction(async () => getFood(foodId));
+}
+
+export async function findFoodByBarcodeAction(
+  barcode: string,
+): Promise<ActionResult<FoodDetail | null>> {
+  return withAction(async () => {
+    const foodId = await findFoodIdByBarcode(barcode);
+    if (!foodId) return null;
+    return getFood(foodId);
+  });
+}
+
+export async function upsertProductMappingAction(
+  input: UpsertMappingInput,
+): Promise<ActionResult<void>> {
+  return withAction(async () => {
+    await upsertMapping(input);
+    invalidateProductMappingCache();
+  });
+}
+
+export async function deleteProductMappingAction(productKey: string): Promise<ActionResult<void>> {
+  return withAction(async () => {
+    await deleteMapping(productKey);
+    invalidateProductMappingCache();
   });
 }

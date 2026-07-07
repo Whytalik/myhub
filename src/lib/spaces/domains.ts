@@ -14,6 +14,7 @@ import {
   Dumbbell,
   TrendingUp,
   Scale,
+  Barcode,
 } from "lucide-react";
 
 export interface PageLink {
@@ -79,6 +80,7 @@ export const DOMAINS: Domain[] = [
           { href: "/health/nutrition", label: "Daily", icon: Utensils },
           { href: "/health/nutrition/meal-prep", label: "Meal Prep", icon: ClipboardList },
           { href: "/health/nutrition/shopping-list", label: "Shopping List", icon: ShoppingCart },
+          { href: "/health/nutrition/mapping", label: "Food Mapper", icon: Barcode },
         ],
       },
       {
