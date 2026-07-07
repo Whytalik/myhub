@@ -26,6 +26,10 @@ export interface Product {
   searchTerm?: string;
   /** Підрядки одразу після кореня, які виключають збіг (напр. "сир" без "ник"). */
   excludeAfter?: string[];
+  /** Грамів на 1 штуку — лише для продуктів, де конверсія грами→штуки стабільна
+   *  й консистентна в усіх macroItems (напр. яйце, банан). Використовує
+   *  `quantities.ts`'s `formatGrams` для відображення "N шт" замість грамів. */
+  gramsPerPiece?: number;
 }
 
 function tracked(
@@ -33,7 +37,7 @@ function tracked(
   nameUk: string,
   macros: FoodMacros,
   category: ProductCategory,
-  extra?: Pick<Product, "searchTerm" | "excludeAfter">,
+  extra?: Pick<Product, "searchTerm" | "excludeAfter" | "gramsPerPiece">,
 ): Product {
   return { key, nameUk, kind: "tracked", macros, category, ...extra };
 }
@@ -66,7 +70,9 @@ function pantry(
  * - pantry — спеції й приправи: без обліку макросів.
  */
 export const PRODUCTS: Record<string, Product> = {
-  eggs: tracked("eggs", "Яйця", { kcal: 155, protein: 13, fat: 11, carbs: 1.1 }, "other"),
+  eggs: tracked("eggs", "Яйця", { kcal: 155, protein: 13, fat: 11, carbs: 1.1 }, "other", {
+    gramsPerPiece: 60,
+  }),
   bread: tracked(
     "bread",
     "Цільнозерновий хліб",
@@ -143,7 +149,9 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 60, protein: 0.5, fat: 0.3, carbs: 15 },
     "fruits",
   ),
-  banana: tracked("banana", "Банан", { kcal: 89, protein: 1.1, fat: 0.3, carbs: 23 }, "fruits"),
+  banana: tracked("banana", "Банан", { kcal: 89, protein: 1.1, fat: 0.3, carbs: 23 }, "fruits", {
+    gramsPerPiece: 120,
+  }),
   oats: tracked("oats", "Вівсянка", { kcal: 389, protein: 13.5, fat: 6.9, carbs: 66.3 }, "grains"),
   proteinPowder: tracked(
     "proteinPowder",

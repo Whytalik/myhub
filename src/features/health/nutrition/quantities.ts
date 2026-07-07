@@ -1,0 +1,48 @@
+import { WEEK_PLAN } from "./data";
+import type { Weekday } from "./types";
+
+/** Sum of macroItems grams (vitalii+olesia) for one product key, across the given weekdays. */
+export function sumMacroGrams(productKey: string, weekdays: Weekday[]): number {
+  const days = new Set(weekdays);
+  let total = 0;
+  for (const day of WEEK_PLAN) {
+    if (!days.has(day.weekday)) continue;
+    for (const meal of day.meals) {
+      for (const item of meal.macroItems ?? []) {
+        if (item.food === productKey) total += item.vitalii + item.olesia;
+      }
+    }
+  }
+  return total;
+}
+
+/** Same as `sumMacroGrams`, but combines several product keys (e.g. raw chicken
+ *  fillet is tracked as two macro-distinct keys — chickenMarinated/friedChicken). */
+export function sumMacroGramsMulti(productKeys: string[], weekdays: Weekday[]): number {
+  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays), 0);
+}
+
+export type QuantityUnit = "g" | "piece" | "ml";
+
+/**
+ * Grams → display string. "piece" needs `gramsPerPiece` (from `products.ts`) to convert.
+ * "ml" reuses the gram total as-is (water-based liquids — milk, cream — are ~1g/ml,
+ * close enough for a shopping quantity) but labels it "мл" instead of "г"/"кг".
+ */
+export function formatGrams(
+  grams: number,
+  unit: QuantityUnit = "g",
+  gramsPerPiece?: number,
+): string {
+  if (unit === "piece") {
+    if (!gramsPerPiece) throw new Error("formatGrams: unit 'piece' requires gramsPerPiece");
+    return `${Math.round(grams / gramsPerPiece)} шт`;
+  }
+  if (unit === "ml") {
+    return `${Math.round(grams)} мл`;
+  }
+  if (grams >= 1000) {
+    return `${Number((grams / 1000).toFixed(2))} кг`;
+  }
+  return `${Math.round(grams)} г`;
+}

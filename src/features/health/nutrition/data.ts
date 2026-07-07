@@ -676,7 +676,11 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "meat-0",
         food: "chickenMarinated",
-        qty: "2310 г",
+        computedQty: {
+          food: "chickenMarinated",
+          extraFood: ["friedChicken"],
+          weekdays: ["mon", "thu", "fri", "sat"],
+        },
         note: "530г шашлики Пн (підігнано під макроси) + 680г смажена Чт + 1100г запечене Пт+Цезар Сб — маринується й заморожується в Нд",
         price: 370,
         buyDay: "sun",
@@ -684,7 +688,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "meat-1",
         food: "chickenHearts",
-        qty: "600 г",
+        computedQty: { food: "chickenHearts", weekdays: ["tue"] },
         note: "Вт — маринуються й заморожуються в Нд",
         price: 66,
         buyDay: "sun",
@@ -692,7 +696,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "meat-2",
         food: "porkChop",
-        qty: "600 г",
+        computedQty: { food: "porkChop", weekdays: ["sun"] },
         note: "~4 шт, Нд",
         price: 132,
         buyDay: "sun",
@@ -746,7 +750,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-0-sun",
         food: "eggs",
-        qty: "9 шт",
+        // +60г (1 яйце) — сирники в мілпрепі використовують яйце як інгредієнт рецепту,
+        // яке ніколи не стає власним macroItem (сирники зважуються одним ключем "syrniki").
+        computedQty: { food: "eggs", weekdays: ["mon", "sun"], grams: 60, unit: "piece" },
         note: "Нд 4шт + Пн 4шт + 1шт сирники (мілпреп)",
         price: 45,
         buyDay: "sun",
@@ -754,7 +760,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-0-wed",
         food: "eggs",
-        qty: "8 шт",
+        computedQty: { food: "eggs", weekdays: ["wed", "thu"], unit: "piece" },
         note: "Ср 4шт варені + Чт 4шт",
         price: 40,
         buyDay: "wed",
@@ -770,7 +776,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-1-wed",
         food: "yogurtGreek",
-        qty: "900 г",
+        computedQty: { food: "yogurtGreek", weekdays: ["wed", "thu", "fri"] },
         note: "Ср+Чт+Пт перекус (300г/день) — Сб замість йогурту протеїновий шейк",
         price: 117,
         buyDay: "wed",
@@ -805,7 +811,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-4",
         food: "cream",
         qualifier: "10–15%",
-        qty: "145 мл",
+        computedQty: { food: "cream", weekdays: ["sun"], unit: "ml" },
         note: "соус Нд",
         price: 44,
         buyDay: "sun",
@@ -821,7 +827,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-6",
         food: "brynza",
-        qty: "285 г",
+        computedQty: { food: "brynza", weekdays: ["mon", "sun"] },
         note: "Грецький салат: 135г Пн + 150г Нд",
         price: 71,
         buyDay: "sun",
@@ -837,7 +843,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-8",
         food: "hardCheese",
-        qty: "235 г",
+        computedQty: { food: "hardCheese", weekdays: ["tue", "sat"] },
         note: "105г Рукола Вт + 130г Цезар Сб",
         price: 141,
         buyDay: "sun",
@@ -859,7 +865,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-1",
         food: "buckwheat",
-        qty: "240 г",
+        computedQty: { food: "buckwheat", weekdays: ["tue"] },
         note: "Вт — підігнано під макроси (Віталій 80г, Олеся 160г)",
         price: 17,
         buyDay: "sun",
@@ -867,7 +873,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-2",
         food: "rice",
-        qty: "320 г",
+        computedQty: { food: "rice", weekdays: ["thu", "sun", "sat"] },
         note: "160г Чт + 80г Нд + 80г Сб — реалістична порція гарніру",
         price: 19,
         buyDay: "sun",
@@ -987,7 +993,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-5",
         food: "carrot",
-        qty: "400 г",
+        computedQty: { food: "carrot", weekdays: ["fri"] },
         note: "Корейська морква Пт",
         price: 8,
         buyDay: "sun",
@@ -1003,7 +1009,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-7",
         food: "arugula",
-        qty: "150 г",
+        computedQty: { food: "arugula", weekdays: ["tue"] },
         note: "салат Вт",
         price: 45,
         buyDay: "sun",

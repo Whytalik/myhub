@@ -3,8 +3,9 @@
 import { useSyncExternalStore } from "react";
 import { Check, RotateCcw } from "lucide-react";
 import { SHOPPING_LIST } from "../data";
-import { getProductName } from "../products";
+import { getProductName, PRODUCTS } from "../products";
 import { highlightProductMentions } from "../highlight-products";
+import { sumMacroGramsMulti, formatGrams } from "../quantities";
 import type { ShoppingCategory, ShoppingDay, ShoppingItem } from "../types";
 
 /** Base name always comes from products.ts when `food` is set — `qualifier` layers
@@ -15,6 +16,15 @@ function displayNameOf(item: ShoppingItem): string {
     return item.qualifier ? `${base} ${item.qualifier}` : base;
   }
   return item.name ?? "?";
+}
+
+/** Computed qty derives from macroItems (+ an explicit manual buffer) instead of
+ *  being hand-typed — see [[nutrition_products_single_source]] / quantities.ts. */
+function displayQtyOf(item: ShoppingItem): string | undefined {
+  if (!item.computedQty) return item.qty;
+  const { food, extraFood, weekdays, grams = 0, unit } = item.computedQty;
+  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays) + grams;
+  return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
 
 const STORAGE_KEY = "nutrition-shopping-v1";
@@ -98,6 +108,7 @@ function CategoryList({
           <ul className="flex flex-col gap-1">
             {category.items.map((item) => {
               const isChecked = !!checked[item.id];
+              const qty = displayQtyOf(item);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 isChecked
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
@@ -117,7 +128,7 @@ function CategoryList({
                     <span className="flex flex-col min-w-0">
                       <span className={nameClass}>
                         {highlightProductMentions(displayNameOf(item))}
-                        {item.qty && <span className="text-zinc-500"> — {item.qty}</span>}
+                        {qty && <span className="text-zinc-500"> — {qty}</span>}
                         {item.price && (
                           <span className="font-mono text-xs text-zinc-500 ml-1.5">
                             ~{item.price} ₴

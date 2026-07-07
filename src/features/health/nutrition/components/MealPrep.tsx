@@ -1,11 +1,14 @@
 import { ClipboardList, Flame, Apple } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
-import { getProductName } from "../products";
+import { getProductName, PRODUCTS } from "../products";
+import { sumMacroGramsMulti, formatGrams } from "../quantities";
+import type { ComputedQuantity } from "../types";
 
 interface RecipeIngredient {
   food: string;
   qualifier?: string;
   qty?: string;
+  computedQty?: ComputedQuantity;
 }
 
 /** Base name always comes from products.ts — `qualifier` adds prep-specific
@@ -15,17 +18,38 @@ function productLabel(food: string, qualifier?: string): string {
   return qualifier ? `${base} (${qualifier})` : base;
 }
 
+/** Same computed/manual duality as ShoppingList's `displayNameOf` — a computed
+ *  qty is `sumMacroGramsMulti(...) + grams` formatted, never a hand-typed string. */
+function quantityLabel(computed: ComputedQuantity): string {
+  const total =
+    sumMacroGramsMulti([computed.food, ...(computed.extraFood ?? [])], computed.weekdays) +
+    (computed.grams ?? 0);
+  return formatGrams(total, computed.unit, PRODUCTS[computed.food]?.gramsPerPiece);
+}
+
 function ingredientLabel(ing: RecipeIngredient): string {
   const label = productLabel(ing.food, ing.qualifier);
-  return ing.qty ? `${label} — ${ing.qty}` : label;
+  const qty = ing.computedQty ? quantityLabel(ing.computedQty) : ing.qty;
+  return qty ? `${label} — ${qty}` : label;
 }
 
 const proteinIngredients: RecipeIngredient[] = [
-  { food: "chickenMarinated", qty: "2.31 кг" },
-  { food: "chickenHearts", qty: "600 г" },
-  { food: "porkChop", qty: "600 г (~4 шт)" },
+  {
+    food: "chickenMarinated",
+    computedQty: {
+      food: "chickenMarinated",
+      extraFood: ["friedChicken"],
+      weekdays: ["mon", "thu", "fri", "sat"],
+    },
+  },
+  { food: "chickenHearts", computedQty: { food: "chickenHearts", weekdays: ["tue"] } },
+  { food: "porkChop", computedQty: { food: "porkChop", weekdays: ["sun"] } },
   { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
-  { food: "eggs", qty: "1 шт, для сирників" },
+  {
+    food: "eggs",
+    qualifier: "для сирників",
+    computedQty: { food: "eggs", weekdays: [], grams: 60, unit: "piece" },
+  },
 ];
 
 const marinadeIngredients: RecipeIngredient[] = [
@@ -49,27 +73,38 @@ const marinadeIngredients: RecipeIngredient[] = [
 ];
 
 export function MealPrep() {
-  const prepTable = [
+  const prepTable: (RecipeIngredient & { marinade: string })[] = [
     {
       food: "chickenMarinated",
       qualifier: "шашлики — Пн",
-      qty: "530 г",
+      computedQty: { food: "chickenMarinated", weekdays: ["mon"] },
       marinade: "Йогуртово-лимонний",
     },
-    { food: "chickenHearts", qualifier: "Вт", qty: "600 г", marinade: "Соєво-томатний" },
+    {
+      food: "chickenHearts",
+      qualifier: "Вт",
+      computedQty: { food: "chickenHearts", weekdays: ["tue"] },
+      marinade: "Соєво-томатний",
+    },
     {
       food: "chickenMarinated",
       qualifier: "смажена курка — Чт",
-      qty: "680 г",
+      // Сира назва для маринування — той самий шматок філе, macro-ключ уже friedChicken після смаження.
+      computedQty: { food: "friedChicken", weekdays: ["thu"] },
       marinade: "Соєво-часниковий",
     },
     {
       food: "chickenMarinated",
       qualifier: "запечене — Пт + Цезар Сб",
-      qty: "1100 г",
+      computedQty: { food: "chickenMarinated", weekdays: ["fri", "sat"] },
       marinade: "Медово-гірчичний",
     },
-    { food: "porkChop", qualifier: "Нд", qty: "600 г (~4 шт)", marinade: "Суха трав'яна база" },
+    {
+      food: "porkChop",
+      qualifier: "Нд",
+      computedQty: { food: "porkChop", weekdays: ["sun"] },
+      marinade: "Суха трав'яна база",
+    },
   ];
 
   const algorithm = [
@@ -205,7 +240,9 @@ export function MealPrep() {
                   <td className="py-2 pr-3 text-zinc-200">
                     {productLabel(row.food, row.qualifier)}
                   </td>
-                  <td className="py-2 pr-3 font-mono text-zinc-300">{row.qty}</td>
+                  <td className="py-2 pr-3 font-mono text-zinc-300">
+                    {row.computedQty ? quantityLabel(row.computedQty) : row.qty}
+                  </td>
                   <td className="py-2 text-zinc-400">{highlightProductMentions(row.marinade)}</td>
                 </tr>
               ))}
