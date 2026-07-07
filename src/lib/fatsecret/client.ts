@@ -256,3 +256,33 @@ export async function getRecentlyEaten(accessToken: OAuth1Token): Promise<Favori
   if (!food) return [];
   return Array.isArray(food) ? food : [food];
 }
+
+export interface FoodEntryItem {
+  food_entry_id: string;
+  food_entry_name: string;
+  food_id: string;
+  serving_id?: string;
+}
+
+/** Delegated (OAuth1) — returns the food diary entries for a given date. */
+export async function getFoodEntriesForDate(
+  date: Date,
+  accessToken: OAuth1Token,
+): Promise<FoodEntryItem[]> {
+  const body = await signedFetch(
+    REST_API_URL,
+    {
+      method: "food_entries.get.v2",
+      date: String(daysSinceEpoch(date)),
+      format: "json",
+    },
+    accessToken,
+  );
+  const data = JSON.parse(body) as {
+    food_entries?: { food_entry?: FoodEntryItem | FoodEntryItem[] };
+  };
+  assertNoFatSecretError(data);
+  const entry = data.food_entries?.food_entry;
+  if (!entry) return [];
+  return Array.isArray(entry) ? entry : [entry];
+}

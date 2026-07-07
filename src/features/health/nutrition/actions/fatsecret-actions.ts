@@ -10,6 +10,7 @@ import {
   searchFoods,
   getMostEaten,
   getRecentlyEaten,
+  getFoodEntriesForDate,
   type FatSecretMealType,
   type FoodDetail,
   type FavoriteFood,
@@ -229,15 +230,55 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
   return withAction(async () => {
     const accounts = await prisma.fatSecretAccount.findMany();
     const results: ProfileFavorite[] = [];
+    
     for (const account of accounts) {
-      const list = await getRecentlyEaten({
-        key: account.accessToken,
-        secret: account.accessTokenSecret,
-      });
-      for (const food of list) {
-        results.push({ profile: account.profileId as ProfileId, food });
+      const token = { key: account.accessToken, secret: account.accessTokenSecret };
+      const uniqueFoodIds = new Set<string>();
+      
+      // 1. Fetch recently eaten list (usually last 20 items)
+      try {
+        const recentlyEatenList = await getRecentlyEaten(token);
+        for (const food of recentlyEatenList) {
+          if (!uniqueFoodIds.has(food.food_id)) {
+            uniqueFoodIds.add(food.food_id);
+            results.push({ profile: account.profileId as ProfileId, food });
+          }
+        }
+      } catch (error) {
+        console.error("Failed to get recently eaten list:", error);
+      }
+      
+      // 2. Fetch diary entries from the last 4 days to ensure nothing is missed
+      const datesToFetch = [
+        new Date(),
+        new Date(Date.now() - 86_400_000),
+        new Date(Date.now() - 172_800_000),
+        new Date(Date.now() - 259_200_000),
+      ];
+      
+      for (const date of datesToFetch) {
+        try {
+          const diaryEntries = await getFoodEntriesForDate(date, token);
+          for (const entry of diaryEntries) {
+            if (!uniqueFoodIds.has(entry.food_id)) {
+              uniqueFoodIds.add(entry.food_id);
+              results.push({
+                profile: account.profileId as ProfileId,
+                food: {
+                  food_id: entry.food_id,
+                  food_name: entry.food_entry_name,
+                  food_type: "Brand",
+                  serving_id: entry.serving_id,
+                },
+              });
+            }
+          }
+        } catch (error) {
+          console.error(`Failed to get food entries for date ${date.toDateString()}:`, error);
+        }
       }
     }
+    
     return results;
   });
 }
