@@ -149,6 +149,8 @@ export async function searchFoods(query: string): Promise<FoodSearchResultItem[]
   url.searchParams.set("method", "foods.search");
   url.searchParams.set("format", "json");
   url.searchParams.set("search_expression", query);
+  url.searchParams.set("region", "UA");
+  url.searchParams.set("language", "uk");
 
   const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
@@ -188,7 +190,7 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   if (accessToken) {
     const body = await signedFetch(
       REST_API_URL,
-      { method: "food.get.v5", food_id: foodId, format: "json" },
+      { method: "food.get.v5", food_id: foodId, format: "json", region: "UA", language: "uk" },
       accessToken,
     );
     const data = JSON.parse(body) as { food?: FoodDetail };
@@ -202,6 +204,8 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   url.searchParams.set("method", "food.get.v5");
   url.searchParams.set("format", "json");
   url.searchParams.set("food_id", foodId);
+  url.searchParams.set("region", "UA");
+  url.searchParams.set("language", "uk");
 
   const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
