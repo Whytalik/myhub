@@ -114,21 +114,19 @@ function ProfileScienceCard({ profile }: { profile: Profile }) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-label">Макроси — науково vs у плані</span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1 p-3 rounded-xl bg-accent-nutrition/5 border border-accent-nutrition/20">
-            <span className="text-caption">Науковий орієнтир ({science.targetKcal} ккал)</span>
-            <span className="font-mono text-sm text-zinc-100">
-              Б {science.proteinG} г · Ж {science.fatG} г · В {science.carbsG} г
+        <span className="text-label">Цільові макроси</span>
+        <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.05] flex flex-col gap-2">
+          <div className="flex items-baseline justify-between gap-4 flex-wrap">
+            <span className="font-mono text-xl font-bold text-accent-nutrition">
+              {profile.kcal} <span className="text-xs font-normal text-zinc-400">ккал</span>
             </span>
-            <span className="text-caption">
-              {science.proteinGramsPerKgLbm} г білка / кг обезжиреної маси
-            </span>
-          </div>
-          <div className="flex flex-col gap-1.5 p-3 rounded-xl bg-white/[0.02]">
-            <span className="text-caption">У поточному плані ({profile.kcal} ккал)</span>
             <span className="font-mono text-sm text-zinc-200">
               Б {profile.macros.protein} г · Ж {profile.macros.fat} г · В {profile.macros.carbs} г
+            </span>
+          </div>
+          <div className="flex items-center justify-between gap-4 flex-wrap pt-1 border-t border-white/[0.03]">
+            <span className="text-caption">
+              Порівняння з науковим орієнтиром ({science.targetKcal} ккал: Б {science.proteinG}г · Ж {science.fatG}г · В {science.carbsG}г)
             </span>
             <Pill tone={deltaTone}>{kcalDeltaLabel}</Pill>
           </div>
