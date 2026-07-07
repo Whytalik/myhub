@@ -343,6 +343,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                     <thead>
                       <tr className="border-b border-white/[0.06] bg-white/[0.03]">
                         <th className="text-label text-left py-2 pr-3">Продукт</th>
+                        <th className="text-label text-right py-2 pr-3 w-20 sm:w-36">Всього</th>
                         <th className="text-label text-right py-2 pr-3 w-28 sm:w-56">Віталій</th>
                         <th className="text-label text-right py-2 w-28 sm:w-56">Олеся</th>
                       </tr>
@@ -360,9 +361,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                         let totalLabel = "";
                         if (totalRaw > 0 && group.vitalii > 0 && group.olesia > 0) {
                           if (multiplier) {
-                            totalLabel = ` (всього ~${Math.round(totalRaw * multiplier)} г готового)`;
+                            totalLabel = `~${Math.round(totalRaw * multiplier)} г готового`;
                           } else {
-                            totalLabel = ` (всього ~${Math.round(totalRaw)} г)`;
+                            totalLabel = `~${Math.round(totalRaw)} г`;
                           }
                         }
 
@@ -387,11 +388,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                           <tr key={groupIdx} className="border-b border-white/[0.03] last:border-0">
                             <td className="py-2 pr-3 text-zinc-200">
                               {group.label}
-                              {totalLabel && (
-                                <span className="text-xs text-zinc-500 font-normal">
-                                  {totalLabel}
-                                </span>
-                              )}
+                            </td>
+                            <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                              {totalLabel || "—"}
                             </td>
                             <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
                               {formatWeight(group.vitalii, vitaliiPct)}
