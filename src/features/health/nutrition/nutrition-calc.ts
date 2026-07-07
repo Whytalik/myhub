@@ -1,5 +1,5 @@
 import { PRODUCTS } from "./products";
-import type { DayPlan, MacroItem } from "./types";
+import type { DayPlan, MacroItem, Meal } from "./types";
 
 export interface DayMacros {
   kcal: number;
@@ -36,3 +36,18 @@ export function calculateDayMacros(day: DayPlan, person: "vitalii" | "olesia"): 
     carbs: Math.round(raw.carbs),
   };
 }
+
+export function calculateMealMacros(meal: Meal, person: "vitalii" | "olesia"): DayMacros {
+  const raw = (meal.macroItems ?? []).reduce(
+    (totals, item) => addItem(totals, item, person),
+    ZERO
+  );
+
+  return {
+    kcal: Math.round(raw.kcal),
+    protein: Math.round(raw.protein),
+    fat: Math.round(raw.fat),
+    carbs: Math.round(raw.carbs),
+  };
+}
+

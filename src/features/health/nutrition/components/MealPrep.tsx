@@ -38,7 +38,6 @@ const proteinIngredients: RecipeIngredient[] = [
     food: "chickenMarinated",
     computedQty: {
       food: "chickenMarinated",
-      extraFood: ["friedChicken"],
       weekdays: ["mon", "thu", "fri", "sat"],
     },
   },
@@ -89,8 +88,7 @@ export function MealPrep() {
     {
       food: "chickenMarinated",
       qualifier: "смажена курка — Чт",
-      // Сира назва для маринування — той самий шматок філе, macro-ключ уже friedChicken після смаження.
-      computedQty: { food: "friedChicken", weekdays: ["thu"] },
+      computedQty: { food: "chickenMarinated", weekdays: ["thu"] },
       marinade: "Соєво-часниковий",
     },
     {

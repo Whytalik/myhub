@@ -16,8 +16,7 @@ export function sumMacroGrams(productKey: string, weekdays: Weekday[]): number {
   return total;
 }
 
-/** Same as `sumMacroGrams`, but combines several product keys (e.g. raw chicken
- *  fillet is tracked as two macro-distinct keys — chickenMarinated/friedChicken). */
+/** Same as `sumMacroGrams`, but combines several product keys if needed. */
 export function sumMacroGramsMulti(productKeys: string[], weekdays: Weekday[]): number {
   return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays), 0);
 }

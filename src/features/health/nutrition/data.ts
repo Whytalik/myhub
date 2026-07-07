@@ -343,11 +343,16 @@ export const WEEK_PLAN: DayPlan[] = [
         title: "Смажена курка + Варений рис + Капрезе",
         ingredients: [
           "Смажена курка (вже замаринована) — 680 г (порівну: Віталій — 340 г, Олеся — 340 г)",
+          "Соєво-часниковий маринад — ~1/3 засвоюється (по 7.5 г соєвого соусу + 2.2 г олії кожному)",
+          "Олія для смаження курки — 10 г (по 5 г кожному)",
           "Рис — 160 г сухого (по 80 г кожному — реалістична порція гарніру на 2 прийоми)",
           "Для Капрезе: помідори 4 шт (~520 г), сулугуні (Віталій 25г, Олеся 170г), базилік, олія 1.5 ч.л. (порівну), яблучний оцет",
         ],
         macroItems: [
-          { food: "friedChicken", vitalii: 340, olesia: 340 },
+          { food: "chickenMarinated", vitalii: 340, olesia: 340 },
+          { food: "soySauce", vitalii: 7.5, olesia: 7.5, component: "Маринад (~1/3 засвоюється)" },
+          { food: "oil", vitalii: 2.2, olesia: 2.2, component: "Маринад (~1/3 засвоюється)" },
+          { food: "oil", vitalii: 5, olesia: 5, component: "Для смаження курки" },
           { food: "rice", vitalii: 80, olesia: 80 },
           { food: "tomato", vitalii: 260, olesia: 260, component: "Капрезе" },
           { food: "suluguni", vitalii: 25, olesia: 170, component: "Капрезе" },
@@ -678,7 +683,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "chickenMarinated",
         computedQty: {
           food: "chickenMarinated",
-          extraFood: ["friedChicken"],
           weekdays: ["mon", "thu", "fri", "sat"],
         },
         note: "530г шашлики Пн (підігнано під макроси) + 680г смажена Чт + 1100г запечене Пт+Цезар Сб — маринується й заморожується в Нд",

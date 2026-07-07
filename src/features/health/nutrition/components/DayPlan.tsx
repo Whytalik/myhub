@@ -1,9 +1,9 @@
 "use client";
 
-import { Scale, ClipboardList, Flame } from "lucide-react";
+import { Scale, ClipboardList, Flame, UtensilsCrossed } from "lucide-react";
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
-import { getProductName } from "../products";
+import { PRODUCTS, getProductName } from "../products";
 import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
@@ -23,6 +23,7 @@ interface ServingGroup {
   label: string;
   vitalii: number;
   olesia: number;
+  foodKey?: string;
 }
 
 interface ServingEntry {
@@ -59,8 +60,16 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
       if (existing) {
         existing.vitalii += item.vitalii;
         existing.olesia += item.olesia;
+        if (existing.foodKey !== item.food) {
+          existing.foodKey = undefined;
+        }
       } else {
-        groups.set(label, { label, vitalii: item.vitalii, olesia: item.olesia });
+        groups.set(label, {
+          label,
+          vitalii: item.vitalii,
+          olesia: item.olesia,
+          foodKey: item.food,
+        });
       }
     }
 
@@ -108,13 +117,64 @@ function buildDayProductTotals(meals: Meal[]): DayProductTotal[] {
   return [...totals.values()];
 }
 
+function splitRepeatMeals(day: DayPlanType): DayPlanType {
+  // Deep copy meals so we don't mutate the static WEEK_PLAN
+  const meals: Meal[] = day.meals.map((meal) => ({
+    ...meal,
+    macroItems: meal.macroItems ? meal.macroItems.map((item) => ({ ...item })) : [],
+    ingredients: [...meal.ingredients],
+  }));
+
+  for (let i = 0; i < meals.length; i++) {
+    const meal = meals[i];
+    if (meal.type === "dinner" && isRepeatPortion(meal)) {
+      const lunch = meals.find((m) => m.type === "lunch");
+      if (lunch && lunch.macroItems && lunch.macroItems.length > 0) {
+        const lunchHalfItems: MacroItem[] = [];
+        const dinnerHalfItems: MacroItem[] = [];
+
+        for (const item of lunch.macroItems) {
+          // Halve values, rounding to 1 decimal place to avoid float issues
+          const vHalf = Math.round((item.vitalii / 2) * 10) / 10;
+          const oHalf = Math.round((item.olesia / 2) * 10) / 10;
+
+          lunchHalfItems.push({
+            ...item,
+            vitalii: vHalf,
+            olesia: oHalf,
+          });
+
+          dinnerHalfItems.push({
+            ...item,
+            vitalii: vHalf,
+            olesia: oHalf,
+          });
+        }
+
+        lunch.macroItems = lunchHalfItems;
+        meal.macroItems = dinnerHalfItems;
+        meal.title = lunch.title;
+        meal.ingredients = [
+          "Друга порція обідньої страви (розігріти м'ясо та гарнір, салат зробити свіжим)",
+        ];
+      }
+    }
+  }
+
+  return {
+    ...day,
+    meals,
+  };
+}
+
 export function DayPlan({ day }: { day: DayPlanType }) {
+  const processedDay = splitRepeatMeals(day);
   const actual = {
-    vitalii: calculateDayMacros(day, "vitalii"),
-    olesia: calculateDayMacros(day, "olesia"),
+    vitalii: calculateDayMacros(processedDay, "vitalii"),
+    olesia: calculateDayMacros(processedDay, "olesia"),
   };
 
-  const dayProductTotals = buildDayProductTotals(day.meals);
+  const dayProductTotals = buildDayProductTotals(processedDay.meals);
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
@@ -176,65 +236,18 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         })}
       </div>
 
-      {day.note && <p className="text-caption italic">{highlightProductMentions(day.note)}</p>}
+      {processedDay.note && <p className="text-caption italic">{highlightProductMentions(processedDay.note)}</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {day.meals.map((meal) => (
-          <MealCard key={meal.type} meal={meal} />
-        ))}
-      </div>
-
-      <div className="glass-card p-4 flex flex-col gap-4">
+      <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <div className={sectionIconClass}>
-            <Scale size={16} />
+            <UtensilsCrossed size={16} />
           </div>
-          <span className="text-panel-title">Сервування — порції на сьогодні</span>
+          <span className="text-panel-title">Прийоми їжі</span>
         </div>
-        <div className="flex flex-col gap-6">
-          {buildServingEntries(day.meals).map((entry, idx) => (
-            <div key={idx} className="flex flex-col gap-2">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm font-semibold text-zinc-200">
-                  {entry.labels.join(" + ")} · {entry.title}
-                </span>
-                <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
-              </div>
-              {entry.labels.length > 1 && (
-                <p className="text-caption italic">
-                  Разом на {entry.labels.length.toString()} прийоми — ділити приблизно порівну
-                </p>
-              )}
-              <div className="h-px bg-white/[0.06]" />
-              {entry.groups.length > 0 ? (
-                <div className="overflow-x-auto rounded-xl bg-white/[0.02] px-3">
-                  <table className="w-full text-sm table-fixed">
-                    <thead>
-                      <tr className="border-b border-white/[0.06] bg-white/[0.03]">
-                        <th className="text-label text-left py-2 pr-3">Продукт</th>
-                        <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
-                        <th className="text-label text-right py-2 w-24">Олеся</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {entry.groups.map((group, groupIdx) => (
-                        <tr key={groupIdx} className="border-b border-white/[0.03] last:border-0">
-                          <td className="py-2 pr-3 text-zinc-200">{group.label}</td>
-                          <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
-                            {group.vitalii > 0 ? `${group.vitalii} г` : "—"}
-                          </td>
-                          <td className="py-2 text-right font-mono text-xs text-zinc-400">
-                            {group.olesia > 0 ? `${group.olesia} г` : "—"}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
-              )}
-            </div>
+        <div className="grid grid-cols-1 gap-2">
+          {processedDay.meals.map((meal) => (
+            <MealCard key={meal.type} meal={meal} />
           ))}
         </div>
       </div>
@@ -274,7 +287,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         </div>
       )}
 
-      {day.prepSteps && day.prepSteps.length > 0 && (
+      {processedDay.prepSteps && processedDay.prepSteps.length > 0 && (
         <div className="glass-card p-4 flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <div className={sectionIconClass}>
@@ -283,7 +296,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
             <span className="text-panel-title">Алгоритм приготування</span>
           </div>
           <div className="flex flex-col gap-3">
-            {day.prepSteps.map((section, idx) => (
+            {processedDay.prepSteps.map((section, idx) => (
               <div key={idx} className="flex flex-col gap-1.5">
                 <span className="text-sm font-semibold text-zinc-200">{section.title}</span>
                 <ul className="flex flex-col gap-1">
@@ -301,6 +314,104 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           </div>
         </div>
       )}
+
+      <div className="glass-card p-4 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className={sectionIconClass}>
+            <Scale size={16} />
+          </div>
+          <span className="text-panel-title">Сервування — порції на сьогодні</span>
+        </div>
+        <div className="flex flex-col gap-6">
+          {buildServingEntries(processedDay.meals).map((entry, idx) => (
+            <div key={idx} className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold text-zinc-200">
+                  {entry.labels.join(" + ")} · {entry.title}
+                </span>
+                <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
+              </div>
+              {entry.labels.length > 1 && (
+                <p className="text-caption italic">
+                  Разом на {entry.labels.length.toString()} прийоми — ділити приблизно порівну
+                </p>
+              )}
+              <div className="h-px bg-white/[0.06]" />
+              {entry.groups.length > 0 ? (
+                <div className="overflow-x-auto rounded-xl bg-white/[0.02] px-3">
+                  <table className="w-full text-sm table-fixed">
+                    <thead>
+                      <tr className="border-b border-white/[0.06] bg-white/[0.03]">
+                        <th className="text-label text-left py-2 pr-3">Продукт</th>
+                        <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
+                        <th className="text-label text-right py-2 w-24">Олеся</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {entry.groups.map((group, groupIdx) => {
+                        const product = group.foodKey ? PRODUCTS[group.foodKey] : undefined;
+                        const multiplier = product?.cookedMultiplier;
+
+                        // Calculate total and percentages
+                        const totalRaw = group.vitalii + group.olesia;
+                        const vitaliiPct = totalRaw > 0 ? Math.round((group.vitalii / totalRaw) * 100) : 0;
+                        const olesiaPct = totalRaw > 0 ? 100 - vitaliiPct : 0;
+
+                        let totalLabel = "";
+                        if (totalRaw > 0 && group.vitalii > 0 && group.olesia > 0) {
+                          if (multiplier) {
+                            totalLabel = `(всього ~${Math.round(totalRaw * multiplier)} г готового)`;
+                          } else {
+                            totalLabel = `(всього ~${Math.round(totalRaw)} г)`;
+                          }
+                        }
+
+                        const formatWeight = (rawWeight: number, pct: number) => {
+                          if (rawWeight <= 0) return "—";
+                          
+                          const pctSuffix = totalRaw > 0 && group.vitalii > 0 && group.olesia > 0 ? ` (${pct}%)` : "";
+
+                          if (multiplier) {
+                            return (
+                              <span className="flex flex-col items-end sm:inline sm:space-x-1">
+                                <span className="text-zinc-500">{rawWeight} г (сух.)</span>
+                                <span className="hidden sm:inline">→</span>
+                                <span className="text-accent-nutrition font-bold">~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}</span>
+                              </span>
+                            );
+                          }
+                          return `${rawWeight} г${pctSuffix}`;
+                        };
+
+                        return (
+                          <tr key={groupIdx} className="border-b border-white/[0.03] last:border-0">
+                            <td className="py-2 pr-3 text-zinc-200">
+                              {group.label}
+                              {totalLabel && (
+                                <span className="text-xs text-zinc-500 block sm:inline sm:ml-2">
+                                  {totalLabel}
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                              {formatWeight(group.vitalii, vitaliiPct)}
+                            </td>
+                            <td className="py-2 text-right font-mono text-xs text-zinc-400">
+                              {formatWeight(group.olesia, olesiaPct)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
