@@ -31,8 +31,8 @@ export function MealCard({ meal }: { meal: Meal }) {
       {hasMacros && (
         <div className="flex flex-col gap-1 text-[11px] border-t sm:border-t-0 sm:border-l border-white/[0.06] pt-2 sm:pt-0 sm:pl-3 shrink-0">
           <div className="flex items-center gap-1.5 whitespace-nowrap">
-            <span className="text-zinc-500 font-semibold w-3 shrink-0">В:</span>
-            <span className="font-mono text-zinc-300 inline-block w-20 text-right shrink-0">
+            <span className="text-zinc-500 font-semibold inline-block w-4 shrink-0">В:</span>
+            <span className="font-mono text-zinc-300 inline-block w-[80px] text-right shrink-0">
               {vitaliiMacros.kcal} <span className="text-zinc-500 font-normal">ккал</span>
             </span>
             <span className="text-zinc-500 font-mono flex items-center gap-1.5 shrink-0">
@@ -45,8 +45,8 @@ export function MealCard({ meal }: { meal: Meal }) {
             </span>
           </div>
           <div className="flex items-center gap-1.5 whitespace-nowrap">
-            <span className="text-zinc-500 font-semibold w-3 shrink-0">О:</span>
-            <span className="font-mono text-zinc-300 inline-block w-20 text-right shrink-0">
+            <span className="text-zinc-500 font-semibold inline-block w-4 shrink-0">О:</span>
+            <span className="font-mono text-zinc-300 inline-block w-[80px] text-right shrink-0">
               {olesiaMacros.kcal} <span className="text-zinc-500 font-normal">ккал</span>
             </span>
             <span className="text-zinc-500 font-mono flex items-center gap-1.5 shrink-0">
