@@ -188,18 +188,18 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   if (accessToken) {
     const body = await signedFetch(
       REST_API_URL,
-      { method: "food.get", food_id: foodId, format: "json" },
+      { method: "food.get.v5", food_id: foodId, format: "json" },
       accessToken,
     );
     const data = JSON.parse(body) as { food?: FoodDetail };
     assertNoFatSecretError(data);
-    if (!data.food) throw new Error(`FatSecret food.get returned no food for id ${foodId}`);
+    if (!data.food) throw new Error(`FatSecret food.get.v5 returned no food for id ${foodId}`);
     return data.food;
   }
 
   const token = await getOAuth2Token();
   const url = new URL(REST_API_URL);
-  url.searchParams.set("method", "food.get");
+  url.searchParams.set("method", "food.get.v5");
   url.searchParams.set("format", "json");
   url.searchParams.set("food_id", foodId);
 
@@ -208,7 +208,7 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   });
   const data = (await response.json()) as { food?: FoodDetail };
   assertNoFatSecretError(data);
-  if (!data.food) throw new Error(`FatSecret food.get returned no food for id ${foodId}`);
+  if (!data.food) throw new Error(`FatSecret food.get.v5 returned no food for id ${foodId}`);
   return data.food;
 }
 
