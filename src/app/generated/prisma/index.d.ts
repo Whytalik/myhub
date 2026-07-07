@@ -9183,10 +9183,18 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgAggregateOutputType = {
     servingGrams: number | null
+    kcal: number | null
+    protein: number | null
+    fat: number | null
+    carbs: number | null
   }
 
   export type ProductFatSecretMappingSumAggregateOutputType = {
     servingGrams: number | null
+    kcal: number | null
+    protein: number | null
+    fat: number | null
+    carbs: number | null
   }
 
   export type ProductFatSecretMappingMinAggregateOutputType = {
@@ -9197,6 +9205,10 @@ export namespace Prisma {
     servingId: string | null
     servingDescription: string | null
     servingGrams: number | null
+    kcal: number | null
+    protein: number | null
+    fat: number | null
+    carbs: number | null
     source: $Enums.MappingSource | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9210,6 +9222,10 @@ export namespace Prisma {
     servingId: string | null
     servingDescription: string | null
     servingGrams: number | null
+    kcal: number | null
+    protein: number | null
+    fat: number | null
+    carbs: number | null
     source: $Enums.MappingSource | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9223,6 +9239,10 @@ export namespace Prisma {
     servingId: number
     servingDescription: number
     servingGrams: number
+    kcal: number
+    protein: number
+    fat: number
+    carbs: number
     source: number
     createdAt: number
     updatedAt: number
@@ -9232,10 +9252,18 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgAggregateInputType = {
     servingGrams?: true
+    kcal?: true
+    protein?: true
+    fat?: true
+    carbs?: true
   }
 
   export type ProductFatSecretMappingSumAggregateInputType = {
     servingGrams?: true
+    kcal?: true
+    protein?: true
+    fat?: true
+    carbs?: true
   }
 
   export type ProductFatSecretMappingMinAggregateInputType = {
@@ -9246,6 +9274,10 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    kcal?: true
+    protein?: true
+    fat?: true
+    carbs?: true
     source?: true
     createdAt?: true
     updatedAt?: true
@@ -9259,6 +9291,10 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    kcal?: true
+    protein?: true
+    fat?: true
+    carbs?: true
     source?: true
     createdAt?: true
     updatedAt?: true
@@ -9272,6 +9308,10 @@ export namespace Prisma {
     servingId?: true
     servingDescription?: true
     servingGrams?: true
+    kcal?: true
+    protein?: true
+    fat?: true
+    carbs?: true
     source?: true
     createdAt?: true
     updatedAt?: true
@@ -9372,6 +9412,10 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams: number
+    kcal: number
+    protein: number
+    fat: number
+    carbs: number
     source: $Enums.MappingSource
     createdAt: Date
     updatedAt: Date
@@ -9404,6 +9448,10 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    kcal?: boolean
+    protein?: boolean
+    fat?: boolean
+    carbs?: boolean
     source?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9417,6 +9465,10 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    kcal?: boolean
+    protein?: boolean
+    fat?: boolean
+    carbs?: boolean
     source?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9430,6 +9482,10 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    kcal?: boolean
+    protein?: boolean
+    fat?: boolean
+    carbs?: boolean
     source?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9443,12 +9499,16 @@ export namespace Prisma {
     servingId?: boolean
     servingDescription?: boolean
     servingGrams?: boolean
+    kcal?: boolean
+    protein?: boolean
+    fat?: boolean
+    carbs?: boolean
     source?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductFatSecretMappingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productKey" | "foodId" | "foodName" | "servingId" | "servingDescription" | "servingGrams" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["productFatSecretMapping"]>
+  export type ProductFatSecretMappingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productKey" | "foodId" | "foodName" | "servingId" | "servingDescription" | "servingGrams" | "kcal" | "protein" | "fat" | "carbs" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["productFatSecretMapping"]>
 
   export type $ProductFatSecretMappingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ProductFatSecretMapping"
@@ -9461,6 +9521,13 @@ export namespace Prisma {
       servingId: string
       servingDescription: string
       servingGrams: number
+      /**
+       * * Макроси serving'у, як повернув FatSecret на момент мапування — для порівняння з ціллю.
+       */
+      kcal: number
+      protein: number
+      fat: number
+      carbs: number
       source: $Enums.MappingSource
       createdAt: Date
       updatedAt: Date
@@ -9894,6 +9961,10 @@ export namespace Prisma {
     readonly servingId: FieldRef<"ProductFatSecretMapping", 'String'>
     readonly servingDescription: FieldRef<"ProductFatSecretMapping", 'String'>
     readonly servingGrams: FieldRef<"ProductFatSecretMapping", 'Float'>
+    readonly kcal: FieldRef<"ProductFatSecretMapping", 'Float'>
+    readonly protein: FieldRef<"ProductFatSecretMapping", 'Float'>
+    readonly fat: FieldRef<"ProductFatSecretMapping", 'Float'>
+    readonly carbs: FieldRef<"ProductFatSecretMapping", 'Float'>
     readonly source: FieldRef<"ProductFatSecretMapping", 'MappingSource'>
     readonly createdAt: FieldRef<"ProductFatSecretMapping", 'DateTime'>
     readonly updatedAt: FieldRef<"ProductFatSecretMapping", 'DateTime'>
@@ -40240,6 +40311,10 @@ export namespace Prisma {
     servingId: 'servingId',
     servingDescription: 'servingDescription',
     servingGrams: 'servingGrams',
+    kcal: 'kcal',
+    protein: 'protein',
+    fat: 'fat',
+    carbs: 'carbs',
     source: 'source',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -41238,6 +41313,10 @@ export namespace Prisma {
     servingId?: StringFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatFilter<"ProductFatSecretMapping"> | number
+    kcal?: FloatFilter<"ProductFatSecretMapping"> | number
+    protein?: FloatFilter<"ProductFatSecretMapping"> | number
+    fat?: FloatFilter<"ProductFatSecretMapping"> | number
+    carbs?: FloatFilter<"ProductFatSecretMapping"> | number
     source?: EnumMappingSourceFilter<"ProductFatSecretMapping"> | $Enums.MappingSource
     createdAt?: DateTimeFilter<"ProductFatSecretMapping"> | Date | string
     updatedAt?: DateTimeFilter<"ProductFatSecretMapping"> | Date | string
@@ -41251,6 +41330,10 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
     source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41267,6 +41350,10 @@ export namespace Prisma {
     servingId?: StringFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatFilter<"ProductFatSecretMapping"> | number
+    kcal?: FloatFilter<"ProductFatSecretMapping"> | number
+    protein?: FloatFilter<"ProductFatSecretMapping"> | number
+    fat?: FloatFilter<"ProductFatSecretMapping"> | number
+    carbs?: FloatFilter<"ProductFatSecretMapping"> | number
     source?: EnumMappingSourceFilter<"ProductFatSecretMapping"> | $Enums.MappingSource
     createdAt?: DateTimeFilter<"ProductFatSecretMapping"> | Date | string
     updatedAt?: DateTimeFilter<"ProductFatSecretMapping"> | Date | string
@@ -41280,6 +41367,10 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
     source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41301,6 +41392,10 @@ export namespace Prisma {
     servingId?: StringWithAggregatesFilter<"ProductFatSecretMapping"> | string
     servingDescription?: StringWithAggregatesFilter<"ProductFatSecretMapping"> | string
     servingGrams?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
+    kcal?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
+    protein?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
+    fat?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
+    carbs?: FloatWithAggregatesFilter<"ProductFatSecretMapping"> | number
     source?: EnumMappingSourceWithAggregatesFilter<"ProductFatSecretMapping"> | $Enums.MappingSource
     createdAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
@@ -43908,6 +44003,10 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    kcal?: number
+    protein?: number
+    fat?: number
+    carbs?: number
     source?: $Enums.MappingSource
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43921,6 +44020,10 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    kcal?: number
+    protein?: number
+    fat?: number
+    carbs?: number
     source?: $Enums.MappingSource
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43934,6 +44037,10 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    kcal?: FloatFieldUpdateOperationsInput | number
+    protein?: FloatFieldUpdateOperationsInput | number
+    fat?: FloatFieldUpdateOperationsInput | number
+    carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43947,6 +44054,10 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    kcal?: FloatFieldUpdateOperationsInput | number
+    protein?: FloatFieldUpdateOperationsInput | number
+    fat?: FloatFieldUpdateOperationsInput | number
+    carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43960,6 +44071,10 @@ export namespace Prisma {
     servingId: string
     servingDescription: string
     servingGrams?: number
+    kcal?: number
+    protein?: number
+    fat?: number
+    carbs?: number
     source?: $Enums.MappingSource
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -43973,6 +44088,10 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    kcal?: FloatFieldUpdateOperationsInput | number
+    protein?: FloatFieldUpdateOperationsInput | number
+    fat?: FloatFieldUpdateOperationsInput | number
+    carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43986,6 +44105,10 @@ export namespace Prisma {
     servingId?: StringFieldUpdateOperationsInput | string
     servingDescription?: StringFieldUpdateOperationsInput | string
     servingGrams?: FloatFieldUpdateOperationsInput | number
+    kcal?: FloatFieldUpdateOperationsInput | number
+    protein?: FloatFieldUpdateOperationsInput | number
+    fat?: FloatFieldUpdateOperationsInput | number
+    carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46973,6 +47096,10 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
     source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -46980,6 +47107,10 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingAvgOrderByAggregateInput = {
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
   }
 
   export type ProductFatSecretMappingMaxOrderByAggregateInput = {
@@ -46990,6 +47121,10 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
     source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47003,6 +47138,10 @@ export namespace Prisma {
     servingId?: SortOrder
     servingDescription?: SortOrder
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
     source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -47010,6 +47149,10 @@ export namespace Prisma {
 
   export type ProductFatSecretMappingSumOrderByAggregateInput = {
     servingGrams?: SortOrder
+    kcal?: SortOrder
+    protein?: SortOrder
+    fat?: SortOrder
+    carbs?: SortOrder
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {

@@ -167,6 +167,10 @@ export interface FoodServing {
   serving_description: string;
   metric_serving_amount?: string;
   metric_serving_unit?: string;
+  calories?: string;
+  protein?: string;
+  fat?: string;
+  carbohydrate?: string;
 }
 
 export interface FoodDetail {

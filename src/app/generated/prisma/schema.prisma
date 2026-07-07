@@ -90,6 +90,13 @@ model ProductFatSecretMapping {
   servingId          String
   servingDescription String
   servingGrams       Float         @default(1)
+  /**
+   * Макроси serving'у, як повернув FatSecret на момент мапування — для порівняння з ціллю.
+   */
+  kcal               Float         @default(0)
+  protein            Float         @default(0)
+  fat                Float         @default(0)
+  carbs              Float         @default(0)
   source             MappingSource @default(MANUAL)
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt

@@ -169,6 +169,10 @@ exports.Prisma.ProductFatSecretMappingScalarFieldEnum = {
   servingId: 'servingId',
   servingDescription: 'servingDescription',
   servingGrams: 'servingGrams',
+  kcal: 'kcal',
+  protein: 'protein',
+  fat: 'fat',
+  carbs: 'carbs',
   source: 'source',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

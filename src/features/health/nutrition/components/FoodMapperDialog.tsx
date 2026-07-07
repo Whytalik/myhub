@@ -33,6 +33,14 @@ function servingGramsOf(serving: FoodServing): number | null {
   return null;
 }
 
+function servingMacrosLabel(serving: FoodServing): string | null {
+  if (!serving.calories) return null;
+  const protein = Number(serving.protein ?? 0);
+  const fat = Number(serving.fat ?? 0);
+  const carbs = Number(serving.carbohydrate ?? 0);
+  return `${serving.calories} ккал · Б${protein} Ж${fat} В${carbs}`;
+}
+
 export function FoodMapperDialog({
   isOpen,
   onClose,
@@ -120,6 +128,10 @@ export function FoodMapperDialog({
       servingId: serving.serving_id,
       servingDescription: serving.serving_description,
       servingGrams: grams,
+      kcal: Number(serving.calories ?? 0),
+      protein: Number(serving.protein ?? 0),
+      fat: Number(serving.fat ?? 0),
+      carbs: Number(serving.carbohydrate ?? 0),
       source: barcodeSource ? "BARCODE" : "MANUAL",
     });
     setIsSaving(false);
@@ -217,6 +229,7 @@ export function FoodMapperDialog({
             <div className="flex flex-col gap-1">
               {servings.map((serving) => {
                 const autoGrams = servingGramsOf(serving);
+                const macrosLabel = servingMacrosLabel(serving);
                 return (
                   <div
                     key={serving.serving_id}
@@ -229,6 +242,7 @@ export function FoodMapperDialog({
                       ) : (
                         <p className="text-label text-amber-400">грами невідомі — вкажіть вручну</p>
                       )}
+                      {macrosLabel && <p className="text-label truncate">{macrosLabel}</p>}
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       {!autoGrams && (
