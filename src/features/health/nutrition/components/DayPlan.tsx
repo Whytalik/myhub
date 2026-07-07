@@ -343,8 +343,8 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                     <thead>
                       <tr className="border-b border-white/[0.06] bg-white/[0.03]">
                         <th className="text-label text-left py-2 pr-3">Продукт</th>
-                        <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
-                        <th className="text-label text-right py-2 w-24">Олеся</th>
+                        <th className="text-label text-right py-2 pr-3 w-28 sm:w-56">Віталій</th>
+                        <th className="text-label text-right py-2 w-28 sm:w-56">Олеся</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -360,9 +360,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                         let totalLabel = "";
                         if (totalRaw > 0 && group.vitalii > 0 && group.olesia > 0) {
                           if (multiplier) {
-                            totalLabel = `(всього ~${Math.round(totalRaw * multiplier)} г готового)`;
+                            totalLabel = ` (всього ~${Math.round(totalRaw * multiplier)} г готового)`;
                           } else {
-                            totalLabel = `(всього ~${Math.round(totalRaw)} г)`;
+                            totalLabel = ` (всього ~${Math.round(totalRaw)} г)`;
                           }
                         }
 
@@ -375,7 +375,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                             return (
                               <span className="flex flex-col items-end sm:inline sm:space-x-1">
                                 <span className="text-zinc-500">{rawWeight} г (сух.)</span>
-                                <span className="hidden sm:inline">→</span>
+                                <span className="hidden sm:inline text-zinc-600 mx-1.5">→</span>
                                 <span className="text-accent-nutrition font-bold">~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}</span>
                               </span>
                             );
@@ -388,7 +388,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                             <td className="py-2 pr-3 text-zinc-200">
                               {group.label}
                               {totalLabel && (
-                                <span className="text-xs text-zinc-500 block sm:inline sm:ml-2">
+                                <span className="text-xs text-zinc-500 font-normal">
                                   {totalLabel}
                                 </span>
                               )}
