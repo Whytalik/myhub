@@ -1,7 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, useState } from "react";
 import { Check, RotateCcw } from "lucide-react";
+import { Tabs } from "@/components/ui/navigation/tabs";
 import { SHOPPING_LIST } from "../data";
 import { getProductName, PRODUCTS } from "../products";
 import { highlightProductMentions } from "../highlight-products";
@@ -29,14 +30,13 @@ function displayQtyOf(item: ShoppingItem): string | undefined {
 
 const STORAGE_KEY = "nutrition-shopping-v1";
 
-const TRIPS: { day: ShoppingDay; title: string; hint: string }[] = [
-  {
-    day: "sun",
-    title: "Неділя",
-    hint: "Закупка перед міл-препом — м'ясо на весь тиждень + непсувні товари",
-  },
-  { day: "wed", title: "Середа", hint: "Свіжі продукти на другу половину тижня" },
+const VIEWS = [
+  { id: "all" as const, label: "7 днів" },
+  { id: "sun" as const, label: "Неділя" },
+  { id: "wed" as const, label: "Середа" },
 ];
+
+type ViewId = (typeof VIEWS)[number]["id"];
 
 function categoriesForDay(day: ShoppingDay): ShoppingCategory[] {
   return SHOPPING_LIST.map((category) => ({
@@ -80,8 +80,6 @@ function write(next: CheckedMap) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   listeners.forEach((listener) => listener());
 }
-
-const TOTAL_ITEMS = SHOPPING_LIST.reduce((sum, category) => sum + category.items.length, 0);
 
 function categoryCost(categories: ShoppingCategory[]): number {
   return categories.reduce(
@@ -181,17 +179,29 @@ function CategoryList({
 
 export function ShoppingList() {
   const checked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [activeView, setActiveView] = useState<ViewId>("all");
 
-  const checkedCount = Object.entries(checked).filter(
-    ([id, val]) => val && !id.includes("-opt-"),
+  const visibleCategories = activeView === "all"
+    ? SHOPPING_LIST
+    : categoriesForDay(activeView);
+
+  const visibleItemIds = new Set(
+    visibleCategories.flatMap((category) => category.items.map((item) => item.id)),
+  );
+
+  const totalItemsInView = visibleItemIds.size;
+
+  const checkedCountInView = Object.entries(checked).filter(
+    ([id, val]) => val && !id.includes("-opt-") && visibleItemIds.has(id),
   ).length;
-  const progress = TOTAL_ITEMS > 0 ? Math.round((checkedCount / TOTAL_ITEMS) * 100) : 0;
 
-  const totalCost = SHOPPING_LIST.reduce((sum, category) => {
-    return sum + category.items.reduce((itemSum, item) => itemSum + (item.price || 0), 0);
-  }, 0);
+  const progress = totalItemsInView > 0
+    ? Math.round((checkedCountInView / totalItemsInView) * 100)
+    : 0;
 
-  const checkedCost = SHOPPING_LIST.reduce((sum, category) => {
+  const totalCost = categoryCost(visibleCategories);
+
+  const checkedCost = visibleCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
@@ -205,12 +215,21 @@ export function ShoppingList() {
   const toggle = (id: string) => write({ ...checked, [id]: !checked[id] });
   const reset = () => write({});
 
+  const tabPills = VIEWS.map((v) => ({ id: v.id, label: v.label }));
+
   return (
     <div className="flex flex-col gap-4">
+      <Tabs
+        tabs={tabPills}
+        activeTab={activeView}
+        onTabChange={(id) => setActiveView(id as ViewId)}
+        contentClassName="hidden"
+      />
+
       <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span className="text-panel-title">
-            {checkedCount} / {TOTAL_ITEMS} куплено
+            {checkedCountInView} / {totalItemsInView} куплено
           </span>
           <button
             onClick={reset}
@@ -245,23 +264,7 @@ export function ShoppingList() {
         </div>
       </div>
 
-      {TRIPS.map(({ day, title, hint }) => {
-        const categories = categoriesForDay(day);
-        const tripCost = categoryCost(categories);
-
-        return (
-          <div key={day} className="flex flex-col gap-3">
-            <div className="flex items-baseline justify-between gap-2 px-1">
-              <div>
-                <span className="text-panel-title">{title}</span>
-                <p className="text-caption">{hint}</p>
-              </div>
-              <span className="font-mono text-xs text-zinc-500 shrink-0">~{tripCost} ₴</span>
-            </div>
-            <CategoryList categories={categories} checked={checked} onToggle={toggle} />
-          </div>
-        );
-      })}
+      <CategoryList categories={visibleCategories} checked={checked} onToggle={toggle} />
     </div>
   );
 }

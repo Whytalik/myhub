@@ -1,21 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2, Star } from "lucide-react";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Input } from "@/components/ui/inputs/input";
 import { Button } from "@/components/ui/actions/button";
 import {
-  getFatSecretFavoritesAction,
   getFatSecretFoodAction,
   upsertProductMappingAction,
   searchFatSecretFoodAction,
-  getFatSecretMostEatenAction,
-  getFatSecretRecentlyEatenAction,
-  type ProfileFavorite,
 } from "../actions/fatsecret-actions";
-import { PROFILES } from "../data";
 import type { FoodDetail, FoodServing, FoodSearchResultItem } from "@/lib/fatsecret/client";
 
 type Step = "pick-food" | "pick-serving" | "manual-input";
@@ -45,10 +40,6 @@ function servingGramsOf(serving: FoodServing): number | null {
 function pushServingGramsOf(serving: FoodServing, metricGrams: number): number {
   const measurement = serving.measurement_description?.toLowerCase();
   return measurement === "g" || measurement === "ml" ? 1 : metricGrams;
-}
-
-function profileNameOf(profileId: string): string {
-  return PROFILES.find((p) => p.id === profileId)?.name ?? profileId;
 }
 
 function buildMacroOverrides(food: FoodDetail): Record<string, {kcal: string; protein: string; fat: string; carbs: string}> {
@@ -100,43 +91,6 @@ export function FoodMapperDialog({
   const [hasSearched, setHasSearched] = useState(false);
   const [isFetchingFood, setIsFetchingFood] = useState(false);
 
-  // List tabs state
-  const [activeTab, setActiveTab] = useState<"favorites" | "most-eaten" | "recently-eaten">("favorites");
-  const [listData, setListData] = useState<ProfileFavorite[]>([]);
-  const [isLoadingList, setIsLoadingList] = useState(true);
-  const [listError, setListError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setIsLoadingList(true);
-    setListError(null);
-
-    const loadData = async () => {
-      let response;
-      if (activeTab === "favorites") {
-        response = await getFatSecretFavoritesAction();
-      } else if (activeTab === "most-eaten") {
-        response = await getFatSecretMostEatenAction();
-      } else {
-        response = await getFatSecretRecentlyEatenAction();
-      }
-
-      if (cancelled) return;
-      setIsLoadingList(false);
-      if (!response.success) {
-        setListError(response.error);
-        return;
-      }
-      setListData(response.data);
-    };
-
-    loadData();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [activeTab]);
-
   // 2. Derived values
   const servings: FoodServing[] = selectedFood
     ? Array.isArray(selectedFood.servings.serving)
@@ -172,28 +126,6 @@ export function FoodMapperDialog({
       setFailedFoodId(food.food_id);
       setFailedFoodName(food.food_name);
       setFailedServingId(null);
-      setManualCalories("");
-      setManualProtein("");
-      setManualFat("");
-      setManualCarbs("");
-      setStep("manual-input");
-      return;
-    }
-    setSelectedFood(response.data);
-    setMacroOverrides(buildMacroOverrides(response.data));
-    setStep("pick-serving");
-  };
-
-  const handlePickFavorite = async (favorite: ProfileFavorite) => {
-    setSelectedServingId(favorite.food.serving_id ?? null);
-    setIsFetchingFood(true);
-    const response = await getFatSecretFoodAction(favorite.food.food_id, favorite.profile);
-    setIsFetchingFood(false);
-    if (!response.success) {
-      toast.warning("Не вдалося завантажити деталі з API. Перехід до ручного введення.");
-      setFailedFoodId(favorite.food.food_id);
-      setFailedFoodName(favorite.food.food_name);
-      setFailedServingId(favorite.food.serving_id ?? null);
       setManualCalories("");
       setManualProtein("");
       setManualFat("");
@@ -315,119 +247,32 @@ export function FoodMapperDialog({
               </div>
             )}
 
-            {!isFetchingFood && (
-              <>
-                {/* Tab selectors for quick access lists */}
-                <div className="flex border-b border-white/[0.06] mt-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("favorites");
-                      setHasSearched(false);
-                    }}
-                    className={`pb-2 px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                      activeTab === "favorites" && !hasSearched
-                        ? "border-b-2 border-accent-nutrition text-accent-nutrition"
-                        : "text-zinc-400 hover:text-zinc-200"
-                    }`}
-                  >
-                    Улюблені
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("most-eaten");
-                      setHasSearched(false);
-                    }}
-                    className={`pb-2 px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                      activeTab === "most-eaten" && !hasSearched
-                        ? "border-b-2 border-accent-nutrition text-accent-nutrition"
-                        : "text-zinc-400 hover:text-zinc-200"
-                    }`}
-                  >
-                    Часті
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("recently-eaten");
-                      setHasSearched(false);
-                    }}
-                    className={`pb-2 px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                      activeTab === "recently-eaten" && !hasSearched
-                        ? "border-b-2 border-accent-nutrition text-accent-nutrition"
-                        : "text-zinc-400 hover:text-zinc-200"
-                    }`}
-                  >
-                    Недавні
-                  </button>
-                </div>
+            {!isFetchingFood && hasSearched && (
+              <div className="flex flex-col gap-2">
+                <span className="text-label text-zinc-400 font-semibold uppercase tracking-wide text-xs">
+                  Результати пошуку
+                </span>
 
-                {hasSearched ? (
-                  <div className="flex flex-col gap-2">
-                    <span className="text-label text-zinc-400 font-semibold uppercase tracking-wide text-xs">
-                      Результати пошуку
-                    </span>
-
-                    {searchResults.length === 0 ? (
-                      <p className="text-caption text-center py-6">Нічого не знайдено</p>
-                    ) : (
-                      <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
-                        {searchResults.map((result) => (
-                          <button
-                            key={result.food_id}
-                            type="button"
-                            onClick={() => handlePickSearchResult(result)}
-                            className="text-left rounded-lg p-2.5 hover:bg-white/5 transition-colors flex flex-col gap-0.5"
-                          >
-                            <p className="text-body truncate font-medium">{result.food_name}</p>
-                            {result.food_description && (
-                              <p className="text-caption truncate">{result.food_description}</p>
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                {searchResults.length === 0 ? (
+                  <p className="text-caption text-center py-6">Нічого не знайдено</p>
                 ) : (
-                  <div className="flex flex-col gap-2">
-                    {isLoadingList && (
-                      <div className="flex items-center justify-center gap-2 text-caption py-6">
-                        <Loader2 size={14} className="animate-spin" />
-                        Завантаження списку...
-                      </div>
-                    )}
-
-                    {listError && <p className="text-caption text-rose-400">{listError}</p>}
-
-                    {!isLoadingList && !listError && listData.length === 0 && (
-                      <p className="text-caption text-center py-6 text-zinc-400">
-                        Список порожній. Спробуйте скористатися пошуком вище.
-                      </p>
-                    )}
-
-                    <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
-                      {listData.map((favorite, idx) => (
-                        <button
-                          key={`${favorite.profile}-${favorite.food.food_id}-${favorite.food.serving_id ?? "unknown"}-${idx}`}
-                          type="button"
-                          onClick={() => handlePickFavorite(favorite)}
-                          className="text-left rounded-lg p-2.5 hover:bg-white/5 transition-colors flex items-start gap-2"
-                        >
-                          <Star size={13} className="text-accent-nutrition shrink-0 mt-0.5" />
-                          <div className="min-w-0">
-                            <p className="text-body truncate">{favorite.food.food_name}</p>
-                            {favorite.food.food_description && (
-                              <p className="text-caption truncate">{favorite.food.food_description}</p>
-                            )}
-                            <p className="text-label">{profileNameOf(favorite.profile)}</p>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
+                  <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
+                    {searchResults.map((result) => (
+                      <button
+                        key={result.food_id}
+                        type="button"
+                        onClick={() => handlePickSearchResult(result)}
+                        className="text-left rounded-lg p-2.5 hover:bg-white/5 transition-colors flex flex-col gap-0.5"
+                      >
+                        <p className="text-body truncate font-medium">{result.food_name}</p>
+                        {result.food_description && (
+                          <p className="text-caption truncate">{result.food_description}</p>
+                        )}
+                      </button>
+                    ))}
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
         )}
