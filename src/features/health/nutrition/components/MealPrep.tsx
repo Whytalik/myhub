@@ -2,6 +2,12 @@ import { ClipboardList, Flame, Apple } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
 import { getProductName } from "../products";
 
+interface RecipeIngredient {
+  food: string;
+  qualifier?: string;
+  qty?: string;
+}
+
 /** Base name always comes from products.ts — `qualifier` adds prep-specific
  *  context (day, fat %, dish) that products.ts has no reason to track. */
 function productLabel(food: string, qualifier?: string): string {
@@ -9,7 +15,12 @@ function productLabel(food: string, qualifier?: string): string {
   return qualifier ? `${base} (${qualifier})` : base;
 }
 
-const proteinIngredients: { food: string; qualifier?: string; qty: string }[] = [
+function ingredientLabel(ing: RecipeIngredient): string {
+  const label = productLabel(ing.food, ing.qualifier);
+  return ing.qty ? `${label} — ${ing.qty}` : label;
+}
+
+const proteinIngredients: RecipeIngredient[] = [
   { food: "chickenMarinated", qty: "2.31 кг" },
   { food: "chickenHearts", qty: "600 г" },
   { food: "porkChop", qty: "600 г (~4 шт)" },
@@ -17,15 +28,24 @@ const proteinIngredients: { food: string; qualifier?: string; qty: string }[] = 
   { food: "eggs", qty: "1 шт, для сирників" },
 ];
 
-const marinadeIngredients = [
-  "Грецький йогурт — 150 г",
-  "Лимон — ½ шт",
-  "Часник — 10 зубчиків",
-  "Соєвий соус — 6 ст.л., Томатна паста — 1 ст.л.",
-  "Мед — 1 ст.л., Гірчиця — 2 ст.л.",
-  "Оливкова олія — ~6 ст.л.",
-  "Борошно — 5–6 ст.л., Цукор — 3 ст.л., Ванільний цукор",
-  "Розмарин, чебрець, паприка, прованські трави, сіль, перець",
+const marinadeIngredients: RecipeIngredient[] = [
+  { food: "yogurtGreek", qty: "150 г" },
+  { food: "lemon", qty: "½ шт" },
+  { food: "garlic", qty: "10 зубчиків" },
+  { food: "soySauce", qty: "6 ст.л." },
+  { food: "tomatoPaste", qty: "1 ст.л." },
+  { food: "honey", qty: "1 ст.л." },
+  { food: "mustardDijon", qty: "2 ст.л." },
+  { food: "oil", qualifier: "оливкова", qty: "~6 ст.л." },
+  { food: "flour", qty: "5–6 ст.л." },
+  { food: "sugar", qty: "3 ст.л." },
+  { food: "vanillaSugar" },
+  { food: "rosemary" },
+  { food: "thyme" },
+  { food: "paprika" },
+  { food: "provencalHerbs" },
+  { food: "salt" },
+  { food: "blackPepper" },
 ];
 
 export function MealPrep() {
@@ -83,69 +103,73 @@ export function MealPrep() {
     },
   ];
 
-  const marinades = [
-    {
-      title: "Йогуртово-лимонний маринад",
-      for: "Для курячих шашликів (Пн). Подача: гірчиця.",
-      ingredients: [
-        "150 г грецького йогурту",
-        "сік ½ лимона + цедра",
-        "2 зубчики часнику (тиском)",
-        "1 ч.л. паприки",
-        "½ ч.л. прованських трав",
-        "1 ст.л. оливкової олії",
-        "сіль, чорний перець",
-      ],
-      note: "Маринувати мінімум 2 год, ідеально — ніч у холодильнику.",
-    },
-    {
-      title: "Соєво-томатний маринад",
-      for: "Для курячих сердець (Вт). Соус подачі: Соєва глазур",
-      ingredients: [
-        "3 ст.л. соєвого соусу",
-        "1 ст.л. томатної пасти",
-        "1 ст.л. оливкової олії",
-        "½ ч.л. прованських трав",
-        "чорний перець (сіль не потрібна — соєвий соус солоний)",
-      ],
-      note: "Маринувати 30–60 хв, перемішувати кожні 10 хв.",
-    },
-    {
-      title: "Соєво-часниковий маринад",
-      for: "Для смаженої курки (Чт)",
-      ingredients: [
-        "3 ст.л. соєвого соусу",
-        "1 ст.л. оливкової олії",
-        "2 зубчики часнику (тиском)",
-        "½ ч.л. паприки",
-        "чорний перець",
-      ],
-      note: "Маринувати від 1 до 4 год.",
-    },
-    {
-      title: "Медово-гірчичний маринад",
-      for: "Для запеченого курячого філе (Пт). Утворює соус при запіканні.",
-      ingredients: [
-        "2 ст.л. гірчиці (французька зернова або діжонська)",
-        "1 ст.л. меду",
-        "2 ст.л. оливкової олії",
-        "2 зубчики часнику (тиском)",
-        "сіль, чорний перець",
-      ],
-      note: "Маринувати від 1 до 4 год. Запікати у фользі або рукаві при 180°C — 30–35 хв.",
-    },
-    {
-      title: "Суха трав'яна база",
-      for: "Для свинячої відбивної (Нд). Соус подачі: Цибулево-вершковий",
-      ingredients: [
-        "сіль, чорний перець",
-        "1 ч.л. сухого розмарину",
-        "½ ч.л. чебрецю",
-        "2 зубчики часнику (тиском)",
-      ],
-      note: "Без олії та рідини — натерти суху суміш з обох боків, дати полежати 15–30 хв перед смаженням.",
-    },
-  ];
+  const marinades: { title: string; for: string; ingredients: RecipeIngredient[]; note: string }[] =
+    [
+      {
+        title: "Йогуртово-лимонний маринад",
+        for: "Для курячих шашликів (Пн). Подача: гірчиця.",
+        ingredients: [
+          { food: "yogurtGreek", qty: "150 г" },
+          { food: "lemon", qty: "сік ½ шт + цедра" },
+          { food: "garlic", qty: "2 зубчики (тиском)" },
+          { food: "paprika", qty: "1 ч.л." },
+          { food: "provencalHerbs", qty: "½ ч.л." },
+          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
+          { food: "salt" },
+          { food: "blackPepper" },
+        ],
+        note: "Маринувати мінімум 2 год, ідеально — ніч у холодильнику.",
+      },
+      {
+        title: "Соєво-томатний маринад",
+        for: "Для курячих сердець (Вт). Соус подачі: Соєва глазур",
+        ingredients: [
+          { food: "soySauce", qty: "3 ст.л." },
+          { food: "tomatoPaste", qty: "1 ст.л." },
+          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
+          { food: "provencalHerbs", qty: "½ ч.л." },
+          { food: "blackPepper", qty: "сіль не потрібна — соєвий соус солоний" },
+        ],
+        note: "Маринувати 30–60 хв, перемішувати кожні 10 хв.",
+      },
+      {
+        title: "Соєво-часниковий маринад",
+        for: "Для смаженої курки (Чт)",
+        ingredients: [
+          { food: "soySauce", qty: "3 ст.л." },
+          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
+          { food: "garlic", qty: "2 зубчики (тиском)" },
+          { food: "paprika", qty: "½ ч.л." },
+          { food: "blackPepper" },
+        ],
+        note: "Маринувати від 1 до 4 год.",
+      },
+      {
+        title: "Медово-гірчичний маринад",
+        for: "Для запеченого курячого філе (Пт). Утворює соус при запіканні.",
+        ingredients: [
+          { food: "mustardDijon", qty: "2 ст.л., французька зернова або діжонська" },
+          { food: "honey", qty: "1 ст.л." },
+          { food: "oil", qualifier: "оливкова", qty: "2 ст.л." },
+          { food: "garlic", qty: "2 зубчики (тиском)" },
+          { food: "salt" },
+          { food: "blackPepper" },
+        ],
+        note: "Маринувати від 1 до 4 год. Запікати у фользі або рукаві при 180°C — 30–35 хв.",
+      },
+      {
+        title: "Суха трав'яна база",
+        for: "Для свинячої відбивної (Нд). Соус подачі: Цибулево-вершковий",
+        ingredients: [
+          { food: "salt" },
+          { food: "blackPepper" },
+          { food: "rosemary", qty: "1 ч.л." },
+          { food: "thyme", qty: "½ ч.л." },
+          { food: "garlic", qty: "2 зубчики (тиском)" },
+        ],
+        note: "Без олії та рідини — натерти суху суміш з обох боків, дати полежати 15–30 хв перед смаженням.",
+      },
+    ];
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
@@ -210,9 +234,7 @@ export function MealPrep() {
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span>
-                    {productLabel(ing.food, ing.qualifier)} — {ing.qty}
-                  </span>
+                  <span>{ingredientLabel(ing)}</span>
                 </li>
               ))}
             </ul>
@@ -223,7 +245,7 @@ export function MealPrep() {
               {marinadeIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span>{highlightProductMentions(ing)}</span>
+                  <span>{ingredientLabel(ing)}</span>
                 </li>
               ))}
             </ul>
@@ -264,7 +286,7 @@ export function MealPrep() {
                 {m.ingredients.map((ing, ingIdx) => (
                   <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
                     <span className="text-zinc-600">·</span>
-                    <span>{highlightProductMentions(ing)}</span>
+                    <span>{ingredientLabel(ing)}</span>
                   </li>
                 ))}
               </ul>

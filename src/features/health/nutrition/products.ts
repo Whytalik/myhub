@@ -267,6 +267,15 @@ export const PRODUCTS: Record<string, Product> = {
   tomatoPaste: pantry("tomatoPaste", "Томатна паста"),
   flour: pantry("flour", "Борошно"),
   vanillaSugar: pantry("vanillaSugar", "Ванільний цукор"),
+  dillParsley: pantry("dillParsley", "Кріп/петрушка"),
+  greenOnion: pantry(
+    "greenOnion",
+    "Зелена цибуля",
+    // Дефолтний корінь дав би "цибуля", що збігається зі звичайною цибулею — беремо "зелена".
+    { searchTerm: "зелена" },
+  ),
+  basil: pantry("basil", "Базилік"),
+  appleVinegar: pantry("appleVinegar", "Яблучний оцет"),
 };
 
 export type ProductKey = keyof typeof PRODUCTS;

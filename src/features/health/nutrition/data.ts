@@ -189,8 +189,8 @@ export const WEEK_PLAN: DayPlan[] = [
         title: "Сніданок (~10 хв)",
         steps: [
           "Зварити вівсянку у воді (5–7 хв).",
-          "Зняти з вогню, дати трішки охолонути.",
-          "Вмішати або викласти зверху грецький йогурт, прикрасити чорницями перед подачею.",
+          "Зняти з вогню, дати трішки охолонути, вмішати або викласти зверху грецький йогурт.",
+          "Прикрасити чорницями перед подачею.",
         ],
       },
       {
@@ -1072,7 +1072,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "greens-0-sun",
-        name: "Кріп/петрушка",
+        food: "dillParsley",
         qty: "1 пучок",
         note: "соус Пн",
         price: 22,
@@ -1080,7 +1080,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "greens-0-wed",
-        name: "Кріп/петрушка",
+        food: "dillParsley",
         qty: "1 пучок",
         note: "тунець Ср",
         price: 23,
@@ -1088,7 +1088,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "greens-1",
-        name: "Зелена цибуля",
+        food: "greenOnion",
         qty: "1 пучок",
         note: "тунець Ср + свіжий салат Ср",
         price: 22,
@@ -1096,7 +1096,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "greens-2",
-        name: "Свіжий базилік",
+        food: "basil",
+        qualifier: "свіжий",
         qty: "1 пучок",
         note: "Капрезе Чт",
         price: 30,
@@ -1110,7 +1111,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     items: [
       {
         id: "oils-0",
-        name: "Оливкова олія",
+        food: "oil",
+        qualifier: "оливкова",
         qty: "185 мл",
         note: "маринади + заправки (свинина тепер без олії — суха база; заправки на оцті)",
         price: 65,
@@ -1118,7 +1120,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "oils-1",
-        name: "Рослинна олія",
+        food: "oil",
+        qualifier: "рослинна",
         qty: "100 (для смаження + морква)",
         note: "смаження",
         price: 10,
@@ -1126,7 +1129,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "oils-2",
-        name: "Яблучний оцет 9%",
+        food: "appleVinegar",
+        qualifier: "9%",
         qty: "50 мл",
         note: "салати + морква",
         price: 4,

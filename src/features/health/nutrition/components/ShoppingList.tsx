@@ -59,8 +59,10 @@ function getSnapshot(): CheckedMap {
   return cache;
 }
 
+const EMPTY_SNAPSHOT: CheckedMap = {};
+
 function getServerSnapshot(): CheckedMap {
-  return {};
+  return EMPTY_SNAPSHOT;
 }
 
 function write(next: CheckedMap) {
