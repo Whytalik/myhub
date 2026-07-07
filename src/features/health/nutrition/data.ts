@@ -6,14 +6,14 @@ export const PROFILES: Profile[] = [
     name: "Віталій",
     goal: "Схуднення (дефіцит)",
     kcal: 1700,
-    macros: { protein: 120, fat: 65, carbs: 159 },
+    macros: { protein: 145, fat: 55, carbs: 155 },
   },
   {
     id: "olesia",
     name: "Олеся",
     goal: "Набір ваги 53 → 60 кг",
-    kcal: 2200,
-    macros: { protein: 100, fat: 75, carbs: 281 },
+    kcal: 1950,
+    macros: { protein: 100, fat: 65, carbs: 240 },
   },
 ];
 
