@@ -233,7 +233,7 @@ export const PRODUCTS: Record<string, Product> = {
   mustardDijon: tracked(
     "mustardDijon",
     "Гірчиця діжонська",
-    { kcal: 150, protein: 4, fat: 11, carbs: 5 },
+    { kcal: 183.5, protein: 8.8, fat: 6.9, carbs: 23 },
     "other",
     // текст майже завжди каже просто "гірчиця", а не "діжонська".
     { searchTerm: "гірчиця" },

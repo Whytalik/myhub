@@ -135,10 +135,11 @@ export interface FoodSearchResultItem {
   food_description?: string;
 }
 
-function assertNoFatSecretError(data: unknown): void {
+function assertNoFatSecretError(data: unknown, context?: string): void {
   const error = (data as { error?: { message?: string; code?: number } } | undefined)?.error;
   if (error) {
-    throw new Error(`FatSecret API error ${error.code ?? "?"}: ${error.message ?? "unknown"}`);
+    const ctx = context ? ` [${context}]` : "";
+    throw new Error(`FatSecret API error ${error.code ?? "?"}: ${error.message ?? "unknown"}${ctx}`);
   }
 }
 
@@ -149,8 +150,6 @@ export async function searchFoods(query: string): Promise<FoodSearchResultItem[]
   url.searchParams.set("method", "foods.search");
   url.searchParams.set("format", "json");
   url.searchParams.set("search_expression", query);
-  url.searchParams.set("region", "UA");
-  url.searchParams.set("language", "uk");
 
   const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
@@ -158,7 +157,7 @@ export async function searchFoods(query: string): Promise<FoodSearchResultItem[]
   const data = (await response.json()) as {
     foods?: { food?: FoodSearchResultItem | FoodSearchResultItem[] };
   };
-  assertNoFatSecretError(data);
+  assertNoFatSecretError(data, `foods.search query="${query}"`);
   const food = data.foods?.food;
   if (!food) return [];
   return Array.isArray(food) ? food : [food];
@@ -190,11 +189,11 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   if (accessToken) {
     const body = await signedFetch(
       REST_API_URL,
-      { method: "food.get.v5", food_id: foodId, format: "json", region: "UA", language: "uk" },
+      { method: "food.get.v5", food_id: foodId, format: "json" },
       accessToken,
     );
     const data = JSON.parse(body) as { food?: FoodDetail };
-    assertNoFatSecretError(data);
+    assertNoFatSecretError(data, `food.get.v5 food_id=${foodId}`);
     if (!data.food) throw new Error(`FatSecret food.get.v5 returned no food for id ${foodId}`);
     return data.food;
   }
@@ -204,14 +203,12 @@ export async function getFood(foodId: string, accessToken?: OAuth1Token): Promis
   url.searchParams.set("method", "food.get.v5");
   url.searchParams.set("format", "json");
   url.searchParams.set("food_id", foodId);
-  url.searchParams.set("region", "UA");
-  url.searchParams.set("language", "uk");
 
   const response = await fatsecretFetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = (await response.json()) as { food?: FoodDetail };
-  assertNoFatSecretError(data);
+  assertNoFatSecretError(data, `food.get.v5 food_id=${foodId}`);
   if (!data.food) throw new Error(`FatSecret food.get.v5 returned no food for id ${foodId}`);
   return data.food;
 }

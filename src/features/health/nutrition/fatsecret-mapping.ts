@@ -45,7 +45,7 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   // proteinPowder: { foodId: "", servingId: "", servingGrams: 100 },
   // hardCheese: { foodId: "", servingId: "", servingGrams: 100 },
   // soySauce: { foodId: "", servingId: "", servingGrams: 100 },
-  // mustardDijon: { foodId: "", servingId: "", servingGrams: 100 },
+  mustardDijon: { foodId: "294912", servingId: "330199", servingGrams: 1 },
   // cottageCheese: { foodId: "", servingId: "", servingGrams: 100 },
   // cream: { foodId: "", servingId: "", servingGrams: 100 },
   // syrniki: { foodId: "", servingId: "", servingGrams: 100 },

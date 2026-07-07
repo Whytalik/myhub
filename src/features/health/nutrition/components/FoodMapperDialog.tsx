@@ -18,7 +18,7 @@ import {
 import { PROFILES } from "../data";
 import type { FoodDetail, FoodServing, FoodSearchResultItem } from "@/lib/fatsecret/client";
 
-type Step = "pick-food" | "pick-serving";
+type Step = "pick-food" | "pick-serving" | "manual-input";
 
 interface FoodMapperDialogProps {
   isOpen: boolean;
@@ -47,16 +47,22 @@ function pushServingGramsOf(serving: FoodServing, metricGrams: number): number {
   return measurement === "g" || measurement === "ml" ? 1 : metricGrams;
 }
 
-function servingMacrosLabel(serving: FoodServing): string | null {
-  if (!serving.calories) return null;
-  const protein = Number(serving.protein ?? 0);
-  const fat = Number(serving.fat ?? 0);
-  const carbs = Number(serving.carbohydrate ?? 0);
-  return `${serving.calories} ккал · Б${protein} Ж${fat} В${carbs}`;
-}
-
 function profileNameOf(profileId: string): string {
   return PROFILES.find((p) => p.id === profileId)?.name ?? profileId;
+}
+
+function buildMacroOverrides(food: FoodDetail): Record<string, {kcal: string; protein: string; fat: string; carbs: string}> {
+  const servings = Array.isArray(food.servings.serving) ? food.servings.serving : [food.servings.serving];
+  const overrides: Record<string, {kcal: string; protein: string; fat: string; carbs: string}> = {};
+  for (const s of servings) {
+    overrides[s.serving_id] = {
+      kcal: s.calories ?? "",
+      protein: s.protein ?? "",
+      fat: s.fat ?? "",
+      carbs: s.carbohydrate ?? "",
+    };
+  }
+  return overrides;
 }
 
 export function FoodMapperDialog({
@@ -72,6 +78,20 @@ export function FoodMapperDialog({
   const [selectedServingId, setSelectedServingId] = useState<string | null>(null);
   const [manualGrams, setManualGrams] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+
+  // Manual input state fallback
+  const [failedFoodId, setFailedFoodId] = useState("");
+  const [failedFoodName, setFailedFoodName] = useState("");
+  const [failedServingId, setFailedServingId] = useState<string | null>(null);
+  const [manualCalories, setManualCalories] = useState("");
+  const [manualProtein, setManualProtein] = useState("");
+  const [manualFat, setManualFat] = useState("");
+  const [manualCarbs, setManualCarbs] = useState("");
+  const [manualServingGrams, setManualServingGrams] = useState("100");
+  const [manualServingDescription, setManualServingDescription] = useState("100 г");
+
+  // Macro override state (Option B: keep real US food_id for push, override macros for display)
+  const [macroOverrides, setMacroOverrides] = useState<Record<string, {kcal: string; protein: string; fat: string; carbs: string}>>({});
 
   // Search state
   const [searchQuery, setSearchQuery] = useState(productNameUk);
@@ -148,10 +168,19 @@ export function FoodMapperDialog({
     const response = await getFatSecretFoodAction(food.food_id);
     setIsFetchingFood(false);
     if (!response.success) {
-      toast.error(response.error);
+      toast.warning("Не вдалося завантажити деталі з API. Перехід до ручного введення.");
+      setFailedFoodId(food.food_id);
+      setFailedFoodName(food.food_name);
+      setFailedServingId(null);
+      setManualCalories("");
+      setManualProtein("");
+      setManualFat("");
+      setManualCarbs("");
+      setStep("manual-input");
       return;
     }
     setSelectedFood(response.data);
+    setMacroOverrides(buildMacroOverrides(response.data));
     setStep("pick-serving");
   };
 
@@ -161,10 +190,19 @@ export function FoodMapperDialog({
     const response = await getFatSecretFoodAction(favorite.food.food_id, favorite.profile);
     setIsFetchingFood(false);
     if (!response.success) {
-      toast.error(response.error);
+      toast.warning("Не вдалося завантажити деталі з API. Перехід до ручного введення.");
+      setFailedFoodId(favorite.food.food_id);
+      setFailedFoodName(favorite.food.food_name);
+      setFailedServingId(favorite.food.serving_id ?? null);
+      setManualCalories("");
+      setManualProtein("");
+      setManualFat("");
+      setManualCarbs("");
+      setStep("manual-input");
       return;
     }
     setSelectedFood(response.data);
+    setMacroOverrides(buildMacroOverrides(response.data));
     setStep("pick-serving");
   };
 
@@ -180,6 +218,8 @@ export function FoodMapperDialog({
     // falls back to a 1:1 push multiplier, matching how the static seed file treats them.
     const pushGrams = autoGrams ? pushServingGramsOf(serving, autoGrams) : macroGrams;
 
+    const overrides = macroOverrides[serving.serving_id];
+
     setIsSaving(true);
     const response = await upsertProductMappingAction({
       productKey,
@@ -189,10 +229,10 @@ export function FoodMapperDialog({
       servingDescription: serving.serving_description,
       servingGrams: pushGrams,
       macroGrams,
-      kcal: Number(serving.calories ?? 0),
-      protein: Number(serving.protein ?? 0),
-      fat: Number(serving.fat ?? 0),
-      carbs: Number(serving.carbohydrate ?? 0),
+      kcal: Number(overrides?.kcal ?? serving.calories ?? 0),
+      protein: Number(overrides?.protein ?? serving.protein ?? 0),
+      fat: Number(overrides?.fat ?? serving.fat ?? 0),
+      carbs: Number(overrides?.carbs ?? serving.carbohydrate ?? 0),
       source: "MANUAL",
     });
     setIsSaving(false);
@@ -202,6 +242,42 @@ export function FoodMapperDialog({
       return;
     }
     toast.success(`${productNameUk} замаплено на ${selectedFood.food_name}`);
+    onSaved();
+  };
+
+  const handleSaveManualInput = async () => {
+    if (!manualCalories || !manualProtein || !manualFat || !manualCarbs || !manualServingGrams) {
+      toast.error("Будь ласка, заповніть всі поля");
+      return;
+    }
+    const macroGrams = Number(manualServingGrams);
+    if (!macroGrams || macroGrams <= 0) {
+      toast.error("Вага порції має бути більшою за 0");
+      return;
+    }
+
+    setIsSaving(true);
+    const response = await upsertProductMappingAction({
+      productKey,
+      foodId: failedFoodId || `manual-${Date.now()}`,
+      foodName: failedFoodName || productNameUk,
+      servingId: failedServingId || "manual",
+      servingDescription: manualServingDescription || "100 г",
+      servingGrams: macroGrams,
+      macroGrams,
+      kcal: Number(manualCalories),
+      protein: Number(manualProtein),
+      fat: Number(manualFat),
+      carbs: Number(manualCarbs),
+      source: "MANUAL",
+    });
+    setIsSaving(false);
+
+    if (!response.success) {
+      toast.error(response.error);
+      return;
+    }
+    toast.success(`${productNameUk} замаплено вручну`);
     onSaved();
   };
 
@@ -370,45 +446,94 @@ export function FoodMapperDialog({
             <div className="flex flex-col gap-1">
               {servings.map((serving) => {
                 const autoGrams = servingGramsOf(serving);
-                const macrosLabel = servingMacrosLabel(serving);
                 const isFavorited = serving.serving_id === selectedServingId;
-                const cardClass = `glass-card p-3 flex items-center justify-between gap-3 ${
+                const cardClass = `glass-card p-3 ${
                   isFavorited ? "border border-accent-nutrition/40" : ""
                 }`;
+                const ov = macroOverrides[serving.serving_id];
+
+                const updateOverride = (field: "kcal" | "protein" | "fat" | "carbs", value: string) => {
+                  setMacroOverrides((prev) => ({
+                    ...prev,
+                    [serving.serving_id]: { ...prev[serving.serving_id], [field]: value },
+                  }));
+                };
+
                 return (
                   <div key={serving.serving_id} className={cardClass}>
-                    <div className="min-w-0">
-                      <p className="text-body truncate">
-                        {serving.serving_description}
-                        {isFavorited && (
-                          <span className="text-label text-accent-nutrition"> · улюблене</span>
-                        )}
-                      </p>
+                    <div className="flex flex-col gap-2 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-body truncate">
+                          {serving.serving_description}
+                          {isFavorited && (
+                            <span className="text-label text-accent-nutrition"> · улюблене</span>
+                          )}
+                        </p>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => handleSaveServing(serving)}
+                          isLoading={isSaving}
+                        >
+                          Обрати
+                        </Button>
+                      </div>
                       {autoGrams ? (
                         <p className="text-label">{autoGrams} г</p>
                       ) : (
                         <p className="text-label text-amber-400">грами невідомі — вкажіть вручну</p>
                       )}
-                      {macrosLabel && <p className="text-label truncate">{macrosLabel}</p>}
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      {!autoGrams && (
-                        <Input
-                          type="number"
-                          value={manualGrams}
-                          onChange={(e) => setManualGrams(e.target.value)}
-                          placeholder="грами"
-                          className="w-20 text-right"
-                        />
+                      {ov && (
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 items-center text-label">
+                          <label className="flex items-center gap-1">
+                            <span className="text-zinc-400">Ккал:</span>
+                            <input
+                              type="number"
+                              value={ov.kcal}
+                              onChange={(e) => updateOverride("kcal", e.target.value)}
+                              className="w-16 text-right text-body bg-white/5 rounded border border-white/10 px-1.5 py-0.5 focus:outline-none focus:border-accent-nutrition"
+                            />
+                          </label>
+                          <label className="flex items-center gap-1">
+                            <span className="text-zinc-400">Б:</span>
+                            <input
+                              type="number"
+                              value={ov.protein}
+                              onChange={(e) => updateOverride("protein", e.target.value)}
+                              className="w-14 text-right text-body bg-white/5 rounded border border-white/10 px-1.5 py-0.5 focus:outline-none focus:border-accent-nutrition"
+                            />
+                          </label>
+                          <label className="flex items-center gap-1">
+                            <span className="text-zinc-400">Ж:</span>
+                            <input
+                              type="number"
+                              value={ov.fat}
+                              onChange={(e) => updateOverride("fat", e.target.value)}
+                              className="w-14 text-right text-body bg-white/5 rounded border border-white/10 px-1.5 py-0.5 focus:outline-none focus:border-accent-nutrition"
+                            />
+                          </label>
+                          <label className="flex items-center gap-1">
+                            <span className="text-zinc-400">В:</span>
+                            <input
+                              type="number"
+                              value={ov.carbs}
+                              onChange={(e) => updateOverride("carbs", e.target.value)}
+                              className="w-14 text-right text-body bg-white/5 rounded border border-white/10 px-1.5 py-0.5 focus:outline-none focus:border-accent-nutrition"
+                            />
+                          </label>
+                        </div>
                       )}
-                      <Button
-                        type="button"
-                        size="sm"
-                        onClick={() => handleSaveServing(serving)}
-                        isLoading={isSaving}
-                      >
-                        Обрати
-                      </Button>
+                      {!autoGrams && (
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="number"
+                            value={manualGrams}
+                            onChange={(e) => setManualGrams(e.target.value)}
+                            placeholder="грами"
+                            className="w-20 text-right"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
