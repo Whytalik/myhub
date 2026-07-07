@@ -5,12 +5,11 @@ import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { invalidateProductMappingCache } from "@/lib/cache/revalidate";
 import {
   createFoodEntry,
-  searchFoods,
   getFood,
-  findFoodIdByBarcode,
+  getFavorites,
   type FatSecretMealType,
-  type FoodSearchResultItem,
   type FoodDetail,
+  type FavoriteFood,
 } from "@/lib/fatsecret/client";
 import {
   getMergedMappings,
@@ -156,23 +155,30 @@ export async function getMappingOverviewAction() {
   return withAction(async () => getMappingOverview());
 }
 
-export async function searchFatSecretFoodsAction(
-  query: string,
-): Promise<ActionResult<FoodSearchResultItem[]>> {
-  return withAction(async () => searchFoods(query));
-}
-
 export async function getFatSecretFoodAction(foodId: string): Promise<ActionResult<FoodDetail>> {
   return withAction(async () => getFood(foodId));
 }
 
-export async function findFoodByBarcodeAction(
-  barcode: string,
-): Promise<ActionResult<FoodDetail | null>> {
+export interface ProfileFavorite {
+  profile: ProfileId;
+  food: FavoriteFood;
+}
+
+/** Favorites from every linked profile's real FatSecret app — see getFavorites() for why. */
+export async function getFatSecretFavoritesAction(): Promise<ActionResult<ProfileFavorite[]>> {
   return withAction(async () => {
-    const foodId = await findFoodIdByBarcode(barcode);
-    if (!foodId) return null;
-    return getFood(foodId);
+    const accounts = await prisma.fatSecretAccount.findMany();
+    const results: ProfileFavorite[] = [];
+    for (const account of accounts) {
+      const favorites = await getFavorites({
+        key: account.accessToken,
+        secret: account.accessTokenSecret,
+      });
+      for (const food of favorites) {
+        results.push({ profile: account.profileId as ProfileId, food });
+      }
+    }
+    return results;
   });
 }
 

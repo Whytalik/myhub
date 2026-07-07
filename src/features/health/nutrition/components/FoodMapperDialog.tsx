@@ -1,21 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { Search, ScanLine, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Loader2, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Input } from "@/components/ui/inputs/input";
 import { Button } from "@/components/ui/actions/button";
-import { BarcodeScanner } from "./BarcodeScanner";
 import {
-  searchFatSecretFoodsAction,
+  getFatSecretFavoritesAction,
   getFatSecretFoodAction,
-  findFoodByBarcodeAction,
   upsertProductMappingAction,
+  type ProfileFavorite,
 } from "../actions/fatsecret-actions";
-import type { FoodSearchResultItem, FoodDetail, FoodServing } from "@/lib/fatsecret/client";
+import { PROFILES } from "../data";
+import type { FoodDetail, FoodServing } from "@/lib/fatsecret/client";
 
-type Mode = "search" | "scan";
 type Step = "pick-food" | "pick-serving";
 
 interface FoodMapperDialogProps {
@@ -53,6 +52,10 @@ function servingMacrosLabel(serving: FoodServing): string | null {
   return `${serving.calories} ккал · Б${protein} Ж${fat} В${carbs}`;
 }
 
+function profileNameOf(profileId: string): string {
+  return PROFILES.find((p) => p.id === profileId)?.name ?? profileId;
+}
+
 export function FoodMapperDialog({
   isOpen,
   onClose,
@@ -61,15 +64,30 @@ export function FoodMapperDialog({
   productNameUk,
 }: FoodMapperDialogProps) {
   // 1. Hooks
-  const [mode, setMode] = useState<Mode>("search");
   const [step, setStep] = useState<Step>("pick-food");
-  const [query, setQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [results, setResults] = useState<FoodSearchResultItem[]>([]);
+  const [isLoadingFavorites, setIsLoadingFavorites] = useState(true);
+  const [favorites, setFavorites] = useState<ProfileFavorite[]>([]);
+  const [favoritesError, setFavoritesError] = useState<string | null>(null);
   const [selectedFood, setSelectedFood] = useState<FoodDetail | null>(null);
+  const [selectedServingId, setSelectedServingId] = useState<string | null>(null);
   const [manualGrams, setManualGrams] = useState("");
-  const [barcodeSource, setBarcodeSource] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getFatSecretFavoritesAction().then((response) => {
+      if (cancelled) return;
+      setIsLoadingFavorites(false);
+      if (!response.success) {
+        setFavoritesError(response.error);
+        return;
+      }
+      setFavorites(response.data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // 2. Derived values
   const servings: FoodServing[] = selectedFood
@@ -77,49 +95,16 @@ export function FoodMapperDialog({
       ? selectedFood.servings.serving
       : [selectedFood.servings.serving]
     : [];
-  const modeButtonClass = (target: Mode) =>
-    `flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold transition-colors ${
-      mode === target
-        ? "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20"
-        : "text-zinc-400 hover:bg-white/5 border border-transparent"
-    }`;
 
   // 3. Handlers
-  const handleSearch = async () => {
-    if (!query.trim()) return;
-    setIsSearching(true);
-    const response = await searchFatSecretFoodsAction(query.trim());
-    setIsSearching(false);
-    if (!response.success) {
-      toast.error(response.error);
-      return;
-    }
-    setResults(response.data);
-  };
-
-  const handlePickFood = async (foodId: string, source: "manual" | "barcode") => {
-    setBarcodeSource(source === "barcode");
-    const response = await getFatSecretFoodAction(foodId);
+  const handlePickFavorite = async (favorite: ProfileFavorite) => {
+    setSelectedServingId(favorite.food.serving_id);
+    const response = await getFatSecretFoodAction(favorite.food.food_id);
     if (!response.success) {
       toast.error(response.error);
       return;
     }
     setSelectedFood(response.data);
-    setStep("pick-serving");
-  };
-
-  const handleBarcodeDetected = async (barcode: string) => {
-    const response = await findFoodByBarcodeAction(barcode);
-    if (!response.success) {
-      toast.error(response.error);
-      return;
-    }
-    if (!response.data) {
-      toast.error(`Штрихкод ${barcode} не знайдено в FatSecret`);
-      return;
-    }
-    setSelectedFood(response.data);
-    setBarcodeSource(true);
     setStep("pick-serving");
   };
 
@@ -148,7 +133,7 @@ export function FoodMapperDialog({
       protein: Number(serving.protein ?? 0),
       fat: Number(serving.fat ?? 0),
       carbs: Number(serving.carbohydrate ?? 0),
-      source: barcodeSource ? "BARCODE" : "MANUAL",
+      source: "MANUAL",
     });
     setIsSaving(false);
 
@@ -165,70 +150,52 @@ export function FoodMapperDialog({
       isOpen={isOpen}
       onClose={onClose}
       title={`Мапувати: ${productNameUk}`}
-      description="Знайдіть продукт у FatSecret або скануйте штрихкод"
+      description="Оберіть продукт зі списку улюблених у FatSecret"
       maxWidth="560px"
     >
       <div className="flex flex-col gap-4">
         {step === "pick-food" && (
-          <>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className={modeButtonClass("search")}
-                onClick={() => setMode("search")}
-              >
-                <Search size={13} />
-                Пошук
-              </button>
-              <button
-                type="button"
-                className={modeButtonClass("scan")}
-                onClick={() => setMode("scan")}
-              >
-                <ScanLine size={13} />
-                Скан штрихкоду
-              </button>
-            </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-caption">
+              Спершу знайди і додай продукт у &quot;Улюблене&quot; (favorite) прямо в застосунку
+              FatSecret — тоді він з&apos;явиться тут для прив&apos;язки.
+            </p>
 
-            {mode === "search" && (
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-2">
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                    placeholder="Назва продукту англійською"
-                    autoFocus
-                    className="flex-1"
-                  />
-                  <Button type="button" onClick={handleSearch} isLoading={isSearching}>
-                    Знайти
-                  </Button>
-                </div>
-
-                <div className="flex flex-col gap-1 max-h-72 overflow-y-auto">
-                  {results.map((food) => (
-                    <button
-                      key={food.food_id}
-                      type="button"
-                      onClick={() => handlePickFood(food.food_id, "manual")}
-                      className="text-left rounded-lg p-2.5 hover:bg-white/5 transition-colors"
-                    >
-                      <p className="text-body">{food.food_name}</p>
-                      {food.food_description && (
-                        <p className="text-caption truncate">{food.food_description}</p>
-                      )}
-                    </button>
-                  ))}
-                  {!isSearching && query && results.length === 0 && (
-                    <p className="text-caption text-center py-4">Нічого не знайдено</p>
-                  )}
-                </div>
+            {isLoadingFavorites && (
+              <div className="flex items-center justify-center gap-2 text-caption py-6">
+                <Loader2 size={14} className="animate-spin" />
+                Завантаження улюблених...
               </div>
             )}
 
-            {mode === "scan" && <BarcodeScanner onDetected={handleBarcodeDetected} />}
-          </>
+            {favoritesError && <p className="text-caption text-rose-400">{favoritesError}</p>}
+
+            {!isLoadingFavorites && !favoritesError && favorites.length === 0 && (
+              <p className="text-caption text-center py-6">
+                Немає улюблених продуктів. Додай хоча б один у FatSecret і онови сторінку.
+              </p>
+            )}
+
+            <div className="flex flex-col gap-1 max-h-96 overflow-y-auto">
+              {favorites.map((favorite, idx) => (
+                <button
+                  key={`${favorite.profile}-${favorite.food.food_id}-${favorite.food.serving_id}-${idx}`}
+                  type="button"
+                  onClick={() => handlePickFavorite(favorite)}
+                  className="text-left rounded-lg p-2.5 hover:bg-white/5 transition-colors flex items-start gap-2"
+                >
+                  <Star size={13} className="text-accent-nutrition shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <p className="text-body truncate">{favorite.food.food_name}</p>
+                    {favorite.food.food_description && (
+                      <p className="text-caption truncate">{favorite.food.food_description}</p>
+                    )}
+                    <p className="text-label">{profileNameOf(favorite.profile)}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         )}
 
         {step === "pick-serving" && selectedFood && (
@@ -246,13 +213,19 @@ export function FoodMapperDialog({
               {servings.map((serving) => {
                 const autoGrams = servingGramsOf(serving);
                 const macrosLabel = servingMacrosLabel(serving);
+                const isFavorited = serving.serving_id === selectedServingId;
+                const cardClass = `glass-card p-3 flex items-center justify-between gap-3 ${
+                  isFavorited ? "border border-accent-nutrition/40" : ""
+                }`;
                 return (
-                  <div
-                    key={serving.serving_id}
-                    className="glass-card p-3 flex items-center justify-between gap-3"
-                  >
+                  <div key={serving.serving_id} className={cardClass}>
                     <div className="min-w-0">
-                      <p className="text-body truncate">{serving.serving_description}</p>
+                      <p className="text-body truncate">
+                        {serving.serving_description}
+                        {isFavorited && (
+                          <span className="text-label text-accent-nutrition"> · улюблене</span>
+                        )}
+                      </p>
                       {autoGrams ? (
                         <p className="text-label">{autoGrams} г</p>
                       ) : (

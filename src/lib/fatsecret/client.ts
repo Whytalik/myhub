@@ -200,20 +200,31 @@ export async function getFood(foodId: string): Promise<FoodDetail> {
   return data.food;
 }
 
-/** Resolves a scanned barcode (EAN-8/13, UPC-A) to a FatSecret food_id, or null if unknown. */
-export async function findFoodIdByBarcode(barcode: string): Promise<string | null> {
-  const token = await getOAuth2Token();
-  const url = new URL(REST_API_URL);
-  url.searchParams.set("method", "food.find_id_for_barcode");
-  url.searchParams.set("format", "json");
-  // FatSecret expects a 13-digit GTIN — shorter codes (e.g. 12-digit UPC-A) are zero-padded.
-  url.searchParams.set("barcode", barcode.padStart(13, "0"));
+export interface FavoriteFood {
+  food_id: string;
+  food_name: string;
+  food_type: "Brand" | "Generic";
+  food_description?: string;
+  serving_id: string;
+  number_of_units: string;
+}
 
-  const response = await fatsecretFetch(url.toString(), {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const data = (await response.json()) as { food_id?: { value?: string } };
+/**
+ * Delegated (OAuth1) — foods the user favorited inside the actual FatSecret app.
+ * This is how we get real branded products into the mapper: FatSecret's Basic-tier
+ * search/food.get only surfaces generic USDA-style entries, and food.find_id_for_barcode
+ * is Premier-exclusive (confirmed: this account's token never carries "barcode" scope
+ * even when no scope is requested). Favoriting in-app sidesteps both limits.
+ */
+export async function getFavorites(accessToken: OAuth1Token): Promise<FavoriteFood[]> {
+  const body = await signedFetch(
+    REST_API_URL,
+    { method: "foods.get_favorites.v2", format: "json" },
+    accessToken,
+  );
+  const data = JSON.parse(body) as { foods?: { food?: FavoriteFood | FavoriteFood[] } };
   assertNoFatSecretError(data);
-  const id = data.food_id?.value;
-  return id && id !== "0" ? id : null;
+  const food = data.foods?.food;
+  if (!food) return [];
+  return Array.isArray(food) ? food : [food];
 }

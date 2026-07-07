@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, CircleDashed, Barcode } from "lucide-react";
+import { CheckCircle2, CircleDashed, Star } from "lucide-react";
 import type { ProductMappingOverviewItem } from "../services/product-mapping-service";
 import type { FoodMacros, ProductCategory } from "../products";
 import { FoodMapperDialog } from "./FoodMapperDialog";
@@ -77,7 +77,6 @@ export function FoodMapperClient({ initialOverview }: FoodMapperClientProps) {
                       <span className="text-label truncate">
                         {item.foodName ?? `food ${item.mapping?.foodId}`}
                         {item.servingDescription ? ` · ${item.servingDescription}` : ""}
-                        {item.source === "BARCODE" ? " · скан" : ""}
                       </span>
                     )}
                     {item.targetMacros && (
@@ -98,7 +97,7 @@ export function FoodMapperClient({ initialOverview }: FoodMapperClientProps) {
                   onClick={() => setOpenProductKey(item.productKey)}
                   className="shrink-0 flex items-center gap-1.5 text-xs font-semibold text-accent-nutrition hover:opacity-80 transition-opacity"
                 >
-                  <Barcode size={13} />
+                  <Star size={13} />
                   {isMapped ? "Змінити" : "Мапувати"}
                 </button>
               </div>
