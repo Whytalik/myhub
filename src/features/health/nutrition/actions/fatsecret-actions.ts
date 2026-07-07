@@ -7,9 +7,13 @@ import {
   createFoodEntry,
   getFood,
   getFavorites,
+  searchFoods,
+  getMostEaten,
+  getRecentlyEaten,
   type FatSecretMealType,
   type FoodDetail,
   type FavoriteFood,
+  type FoodSearchResultItem,
 } from "@/lib/fatsecret/client";
 import {
   getMergedMappings,
@@ -195,5 +199,45 @@ export async function deleteProductMappingAction(productKey: string): Promise<Ac
   return withAction(async () => {
     await deleteMapping(productKey);
     invalidateProductMappingCache();
+  });
+}
+
+export async function searchFatSecretFoodAction(
+  query: string,
+): Promise<ActionResult<FoodSearchResultItem[]>> {
+  return withAction(async () => searchFoods(query));
+}
+
+export async function getFatSecretMostEatenAction(): Promise<ActionResult<ProfileFavorite[]>> {
+  return withAction(async () => {
+    const accounts = await prisma.fatSecretAccount.findMany();
+    const results: ProfileFavorite[] = [];
+    for (const account of accounts) {
+      const list = await getMostEaten({
+        key: account.accessToken,
+        secret: account.accessTokenSecret,
+      });
+      for (const food of list) {
+        results.push({ profile: account.profileId as ProfileId, food });
+      }
+    }
+    return results;
+  });
+}
+
+export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<ProfileFavorite[]>> {
+  return withAction(async () => {
+    const accounts = await prisma.fatSecretAccount.findMany();
+    const results: ProfileFavorite[] = [];
+    for (const account of accounts) {
+      const list = await getRecentlyEaten({
+        key: account.accessToken,
+        secret: account.accessTokenSecret,
+      });
+      for (const food of list) {
+        results.push({ profile: account.profileId as ProfileId, food });
+      }
+    }
+    return results;
   });
 }

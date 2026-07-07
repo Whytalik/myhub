@@ -205,8 +205,8 @@ export interface FavoriteFood {
   food_name: string;
   food_type: "Brand" | "Generic";
   food_description?: string;
-  serving_id: string;
-  number_of_units: string;
+  serving_id?: string;
+  number_of_units?: string;
 }
 
 /**
@@ -220,6 +220,34 @@ export async function getFavorites(accessToken: OAuth1Token): Promise<FavoriteFo
   const body = await signedFetch(
     REST_API_URL,
     { method: "foods.get_favorites.v2", format: "json" },
+    accessToken,
+  );
+  const data = JSON.parse(body) as { foods?: { food?: FavoriteFood | FavoriteFood[] } };
+  assertNoFatSecretError(data);
+  const food = data.foods?.food;
+  if (!food) return [];
+  return Array.isArray(food) ? food : [food];
+}
+
+/** Delegated (OAuth1) — returns the most frequently eaten foods for the user. */
+export async function getMostEaten(accessToken: OAuth1Token): Promise<FavoriteFood[]> {
+  const body = await signedFetch(
+    REST_API_URL,
+    { method: "foods.get_most_eaten", format: "json" },
+    accessToken,
+  );
+  const data = JSON.parse(body) as { foods?: { food?: FavoriteFood | FavoriteFood[] } };
+  assertNoFatSecretError(data);
+  const food = data.foods?.food;
+  if (!food) return [];
+  return Array.isArray(food) ? food : [food];
+}
+
+/** Delegated (OAuth1) — returns the most recently logged foods for the user. */
+export async function getRecentlyEaten(accessToken: OAuth1Token): Promise<FavoriteFood[]> {
+  const body = await signedFetch(
+    REST_API_URL,
+    { method: "foods.get_recently_eaten", format: "json" },
     accessToken,
   );
   const data = JSON.parse(body) as { foods?: { food?: FavoriteFood | FavoriteFood[] } };
