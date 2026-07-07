@@ -160,8 +160,28 @@ export async function getMappingOverviewAction() {
   return withAction(async () => getMappingOverview());
 }
 
-export async function getFatSecretFoodAction(foodId: string): Promise<ActionResult<FoodDetail>> {
-  return withAction(async () => getFood(foodId));
+export async function getFatSecretFoodAction(
+  foodId: string,
+  profileId?: string,
+): Promise<ActionResult<FoodDetail>> {
+  return withAction(async () => {
+    if (profileId) {
+      const account = await prisma.fatSecretAccount.findUnique({
+        where: { profileId },
+      });
+      if (account) {
+        try {
+          return await getFood(foodId, {
+            key: account.accessToken,
+            secret: account.accessTokenSecret,
+          });
+        } catch (error) {
+          console.warn(`OAuth1 food.get failed for profile ${profileId}, falling back to OAuth2:`, error);
+        }
+      }
+    }
+    return getFood(foodId);
+  });
 }
 
 export interface ProfileFavorite {
@@ -241,7 +261,13 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
         for (const food of recentlyEatenList) {
           if (!uniqueFoodIds.has(food.food_id)) {
             uniqueFoodIds.add(food.food_id);
-            results.push({ profile: account.profileId as ProfileId, food });
+            results.push({
+              profile: account.profileId as ProfileId,
+              food: {
+                ...food,
+                food_description: food.food_description || "З історії споживання",
+              },
+            });
           }
         }
       } catch (error) {
@@ -255,8 +281,11 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
         new Date(Date.now() - 172_800_000),
         new Date(Date.now() - 259_200_000),
       ];
+      const dateLabels = ["Сьогодні", "Вчора", "Позавчора", "3 дні тому"];
       
-      for (const date of datesToFetch) {
+      for (let i = 0; i < datesToFetch.length; i++) {
+        const date = datesToFetch[i];
+        const dateLabel = dateLabels[i];
         try {
           const diaryEntries = await getFoodEntriesForDate(date, token);
           for (const entry of diaryEntries) {
@@ -269,6 +298,7 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
                   food_name: entry.food_entry_name,
                   food_type: "Brand",
                   serving_id: entry.serving_id,
+                  food_description: `Спожито: ${dateLabel}`,
                 },
               });
             }

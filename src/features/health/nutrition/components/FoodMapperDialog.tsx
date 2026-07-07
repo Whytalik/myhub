@@ -158,7 +158,7 @@ export function FoodMapperDialog({
   const handlePickFavorite = async (favorite: ProfileFavorite) => {
     setSelectedServingId(favorite.food.serving_id ?? null);
     setIsFetchingFood(true);
-    const response = await getFatSecretFoodAction(favorite.food.food_id);
+    const response = await getFatSecretFoodAction(favorite.food.food_id, favorite.profile);
     setIsFetchingFood(false);
     if (!response.success) {
       toast.error(response.error);
