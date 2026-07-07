@@ -64,13 +64,13 @@ function pantry(
  * - pantry — спеції й приправи: без обліку макросів.
  */
 export const PRODUCTS: Record<string, Product> = {
-  eggs: tracked("eggs", "Яйця", { kcal: 155, protein: 13, fat: 11, carbs: 1.1 }, "other", {
+  eggs: tracked("eggs", "Яйця", { kcal: 157, protein: 12.7, fat: 11.5, carbs: 0.7 }, "other", {
     gramsPerPiece: 60,
   }),
   bread: tracked(
     "bread",
-    "Цільнозерновий хліб",
-    { kcal: 250, protein: 10, fat: 3.5, carbs: 43 },
+    "Хліб гречаний",
+    { kcal: 240, protein: 8.2, fat: 2.3, carbs: 47.9 },
     "grains",
   ),
   oil: tracked("oil", "Олія", { kcal: 884, protein: 0, fat: 100, carbs: 0 }, "other"),
@@ -94,7 +94,7 @@ export const PRODUCTS: Record<string, Product> = {
   chickenHearts: tracked(
     "chickenHearts",
     "Курячі серця",
-    { kcal: 185, protein: 17, fat: 11.4, carbs: 0.8 },
+    { kcal: 153, protein: 15.6, fat: 9.3, carbs: 0.1 },
     "meat",
   ),
   potato: tracked(
@@ -129,7 +129,7 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
   ),
   onion: tracked("onion", "Цибуля", { kcal: 40, protein: 1.1, fat: 0.1, carbs: 9.3 }, "vegetables"),
-  brynza: tracked("brynza", "Бринза", { kcal: 260, protein: 16, fat: 21, carbs: 2 }, "dairy"),
+  brynza: tracked("brynza", "Бринза", { kcal: 260, protein: 17.9, fat: 20.1, carbs: 0 }, "dairy"),
   yogurtGreek: tracked(
     "yogurtGreek",
     "Грецький йогурт",
@@ -180,12 +180,12 @@ export const PRODUCTS: Record<string, Product> = {
   hardCheese: tracked(
     "hardCheese",
     "Твердий сир",
-    { kcal: 380, protein: 25, fat: 30, carbs: 2 },
+    { kcal: 363, protein: 24.1, fat: 29.5, carbs: 0.3 },
     "dairy",
     // "сир" є префіксом слова "сирники" (інша страва) — виключаємо цей збіг.
     { excludeAfter: ["ник"] },
   ),
-  suluguni: tracked("suluguni", "Сулугуні", { kcal: 285, protein: 20, fat: 22, carbs: 0 }, "dairy"),
+  suluguni: tracked("suluguni", "Сулугуні", { kcal: 282, protein: 20.5, fat: 22, carbs: 0.4 }, "dairy"),
   cottageCheese: tracked(
     "cottageCheese",
     "Творог",
@@ -200,17 +200,17 @@ export const PRODUCTS: Record<string, Product> = {
     // "соус" занадто загальне слово (в тексті є й інші соуси) — беремо "соєвий".
     { searchTerm: "соєвий" },
   ),
-  honey: tracked("honey", "Мед", { kcal: 304, protein: 0.3, fat: 0, carbs: 82.4 }, "other"),
+  honey: tracked("honey", "Мед", { kcal: 308, protein: 0.8, fat: 0, carbs: 80.3 }, "other"),
   mackerel: tracked(
     "mackerel",
     "Скумбрія",
-    { kcal: 205, protein: 19, fat: 13.9, carbs: 0 },
+    { kcal: 193, protein: 18.7, fat: 13.2, carbs: 0 },
     "meat",
   ),
   tunaCanned: tracked(
     "tunaCanned",
     "Тунець консервований",
-    { kcal: 116, protein: 26, fat: 1, carbs: 0 },
+    { kcal: 100, protein: 22, fat: 1.2, carbs: 0 },
     "meat",
     // "консервований" спільне з cornCanned — беремо конкретний іменник.
     { searchTerm: "тунець" },
@@ -228,7 +228,7 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 41, protein: 0.9, fat: 0.2, carbs: 10 },
     "vegetables",
   ),
-  sugar: tracked("sugar", "Цукор", { kcal: 387, protein: 0, fat: 0, carbs: 100 }, "other"),
+  sugar: tracked("sugar", "Цукор", { kcal: 374, protein: 0, fat: 0, carbs: 99.5 }, "other"),
   mayo: tracked("mayo", "Майонез", { kcal: 680, protein: 1, fat: 75, carbs: 2.6 }, "other"),
   mustardDijon: tracked(
     "mustardDijon",
