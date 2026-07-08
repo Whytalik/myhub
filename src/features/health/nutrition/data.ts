@@ -24,18 +24,29 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
     labelShort: "Пн",
     meals: [
       {
+        type: "snack",
+        label: "Передтрен",
+        title: "Половинка банана (швидкі вуглеводи)",
+        ingredients: [
+          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
+        ],
+        macroItems: [
+          { food: "banana", vitalii: 60, olesia: 0 },
+        ],
+      },
+      {
         type: "breakfast",
         label: "Сніданок",
         title: "Яєчня з овочами та тостами",
         ingredients: [
           "Яйця — 4 шт (Віталій — 2, Олеся — 2)",
-          "Цільнозерновий хліб — 3 скибки (Віталій — ½ скибки/15 г, Олеся — 2.5 скибки/60 г)",
+          "Цільнозерновий хліб — Олеся 60 г (2.5 скибки), Віталій 0 г",
           "Помідори і огірки — 150 г (по 75 г кожному)",
           "Олія — ½ ч.л. (для смаження Олесі, на суху пательню для Віталія)",
         ],
         macroItems: [
           { food: "eggs", vitalii: 120, olesia: 120 },
-          { food: "bread", vitalii: 15, olesia: 60 },
+          { food: "bread", vitalii: 0, olesia: 60 },
           { food: "tomato", vitalii: 40, olesia: 40 },
           { food: "cucumber", vitalii: 35, olesia: 35 },
           { food: "oil", vitalii: 0, olesia: 1.25 },
@@ -49,7 +60,7 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
           "Курячі шашлички (вже замаринована) — 355 г (Віталій — 250 г, Олеся — 105 г — підігнано під макроси)",
           "Йогуртово-лимонний маринад запікається на м'ясі — ~1/3 засвоюється (по 25 г йогурту + 2 г олії кожному)",
           "Гірчиця — для подачі до шашликів (по 5 г кожному)",
-          "Картопля — 990 г (Віталій 475 г, Олеся 515 г — підігнано під макроси, більша порція гарніру)",
+          "Картопля — 960 г (Віталій 445 г, Олеся 515 г — підігнано під макроси, більша порція гарніру)",
           "Молоко тепле — 120 мл",
           "Вершкове масло — 20 г (Віталій — 5 г, Олеся — 15 г)",
           "Для салату: помідори 4 шт (~520 г), огірок 2 шт (~400 г), перець солодкий 1 шт (~170 г), червона цибуля ½ шт (~60 г), бринза 150 г, оливкова олія (для Олесі ½ ст.л. — 6 г), яблучний оцет 1 ст.л., орегано",
@@ -60,7 +71,7 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
           { food: "yogurtGreek", vitalii: 25, olesia: 25, component: "Маринад (~1/3 засвоюється)" },
           { food: "oil", vitalii: 2, olesia: 2, component: "Маринад (~1/3 засвоюється)" },
           { food: "mustardDijon", vitalii: 5, olesia: 5, component: "Курячі шашлички" },
-          { food: "potato", vitalii: 475, olesia: 515, component: "Картопляне пюре" },
+          { food: "potato", vitalii: 445, olesia: 515, component: "Картопляне пюре" },
           { food: "milk", vitalii: 60, olesia: 60, component: "Картопляне пюре" },
           { food: "butter", vitalii: 5, olesia: 15, component: "Картопляне пюре" },
           { food: "tomato", vitalii: 260, olesia: 260, component: "Грецький салат" },
@@ -218,18 +229,29 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
     labelShort: "Ср",
     meals: [
       {
+        type: "snack",
+        label: "Передтрен",
+        title: "Половинка банана (швидкі вуглеводи)",
+        ingredients: [
+          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
+        ],
+        macroItems: [
+          { food: "banana", vitalii: 60, olesia: 0 },
+        ],
+      },
+      {
         type: "breakfast",
         label: "Сніданок",
         title: "Кисломолочний сир з ягодами",
         ingredients: [
           "Творог — 215 г (Віталій 135 г, Олеся 80 г)",
           "Ягоди",
-          "Цільнозерновий хліб — 3 скибки (Віталій — 2 скибки/60 г, Олеся — 2 скибки/60 г)",
+          "Цільнозерновий хліб — Олеся 60 г (2 скибки), Віталій 30 г (1 скибка)",
         ],
         macroItems: [
           { food: "cottageCheese", vitalii: 135, olesia: 80 },
           { food: "berries", vitalii: 75, olesia: 75 },
-          { food: "bread", vitalii: 60, olesia: 60 },
+          { food: "bread", vitalii: 30, olesia: 60 },
         ],
       },
       {
@@ -239,13 +261,13 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
         ingredients: [
           "Скумбрія (підготовлена в мілпрепі Нд — з лимоном і приправою, у фользі) — 2 шт (~350 г) — Віталій ~200 г, Олеся ~150 г",
           "Лимон — половина (друга половина йде на рибу в мілпрепі Нд)",
-          "Картопля — 435 г (Віталій 150 г, Олеся 285 г — підігнано під макроси)",
+          "Картопля — 405 г (Віталій 120 г, Олеся 285 г — підігнано під макроси)",
           "Вершкове масло (для Олесі) — 27 г (у гарячу картоплю)",
           "Для салату: помідори 2 шт (~260 г), огірки 2 шт (~400 г), зелена цибуля, зелень, лимонний сік (без олії)",
         ],
         macroItems: [
           { food: "mackerel", vitalii: 200, olesia: 150 },
-          { food: "potato", vitalii: 150, olesia: 285, component: "Відварна картопля" },
+          { food: "potato", vitalii: 120, olesia: 285, component: "Відварна картопля" },
           { food: "butter", vitalii: 0, olesia: 27, component: "Відварна картопля" },
           { food: "tomato", vitalii: 130, olesia: 130, component: "Свіжий овочевий салат" },
           { food: "cucumber", vitalii: 200, olesia: 200, component: "Свіжий овочевий салат" },
@@ -445,18 +467,29 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
     labelShort: "Пт",
     meals: [
       {
+        type: "snack",
+        label: "Передтрен",
+        title: "Половинка банана (швидкі вуглеводи)",
+        ingredients: [
+          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
+        ],
+        macroItems: [
+          { food: "banana", vitalii: 60, olesia: 0 },
+        ],
+      },
+      {
         type: "breakfast",
         label: "Сніданок",
         title: "Протеїнова вівсянка з ягодами",
         ingredients: [
-          "Вівсянка — 215 г (Віталій — 105 г, Олеся — 110 г)",
+          "Вівсянка — 195 г (Віталій — 85 г, Олеся — 110 г)",
           "Протеїн — Віталій 1.9 мірної ложки (57 г), Олеся 0 (без протеїну)",
           "Ягоди — по 75 г",
           "Цільнозерновий хліб (для Олесі) — 1.5 скибки (40 г)",
           "Мед (для Віталія) — ½ ч.л. (~15 г)",
         ],
         macroItems: [
-          { food: "oats", vitalii: 105, olesia: 110 },
+          { food: "oats", vitalii: 85, olesia: 110 },
           { food: "proteinPowder", vitalii: 57, olesia: 0 },
           { food: "berries", vitalii: 75, olesia: 75 },
           { food: "bread", vitalii: 0, olesia: 40 },
