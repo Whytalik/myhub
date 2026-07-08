@@ -297,7 +297,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         </div>
         <div className="grid grid-cols-1 gap-2">
           {processedDay.meals.map((meal) => (
-            <MealCard key={meal.type} meal={meal} />
+            <MealCard key={`${meal.type}-${meal.label}`} meal={meal} />
           ))}
         </div>
       </div>
