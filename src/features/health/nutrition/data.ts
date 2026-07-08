@@ -17,7 +17,7 @@ export const PROFILES: Profile[] = [
   },
 ];
 
-export const WEEK_PLAN: DayPlan[] = [
+export const SUMMER_WEEK_PLAN: DayPlan[] = [
   {
     weekday: "mon",
     labelUk: "Понеділок",
@@ -1340,3 +1340,72 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     ],
   },
 ];
+
+// Глибока копія літнього плану для зимового меню (щоб уникнути дублювання коду)
+export const DEFAULT_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+
+// 1. Понеділок: Заміна свіжого салатного міксу (помідори, огірки, перець, бринза) на коул-слоу (капуста, морква)
+const monLunch = DEFAULT_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+if (monLunch && monLunch.macroItems) {
+  monLunch.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
+  monLunch.macroItems = monLunch.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  monLunch.macroItems.push(
+    { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
+    { food: "carrot", vitalii: 50, olesia: 50, component: "Салат з капусти" },
+  );
+}
+
+// 2. Вівторок: Заміна салатного міксу (рукола, томати, сир) на салат з капусти
+const tueLunch = DEFAULT_WEEK_PLAN[1].meals.find((m) => m.type === "lunch");
+if (tueLunch && tueLunch.macroItems) {
+  tueLunch.ingredients[2] = "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
+  tueLunch.macroItems = tueLunch.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "arugula" && item.food !== "hardCheese",
+  );
+  tueLunch.macroItems.push(
+    { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
+  );
+}
+
+// 3. Середа: Заміна томатів/огірків на салат з капусти та солоних огірків
+const wedLunch = DEFAULT_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
+if (wedLunch && wedLunch.macroItems) {
+  wedLunch.ingredients[4] = "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
+  wedLunch.macroItems = wedLunch.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber",
+  );
+  wedLunch.macroItems.push(
+    { food: "cabbage", vitalii: 150, olesia: 150, component: "Зимовий салат" },
+    { food: "pickledCucumber", vitalii: 75, olesia: 75, component: "Зимовий салат" },
+  );
+}
+
+// 4. П'ятниця: Заміна томатів/огірків на салат з капусти
+const friLunch = DEFAULT_WEEK_PLAN[4].meals.find((m) => m.type === "lunch");
+if (friLunch && friLunch.macroItems) {
+  friLunch.ingredients[3] = "Для салату: капуста 300 г, олія 6 г (Олеся)";
+  friLunch.macroItems = friLunch.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber",
+  );
+  friLunch.macroItems.push(
+    { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
+  );
+}
+
+// 5. Неділя: Заміна грецького салату на салат з капусти та моркви
+const sunLunch = DEFAULT_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+if (sunLunch && sunLunch.macroItems) {
+  sunLunch.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), зелень";
+  sunLunch.macroItems = sunLunch.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  sunLunch.macroItems.push(
+    { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
+    { food: "carrot", vitalii: 50, olesia: 50, component: "Салат з капусти" },
+  );
+}
+
+export const WEEK_PLAN = DEFAULT_WEEK_PLAN;
+

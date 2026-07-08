@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DayPlan } from "./DayPlan";
-import { WEEK_PLAN } from "../data";
+import { getActiveWeekPlan } from "../week";
 
 function todayIndex() {
   return (new Date().getDay() + 6) % 7;
@@ -10,13 +10,14 @@ function todayIndex() {
 
 export function NutritionPageClient() {
   const [activeIndex, setActiveIndex] = useState(todayIndex);
+  const plan = getActiveWeekPlan();
 
-  const day = WEEK_PLAN[activeIndex];
+  const day = plan[activeIndex];
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit overflow-x-auto">
-        {WEEK_PLAN.map((d, i) => {
+        {plan.map((d, i) => {
           const isActive = i === activeIndex;
           const isToday = i === todayIndex();
           const dayButtonClass = `relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 shrink-0 ${

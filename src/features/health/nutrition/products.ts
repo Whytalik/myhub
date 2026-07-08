@@ -207,6 +207,20 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { searchTerm: "кабачок кабачк", basePrice: 60 },
   ),
+  cabbage: tracked(
+    "cabbage",
+    "Капуста",
+    { kcal: 25, protein: 1.8, fat: 0.1, carbs: 5.8 },
+    "vegetables",
+    { searchTerm: "капуст", basePrice: 15 },
+  ),
+  pickledCucumber: tracked(
+    "pickledCucumber",
+    "Солоні огірки",
+    { kcal: 11, protein: 0.8, fat: 0.1, carbs: 1.7 },
+    "vegetables",
+    { searchTerm: "солон", basePrice: 40 },
+  ),
   hardCheese: tracked(
     "hardCheese",
     "Твердий сир",

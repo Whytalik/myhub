@@ -1,11 +1,16 @@
-import { WEEK_PLAN } from "./data";
+import { getActiveWeekPlan } from "./week";
 import type { Weekday } from "./types";
 
-/** Sum of macroItems grams (vitalii+olesia) for one product key, across the given weekdays. */
-export function sumMacroGrams(productKey: string, weekdays: Weekday[]): number {
+/** Sum of macroItems grams (vitalii+olesia) for one product key, across the given weekdays for the seasonal plan. */
+export function sumMacroGrams(
+  productKey: string,
+  weekdays: Weekday[],
+  weekStart?: string,
+): number {
+  const plan = getActiveWeekPlan(weekStart);
   const days = new Set(weekdays);
   let total = 0;
-  for (const day of WEEK_PLAN) {
+  for (const day of plan) {
     if (!days.has(day.weekday)) continue;
     for (const meal of day.meals) {
       for (const item of meal.macroItems ?? []) {
@@ -17,8 +22,12 @@ export function sumMacroGrams(productKey: string, weekdays: Weekday[]): number {
 }
 
 /** Same as `sumMacroGrams`, but combines several product keys if needed. */
-export function sumMacroGramsMulti(productKeys: string[], weekdays: Weekday[]): number {
-  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays), 0);
+export function sumMacroGramsMulti(
+  productKeys: string[],
+  weekdays: Weekday[],
+  weekStart?: string,
+): number {
+  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays, weekStart), 0);
 }
 
 export type QuantityUnit = "g" | "piece" | "ml";

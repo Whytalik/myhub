@@ -32,10 +32,10 @@ function displayNameOf(item: ShoppingItem): string {
 
 /** Computed qty derives from macroItems (+ an explicit manual buffer) instead of
  *  being hand-typed — see [[nutrition_products_single_source]] / quantities.ts. */
-function displayQtyOf(item: ShoppingItem): string | undefined {
+function displayQtyOf(item: ShoppingItem, weekStart?: string): string | undefined {
   if (!item.computedQty) return item.qty;
   const { food, extraFood, weekdays, grams = 0, unit } = item.computedQty;
-  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays) + grams;
+  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart) + grams;
   return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
 
@@ -44,10 +44,10 @@ function displayQtyOf(item: ShoppingItem): string | undefined {
  * items (hand-typed `qty` strings like "1 пучок" have no clean number to divide against).
  * Used to translate a "вже вдома" fraction into a real "≈ X з Y" readout.
  */
-function computedTotal(item: ShoppingItem): number | null {
+function computedTotal(item: ShoppingItem, weekStart?: string): number | null {
   if (!item.computedQty) return null;
   const { food, extraFood, weekdays, grams = 0 } = item.computedQty;
-  return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays) + grams;
+  return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart) + grams;
 }
 
 const STORAGE_KEY = "nutrition-shopping-v1";
@@ -143,8 +143,8 @@ function categoryCost(categories: ShoppingCategory[], weekStart: string): number
 }
 
 /** "з 990 г — купити ще 690 г" — only when the item has a computable total. */
-function homeStockReadout(item: ShoppingItem, fraction: number): string | null {
-  const total = computedTotal(item);
+function homeStockReadout(item: ShoppingItem, fraction: number, weekStart?: string): string | null {
+  const total = computedTotal(item, weekStart);
   if (total === null) return null;
   const unit = item.computedQty?.unit;
   const gramsPerPiece = item.computedQty
@@ -196,9 +196,9 @@ function CategoryList({
               const isHomeStock = fraction > 0;
               const giftedRecord = giftedByItemId.get(item.id) ?? null;
               const isGifted = giftedRecord !== null;
-              const qty = displayQtyOf(item);
-              const itemTotal = computedTotal(item);
-              const readout = isHomeStock ? homeStockReadout(item, fraction) : null;
+              const qty = displayQtyOf(item, weekStart);
+              const itemTotal = computedTotal(item, weekStart);
+              const readout = isHomeStock ? homeStockReadout(item, fraction, weekStart) : null;
               const itemPrice = getSeasonalPrice(item, weekStart);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 !isHomeStock && !isGifted && isChecked

@@ -49,3 +49,30 @@ export function formatWeekRange(weekStart: string): string {
   const startMonth = UA_MONTHS_GENITIVE[start.getMonth()];
   return `${startDay} ${startMonth} – ${endDay} ${month}`;
 }
+
+import { DayPlan } from "./types";
+import { DEFAULT_WEEK_PLAN, SUMMER_WEEK_PLAN } from "./data";
+
+/**
+ * Повертає активний план на тиждень залежно від дати чи weekStart.
+ * Літні місяці (червень, липень, серпень) використовують літній план, решта — зимовий/дефолтний.
+ */
+export function getActiveWeekPlan(weekStart?: string | Date): DayPlan[] {
+  let date: Date;
+  if (!weekStart) {
+    date = new Date();
+  } else if (typeof weekStart === "string") {
+    date = new Date(`${weekStart}T00:00:00`);
+    if (isNaN(date.getTime())) date = new Date();
+  } else {
+    date = weekStart;
+  }
+
+  const month = date.getMonth();
+  // 5 = Червень, 6 = Липень, 7 = Серпень
+  if (month >= 5 && month <= 7) {
+    return SUMMER_WEEK_PLAN;
+  }
+  return DEFAULT_WEEK_PLAN;
+}
+

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { FoodMapperClient } from "@/features/health/nutrition/components/FoodMapperClient";
 import { getMappingOverview } from "@/features/health/nutrition/services/product-mapping-service";
@@ -8,6 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function NutritionMappingPage() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+
   const overview = await getMappingOverview();
 
   return (
