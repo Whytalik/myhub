@@ -1,5 +1,5 @@
 import { getWeekStart, getStartOfDay } from "./habit-utils";
-import { MORNING_ROUTINE, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
+import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
 import { EMOTION_POLARITY } from "@/lib/life/emotion-taxonomy";
 import type {
   ReviewEntryData,
@@ -63,8 +63,12 @@ function genericMapCompletionPct(map: unknown): number | null {
   return (done / keys.length) * 100;
 }
 
-export function morningRoutinePct(entry: Pick<ReviewEntryData, "morningRoutine">): number | null {
-  return itemsCompletionPct(entry.morningRoutine, MORNING_ROUTINE);
+export function morningRoutinePct(entry: Pick<ReviewEntryData, "morningRoutine" | "date">): number | null {
+  const d = entry.date ? (typeof entry.date === "string" ? new Date(entry.date) : entry.date) : new Date();
+  const dayOfWeek = d.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  const isTrainingDay = dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5;
+  const items = getMorningRoutine(isTrainingDay);
+  return itemsCompletionPct(entry.morningRoutine, items);
 }
 
 export function eveningRoutinePct(entry: Pick<ReviewEntryData, "eveningRoutine">): number | null {

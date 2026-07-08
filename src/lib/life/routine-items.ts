@@ -27,7 +27,93 @@ export const MORNING_ROUTINE = [
     labelUk: "Вийти на вулицю на 15 хвилин",
     icon: "Sun",
   },
+  {
+    id: "m_gym",
+    time: "07:00",
+    label: "Training in the gym (07:00 - 08:30)",
+    labelUk: "Тренування в залі (07:00 - 08:30)",
+    icon: "Dumbbell",
+  },
+  {
+    id: "m_cook",
+    time: "07:00",
+    label: "Cooking food",
+    labelUk: "Приготування їжі",
+    icon: "Utensils",
+  },
 ] as const;
+
+export interface RoutineItem {
+  id: string;
+  time: string;
+  label: string;
+  labelUk: string;
+  icon: string;
+}
+
+export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
+  const base = [
+    {
+      id: "m_wake",
+      time: "06:30",
+      label: "Wake up and get out of bed",
+      labelUk: "Прокинутися та встати з ліжка",
+      icon: "AlarmClock",
+    },
+    {
+      id: "m_water",
+      time: "06:32",
+      label: "Drink a glass of water",
+      labelUk: "Випити склянку води",
+      icon: "Droplets",
+    },
+    {
+      id: "m_hygiene",
+      time: "06:35",
+      label: "Water procedures",
+      labelUk: "Водні процедури",
+      icon: "ShowerHead",
+    },
+  ];
+
+  if (isTrainingDay) {
+    return [
+      ...base,
+      {
+        id: "m_gym",
+        time: "07:00",
+        label: "Training in the gym (07:00 - 08:30)",
+        labelUk: "Тренування в залі (07:00 - 08:30)",
+        icon: "Dumbbell",
+      },
+      {
+        id: "m_cook",
+        time: "08:45",
+        label: "Cooking food (08:45 - 09:30)",
+        labelUk: "Приготування їжі (08:45 - 09:30)",
+        icon: "Utensils",
+      },
+    ];
+  } else {
+    return [
+      ...base,
+      {
+        id: "m_outside",
+        time: "06:50",
+        label: "Go outside for 15 minutes",
+        labelUk: "Вийти на вулицю на 15 хвилин",
+        icon: "Sun",
+      },
+      {
+        id: "m_cook",
+        time: "07:00",
+        label: "Cooking food (07:00 - 08:00)",
+        labelUk: "Приготування їжі (07:00 - 08:00)",
+        icon: "Utensils",
+      },
+    ];
+  }
+};
 
 export const EVENING_ROUTINE = [
   {
