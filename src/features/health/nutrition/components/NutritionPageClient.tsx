@@ -8,9 +8,13 @@ function todayIndex() {
   return (new Date().getDay() + 6) % 7;
 }
 
-export function NutritionPageClient() {
+interface NutritionPageClientProps {
+  seasonOverride?: string;
+}
+
+export function NutritionPageClient({ seasonOverride }: NutritionPageClientProps) {
   const [activeIndex, setActiveIndex] = useState(todayIndex);
-  const plan = getActiveWeekPlan();
+  const plan = getActiveWeekPlan(undefined, seasonOverride);
 
   const day = plan[activeIndex];
 

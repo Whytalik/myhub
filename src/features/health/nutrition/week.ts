@@ -51,13 +51,30 @@ export function formatWeekRange(weekStart: string): string {
 }
 
 import { DayPlan } from "./types";
-import { DEFAULT_WEEK_PLAN, SUMMER_WEEK_PLAN } from "./data";
+import {
+  SUMMER_WEEK_PLAN,
+  WINTER_WEEK_PLAN,
+  AUTUMN_WEEK_PLAN,
+  SPRING_WEEK_PLAN
+} from "./data";
 
 /**
- * Повертає активний план на тиждень залежно від дати чи weekStart.
- * Літні місяці (червень, липень, серпень) використовують літній план, решта — зимовий/дефолтний.
+ * Повертає активний план на тиждень залежно від дати чи weekStart та обраного сезону в налаштуваннях.
+ * Якщо сезон задано явно (у cookies/параметрах), повертає відповідний план.
+ * Якщо сезон "auto" або не задано, перемикає за місяцями в Україні.
  */
-export function getActiveWeekPlan(weekStart?: string | Date): DayPlan[] {
+export function getActiveWeekPlan(weekStart?: string | Date, seasonOverride?: string): DayPlan[] {
+  let season = seasonOverride;
+  if (!season && typeof window !== "undefined") {
+    const match = document.cookie.match(/(^| )nutrition-menu-season=([^;]+)/);
+    season = match ? decodeURIComponent(match[2]) : undefined;
+  }
+
+  if (season === "summer") return SUMMER_WEEK_PLAN;
+  if (season === "autumn") return AUTUMN_WEEK_PLAN;
+  if (season === "winter") return WINTER_WEEK_PLAN;
+  if (season === "spring") return SPRING_WEEK_PLAN;
+
   let date: Date;
   if (!weekStart) {
     date = new Date();
@@ -69,10 +86,19 @@ export function getActiveWeekPlan(weekStart?: string | Date): DayPlan[] {
   }
 
   const month = date.getMonth();
-  // 5 = Червень, 6 = Липень, 7 = Серпень
+  // 5 = Червень, 6 = Липень, 7 = Серпень (Літо)
   if (month >= 5 && month <= 7) {
     return SUMMER_WEEK_PLAN;
   }
-  return DEFAULT_WEEK_PLAN;
+  // 8 = Вересень, 9 = Жовтень, 10 = Листопад (Осінь)
+  if (month >= 8 && month <= 10) {
+    return AUTUMN_WEEK_PLAN;
+  }
+  // 2 = Березень, 3 = Квітень, 4 = Травень (Весна)
+  if (month >= 2 && month <= 4) {
+    return SPRING_WEEK_PLAN;
+  }
+  // 11 = Грудень, 0 = Січень, 1 = Лютий (Зима)
+  return WINTER_WEEK_PLAN;
 }
 

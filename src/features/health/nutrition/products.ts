@@ -221,6 +221,27 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { searchTerm: "солон", basePrice: 40 },
   ),
+  radish: tracked(
+    "radish",
+    "Редиска",
+    { kcal: 19, protein: 1.2, fat: 0.1, carbs: 3.4 },
+    "vegetables",
+    { searchTerm: "редиск", basePrice: 40 },
+  ),
+  beetroot: tracked(
+    "beetroot",
+    "Буряк",
+    { kcal: 43, protein: 1.6, fat: 0.1, carbs: 9.6 },
+    "vegetables",
+    { searchTerm: "буряк", basePrice: 20 },
+  ),
+  apple: tracked(
+    "apple",
+    "Яблука",
+    { kcal: 52, protein: 0.3, fat: 0.2, carbs: 13.8 },
+    "fruits",
+    { searchTerm: "яблук", basePrice: 25 },
+  ),
   hardCheese: tracked(
     "hardCheese",
     "Твердий сир",

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { MealPrep } from "@/features/health/nutrition/components/MealPrep";
@@ -14,6 +15,9 @@ export default async function NutritionMealPrepPage() {
     redirect("/login");
   }
 
+  const cookieStore = await cookies();
+  const seasonOverride = cookieStore.get("nutrition-menu-season")?.value;
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -24,7 +28,7 @@ export default async function NutritionMealPrepPage() {
         ]}
         title="Meal Prep"
       />
-      <MealPrep />
+      <MealPrep seasonOverride={seasonOverride} />
     </div>
   );
 }

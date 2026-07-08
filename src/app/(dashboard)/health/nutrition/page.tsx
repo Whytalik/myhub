@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { NutritionPageClient } from "@/features/health/nutrition/components/NutritionPageClient";
@@ -14,13 +15,16 @@ export default async function NutritionDailyPage() {
     redirect("/login");
   }
 
+  const cookieStore = await cookies();
+  const seasonOverride = cookieStore.get("nutrition-menu-season")?.value;
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "nutrition" }]}
         title="Nutrition"
       />
-      <NutritionPageClient />
+      <NutritionPageClient seasonOverride={seasonOverride} />
     </div>
   );
 }

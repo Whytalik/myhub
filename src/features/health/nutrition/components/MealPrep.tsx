@@ -20,16 +20,16 @@ function productLabel(food: string, qualifier?: string): string {
 
 /** Same computed/manual duality as ShoppingList's `displayNameOf` — a computed
  *  qty is `sumMacroGramsMulti(...) + grams` formatted, never a hand-typed string. */
-function quantityLabel(computed: ComputedQuantity): string {
+function quantityLabel(computed: ComputedQuantity, seasonOverride?: string): string {
   const total =
-    sumMacroGramsMulti([computed.food, ...(computed.extraFood ?? [])], computed.weekdays) +
+    sumMacroGramsMulti([computed.food, ...(computed.extraFood ?? [])], computed.weekdays, undefined, seasonOverride) +
     (computed.grams ?? 0);
   return formatGrams(total, computed.unit, PRODUCTS[computed.food]?.gramsPerPiece);
 }
 
-function ingredientLabel(ing: RecipeIngredient): string {
+function ingredientLabel(ing: RecipeIngredient, seasonOverride?: string): string {
   const label = productLabel(ing.food, ing.qualifier);
-  const qty = ing.computedQty ? quantityLabel(ing.computedQty) : ing.qty;
+  const qty = ing.computedQty ? quantityLabel(ing.computedQty, seasonOverride) : ing.qty;
   return qty ? `${label} — ${qty}` : label;
 }
 
@@ -73,7 +73,11 @@ const marinadeIngredients: RecipeIngredient[] = [
   { food: "blackPepper" },
 ];
 
-export function MealPrep() {
+interface MealPrepProps {
+  seasonOverride?: string;
+}
+
+export function MealPrep({ seasonOverride }: MealPrepProps) {
   const prepTable: (RecipeIngredient & { marinade: string })[] = [
     {
       food: "chickenMarinated",
@@ -258,7 +262,7 @@ export function MealPrep() {
                     {productLabel(row.food, row.qualifier)}
                   </td>
                   <td className="py-2 pr-3 font-mono text-zinc-300">
-                    {row.computedQty ? quantityLabel(row.computedQty) : row.qty}
+                    {row.computedQty ? quantityLabel(row.computedQty, seasonOverride) : row.qty}
                   </td>
                   <td className="py-2 text-zinc-400">{row.marinade}</td>
                 </tr>
@@ -288,7 +292,7 @@ export function MealPrep() {
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span>{ingredientLabel(ing)}</span>
+                  <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
             </ul>
@@ -299,7 +303,7 @@ export function MealPrep() {
               {marinadeIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
-                  <span>{ingredientLabel(ing)}</span>
+                  <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
             </ul>
@@ -340,7 +344,7 @@ export function MealPrep() {
                 {m.ingredients.map((ing, ingIdx) => (
                   <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
                     <span className="text-zinc-600">·</span>
-                    <span>{ingredientLabel(ing)}</span>
+                    <span>{ingredientLabel(ing, seasonOverride)}</span>
                   </li>
                 ))}
               </ul>

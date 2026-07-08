@@ -6,8 +6,9 @@ export function sumMacroGrams(
   productKey: string,
   weekdays: Weekday[],
   weekStart?: string,
+  seasonOverride?: string,
 ): number {
-  const plan = getActiveWeekPlan(weekStart);
+  const plan = getActiveWeekPlan(weekStart, seasonOverride);
   const days = new Set(weekdays);
   let total = 0;
   for (const day of plan) {
@@ -26,8 +27,9 @@ export function sumMacroGramsMulti(
   productKeys: string[],
   weekdays: Weekday[],
   weekStart?: string,
+  seasonOverride?: string,
 ): number {
-  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays, weekStart), 0);
+  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays, weekStart, seasonOverride), 0);
 }
 
 export type QuantityUnit = "g" | "piece" | "ml";

@@ -32,10 +32,10 @@ function displayNameOf(item: ShoppingItem): string {
 
 /** Computed qty derives from macroItems (+ an explicit manual buffer) instead of
  *  being hand-typed — see [[nutrition_products_single_source]] / quantities.ts. */
-function displayQtyOf(item: ShoppingItem, weekStart?: string): string | undefined {
+function displayQtyOf(item: ShoppingItem, weekStart?: string, seasonOverride?: string): string | undefined {
   if (!item.computedQty) return item.qty;
   const { food, extraFood, weekdays, grams = 0, unit } = item.computedQty;
-  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart) + grams;
+  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
   return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
 
@@ -44,10 +44,10 @@ function displayQtyOf(item: ShoppingItem, weekStart?: string): string | undefine
  * items (hand-typed `qty` strings like "1 пучок" have no clean number to divide against).
  * Used to translate a "вже вдома" fraction into a real "≈ X з Y" readout.
  */
-function computedTotal(item: ShoppingItem, weekStart?: string): number | null {
+function computedTotal(item: ShoppingItem, weekStart?: string, seasonOverride?: string): number | null {
   if (!item.computedQty) return null;
   const { food, extraFood, weekdays, grams = 0 } = item.computedQty;
-  return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart) + grams;
+  return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
 }
 
 const STORAGE_KEY = "nutrition-shopping-v1";
@@ -134,17 +134,17 @@ const homeStockStore = makeRecordStore<FractionMap>(
   EMPTY_FRACTIONS,
 );
 
-function categoryCost(categories: ShoppingCategory[], weekStart: string): number {
+function categoryCost(categories: ShoppingCategory[], weekStart: string, seasonOverride?: string): number {
   return categories.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart), 0),
+      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride), 0),
     0,
   );
 }
 
 /** "з 990 г — купити ще 690 г" — only when the item has a computable total. */
-function homeStockReadout(item: ShoppingItem, fraction: number, weekStart?: string): string | null {
-  const total = computedTotal(item, weekStart);
+function homeStockReadout(item: ShoppingItem, fraction: number, weekStart?: string, seasonOverride?: string): string | null {
+  const total = computedTotal(item, weekStart, seasonOverride);
   if (total === null) return null;
   const unit = item.computedQty?.unit;
   const gramsPerPiece = item.computedQty
@@ -169,6 +169,7 @@ function CategoryList({
   homeStock,
   giftedByItemId,
   weekStart,
+  seasonOverride,
   onToggle,
   onToggleHomeStock,
   onSetHomeStockFraction,
@@ -179,6 +180,7 @@ function CategoryList({
   homeStock: FractionMap;
   giftedByItemId: Map<string, GiftedRecord>;
   weekStart: string;
+  seasonOverride?: string;
   onToggle: (id: string) => void;
   onToggleHomeStock: (id: string) => void;
   onSetHomeStockFraction: (id: string, fraction: number) => void;
@@ -196,10 +198,10 @@ function CategoryList({
               const isHomeStock = fraction > 0;
               const giftedRecord = giftedByItemId.get(item.id) ?? null;
               const isGifted = giftedRecord !== null;
-              const qty = displayQtyOf(item, weekStart);
-              const itemTotal = computedTotal(item, weekStart);
-              const readout = isHomeStock ? homeStockReadout(item, fraction, weekStart) : null;
-              const itemPrice = getSeasonalPrice(item, weekStart);
+              const qty = displayQtyOf(item, weekStart, seasonOverride);
+              const itemTotal = computedTotal(item, weekStart, seasonOverride);
+              const readout = isHomeStock ? homeStockReadout(item, fraction, weekStart, seasonOverride) : null;
+              const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 !isHomeStock && !isGifted && isChecked
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
@@ -338,10 +340,11 @@ function CategoryList({
 
 interface ShoppingListProps {
   weekStart: string;
+  seasonOverride?: string;
   gifted: GiftedRecord[];
 }
 
-export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
+export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingListProps) {
   const router = useRouter();
   const checked = useSyncExternalStore(
     checkedStore.subscribe,
@@ -378,14 +381,14 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
   const progress =
     totalItemsInView > 0 ? Math.round((checkedCountInView / totalItemsInView) * 100) : 0;
 
-  const totalCost = categoryCost(visibleCategories, weekStart);
+  const totalCost = categoryCost(visibleCategories, weekStart, seasonOverride);
 
   const homeStockCost = visibleCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
         const fraction = homeStock[item.id] ?? 0;
-        const itemPrice = getSeasonalPrice(item, weekStart);
+        const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
         return itemSum + itemPrice * fraction;
       }, 0)
     );
@@ -409,7 +412,7 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
         // рахується лише за частку, яку реально довелось докупити.
         if (giftedByItemId.has(item.id)) return itemSum;
         const fraction = homeStock[item.id] ?? 0;
-        const itemPrice = getSeasonalPrice(item, weekStart);
+        const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
         return itemSum + itemPrice * (1 - fraction);
       }, 0)
     );
@@ -500,6 +503,7 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
         homeStock={homeStock}
         giftedByItemId={giftedByItemId}
         weekStart={weekStart}
+        seasonOverride={seasonOverride}
         onToggle={toggle}
         onToggleHomeStock={toggleHomeStock}
         onSetHomeStockFraction={setHomeStockFraction}
@@ -516,7 +520,7 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
           itemName={displayNameOf(giftDialogItem)}
           productKey={giftDialogItem.food ?? null}
           existing={giftedByItemId.get(giftDialogItem.id) ?? null}
-          defaultValue={getSeasonalPrice(giftDialogItem, weekStart)}
+          defaultValue={getSeasonalPrice(giftDialogItem, weekStart, seasonOverride)}
         />
       )}
     </div>

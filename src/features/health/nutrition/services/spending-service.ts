@@ -21,12 +21,12 @@ export interface WeekSpend {
 }
 
 /**
- * Сума сезонних цін усіх позицій статичного SHOPPING_LIST для заданого тижня.
+ * Сума сезонних цін усіх позицій статичного SHOPPING_LIST для заданого тижня з урахуванням налаштувань.
  */
-function plannedWeekTotal(weekStart: string): number {
+function plannedWeekTotal(weekStart: string, seasonOverride?: string): number {
   return SHOPPING_LIST.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart), 0),
+      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride), 0),
     0,
   );
 }
@@ -49,18 +49,18 @@ export async function removeGifted(weekStart: string, itemId: string) {
   await giftedGroceryRepository.remove(new Date(`${weekStart}T00:00:00`), itemId);
 }
 
-export async function getActualSpendForWeek(weekStart: string): Promise<WeekSpend> {
+export async function getActualSpendForWeek(weekStart: string, seasonOverride?: string): Promise<WeekSpend> {
   const gifted = await getGiftedForWeek(weekStart);
   const giftedTotal = gifted.reduce((sum, row) => sum + row.value, 0);
-  const plannedTotal = plannedWeekTotal(weekStart);
+  const plannedTotal = plannedWeekTotal(weekStart, seasonOverride);
   return { weekStart, plannedTotal, giftedTotal, actualSpend: plannedTotal - giftedTotal };
 }
 
 /**
  * Один рядок на тиждень, де є хоч один запис подарунка. Використовує сезонні ціни
- * для кожного окремого історичного тижня на основі його дати weekStart.
+ * для кожного окремого історичного тижня на основі його дати weekStart та налаштувань.
  */
-export async function getSpendHistory(): Promise<WeekSpend[]> {
+export async function getSpendHistory(seasonOverride?: string): Promise<WeekSpend[]> {
   const rows = await getCachedGiftedGroceries();
   const byWeek = new Map<string, number>();
   for (const row of rows) {
@@ -71,7 +71,7 @@ export async function getSpendHistory(): Promise<WeekSpend[]> {
   return [...byWeek.entries()]
     .sort(([a], [b]) => (a < b ? 1 : -1))
     .map(([weekStart, giftedTotal]) => {
-      const plannedTotal = plannedWeekTotal(weekStart);
+      const plannedTotal = plannedWeekTotal(weekStart, seasonOverride);
       return {
         weekStart,
         plannedTotal,

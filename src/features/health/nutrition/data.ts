@@ -1341,71 +1341,141 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
   },
 ];
 
-// Глибока копія літнього плану для зимового меню (щоб уникнути дублювання коду)
-export const DEFAULT_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+// 1. Зимовий план (WINTER_WEEK_PLAN): Заміна свіжих томатів/огірків на капусту/солоні огірки
+export const WINTER_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
 
-// 1. Понеділок: Заміна свіжого салатного міксу (помідори, огірки, перець, бринза) на коул-слоу (капуста, морква)
-const monLunch = DEFAULT_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
-if (monLunch && monLunch.macroItems) {
-  monLunch.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
-  monLunch.macroItems = monLunch.macroItems.filter(
+const monLunchW = WINTER_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+if (monLunchW && monLunchW.macroItems) {
+  monLunchW.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
+  monLunchW.macroItems = monLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
   );
-  monLunch.macroItems.push(
+  monLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
     { food: "carrot", vitalii: 50, olesia: 50, component: "Салат з капусти" },
   );
 }
 
-// 2. Вівторок: Заміна салатного міксу (рукола, томати, сир) на салат з капусти
-const tueLunch = DEFAULT_WEEK_PLAN[1].meals.find((m) => m.type === "lunch");
-if (tueLunch && tueLunch.macroItems) {
-  tueLunch.ingredients[2] = "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
-  tueLunch.macroItems = tueLunch.macroItems.filter(
+const tueLunchW = WINTER_WEEK_PLAN[1].meals.find((m) => m.type === "lunch");
+if (tueLunchW && tueLunchW.macroItems) {
+  tueLunchW.ingredients[2] = "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
+  tueLunchW.macroItems = tueLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "arugula" && item.food !== "hardCheese",
   );
-  tueLunch.macroItems.push(
+  tueLunchW.macroItems.push(
     { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
   );
 }
 
-// 3. Середа: Заміна томатів/огірків на салат з капусти та солоних огірків
-const wedLunch = DEFAULT_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
-if (wedLunch && wedLunch.macroItems) {
-  wedLunch.ingredients[4] = "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
-  wedLunch.macroItems = wedLunch.macroItems.filter(
+const wedLunchW = WINTER_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
+if (wedLunchW && wedLunchW.macroItems) {
+  wedLunchW.ingredients[4] = "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
+  wedLunchW.macroItems = wedLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber",
   );
-  wedLunch.macroItems.push(
+  wedLunchW.macroItems.push(
     { food: "cabbage", vitalii: 150, olesia: 150, component: "Зимовий салат" },
     { food: "pickledCucumber", vitalii: 75, olesia: 75, component: "Зимовий салат" },
   );
 }
 
-// 4. П'ятниця: Заміна томатів/огірків на салат з капусти
-const friLunch = DEFAULT_WEEK_PLAN[4].meals.find((m) => m.type === "lunch");
-if (friLunch && friLunch.macroItems) {
-  friLunch.ingredients[3] = "Для салату: капуста 300 г, олія 6 г (Олеся)";
-  friLunch.macroItems = friLunch.macroItems.filter(
+const friLunchW = WINTER_WEEK_PLAN[4].meals.find((m) => m.type === "lunch");
+if (friLunchW && friLunchW.macroItems) {
+  friLunchW.ingredients[3] = "Для салату: капуста 300 г, олія 6 г (Олеся)";
+  friLunchW.macroItems = friLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber",
   );
-  friLunch.macroItems.push(
+  friLunchW.macroItems.push(
     { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
   );
 }
 
-// 5. Неділя: Заміна грецького салату на салат з капусти та моркви
-const sunLunch = DEFAULT_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
-if (sunLunch && sunLunch.macroItems) {
-  sunLunch.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), зелень";
-  sunLunch.macroItems = sunLunch.macroItems.filter(
+const sunLunchW = WINTER_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+if (sunLunchW && sunLunchW.macroItems) {
+  sunLunchW.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), зелень";
+  sunLunchW.macroItems = sunLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
   );
-  sunLunch.macroItems.push(
+  sunLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
     { food: "carrot", vitalii: 50, olesia: 50, component: "Салат з капусти" },
   );
 }
 
+// 2. Осінній план (AUTUMN_WEEK_PLAN): Переважають буряк, морква, капуста, яблука
+export const AUTUMN_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+
+const monLunchA = AUTUMN_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+if (monLunchA && monLunchA.macroItems) {
+  monLunchA.ingredients[6] = "Для салату: варений буряк 500 г, чорнослив, олія 6 г (Олеся), часник";
+  monLunchA.macroItems = monLunchA.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  monLunchA.macroItems.push(
+    { food: "beetroot", vitalii: 250, olesia: 250, component: "Буряковий салат" },
+  );
+}
+
+const wedLunchA = AUTUMN_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
+if (wedLunchA && wedLunchA.macroItems) {
+  wedLunchA.ingredients[4] = "Для салату: капуста 300 г, яблуко 150 г, зелень, лимонний сік";
+  wedLunchA.macroItems = wedLunchA.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber",
+  );
+  wedLunchA.macroItems.push(
+    { food: "cabbage", vitalii: 150, olesia: 150, component: "Капустяний салат з яблуком" },
+    { food: "apple", vitalii: 75, olesia: 75, component: "Капустяний салат з яблуком" },
+  );
+}
+
+const sunLunchA = AUTUMN_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+if (sunLunchA && sunLunchA.macroItems) {
+  sunLunchA.ingredients[6] = "Для салату: варений буряк 500 г, олія 6 г (Олеся), солоний огірок 100 г";
+  sunLunchA.macroItems = sunLunchA.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  sunLunchA.macroItems.push(
+    { food: "beetroot", vitalii: 250, olesia: 250, component: "Буряковий салат" },
+    { food: "pickledCucumber", vitalii: 50, olesia: 50, component: "Буряковий салат" },
+  );
+}
+
+// 3. Весняний план (SPRING_WEEK_PLAN): Переважають редиска, зелена цибуля, огірки
+export const SPRING_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+
+const monBreakfastS = SPRING_WEEK_PLAN[0].meals.find((m) => m.type === "breakfast");
+if (monBreakfastS && monBreakfastS.macroItems) {
+  monBreakfastS.ingredients[2] = "Редиска та огірки — 150 г (по 75 г кожному)";
+  monBreakfastS.macroItems = monBreakfastS.macroItems.map((item) => {
+    if (item.food === "tomato") return { ...item, food: "radish" };
+    return item;
+  });
+}
+
+const monLunchS = SPRING_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+if (monLunchS && monLunchS.macroItems) {
+  monLunchS.ingredients[6] = "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
+  monLunchS.macroItems = monLunchS.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  monLunchS.macroItems.push(
+    { food: "cabbage", vitalii: 175, olesia: 175, component: "Весняний салат" },
+    { food: "radish", vitalii: 75, olesia: 75, component: "Весняний салат" },
+  );
+}
+
+const sunLunchS = SPRING_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+if (sunLunchS && sunLunchS.macroItems) {
+  sunLunchS.ingredients[6] = "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
+  sunLunchS.macroItems = sunLunchS.macroItems.filter(
+    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
+  );
+  sunLunchS.macroItems.push(
+    { food: "cabbage", vitalii: 175, olesia: 175, component: "Весняний салат" },
+    { food: "radish", vitalii: 75, olesia: 75, component: "Весняний салат" },
+  );
+}
+
+export const DEFAULT_WEEK_PLAN = WINTER_WEEK_PLAN;
 export const WEEK_PLAN = DEFAULT_WEEK_PLAN;
 

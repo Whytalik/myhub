@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { ShoppingList } from "@/features/health/nutrition/components/ShoppingList";
@@ -20,11 +21,15 @@ export default async function NutritionShoppingListPage() {
   if (!session) {
     redirect("/login");
   }
+
+  const cookieStore = await cookies();
+  const seasonOverride = cookieStore.get("nutrition-menu-season")?.value;
+
   const weekStart = weekStartKey(currentWeekStart());
   const [gifted, currentSpend, history] = await Promise.all([
     getGiftedForWeek(weekStart),
-    getActualSpendForWeek(weekStart),
-    getSpendHistory(),
+    getActualSpendForWeek(weekStart, seasonOverride),
+    getSpendHistory(seasonOverride),
   ]);
 
   return (
@@ -40,6 +45,7 @@ export default async function NutritionShoppingListPage() {
       <SpendSummary current={currentSpend} history={history} />
       <ShoppingList
         weekStart={weekStart}
+        seasonOverride={seasonOverride}
         gifted={gifted.map((g) => ({
           itemId: g.itemId,
           productKey: g.productKey,

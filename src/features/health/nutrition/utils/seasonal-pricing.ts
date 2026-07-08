@@ -54,16 +54,24 @@ function parseQtyString(qtyStr: string): { amount: number; unit: "kg" | "g" | "p
 }
 
 /**
- * Повертає сезонний коефіцієнт для продукту на основі дати
+ * Повертає сезонний коефіцієнт для продукту на основі дати або примусового сезону
  */
-export function getProductSeasonMultiplier(productKey: string, weekStartKey: string): number {
+export function getProductSeasonMultiplier(productKey: string, weekStartKey: string, seasonOverride?: string): number {
   const product = PRODUCTS[productKey];
   if (!product) return 1.0;
+
+  const category = product.category ?? "other";
+
+  // Якщо передано конкретний сезон, використовуємо типовий місяць для цього сезону:
+  // Зима = Січень (0), Весна = Квітень (3), Літо = Липень (6), Осінь = Жовтень (9)
+  if (seasonOverride === "winter") return CATEGORY_SEASONALITY[category]?.[0] ?? 1.0;
+  if (seasonOverride === "spring") return CATEGORY_SEASONALITY[category]?.[3] ?? 1.0;
+  if (seasonOverride === "summer") return CATEGORY_SEASONALITY[category]?.[6] ?? 1.0;
+  if (seasonOverride === "autumn") return CATEGORY_SEASONALITY[category]?.[9] ?? 1.0;
 
   const date = new Date(`${weekStartKey}T00:00:00`);
   const month = isNaN(date.getTime()) ? new Date().getMonth() : date.getMonth();
   
-  const category = product.category ?? "other";
   return CATEGORY_SEASONALITY[category]?.[month] ?? 1.0;
 }
 
@@ -71,7 +79,7 @@ export function getProductSeasonMultiplier(productKey: string, weekStartKey: str
  * Розраховує динамічну сезонну ціну для позиції списку покупок.
  * Якщо розрахувати неможливо (немає basePrice), повертає оригінальну статичну ціну.
  */
-export function getSeasonalPrice(item: ShoppingItem, weekStartKey: string): number {
+export function getSeasonalPrice(item: ShoppingItem, weekStartKey: string, seasonOverride?: string): number {
   if (!item.food) return item.price ?? 0;
 
   const product = PRODUCTS[item.food];
@@ -79,13 +87,13 @@ export function getSeasonalPrice(item: ShoppingItem, weekStartKey: string): numb
     return item.price ?? 0;
   }
 
-  const multiplier = getProductSeasonMultiplier(item.food, weekStartKey);
+  const multiplier = getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
   const seasonalUnitPrice = product.basePrice * multiplier;
 
   // 1. Якщо кількість розраховується автоматично через computedQty
   if (item.computedQty) {
     const { food, extraFood, weekdays, grams = 0, unit = "g" } = item.computedQty;
-    const totalQty = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays) + grams;
+    const totalQty = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
 
     if (unit === "piece") {
       return Math.round(totalQty * seasonalUnitPrice);
