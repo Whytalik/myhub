@@ -30,35 +30,19 @@ import {
   CalendarDays,
   ChevronDown,
   ChevronUp,
-  Workflow,
-  Wind,
   Fingerprint,
   Gauge,
-  LifeBuoy,
   Link2,
 } from "lucide-react";
-import type { SphereLevel } from "@/features/life/types";
 
 const BEHAVIOR_DETAILS: {
-  key: "ifThenPlan" | "frictionReduction" | "identityStatement" | "minimalThreshold" | "copingPlan";
+  key: "identityStatement" | "minimalThreshold";
   label: string;
-  icon: typeof Workflow;
+  icon: typeof Fingerprint;
 }[] = [
-  { key: "ifThenPlan", label: "If-then plan", icon: Workflow },
-  { key: "frictionReduction", label: "Friction reduction", icon: Wind },
   { key: "identityStatement", label: "Identity", icon: Fingerprint },
   { key: "minimalThreshold", label: "Minimal threshold", icon: Gauge },
-  { key: "copingPlan", label: "Coping plan", icon: LifeBuoy },
 ];
-
-const SPHERE_LEVEL_CONFIG: Record<SphereLevel, { label: string; classes: string }> = {
-  MINIMUM: { label: "Min", classes: "bg-rose-500/10 border-rose-500/20 text-rose-400" },
-  MEDIUM: { label: "Medium", classes: "bg-amber-500/10 border-amber-500/20 text-amber-400" },
-  DESIRED: {
-    label: "Desired",
-    classes: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
-  },
-};
 
 interface HabitCardProps {
   habit: HabitData;
@@ -151,9 +135,6 @@ export function HabitCard({
   const activeLabelClass = `text-[10px] font-mono uppercase tracking-wide ${activeLabel}`;
   const metaChipClass =
     "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide";
-  const sphereChipClass = habit.sphereLevel
-    ? `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono uppercase tracking-wide ${SPHERE_LEVEL_CONFIG[habit.sphereLevel].classes}`
-    : "";
   const iconActionClass =
     "p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
   const deleteActionClass =
@@ -204,17 +185,6 @@ export function HabitCard({
               <div className={metaChipClass}>
                 <Bell size={10} />
                 <span>{habit.reminderTime}</span>
-              </div>
-            )}
-            {habit.sphereLevel && (
-              <div className={sphereChipClass}>
-                <TrendingUp size={10} />
-                <span>{SPHERE_LEVEL_CONFIG[habit.sphereLevel].label}</span>
-              </div>
-            )}
-            {habit.subcategory && (
-              <div className={metaChipClass}>
-                <span>{habit.subcategory}</span>
               </div>
             )}
           </div>
@@ -323,7 +293,7 @@ export function HabitCard({
         {isCompletedOnDate ? (
           <>
             <ShieldCheck size={18} strokeWidth={2.5} />
-            {isAvoidance ? "Resisted" : isWeekly ? `Відмічено сьогодні` : "Completed"}
+            {isAvoidance ? "Resisted" : isWeekly ? "Відмічено сьогодні" : "Completed"}
           </>
         ) : (
           <>

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const habitSchema = z
   .object({
-    name: z.string().min(1, "Name is required"),
+    name: z.string().optional(),
     type: z.enum(["positive", "avoidance"]),
     anchor: z.string().optional(),
     action: z.string().optional(),
@@ -11,14 +11,9 @@ export const habitSchema = z
     archived: z.boolean().optional(),
     scheduledWeekdays: z.array(z.number().int().min(0).max(6)).min(1).optional(),
     sphereId: z.string().nullable().optional(),
-    sphereLevel: z.enum(["MINIMUM", "MEDIUM", "DESIRED"]).nullable().optional(),
-    subcategory: z.string().optional(),
     chainId: z.string().nullable().optional(),
-    ifThenPlan: z.string().optional(),
-    frictionReduction: z.string().optional(),
     identityStatement: z.string().optional(),
     minimalThreshold: z.string().optional(),
-    copingPlan: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.type === "positive") {

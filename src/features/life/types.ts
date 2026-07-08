@@ -320,7 +320,7 @@ export interface WeeklyTrendPoint {
 
 export interface UpsertHabitInput {
   id?: string;
-  name: string;
+  name?: string;
   type?: string;
   icon?: string;
   color?: string;
@@ -332,12 +332,7 @@ export interface UpsertHabitInput {
   archived?: boolean;
   scheduledWeekdays?: number[];
   sphereId?: string | null;
-  sphereLevel?: SphereLevel | null;
-  subcategory?: string | null;
   chainId?: string | null;
-  ifThenPlan?: string | null;
-  frictionReduction?: string | null;
   identityStatement?: string | null;
   minimalThreshold?: string | null;
-  copingPlan?: string | null;
 }
