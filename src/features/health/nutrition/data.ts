@@ -1143,7 +1143,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-2-sun",
         food: "banana",
-        qty: "6 шт",
+        computedQty: { food: "banana", weekdays: ["sun", "mon", "tue", "wed"], unit: "piece" },
         note: "Нд–Ср",
         price: 57,
         buyDay: "sun",
@@ -1151,7 +1151,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-2-wed",
         food: "banana",
-        qty: "5 шт",
+        computedQty: { food: "banana", weekdays: ["thu", "fri", "sat"], unit: "piece" },
         note: "Чт–Сб",
         price: 47,
         buyDay: "wed",
