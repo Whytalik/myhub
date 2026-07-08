@@ -9,6 +9,7 @@ import { getProductName, PRODUCTS } from "../products";
 import { sumMacroGramsMulti, formatGrams } from "../quantities";
 import { currentWeekStart, weekStartKey } from "../week";
 import { GiftedItemDialog } from "./GiftedItemDialog";
+import { getSeasonalPrice } from "../utils/seasonal-pricing";
 import type { ShoppingCategory, ShoppingDay, ShoppingItem } from "../types";
 
 export interface GiftedRecord {
@@ -133,10 +134,10 @@ const homeStockStore = makeRecordStore<FractionMap>(
   EMPTY_FRACTIONS,
 );
 
-function categoryCost(categories: ShoppingCategory[]): number {
+function categoryCost(categories: ShoppingCategory[], weekStart: string): number {
   return categories.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + (item.price || 0), 0),
+      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart), 0),
     0,
   );
 }
@@ -167,6 +168,7 @@ function CategoryList({
   checked,
   homeStock,
   giftedByItemId,
+  weekStart,
   onToggle,
   onToggleHomeStock,
   onSetHomeStockFraction,
@@ -176,6 +178,7 @@ function CategoryList({
   checked: FlagMap;
   homeStock: FractionMap;
   giftedByItemId: Map<string, GiftedRecord>;
+  weekStart: string;
   onToggle: (id: string) => void;
   onToggleHomeStock: (id: string) => void;
   onSetHomeStockFraction: (id: string, fraction: number) => void;
@@ -196,6 +199,7 @@ function CategoryList({
               const qty = displayQtyOf(item);
               const itemTotal = computedTotal(item);
               const readout = isHomeStock ? homeStockReadout(item, fraction) : null;
+              const itemPrice = getSeasonalPrice(item, weekStart);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 !isHomeStock && !isGifted && isChecked
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
@@ -237,9 +241,9 @@ function CategoryList({
                         <span className={nameClass}>
                           {displayNameOf(item)}
                           {qty && <span className="text-zinc-500"> — {qty}</span>}
-                          {item.price && (
+                          {itemPrice > 0 && (
                             <span className="font-mono text-xs text-zinc-500 ml-1.5">
-                              ~{item.price} ₴
+                              ~{itemPrice} ₴
                             </span>
                           )}
                         </span>
@@ -374,14 +378,15 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
   const progress =
     totalItemsInView > 0 ? Math.round((checkedCountInView / totalItemsInView) * 100) : 0;
 
-  const totalCost = categoryCost(visibleCategories);
+  const totalCost = categoryCost(visibleCategories, weekStart);
 
   const homeStockCost = visibleCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
         const fraction = homeStock[item.id] ?? 0;
-        return itemSum + (item.price ?? 0) * fraction;
+        const itemPrice = getSeasonalPrice(item, weekStart);
+        return itemSum + itemPrice * fraction;
       }, 0)
     );
   }, 0);
@@ -404,7 +409,8 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
         // рахується лише за частку, яку реально довелось докупити.
         if (giftedByItemId.has(item.id)) return itemSum;
         const fraction = homeStock[item.id] ?? 0;
-        return itemSum + (item.price ?? 0) * (1 - fraction);
+        const itemPrice = getSeasonalPrice(item, weekStart);
+        return itemSum + itemPrice * (1 - fraction);
       }, 0)
     );
   }, 0);
@@ -493,6 +499,7 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
         checked={checked}
         homeStock={homeStock}
         giftedByItemId={giftedByItemId}
+        weekStart={weekStart}
         onToggle={toggle}
         onToggleHomeStock={toggleHomeStock}
         onSetHomeStockFraction={setHomeStockFraction}
@@ -509,7 +516,7 @@ export function ShoppingList({ weekStart, gifted }: ShoppingListProps) {
           itemName={displayNameOf(giftDialogItem)}
           productKey={giftDialogItem.food ?? null}
           existing={giftedByItemId.get(giftDialogItem.id) ?? null}
-          defaultValue={giftDialogItem.price ?? 0}
+          defaultValue={getSeasonalPrice(giftDialogItem, weekStart)}
         />
       )}
     </div>

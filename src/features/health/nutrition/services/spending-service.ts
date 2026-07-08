@@ -2,6 +2,7 @@ import { getCachedGiftedGroceries } from "@/lib/cache/cache";
 import { giftedGroceryRepository } from "../repositories/gifted-grocery.repository";
 import { SHOPPING_LIST } from "../data";
 import { weekStartKey } from "../week";
+import { getSeasonalPrice } from "../utils/seasonal-pricing";
 
 export interface UpsertGiftedInput {
   weekStart: string; // YYYY-MM-DD
@@ -20,14 +21,12 @@ export interface WeekSpend {
 }
 
 /**
- * Сума цін усіх позицій статичного SHOPPING_LIST (обидва buyDay) — повний плановий
- * тижневий бюджет. Незмінний по тижнях, бо шаблон статичний — див. коментар у сервісі
- * getSpendHistory нижче про те, чому історія рахує сьогоднішній total для минулих тижнів.
+ * Сума сезонних цін усіх позицій статичного SHOPPING_LIST для заданого тижня.
  */
-function plannedWeekTotal(): number {
+function plannedWeekTotal(weekStart: string): number {
   return SHOPPING_LIST.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + (item.price ?? 0), 0),
+      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart), 0),
     0,
   );
 }
@@ -53,16 +52,13 @@ export async function removeGifted(weekStart: string, itemId: string) {
 export async function getActualSpendForWeek(weekStart: string): Promise<WeekSpend> {
   const gifted = await getGiftedForWeek(weekStart);
   const giftedTotal = gifted.reduce((sum, row) => sum + row.value, 0);
-  const plannedTotal = plannedWeekTotal();
+  const plannedTotal = plannedWeekTotal(weekStart);
   return { weekStart, plannedTotal, giftedTotal, actualSpend: plannedTotal - giftedTotal };
 }
 
 /**
- * Один рядок на тиждень, де є хоч один запис подарунка — не вигадуємо рядки для тижнів
- * без жодних записів (нема чого коригувати). Використовує СЬОГОДНІШНІЙ plannedWeekTotal
- * для всіх минулих тижнів (шаблон статичний і рідко змінюється) — якщо колись
- * SHOPPING_LIST зміниться, історичні actualSpend "заднім числом" перерахуються під
- * новий шаблон. Прийнятно для MVP, позначено як подальше вдосконалення.
+ * Один рядок на тиждень, де є хоч один запис подарунка. Використовує сезонні ціни
+ * для кожного окремого історичного тижня на основі його дати weekStart.
  */
 export async function getSpendHistory(): Promise<WeekSpend[]> {
   const rows = await getCachedGiftedGroceries();
@@ -72,13 +68,15 @@ export async function getSpendHistory(): Promise<WeekSpend[]> {
     byWeek.set(key, (byWeek.get(key) ?? 0) + row.value);
   }
 
-  const plannedTotal = plannedWeekTotal();
   return [...byWeek.entries()]
     .sort(([a], [b]) => (a < b ? 1 : -1))
-    .map(([weekStart, giftedTotal]) => ({
-      weekStart,
-      plannedTotal,
-      giftedTotal,
-      actualSpend: plannedTotal - giftedTotal,
-    }));
+    .map(([weekStart, giftedTotal]) => {
+      const plannedTotal = plannedWeekTotal(weekStart);
+      return {
+        weekStart,
+        plannedTotal,
+        giftedTotal,
+        actualSpend: plannedTotal - giftedTotal,
+      };
+    });
 }
