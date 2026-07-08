@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useState } from "react";
+import { useSyncExternalStore, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Gift, Home, RotateCcw } from "lucide-react";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -48,6 +48,24 @@ function computedTotal(item: ShoppingItem, weekStart?: string, seasonOverride?: 
   if (!item.computedQty) return null;
   const { food, extraFood, weekdays, grams = 0 } = item.computedQty;
   return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+}
+
+function isNeededForDay(item: ShoppingItem, day: string): boolean {
+  if (item.computedQty) {
+    return item.computedQty.weekdays.includes(day as any);
+  }
+  if (item.note) {
+    const lowerNote = item.note.toLowerCase();
+    if (lowerNote.includes("щодня") || lowerNote.includes("кожен день")) return true;
+    if (day === "mon" && (lowerNote.includes("пн") || lowerNote.includes("понеділок"))) return true;
+    if (day === "tue" && (lowerNote.includes("вт") || lowerNote.includes("вівторок"))) return true;
+    if (day === "wed" && (lowerNote.includes("ср") || lowerNote.includes("середа"))) return true;
+    if (day === "thu" && (lowerNote.includes("чт") || lowerNote.includes("четвер"))) return true;
+    if (day === "fri" && (lowerNote.includes("пт") || lowerNote.includes("п’ятниця") || lowerNote.includes("п'ятниця"))) return true;
+    if (day === "sat" && (lowerNote.includes("сб") || lowerNote.includes("субота"))) return true;
+    if (day === "sun" && (lowerNote.includes("нд") || lowerNote.includes("неділя"))) return true;
+  }
+  return false;
 }
 
 const STORAGE_KEY = "nutrition-shopping-v1";
@@ -357,14 +375,26 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     homeStockStore.getServerSnapshot,
   );
   const [activeView, setActiveView] = useState<ViewId>("all");
+  const [selectedDay, setSelectedDay] = useState<string>("all");
   const [giftDialogItem, setGiftDialogItem] = useState<ShoppingItem | null>(null);
+
+  useEffect(() => {
+    setSelectedDay("all");
+  }, [activeView]);
 
   const giftedByItemId = new Map(gifted.map((g) => [g.itemId, g]));
 
   const visibleCategories = activeView === "all" ? SHOPPING_LIST : categoriesForDay(activeView);
 
+  const filteredCategories = selectedDay === "all"
+    ? visibleCategories
+    : visibleCategories.map(category => ({
+        ...category,
+        items: category.items.filter(item => isNeededForDay(item, selectedDay))
+      })).filter(category => category.items.length > 0);
+
   const visibleItemIds = new Set(
-    visibleCategories.flatMap((category) => category.items.map((item) => item.id)),
+    filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
   );
 
   // "Куплено" рахує лише те, що реально ще треба купити — позиції, повністю
@@ -381,9 +411,9 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
   const progress =
     totalItemsInView > 0 ? Math.round((checkedCountInView / totalItemsInView) * 100) : 0;
 
-  const totalCost = categoryCost(visibleCategories, weekStart, seasonOverride);
+  const totalCost = categoryCost(filteredCategories, weekStart, seasonOverride);
 
-  const homeStockCost = visibleCategories.reduce((sum, category) => {
+  const homeStockCost = filteredCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
@@ -394,7 +424,7 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     );
   }, 0);
 
-  const giftedCost = visibleCategories.reduce((sum, category) => {
+  const giftedCost = filteredCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
@@ -403,7 +433,7 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     );
   }, 0);
 
-  const checkedCost = visibleCategories.reduce((sum, category) => {
+  const checkedCost = filteredCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
@@ -444,6 +474,39 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
         onTabChange={(id) => setActiveView(id as ViewId)}
         contentClassName="hidden"
       />
+
+      <div className="flex flex-col gap-2">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+          Фільтр за днем вживання:
+        </span>
+        <div className="flex flex-wrap items-center gap-1">
+          {[
+            { id: "all", label: "Усі дні" },
+            { id: "mon", label: "Пн" },
+            { id: "tue", label: "Вт" },
+            { id: "wed", label: "Ср" },
+            { id: "thu", label: "Чт" },
+            { id: "fri", label: "Пт" },
+            { id: "sat", label: "Сб" },
+            { id: "sun", label: "Нд" },
+          ].map((dayOption) => {
+            const isDayActive = selectedDay === dayOption.id;
+            return (
+              <button
+                key={dayOption.id}
+                onClick={() => setSelectedDay(dayOption.id)}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors duration-150 border ${
+                  isDayActive
+                    ? "bg-accent-nutrition/15 border-accent-nutrition/30 text-accent-nutrition"
+                    : "border-white/[0.08] text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
+                }`}
+              >
+                {dayOption.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -498,7 +561,7 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
       </div>
 
       <CategoryList
-        categories={visibleCategories}
+        categories={filteredCategories}
         checked={checked}
         homeStock={homeStock}
         giftedByItemId={giftedByItemId}

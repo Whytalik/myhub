@@ -1,6 +1,6 @@
 "use client";
 
-import { Scale, ClipboardList, Flame, UtensilsCrossed } from "lucide-react";
+import { Scale, ClipboardList, Flame, UtensilsCrossed, Snowflake } from "lucide-react";
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
 import { PRODUCTS, getProductName } from "../products";
@@ -457,6 +457,99 @@ export function DayPlan({ day }: { day: DayPlanType }) {
           ))}
         </div>
       </div>
+
+      {/* Підготовка на завтра */}
+      {(() => {
+        const tomorrowPrepMap: Record<string, { title: string; action: string; note?: string }[]> = {
+          mon: [
+            {
+              title: "Курячі шашлики (Йогуртово-лимонні)",
+              action: "Дістати замариноване куряче філе для шашликів з морозильної камери та перекласти в холодильник для повільного розморожування.",
+              note: "Знадобиться на обід та вечерю в понеділок."
+            }
+          ],
+          tue: [
+            {
+              title: "Курячі серця (Соєво-томатні)",
+              action: "Дістати замариновані курячі серця з морозильної камери та перекласти в холодильник для розморожування.",
+              note: "Знадобиться на обід та вечерю у вівторок."
+            }
+          ],
+          wed: [], // Скумбрія запікається з морозилки без розморожування
+          thu: [
+            {
+              title: "Куряче філе для смаження (Соєво-часникове)",
+              action: "Дістати замариноване куряче філе для смаження з морозильної камери та перекласти в холодильник.",
+              note: "Знадобиться на обід та вечерю в четвер."
+            }
+          ],
+          fri: [
+            {
+              title: "Куряче філе (Медово-гірчичне)",
+              action: "Дістати замариноване куряче філе з морозильної камери та перекласти в холодильник.",
+              note: "Знадобиться на обід та вечерю в п'ятницю та суботу."
+            }
+          ],
+          sat: [], // Залишок курячого філе вже розморожено й приготовлено раніше
+          sun: [
+            {
+              title: "Свиняча відбивна (Трав'яна)",
+              action: "Дістати замариновану свинячу відбивну з морозильної камери та перекласти в холодильник.",
+              note: "Знадобиться на обід та вечерю в неділю."
+            }
+          ]
+        };
+
+        const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+        const currentIndex = weekdays.indexOf(day.weekday);
+        const tomorrowWeekday = weekdays[(currentIndex + 1) % 7];
+        const tomorrowPrep = tomorrowPrepMap[tomorrowWeekday] || [];
+
+        return (
+          <div className="glass-card p-4 flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 shrink-0">
+                <Snowflake size={16} />
+              </div>
+              <div>
+                <h3 className="text-panel-title">Підготовка на завтра</h3>
+                <p className="text-caption">Що потрібно зробити сьогодні ввечері (дістати з морозилки тощо)</p>
+              </div>
+            </div>
+
+            <div className="h-px bg-white/[0.06]" />
+
+            {tomorrowPrep.length > 0 ? (
+              <ul className="flex flex-col gap-3">
+                {tomorrowPrep.map((prep, idx) => (
+                  <li key={idx} className="flex gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                    <div className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 shrink-0 text-xs mt-0.5 font-bold">
+                      !
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-sm font-semibold text-zinc-150">{prep.title}</span>
+                      <p className="text-sm text-zinc-300">{prep.action}</p>
+                      {prep.note && <span className="text-caption text-zinc-400">{prep.note}</span>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="flex gap-3 p-3 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10 text-emerald-400">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 shrink-0 text-xs mt-0.5 font-bold">
+                  ✓
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-sm font-semibold">Розморожування не потрібне</span>
+                  <p className="text-sm text-zinc-300">
+                    Для завтрашніх страв не потрібно нічого діставати з морозилки. Скумбрія запікається прямо з морозилки, а сирники смажаться замороженими.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
