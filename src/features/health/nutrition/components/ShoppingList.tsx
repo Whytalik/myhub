@@ -54,7 +54,7 @@ const STORAGE_KEY = "nutrition-shopping-v1";
 const HOME_STOCK_STORAGE_PREFIX = "nutrition-home-stock-v1";
 
 const VIEWS = [
-  { id: "all" as const, label: "7 днів" },
+  { id: "all" as const, label: "Всі" },
   { id: "sun" as const, label: "Неділя" },
   { id: "wed" as const, label: "Середа" },
 ];

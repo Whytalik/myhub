@@ -850,7 +850,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qty: "500 г",
         note: "Ср",
         price: 90,
-        buyDay: "sun",
+        buyDay: "wed",
       },
       {
         id: "dairy-3",
