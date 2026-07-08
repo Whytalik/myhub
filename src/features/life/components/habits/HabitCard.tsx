@@ -23,10 +23,8 @@ import {
   PartyPopper,
   Flame,
   Archive,
-  Bell,
   ShieldCheck,
   Shield,
-  TrendingUp,
   CalendarDays,
   ChevronDown,
   ChevronUp,
@@ -179,12 +177,6 @@ export function HabitCard({
               <div className={metaChipClass}>
                 <Flame size={10} />
                 <span>{streak} day streak</span>
-              </div>
-            )}
-            {habit.reminderTime && (
-              <div className={metaChipClass}>
-                <Bell size={10} />
-                <span>{habit.reminderTime}</span>
               </div>
             )}
           </div>

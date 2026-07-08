@@ -16,8 +16,6 @@ import {
   Anchor,
   Zap,
   PartyPopper,
-  Bell,
-  X,
   Sprout,
   ShieldOff,
   Link2,
@@ -27,7 +25,6 @@ import {
   Gauge,
   Settings2,
 } from "lucide-react";
-import { TimePicker } from "@/components/ui/inputs/time-picker";
 
 const BEHAVIOR_FIELDS: {
   name: "identityStatement" | "minimalThreshold";
@@ -70,7 +67,7 @@ export function HabitFormDialog({
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
   const [showAdvanced, setShowAdvanced] = useState(
-    !!(habit?.sphereId || habit?.chainId || habit?.reminderTime),
+    !!(habit?.sphereId || habit?.chainId),
   );
   const [showBehaviorDesign, setShowBehaviorDesign] = useState(
     !!(habit?.identityStatement || habit?.minimalThreshold),
@@ -89,7 +86,6 @@ export function HabitFormDialog({
       anchor: habit?.anchor ?? "",
       action: habit?.action ?? "",
       celebration: habit?.celebration ?? "",
-      reminderTime: habit?.reminderTime ?? "",
       archived: habit?.archived ?? false,
       scheduledWeekdays: habit?.scheduledWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
       sphereId: habit?.sphereId ?? null,
@@ -99,7 +95,6 @@ export function HabitFormDialog({
     },
   });
 
-  const reminderTime = useWatch({ control, name: "reminderTime" });
   const habitType = useWatch({ control, name: "type" });
   const selectedSphereId = useWatch({ control, name: "sphereId" });
   const isAvoidance = habitType === "avoidance";
@@ -112,7 +107,6 @@ export function HabitFormDialog({
         anchor: data.anchor?.trim() || "",
         action: data.action?.trim() || "",
         celebration: data.celebration?.trim() || null,
-        reminderTime: data.reminderTime || null,
         archived: data.archived ?? false,
         scheduledWeekdays: data.scheduledWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
         sphereId: data.sphereId ?? null,
@@ -387,32 +381,6 @@ export function HabitFormDialog({
                 />
               )}
 
-              <FormField label="Reminder" hint="Optional">
-                <div className="flex items-center gap-2">
-                  <Bell size={14} className="text-zinc-500 shrink-0" />
-                  {reminderTime && (
-                    <button
-                      type="button"
-                      onClick={() => setValue("reminderTime", "")}
-                      className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-200 transition-colors"
-                    >
-                      <X size={10} /> Clear
-                    </button>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Controller
-                    name="reminderTime"
-                    control={control}
-                    render={({ field }) => (
-                      <TimePicker value={field.value ?? ""} onChange={field.onChange} />
-                    )}
-                  />
-                  {!reminderTime && (
-                    <span className="text-caption">Auto (3x day)</span>
-                  )}
-                </div>
-              </FormField>
             </div>
           )}
         </div>

@@ -7,7 +7,7 @@ export const habitSchema = z
     anchor: z.string().optional(),
     action: z.string().optional(),
     celebration: z.string().optional(),
-    reminderTime: z.string().optional(),
+
     archived: z.boolean().optional(),
     scheduledWeekdays: z.array(z.number().int().min(0).max(6)).min(1).optional(),
     sphereId: z.string().nullable().optional(),
