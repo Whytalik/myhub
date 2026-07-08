@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { Send, Check, AlertTriangle, X } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -27,6 +27,16 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [result, setResult] = useState<PushEntryResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isPushed, setIsPushed] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const macroItemsKey = JSON.stringify(macroItems);
+
+  useEffect(() => {
+    setIsPushed(false);
+    setResult(null);
+    setError(null);
+  }, [macroItemsKey]);
 
   // 2. Derived values
   const okCount = result?.filter((r) => r.status === "ok").length ?? 0;
@@ -63,8 +73,26 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
         return;
       }
       setError(null);
-      setResult(response.data.entries);
+      
+      const entries = response.data.entries;
+      setResult(entries);
+
+      const hasProblems = entries.some((r) => r.status !== "ok");
+      if (!hasProblems) {
+        setIsPushed(true);
+        setTimeout(() => {
+          setResult(null);
+        }, 3000);
+      }
     });
+  };
+
+  const handleButtonClick = () => {
+    if (isPushed) {
+      setShowConfirmModal(true);
+    } else {
+      handleOpenPreview();
+    }
   };
 
   if (macroItems.length === 0) return null;
@@ -72,14 +100,14 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
   return (
     <div className="flex flex-col gap-1.5 items-center">
       <Button
-        variant="secondary"
+        variant={isPushed ? "ghost" : "secondary"}
         size="sm"
         isLoading={isPreviewPending}
-        onClick={handleOpenPreview}
+        onClick={handleButtonClick}
         className="text-xs"
       >
-        <Send size={12} />
-        Запушити в FatSecret
+        {isPushed ? <Check size={12} className="text-emerald-400" /> : <Send size={12} />}
+        {isPushed ? "Запушено в FatSecret" : "Запушити в FatSecret"}
       </Button>
 
       {previewError && (
@@ -180,6 +208,35 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
                 Мапувати відсутні продукти →
               </Link>
             )}
+          </div>
+        </Dialog>
+      )}
+
+      {showConfirmModal && (
+        <Dialog
+          isOpen
+          onClose={() => setShowConfirmModal(false)}
+          title="Повторне надсилання"
+          description="Цей прийом їжі вже було надіслано до FatSecret. Ви впевнені, що хочете надіслати його знову?"
+          maxWidth="400px"
+          footer={
+            <>
+              <Button variant="ghost" onClick={() => setShowConfirmModal(false)}>
+                Скасувати
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  handleOpenPreview();
+                }}
+              >
+                Продовжити
+              </Button>
+            </>
+          }
+        >
+          <div className="text-zinc-400 text-sm">
+            Повторне надсилання може призвести до дублювання записів у вашому акаунті FatSecret.
           </div>
         </Dialog>
       )}
