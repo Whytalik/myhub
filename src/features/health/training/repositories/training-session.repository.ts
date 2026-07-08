@@ -21,6 +21,14 @@ export const trainingSessionRepository = {
     return prisma.trainingSession.findUnique({ where: { id }, include: SESSION_INCLUDE });
   },
 
+  findInRange(userId: string, from: Date, to: Date) {
+    return prisma.trainingSession.findMany({
+      where: { userId, date: { gte: from, lte: to } },
+      orderBy: { date: "asc" },
+      include: SESSION_INCLUDE,
+    });
+  },
+
   createWithLogs(
     sessionData: Prisma.TrainingSessionUncheckedCreateInput,
     setLogsData: Omit<Prisma.SetLogUncheckedCreateInput, "sessionId">[],

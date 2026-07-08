@@ -8,9 +8,19 @@ import { Input } from "@/components/ui/inputs/input";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
 import { toast } from "sonner";
-import { Check, Dumbbell, Activity, ListChecks, Video, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  Check,
+  Dumbbell,
+  Activity,
+  ListChecks,
+  Video,
+  ChevronDown,
+  ChevronRight,
+  ClipboardCopy,
+} from "lucide-react";
 import type { SetLogData, TrainingSessionData } from "../types";
 import { updateSetLogAction, completeSessionAction } from "../actions/training-session-actions";
+import { buildSessionReportMarkdown } from "../utils/session-report";
 
 interface SessionClientProps {
   session: TrainingSessionData;
@@ -34,12 +44,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
   const [setLogs, setSetLogs] = useState<SetLogData[]>(session.setLogs);
   const [status, setStatus] = useState(session.status);
   const [isFinishing, startFinishTransition] = useTransition();
-  const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string } | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string } | null>(
+    null,
+  );
   const isCompleted = status === "completed";
 
   const [collapsedExercises, setCollapsedExercises] = useState<Record<string, boolean>>({});
   const [warmupCollapsed, setWarmupCollapsed] = useState(true);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+  const [sessionNotes, setSessionNotes] = useState(session.notes ?? "");
 
   useEffect(() => {
     if (isCompleted) {
@@ -49,7 +62,7 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
 
     const initialElapsed = Math.max(
       0,
-      Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000)
+      Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000),
     );
     setElapsedSeconds(initialElapsed);
 
@@ -116,16 +129,16 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
 
     setSetLogs((prev) => {
       const nextLogs = prev.map((l) => (l.id === id ? { ...l, completed } : l));
-      
+
       // Auto-collapse if all sets for this exercise are now completed
       const exerciseSets = nextLogs.filter((l) => l.exerciseId === log.exerciseId);
       const allCompleted = exerciseSets.every((s) => s.completed);
-      
+
       setCollapsedExercises((prevCollapsed) => ({
         ...prevCollapsed,
         [log.exerciseId]: allCompleted,
       }));
-      
+
       return nextLogs;
     });
 
@@ -134,16 +147,16 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         toast.error(result.error || "Failed to update set");
         setSetLogs((prev) => {
           const nextLogs = prev.map((l) => (l.id === id ? { ...l, completed: !completed } : l));
-          
+
           // Re-evaluate collapse state if toggle failed
           const exerciseSets = nextLogs.filter((l) => l.exerciseId === log.exerciseId);
           const allCompleted = exerciseSets.every((s) => s.completed);
-          
+
           setCollapsedExercises((prevCollapsed) => ({
             ...prevCollapsed,
             [log.exerciseId]: allCompleted,
           }));
-          
+
           return nextLogs;
         });
       }
@@ -156,7 +169,11 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         0,
         Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000),
       );
-      const result = await completeSessionAction({ id: session.id, durationSeconds });
+      const result = await completeSessionAction({
+        id: session.id,
+        durationSeconds,
+        notes: sessionNotes.trim() || null,
+      });
       if (result.success) {
         setStatus("completed");
         toast.success("Workout finished");
@@ -166,11 +183,26 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
     });
   };
 
+  const handleCopyReport = () => {
+    const report = buildSessionReportMarkdown({
+      dayName: session.dayName,
+      date: session.date,
+      durationSeconds: elapsedSeconds,
+      status,
+      setLogs,
+      notes: sessionNotes,
+    });
+    navigator.clipboard
+      .writeText(report)
+      .then(() => toast.success("Звіт скопійовано"))
+      .catch(() => toast.error("Не вдалося скопіювати звіт"));
+  };
+
   const statusClass = `text-[10px] font-mono font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-md ${
     isCompleted ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
   }`;
   const numberInputClass = "w-16 text-center shrink-0";
-  const notesInputClass = "flex-1 min-w-[100px]";
+  const notesInputClass = "w-full md:flex-1 md:w-auto md:min-w-[100px]";
 
   return (
     <div className="flex flex-col gap-6">
@@ -178,13 +210,19 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         <div className="flex items-center gap-2.5">
           <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
           <span className="text-xs font-mono font-semibold text-zinc-300 flex items-center gap-1.5 bg-white/5 border border-white/[0.06] px-2.5 py-0.5 rounded-md">
-            <span className={`w-1.5 h-1.5 rounded-full ${isCompleted ? "bg-zinc-500" : "bg-emerald-500 animate-pulse"}`}></span>
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${isCompleted ? "bg-zinc-500" : "bg-emerald-500 animate-pulse"}`}
+            ></span>
             {formatDuration(elapsedSeconds)}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={() => router.push("/health/training")}>
             Back to training
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleCopyReport}>
+            <ClipboardCopy size={14} />
+            Копіювати звіт
           </Button>
           {!isCompleted && (
             <Button variant="primary" size="sm" disabled={isFinishing} onClick={handleFinish}>
@@ -203,7 +241,6 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          
           {/* Collapsible Warmup Section */}
           <div className="bg-amber-500/[0.02] border border-amber-500/10 rounded-xl p-3 flex flex-col gap-2">
             <div
@@ -212,11 +249,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
             >
               <div className="flex items-center gap-2 text-amber-400">
                 <Activity size={16} />
-                <span className="text-xs font-bold uppercase tracking-wider font-mono">1. Розминка (Протокол RAMP)</span>
+                <span className="text-xs font-bold uppercase tracking-wider font-mono">
+                  1. Розминка (Протокол RAMP)
+                </span>
               </div>
               <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
                 <span>~8-10 хв</span>
-                <span>{warmupCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}</span>
+                <span>
+                  {warmupCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+                </span>
               </div>
             </div>
 
@@ -229,10 +270,11 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                     1. Підвищення (Raise)
                   </div>
                   <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба). Підвищує температуру тіла, еластичність м'язів та ЧСС.
+                    3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба). Підвищує
+                    температуру тіла, еластичність м'язів та ЧСС.
                   </p>
                 </div>
-                
+
                 {/* Activate & Mobilize */}
                 <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
                   <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
@@ -240,7 +282,8 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                     2. Мобілізація (Mobilize)
                   </div>
                   <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    Динамічні обертання плечових суглобів, розкриття грудного відділу хребта, 10 присідань без ваги та 12 сідничних містків.
+                    Динамічні обертання плечових суглобів, розкриття грудного відділу хребта, 10
+                    присідань без ваги та 12 сідничних містків.
                   </p>
                 </div>
 
@@ -251,7 +294,8 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                     3. Активація (Potentiate)
                   </div>
                   <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    1–2 легкі розминочні підходи з 50% від робочої ваги для першої вправи дня, щоб підготувати ЦНС та суглоби.
+                    1–2 легкі розминочні підходи з 50% від робочої ваги для першої вправи дня, щоб
+                    підготувати ЦНС та суглоби.
                   </p>
                 </div>
               </div>
@@ -260,7 +304,9 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
 
           <div className="flex items-center gap-2 text-accent-training pl-1 mt-2">
             <Dumbbell size={16} />
-            <span className="text-xs font-bold uppercase tracking-wider font-mono">2. Основне тренування</span>
+            <span className="text-xs font-bold uppercase tracking-wider font-mono">
+              2. Основне тренування
+            </span>
           </div>
 
           {groups.map((group) => {
@@ -293,16 +339,22 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                     <span className="text-panel-title group-hover/title:text-zinc-200 transition-colors">
                       {group.exerciseName}
                     </span>
-                    <span className={`text-[9px] font-mono font-semibold px-2 py-0.5 rounded-full border transition-colors ${
-                      isExerciseCompleted
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                        : "bg-zinc-500/10 border-white/[0.06] text-zinc-400"
-                    }`}>
-                      {isExerciseCompleted ? "✓ Виконано" : `${completedSets}/${totalSets} підходів`}
+                    <span
+                      className={`text-[9px] font-mono font-semibold px-2 py-0.5 rounded-full border transition-colors ${
+                        isExerciseCompleted
+                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                          : "bg-zinc-500/10 border-white/[0.06] text-zinc-400"
+                      }`}
+                    >
+                      {isExerciseCompleted
+                        ? "✓ Виконано"
+                        : `${completedSets}/${totalSets} підходів`}
                     </span>
                   </div>
                   <button
-                    onClick={() => setSelectedExercise({ id: group.exerciseId, name: group.exerciseName })}
+                    onClick={() =>
+                      setSelectedExercise({ id: group.exerciseId, name: group.exerciseName })
+                    }
                     className="text-xs font-semibold text-accent-training hover:text-accent-training/80 transition-colors cursor-pointer select-none focus:outline-none outline-none"
                   >
                     Інфо та техніка
@@ -342,8 +394,11 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                       const pastSet = exercisePastLogs?.[log.setNumber - 1];
 
                       return (
-                        <div key={log.id} className="flex flex-col gap-1 w-full border-b border-white/[0.02] pb-1.5 last:border-b-0 last:pb-0">
-                          <div className="flex items-center gap-2 flex-nowrap w-full min-w-0">
+                        <div
+                          key={log.id}
+                          className="flex flex-col gap-1 w-full border-b border-white/[0.02] pb-1.5 last:border-b-0 last:pb-0"
+                        >
+                          <div className="flex items-center gap-2 flex-wrap md:flex-nowrap w-full min-w-0">
                             <button
                               onClick={() => toggleCompleted(log.id)}
                               disabled={isCompleted}
@@ -490,17 +545,33 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   {pastSet.reps !== null ? `${pastSet.reps}` : "—"}
                                 </span>
                               )}
-                              {pastSet.rpe && <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>}
+                              {pastSet.rpe && (
+                                <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>
+                              )}
                             </div>
                           )}
                         </div>
                       );
                     })}
-                    </div>
-                  )}
-                </div>
-              );
+                  </div>
+                )}
+              </div>
+            );
           })}
+
+          {/* Session notes */}
+          <div className="glass-card p-4 flex flex-col gap-2">
+            <label className="text-xs font-bold uppercase tracking-wider font-mono text-zinc-400">
+              Загальні нотатки по сесії
+            </label>
+            <textarea
+              className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[80px] rounded-lg"
+              placeholder="Самопочуття, сон, стрес, загальні спостереження за тренуванням..."
+              disabled={isCompleted}
+              value={sessionNotes}
+              onChange={(e) => setSessionNotes(e.target.value)}
+            />
+          </div>
         </div>
       )}
 
@@ -511,84 +582,85 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         title={selectedExercise?.name}
         maxWidth="640px"
       >
-        {selectedExercise && (() => {
-          const details = EXERCISE_DETAILS[selectedExercise.name];
-          return (
-            <div className="flex flex-col gap-5 text-sm pb-2">
-              {/* Biomechanics */}
-              <div className="flex flex-col gap-2">
-                <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                  <Activity size={14} />
-                  Науковий аналіз
-                </h4>
-                <p className="text-zinc-300 leading-relaxed text-xs">
-                  {details?.explanation || "Пояснення вправи ще додається."}
-                </p>
-                {details?.scientificInsight && (
-                  <p className="text-[11px] text-zinc-400 leading-relaxed italic bg-white/[0.02] p-2.5 rounded-lg border border-white/[0.04]">
-                    {details.scientificInsight}
-                  </p>
-                )}
-              </div>
-
-              {/* Technique */}
-              <div className="flex flex-col gap-2">
-                <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-blue-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                  <ListChecks size={14} />
-                  Техніка виконання
-                </h4>
+        {selectedExercise &&
+          (() => {
+            const details = EXERCISE_DETAILS[selectedExercise.name];
+            return (
+              <div className="flex flex-col gap-5 text-sm pb-2">
+                {/* Biomechanics */}
                 <div className="flex flex-col gap-2">
-                  {details?.technique ? (
-                    details.technique.split("\n").map((step, idx) => (
-                      <div key={idx} className="flex gap-2 items-start text-xs text-zinc-300">
-                        <span className="w-5 h-5 rounded-full bg-white/5 border border-white/[0.08] text-[10px] font-mono flex items-center justify-center shrink-0 mt-0.5">
-                          {idx + 1}
-                        </span>
-                        <p className="pt-0.5">{step.replace(/^\d+\.\s*/, "")}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-zinc-400 italic">Слідкуйте за правильною формою.</p>
+                  <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
+                    <Activity size={14} />
+                    Науковий аналіз
+                  </h4>
+                  <p className="text-zinc-300 leading-relaxed text-xs">
+                    {details?.explanation || "Пояснення вправи ще додається."}
+                  </p>
+                  {details?.scientificInsight && (
+                    <p className="text-[11px] text-zinc-400 leading-relaxed italic bg-white/[0.02] p-2.5 rounded-lg border border-white/[0.04]">
+                      {details.scientificInsight}
+                    </p>
                   )}
                 </div>
-              </div>
 
-              {/* Video Player */}
-              {details?.videoUrl && (
+                {/* Technique */}
                 <div className="flex flex-col gap-2">
-                  <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-red-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                    <Video size={14} />
-                    Відеопояснення
+                  <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-blue-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
+                    <ListChecks size={14} />
+                    Техніка виконання
                   </h4>
-                  <div className="w-full aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-black/20 mt-1">
-                    <iframe
-                      className="w-full h-full"
-                      src={details.videoUrl}
-                      title={`Відеопояснення: ${selectedExercise.name}`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                    ></iframe>
+                  <div className="flex flex-col gap-2">
+                    {details?.technique ? (
+                      details.technique.split("\n").map((step, idx) => (
+                        <div key={idx} className="flex gap-2 items-start text-xs text-zinc-300">
+                          <span className="w-5 h-5 rounded-full bg-white/5 border border-white/[0.08] text-[10px] font-mono flex items-center justify-center shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <p className="pt-0.5">{step.replace(/^\d+\.\s*/, "")}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-zinc-400 italic">Слідкуйте за правильною формою.</p>
+                    )}
                   </div>
                 </div>
-              )}
 
-              {/* Open Full Page */}
-              <div className="flex justify-between items-center pt-3 border-t border-white/[0.06] mt-1">
-                <Link
-                  href={`/health/training/exercises/${selectedExercise.id}`}
-                  target="_blank"
-                  className="text-[11px] font-semibold text-zinc-400 hover:text-zinc-200 transition-colors underline flex items-center gap-1 focus:outline-none"
-                >
-                  Відкрити повну сторінку вправи в новій вкладці →
-                </Link>
-                <Button variant="secondary" size="sm" onClick={() => setSelectedExercise(null)}>
-                  Закрити
-                </Button>
+                {/* Video Player */}
+                {details?.videoUrl && (
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-red-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
+                      <Video size={14} />
+                      Відеопояснення
+                    </h4>
+                    <div className="w-full aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-black/20 mt-1">
+                      <iframe
+                        className="w-full h-full"
+                        src={details.videoUrl}
+                        title={`Відеопояснення: ${selectedExercise.name}`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+
+                {/* Open Full Page */}
+                <div className="flex justify-between items-center pt-3 border-t border-white/[0.06] mt-1">
+                  <Link
+                    href={`/health/training/exercises/${selectedExercise.id}`}
+                    target="_blank"
+                    className="text-[11px] font-semibold text-zinc-400 hover:text-zinc-200 transition-colors underline flex items-center gap-1 focus:outline-none"
+                  >
+                    Відкрити повну сторінку вправи в новій вкладці →
+                  </Link>
+                  <Button variant="secondary" size="sm" onClick={() => setSelectedExercise(null)}>
+                    Закрити
+                  </Button>
+                </div>
               </div>
-            </div>
-          );
-        })()}
+            );
+          })()}
       </Dialog>
     </div>
   );

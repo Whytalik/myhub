@@ -5,6 +5,7 @@ import type { Prisma } from "@/app/generated/prisma";
 import type { StartSessionInput, UpdateSetLogInput, CompleteSessionInput } from "../types";
 import { setLogRepository } from "../repositories/set-log.repository";
 import { prisma } from "@/lib/db/prisma";
+import { buildWeeklyReportMarkdown } from "../utils/weekly-report";
 
 export async function getRecentSessions(userId: string) {
   return getCachedRecentSessions(userId);
@@ -61,6 +62,27 @@ export async function completeSession(userId: string, input: CompleteSessionInpu
 
 export async function deleteSession(userId: string, id: string) {
   return trainingSessionRepository.delete(id, userId);
+}
+
+export async function getWeeklyReport(userId: string) {
+  const weekEnd = new Date();
+  weekEnd.setHours(23, 59, 59, 999);
+  const weekStart = new Date(weekEnd);
+  weekStart.setDate(weekStart.getDate() - 6);
+  weekStart.setHours(0, 0, 0, 0);
+
+  const sessions = await trainingSessionRepository.findInRange(userId, weekStart, weekEnd);
+
+  const exerciseIds = Array.from(
+    new Set(sessions.flatMap((s) => s.setLogs.map((l) => l.exerciseId))),
+  );
+  const exercises = await prisma.exercise.findMany({
+    where: { id: { in: exerciseIds } },
+    select: { id: true, muscleGroup: true },
+  });
+  const muscleGroupByExerciseId = new Map(exercises.map((e) => [e.id, e.muscleGroup]));
+
+  return buildWeeklyReportMarkdown({ weekStart, weekEnd, sessions, muscleGroupByExerciseId });
 }
 
 export async function getPastLogsForSession(userId: string, sessionId: string) {

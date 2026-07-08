@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { History as HistoryIcon, Trash2 } from "lucide-react";
+import { History as HistoryIcon, Trash2, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
-import { deleteSessionAction } from "../actions/training-session-actions";
+import { Button } from "@/components/ui/actions/button";
+import { deleteSessionAction, getWeeklyReportAction } from "../actions/training-session-actions";
 import type { TrainingSessionSummaryData } from "../types";
 
 interface TrainingHistoryClientProps {
@@ -15,6 +16,7 @@ interface TrainingHistoryClientProps {
 export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClientProps) {
   const router = useRouter();
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
+  const [isCopyingReport, startCopyReportTransition] = useTransition();
 
   const confirmDelete = async () => {
     if (!sessionToDelete) return;
@@ -22,6 +24,22 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
     if (result.success) toast.success("Session deleted");
     else toast.error(result.error || "Failed to delete session");
     setSessionToDelete(null);
+  };
+
+  const handleCopyWeeklyReport = () => {
+    startCopyReportTransition(async () => {
+      const result = await getWeeklyReportAction();
+      if (!result.success) {
+        toast.error(result.error || "Не вдалося сформувати звіт");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(result.data);
+        toast.success("Тижневий звіт скопійовано");
+      } catch {
+        toast.error("Не вдалося скопіювати звіт");
+      }
+    });
   };
 
   if (initialSessions.length === 0) {
@@ -40,6 +58,17 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
 
   return (
     <div className="flex flex-col gap-2">
+      <div className="flex justify-end">
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={isCopyingReport}
+          onClick={handleCopyWeeklyReport}
+        >
+          <ClipboardCopy size={14} />
+          {isCopyingReport ? "Формування звіту..." : "Копіювати тижневий звіт"}
+        </Button>
+      </div>
       {initialSessions.map((s) => {
         const isCompleted = s.status === "completed";
         const statusClass = `text-[10px] font-mono font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-md ${

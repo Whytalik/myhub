@@ -41,3 +41,9 @@ export async function deleteSessionAction(id: string): Promise<ActionResult<void
     invalidateTrainingSessionCache(userId);
   });
 }
+
+export async function getWeeklyReportAction(): Promise<ActionResult<string>> {
+  return withAction(async (userId) => {
+    return trainingSessionService.getWeeklyReport(userId);
+  });
+}
