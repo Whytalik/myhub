@@ -211,10 +211,16 @@ function CategoryList({
           <span className="text-label">{category.title}</span>
           <ul className="flex flex-col gap-1">
             {category.items.map((item) => {
-              const isChecked = !!checked[item.id];
-              const fraction = homeStock[item.id] ?? 0;
+              const isChecked = item.id.includes("+")
+                ? item.id.split("+").every((subId) => checked[subId])
+                : !!checked[item.id];
+              const fraction = item.id.includes("+")
+                ? (homeStock[item.id.split("+")[0]] ?? 0)
+                : (homeStock[item.id] ?? 0);
               const isHomeStock = fraction > 0;
-              const giftedRecord = giftedByItemId.get(item.id) ?? null;
+              const giftedRecord = item.id.includes("+")
+                ? (item.id.split("+").map((subId) => giftedByItemId.get(subId)).find(Boolean) ?? null)
+                : (giftedByItemId.get(item.id) ?? null);
               const isGifted = giftedRecord !== null;
               const qty = displayQtyOf(item, weekStart, seasonOverride);
               const itemTotal = computedTotal(item, weekStart, seasonOverride);
@@ -283,13 +289,15 @@ function CategoryList({
                     >
                       <Home size={13} />
                     </button>
-                    <button
-                      onClick={() => onOpenGiftDialog(item)}
-                      className={giftButtonClass}
-                      title="Подаровано батьками"
-                    >
-                      <Gift size={13} />
-                    </button>
+                    {!item.id.includes("+") && (
+                      <button
+                        onClick={() => onOpenGiftDialog(item)}
+                        className={giftButtonClass}
+                        title="Подаровано батьками"
+                      >
+                        <Gift size={13} />
+                      </button>
+                    )}
                   </div>
 
                   {isHomeStock && itemTotal !== null && (
@@ -355,6 +363,99 @@ function CategoryList({
   );
 }
 
+function getConsolidatedCategories(categories: ShoppingCategory[], weekStart: string, seasonOverride?: string): ShoppingCategory[] {
+  return categories.map(category => {
+    const grouped = new Map<string, ShoppingItem[]>();
+    for (const item of category.items) {
+      const key = displayNameOf(item);
+      if (!grouped.has(key)) {
+        grouped.set(key, []);
+      }
+      grouped.get(key)!.push(item);
+    }
+
+    const items: ShoppingItem[] = [];
+    for (const [name, list] of grouped.entries()) {
+      if (list.length === 1) {
+        items.push(list[0]);
+        continue;
+      }
+
+      // Merge duplicates
+      const base = list[0];
+      const mergedId = list.map(item => item.id).join("+");
+      const totalCostVal = list.reduce((sum, item) => sum + getSeasonalPrice(item, weekStart, seasonOverride), 0);
+      
+      // Combine notes
+      const notes = list.map(item => item.note).filter(Boolean);
+      const combinedNote = notes.length > 0 ? notes.join(" + ") : undefined;
+
+      // Combine quantities
+      let combinedQty: string | undefined = undefined;
+      let mergedComputedQty: any = undefined;
+      const allComputed = list.every(item => !!item.computedQty);
+      if (allComputed) {
+        const weekdays = Array.from(new Set(list.flatMap(item => item.computedQty!.weekdays)));
+        const grams = list.reduce((sum, item) => sum + (item.computedQty!.grams ?? 0), 0);
+        mergedComputedQty = {
+          ...base.computedQty,
+          weekdays,
+          grams,
+        };
+      } else {
+        let totalGrams = 0;
+        let totalPieces = 0;
+        let totalMl = 0;
+        let hasParsed = true;
+        for (const item of list) {
+          const qtyStr = item.qty || "";
+          const matchG = qtyStr.match(/^([\d.,]+)\s*г$/i);
+          const matchKg = qtyStr.match(/^([\d.,]+)\s*кг$/i);
+          const matchMl = qtyStr.match(/^([\d.,]+)\s*мл$/i);
+          const matchPcs = qtyStr.match(/^([\d.,]+)\s*шт$/i);
+          if (matchG) {
+            totalGrams += parseFloat(matchG[1].replace(",", "."));
+          } else if (matchKg) {
+            totalGrams += parseFloat(matchKg[1].replace(",", ".")) * 1000;
+          } else if (matchMl) {
+            totalMl += parseFloat(matchMl[1].replace(",", "."));
+          } else if (matchPcs) {
+            totalPieces += parseFloat(matchPcs[1].replace(",", "."));
+          } else {
+            hasParsed = false;
+            break;
+          }
+        }
+        if (hasParsed) {
+          if (totalGrams > 0) {
+            combinedQty = totalGrams >= 1000 ? `${totalGrams / 1000} кг` : `${totalGrams} г`;
+          } else if (totalMl > 0) {
+            combinedQty = totalMl >= 1000 ? `${totalMl / 1000} л` : `${totalMl} мл`;
+          } else if (totalPieces > 0) {
+            combinedQty = `${totalPieces} шт`;
+          }
+        } else {
+          combinedQty = list.map(item => item.qty).filter(Boolean).join(" + ");
+        }
+      }
+
+      items.push({
+        ...base,
+        id: mergedId,
+        qty: combinedQty,
+        computedQty: mergedComputedQty,
+        price: totalCostVal,
+        note: combinedNote,
+      });
+    }
+
+    return {
+      ...category,
+      items,
+    };
+  });
+}
+
 interface ShoppingListProps {
   weekStart: string;
   seasonOverride?: string;
@@ -386,7 +487,7 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
   const visibleCategories = activeView === "all" ? SHOPPING_LIST : categoriesForDay(activeView);
 
   const filteredCategories = selectedDay === "all"
-    ? visibleCategories
+    ? (activeView === "all" ? getConsolidatedCategories(visibleCategories, weekStart, seasonOverride) : visibleCategories)
     : visibleCategories.map(category => ({
         ...category,
         items: category.items.filter(item => isNeededForDay(item, selectedDay))
@@ -399,7 +500,13 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
   // "Куплено" рахує лише те, що реально ще треба купити — позиції, повністю
   // відмічені "вдома" (fraction 1) або подаровані, не входять ні в знаменник, ні в лічильник прогресу.
   const buyableItemIds = new Set(
-    [...visibleItemIds].filter((id) => (homeStock[id] ?? 0) < 1 && !giftedByItemId.has(id)),
+    [...visibleItemIds].filter((id) => {
+      if (id.includes("+")) {
+        const ids = id.split("+");
+        return ids.some((subId) => (homeStock[subId] ?? 0) < 1 && !giftedByItemId.has(subId));
+      }
+      return (homeStock[id] ?? 0) < 1 && !giftedByItemId.has(id);
+    }),
   );
   const totalItemsInView = buyableItemIds.size;
 
@@ -416,6 +523,12 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     return (
       sum +
       category.items.reduce((itemSum, item) => {
+        if (item.id.includes("+")) {
+          const ids = item.id.split("+");
+          const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
+          const fraction = homeStock[ids[0]] ?? 0;
+          return itemSum + itemPrice * fraction;
+        }
         const fraction = homeStock[item.id] ?? 0;
         const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
         return itemSum + itemPrice * fraction;
@@ -427,6 +540,11 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     return (
       sum +
       category.items.reduce((itemSum, item) => {
+        if (item.id.includes("+")) {
+          const ids = item.id.split("+");
+          const totalVal = ids.reduce((s, subId) => s + (giftedByItemId.get(subId)?.value ?? 0), 0);
+          return itemSum + totalVal;
+        }
         return itemSum + (giftedByItemId.get(item.id)?.value ?? 0);
       }, 0)
     );
@@ -436,9 +554,25 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     return (
       sum +
       category.items.reduce((itemSum, item) => {
-        if (!checked[item.id]) return itemSum;
-        // Подароване ніколи не купувалось, а те, що частково вдома (fraction),
-        // рахується лише за частку, яку реально довелось докупити.
+        const isChecked = item.id.includes("+")
+          ? item.id.split("+").every(subId => checked[subId])
+          : !!checked[item.id];
+        if (!isChecked) return itemSum;
+        
+        if (item.id.includes("+")) {
+          const ids = item.id.split("+");
+          const fraction = homeStock[ids[0]] ?? 0;
+          const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
+          let activePrice = 0;
+          for (let i = 0; i < ids.length; i++) {
+            const subId = ids[i];
+            if (!giftedByItemId.has(subId)) {
+              activePrice += (itemPrice / ids.length) * (1 - fraction);
+            }
+          }
+          return itemSum + activePrice;
+        }
+        
         if (giftedByItemId.has(item.id)) return itemSum;
         const fraction = homeStock[item.id] ?? 0;
         const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
@@ -449,14 +583,49 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
 
   const remainingCost = totalCost - homeStockCost - giftedCost - checkedCost;
 
-  const toggle = (id: string) => checkedStore.write({ ...checked, [id]: !checked[id] });
+  const toggle = (id: string) => {
+    if (id.includes("+")) {
+      const ids = id.split("+");
+      const nextChecked = { ...checked };
+      const nextVal = !checked[ids[0]];
+      for (const subId of ids) {
+        nextChecked[subId] = nextVal;
+      }
+      checkedStore.write(nextChecked);
+    } else {
+      checkedStore.write({ ...checked, [id]: !checked[id] });
+    }
+  };
+
   const reset = () => checkedStore.write({});
-  // Клік по іконці "дім" — простий перемикач: 0 → повністю є вдома (1), інакше прибрати позначку.
-  // Точну часткову кількість потім можна підкрутити грамовим полем, яке з'являється під позицією.
-  const toggleHomeStock = (id: string) =>
-    homeStockStore.write({ ...homeStock, [id]: (homeStock[id] ?? 0) > 0 ? 0 : 1 });
-  const setHomeStockFraction = (id: string, fraction: number) =>
-    homeStockStore.write({ ...homeStock, [id]: fraction });
+
+  const toggleHomeStock = (id: string) => {
+    if (id.includes("+")) {
+      const ids = id.split("+");
+      const nextHomeStock = { ...homeStock };
+      const nextVal = (homeStock[ids[0]] ?? 0) > 0 ? 0 : 1;
+      for (const subId of ids) {
+        nextHomeStock[subId] = nextVal;
+      }
+      homeStockStore.write(nextHomeStock);
+    } else {
+      homeStockStore.write({ ...homeStock, [id]: (homeStock[id] ?? 0) > 0 ? 0 : 1 });
+    }
+  };
+
+  const setHomeStockFraction = (id: string, fraction: number) => {
+    if (id.includes("+")) {
+      const ids = id.split("+");
+      const nextHomeStock = { ...homeStock };
+      for (const subId of ids) {
+        nextHomeStock[subId] = fraction;
+      }
+      homeStockStore.write(nextHomeStock);
+    } else {
+      homeStockStore.write({ ...homeStock, [id]: fraction });
+    }
+  };
+
   const closeGiftDialog = () => setGiftDialogItem(null);
   const handleGiftSaved = () => {
     setGiftDialogItem(null);
