@@ -297,12 +297,11 @@ function CategoryList({
                       <input
                         type="number"
                         min={0}
-                        max={Math.round(itemTotal)}
                         value={Math.round(fraction * itemTotal)}
                         onChange={(e) => {
                           const amount = Number(e.target.value);
                           if (!Number.isFinite(amount) || itemTotal <= 0) return;
-                          const clamped = Math.min(itemTotal, Math.max(0, amount));
+                          const clamped = Math.max(0, amount);
                           onSetHomeStockFraction(item.id, clamped / itemTotal);
                         }}
                         className="w-16 text-right text-xs bg-white/5 rounded border border-white/10 px-1.5 py-0.5 text-amber-400 focus:outline-none focus:border-amber-400/50"
@@ -579,9 +578,11 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
           onClose={closeGiftDialog}
           onSaved={handleGiftSaved}
           weekStart={weekStart}
+          seasonOverride={seasonOverride}
           itemId={giftDialogItem.id}
           itemName={displayNameOf(giftDialogItem)}
           productKey={giftDialogItem.food ?? null}
+          unit={giftDialogItem.computedQty?.unit}
           existing={giftedByItemId.get(giftDialogItem.id) ?? null}
           defaultValue={getSeasonalPrice(giftDialogItem, weekStart, seasonOverride)}
         />

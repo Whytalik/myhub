@@ -60,6 +60,10 @@ export async function completeSession(userId: string, input: CompleteSessionInpu
   return trainingSessionRepository.update(id, userId, { ...data, status: "completed" });
 }
 
+export async function updateSessionNotes(userId: string, id: string, notes: string | null) {
+  return trainingSessionRepository.update(id, userId, { notes });
+}
+
 export async function deleteSession(userId: string, id: string) {
   return trainingSessionRepository.delete(id, userId);
 }

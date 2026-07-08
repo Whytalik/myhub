@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
+import { Textarea } from "@/components/ui/inputs/textarea";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
 import { toast } from "sonner";
@@ -19,7 +20,7 @@ import {
   ClipboardCopy,
 } from "lucide-react";
 import type { SetLogData, TrainingSessionData } from "../types";
-import { updateSetLogAction, completeSessionAction } from "../actions/training-session-actions";
+import { updateSetLogAction, completeSessionAction, updateSessionNotesAction } from "../actions/training-session-actions";
 import { buildSessionReportMarkdown } from "../utils/session-report";
 
 interface SessionClientProps {
@@ -179,6 +180,14 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
         toast.success("Workout finished");
       } else {
         toast.error(result.error || "Failed to finish workout");
+      }
+    });
+  };
+
+  const handleNotesBlur = () => {
+    updateSessionNotesAction(session.id, sessionNotes.trim() || null).then((result) => {
+      if (!result.success) {
+        toast.error(result.error || "Не вдалося зберегти нотатки");
       }
     });
   };
@@ -364,7 +373,7 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                 {!isCollapsed && (
                   <div className="flex flex-col gap-2">
                     {/* Header Row */}
-                    <div className="flex items-center gap-2 mb-1 px-1 text-[10px] font-semibold font-mono uppercase tracking-wider text-zinc-500 select-none">
+                    <div className="hidden md:flex items-center gap-2 mb-1 px-1 text-[10px] font-semibold font-mono uppercase tracking-wider text-zinc-500 select-none">
                       <div className="w-7 shrink-0 text-center">Статус</div>
                       <div className="w-4 shrink-0 text-center">Сет</div>
                       {isTimeBased ? (
@@ -383,31 +392,32 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                       <div className="flex-1 min-w-[100px] pl-2 text-left">Нотатки</div>
                     </div>
 
-                    {group.sets.map((log) => {
-                      const setToggleClass = `flex items-center justify-center w-7 h-7 rounded-lg border shrink-0 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${
-                        log.completed
+                    {group.sets.map((setLog) => {
+                      const setToggleClass = `flex items-center justify-center w-9 h-9 md:w-7 md:h-7 rounded-lg border shrink-0 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${
+                        setLog.completed
                           ? "bg-emerald-500 border-emerald-500 text-white"
                           : "border-white/[0.12] text-zinc-500 hover:bg-white/5"
                       }`;
 
                       const exercisePastLogs = pastLogs?.[group.exerciseId];
-                      const pastSet = exercisePastLogs?.[log.setNumber - 1];
+                      const pastSet = exercisePastLogs?.[setLog.setNumber - 1];
 
                       return (
                         <div
-                          key={log.id}
-                          className="flex flex-col gap-1 w-full border-b border-white/[0.02] pb-1.5 last:border-b-0 last:pb-0"
+                          key={setLog.id}
+                          className="flex flex-col gap-1 w-full border-b border-white/[0.04] md:border-white/[0.02] pb-3 md:pb-1.5 last:border-b-0 last:pb-0"
                         >
-                          <div className="flex items-center gap-2 flex-wrap md:flex-nowrap w-full min-w-0">
+                          {/* Desktop Layout */}
+                          <div className="hidden md:flex items-center gap-2 w-full min-w-0">
                             <button
-                              onClick={() => toggleCompleted(log.id)}
+                              onClick={() => toggleCompleted(setLog.id)}
                               disabled={isCompleted}
                               className={setToggleClass}
                             >
                               <Check size={14} />
                             </button>
                             <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
-                              {log.setNumber}
+                              {setLog.setNumber}
                             </span>
 
                             {isTimeBased ? (
@@ -418,15 +428,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className={numberInputClass}
                                   disabled={isCompleted}
-                                  value={log.durationSeconds ?? ""}
-                                  onChange={(e) =>
+                                  value={setLog.durationSeconds ?? ""}
+                                  onChange={(event) =>
                                     updateField(
-                                      log.id,
+                                      setLog.id,
                                       "durationSeconds",
-                                      e.target.value === "" ? null : Number(e.target.value),
+                                      event.target.value === "" ? null : Number(event.target.value),
                                     )
                                   }
-                                  onBlur={() => persist(log.id)}
+                                  onBlur={() => persist(setLog.id)}
                                 />
                                 <Input
                                   type="number"
@@ -435,15 +445,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className={numberInputClass}
                                   disabled={isCompleted}
-                                  value={log.distanceMeters ?? ""}
-                                  onChange={(e) =>
+                                  value={setLog.distanceMeters ?? ""}
+                                  onChange={(event) =>
                                     updateField(
-                                      log.id,
+                                      setLog.id,
                                       "distanceMeters",
-                                      e.target.value === "" ? null : Number(e.target.value),
+                                      event.target.value === "" ? null : Number(event.target.value),
                                     )
                                   }
-                                  onBlur={() => persist(log.id)}
+                                  onBlur={() => persist(setLog.id)}
                                 />
                               </>
                             ) : (
@@ -454,15 +464,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className={numberInputClass}
                                   disabled={isCompleted}
-                                  value={log.reps ?? ""}
-                                  onChange={(e) =>
+                                  value={setLog.reps ?? ""}
+                                  onChange={(event) =>
                                     updateField(
-                                      log.id,
+                                      setLog.id,
                                       "reps",
-                                      e.target.value === "" ? null : Number(e.target.value),
+                                      event.target.value === "" ? null : Number(event.target.value),
                                     )
                                   }
-                                  onBlur={() => persist(log.id)}
+                                  onBlur={() => persist(setLog.id)}
                                 />
                                 <Input
                                   type="number"
@@ -471,15 +481,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className={numberInputClass}
                                   disabled={isCompleted}
-                                  value={log.weight ?? ""}
-                                  onChange={(e) =>
+                                  value={setLog.weight ?? ""}
+                                  onChange={(event) =>
                                     updateField(
-                                      log.id,
+                                      setLog.id,
                                       "weight",
-                                      e.target.value === "" ? null : Number(e.target.value),
+                                      event.target.value === "" ? null : Number(event.target.value),
                                     )
                                   }
-                                  onBlur={() => persist(log.id)}
+                                  onBlur={() => persist(setLog.id)}
                                 />
                               </>
                             )}
@@ -492,15 +502,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                               placeholder="—"
                               className={numberInputClass}
                               disabled={isCompleted}
-                              value={log.rpe ?? ""}
-                              onChange={(e) =>
+                              value={setLog.rpe ?? ""}
+                              onChange={(event) =>
                                 updateField(
-                                  log.id,
+                                  setLog.id,
                                   "rpe",
-                                  e.target.value === "" ? null : Number(e.target.value),
+                                  event.target.value === "" ? null : Number(event.target.value),
                                 )
                               }
-                              onBlur={() => persist(log.id)}
+                              onBlur={() => persist(setLog.id)}
                             />
 
                             <Input
@@ -509,29 +519,29 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                               placeholder="—"
                               className={numberInputClass}
                               disabled={isCompleted}
-                              value={log.restSeconds ?? ""}
-                              onChange={(e) =>
+                              value={setLog.restSeconds ?? ""}
+                              onChange={(event) =>
                                 updateField(
-                                  log.id,
+                                  setLog.id,
                                   "restSeconds",
-                                  e.target.value === "" ? null : Number(e.target.value),
+                                  event.target.value === "" ? null : Number(event.target.value),
                                 )
                               }
-                              onBlur={() => persist(log.id)}
+                              onBlur={() => persist(setLog.id)}
                             />
 
                             <Input
                               placeholder="Нотатки..."
                               className={notesInputClass}
                               disabled={isCompleted}
-                              value={log.notes ?? ""}
-                              onChange={(e) => updateField(log.id, "notes", e.target.value)}
-                              onBlur={() => persist(log.id)}
+                              value={setLog.notes ?? ""}
+                              onChange={(event) => updateField(setLog.id, "notes", event.target.value)}
+                              onBlur={() => persist(setLog.id)}
                             />
                           </div>
 
                           {pastSet && (
-                            <div className="flex items-center gap-1.5 pl-13 text-[10px] text-zinc-500 font-mono select-none">
+                            <div className="hidden md:flex items-center gap-1.5 pl-13 text-[10px] text-zinc-500 font-mono select-none">
                               <span>Минулого разу:</span>
                               {isTimeBased ? (
                                 <span className="text-zinc-400">
@@ -550,6 +560,156 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                               )}
                             </div>
                           )}
+
+                          {/* Mobile Layout */}
+                          <div className="flex md:hidden flex-col gap-2.5 w-full">
+                            {/* Header: Set Number, Completed Checkbox, Past Set Info */}
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => toggleCompleted(setLog.id)}
+                                  disabled={isCompleted}
+                                  className={setToggleClass}
+                                >
+                                  <Check size={16} />
+                                </button>
+                                <span className="font-mono text-sm font-semibold text-zinc-300">
+                                  Сет {setLog.setNumber}
+                                </span>
+                              </div>
+
+                              {pastSet && (
+                                <div className="text-[11px] text-zinc-500 font-mono select-none flex items-center gap-1 bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.04]">
+                                  <span className="text-zinc-500">Минулого разу:</span>
+                                  {isTimeBased ? (
+                                    <span className="text-zinc-400 font-medium">
+                                      {pastSet.durationSeconds ? `${pastSet.durationSeconds}с` : "—"}
+                                      {pastSet.distanceMeters ? ` / ${pastSet.distanceMeters}м` : ""}
+                                    </span>
+                                  ) : (
+                                    <span className="text-zinc-400 font-bold">
+                                      {pastSet.weight !== null ? `${pastSet.weight}кг` : "—"}
+                                      {" х "}
+                                      {pastSet.reps !== null ? `${pastSet.reps}` : "—"}
+                                    </span>
+                                  )}
+                                  {pastSet.rpe && (
+                                    <span className="text-zinc-500">@ {pastSet.rpe}</span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Inputs Grid */}
+                            <div className="grid grid-cols-4 gap-2">
+                              {/* Input 1: Reps / Time */}
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
+                                  {isTimeBased ? "Час (с)" : "Повт"}
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  placeholder="—"
+                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
+                                  disabled={isCompleted}
+                                  value={isTimeBased ? (setLog.durationSeconds ?? "") : (setLog.reps ?? "")}
+                                  onChange={(event) =>
+                                    updateField(
+                                      setLog.id,
+                                      isTimeBased ? "durationSeconds" : "reps",
+                                      event.target.value === "" ? null : Number(event.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(setLog.id)}
+                                />
+                              </div>
+
+                              {/* Input 2: Weight / Distance */}
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
+                                  {isTimeBased ? "Дист (м)" : "Вага"}
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  step={isTimeBased ? "0.1" : "0.5"}
+                                  placeholder="—"
+                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
+                                  disabled={isCompleted}
+                                  value={isTimeBased ? (setLog.distanceMeters ?? "") : (setLog.weight ?? "")}
+                                  onChange={(event) =>
+                                    updateField(
+                                      setLog.id,
+                                      isTimeBased ? "distanceMeters" : "weight",
+                                      event.target.value === "" ? null : Number(event.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(setLog.id)}
+                                />
+                              </div>
+
+                              {/* Input 3: RPE */}
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
+                                  RPE
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={1}
+                                  max={10}
+                                  step="0.5"
+                                  placeholder="—"
+                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
+                                  disabled={isCompleted}
+                                  value={setLog.rpe ?? ""}
+                                  onChange={(event) =>
+                                    updateField(
+                                      setLog.id,
+                                      "rpe",
+                                      event.target.value === "" ? null : Number(event.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(setLog.id)}
+                                />
+                              </div>
+
+                              {/* Input 4: Rest */}
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
+                                  Відпоч
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  placeholder="—"
+                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
+                                  disabled={isCompleted}
+                                  value={setLog.restSeconds ?? ""}
+                                  onChange={(event) =>
+                                    updateField(
+                                      setLog.id,
+                                      "restSeconds",
+                                      event.target.value === "" ? null : Number(event.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(setLog.id)}
+                                />
+                              </div>
+                            </div>
+
+                            {/* Full-width Notes Textarea */}
+                            <div className="flex flex-col gap-1 w-full">
+                              <Textarea
+                                placeholder="Нотатки до підходу..."
+                                className="w-full text-xs min-h-[44px] py-2 px-2.5 rounded-lg border border-white/[0.04] bg-black/15 focus:bg-black/25 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 resize-none"
+                                disabled={isCompleted}
+                                value={setLog.notes ?? ""}
+                                onChange={(event) => updateField(setLog.id, "notes", event.target.value)}
+                                onBlur={() => persist(setLog.id)}
+                              />
+                            </div>
+                          </div>
                         </div>
                       );
                     })}
@@ -564,12 +724,12 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
             <label className="text-xs font-bold uppercase tracking-wider font-mono text-zinc-400">
               Загальні нотатки по сесії
             </label>
-            <textarea
-              className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[80px] rounded-lg"
+            <Textarea
+              className="min-h-[80px]"
               placeholder="Самопочуття, сон, стрес, загальні спостереження за тренуванням..."
-              disabled={isCompleted}
               value={sessionNotes}
-              onChange={(e) => setSessionNotes(e.target.value)}
+              onChange={(event) => setSessionNotes(event.target.value)}
+              onBlur={handleNotesBlur}
             />
           </div>
         </div>

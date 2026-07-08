@@ -35,6 +35,17 @@ export async function completeSessionAction(
   });
 }
 
+export async function updateSessionNotesAction(
+  id: string,
+  notes: string | null,
+): Promise<ActionResult<Awaited<ReturnType<typeof trainingSessionService.updateSessionNotes>>>> {
+  return withAction(async (userId) => {
+    const session = await trainingSessionService.updateSessionNotes(userId, id, notes);
+    invalidateTrainingSessionCache(userId);
+    return session;
+  });
+}
+
 export async function deleteSessionAction(id: string): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await trainingSessionService.deleteSession(userId, id);
