@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Scale,
   Star,
+  BarChart3,
 } from "lucide-react";
 
 export interface PageLink {
@@ -93,6 +94,7 @@ export const DOMAINS: Domain[] = [
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
           { href: "/health/training/sessions", label: "Sessions", icon: LineChart },
           { href: "/health/training/review", label: "Weekly Review", icon: TrendingUp },
+          { href: "/health/training/stats", label: "Statistics", icon: BarChart3 },
         ],
       },
     ],
