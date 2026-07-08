@@ -17,9 +17,10 @@ import type { MacroItem, MealType } from "../types";
 interface PushToFatSecretButtonProps {
   mealType: MealType;
   macroItems: MacroItem[];
+  pushedKey?: string;
 }
 
-export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretButtonProps) {
+export function PushToFatSecretButton({ mealType, macroItems, pushedKey }: PushToFatSecretButtonProps) {
   // 1. Hooks
   const [isPreviewPending, startPreviewTransition] = useTransition();
   const [isPushPending, startPushTransition] = useTransition();
@@ -33,10 +34,20 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
   const macroItemsKey = JSON.stringify(macroItems);
 
   useEffect(() => {
-    setIsPushed(false);
+    if (pushedKey) {
+      try {
+        const raw = localStorage.getItem("nutrition-fatsecret-pushed-v1");
+        const map = raw ? JSON.parse(raw) : {};
+        setIsPushed(!!map[pushedKey]);
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      setIsPushed(false);
+    }
     setResult(null);
     setError(null);
-  }, [macroItemsKey]);
+  }, [macroItemsKey, pushedKey]);
 
   // 2. Derived values
   const okCount = result?.filter((r) => r.status === "ok").length ?? 0;
@@ -79,6 +90,16 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
 
       const hasProblems = entries.some((r) => r.status !== "ok");
       if (!hasProblems) {
+        if (pushedKey) {
+          try {
+            const raw = localStorage.getItem("nutrition-fatsecret-pushed-v1");
+            const map = raw ? JSON.parse(raw) : {};
+            map[pushedKey] = true;
+            localStorage.setItem("nutrition-fatsecret-pushed-v1", JSON.stringify(map));
+          } catch (e) {
+            console.error(e);
+          }
+        }
         setIsPushed(true);
         setTimeout(() => {
           setResult(null);
@@ -98,17 +119,27 @@ export function PushToFatSecretButton({ mealType, macroItems }: PushToFatSecretB
   if (macroItems.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-1.5 items-center">
-      <Button
-        variant={isPushed ? "ghost" : "secondary"}
-        size="sm"
-        isLoading={isPreviewPending}
-        onClick={handleButtonClick}
-        className="text-xs"
-      >
-        {isPushed ? <Check size={12} className="text-emerald-400" /> : <Send size={12} />}
-        {isPushed ? "Запушено в FatSecret" : "Запушити в FatSecret"}
-      </Button>
+    <div className="flex flex-col gap-1.5 items-end">
+      <div className="flex items-center gap-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          isLoading={isPreviewPending}
+          onClick={handleButtonClick}
+          className="text-xs"
+        >
+          <Send size={12} />
+          Запушити в FatSecret
+        </Button>
+        {isPushed && (
+          <span
+            className="flex items-center justify-center text-emerald-400 bg-emerald-400/10 rounded-full p-1 shrink-0"
+            title="Вже запушено"
+          >
+            <Check size={14} strokeWidth={2.5} />
+          </span>
+        )}
+      </div>
 
       {previewError && (
         <p className="flex items-center gap-1 text-xs text-rose-400">

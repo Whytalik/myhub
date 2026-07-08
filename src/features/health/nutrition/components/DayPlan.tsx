@@ -7,6 +7,7 @@ import { PRODUCTS, getProductName } from "../products";
 import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
+import { currentWeekStart, weekStartKey } from "../week";
 import type { DayPlan as DayPlanType, Meal, MacroItem, MealType } from "../types";
 
 function isRepeatPortion(meal: Meal): boolean {
@@ -217,6 +218,7 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
 
 export function DayPlan({ day }: { day: DayPlanType }) {
   const processedDay = splitRepeatMeals(day);
+  const weekStart = weekStartKey(currentWeekStart());
   const actual = {
     vitalii: calculateDayMacros(processedDay, "vitalii"),
     olesia: calculateDayMacros(processedDay, "olesia"),
@@ -375,7 +377,11 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                 <span className="text-sm font-semibold text-zinc-200">
                   {entry.labels.join(" + ")} · {entry.title}
                 </span>
-                <PushToFatSecretButton mealType={entry.mealType} macroItems={entry.rawMacroItems} />
+                <PushToFatSecretButton
+                    mealType={entry.mealType}
+                    macroItems={entry.rawMacroItems}
+                    pushedKey={`${weekStart}-${day.weekday}-${entry.mealType}-${entry.labels.join("+")}`}
+                  />
               </div>
               {entry.labels.length > 1 && (
                 <p className="text-caption italic">
