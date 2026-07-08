@@ -23,7 +23,7 @@ import {
   deleteMapping,
   type UpsertMappingInput,
 } from "../services/product-mapping-service";
-import { getProductName } from "../products";
+import { getProductName, PRODUCTS } from "../products";
 import { PROFILES } from "../data";
 import type { MacroItem, MealType } from "../types";
 
@@ -70,7 +70,9 @@ export async function previewFatSecretPushAction(
     const entries: PushPreviewEntry[] = [];
 
     for (const profile of PROFILES) {
-      const itemsForProfile = macroItems.filter((item) => item[profile.id as ProfileId] > 0);
+      const itemsForProfile = macroItems.filter(
+        (item) => item[profile.id as ProfileId] > 0 && PRODUCTS[item.food]?.macros,
+      );
 
       for (const item of itemsForProfile) {
         const grams = item[profile.id as ProfileId];
@@ -103,7 +105,9 @@ export async function pushMealToFatSecretAction(
 
     for (const profile of PROFILES) {
       const account = accountByProfile.get(profile.id);
-      const itemsForProfile = macroItems.filter((item) => item[profile.id as ProfileId] > 0);
+      const itemsForProfile = macroItems.filter(
+        (item) => item[profile.id as ProfileId] > 0 && PRODUCTS[item.food]?.macros,
+      );
 
       for (const item of itemsForProfile) {
         const productName = getProductName(item.food);
@@ -176,7 +180,10 @@ export async function getFatSecretFoodAction(
             secret: account.accessTokenSecret,
           });
         } catch (error) {
-          console.warn(`OAuth1 food.get failed for profile ${profileId}, falling back to OAuth2:`, error);
+          console.warn(
+            `OAuth1 food.get failed for profile ${profileId}, falling back to OAuth2:`,
+            error,
+          );
         }
       }
     }
@@ -250,11 +257,11 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
   return withAction(async () => {
     const accounts = await prisma.fatSecretAccount.findMany();
     const results: ProfileFavorite[] = [];
-    
+
     for (const account of accounts) {
       const token = { key: account.accessToken, secret: account.accessTokenSecret };
       const uniqueFoodIds = new Set<string>();
-      
+
       // 1. Fetch recently eaten list (usually last 20 items)
       try {
         const recentlyEatenList = await getRecentlyEaten(token);
@@ -273,7 +280,7 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
       } catch (error) {
         console.error("Failed to get recently eaten list:", error);
       }
-      
+
       // 2. Fetch diary entries from the last 4 days to ensure nothing is missed
       const datesToFetch = [
         new Date(),
@@ -282,7 +289,7 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
         new Date(Date.now() - 259_200_000),
       ];
       const dateLabels = ["Сьогодні", "Вчора", "Позавчора", "3 дні тому"];
-      
+
       for (let i = 0; i < datesToFetch.length; i++) {
         const date = datesToFetch[i];
         const dateLabel = dateLabels[i];
@@ -308,7 +315,7 @@ export async function getFatSecretRecentlyEatenAction(): Promise<ActionResult<Pr
         }
       }
     }
-    
+
     return results;
   });
 }

@@ -20,8 +20,9 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   fruitMix: { foodId: "3352146", servingId: "3260931", servingGrams: 126 },
   banana: { foodId: "35755", servingId: "58486", servingGrams: 1 },
   oats: { foodId: "39715", servingId: "62446", servingGrams: 1 },
-  buckwheat: { foodId: "4435", servingId: "53115", servingGrams: 1 },
-  rice: { foodId: "4501", servingId: "53181", servingGrams: 1 },
+  // raw/dry basis (food_id 4435/4501 were cooked-basis — mismatched our raw-gram macros ~2.8x low)
+  buckwheat: { foodId: "39688", servingId: "62419", servingGrams: 1 },
+  rice: { foodId: "39821", servingId: "62552", servingGrams: 1 },
   arugula: { foodId: "6253", servingId: "54933", servingGrams: 1 },
   icebergLettuce: { foodId: "36414", servingId: "59145", servingGrams: 1 },
   honey: { foodId: "39536", servingId: "62267", servingGrams: 1 },
@@ -41,10 +42,12 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   brynza: { foodId: "33699", servingId: "56430", servingGrams: 1 },
   suluguni: { foodId: "33708", servingId: "56439", servingGrams: 1 },
   yogurtGreek: { foodId: "32696412", servingId: "29550569", servingGrams: 1 },
-  proteinPowder: { foodId: "3282", servingId: "51962", servingGrams: 1 },
-  hardCheese: { foodId: "33713", servingId: "56444", servingGrams: 1 },
+  proteinPowder: { foodId: "30236771", servingId: "27532320", servingGrams: 31 },
+  // Gouda — closer protein match to our "hard cheese" than the previously mapped Parmesan
+  hardCheese: { foodId: "33702", servingId: "56433", servingGrams: 1 },
   soySauce: { foodId: "3272", servingId: "51952", servingGrams: 1 },
   mustardDijon: { foodId: "294912", servingId: "330199", servingGrams: 1 },
-  cottageCheese: { foodId: "6312", servingId: "54992", servingGrams: 1 },
+  // was food_id 6312 = "Cooked String Beans (from Frozen)" — completely wrong food, caused ~1g protein logs
+  cottageCheese: { foodId: "33692", servingId: "56423", servingGrams: 1 },
   cream: { foodId: "1080", servingId: "49760", servingGrams: 1 },
 };

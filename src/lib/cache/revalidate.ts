@@ -59,3 +59,7 @@ export function invalidateTrainingSessionCache(userId: string) {
 export function invalidateProductMappingCache() {
   revalidateTag("product-mapping", INVALIDATE_PROFILE);
 }
+
+export function invalidateGiftedGroceryCache() {
+  revalidateTag("gifted-grocery", INVALIDATE_PROFILE);
+}

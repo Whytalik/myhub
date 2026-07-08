@@ -185,7 +185,12 @@ export const PRODUCTS: Record<string, Product> = {
     // "сир" є префіксом слова "сирники" (інша страва) — виключаємо цей збіг.
     { excludeAfter: ["ник"] },
   ),
-  suluguni: tracked("suluguni", "Сулугуні", { kcal: 282, protein: 20.5, fat: 22, carbs: 0.4 }, "dairy"),
+  suluguni: tracked(
+    "suluguni",
+    "Сулугуні",
+    { kcal: 282, protein: 20.5, fat: 22, carbs: 0.4 },
+    "dairy",
+  ),
   cottageCheese: tracked(
     "cottageCheese",
     "Творог",
@@ -236,7 +241,9 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 183.5, protein: 8.8, fat: 6.9, carbs: 23 },
     "other",
     // текст майже завжди каже просто "гірчиця", а не "діжонська".
-    { searchTerm: "гірчиця" },
+    // "гірчичний" (маринади) не ловиться відкиданням закінчень від "гірчиця" —
+    // чергування ц→ч — тому окремий корінь.
+    { searchTerm: "гірчиця гірчичн" },
   ),
   porkChop: tracked(
     "porkChop",
@@ -265,13 +272,15 @@ export const PRODUCTS: Record<string, Product> = {
     { searchTerm: "прованські" },
   ),
   oregano: pantry("oregano", "Орегано"),
+  fishSeasoning: pantry("fishSeasoning", "Приправа до риби"),
   coriander: pantry("coriander", "Коріандр"),
   nutmeg: pantry("nutmeg", "Мускатний горіх"),
   salt: pantry("salt", "Сіль"),
   blackPepper: pantry("blackPepper", "Чорний перець"),
   lemon: pantry("lemon", "Лимон"),
   garlic: pantry("garlic", "Часник"),
-  tomatoPaste: pantry("tomatoPaste", "Томатна паста"),
+  // корінь "паста" замінено на "томат" — так ловиться і "томатна", і "томатний" (маринади).
+  tomatoPaste: pantry("tomatoPaste", "Томатна паста", { searchTerm: "томат" }),
   flour: pantry("flour", "Борошно"),
   vanillaSugar: pantry("vanillaSugar", "Ванільний цукор"),
   dillParsley: pantry("dillParsley", "Кріп/петрушка"),

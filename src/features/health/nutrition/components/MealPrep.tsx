@@ -43,6 +43,7 @@ const proteinIngredients: RecipeIngredient[] = [
   },
   { food: "chickenHearts", computedQty: { food: "chickenHearts", weekdays: ["tue"] } },
   { food: "porkChop", computedQty: { food: "porkChop", weekdays: ["sun"] } },
+  { food: "mackerel", computedQty: { food: "mackerel", weekdays: ["wed"] } },
   { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
   {
     food: "eggs",
@@ -53,7 +54,7 @@ const proteinIngredients: RecipeIngredient[] = [
 
 const marinadeIngredients: RecipeIngredient[] = [
   { food: "yogurtGreek", qty: "150 г" },
-  { food: "lemon", qty: "½ шт" },
+  { food: "lemon", qty: "1 шт" },
   { food: "garlic", qty: "10 зубчиків" },
   { food: "soySauce", qty: "6 ст.л." },
   { food: "tomatoPaste", qty: "1 ст.л." },
@@ -67,6 +68,7 @@ const marinadeIngredients: RecipeIngredient[] = [
   { food: "thyme" },
   { food: "paprika" },
   { food: "provencalHerbs" },
+  { food: "fishSeasoning" },
   { food: "salt" },
   { food: "blackPepper" },
 ];
@@ -103,6 +105,12 @@ export function MealPrep() {
       computedQty: { food: "porkChop", weekdays: ["sun"] },
       marinade: "Суха трав'яна база",
     },
+    {
+      food: "mackerel",
+      qualifier: "Ср",
+      computedQty: { food: "mackerel", weekdays: ["wed"] },
+      marinade: "Скумбрія з лимоном",
+    },
   ];
 
   const algorithm = [
@@ -113,11 +121,12 @@ export function MealPrep() {
         "Очищення: курячі серця (600 г) промити у друшляку, натискаючи пальцями для видалення згустків крові.",
         "Відбивання: шматки свинячої відбивної (600 г) накрити харчовою плівкою і відбити молотком з обох боків.",
         "Нарізка: куряче філе для шашликів (390 г) нарізати порційними шматочками розміром 2–3 см.",
-        "Миска 1 (Йогуртово-лимонний): змішати грецький йогурт 150 г, сік ½ лимона + подрібнену цедру, 2 вичавлені зубчики часнику, 1 ч.л. паприки, ½ ч.л. прованських трав, 1 ст.л. оливкової олії, сіль та чорний перець. Додати куряче філе (390 г) та перемішати.",
-        "Миска 2 (Соєво-томатний): змішати соєвий соусу 3 ст.л., томатну пасту 1 ст.л., оливкову олію 1 ст.л., ½ ч.л. прованських трав та чорний перець. Додати очищені курячі серця (600 г) та перемішати.",
-        "Миска 3 (Соєво-часниковий): змішати соєвий соусу 3 ст.л., оливкову олію 1 ст.л., 2 вичавлені зубчики часнику, ½ ч.л. паприки та чорний перець. Додати куряче філе для смаження (680 г) та перемішати.",
-        "Миска 4 (Медово-гірчичний): змішати гірчицю 2 ст.л., мед 1 ст.л., оливкову олію 2 ст.л., 2 вичавлені зубчики часнику, сіль та чорний перець. Обмазати сумішшю куряче філе (1.1 кг).",
-        "Суха база (без миски): змішати сіль, чорний перець, 1 ч.л. сухого розмарину, ½ ч.л. чебрецю та 2 подрібнені зубчики часнику. Натерти сумішшю відбивні (600 г) з обох боків — без олії та рідини.",
+        "Миска 1: приготувати «Йогуртово-лимонний маринад» (рецепт нижче), додати куряче філе для шашликів (390 г) та перемішати.",
+        "Миска 2: приготувати «Соєво-томатний маринад» (рецепт нижче), додати очищені курячі серця (600 г) та перемішати.",
+        "Миска 3: приготувати «Соєво-часниковий маринад» (рецепт нижче), додати куряче філе для смаження (680 г) та перемішати.",
+        "Миска 4: приготувати «Медово-гірчичний маринад» (рецепт нижче), обмазати сумішшю куряче філе (1.1 кг).",
+        "Без миски: приготувати «Суху трав'яну базу» (рецепт нижче), натерти сумішшю відбивні (600 г) з обох боків.",
+        "Скумбрія: випотрошити 2 тушки, промити, зробити кілька поперечних надрізів на боках. Половину лимона нарізати тонкими півкружальцями і вставити в надрізи, посолити та натерти «Скумбрія з лимоном» (рецепт нижче). Щільно загорнути кожну тушку в фольгу.",
       ],
     },
     {
@@ -131,7 +140,7 @@ export function MealPrep() {
     {
       title: "Фінал",
       steps: [
-        "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах, підписати дні тижня та відразу відправити в морозильну камеру.",
+        "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах, загорнуту в фольгу скумбрію покласти окремо — підписати все днями тижня та відразу відправити в морозильну камеру.",
       ],
     },
   ];
@@ -202,6 +211,16 @@ export function MealPrep() {
         ],
         note: "Без олії та рідини — натерти суху суміш з обох боків, дати полежати 15–30 хв перед смаженням.",
       },
+      {
+        title: "Скумбрія з лимоном",
+        for: "Для запеченої скумбрії (Ср). Одразу у фользі — готова з морозилки в духовку.",
+        ingredients: [
+          { food: "lemon", qty: "½ шт, тонкими півкружальцями в надрізи" },
+          { food: "fishSeasoning", qty: "1 ч.л." },
+          { food: "salt" },
+        ],
+        note: "Не розморожувати перед запіканням — просто запікати з морозилки, додавши ~10 хв до часу.",
+      },
     ];
 
   const sectionIconClass =
@@ -241,7 +260,7 @@ export function MealPrep() {
                   <td className="py-2 pr-3 font-mono text-zinc-300">
                     {row.computedQty ? quantityLabel(row.computedQty) : row.qty}
                   </td>
-                  <td className="py-2 text-zinc-400">{highlightProductMentions(row.marinade)}</td>
+                  <td className="py-2 text-zinc-400">{row.marinade}</td>
                 </tr>
               ))}
             </tbody>
@@ -316,7 +335,7 @@ export function MealPrep() {
           {marinades.map((m, idx) => (
             <div key={idx} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.02]">
               <span className="text-sm font-semibold text-zinc-100">{m.title}</span>
-              <p className="text-caption">{highlightProductMentions(m.for)}</p>
+              <p className="text-caption">{m.for}</p>
               <ul className="flex flex-col gap-1">
                 {m.ingredients.map((ing, ingIdx) => (
                   <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
@@ -325,7 +344,7 @@ export function MealPrep() {
                   </li>
                 ))}
               </ul>
-              {m.note && <p className="text-caption italic">{highlightProductMentions(m.note)}</p>}
+              {m.note && <p className="text-caption italic">{m.note}</p>}
             </div>
           ))}
         </div>

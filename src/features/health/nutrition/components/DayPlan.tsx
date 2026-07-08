@@ -167,6 +167,54 @@ function splitRepeatMeals(day: DayPlanType): DayPlanType {
   };
 }
 
+interface ServingDisplay {
+  totalLabel: string;
+  vitalii: React.ReactNode;
+  olesia: React.ReactNode;
+}
+
+/** Shared weight formatting (raw vs. cooked, per-person %) for both the mobile card list and the desktop table. */
+function computeServingDisplay(group: ServingGroup): ServingDisplay {
+  const product = group.foodKey ? PRODUCTS[group.foodKey] : undefined;
+  const multiplier = product?.cookedMultiplier;
+
+  const totalRaw = group.vitalii + group.olesia;
+  const vitaliiPct = totalRaw > 0 ? Math.round((group.vitalii / totalRaw) * 100) : 0;
+  const olesiaPct = totalRaw > 0 ? 100 - vitaliiPct : 0;
+  const showPct = totalRaw > 0 && group.vitalii > 0 && group.olesia > 0;
+
+  let totalLabel = "";
+  if (showPct) {
+    totalLabel = multiplier
+      ? `~${Math.round(totalRaw * multiplier)} г готового`
+      : `~${Math.round(totalRaw)} г`;
+  }
+
+  const formatWeight = (rawWeight: number, pct: number) => {
+    if (rawWeight <= 0) return "—";
+    const pctSuffix = showPct ? ` (${pct}%)` : "";
+
+    if (multiplier) {
+      return (
+        <span className="flex flex-col items-end sm:inline sm:space-x-1">
+          <span className="text-zinc-500">{rawWeight} г (сух.)</span>
+          <span className="hidden sm:inline text-zinc-600 mx-1.5">→</span>
+          <span className="text-accent-nutrition font-bold">
+            ~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}
+          </span>
+        </span>
+      );
+    }
+    return `${rawWeight} г${pctSuffix}`;
+  };
+
+  return {
+    totalLabel,
+    vitalii: formatWeight(group.vitalii, vitaliiPct),
+    olesia: formatWeight(group.olesia, olesiaPct),
+  };
+}
+
 export function DayPlan({ day }: { day: DayPlanType }) {
   const processedDay = splitRepeatMeals(day);
   const actual = {
@@ -236,7 +284,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         })}
       </div>
 
-      {processedDay.note && <p className="text-caption italic">{highlightProductMentions(processedDay.note)}</p>}
+      {processedDay.note && (
+        <p className="text-caption italic">{highlightProductMentions(processedDay.note)}</p>
+      )}
 
       <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center gap-3">
@@ -265,19 +315,15 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               <thead>
                 <tr className="border-b border-white/[0.06] bg-white/[0.03]">
                   <th className="text-label text-left py-2 pr-3">Продукт</th>
-                  <th className="text-label text-right py-2 pr-3 w-24">Віталій</th>
-                  <th className="text-label text-right py-2 w-24">Олеся</th>
+                  <th className="text-label text-right py-2 w-24">Кількість</th>
                 </tr>
               </thead>
               <tbody>
                 {dayProductTotals.map((total, i) => (
                   <tr key={i} className="border-b border-white/[0.03] last:border-0">
                     <td className="py-2 pr-3 text-zinc-200">{total.name}</td>
-                    <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
-                      {total.vitalii > 0 ? `${total.vitalii} г` : "—"}
-                    </td>
                     <td className="py-2 text-right font-mono text-xs text-zinc-400">
-                      {total.olesia > 0 ? `${total.olesia} г` : "—"}
+                      {total.vitalii + total.olesia > 0 ? `${total.vitalii + total.olesia} г` : "—"}
                     </td>
                   </tr>
                 ))}
@@ -325,7 +371,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
         <div className="flex flex-col gap-6">
           {buildServingEntries(processedDay.meals).map((entry, idx) => (
             <div key={idx} className="flex flex-col gap-2">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <span className="text-sm font-semibold text-zinc-200">
                   {entry.labels.join(" + ")} · {entry.title}
                 </span>
@@ -338,72 +384,72 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               )}
               <div className="h-px bg-white/[0.06]" />
               {entry.groups.length > 0 ? (
-                <div className="overflow-x-auto rounded-xl bg-white/[0.02] px-3">
-                  <table className="w-full text-sm table-fixed">
-                    <thead>
-                      <tr className="border-b border-white/[0.06] bg-white/[0.03]">
-                        <th className="text-label text-left py-2 pr-3">Продукт</th>
-                        <th className="text-label text-right py-2 pr-3 w-20 sm:w-36">Всього</th>
-                        <th className="text-label text-right py-2 pr-3 w-28 sm:w-56">Віталій</th>
-                        <th className="text-label text-right py-2 w-28 sm:w-56">Олеся</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {entry.groups.map((group, groupIdx) => {
-                        const product = group.foodKey ? PRODUCTS[group.foodKey] : undefined;
-                        const multiplier = product?.cookedMultiplier;
-
-                        // Calculate total and percentages
-                        const totalRaw = group.vitalii + group.olesia;
-                        const vitaliiPct = totalRaw > 0 ? Math.round((group.vitalii / totalRaw) * 100) : 0;
-                        const olesiaPct = totalRaw > 0 ? 100 - vitaliiPct : 0;
-
-                        let totalLabel = "";
-                        if (totalRaw > 0 && group.vitalii > 0 && group.olesia > 0) {
-                          if (multiplier) {
-                            totalLabel = `~${Math.round(totalRaw * multiplier)} г готового`;
-                          } else {
-                            totalLabel = `~${Math.round(totalRaw)} г`;
-                          }
-                        }
-
-                        const formatWeight = (rawWeight: number, pct: number) => {
-                          if (rawWeight <= 0) return "—";
-                          
-                          const pctSuffix = totalRaw > 0 && group.vitalii > 0 && group.olesia > 0 ? ` (${pct}%)` : "";
-
-                          if (multiplier) {
-                            return (
-                              <span className="flex flex-col items-end sm:inline sm:space-x-1">
-                                <span className="text-zinc-500">{rawWeight} г (сух.)</span>
-                                <span className="hidden sm:inline text-zinc-600 mx-1.5">→</span>
-                                <span className="text-accent-nutrition font-bold">~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}</span>
+                <>
+                  <div className="flex sm:hidden flex-col gap-2">
+                    {entry.groups.map((group, groupIdx) => {
+                      const display = computeServingDisplay(group);
+                      return (
+                        <div
+                          key={groupIdx}
+                          className="rounded-lg bg-white/[0.02] p-2.5 flex flex-col gap-1.5"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm text-zinc-200">{group.label}</span>
+                            {display.totalLabel && (
+                              <span className="text-xs font-mono text-zinc-500 shrink-0">
+                                {display.totalLabel}
                               </span>
-                            );
-                          }
-                          return `${rawWeight} г${pctSuffix}`;
-                        };
-
-                        return (
-                          <tr key={groupIdx} className="border-b border-white/[0.03] last:border-0">
-                            <td className="py-2 pr-3 text-zinc-200">
-                              {group.label}
-                            </td>
-                            <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
-                              {totalLabel || "—"}
-                            </td>
-                            <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
-                              {formatWeight(group.vitalii, vitaliiPct)}
-                            </td>
-                            <td className="py-2 text-right font-mono text-xs text-zinc-400">
-                              {formatWeight(group.olesia, olesiaPct)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-1 text-xs font-mono text-zinc-400">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-zinc-500">Віталій</span>
+                              {display.vitalii}
+                            </div>
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-zinc-500">Олеся</span>
+                              {display.olesia}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="hidden sm:block overflow-x-auto rounded-xl bg-white/[0.02] px-3">
+                    <table className="w-full text-sm table-fixed">
+                      <thead>
+                        <tr className="border-b border-white/[0.06] bg-white/[0.03]">
+                          <th className="text-label text-left py-2 pr-3">Продукт</th>
+                          <th className="text-label text-right py-2 pr-3 w-36">Всього</th>
+                          <th className="text-label text-right py-2 pr-3 w-56">Віталій</th>
+                          <th className="text-label text-right py-2 w-56">Олеся</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {entry.groups.map((group, groupIdx) => {
+                          const display = computeServingDisplay(group);
+                          return (
+                            <tr
+                              key={groupIdx}
+                              className="border-b border-white/[0.03] last:border-0"
+                            >
+                              <td className="py-2 pr-3 text-zinc-200">{group.label}</td>
+                              <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                                {display.totalLabel || "—"}
+                              </td>
+                              <td className="py-2 pr-3 text-right font-mono text-xs text-zinc-400">
+                                {display.vitalii}
+                              </td>
+                              <td className="py-2 text-right font-mono text-xs text-zinc-400">
+                                {display.olesia}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               ) : (
                 <p className="text-caption italic">Без окремих продуктів для розрахунку</p>
               )}

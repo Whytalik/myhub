@@ -57,11 +57,16 @@ function buildStems(): StemEntry[] {
   const byStem = new Map<string, StemEntry>();
   for (const product of Object.values(PRODUCTS) as Product[]) {
     const source = product.searchTerm ?? lastWord(product.nameUk);
-    const stem = stripEnding(source.toLowerCase());
-    if (stem.length < 3) continue;
-    const existing = byStem.get(stem);
-    if (existing?.excludeAfter && !product.excludeAfter) continue;
-    byStem.set(stem, { stem, excludeAfter: product.excludeAfter });
+    // searchTerm може містити кілька коренів через пробіл — потрібно для
+    // прикметникових форм з чергуванням приголосних (гірчиця → гірчичний),
+    // які звичайне відкидання закінчень не вловлює.
+    for (const word of source.split(/\s+/)) {
+      const stem = stripEnding(word.toLowerCase());
+      if (stem.length < 3) continue;
+      const existing = byStem.get(stem);
+      if (existing?.excludeAfter && !product.excludeAfter) continue;
+      byStem.set(stem, { stem, excludeAfter: product.excludeAfter });
+    }
   }
   // Найдовші корені першими, щоб довший специфічний збіг вигравав у regex-альтернації.
   return [...byStem.values()].sort((a, b) => b.stem.length - a.stem.length);

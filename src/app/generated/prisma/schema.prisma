@@ -114,6 +114,25 @@ enum MappingSource {
   BARCODE
 }
 
+// Also not user-owned — see FatSecretAccount comment above. Records groceries the
+// household received as gifts (e.g. from parents) for a given shopping week, so the
+// weekly spend estimate can exclude them. Keyed by (weekStart, itemId) against the
+// static ShoppingItem ids in src/features/health/nutrition/data.ts.
+model GiftedGroceryItem {
+  id           String   @id @default(cuid())
+  weekStart    DateTime @db.Date // неділя-якір тижня закупівлі
+  itemId       String // статичний ShoppingItem.id, напр. "meat-0"
+  productKey   String? // денормалізований ShoppingItem.food — для стійкості відображення
+  value        Float // ₴, виключається з витрат; дефолт = item.price, редагується
+  quantityNote String?
+  note         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([weekStart, itemId])
+  @@index([weekStart])
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String

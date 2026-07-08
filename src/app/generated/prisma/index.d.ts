@@ -39,6 +39,11 @@ export type FatSecretAccount = $Result.DefaultSelection<Prisma.$FatSecretAccount
  */
 export type ProductFatSecretMapping = $Result.DefaultSelection<Prisma.$ProductFatSecretMappingPayload>
 /**
+ * Model GiftedGroceryItem
+ * 
+ */
+export type GiftedGroceryItem = $Result.DefaultSelection<Prisma.$GiftedGroceryItemPayload>
+/**
  * Model Account
  * 
  */
@@ -448,6 +453,16 @@ export class PrismaClient<
     * ```
     */
   get productFatSecretMapping(): Prisma.ProductFatSecretMappingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.giftedGroceryItem`: Exposes CRUD operations for the **GiftedGroceryItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GiftedGroceryItems
+    * const giftedGroceryItems = await prisma.giftedGroceryItem.findMany()
+    * ```
+    */
+  get giftedGroceryItem(): Prisma.GiftedGroceryItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.account`: Exposes CRUD operations for the **Account** model.
@@ -1137,6 +1152,7 @@ export namespace Prisma {
     PushSubscription: 'PushSubscription',
     FatSecretAccount: 'FatSecretAccount',
     ProductFatSecretMapping: 'ProductFatSecretMapping',
+    GiftedGroceryItem: 'GiftedGroceryItem',
     Account: 'Account',
     Session: 'Session',
     VerificationToken: 'VerificationToken',
@@ -1177,7 +1193,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1548,6 +1564,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductFatSecretMappingCountArgs<ExtArgs>
             result: $Utils.Optional<ProductFatSecretMappingCountAggregateOutputType> | number
+          }
+        }
+      }
+      GiftedGroceryItem: {
+        payload: Prisma.$GiftedGroceryItemPayload<ExtArgs>
+        fields: Prisma.GiftedGroceryItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GiftedGroceryItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GiftedGroceryItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          findFirst: {
+            args: Prisma.GiftedGroceryItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GiftedGroceryItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          findMany: {
+            args: Prisma.GiftedGroceryItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>[]
+          }
+          create: {
+            args: Prisma.GiftedGroceryItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          createMany: {
+            args: Prisma.GiftedGroceryItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GiftedGroceryItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>[]
+          }
+          delete: {
+            args: Prisma.GiftedGroceryItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          update: {
+            args: Prisma.GiftedGroceryItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.GiftedGroceryItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GiftedGroceryItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GiftedGroceryItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.GiftedGroceryItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GiftedGroceryItemPayload>
+          }
+          aggregate: {
+            args: Prisma.GiftedGroceryItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGiftedGroceryItem>
+          }
+          groupBy: {
+            args: Prisma.GiftedGroceryItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GiftedGroceryItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GiftedGroceryItemCountArgs<ExtArgs>
+            result: $Utils.Optional<GiftedGroceryItemCountAggregateOutputType> | number
           }
         }
       }
@@ -3514,6 +3604,7 @@ export namespace Prisma {
     pushSubscription?: PushSubscriptionOmit
     fatSecretAccount?: FatSecretAccountOmit
     productFatSecretMapping?: ProductFatSecretMappingOmit
+    giftedGroceryItem?: GiftedGroceryItemOmit
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
@@ -10359,6 +10450,1092 @@ export namespace Prisma {
      * Omit specific fields from the ProductFatSecretMapping
      */
     omit?: ProductFatSecretMappingOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GiftedGroceryItem
+   */
+
+  export type AggregateGiftedGroceryItem = {
+    _count: GiftedGroceryItemCountAggregateOutputType | null
+    _avg: GiftedGroceryItemAvgAggregateOutputType | null
+    _sum: GiftedGroceryItemSumAggregateOutputType | null
+    _min: GiftedGroceryItemMinAggregateOutputType | null
+    _max: GiftedGroceryItemMaxAggregateOutputType | null
+  }
+
+  export type GiftedGroceryItemAvgAggregateOutputType = {
+    value: number | null
+  }
+
+  export type GiftedGroceryItemSumAggregateOutputType = {
+    value: number | null
+  }
+
+  export type GiftedGroceryItemMinAggregateOutputType = {
+    id: string | null
+    weekStart: Date | null
+    itemId: string | null
+    productKey: string | null
+    value: number | null
+    quantityNote: string | null
+    note: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GiftedGroceryItemMaxAggregateOutputType = {
+    id: string | null
+    weekStart: Date | null
+    itemId: string | null
+    productKey: string | null
+    value: number | null
+    quantityNote: string | null
+    note: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GiftedGroceryItemCountAggregateOutputType = {
+    id: number
+    weekStart: number
+    itemId: number
+    productKey: number
+    value: number
+    quantityNote: number
+    note: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GiftedGroceryItemAvgAggregateInputType = {
+    value?: true
+  }
+
+  export type GiftedGroceryItemSumAggregateInputType = {
+    value?: true
+  }
+
+  export type GiftedGroceryItemMinAggregateInputType = {
+    id?: true
+    weekStart?: true
+    itemId?: true
+    productKey?: true
+    value?: true
+    quantityNote?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GiftedGroceryItemMaxAggregateInputType = {
+    id?: true
+    weekStart?: true
+    itemId?: true
+    productKey?: true
+    value?: true
+    quantityNote?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GiftedGroceryItemCountAggregateInputType = {
+    id?: true
+    weekStart?: true
+    itemId?: true
+    productKey?: true
+    value?: true
+    quantityNote?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GiftedGroceryItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GiftedGroceryItem to aggregate.
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GiftedGroceryItems to fetch.
+     */
+    orderBy?: GiftedGroceryItemOrderByWithRelationInput | GiftedGroceryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GiftedGroceryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GiftedGroceryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GiftedGroceryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GiftedGroceryItems
+    **/
+    _count?: true | GiftedGroceryItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GiftedGroceryItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GiftedGroceryItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GiftedGroceryItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GiftedGroceryItemMaxAggregateInputType
+  }
+
+  export type GetGiftedGroceryItemAggregateType<T extends GiftedGroceryItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateGiftedGroceryItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGiftedGroceryItem[P]>
+      : GetScalarType<T[P], AggregateGiftedGroceryItem[P]>
+  }
+
+
+
+
+  export type GiftedGroceryItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GiftedGroceryItemWhereInput
+    orderBy?: GiftedGroceryItemOrderByWithAggregationInput | GiftedGroceryItemOrderByWithAggregationInput[]
+    by: GiftedGroceryItemScalarFieldEnum[] | GiftedGroceryItemScalarFieldEnum
+    having?: GiftedGroceryItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GiftedGroceryItemCountAggregateInputType | true
+    _avg?: GiftedGroceryItemAvgAggregateInputType
+    _sum?: GiftedGroceryItemSumAggregateInputType
+    _min?: GiftedGroceryItemMinAggregateInputType
+    _max?: GiftedGroceryItemMaxAggregateInputType
+  }
+
+  export type GiftedGroceryItemGroupByOutputType = {
+    id: string
+    weekStart: Date
+    itemId: string
+    productKey: string | null
+    value: number
+    quantityNote: string | null
+    note: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GiftedGroceryItemCountAggregateOutputType | null
+    _avg: GiftedGroceryItemAvgAggregateOutputType | null
+    _sum: GiftedGroceryItemSumAggregateOutputType | null
+    _min: GiftedGroceryItemMinAggregateOutputType | null
+    _max: GiftedGroceryItemMaxAggregateOutputType | null
+  }
+
+  type GetGiftedGroceryItemGroupByPayload<T extends GiftedGroceryItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GiftedGroceryItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GiftedGroceryItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GiftedGroceryItemGroupByOutputType[P]>
+            : GetScalarType<T[P], GiftedGroceryItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GiftedGroceryItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    itemId?: boolean
+    productKey?: boolean
+    value?: boolean
+    quantityNote?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["giftedGroceryItem"]>
+
+  export type GiftedGroceryItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    itemId?: boolean
+    productKey?: boolean
+    value?: boolean
+    quantityNote?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["giftedGroceryItem"]>
+
+  export type GiftedGroceryItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    weekStart?: boolean
+    itemId?: boolean
+    productKey?: boolean
+    value?: boolean
+    quantityNote?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["giftedGroceryItem"]>
+
+  export type GiftedGroceryItemSelectScalar = {
+    id?: boolean
+    weekStart?: boolean
+    itemId?: boolean
+    productKey?: boolean
+    value?: boolean
+    quantityNote?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GiftedGroceryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "weekStart" | "itemId" | "productKey" | "value" | "quantityNote" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["giftedGroceryItem"]>
+
+  export type $GiftedGroceryItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GiftedGroceryItem"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      weekStart: Date
+      itemId: string
+      productKey: string | null
+      value: number
+      quantityNote: string | null
+      note: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["giftedGroceryItem"]>
+    composites: {}
+  }
+
+  type GiftedGroceryItemGetPayload<S extends boolean | null | undefined | GiftedGroceryItemDefaultArgs> = $Result.GetResult<Prisma.$GiftedGroceryItemPayload, S>
+
+  type GiftedGroceryItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GiftedGroceryItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GiftedGroceryItemCountAggregateInputType | true
+    }
+
+  export interface GiftedGroceryItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GiftedGroceryItem'], meta: { name: 'GiftedGroceryItem' } }
+    /**
+     * Find zero or one GiftedGroceryItem that matches the filter.
+     * @param {GiftedGroceryItemFindUniqueArgs} args - Arguments to find a GiftedGroceryItem
+     * @example
+     * // Get one GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GiftedGroceryItemFindUniqueArgs>(args: SelectSubset<T, GiftedGroceryItemFindUniqueArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GiftedGroceryItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GiftedGroceryItemFindUniqueOrThrowArgs} args - Arguments to find a GiftedGroceryItem
+     * @example
+     * // Get one GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GiftedGroceryItemFindUniqueOrThrowArgs>(args: SelectSubset<T, GiftedGroceryItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GiftedGroceryItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemFindFirstArgs} args - Arguments to find a GiftedGroceryItem
+     * @example
+     * // Get one GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GiftedGroceryItemFindFirstArgs>(args?: SelectSubset<T, GiftedGroceryItemFindFirstArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GiftedGroceryItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemFindFirstOrThrowArgs} args - Arguments to find a GiftedGroceryItem
+     * @example
+     * // Get one GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GiftedGroceryItemFindFirstOrThrowArgs>(args?: SelectSubset<T, GiftedGroceryItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GiftedGroceryItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GiftedGroceryItems
+     * const giftedGroceryItems = await prisma.giftedGroceryItem.findMany()
+     * 
+     * // Get first 10 GiftedGroceryItems
+     * const giftedGroceryItems = await prisma.giftedGroceryItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const giftedGroceryItemWithIdOnly = await prisma.giftedGroceryItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GiftedGroceryItemFindManyArgs>(args?: SelectSubset<T, GiftedGroceryItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GiftedGroceryItem.
+     * @param {GiftedGroceryItemCreateArgs} args - Arguments to create a GiftedGroceryItem.
+     * @example
+     * // Create one GiftedGroceryItem
+     * const GiftedGroceryItem = await prisma.giftedGroceryItem.create({
+     *   data: {
+     *     // ... data to create a GiftedGroceryItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends GiftedGroceryItemCreateArgs>(args: SelectSubset<T, GiftedGroceryItemCreateArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GiftedGroceryItems.
+     * @param {GiftedGroceryItemCreateManyArgs} args - Arguments to create many GiftedGroceryItems.
+     * @example
+     * // Create many GiftedGroceryItems
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GiftedGroceryItemCreateManyArgs>(args?: SelectSubset<T, GiftedGroceryItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GiftedGroceryItems and returns the data saved in the database.
+     * @param {GiftedGroceryItemCreateManyAndReturnArgs} args - Arguments to create many GiftedGroceryItems.
+     * @example
+     * // Create many GiftedGroceryItems
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GiftedGroceryItems and only return the `id`
+     * const giftedGroceryItemWithIdOnly = await prisma.giftedGroceryItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GiftedGroceryItemCreateManyAndReturnArgs>(args?: SelectSubset<T, GiftedGroceryItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GiftedGroceryItem.
+     * @param {GiftedGroceryItemDeleteArgs} args - Arguments to delete one GiftedGroceryItem.
+     * @example
+     * // Delete one GiftedGroceryItem
+     * const GiftedGroceryItem = await prisma.giftedGroceryItem.delete({
+     *   where: {
+     *     // ... filter to delete one GiftedGroceryItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GiftedGroceryItemDeleteArgs>(args: SelectSubset<T, GiftedGroceryItemDeleteArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GiftedGroceryItem.
+     * @param {GiftedGroceryItemUpdateArgs} args - Arguments to update one GiftedGroceryItem.
+     * @example
+     * // Update one GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GiftedGroceryItemUpdateArgs>(args: SelectSubset<T, GiftedGroceryItemUpdateArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GiftedGroceryItems.
+     * @param {GiftedGroceryItemDeleteManyArgs} args - Arguments to filter GiftedGroceryItems to delete.
+     * @example
+     * // Delete a few GiftedGroceryItems
+     * const { count } = await prisma.giftedGroceryItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GiftedGroceryItemDeleteManyArgs>(args?: SelectSubset<T, GiftedGroceryItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GiftedGroceryItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GiftedGroceryItems
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GiftedGroceryItemUpdateManyArgs>(args: SelectSubset<T, GiftedGroceryItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GiftedGroceryItems and returns the data updated in the database.
+     * @param {GiftedGroceryItemUpdateManyAndReturnArgs} args - Arguments to update many GiftedGroceryItems.
+     * @example
+     * // Update many GiftedGroceryItems
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GiftedGroceryItems and only return the `id`
+     * const giftedGroceryItemWithIdOnly = await prisma.giftedGroceryItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GiftedGroceryItemUpdateManyAndReturnArgs>(args: SelectSubset<T, GiftedGroceryItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GiftedGroceryItem.
+     * @param {GiftedGroceryItemUpsertArgs} args - Arguments to update or create a GiftedGroceryItem.
+     * @example
+     * // Update or create a GiftedGroceryItem
+     * const giftedGroceryItem = await prisma.giftedGroceryItem.upsert({
+     *   create: {
+     *     // ... data to create a GiftedGroceryItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GiftedGroceryItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GiftedGroceryItemUpsertArgs>(args: SelectSubset<T, GiftedGroceryItemUpsertArgs<ExtArgs>>): Prisma__GiftedGroceryItemClient<$Result.GetResult<Prisma.$GiftedGroceryItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GiftedGroceryItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemCountArgs} args - Arguments to filter GiftedGroceryItems to count.
+     * @example
+     * // Count the number of GiftedGroceryItems
+     * const count = await prisma.giftedGroceryItem.count({
+     *   where: {
+     *     // ... the filter for the GiftedGroceryItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends GiftedGroceryItemCountArgs>(
+      args?: Subset<T, GiftedGroceryItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GiftedGroceryItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GiftedGroceryItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GiftedGroceryItemAggregateArgs>(args: Subset<T, GiftedGroceryItemAggregateArgs>): Prisma.PrismaPromise<GetGiftedGroceryItemAggregateType<T>>
+
+    /**
+     * Group by GiftedGroceryItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GiftedGroceryItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GiftedGroceryItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GiftedGroceryItemGroupByArgs['orderBy'] }
+        : { orderBy?: GiftedGroceryItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GiftedGroceryItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGiftedGroceryItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GiftedGroceryItem model
+   */
+  readonly fields: GiftedGroceryItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GiftedGroceryItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GiftedGroceryItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GiftedGroceryItem model
+   */
+  interface GiftedGroceryItemFieldRefs {
+    readonly id: FieldRef<"GiftedGroceryItem", 'String'>
+    readonly weekStart: FieldRef<"GiftedGroceryItem", 'DateTime'>
+    readonly itemId: FieldRef<"GiftedGroceryItem", 'String'>
+    readonly productKey: FieldRef<"GiftedGroceryItem", 'String'>
+    readonly value: FieldRef<"GiftedGroceryItem", 'Float'>
+    readonly quantityNote: FieldRef<"GiftedGroceryItem", 'String'>
+    readonly note: FieldRef<"GiftedGroceryItem", 'String'>
+    readonly createdAt: FieldRef<"GiftedGroceryItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"GiftedGroceryItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GiftedGroceryItem findUnique
+   */
+  export type GiftedGroceryItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter, which GiftedGroceryItem to fetch.
+     */
+    where: GiftedGroceryItemWhereUniqueInput
+  }
+
+  /**
+   * GiftedGroceryItem findUniqueOrThrow
+   */
+  export type GiftedGroceryItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter, which GiftedGroceryItem to fetch.
+     */
+    where: GiftedGroceryItemWhereUniqueInput
+  }
+
+  /**
+   * GiftedGroceryItem findFirst
+   */
+  export type GiftedGroceryItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter, which GiftedGroceryItem to fetch.
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GiftedGroceryItems to fetch.
+     */
+    orderBy?: GiftedGroceryItemOrderByWithRelationInput | GiftedGroceryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GiftedGroceryItems.
+     */
+    cursor?: GiftedGroceryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GiftedGroceryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GiftedGroceryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GiftedGroceryItems.
+     */
+    distinct?: GiftedGroceryItemScalarFieldEnum | GiftedGroceryItemScalarFieldEnum[]
+  }
+
+  /**
+   * GiftedGroceryItem findFirstOrThrow
+   */
+  export type GiftedGroceryItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter, which GiftedGroceryItem to fetch.
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GiftedGroceryItems to fetch.
+     */
+    orderBy?: GiftedGroceryItemOrderByWithRelationInput | GiftedGroceryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GiftedGroceryItems.
+     */
+    cursor?: GiftedGroceryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GiftedGroceryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GiftedGroceryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GiftedGroceryItems.
+     */
+    distinct?: GiftedGroceryItemScalarFieldEnum | GiftedGroceryItemScalarFieldEnum[]
+  }
+
+  /**
+   * GiftedGroceryItem findMany
+   */
+  export type GiftedGroceryItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter, which GiftedGroceryItems to fetch.
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GiftedGroceryItems to fetch.
+     */
+    orderBy?: GiftedGroceryItemOrderByWithRelationInput | GiftedGroceryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GiftedGroceryItems.
+     */
+    cursor?: GiftedGroceryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GiftedGroceryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GiftedGroceryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GiftedGroceryItems.
+     */
+    distinct?: GiftedGroceryItemScalarFieldEnum | GiftedGroceryItemScalarFieldEnum[]
+  }
+
+  /**
+   * GiftedGroceryItem create
+   */
+  export type GiftedGroceryItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * The data needed to create a GiftedGroceryItem.
+     */
+    data: XOR<GiftedGroceryItemCreateInput, GiftedGroceryItemUncheckedCreateInput>
+  }
+
+  /**
+   * GiftedGroceryItem createMany
+   */
+  export type GiftedGroceryItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GiftedGroceryItems.
+     */
+    data: GiftedGroceryItemCreateManyInput | GiftedGroceryItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GiftedGroceryItem createManyAndReturn
+   */
+  export type GiftedGroceryItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many GiftedGroceryItems.
+     */
+    data: GiftedGroceryItemCreateManyInput | GiftedGroceryItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GiftedGroceryItem update
+   */
+  export type GiftedGroceryItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * The data needed to update a GiftedGroceryItem.
+     */
+    data: XOR<GiftedGroceryItemUpdateInput, GiftedGroceryItemUncheckedUpdateInput>
+    /**
+     * Choose, which GiftedGroceryItem to update.
+     */
+    where: GiftedGroceryItemWhereUniqueInput
+  }
+
+  /**
+   * GiftedGroceryItem updateMany
+   */
+  export type GiftedGroceryItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GiftedGroceryItems.
+     */
+    data: XOR<GiftedGroceryItemUpdateManyMutationInput, GiftedGroceryItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GiftedGroceryItems to update
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * Limit how many GiftedGroceryItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GiftedGroceryItem updateManyAndReturn
+   */
+  export type GiftedGroceryItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * The data used to update GiftedGroceryItems.
+     */
+    data: XOR<GiftedGroceryItemUpdateManyMutationInput, GiftedGroceryItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GiftedGroceryItems to update
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * Limit how many GiftedGroceryItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GiftedGroceryItem upsert
+   */
+  export type GiftedGroceryItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * The filter to search for the GiftedGroceryItem to update in case it exists.
+     */
+    where: GiftedGroceryItemWhereUniqueInput
+    /**
+     * In case the GiftedGroceryItem found by the `where` argument doesn't exist, create a new GiftedGroceryItem with this data.
+     */
+    create: XOR<GiftedGroceryItemCreateInput, GiftedGroceryItemUncheckedCreateInput>
+    /**
+     * In case the GiftedGroceryItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GiftedGroceryItemUpdateInput, GiftedGroceryItemUncheckedUpdateInput>
+  }
+
+  /**
+   * GiftedGroceryItem delete
+   */
+  export type GiftedGroceryItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
+    /**
+     * Filter which GiftedGroceryItem to delete.
+     */
+    where: GiftedGroceryItemWhereUniqueInput
+  }
+
+  /**
+   * GiftedGroceryItem deleteMany
+   */
+  export type GiftedGroceryItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GiftedGroceryItems to delete
+     */
+    where?: GiftedGroceryItemWhereInput
+    /**
+     * Limit how many GiftedGroceryItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GiftedGroceryItem without action
+   */
+  export type GiftedGroceryItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GiftedGroceryItem
+     */
+    select?: GiftedGroceryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GiftedGroceryItem
+     */
+    omit?: GiftedGroceryItemOmit<ExtArgs> | null
   }
 
 
@@ -40347,6 +41524,21 @@ export namespace Prisma {
   export type ProductFatSecretMappingScalarFieldEnum = (typeof ProductFatSecretMappingScalarFieldEnum)[keyof typeof ProductFatSecretMappingScalarFieldEnum]
 
 
+  export const GiftedGroceryItemScalarFieldEnum: {
+    id: 'id',
+    weekStart: 'weekStart',
+    itemId: 'itemId',
+    productKey: 'productKey',
+    value: 'value',
+    quantityNote: 'quantityNote',
+    note: 'note',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GiftedGroceryItemScalarFieldEnum = (typeof GiftedGroceryItemScalarFieldEnum)[keyof typeof GiftedGroceryItemScalarFieldEnum]
+
+
   export const AccountScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -41428,6 +42620,81 @@ export namespace Prisma {
     source?: EnumMappingSourceWithAggregatesFilter<"ProductFatSecretMapping"> | $Enums.MappingSource
     createdAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
+  }
+
+  export type GiftedGroceryItemWhereInput = {
+    AND?: GiftedGroceryItemWhereInput | GiftedGroceryItemWhereInput[]
+    OR?: GiftedGroceryItemWhereInput[]
+    NOT?: GiftedGroceryItemWhereInput | GiftedGroceryItemWhereInput[]
+    id?: StringFilter<"GiftedGroceryItem"> | string
+    weekStart?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+    itemId?: StringFilter<"GiftedGroceryItem"> | string
+    productKey?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    value?: FloatFilter<"GiftedGroceryItem"> | number
+    quantityNote?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    note?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    createdAt?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+    updatedAt?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+  }
+
+  export type GiftedGroceryItemOrderByWithRelationInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    itemId?: SortOrder
+    productKey?: SortOrderInput | SortOrder
+    value?: SortOrder
+    quantityNote?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GiftedGroceryItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    weekStart_itemId?: GiftedGroceryItemWeekStartItemIdCompoundUniqueInput
+    AND?: GiftedGroceryItemWhereInput | GiftedGroceryItemWhereInput[]
+    OR?: GiftedGroceryItemWhereInput[]
+    NOT?: GiftedGroceryItemWhereInput | GiftedGroceryItemWhereInput[]
+    weekStart?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+    itemId?: StringFilter<"GiftedGroceryItem"> | string
+    productKey?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    value?: FloatFilter<"GiftedGroceryItem"> | number
+    quantityNote?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    note?: StringNullableFilter<"GiftedGroceryItem"> | string | null
+    createdAt?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+    updatedAt?: DateTimeFilter<"GiftedGroceryItem"> | Date | string
+  }, "id" | "weekStart_itemId">
+
+  export type GiftedGroceryItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    itemId?: SortOrder
+    productKey?: SortOrderInput | SortOrder
+    value?: SortOrder
+    quantityNote?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GiftedGroceryItemCountOrderByAggregateInput
+    _avg?: GiftedGroceryItemAvgOrderByAggregateInput
+    _max?: GiftedGroceryItemMaxOrderByAggregateInput
+    _min?: GiftedGroceryItemMinOrderByAggregateInput
+    _sum?: GiftedGroceryItemSumOrderByAggregateInput
+  }
+
+  export type GiftedGroceryItemScalarWhereWithAggregatesInput = {
+    AND?: GiftedGroceryItemScalarWhereWithAggregatesInput | GiftedGroceryItemScalarWhereWithAggregatesInput[]
+    OR?: GiftedGroceryItemScalarWhereWithAggregatesInput[]
+    NOT?: GiftedGroceryItemScalarWhereWithAggregatesInput | GiftedGroceryItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GiftedGroceryItem"> | string
+    weekStart?: DateTimeWithAggregatesFilter<"GiftedGroceryItem"> | Date | string
+    itemId?: StringWithAggregatesFilter<"GiftedGroceryItem"> | string
+    productKey?: StringNullableWithAggregatesFilter<"GiftedGroceryItem"> | string | null
+    value?: FloatWithAggregatesFilter<"GiftedGroceryItem"> | number
+    quantityNote?: StringNullableWithAggregatesFilter<"GiftedGroceryItem"> | string | null
+    note?: StringNullableWithAggregatesFilter<"GiftedGroceryItem"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GiftedGroceryItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GiftedGroceryItem"> | Date | string
   }
 
   export type AccountWhereInput = {
@@ -44146,6 +45413,90 @@ export namespace Prisma {
     fat?: FloatFieldUpdateOperationsInput | number
     carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GiftedGroceryItemCreateInput = {
+    id?: string
+    weekStart: Date | string
+    itemId: string
+    productKey?: string | null
+    value: number
+    quantityNote?: string | null
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GiftedGroceryItemUncheckedCreateInput = {
+    id?: string
+    weekStart: Date | string
+    itemId: string
+    productKey?: string | null
+    value: number
+    quantityNote?: string | null
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GiftedGroceryItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    productKey?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: FloatFieldUpdateOperationsInput | number
+    quantityNote?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GiftedGroceryItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    productKey?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: FloatFieldUpdateOperationsInput | number
+    quantityNote?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GiftedGroceryItemCreateManyInput = {
+    id?: string
+    weekStart: Date | string
+    itemId: string
+    productKey?: string | null
+    value: number
+    quantityNote?: string | null
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GiftedGroceryItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    productKey?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: FloatFieldUpdateOperationsInput | number
+    quantityNote?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GiftedGroceryItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    weekStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    itemId?: StringFieldUpdateOperationsInput | string
+    productKey?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: FloatFieldUpdateOperationsInput | number
+    quantityNote?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -47220,6 +48571,55 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMappingSourceFilter<$PrismaModel>
     _max?: NestedEnumMappingSourceFilter<$PrismaModel>
+  }
+
+  export type GiftedGroceryItemWeekStartItemIdCompoundUniqueInput = {
+    weekStart: Date | string
+    itemId: string
+  }
+
+  export type GiftedGroceryItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    itemId?: SortOrder
+    productKey?: SortOrder
+    value?: SortOrder
+    quantityNote?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GiftedGroceryItemAvgOrderByAggregateInput = {
+    value?: SortOrder
+  }
+
+  export type GiftedGroceryItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    itemId?: SortOrder
+    productKey?: SortOrder
+    value?: SortOrder
+    quantityNote?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GiftedGroceryItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    weekStart?: SortOrder
+    itemId?: SortOrder
+    productKey?: SortOrder
+    value?: SortOrder
+    quantityNote?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GiftedGroceryItemSumOrderByAggregateInput = {
+    value?: SortOrder
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
