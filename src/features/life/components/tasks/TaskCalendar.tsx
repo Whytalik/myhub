@@ -236,7 +236,7 @@ function DayTimelineCardWrapper({
   style?: React.CSSProperties;
   isResizing?: boolean;
 }) {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging, transform } = useDraggable({
     id: task.id,
     data: task,
     disabled: isResizing,
@@ -244,17 +244,16 @@ function DayTimelineCardWrapper({
 
   const dragStyle: React.CSSProperties = {
     ...style,
-    transform: "none",
+    transform: transform ? `translate3d(0, ${transform.y}px, 0)` : undefined,
     zIndex: isDragging || isResizing ? 1000 : style?.zIndex,
     transition: "none",
-    top: 0,
-    willChange: isResizing ? "width" : "auto",
+    willChange: isResizing ? "height" : "auto",
   };
 
   return (
     <div
       ref={setNodeRef}
-      className="absolute h-full"
+      className="absolute"
       style={dragStyle}
       {...attributes}
       {...listeners}
@@ -373,6 +372,15 @@ export function TaskCalendar({
 
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
+  const verticalScrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (mode === "day" && verticalScrollContainerRef.current) {
+      const currentHour = new Date().getHours();
+      const scrollAmount = Math.max(0, currentHour * 60 - 120);
+      verticalScrollContainerRef.current.scrollTop = scrollAmount;
+    }
+  }, [mode]);
 
   useEffect(() => {
     setLocalTasks(initialTasks);
@@ -511,6 +519,109 @@ export function TaskCalendar({
     () => tasksForDay.filter((t) => !t.hasPlannedTime),
     [tasksForDay],
   );
+
+  const positionedTasks = useMemo(() => {
+    const getMinutesSinceMidnight = (date: Date) => {
+      return date.getHours() * 60 + date.getMinutes();
+    };
+
+    const sorted = [...scheduledTasks].sort(
+      (a, b) => new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime()
+    );
+
+    const taskPlacements: {
+      task: TaskData;
+      startMin: number;
+      endMin: number;
+      colIdx: number;
+      totalCols: number;
+    }[] = [];
+
+    const overlaps = (s1: number, e1: number, s2: number, e2: number) => {
+      return s1 < e2 && s2 < e1;
+    };
+
+    sorted.forEach((task) => {
+      const startMin = getMinutesSinceMidnight(new Date(task.plannedDate!));
+      const duration = task.plannedEndDate
+        ? differenceInMinutes(new Date(task.plannedEndDate), new Date(task.plannedDate!))
+        : 60;
+      const endMin = startMin + Math.max(duration, 45);
+
+      let colIdx = 0;
+      while (true) {
+        const isConflict = taskPlacements.some((p) => {
+          return p.colIdx === colIdx && overlaps(p.startMin, p.endMin, startMin, endMin);
+        });
+
+        if (!isConflict) {
+          break;
+        }
+        colIdx++;
+      }
+
+      taskPlacements.push({
+        task,
+        startMin,
+        endMin,
+        colIdx,
+        totalCols: 1,
+      });
+    });
+
+    taskPlacements.forEach((p) => {
+      const overlapping = taskPlacements.filter((other) => {
+        return overlaps(p.startMin, p.endMin, other.startMin, other.endMin);
+      });
+
+      const maxColIdx = Math.max(...overlapping.map((o) => o.colIdx), 0);
+      p.totalCols = maxColIdx + 1;
+    });
+
+    return taskPlacements;
+  }, [scheduledTasks]);
+
+  const handleTimelineDragStart = (event: DragStartEvent) => {
+    setIsDraggingAny(true);
+  };
+
+  const handleTimelineDragEnd = async (event: DragEndEvent) => {
+    setIsDraggingAny(false);
+    const { active, delta } = event;
+    const task = active.data.current as TaskData;
+    if (!task || !task.plannedDate) return;
+
+    const minutesDelta = Math.round(delta.y / 5) * 5;
+    if (minutesDelta === 0) return;
+
+    const originalStart = new Date(task.plannedDate);
+    const newStart = addMinutes(originalStart, minutesDelta);
+    
+    const durationMs = task.plannedEndDate
+      ? new Date(task.plannedEndDate).getTime() - originalStart.getTime()
+      : 3600000;
+    const newEnd = new Date(newStart.getTime() + durationMs);
+
+    const originalTasks = [...localTasks];
+    setLocalTasks((prev) =>
+      prev.map((t) =>
+        t.id === task.id ? { ...t, plannedDate: newStart, plannedEndDate: newEnd } : t,
+      ),
+    );
+
+    const result = await updateTaskTimeRangeAction(
+      task.id,
+      newStart.toISOString(),
+      newEnd.toISOString(),
+    );
+
+    if (result.success) {
+      toast.success("Завдання перенесено");
+    } else {
+      setLocalTasks(originalTasks);
+      toast.error(result.error || "Не вдалося перенести завдання");
+    }
+  };
 
   const allTasksWithLevels = useMemo(() => {
     const levelsByRow: Record<
@@ -993,98 +1104,158 @@ export function TaskCalendar({
 
         <div>
           {mode === "day" ? (
-            <div className="flex flex-col gap-6 py-2">
-              {/* Scheduled Tasks */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-accent/15 text-accent">
-                    <Clock size={14} />
-                  </div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Розклад на день</h3>
-                  <div className="flex-1 h-px bg-white/[0.06]" />
-                </div>
-                
-                {scheduledTasks.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center gap-2 py-10 text-zinc-500 bg-white/[0.01] border border-dashed border-white/[0.06] rounded-2xl">
-                    <Clock size={28} strokeWidth={1.2} className="text-zinc-600" />
-                    <p className="text-xs">Немає запланованих завдань на цей час</p>
-                  </div>
-                ) : (
-                  <div className="relative pl-6 border-l-2 border-white/[0.06] flex flex-col gap-4 ml-4 sm:ml-8">
-                    {(() => {
-                      const sorted = [...scheduledTasks].sort(
-                        (a, b) => new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime()
-                      );
-                      
-                      return sorted.map((task) => (
-                        <div key={task.id} className="relative flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 group">
-                          {/* Timeline dot */}
-                          <div className="absolute -left-[31px] top-4 w-2 h-2 rounded-full bg-accent/40 border border-canvas group-hover:bg-accent transition-colors duration-150" />
-                          
-                          <div className="w-24 shrink-0 sm:pt-3 text-left sm:text-right">
-                            <span className="text-xs font-mono font-bold text-accent">
-                              {(() => {
-                                if (!task.plannedDate) return "";
-                                const start = new Date(task.plannedDate);
-                                const startStr = format(start, "HH:mm");
-                                if (task.plannedEndDate) {
-                                  const end = new Date(task.plannedEndDate);
-                                  return `${startStr} — ${format(end, "HH:mm")}`;
-                                }
-                                return startStr;
-                              })()}
-                            </span>
-                          </div>
-                          
-                          <div className="flex-1 w-full">
-                            <TaskCardBase
-                              task={task}
-                              variant="compact"
-                              onEdit={handleEdit}
-                              onDuplicate={onDuplicate}
-                              onAddChild={handleAddChild}
-                              onDelete={handleTaskDeleted}
-                              allTasks={parentResolutionTasks}
-                            />
-                          </div>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                )}
-              </div>
-
+            <div className="flex flex-col gap-4 py-2">
               {/* Flexible/Unscheduled Tasks */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-zinc-500/10 text-zinc-400">
-                    <Plus size={14} />
+              {unscheduledTasks.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Гнучкі завдання (без фіксованого часу)</span>
+                    <div className="flex-1 h-px bg-white/[0.04]" />
                   </div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">Гнучкі завдання (без часу)</h3>
-                  <div className="flex-1 h-px bg-white/[0.06]" />
-                </div>
-
-                {unscheduledTasks.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center gap-2 py-10 text-zinc-500 bg-white/[0.01] border border-dashed border-white/[0.06] rounded-2xl">
-                    <Plus size={24} strokeWidth={1.2} className="text-zinc-600" />
-                    <p className="text-xs">Немає гнучких завдань на цей день</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-0 sm:pl-8">
+                  <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                     {unscheduledTasks.map((task) => (
-                      <TaskCardBase
+                      <button
                         key={task.id}
-                        task={task}
-                        variant="compact"
-                        onEdit={handleEdit}
-                        onDuplicate={onDuplicate}
-                        onAddChild={handleAddChild}
-                        onDelete={handleTaskDeleted}
-                        allTasks={parentResolutionTasks}
-                      />
+                        onClick={() => handleEdit(task)}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:bg-white/5 transition-colors shrink-0 text-left"
+                      >
+                        {task.icon &&
+                          ALL_ICONS[task.icon] &&
+                          React.createElement(ALL_ICONS[task.icon], {
+                            size: 12,
+                            className: "text-zinc-400 shrink-0",
+                          })}
+                        <span className="text-xs font-medium text-zinc-200">
+                          {task.isPrivate ? "Приватне" : task.title}
+                        </span>
+                        {task.sphere && (
+                          <div
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: task.sphere.color }}
+                          />
+                        )}
+                      </button>
                     ))}
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* Vertical Timeline Hour Grid */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Погодинний розклад</span>
+                  <div className="flex-1 h-px bg-white/[0.04]" />
+                </div>
+
+                <div 
+                  ref={verticalScrollContainerRef}
+                  className="relative rounded-2xl border border-white/[0.06] bg-zinc-950/10 overflow-y-auto h-[600px] scroll-smooth"
+                >
+                  <DndContext
+                    sensors={sensors}
+                    onDragStart={handleTimelineDragStart}
+                    onDragEnd={handleTimelineDragEnd}
+                  >
+                    <div className="relative flex" style={{ height: "1440px" }}>
+                      
+                      {/* Sleep block shading: 00:00 to 06:30 */}
+                      <div 
+                        className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-b border-indigo-950/20 flex items-center justify-center pointer-events-none"
+                        style={{ 
+                          top: 0, 
+                          height: "390px",
+                          backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
+                        }}
+                      >
+                        <span className="text-[10px] font-mono tracking-wider uppercase text-indigo-500/40 select-none">
+                          💤 Час для сну (00:00 — 06:30)
+                        </span>
+                      </div>
+
+                      {/* Sleep block shading: 22:00 to 24:00 */}
+                      <div 
+                        className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-t border-indigo-950/20 flex items-center justify-center pointer-events-none"
+                        style={{ 
+                          top: "1320px", 
+                          height: "120px",
+                          backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
+                        }}
+                      >
+                        <span className="text-[10px] font-mono tracking-wider uppercase text-indigo-500/40 select-none">
+                          💤 Час для сну (22:00 — 24:00)
+                        </span>
+                      </div>
+
+                      {/* Hours Column & Horizontal Guidelines */}
+                      <div className="w-16 sm:w-20 shrink-0 border-r border-white/[0.04] bg-white/[0.01] relative select-none">
+                        {Array.from({ length: 24 }).map((_, hourIdx) => (
+                          <div 
+                            key={hourIdx} 
+                            className="absolute right-2 font-mono text-[10px] font-bold text-zinc-500 text-right"
+                            style={{ top: `${hourIdx * 60}px`, transform: "translateY(-50%)" }}
+                          >
+                            {String(hourIdx).padStart(2, "0")}:00
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Grid lines running across the canvas */}
+                      <div className="flex-1 relative z-0">
+                        {Array.from({ length: 24 }).map((_, hourIdx) => (
+                          <div 
+                            key={hourIdx} 
+                            className="absolute left-0 right-0 border-b border-white/[0.03]"
+                            style={{ top: `${hourIdx * 60}px` }}
+                          />
+                        ))}
+
+                        {/* Current time horizontal indicator */}
+                        {isToday(currentDate) && (() => {
+                          const nowMin = now.getHours() * 60 + now.getMinutes();
+                          return (
+                            <div 
+                              className="absolute left-0 right-0 h-0.5 bg-rose-500/80 z-20 pointer-events-none"
+                              style={{ top: `${nowMin}px` }}
+                            >
+                              <div className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
+                            </div>
+                          );
+                        })()}
+
+                        {/* Draggable Task Cards Container */}
+                        <div className="absolute inset-0 z-10 pointer-events-none">
+                          {positionedTasks.map((p) => (
+                            <DayTimelineCardWrapper
+                              key={p.task.id}
+                              task={p.task}
+                              style={{
+                                top: `${p.startMin}px`,
+                                height: `${p.endMin - p.startMin}px`,
+                                left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
+                                width: `calc(${100 / p.totalCols}% - 4px)`,
+                                pointerEvents: "auto"
+                              }}
+                            >
+                              <div className="w-full h-full p-0.5 overflow-hidden">
+                                <TaskCardBase
+                                  task={p.task}
+                                  variant="compact"
+                                  onEdit={handleEdit}
+                                  onDuplicate={onDuplicate}
+                                  onAddChild={handleAddChild}
+                                  onDelete={handleTaskDeleted}
+                                  allTasks={parentResolutionTasks}
+                                  className="h-full border border-white/[0.06] hover:border-white/10"
+                                />
+                              </div>
+                            </DayTimelineCardWrapper>
+                          ))}
+                        </div>
+
+                      </div>
+                    </div>
+                  </DndContext>
+                </div>
               </div>
             </div>
           ) : (
