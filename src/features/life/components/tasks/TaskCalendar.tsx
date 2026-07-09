@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   format,
   startOfMonth,
@@ -400,16 +400,7 @@ export function TaskCalendar({
     });
   };
 
-  const maxTaskHeight = useMemo(() => {
-    const values = Object.values(taskHeights);
-    return values.length > 0 ? Math.max(...values) : 80;
-  }, [taskHeights]);
 
-  const calculateTop = (level: number) => {
-    const baseTop = mode === "month" ? 64 : 74;
-    const padding = 8;
-    return baseTop + level * (maxTaskHeight + padding);
-  };
 
   const handleEdit = (t: TaskData) => {
     setEditingTask(t);
@@ -695,6 +686,20 @@ export function TaskCalendar({
       return segments;
     });
   }, [calendarTasks, days]);
+  const maxTaskHeightForRow = useCallback((rowIdx: number) => {
+    const rowSegments = allTasksWithLevels.filter((s) => s.rowIdx === rowIdx);
+    const heights = rowSegments
+      .map((s) => taskHeights[s.task.id])
+      .filter((h): h is number => typeof h === "number");
+    return heights.length > 0 ? Math.max(...heights) : 80;
+  }, [allTasksWithLevels, taskHeights]);
+
+  const calculateTop = useCallback((level: number, rowIdx: number) => {
+    const baseTop = mode === "month" ? 64 : 74;
+    const padding = 8;
+    const rowMaxHeight = maxTaskHeightForRow(rowIdx);
+    return baseTop + level * (rowMaxHeight + padding);
+  }, [mode, maxTaskHeightForRow]);
 
   const handleDragStart = () => {
     setIsDraggingAny(true);
@@ -825,13 +830,14 @@ export function TaskCalendar({
       const maxLevel = rowSegments.length > 0 ? Math.max(...rowSegments.map((s) => s.level)) : -1;
 
       if (maxLevel >= 0) {
-        total += (maxLevel + 1) * (maxTaskHeight + padding);
+        const rowMaxHeight = maxTaskHeightForRow(r);
+        total += (maxLevel + 1) * (rowMaxHeight + padding);
       }
       heights[r] = Math.max(minCellHeightVal, total);
     }
 
     return heights;
-  }, [allTasksWithLevels, maxTaskHeight, mode, days.length, minCellHeight]);
+  }, [allTasksWithLevels, maxTaskHeightForRow, mode, days.length, minCellHeight]);
 
   const deadlinesByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
@@ -960,8 +966,8 @@ export function TaskCalendar({
                     isOverlay
                     isDraggable
                     onHeightChange={handleHeightChange}
-                    fixedHeight={maxTaskHeight}
-                    style={{ top: calculateTop(seg.level), pointerEvents: "auto" }}
+                    fixedHeight={maxTaskHeightForRow(weekIdx)}
+                    style={{ top: calculateTop(seg.level, seg.rowIdx), pointerEvents: "auto" }}
                   />
                 ))}
             </div>
