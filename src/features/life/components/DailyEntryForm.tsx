@@ -520,6 +520,7 @@ export function DailyEntryForm({
                     hideModeSwitch
                     onDuplicate={handleDuplicate}
                     onDelete={() => {}}
+                    minCellHeight={150}
                   />
                 </Suspense>
 

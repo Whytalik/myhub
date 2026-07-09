@@ -67,6 +67,7 @@ interface TaskCalendarProps {
   hideModeSwitch?: boolean;
   onDuplicate?: (task: TaskData) => void;
   onDelete?: () => void;
+  minCellHeight?: number;
 }
 
 function TaskCalendarCard({
@@ -196,7 +197,7 @@ function TaskCalendarCard({
         setNodeRef(node);
         if (ref) ref.current = node;
       }}
-      className="relative"
+      className={isOverlay ? "absolute" : "relative"}
       style={combinedStyle}
     >
       <TaskCardBase
@@ -356,6 +357,7 @@ export function TaskCalendar({
   hideModeSwitch = false,
   onDuplicate,
   onDelete,
+  minCellHeight,
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week" | "day">(defaultMode);
@@ -813,7 +815,7 @@ export function TaskCalendar({
     const heights: Record<number, number> = {};
     const baseTop = mode === "month" ? 64 : 74;
     const padding = 8;
-    const minCellHeight = mode === "month" ? 200 : 500;
+    const minCellHeightVal = minCellHeight ?? (mode === "month" ? 200 : 500);
 
     const rowCount = Math.ceil(days.length / 7);
 
@@ -825,11 +827,11 @@ export function TaskCalendar({
       if (maxLevel >= 0) {
         total += (maxLevel + 1) * (maxTaskHeight + padding);
       }
-      heights[r] = Math.max(minCellHeight, total);
+      heights[r] = Math.max(minCellHeightVal, total);
     }
 
     return heights;
-  }, [allTasksWithLevels, maxTaskHeight, mode, days.length]);
+  }, [allTasksWithLevels, maxTaskHeight, mode, days.length, minCellHeight]);
 
   const deadlinesByDayIndex = useMemo(() => {
     const map: Record<number, TaskData[]> = {};
