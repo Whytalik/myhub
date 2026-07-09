@@ -153,7 +153,7 @@ export function TaskCardBase({
     isCompact ? "p-2.5 gap-1.5" : "p-3.5 gap-2"
   } ${isDragging ? "opacity-50 shadow-2xl" : ""} ${className}`;
   const actionBarClass =
-    "absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150";
+    "absolute top-1.5 right-1.5 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 bg-elevated/95 border border-stroke px-1 py-0.5 rounded-lg shadow-md pointer-events-auto z-10";
   const actionButtonClass =
     "p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
   const deleteButtonClass =
@@ -161,8 +161,8 @@ export function TaskCardBase({
   const parentLinkClass =
     "flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors w-fit";
   const titleClass = isCompact
-    ? "text-sm font-medium text-zinc-100 truncate"
-    : "text-panel-title truncate";
+    ? "text-sm font-medium text-zinc-100 whitespace-pre-wrap break-words"
+    : "text-panel-title whitespace-pre-wrap break-words";
   const titleText = task.isPrivate ? "Hidden" : task.title;
   const titleHtml = { __html: formatText(titleText) };
   const parentLabel = task.isPrivate ? "Hidden" : task.parentTitle || "Parent Task";
@@ -257,7 +257,7 @@ export function TaskCardBase({
         </div>
       )}
 
-      <div className="flex flex-col gap-1.5 pr-16">
+      <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2 flex-wrap">
           {task.icon && SPHERE_ICONS[task.icon] ? (
             (() => {
