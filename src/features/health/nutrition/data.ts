@@ -26,13 +26,9 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         type: "snack",
         label: "Передтрен",
-        title: "Половинка банана (швидкі вуглеводи)",
-        ingredients: [
-          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
-        ],
-        macroItems: [
-          { food: "banana", vitalii: 60, olesia: 0 },
-        ],
+        title: "Половинка банана",
+        ingredients: ["Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)"],
+        macroItems: [{ food: "banana", vitalii: 60, olesia: 0 }],
       },
       {
         type: "breakfast",
@@ -231,13 +227,9 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         type: "snack",
         label: "Передтрен",
-        title: "Половинка банана (швидкі вуглеводи)",
-        ingredients: [
-          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
-        ],
-        macroItems: [
-          { food: "banana", vitalii: 60, olesia: 0 },
-        ],
+        title: "Половинка банана",
+        ingredients: ["Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)"],
+        macroItems: [{ food: "banana", vitalii: 60, olesia: 0 }],
       },
       {
         type: "breakfast",
@@ -378,15 +370,14 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
         title: "Яєчня з томатами та тостами",
         ingredients: [
           "Яйця — 4 шт (Віталій — 2, Олеся — 2)",
-          "Помідори — 2 шт (~260 г) — по 1 шт кожному",
+          "Помідор — 1 шт (~130 г), нарізаний кружальцями — порівну на двох",
           "Цільнозерновий хліб — Віталій 1.5 скибки (45 г), Олеся 2 скибки (60 г)",
-          "Помідори і огірки для свіжої подачі",
+          "Огірки для свіжої подачі",
         ],
         macroItems: [
           { food: "eggs", vitalii: 120, olesia: 120, component: "Яєчня з помідорами" },
-          { food: "tomato", vitalii: 130, olesia: 130, component: "Яєчня з помідорами" },
+          { food: "tomato", vitalii: 65, olesia: 65, component: "Яєчня з помідорами" },
           { food: "bread", vitalii: 45, olesia: 60 },
-          { food: "tomato", vitalii: 25, olesia: 25 },
           { food: "cucumber", vitalii: 25, olesia: 25 },
         ],
       },
@@ -445,9 +436,9 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         title: "Сніданок (~10 хв)",
         steps: [
-          "Помідори (2 шт) нарізати кружальцями середньої товщини. Обсмажити їх на розігрітій пательні з мінімумом олії по 1 хв з кожного боку.",
-          "Акуратно розбити яйця поверх помідорів, посолити, накрити кришкою та готувати на середньому вогні 3–5 хв (до бажаної готовності жовтка).",
-          "Для подачі: додаткові свіжі помідори та огірки нарізати кружальцями. Викласти на тарілку разом із готовою яєчнею та хлібом.",
+          "Помідор (1 шт) нарізати кружальцями середньої товщини. Обсмажити на розігрітій пательні з мінімумом олії по 1 хв з кожного боку.",
+          "Акуратно розбити яйця поверх помідора, посолити, накрити кришкою та готувати на середньому вогні 3–5 хв (до бажаної готовності жовтка).",
+          "Для подачі: додаткові свіжі огірки нарізати кружальцями. Викласти на тарілку разом із готовою яєчнею та хлібом.",
         ],
       },
       {
@@ -469,13 +460,9 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         type: "snack",
         label: "Передтрен",
-        title: "Половинка банана (швидкі вуглеводи)",
-        ingredients: [
-          "Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)",
-        ],
-        macroItems: [
-          { food: "banana", vitalii: 60, olesia: 0 },
-        ],
+        title: "Половинка банана",
+        ingredients: ["Банан — 60 г (Віталій — 60 г / половинка банана, Олеся — 0 г)"],
+        macroItems: [{ food: "banana", vitalii: 60, olesia: 0 }],
       },
       {
         type: "breakfast",
@@ -1379,9 +1366,14 @@ export const WINTER_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK
 
 const monLunchW = WINTER_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchW && monLunchW.macroItems) {
-  monLunchW.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
+  monLunchW.ingredients[6] =
+    "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
   monLunchW.macroItems = monLunchW.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+    (item) =>
+      item.food !== "tomato" &&
+      item.food !== "cucumber" &&
+      item.food !== "pepper" &&
+      item.food !== "brynza",
   );
   monLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
@@ -1391,18 +1383,23 @@ if (monLunchW && monLunchW.macroItems) {
 
 const tueLunchW = WINTER_WEEK_PLAN[1].meals.find((m) => m.type === "lunch");
 if (tueLunchW && tueLunchW.macroItems) {
-  tueLunchW.ingredients[2] = "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
+  tueLunchW.ingredients[2] =
+    "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
   tueLunchW.macroItems = tueLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "arugula" && item.food !== "hardCheese",
   );
-  tueLunchW.macroItems.push(
-    { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
-  );
+  tueLunchW.macroItems.push({
+    food: "cabbage",
+    vitalii: 150,
+    olesia: 150,
+    component: "Салат з капусти",
+  });
 }
 
 const wedLunchW = WINTER_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
 if (wedLunchW && wedLunchW.macroItems) {
-  wedLunchW.ingredients[4] = "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
+  wedLunchW.ingredients[4] =
+    "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
   wedLunchW.macroItems = wedLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber",
   );
@@ -1418,16 +1415,23 @@ if (friLunchW && friLunchW.macroItems) {
   friLunchW.macroItems = friLunchW.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "cucumber",
   );
-  friLunchW.macroItems.push(
-    { food: "cabbage", vitalii: 150, olesia: 150, component: "Салат з капусти" },
-  );
+  friLunchW.macroItems.push({
+    food: "cabbage",
+    vitalii: 150,
+    olesia: 150,
+    component: "Салат з капусти",
+  });
 }
 
 const sunLunchW = WINTER_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchW && sunLunchW.macroItems) {
   sunLunchW.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), зелень";
   sunLunchW.macroItems = sunLunchW.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+    (item) =>
+      item.food !== "tomato" &&
+      item.food !== "cucumber" &&
+      item.food !== "pepper" &&
+      item.food !== "brynza",
   );
   sunLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
@@ -1442,11 +1446,18 @@ const monLunchA = AUTUMN_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchA && monLunchA.macroItems) {
   monLunchA.ingredients[6] = "Для салату: варений буряк 500 г, чорнослив, олія 6 г (Олеся), часник";
   monLunchA.macroItems = monLunchA.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+    (item) =>
+      item.food !== "tomato" &&
+      item.food !== "cucumber" &&
+      item.food !== "pepper" &&
+      item.food !== "brynza",
   );
-  monLunchA.macroItems.push(
-    { food: "beetroot", vitalii: 250, olesia: 250, component: "Буряковий салат" },
-  );
+  monLunchA.macroItems.push({
+    food: "beetroot",
+    vitalii: 250,
+    olesia: 250,
+    component: "Буряковий салат",
+  });
 }
 
 const wedLunchA = AUTUMN_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
@@ -1463,9 +1474,14 @@ if (wedLunchA && wedLunchA.macroItems) {
 
 const sunLunchA = AUTUMN_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchA && sunLunchA.macroItems) {
-  sunLunchA.ingredients[6] = "Для салату: варений буряк 500 г, олія 6 г (Олеся), солоний огірок 100 г";
+  sunLunchA.ingredients[6] =
+    "Для салату: варений буряк 500 г, олія 6 г (Олеся), солоний огірок 100 г";
   sunLunchA.macroItems = sunLunchA.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "cucumber" && item.food !== "pepper" && item.food !== "brynza",
+    (item) =>
+      item.food !== "tomato" &&
+      item.food !== "cucumber" &&
+      item.food !== "pepper" &&
+      item.food !== "brynza",
   );
   sunLunchA.macroItems.push(
     { food: "beetroot", vitalii: 250, olesia: 250, component: "Буряковий салат" },
@@ -1487,7 +1503,8 @@ if (monBreakfastS && monBreakfastS.macroItems) {
 
 const monLunchS = SPRING_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchS && monLunchS.macroItems) {
-  monLunchS.ingredients[6] = "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
+  monLunchS.ingredients[6] =
+    "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
   monLunchS.macroItems = monLunchS.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
   );
@@ -1499,7 +1516,8 @@ if (monLunchS && monLunchS.macroItems) {
 
 const sunLunchS = SPRING_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchS && sunLunchS.macroItems) {
-  sunLunchS.ingredients[6] = "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
+  sunLunchS.ingredients[6] =
+    "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
   sunLunchS.macroItems = sunLunchS.macroItems.filter(
     (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
   );
@@ -1511,4 +1529,3 @@ if (sunLunchS && sunLunchS.macroItems) {
 
 export const DEFAULT_WEEK_PLAN = WINTER_WEEK_PLAN;
 export const WEEK_PLAN = DEFAULT_WEEK_PLAN;
-
