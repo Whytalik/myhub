@@ -151,6 +151,7 @@ function TaskCalendarCard({
 
   const overlayStyle: React.CSSProperties = isOverlay
     ? {
+        position: "absolute" as const,
         gridRowStart: 1,
         gridColumnStart: ((startIdx ?? 0) % 7) + 1,
         gridColumnEnd: `span ${Math.max((endIdx ?? startIdx ?? 0) - (startIdx ?? 0) + 1, 1)}`,
