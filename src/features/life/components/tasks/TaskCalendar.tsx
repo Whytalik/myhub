@@ -369,11 +369,7 @@ export function TaskCalendar({
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   const [resizingTaskId, setResizingTaskId] = useState<string | null>(null);
   const [taskHeights, setTaskHeights] = useState<Record<string, number>>({});
-  const [resizingTimeline, setResizingTimeline] = useState<{
-    id: string;
-    startDelta: number;
-    endDelta: number;
-  } | null>(null);
+  const HOUR_HEIGHT = 120;
 
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
@@ -382,7 +378,7 @@ export function TaskCalendar({
   useEffect(() => {
     if (mode === "day" && verticalScrollContainerRef.current) {
       const currentHour = new Date().getHours();
-      const scrollAmount = Math.max(0, currentHour * 60 - 120);
+      const scrollAmount = Math.max(0, currentHour * HOUR_HEIGHT - 120);
       verticalScrollContainerRef.current.scrollTop = scrollAmount;
     }
   }, [mode]);
@@ -551,7 +547,7 @@ export function TaskCalendar({
       const duration = task.plannedEndDate
         ? differenceInMinutes(new Date(task.plannedEndDate), new Date(task.plannedDate!))
         : 60;
-      const endMin = startMin + Math.max(duration, 45);
+      const endMin = startMin + Math.max(duration, 30);
 
       let colIdx = 0;
       while (true) {
@@ -596,7 +592,7 @@ export function TaskCalendar({
     const task = active.data.current as TaskData;
     if (!task || !task.plannedDate) return;
 
-    const minutesDelta = Math.round(delta.y / 5) * 5;
+    const minutesDelta = Math.round(((delta.y / HOUR_HEIGHT) * 60) / 5) * 5;
     if (minutesDelta === 0) return;
 
     const originalStart = new Date(task.plannedDate);
@@ -628,131 +624,7 @@ export function TaskCalendar({
     }
   };
 
-  const handleTopResizeStart = (e: React.MouseEvent, task: TaskData) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const startY = e.clientY;
-    const originalStart = new Date(task.plannedDate!);
-    const originalEnd = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(originalStart, 60);
 
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const deltaY = moveEvent.clientY - startY;
-      const minutesDelta = Math.round(deltaY / 5) * 5;
-      
-      const potentialStart = addMinutes(originalStart, minutesDelta);
-      if (differenceInMinutes(originalEnd, potentialStart) >= 30) {
-        setResizingTimeline({
-          id: task.id,
-          startDelta: minutesDelta,
-          endDelta: 0,
-        });
-      }
-    };
-
-    const onMouseUp = async (upEvent: MouseEvent) => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-
-      const deltaY = upEvent.clientY - startY;
-      const minutesDelta = Math.round(deltaY / 5) * 5;
-
-      const potentialStart = addMinutes(originalStart, minutesDelta);
-      let finalStart = originalStart;
-      if (differenceInMinutes(originalEnd, potentialStart) >= 30) {
-        finalStart = potentialStart;
-      } else {
-        finalStart = addMinutes(originalEnd, -30);
-      }
-
-      setResizingTimeline(null);
-
-      const originalTasks = [...localTasks];
-      setLocalTasks((prev) =>
-        prev.map((t) =>
-          t.id === task.id ? { ...t, plannedDate: finalStart, plannedEndDate: originalEnd } : t,
-        ),
-      );
-
-      const result = await updateTaskTimeRangeAction(
-        task.id,
-        finalStart.toISOString(),
-        originalEnd.toISOString()
-      );
-
-      if (result.success) {
-        toast.success("Час завдання змінено");
-      } else {
-        setLocalTasks(originalTasks);
-        toast.error(result.error || "Не вдалося змінити час");
-      }
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  };
-
-  const handleBottomResizeStart = (e: React.MouseEvent, task: TaskData) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const startY = e.clientY;
-    const originalStart = new Date(task.plannedDate!);
-    const originalEnd = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(originalStart, 60);
-
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const deltaY = moveEvent.clientY - startY;
-      const minutesDelta = Math.round(deltaY / 5) * 5;
-      
-      const potentialEnd = addMinutes(originalEnd, minutesDelta);
-      if (differenceInMinutes(potentialEnd, originalStart) >= 30) {
-        setResizingTimeline({
-          id: task.id,
-          startDelta: 0,
-          endDelta: minutesDelta,
-        });
-      }
-    };
-
-    const onMouseUp = async (upEvent: MouseEvent) => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-
-      const deltaY = upEvent.clientY - startY;
-      const minutesDelta = Math.round(deltaY / 5) * 5;
-
-      const potentialEnd = addMinutes(originalEnd, minutesDelta);
-      let finalEnd = originalEnd;
-      if (differenceInMinutes(potentialEnd, originalStart) >= 30) {
-        finalEnd = potentialEnd;
-      } else {
-        finalEnd = addMinutes(originalStart, 30);
-      }
-
-      setResizingTimeline(null);
-
-      const originalTasks = [...localTasks];
-      setLocalTasks((prev) =>
-        prev.map((t) =>
-          t.id === task.id ? { ...t, plannedDate: originalStart, plannedEndDate: finalEnd } : t,
-        ),
-      );
-
-      const result = await updateTaskTimeRangeAction(
-        task.id,
-        originalStart.toISOString(),
-        finalEnd.toISOString()
-      );
-
-      if (result.success) {
-        toast.success("Тривалість завдання змінено");
-      } else {
-        setLocalTasks(originalTasks);
-        toast.error(result.error || "Не вдалося змінити тривалість");
-      }
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  };
 
   const allTasksWithLevels = useMemo(() => {
     const levelsByRow: Record<
@@ -1287,14 +1159,14 @@ export function TaskCalendar({
                     onDragStart={handleTimelineDragStart}
                     onDragEnd={handleTimelineDragEnd}
                   >
-                    <div className="relative flex" style={{ height: "1440px" }}>
+                    <div className="relative flex" style={{ height: `${24 * HOUR_HEIGHT}px` }}>
                       
                       {/* Sleep block shading: 00:00 to 06:30 */}
                       <div 
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-b border-indigo-950/20 flex items-center justify-center pointer-events-none"
                         style={{ 
                           top: 0, 
-                          height: "390px",
+                          height: `${6.5 * HOUR_HEIGHT}px`,
                           backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
                         }}
                       >
@@ -1307,8 +1179,8 @@ export function TaskCalendar({
                       <div 
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-t border-indigo-950/20 flex items-center justify-center pointer-events-none"
                         style={{ 
-                          top: "1320px", 
-                          height: "120px",
+                          top: `${22 * HOUR_HEIGHT}px`, 
+                          height: `${2 * HOUR_HEIGHT}px`,
                           backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
                         }}
                       >
@@ -1323,7 +1195,7 @@ export function TaskCalendar({
                           <div 
                             key={hourIdx} 
                             className="absolute right-2 font-mono text-[10px] font-bold text-zinc-500 text-right"
-                            style={{ top: `${hourIdx * 60}px`, transform: "translateY(-50%)" }}
+                            style={{ top: `${hourIdx * HOUR_HEIGHT}px`, transform: "translateY(-50%)" }}
                           >
                             {String(hourIdx).padStart(2, "0")}:00
                           </div>
@@ -1336,7 +1208,7 @@ export function TaskCalendar({
                           <div 
                             key={hourIdx} 
                             className="absolute left-0 right-0 border-b border-white/[0.03]"
-                            style={{ top: `${hourIdx * 60}px` }}
+                            style={{ top: `${hourIdx * HOUR_HEIGHT}px` }}
                           />
                         ))}
 
@@ -1346,7 +1218,7 @@ export function TaskCalendar({
                           return (
                             <div 
                               className="absolute left-0 right-0 h-0.5 bg-rose-500/80 z-20 pointer-events-none"
-                              style={{ top: `${nowMin}px` }}
+                              style={{ top: `${(nowMin * HOUR_HEIGHT) / 60}px` }}
                             >
                               <div className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
                             </div>
@@ -1356,23 +1228,19 @@ export function TaskCalendar({
                         {/* Draggable Task Cards Container */}
                         <div className="absolute inset-0 z-10 pointer-events-none">
                           {positionedTasks.map((p) => {
-                            const isResizingThis = resizingTimeline?.id === p.task.id;
-                            const startDelta = isResizingThis ? resizingTimeline!.startDelta : 0;
-                            const endDelta = isResizingThis ? resizingTimeline!.endDelta : 0;
-
                             return (
                               <DayTimelineCardWrapper
                                 key={p.task.id}
                                 task={p.task}
                                 style={{
-                                  top: `${p.startMin + startDelta}px`,
-                                  height: `${Math.max(p.endMin - p.startMin + endDelta - startDelta, 30)}px`,
+                                  top: `${(p.startMin * HOUR_HEIGHT) / 60}px`,
+                                  height: `${((p.endMin - p.startMin) * HOUR_HEIGHT) / 60}px`,
                                   left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
                                   width: `calc(${100 / p.totalCols}% - 4px)`,
                                   pointerEvents: "auto"
                                 }}
                               >
-                                <div className="w-full h-full p-0.5 overflow-hidden relative group/card">
+                                <div className="w-full h-full p-0.5 overflow-hidden">
                                   <TaskCardBase
                                     task={p.task}
                                     variant="compact"
@@ -1383,22 +1251,6 @@ export function TaskCalendar({
                                     allTasks={parentResolutionTasks}
                                     className="h-full border border-white/[0.06] hover:border-white/10"
                                   />
-                                  
-                                  {/* Resize top handle */}
-                                  <div 
-                                    className="absolute top-0 left-0 right-0 h-1.5 cursor-ns-resize z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 flex items-center justify-center"
-                                    onMouseDown={(e) => handleTopResizeStart(e, p.task)}
-                                  >
-                                    <div className="w-8 h-1 rounded-full bg-white/20 hover:bg-accent transition-colors" />
-                                  </div>
-
-                                  {/* Resize bottom handle */}
-                                  <div 
-                                    className="absolute bottom-0 left-0 right-0 h-1.5 cursor-ns-resize z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 flex items-center justify-center"
-                                    onMouseDown={(e) => handleBottomResizeStart(e, p.task)}
-                                  >
-                                    <div className="w-8 h-1 rounded-full bg-white/20 hover:bg-accent transition-colors" />
-                                  </div>
                                 </div>
                               </DayTimelineCardWrapper>
                             );
