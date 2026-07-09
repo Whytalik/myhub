@@ -8,6 +8,7 @@ import { highlightProductMentions } from "../highlight-products";
 import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
 import { currentWeekStart, weekStartKey } from "../week";
+import { formatGrams } from "../quantities";
 import type { DayPlan as DayPlanType, Meal, MacroItem, MealType } from "../types";
 
 function isRepeatPortion(meal: Meal): boolean {
@@ -192,6 +193,7 @@ interface ServingDisplay {
 function computeServingDisplay(group: ServingGroup): ServingDisplay {
   const product = group.foodKey ? PRODUCTS[group.foodKey] : undefined;
   const multiplier = product?.cookedMultiplier;
+  const gramsPerPiece = product?.gramsPerPiece;
 
   const totalRaw = group.vitalii + group.olesia;
   const vitaliiPct = totalRaw > 0 ? Math.round((group.vitalii / totalRaw) * 100) : 0;
@@ -202,12 +204,18 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
   if (showPct) {
     totalLabel = multiplier
       ? `~${Math.round(totalRaw * multiplier)} г готового`
-      : `~${Math.round(totalRaw)} г`;
+      : gramsPerPiece
+        ? formatGrams(totalRaw, "piece", gramsPerPiece)
+        : `~${Math.round(totalRaw)} г`;
   }
 
   const formatWeight = (rawWeight: number, pct: number) => {
     if (rawWeight <= 0) return "—";
     const pctSuffix = showPct ? ` (${pct}%)` : "";
+
+    if (gramsPerPiece) {
+      return `${formatGrams(rawWeight, "piece", gramsPerPiece)}${pctSuffix}`;
+    }
 
     if (multiplier) {
       return (
