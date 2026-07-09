@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition, useCallback } from "react";
+import React, { useState, useTransition, useCallback, useEffect, useMemo } from "react";
 import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw } from "lucide-react";
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
@@ -44,6 +44,19 @@ export function TaskCardBase({
 }: TaskCardBaseProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isActiveNow = useMemo(() => {
+    if (task.status === "DONE" || !task.plannedDate) return false;
+    const start = new Date(task.plannedDate);
+    const end = task.plannedEndDate ? new Date(task.plannedEndDate) : new Date(start.getTime() + 3600000);
+    return now >= start && now <= end;
+  }, [task.status, task.plannedDate, task.plannedEndDate, now]);
 
   const hasChildren = task.children.length > 0;
   const completedSubtasks = task.children.filter((c) => c.status === "DONE").length;
@@ -149,9 +162,13 @@ export function TaskCardBase({
     }
   };
 
-  const cardClass = `group relative glass-card flex flex-col transition-colors duration-150 hover:border-white/[0.12] cursor-pointer ${
+  const cardClass = `group relative glass-card flex flex-col transition-all duration-300 hover:border-white/[0.12] cursor-pointer ${
     isCompact ? "p-2.5 gap-1.5" : "p-3.5 gap-2"
-  } ${isDragging ? "opacity-50 shadow-2xl" : ""} ${className}`;
+  } ${isDragging ? "opacity-50 shadow-2xl" : ""} ${
+    isActiveNow 
+      ? "border-accent ring-1 ring-accent/20 bg-accent/[0.01] shadow-[0_0_15px_rgba(37,99,235,0.08)]" 
+      : ""
+  } ${className}`;
   const actionBarClass =
     "absolute top-1.5 right-1.5 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 bg-elevated/95 border border-stroke px-1 py-0.5 rounded-lg shadow-md pointer-events-auto z-10";
   const actionButtonClass =
@@ -268,6 +285,12 @@ export function TaskCardBase({
             <FileText size={iconSize} strokeWidth={2.5} className="text-zinc-500 shrink-0" />
           )}
           <h3 className={titleClass} dangerouslySetInnerHTML={titleHtml} title={titleText} />
+          {isActiveNow && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-accent/10 text-accent text-[9px] font-mono font-semibold uppercase tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              Зараз
+            </span>
+          )}
           {task.isFrog && (
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-400/10 text-amber-400 text-[10px] font-mono font-semibold uppercase tracking-wide">
               <span role="img" aria-label="frog">

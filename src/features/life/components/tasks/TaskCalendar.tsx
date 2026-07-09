@@ -369,6 +369,11 @@ export function TaskCalendar({
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   const [resizingTaskId, setResizingTaskId] = useState<string | null>(null);
   const [taskHeights, setTaskHeights] = useState<Record<string, number>>({});
+  const [resizingTimeline, setResizingTimeline] = useState<{
+    id: string;
+    startDelta: number;
+    endDelta: number;
+  } | null>(null);
 
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
@@ -621,6 +626,132 @@ export function TaskCalendar({
       setLocalTasks(originalTasks);
       toast.error(result.error || "Не вдалося перенести завдання");
     }
+  };
+
+  const handleTopResizeStart = (e: React.MouseEvent, task: TaskData) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const startY = e.clientY;
+    const originalStart = new Date(task.plannedDate!);
+    const originalEnd = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(originalStart, 60);
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const deltaY = moveEvent.clientY - startY;
+      const minutesDelta = Math.round(deltaY / 5) * 5;
+      
+      const potentialStart = addMinutes(originalStart, minutesDelta);
+      if (differenceInMinutes(originalEnd, potentialStart) >= 30) {
+        setResizingTimeline({
+          id: task.id,
+          startDelta: minutesDelta,
+          endDelta: 0,
+        });
+      }
+    };
+
+    const onMouseUp = async (upEvent: MouseEvent) => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+
+      const deltaY = upEvent.clientY - startY;
+      const minutesDelta = Math.round(deltaY / 5) * 5;
+
+      const potentialStart = addMinutes(originalStart, minutesDelta);
+      let finalStart = originalStart;
+      if (differenceInMinutes(originalEnd, potentialStart) >= 30) {
+        finalStart = potentialStart;
+      } else {
+        finalStart = addMinutes(originalEnd, -30);
+      }
+
+      setResizingTimeline(null);
+
+      const originalTasks = [...localTasks];
+      setLocalTasks((prev) =>
+        prev.map((t) =>
+          t.id === task.id ? { ...t, plannedDate: finalStart, plannedEndDate: originalEnd } : t,
+        ),
+      );
+
+      const result = await updateTaskTimeRangeAction(
+        task.id,
+        finalStart.toISOString(),
+        originalEnd.toISOString()
+      );
+
+      if (result.success) {
+        toast.success("Час завдання змінено");
+      } else {
+        setLocalTasks(originalTasks);
+        toast.error(result.error || "Не вдалося змінити час");
+      }
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  };
+
+  const handleBottomResizeStart = (e: React.MouseEvent, task: TaskData) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const startY = e.clientY;
+    const originalStart = new Date(task.plannedDate!);
+    const originalEnd = task.plannedEndDate ? new Date(task.plannedEndDate) : addMinutes(originalStart, 60);
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const deltaY = moveEvent.clientY - startY;
+      const minutesDelta = Math.round(deltaY / 5) * 5;
+      
+      const potentialEnd = addMinutes(originalEnd, minutesDelta);
+      if (differenceInMinutes(potentialEnd, originalStart) >= 30) {
+        setResizingTimeline({
+          id: task.id,
+          startDelta: 0,
+          endDelta: minutesDelta,
+        });
+      }
+    };
+
+    const onMouseUp = async (upEvent: MouseEvent) => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+
+      const deltaY = upEvent.clientY - startY;
+      const minutesDelta = Math.round(deltaY / 5) * 5;
+
+      const potentialEnd = addMinutes(originalEnd, minutesDelta);
+      let finalEnd = originalEnd;
+      if (differenceInMinutes(potentialEnd, originalStart) >= 30) {
+        finalEnd = potentialEnd;
+      } else {
+        finalEnd = addMinutes(originalStart, 30);
+      }
+
+      setResizingTimeline(null);
+
+      const originalTasks = [...localTasks];
+      setLocalTasks((prev) =>
+        prev.map((t) =>
+          t.id === task.id ? { ...t, plannedDate: originalStart, plannedEndDate: finalEnd } : t,
+        ),
+      );
+
+      const result = await updateTaskTimeRangeAction(
+        task.id,
+        originalStart.toISOString(),
+        finalEnd.toISOString()
+      );
+
+      if (result.success) {
+        toast.success("Тривалість завдання змінено");
+      } else {
+        setLocalTasks(originalTasks);
+        toast.error(result.error || "Не вдалося змінити тривалість");
+      }
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
   };
 
   const allTasksWithLevels = useMemo(() => {
@@ -1224,32 +1355,54 @@ export function TaskCalendar({
 
                         {/* Draggable Task Cards Container */}
                         <div className="absolute inset-0 z-10 pointer-events-none">
-                          {positionedTasks.map((p) => (
-                            <DayTimelineCardWrapper
-                              key={p.task.id}
-                              task={p.task}
-                              style={{
-                                top: `${p.startMin}px`,
-                                height: `${p.endMin - p.startMin}px`,
-                                left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
-                                width: `calc(${100 / p.totalCols}% - 4px)`,
-                                pointerEvents: "auto"
-                              }}
-                            >
-                              <div className="w-full h-full p-0.5 overflow-hidden">
-                                <TaskCardBase
-                                  task={p.task}
-                                  variant="compact"
-                                  onEdit={handleEdit}
-                                  onDuplicate={onDuplicate}
-                                  onAddChild={handleAddChild}
-                                  onDelete={handleTaskDeleted}
-                                  allTasks={parentResolutionTasks}
-                                  className="h-full border border-white/[0.06] hover:border-white/10"
-                                />
-                              </div>
-                            </DayTimelineCardWrapper>
-                          ))}
+                          {positionedTasks.map((p) => {
+                            const isResizingThis = resizingTimeline?.id === p.task.id;
+                            const startDelta = isResizingThis ? resizingTimeline!.startDelta : 0;
+                            const endDelta = isResizingThis ? resizingTimeline!.endDelta : 0;
+
+                            return (
+                              <DayTimelineCardWrapper
+                                key={p.task.id}
+                                task={p.task}
+                                style={{
+                                  top: `${p.startMin + startDelta}px`,
+                                  height: `${Math.max(p.endMin - p.startMin + endDelta - startDelta, 30)}px`,
+                                  left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
+                                  width: `calc(${100 / p.totalCols}% - 4px)`,
+                                  pointerEvents: "auto"
+                                }}
+                              >
+                                <div className="w-full h-full p-0.5 overflow-hidden relative group/card">
+                                  <TaskCardBase
+                                    task={p.task}
+                                    variant="compact"
+                                    onEdit={handleEdit}
+                                    onDuplicate={onDuplicate}
+                                    onAddChild={handleAddChild}
+                                    onDelete={handleTaskDeleted}
+                                    allTasks={parentResolutionTasks}
+                                    className="h-full border border-white/[0.06] hover:border-white/10"
+                                  />
+                                  
+                                  {/* Resize top handle */}
+                                  <div 
+                                    className="absolute top-0 left-0 right-0 h-1.5 cursor-ns-resize z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 flex items-center justify-center"
+                                    onMouseDown={(e) => handleTopResizeStart(e, p.task)}
+                                  >
+                                    <div className="w-8 h-1 rounded-full bg-white/20 hover:bg-accent transition-colors" />
+                                  </div>
+
+                                  {/* Resize bottom handle */}
+                                  <div 
+                                    className="absolute bottom-0 left-0 right-0 h-1.5 cursor-ns-resize z-20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-150 flex items-center justify-center"
+                                    onMouseDown={(e) => handleBottomResizeStart(e, p.task)}
+                                  >
+                                    <div className="w-8 h-1 rounded-full bg-white/20 hover:bg-accent transition-colors" />
+                                  </div>
+                                </div>
+                              </DayTimelineCardWrapper>
+                            );
+                          })}
                         </div>
 
                       </div>
