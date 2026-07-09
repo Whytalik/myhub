@@ -152,9 +152,10 @@ export function DailyEntryForm({
   const [data, setData] = useState<Omit<UpsertDailyEntryInput, "date">>(computeInitialData);
 
   const isToday = todayStr === new Date().toISOString().slice(0, 10);
+  const isEditable = isToday || !initialEntry?.completedAt;
 
   const patch = (update: Partial<typeof data>) => {
-    if (!isToday) return;
+    if (!isEditable) return;
     const next = { ...data, ...update };
     setData(next);
 
@@ -251,12 +252,19 @@ export function DailyEntryForm({
 
   return (
     <div className="flex flex-col gap-4">
-      {!isToday && (
+      {!isEditable ? (
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10 text-amber-400 text-xs">
           <AlertCircle size={14} />
           Past entries are read-only.
         </div>
-      )}
+      ) : isPast ? (
+        <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-accent/10 border border-accent/25 text-xs text-zinc-200">
+          <AlertCircle size={14} className="text-accent shrink-0" />
+          <span>
+            Ви заповнюєте вчорашній день retrospectively. Після натискання &quot;Завершити день&quot; він стане доступним лише для читання.
+          </span>
+        </div>
+      ) : null}
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-caption">
@@ -369,7 +377,12 @@ export function DailyEntryForm({
                 ) : (
                   <div className="flex flex-col gap-3">
                     {habits.map((habit) => (
-                      <HabitCard key={habit.id} habit={habit} date={new Date(todayStr)} />
+                      <HabitCard
+                        key={habit.id}
+                        habit={habit}
+                        date={new Date(todayStr)}
+                        readOnly={!isEditable}
+                      />
                     ))}
                   </div>
                 )}
@@ -518,7 +531,7 @@ export function DailyEntryForm({
                   onChange={patch}
                 />
 
-                {isToday && (
+                {isEditable && (
                   <div className="flex justify-center pt-2">
                     <button
                       type="button"

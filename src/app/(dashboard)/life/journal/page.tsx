@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -111,6 +111,33 @@ export default async function JournalPage({
           History
         </Link>
       </div>
+
+      {!isPast && yesterdayRaw && !yesterdayRaw.completedAt && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm">
+          <div className="flex items-start gap-2.5 text-zinc-200">
+            <span className="text-lg shrink-0">🌙</span>
+            <div>
+              <p className="font-semibold text-zinc-100">
+                Вчорашній день (
+                {yesterday.toLocaleDateString("uk-UA", {
+                  day: "numeric",
+                  month: "long",
+                })}
+                ) не завершено
+              </p>
+              <p className="text-xs text-zinc-400">
+                Ви вимкнули пристрої о 21:00? Ви можете заповнити вечірні звички та завершити вчорашній день retrospectively.
+              </p>
+            </div>
+          </div>
+          <Link
+            href={`/life/journal?date=${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, "0")}-${String(yesterday.getDate()).padStart(2, "0")}`}
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent text-white text-xs font-semibold hover:bg-accent/90 transition-colors shrink-0"
+          >
+            Завершити вчора
+          </Link>
+        </div>
+      )}
 
       <DailyEntryForm
         key={dateStr}

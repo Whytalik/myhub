@@ -49,6 +49,7 @@ interface HabitCardProps {
   date?: Date;
   isNextInChain?: boolean;
   nextHabitName?: string;
+  readOnly?: boolean;
 }
 
 export function HabitCard({
@@ -58,6 +59,7 @@ export function HabitCard({
   date,
   isNextInChain,
   nextHabitName,
+  readOnly,
 }: HabitCardProps) {
   const [isPending, startTransition] = useTransition();
   const [showDetails, setShowDetails] = useState(false);
@@ -138,7 +140,11 @@ export function HabitCard({
   const deleteActionClass =
     "p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
   const toggleButtonClass = `flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
-    isCompletedOnDate ? completedButton : "bg-white/5 text-zinc-300 hover:bg-white/10"
+    isCompletedOnDate
+      ? completedButton
+      : readOnly
+        ? "bg-white/[0.02] text-zinc-500 cursor-not-allowed"
+        : "bg-white/5 text-zinc-300 hover:bg-white/10"
   }`;
   const noteIconWrapClass =
     "flex items-center justify-center w-7 h-7 rounded-lg bg-white/5 text-zinc-400 shrink-0";
@@ -183,22 +189,26 @@ export function HabitCard({
         </div>
 
         <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={handleArchive}
-            title={habit.archived ? "Restore" : "Archive"}
-            className={iconActionClass}
-          >
-            <Archive size={14} />
-          </button>
-          {onEdit && (
-            <button onClick={() => onEdit(habit)} className={iconActionClass}>
-              <Edit2 size={14} />
-            </button>
-          )}
-          {onDelete && (
-            <button onClick={() => onDelete(habit.id)} className={deleteActionClass}>
-              <Trash2 size={14} />
-            </button>
+          {!readOnly && (
+            <>
+              <button
+                onClick={handleArchive}
+                title={habit.archived ? "Restore" : "Archive"}
+                className={iconActionClass}
+              >
+                <Archive size={14} />
+              </button>
+              {onEdit && (
+                <button onClick={() => onEdit(habit)} className={iconActionClass}>
+                  <Edit2 size={14} />
+                </button>
+              )}
+              {onDelete && (
+                <button onClick={() => onDelete(habit.id)} className={deleteActionClass}>
+                  <Trash2 size={14} />
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -281,7 +291,11 @@ export function HabitCard({
         </div>
       )}
 
-      <button onClick={handleToggle} disabled={isPending} className={toggleButtonClass}>
+      <button
+        onClick={handleToggle}
+        disabled={isPending || readOnly}
+        className={toggleButtonClass}
+      >
         {isCompletedOnDate ? (
           <>
             <ShieldCheck size={18} strokeWidth={2.5} />
