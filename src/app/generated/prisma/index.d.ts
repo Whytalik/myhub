@@ -17622,6 +17622,7 @@ export namespace Prisma {
     improveTomorrow: number
     gratitude: number
     brainDump: number
+    confidenceLog: number
     createdAt: number
     updatedAt: number
     standupBlockers: number
@@ -17746,6 +17747,7 @@ export namespace Prisma {
     improveTomorrow?: true
     gratitude?: true
     brainDump?: true
+    confidenceLog?: true
     createdAt?: true
     updatedAt?: true
     standupBlockers?: true
@@ -17869,6 +17871,7 @@ export namespace Prisma {
     improveTomorrow: string | null
     gratitude: string | null
     brainDump: string | null
+    confidenceLog: JsonValue | null
     createdAt: Date
     updatedAt: Date
     standupBlockers: string | null
@@ -17924,6 +17927,7 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupBlockers?: boolean
@@ -17961,6 +17965,7 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupBlockers?: boolean
@@ -17998,6 +18003,7 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupBlockers?: boolean
@@ -18035,6 +18041,7 @@ export namespace Prisma {
     improveTomorrow?: boolean
     gratitude?: boolean
     brainDump?: boolean
+    confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupBlockers?: boolean
@@ -18046,7 +18053,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "confidenceLog" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -18087,6 +18094,7 @@ export namespace Prisma {
       improveTomorrow: string | null
       gratitude: string | null
       brainDump: string | null
+      confidenceLog: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
       standupBlockers: string | null
@@ -18544,6 +18552,7 @@ export namespace Prisma {
     readonly improveTomorrow: FieldRef<"DailyEntry", 'String'>
     readonly gratitude: FieldRef<"DailyEntry", 'String'>
     readonly brainDump: FieldRef<"DailyEntry", 'String'>
+    readonly confidenceLog: FieldRef<"DailyEntry", 'Json'>
     readonly createdAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly standupBlockers: FieldRef<"DailyEntry", 'String'>
@@ -41661,6 +41670,7 @@ export namespace Prisma {
     improveTomorrow: 'improveTomorrow',
     gratitude: 'gratitude',
     brainDump: 'brainDump',
+    confidenceLog: 'confidenceLog',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     standupBlockers: 'standupBlockers',
@@ -43188,6 +43198,7 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
@@ -43225,6 +43236,7 @@ export namespace Prisma {
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
     brainDump?: SortOrderInput | SortOrder
+    confidenceLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupBlockers?: SortOrderInput | SortOrder
@@ -43266,6 +43278,7 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
@@ -43303,6 +43316,7 @@ export namespace Prisma {
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
     brainDump?: SortOrderInput | SortOrder
+    confidenceLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupBlockers?: SortOrderInput | SortOrder
@@ -43347,6 +43361,7 @@ export namespace Prisma {
     improveTomorrow?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    confidenceLog?: JsonNullableWithAggregatesFilter<"DailyEntry">
     createdAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     standupBlockers?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
@@ -46040,6 +46055,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -46077,6 +46093,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -46112,6 +46129,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46149,6 +46167,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46185,6 +46204,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -46220,6 +46240,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46256,6 +46277,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49054,6 +49076,7 @@ export namespace Prisma {
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
     brainDump?: SortOrder
+    confidenceLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupBlockers?: SortOrder
@@ -53090,6 +53113,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -53125,6 +53149,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -53862,6 +53887,7 @@ export namespace Prisma {
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
+    confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
@@ -59984,6 +60010,7 @@ export namespace Prisma {
     improveTomorrow?: string | null
     gratitude?: string | null
     brainDump?: string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     standupBlockers?: string | null
@@ -60299,6 +60326,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60334,6 +60362,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60369,6 +60398,7 @@ export namespace Prisma {
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
+    confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null

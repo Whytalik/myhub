@@ -18,7 +18,7 @@ export async function getEntryByDate(userId: string, date: Date) {
 
 export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) {
   const date = new Date(input.date);
-  const { date: _date, emotions, morningRoutine, eveningRoutine, ...data } = input;
+  const { date: _date, emotions, morningRoutine, eveningRoutine, confidenceLog, ...data } = input;
 
   const basePayload = {
     ...data,
@@ -26,6 +26,7 @@ export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) 
     emotions: emotions ?? Prisma.DbNull,
     morningRoutine: (morningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
     eveningRoutine: (eveningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
+    confidenceLog: (confidenceLog as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
   };
 
   return journalRepository.upsert(

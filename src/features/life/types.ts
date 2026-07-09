@@ -116,6 +116,7 @@ export interface DailyEntryData {
   improveTomorrow: string | null;
   gratitude: string | null;
   brainDump: string | null;
+  confidenceLog: JsonValue | null;
   standupDone: string | null;
   standupPlan: string | null;
   standupBlockers: string | null;
@@ -159,6 +160,19 @@ export interface UpsertDailyEntryInput {
   standupDone?: string | null;
   standupPlan?: string | null;
   standupBlockers?: string | null;
+  confidenceLog?: ConfidenceLog | null;
+}
+
+export interface ConfidenceLog {
+  ladderLevel: number | null;
+  initAttempts: number | null;
+  usedBoundaryPhrase: boolean | null;
+  boundaryPhraseText: string | null;
+  stuporSituation: string | null;
+  stuporThought: string | null;
+  stuporReality: string | null;
+  floodingUsedPause: boolean | null;
+  note: string | null;
 }
 
 export type SphereLevel = "MINIMUM" | "MEDIUM" | "DESIRED";

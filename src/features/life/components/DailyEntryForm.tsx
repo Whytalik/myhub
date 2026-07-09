@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
-import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, Zap } from "lucide-react";
+import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, Zap, Plus } from "lucide-react";
 import { Input } from "@/components/ui/inputs/input";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
@@ -10,6 +10,7 @@ import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
+import { ConfidenceSection } from "./sections/ConfidenceSection";
 import {
   upsertEntryAction,
   setDayStartedAction,
@@ -26,6 +27,7 @@ import type {
   TaskData,
   LifeSphereData,
   HabitData,
+  ConfidenceLog,
 } from "../types";
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -139,6 +141,7 @@ export function DailyEntryForm({
       standupDone: initialEntry?.standupDone ?? null,
       standupPlan: initialEntry?.standupPlan ?? null,
       standupBlockers: initialEntry?.standupBlockers ?? null,
+      confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
     };
   }, [initialEntry, scheduledTrainingDayName]);
 
@@ -162,6 +165,13 @@ export function DailyEntryForm({
         if (result.success) setSavedAt(new Date());
       });
     }, 1500);
+  };
+
+  const handleAddTask = () => {
+    setEditingTask(null);
+    setParentTask(null);
+    setIsDuplicate(false);
+    setTaskDialogOpen(true);
   };
 
   const handleAddChild = (parent: TaskData) => {
@@ -370,7 +380,17 @@ export function DailyEntryForm({
             id: "tasks",
             label: `Tasks (${tasks.filter((t) => t.status === "DONE").length}/${tasks.length})`,
             content: (
-              <div>
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleAddTask}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-xs font-semibold hover:bg-accent/20 transition-colors"
+                  >
+                    <Plus size={13} />
+                    Add Task
+                  </button>
+                </div>
                 <Tabs
                   tabs={[
                     {
@@ -470,6 +490,11 @@ export function DailyEntryForm({
                     onChange={patch}
                   />
                 </Suspense>
+
+                <ConfidenceSection
+                  log={data.confidenceLog ?? null}
+                  onChange={patch}
+                />
 
                 <TaskReviewSection tasks={tasks} date={todayStr} />
 

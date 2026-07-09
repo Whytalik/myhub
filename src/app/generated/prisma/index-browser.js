@@ -285,6 +285,7 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   improveTomorrow: 'improveTomorrow',
   gratitude: 'gratitude',
   brainDump: 'brainDump',
+  confidenceLog: 'confidenceLog',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   standupBlockers: 'standupBlockers',

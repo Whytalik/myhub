@@ -248,6 +248,7 @@ model DailyEntry {
   improveTomorrow String?
   gratitude       String?
   brainDump       String?
+  confidenceLog   Json?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   standupBlockers String?
