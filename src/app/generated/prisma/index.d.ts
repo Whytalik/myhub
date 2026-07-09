@@ -17550,6 +17550,7 @@ export namespace Prisma {
     nutrition: number | null
     nutritionNote: string | null
     routineNote: string | null
+    trainingDayName: string | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -17581,6 +17582,7 @@ export namespace Prisma {
     nutrition: number | null
     nutritionNote: string | null
     routineNote: string | null
+    trainingDayName: string | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -17615,6 +17617,7 @@ export namespace Prisma {
     morningRoutine: number
     eveningRoutine: number
     routineNote: number
+    trainingDayName: number
     winToday: number
     improveTomorrow: number
     gratitude: number
@@ -17671,6 +17674,7 @@ export namespace Prisma {
     nutrition?: true
     nutritionNote?: true
     routineNote?: true
+    trainingDayName?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -17702,6 +17706,7 @@ export namespace Prisma {
     nutrition?: true
     nutritionNote?: true
     routineNote?: true
+    trainingDayName?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -17736,6 +17741,7 @@ export namespace Prisma {
     morningRoutine?: true
     eveningRoutine?: true
     routineNote?: true
+    trainingDayName?: true
     winToday?: true
     improveTomorrow?: true
     gratitude?: true
@@ -17858,6 +17864,7 @@ export namespace Prisma {
     morningRoutine: JsonValue | null
     eveningRoutine: JsonValue | null
     routineNote: string | null
+    trainingDayName: string | null
     winToday: string | null
     improveTomorrow: string | null
     gratitude: string | null
@@ -17912,6 +17919,7 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    trainingDayName?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -17948,6 +17956,7 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    trainingDayName?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -17984,6 +17993,7 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    trainingDayName?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -18020,6 +18030,7 @@ export namespace Prisma {
     morningRoutine?: boolean
     eveningRoutine?: boolean
     routineNote?: boolean
+    trainingDayName?: boolean
     winToday?: boolean
     improveTomorrow?: boolean
     gratitude?: boolean
@@ -18035,7 +18046,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -18071,6 +18082,7 @@ export namespace Prisma {
       morningRoutine: Prisma.JsonValue | null
       eveningRoutine: Prisma.JsonValue | null
       routineNote: string | null
+      trainingDayName: string | null
       winToday: string | null
       improveTomorrow: string | null
       gratitude: string | null
@@ -18527,6 +18539,7 @@ export namespace Prisma {
     readonly morningRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly eveningRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly routineNote: FieldRef<"DailyEntry", 'String'>
+    readonly trainingDayName: FieldRef<"DailyEntry", 'String'>
     readonly winToday: FieldRef<"DailyEntry", 'String'>
     readonly improveTomorrow: FieldRef<"DailyEntry", 'String'>
     readonly gratitude: FieldRef<"DailyEntry", 'String'>
@@ -41643,6 +41656,7 @@ export namespace Prisma {
     morningRoutine: 'morningRoutine',
     eveningRoutine: 'eveningRoutine',
     routineNote: 'routineNote',
+    trainingDayName: 'trainingDayName',
     winToday: 'winToday',
     improveTomorrow: 'improveTomorrow',
     gratitude: 'gratitude',
@@ -43169,6 +43183,7 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    trainingDayName?: StringNullableFilter<"DailyEntry"> | string | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -43205,6 +43220,7 @@ export namespace Prisma {
     morningRoutine?: SortOrderInput | SortOrder
     eveningRoutine?: SortOrderInput | SortOrder
     routineNote?: SortOrderInput | SortOrder
+    trainingDayName?: SortOrderInput | SortOrder
     winToday?: SortOrderInput | SortOrder
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
@@ -43245,6 +43261,7 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    trainingDayName?: StringNullableFilter<"DailyEntry"> | string | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -43281,6 +43298,7 @@ export namespace Prisma {
     morningRoutine?: SortOrderInput | SortOrder
     eveningRoutine?: SortOrderInput | SortOrder
     routineNote?: SortOrderInput | SortOrder
+    trainingDayName?: SortOrderInput | SortOrder
     winToday?: SortOrderInput | SortOrder
     improveTomorrow?: SortOrderInput | SortOrder
     gratitude?: SortOrderInput | SortOrder
@@ -43324,6 +43342,7 @@ export namespace Prisma {
     morningRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     eveningRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     routineNote?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    trainingDayName?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     winToday?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
@@ -46016,6 +46035,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -46052,6 +46072,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -46086,6 +46107,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46122,6 +46144,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46157,6 +46180,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -46191,6 +46215,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46226,6 +46251,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49023,6 +49049,7 @@ export namespace Prisma {
     morningRoutine?: SortOrder
     eveningRoutine?: SortOrder
     routineNote?: SortOrder
+    trainingDayName?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -49066,6 +49093,7 @@ export namespace Prisma {
     nutrition?: SortOrder
     nutritionNote?: SortOrder
     routineNote?: SortOrder
+    trainingDayName?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -49097,6 +49125,7 @@ export namespace Prisma {
     nutrition?: SortOrder
     nutritionNote?: SortOrder
     routineNote?: SortOrder
+    trainingDayName?: SortOrder
     winToday?: SortOrder
     improveTomorrow?: SortOrder
     gratitude?: SortOrder
@@ -53056,6 +53085,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -53090,6 +53120,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -53826,6 +53857,7 @@ export namespace Prisma {
     morningRoutine?: JsonNullableFilter<"DailyEntry">
     eveningRoutine?: JsonNullableFilter<"DailyEntry">
     routineNote?: StringNullableFilter<"DailyEntry"> | string | null
+    trainingDayName?: StringNullableFilter<"DailyEntry"> | string | null
     winToday?: StringNullableFilter<"DailyEntry"> | string | null
     improveTomorrow?: StringNullableFilter<"DailyEntry"> | string | null
     gratitude?: StringNullableFilter<"DailyEntry"> | string | null
@@ -59947,6 +59979,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: string | null
+    trainingDayName?: string | null
     winToday?: string | null
     improveTomorrow?: string | null
     gratitude?: string | null
@@ -60261,6 +60294,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60295,6 +60329,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60329,6 +60364,7 @@ export namespace Prisma {
     morningRoutine?: NullableJsonNullValueInput | InputJsonValue
     eveningRoutine?: NullableJsonNullValueInput | InputJsonValue
     routineNote?: NullableStringFieldUpdateOperationsInput | string | null
+    trainingDayName?: NullableStringFieldUpdateOperationsInput | string | null
     winToday?: NullableStringFieldUpdateOperationsInput | string | null
     improveTomorrow?: NullableStringFieldUpdateOperationsInput | string | null
     gratitude?: NullableStringFieldUpdateOperationsInput | string | null

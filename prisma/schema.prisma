@@ -243,6 +243,7 @@ model DailyEntry {
   morningRoutine  Json?
   eveningRoutine  Json?
   routineNote     String?
+  trainingDayName String?
   winToday        String?
   improveTomorrow String?
   gratitude       String?

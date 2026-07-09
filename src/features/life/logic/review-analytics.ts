@@ -63,10 +63,8 @@ function genericMapCompletionPct(map: unknown): number | null {
   return (done / keys.length) * 100;
 }
 
-export function morningRoutinePct(entry: Pick<ReviewEntryData, "morningRoutine" | "date">): number | null {
-  const d = entry.date ? (typeof entry.date === "string" ? new Date(entry.date) : entry.date) : new Date();
-  const dayOfWeek = d.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
-  const isTrainingDay = dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5;
+export function morningRoutinePct(entry: Pick<ReviewEntryData, "morningRoutine" | "date" | "trainingDayName">): number | null {
+  const isTrainingDay = !!entry.trainingDayName;
   const items = getMorningRoutine(isTrainingDay);
   return itemsCompletionPct(entry.morningRoutine, items);
 }

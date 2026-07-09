@@ -280,6 +280,7 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   morningRoutine: 'morningRoutine',
   eveningRoutine: 'eveningRoutine',
   routineNote: 'routineNote',
+  trainingDayName: 'trainingDayName',
   winToday: 'winToday',
   improveTomorrow: 'improveTomorrow',
   gratitude: 'gratitude',

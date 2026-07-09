@@ -131,6 +131,7 @@ export function DailyEntryForm({
       morningRoutine: (initialEntry?.morningRoutine as RoutineMap | null) ?? null,
       eveningRoutine: (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
       routineNote: initialEntry?.routineNote ?? null,
+      trainingDayName: initialEntry?.trainingDayName ?? scheduledTrainingDayName ?? null,
       winToday: initialEntry?.winToday ?? null,
       improveTomorrow: initialEntry?.improveTomorrow ?? null,
       gratitude: initialEntry?.gratitude ?? null,
@@ -139,7 +140,7 @@ export function DailyEntryForm({
       standupPlan: initialEntry?.standupPlan ?? null,
       standupBlockers: initialEntry?.standupBlockers ?? null,
     };
-  }, [initialEntry]);
+  }, [initialEntry, scheduledTrainingDayName]);
 
   const [savedAt, setSavedAt] = useState<Date | null>(
     initialEntry ? new Date(initialEntry.updatedAt ?? new Date()) : null,

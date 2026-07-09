@@ -110,6 +110,7 @@ export interface DailyEntryData {
   morningRoutine: JsonValue | null;
   eveningRoutine: JsonValue | null;
   routineNote: string | null;
+  trainingDayName: string | null;
 
   winToday: string | null;
   improveTomorrow: string | null;
@@ -149,6 +150,7 @@ export interface UpsertDailyEntryInput {
   morningRoutine?: RoutineMap | null;
   eveningRoutine?: RoutineMap | null;
   routineNote?: string | null;
+  trainingDayName?: string | null;
 
   winToday?: string | null;
   improveTomorrow?: string | null;
@@ -246,6 +248,7 @@ export interface ReviewEntryData {
   recoveryRoutine: JsonValue | null;
   recoveryScore: number | null;
   emotions: JsonValue | null;
+  trainingDayName: string | null;
   winToday: string | null;
   improveTomorrow: string | null;
   gratitude: string | null;
