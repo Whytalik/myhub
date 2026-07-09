@@ -53,11 +53,11 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
       continue;
     }
 
-    const groups = new Map<string, ServingGroup>();
+    const groups = new Map<string, ServingGroup & { component?: string }>();
     for (const item of meal.macroItems ?? []) {
       if (item.vitalii <= 0 && item.olesia <= 0) continue;
-      const label = item.component ?? getProductName(item.food);
-      const existing = groups.get(label);
+      const key = item.component ?? item.food;
+      const existing = groups.get(key);
       if (existing) {
         existing.vitalii += item.vitalii;
         existing.olesia += item.olesia;
@@ -65,8 +65,9 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
           existing.foodKey = undefined;
         }
       } else {
-        groups.set(label, {
-          label,
+        groups.set(key, {
+          label: key,
+          component: item.component,
           vitalii: item.vitalii,
           olesia: item.olesia,
           foodKey: item.food,
@@ -74,11 +75,24 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
       }
     }
 
+    // Component на групі з єдиним foodKey — це лише позначка призначення
+    // (напр. "Для смаження курки"), не назва самостійної страви з кількох
+    // продуктів (як "Капрезе") — тому показуємо назву продукту, а
+    // призначення додаємо в дужках, а не ховаємо продукт за поміткою.
+    const finalizedGroups: ServingGroup[] = [...groups.values()].map(({ component, ...group }) => ({
+      ...group,
+      label: group.foodKey
+        ? component
+          ? `${getProductName(group.foodKey)} (${component})`
+          : getProductName(group.foodKey)
+        : group.label,
+    }));
+
     entries.push({
       labels: [meal.label],
       title: meal.title,
       mealType: meal.type,
-      groups: [...groups.values()],
+      groups: finalizedGroups,
       rawMacroItems: meal.macroItems ?? [],
     });
   }
@@ -378,10 +392,10 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                   {entry.labels.join(" + ")} · {entry.title}
                 </span>
                 <PushToFatSecretButton
-                    mealType={entry.mealType}
-                    macroItems={entry.rawMacroItems}
-                    pushedKey={`${weekStart}-${day.weekday}-${entry.mealType}-${entry.labels.join("+")}`}
-                  />
+                  mealType={entry.mealType}
+                  macroItems={entry.rawMacroItems}
+                  pushedKey={`${weekStart}-${day.weekday}-${entry.mealType}-${entry.labels.join("+")}`}
+                />
               </div>
               {entry.labels.length > 1 && (
                 <p className="text-caption italic">
@@ -466,45 +480,51 @@ export function DayPlan({ day }: { day: DayPlanType }) {
 
       {/* Підготовка на завтра */}
       {(() => {
-        const tomorrowPrepMap: Record<string, { title: string; action: string; note?: string }[]> = {
-          mon: [
-            {
-              title: "Курячі шашлики (Йогуртово-лимонні)",
-              action: "Дістати замариноване куряче філе для шашликів з морозильної камери та перекласти в холодильник для повільного розморожування.",
-              note: "Знадобиться на обід та вечерю в понеділок."
-            }
-          ],
-          tue: [
-            {
-              title: "Курячі серця (Соєво-томатні)",
-              action: "Дістати замариновані курячі серця з морозильної камери та перекласти в холодильник для розморожування.",
-              note: "Знадобиться на обід та вечерю у вівторок."
-            }
-          ],
-          wed: [], // Скумбрія запікається з морозилки без розморожування
-          thu: [
-            {
-              title: "Куряче філе для смаження (Соєво-часникове)",
-              action: "Дістати замариноване куряче філе для смаження з морозильної камери та перекласти в холодильник.",
-              note: "Знадобиться на обід та вечерю в четвер."
-            }
-          ],
-          fri: [
-            {
-              title: "Куряче філе (Медово-гірчичне)",
-              action: "Дістати замариноване куряче філе з морозильної камери та перекласти в холодильник.",
-              note: "Знадобиться на обід та вечерю в п'ятницю та суботу."
-            }
-          ],
-          sat: [], // Залишок курячого філе вже розморожено й приготовлено раніше
-          sun: [
-            {
-              title: "Свиняча відбивна (Трав'яна)",
-              action: "Дістати замариновану свинячу відбивну з морозильної камери та перекласти в холодильник.",
-              note: "Знадобиться на обід та вечерю в неділю."
-            }
-          ]
-        };
+        const tomorrowPrepMap: Record<string, { title: string; action: string; note?: string }[]> =
+          {
+            mon: [
+              {
+                title: "Курячі шашлики (Йогуртово-лимонні)",
+                action:
+                  "Дістати замариноване куряче філе для шашликів з морозильної камери та перекласти в холодильник для повільного розморожування.",
+                note: "Знадобиться на обід та вечерю в понеділок.",
+              },
+            ],
+            tue: [
+              {
+                title: "Курячі серця (Соєво-томатні)",
+                action:
+                  "Дістати замариновані курячі серця з морозильної камери та перекласти в холодильник для розморожування.",
+                note: "Знадобиться на обід та вечерю у вівторок.",
+              },
+            ],
+            wed: [], // Скумбрія запікається з морозилки без розморожування
+            thu: [
+              {
+                title: "Куряче філе для смаження (Соєво-часникове)",
+                action:
+                  "Дістати замариноване куряче філе для смаження з морозильної камери та перекласти в холодильник.",
+                note: "Знадобиться на обід та вечерю в четвер.",
+              },
+            ],
+            fri: [
+              {
+                title: "Куряче філе (Медово-гірчичне)",
+                action:
+                  "Дістати замариноване куряче філе з морозильної камери та перекласти в холодильник.",
+                note: "Знадобиться на обід та вечерю в п'ятницю та суботу.",
+              },
+            ],
+            sat: [], // Залишок курячого філе вже розморожено й приготовлено раніше
+            sun: [
+              {
+                title: "Свиняча відбивна (Трав'яна)",
+                action:
+                  "Дістати замариновану свинячу відбивну з морозильної камери та перекласти в холодильник.",
+                note: "Знадобиться на обід та вечерю в неділю.",
+              },
+            ],
+          };
 
         const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
         const currentIndex = weekdays.indexOf(day.weekday);
@@ -519,7 +539,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
               </div>
               <div>
                 <h3 className="text-panel-title">Підготовка на завтра</h3>
-                <p className="text-caption">Що потрібно зробити сьогодні ввечері (дістати з морозилки тощо)</p>
+                <p className="text-caption">
+                  Що потрібно зробити сьогодні ввечері (дістати з морозилки тощо)
+                </p>
               </div>
             </div>
 
@@ -528,7 +550,10 @@ export function DayPlan({ day }: { day: DayPlanType }) {
             {tomorrowPrep.length > 0 ? (
               <ul className="flex flex-col gap-3">
                 {tomorrowPrep.map((prep, idx) => (
-                  <li key={idx} className="flex gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                  <li
+                    key={idx}
+                    className="flex gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+                  >
                     <div className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 shrink-0 text-xs mt-0.5 font-bold">
                       !
                     </div>
@@ -548,7 +573,8 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                 <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-semibold">Розморожування не потрібне</span>
                   <p className="text-sm text-zinc-300">
-                    Для завтрашніх страв не потрібно нічого діставати з морозилки. Скумбрія запікається прямо з морозилки, а сирники смажаться замороженими.
+                    Для завтрашніх страв не потрібно нічого діставати з морозилки. Скумбрія
+                    запікається прямо з морозилки, а сирники смажаться замороженими.
                   </p>
                 </div>
               </div>
