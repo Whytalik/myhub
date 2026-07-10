@@ -49,7 +49,9 @@ export function formatGrams(
 ): string {
   if (unit === "piece") {
     if (!gramsPerPiece) throw new Error("formatGrams: unit 'piece' requires gramsPerPiece");
-    return `${Math.round(grams / gramsPerPiece)} шт`;
+    const val = grams / gramsPerPiece;
+    const formatted = Number(val.toFixed(1));
+    return `${formatted} шт`;
   }
   if (unit === "ml") {
     return `${Math.round(grams)} мл`;

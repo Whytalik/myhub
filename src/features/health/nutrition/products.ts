@@ -316,12 +316,15 @@ export const PRODUCTS: Record<string, Product> = {
   cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
 
   // Готується під час міл-препу з уже врахованих tracked-продуктів — не купується окремо.
-  syrniki: prepared(
-    "syrniki",
-    "Сирники (заготовка)",
-    { kcal: 200, protein: 12, fat: 8, carbs: 20 },
-    "dairy",
-  ),
+  syrniki: {
+    ...prepared(
+      "syrniki",
+      "Сирники (заготовка)",
+      { kcal: 200, protein: 12, fat: 8, carbs: 20 },
+      "dairy",
+    ),
+    gramsPerPiece: 67,
+  },
 
   // Спеції, приправи та інші pantry-продукти — купуються, але без обліку макросів.
   rosemary: pantry("rosemary", "Розмарин"),

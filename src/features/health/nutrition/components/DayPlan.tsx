@@ -102,6 +102,7 @@ function buildServingEntries(meals: Meal[]): ServingEntry[] {
 }
 
 interface DayProductTotal {
+  foodKey: string;
   name: string;
   vitalii: number;
   olesia: number;
@@ -125,7 +126,12 @@ function buildDayProductTotals(meals: Meal[]): DayProductTotal[] {
         existing.vitalii += item.vitalii;
         existing.olesia += item.olesia;
       } else {
-        totals.set(item.food, { name, vitalii: item.vitalii, olesia: item.olesia });
+        totals.set(item.food, {
+          foodKey: item.food,
+          name,
+          vitalii: item.vitalii,
+          olesia: item.olesia,
+        });
       }
     }
   }
@@ -205,8 +211,10 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
     totalLabel = multiplier
       ? `~${Math.round(totalRaw * multiplier)} г готового`
       : gramsPerPiece
-        ? formatGrams(totalRaw, "piece", gramsPerPiece)
-        : `~${Math.round(totalRaw)} г`;
+        ? `${formatGrams(totalRaw, "piece", gramsPerPiece)} (${totalRaw} г)`
+        : product?.key === "milk"
+          ? `~${Math.round(totalRaw)} мл`
+          : `~${Math.round(totalRaw)} г`;
   }
 
   const formatWeight = (rawWeight: number, pct: number) => {
@@ -214,7 +222,11 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
     const pctSuffix = showPct ? ` (${pct}%)` : "";
 
     if (gramsPerPiece) {
-      return `${formatGrams(rawWeight, "piece", gramsPerPiece)}${pctSuffix}`;
+      return `${formatGrams(rawWeight, "piece", gramsPerPiece)} (${rawWeight} г)${pctSuffix}`;
+    }
+
+    if (product?.key === "milk") {
+      return `${Math.round(rawWeight)} мл${pctSuffix}`;
     }
 
     if (multiplier) {
@@ -343,14 +355,29 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                 </tr>
               </thead>
               <tbody>
-                {dayProductTotals.map((total, i) => (
-                  <tr key={i} className="border-b border-white/[0.03] last:border-0">
-                    <td className="py-2 pr-3 text-zinc-200">{total.name}</td>
-                    <td className="py-2 text-right font-mono text-xs text-zinc-400">
-                      {total.vitalii + total.olesia > 0 ? `${total.vitalii + total.olesia} г` : "—"}
-                    </td>
-                  </tr>
-                ))}
+                {dayProductTotals.map((total, i) => {
+                  const grams = total.vitalii + total.olesia;
+                  const product = PRODUCTS[total.foodKey];
+                  let displayValue = "—";
+                  if (grams > 0) {
+                    if (product?.gramsPerPiece) {
+                      const pcs = Math.round(grams / product.gramsPerPiece);
+                      displayValue = `${pcs} шт (${grams} г)`;
+                    } else if (product?.key === "milk") {
+                      displayValue = `${grams} мл`;
+                    } else {
+                      displayValue = `${grams} г`;
+                    }
+                  }
+                  return (
+                    <tr key={i} className="border-b border-white/[0.03] last:border-0">
+                      <td className="py-2 pr-3 text-zinc-200">{total.name}</td>
+                      <td className="py-2 text-right font-mono text-xs text-zinc-400">
+                        {displayValue}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
