@@ -12,13 +12,10 @@ import { formatGrams } from "../quantities";
 import type { DayPlan as DayPlanType, Meal, MacroItem, MealType, PrepSection } from "../types";
 
 function isRepeatPortion(meal: Meal): boolean {
-  return (
-    (meal.macroItems ?? []).length === 0 &&
-    meal.ingredients.some((ing) => {
-      const lower = ing.toLowerCase();
-      return lower.includes("друга порція") || lower.includes("обідньої страви");
-    })
-  );
+  return meal.ingredients.some((ing) => {
+    const lower = ing.toLowerCase();
+    return lower.includes("друга порція") || lower.includes("обідньої страви");
+  });
 }
 
 interface ServingGroup {
