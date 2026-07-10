@@ -108,6 +108,25 @@ enum MappingSource {
   BARCODE
 }
 
+// Also not user-owned — see FatSecretAccount comment above. Tracks Saved Meals
+// (FatSecret's own "pick a dish instead of individual foods" feature) provisioned
+// into each profile's real FatSecret account from a WEEK_PLAN slot, so re-running
+// the provisioning script can replace the old FatSecret-side saved meal instead of
+// creating a duplicate when the plan changes.
+model FatSecretSavedMeal {
+  id          String   @id @default(cuid())
+  profileId   String
+  season      String // "summer" | "winter" | "autumn" | "spring"
+  weekday     String // Weekday from types.ts, e.g. "fri"
+  mealType    String // MealType from types.ts, e.g. "breakfast"
+  title       String // last title pushed to FatSecret — for display/debugging only
+  savedMealId String // FatSecret's saved_meal_id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([profileId, season, weekday, mealType])
+}
+
 // Also not user-owned — see FatSecretAccount comment above. Records groceries the
 // household received as gifts (e.g. from parents) for a given shopping week, so the
 // weekly spend estimate can exclude them. Keyed by (weekStart, itemId) against the

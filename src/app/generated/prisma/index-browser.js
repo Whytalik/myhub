@@ -179,6 +179,18 @@ exports.Prisma.ProductFatSecretMappingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FatSecretSavedMealScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  season: 'season',
+  weekday: 'weekday',
+  mealType: 'mealType',
+  title: 'title',
+  savedMealId: 'savedMealId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.GiftedGroceryItemScalarFieldEnum = {
   id: 'id',
   weekStart: 'weekStart',
@@ -621,6 +633,7 @@ exports.Prisma.ModelName = {
   PushSubscription: 'PushSubscription',
   FatSecretAccount: 'FatSecretAccount',
   ProductFatSecretMapping: 'ProductFatSecretMapping',
+  FatSecretSavedMeal: 'FatSecretSavedMeal',
   GiftedGroceryItem: 'GiftedGroceryItem',
   Account: 'Account',
   Session: 'Session',

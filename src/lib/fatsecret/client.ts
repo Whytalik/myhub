@@ -89,6 +89,71 @@ export async function createFoodEntry(input: CreateFoodEntryInput): Promise<void
   }
 }
 
+function extractId(value: unknown): string | undefined {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object" && "value" in value) {
+    return String((value as { value: unknown }).value);
+  }
+  return undefined;
+}
+
+/** Delegated (OAuth1) — creates a FatSecret "Saved Meal" (their combo-of-foods, one-tap-log feature). */
+export async function createSavedMeal(name: string, accessToken: OAuth1Token): Promise<string> {
+  const body = await signedFetch(
+    REST_API_URL,
+    { method: "saved_meal.create", format: "json", saved_meal_name: name },
+    accessToken,
+  );
+  const parsed = JSON.parse(body) as { saved_meal_id?: unknown; error?: { message?: string } };
+  if (parsed.error) throw new Error(parsed.error.message ?? "FatSecret saved_meal.create failed");
+  const id = extractId(parsed.saved_meal_id);
+  if (!id) throw new Error(`Unexpected FatSecret saved_meal.create response: ${body}`);
+  return id;
+}
+
+/** Delegated (OAuth1) — adds one food to an existing Saved Meal. */
+export async function addSavedMealItem(
+  savedMealId: string,
+  foodId: string,
+  servingId: string,
+  numberOfUnits: number,
+  itemName: string,
+  accessToken: OAuth1Token,
+): Promise<string> {
+  const body = await signedFetch(
+    REST_API_URL,
+    {
+      method: "saved_meal_item.add",
+      format: "json",
+      saved_meal_id: savedMealId,
+      food_id: foodId,
+      serving_id: servingId,
+      number_of_units: String(numberOfUnits),
+      saved_meal_item_name: itemName,
+    },
+    accessToken,
+  );
+  const parsed = JSON.parse(body) as { saved_meal_item_id?: unknown; error?: { message?: string } };
+  if (parsed.error) throw new Error(parsed.error.message ?? "FatSecret saved_meal_item.add failed");
+  const id = extractId(parsed.saved_meal_item_id);
+  if (!id) throw new Error(`Unexpected FatSecret saved_meal_item.add response: ${body}`);
+  return id;
+}
+
+/** Delegated (OAuth1) — deletes a Saved Meal (and all its items) entirely. */
+export async function deleteSavedMeal(
+  savedMealId: string,
+  accessToken: OAuth1Token,
+): Promise<void> {
+  const body = await signedFetch(
+    REST_API_URL,
+    { method: "saved_meal.delete", format: "json", saved_meal_id: savedMealId },
+    accessToken,
+  );
+  const parsed = JSON.parse(body) as { error?: { message?: string } };
+  if (parsed.error) throw new Error(parsed.error.message ?? "FatSecret saved_meal.delete failed");
+}
+
 interface OAuth2TokenCache {
   accessToken: string;
   expiresAt: number;

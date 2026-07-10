@@ -39,6 +39,11 @@ export type FatSecretAccount = $Result.DefaultSelection<Prisma.$FatSecretAccount
  */
 export type ProductFatSecretMapping = $Result.DefaultSelection<Prisma.$ProductFatSecretMappingPayload>
 /**
+ * Model FatSecretSavedMeal
+ * 
+ */
+export type FatSecretSavedMeal = $Result.DefaultSelection<Prisma.$FatSecretSavedMealPayload>
+/**
  * Model GiftedGroceryItem
  * 
  */
@@ -453,6 +458,16 @@ export class PrismaClient<
     * ```
     */
   get productFatSecretMapping(): Prisma.ProductFatSecretMappingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fatSecretSavedMeal`: Exposes CRUD operations for the **FatSecretSavedMeal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FatSecretSavedMeals
+    * const fatSecretSavedMeals = await prisma.fatSecretSavedMeal.findMany()
+    * ```
+    */
+  get fatSecretSavedMeal(): Prisma.FatSecretSavedMealDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.giftedGroceryItem`: Exposes CRUD operations for the **GiftedGroceryItem** model.
@@ -1152,6 +1167,7 @@ export namespace Prisma {
     PushSubscription: 'PushSubscription',
     FatSecretAccount: 'FatSecretAccount',
     ProductFatSecretMapping: 'ProductFatSecretMapping',
+    FatSecretSavedMeal: 'FatSecretSavedMeal',
     GiftedGroceryItem: 'GiftedGroceryItem',
     Account: 'Account',
     Session: 'Session',
@@ -1193,7 +1209,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "fatSecretSavedMeal" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1564,6 +1580,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductFatSecretMappingCountArgs<ExtArgs>
             result: $Utils.Optional<ProductFatSecretMappingCountAggregateOutputType> | number
+          }
+        }
+      }
+      FatSecretSavedMeal: {
+        payload: Prisma.$FatSecretSavedMealPayload<ExtArgs>
+        fields: Prisma.FatSecretSavedMealFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FatSecretSavedMealFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FatSecretSavedMealFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          findFirst: {
+            args: Prisma.FatSecretSavedMealFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FatSecretSavedMealFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          findMany: {
+            args: Prisma.FatSecretSavedMealFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>[]
+          }
+          create: {
+            args: Prisma.FatSecretSavedMealCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          createMany: {
+            args: Prisma.FatSecretSavedMealCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FatSecretSavedMealCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>[]
+          }
+          delete: {
+            args: Prisma.FatSecretSavedMealDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          update: {
+            args: Prisma.FatSecretSavedMealUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          deleteMany: {
+            args: Prisma.FatSecretSavedMealDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FatSecretSavedMealUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FatSecretSavedMealUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>[]
+          }
+          upsert: {
+            args: Prisma.FatSecretSavedMealUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FatSecretSavedMealPayload>
+          }
+          aggregate: {
+            args: Prisma.FatSecretSavedMealAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFatSecretSavedMeal>
+          }
+          groupBy: {
+            args: Prisma.FatSecretSavedMealGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FatSecretSavedMealGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FatSecretSavedMealCountArgs<ExtArgs>
+            result: $Utils.Optional<FatSecretSavedMealCountAggregateOutputType> | number
           }
         }
       }
@@ -3604,6 +3694,7 @@ export namespace Prisma {
     pushSubscription?: PushSubscriptionOmit
     fatSecretAccount?: FatSecretAccountOmit
     productFatSecretMapping?: ProductFatSecretMappingOmit
+    fatSecretSavedMeal?: FatSecretSavedMealOmit
     giftedGroceryItem?: GiftedGroceryItemOmit
     account?: AccountOmit
     session?: SessionOmit
@@ -10450,6 +10541,1058 @@ export namespace Prisma {
      * Omit specific fields from the ProductFatSecretMapping
      */
     omit?: ProductFatSecretMappingOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FatSecretSavedMeal
+   */
+
+  export type AggregateFatSecretSavedMeal = {
+    _count: FatSecretSavedMealCountAggregateOutputType | null
+    _min: FatSecretSavedMealMinAggregateOutputType | null
+    _max: FatSecretSavedMealMaxAggregateOutputType | null
+  }
+
+  export type FatSecretSavedMealMinAggregateOutputType = {
+    id: string | null
+    profileId: string | null
+    season: string | null
+    weekday: string | null
+    mealType: string | null
+    title: string | null
+    savedMealId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FatSecretSavedMealMaxAggregateOutputType = {
+    id: string | null
+    profileId: string | null
+    season: string | null
+    weekday: string | null
+    mealType: string | null
+    title: string | null
+    savedMealId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FatSecretSavedMealCountAggregateOutputType = {
+    id: number
+    profileId: number
+    season: number
+    weekday: number
+    mealType: number
+    title: number
+    savedMealId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FatSecretSavedMealMinAggregateInputType = {
+    id?: true
+    profileId?: true
+    season?: true
+    weekday?: true
+    mealType?: true
+    title?: true
+    savedMealId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FatSecretSavedMealMaxAggregateInputType = {
+    id?: true
+    profileId?: true
+    season?: true
+    weekday?: true
+    mealType?: true
+    title?: true
+    savedMealId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FatSecretSavedMealCountAggregateInputType = {
+    id?: true
+    profileId?: true
+    season?: true
+    weekday?: true
+    mealType?: true
+    title?: true
+    savedMealId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FatSecretSavedMealAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FatSecretSavedMeal to aggregate.
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FatSecretSavedMeals to fetch.
+     */
+    orderBy?: FatSecretSavedMealOrderByWithRelationInput | FatSecretSavedMealOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FatSecretSavedMealWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FatSecretSavedMeals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FatSecretSavedMeals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FatSecretSavedMeals
+    **/
+    _count?: true | FatSecretSavedMealCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FatSecretSavedMealMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FatSecretSavedMealMaxAggregateInputType
+  }
+
+  export type GetFatSecretSavedMealAggregateType<T extends FatSecretSavedMealAggregateArgs> = {
+        [P in keyof T & keyof AggregateFatSecretSavedMeal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFatSecretSavedMeal[P]>
+      : GetScalarType<T[P], AggregateFatSecretSavedMeal[P]>
+  }
+
+
+
+
+  export type FatSecretSavedMealGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FatSecretSavedMealWhereInput
+    orderBy?: FatSecretSavedMealOrderByWithAggregationInput | FatSecretSavedMealOrderByWithAggregationInput[]
+    by: FatSecretSavedMealScalarFieldEnum[] | FatSecretSavedMealScalarFieldEnum
+    having?: FatSecretSavedMealScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FatSecretSavedMealCountAggregateInputType | true
+    _min?: FatSecretSavedMealMinAggregateInputType
+    _max?: FatSecretSavedMealMaxAggregateInputType
+  }
+
+  export type FatSecretSavedMealGroupByOutputType = {
+    id: string
+    profileId: string
+    season: string
+    weekday: string
+    mealType: string
+    title: string
+    savedMealId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: FatSecretSavedMealCountAggregateOutputType | null
+    _min: FatSecretSavedMealMinAggregateOutputType | null
+    _max: FatSecretSavedMealMaxAggregateOutputType | null
+  }
+
+  type GetFatSecretSavedMealGroupByPayload<T extends FatSecretSavedMealGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FatSecretSavedMealGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FatSecretSavedMealGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FatSecretSavedMealGroupByOutputType[P]>
+            : GetScalarType<T[P], FatSecretSavedMealGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FatSecretSavedMealSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profileId?: boolean
+    season?: boolean
+    weekday?: boolean
+    mealType?: boolean
+    title?: boolean
+    savedMealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fatSecretSavedMeal"]>
+
+  export type FatSecretSavedMealSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profileId?: boolean
+    season?: boolean
+    weekday?: boolean
+    mealType?: boolean
+    title?: boolean
+    savedMealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fatSecretSavedMeal"]>
+
+  export type FatSecretSavedMealSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profileId?: boolean
+    season?: boolean
+    weekday?: boolean
+    mealType?: boolean
+    title?: boolean
+    savedMealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["fatSecretSavedMeal"]>
+
+  export type FatSecretSavedMealSelectScalar = {
+    id?: boolean
+    profileId?: boolean
+    season?: boolean
+    weekday?: boolean
+    mealType?: boolean
+    title?: boolean
+    savedMealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FatSecretSavedMealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "season" | "weekday" | "mealType" | "title" | "savedMealId" | "createdAt" | "updatedAt", ExtArgs["result"]["fatSecretSavedMeal"]>
+
+  export type $FatSecretSavedMealPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FatSecretSavedMeal"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      profileId: string
+      season: string
+      weekday: string
+      mealType: string
+      title: string
+      savedMealId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["fatSecretSavedMeal"]>
+    composites: {}
+  }
+
+  type FatSecretSavedMealGetPayload<S extends boolean | null | undefined | FatSecretSavedMealDefaultArgs> = $Result.GetResult<Prisma.$FatSecretSavedMealPayload, S>
+
+  type FatSecretSavedMealCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FatSecretSavedMealFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FatSecretSavedMealCountAggregateInputType | true
+    }
+
+  export interface FatSecretSavedMealDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FatSecretSavedMeal'], meta: { name: 'FatSecretSavedMeal' } }
+    /**
+     * Find zero or one FatSecretSavedMeal that matches the filter.
+     * @param {FatSecretSavedMealFindUniqueArgs} args - Arguments to find a FatSecretSavedMeal
+     * @example
+     * // Get one FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FatSecretSavedMealFindUniqueArgs>(args: SelectSubset<T, FatSecretSavedMealFindUniqueArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FatSecretSavedMeal that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FatSecretSavedMealFindUniqueOrThrowArgs} args - Arguments to find a FatSecretSavedMeal
+     * @example
+     * // Get one FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FatSecretSavedMealFindUniqueOrThrowArgs>(args: SelectSubset<T, FatSecretSavedMealFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FatSecretSavedMeal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealFindFirstArgs} args - Arguments to find a FatSecretSavedMeal
+     * @example
+     * // Get one FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FatSecretSavedMealFindFirstArgs>(args?: SelectSubset<T, FatSecretSavedMealFindFirstArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FatSecretSavedMeal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealFindFirstOrThrowArgs} args - Arguments to find a FatSecretSavedMeal
+     * @example
+     * // Get one FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FatSecretSavedMealFindFirstOrThrowArgs>(args?: SelectSubset<T, FatSecretSavedMealFindFirstOrThrowArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FatSecretSavedMeals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FatSecretSavedMeals
+     * const fatSecretSavedMeals = await prisma.fatSecretSavedMeal.findMany()
+     * 
+     * // Get first 10 FatSecretSavedMeals
+     * const fatSecretSavedMeals = await prisma.fatSecretSavedMeal.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fatSecretSavedMealWithIdOnly = await prisma.fatSecretSavedMeal.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FatSecretSavedMealFindManyArgs>(args?: SelectSubset<T, FatSecretSavedMealFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FatSecretSavedMeal.
+     * @param {FatSecretSavedMealCreateArgs} args - Arguments to create a FatSecretSavedMeal.
+     * @example
+     * // Create one FatSecretSavedMeal
+     * const FatSecretSavedMeal = await prisma.fatSecretSavedMeal.create({
+     *   data: {
+     *     // ... data to create a FatSecretSavedMeal
+     *   }
+     * })
+     * 
+     */
+    create<T extends FatSecretSavedMealCreateArgs>(args: SelectSubset<T, FatSecretSavedMealCreateArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FatSecretSavedMeals.
+     * @param {FatSecretSavedMealCreateManyArgs} args - Arguments to create many FatSecretSavedMeals.
+     * @example
+     * // Create many FatSecretSavedMeals
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FatSecretSavedMealCreateManyArgs>(args?: SelectSubset<T, FatSecretSavedMealCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FatSecretSavedMeals and returns the data saved in the database.
+     * @param {FatSecretSavedMealCreateManyAndReturnArgs} args - Arguments to create many FatSecretSavedMeals.
+     * @example
+     * // Create many FatSecretSavedMeals
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FatSecretSavedMeals and only return the `id`
+     * const fatSecretSavedMealWithIdOnly = await prisma.fatSecretSavedMeal.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FatSecretSavedMealCreateManyAndReturnArgs>(args?: SelectSubset<T, FatSecretSavedMealCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FatSecretSavedMeal.
+     * @param {FatSecretSavedMealDeleteArgs} args - Arguments to delete one FatSecretSavedMeal.
+     * @example
+     * // Delete one FatSecretSavedMeal
+     * const FatSecretSavedMeal = await prisma.fatSecretSavedMeal.delete({
+     *   where: {
+     *     // ... filter to delete one FatSecretSavedMeal
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FatSecretSavedMealDeleteArgs>(args: SelectSubset<T, FatSecretSavedMealDeleteArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FatSecretSavedMeal.
+     * @param {FatSecretSavedMealUpdateArgs} args - Arguments to update one FatSecretSavedMeal.
+     * @example
+     * // Update one FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FatSecretSavedMealUpdateArgs>(args: SelectSubset<T, FatSecretSavedMealUpdateArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FatSecretSavedMeals.
+     * @param {FatSecretSavedMealDeleteManyArgs} args - Arguments to filter FatSecretSavedMeals to delete.
+     * @example
+     * // Delete a few FatSecretSavedMeals
+     * const { count } = await prisma.fatSecretSavedMeal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FatSecretSavedMealDeleteManyArgs>(args?: SelectSubset<T, FatSecretSavedMealDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FatSecretSavedMeals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FatSecretSavedMeals
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FatSecretSavedMealUpdateManyArgs>(args: SelectSubset<T, FatSecretSavedMealUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FatSecretSavedMeals and returns the data updated in the database.
+     * @param {FatSecretSavedMealUpdateManyAndReturnArgs} args - Arguments to update many FatSecretSavedMeals.
+     * @example
+     * // Update many FatSecretSavedMeals
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FatSecretSavedMeals and only return the `id`
+     * const fatSecretSavedMealWithIdOnly = await prisma.fatSecretSavedMeal.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FatSecretSavedMealUpdateManyAndReturnArgs>(args: SelectSubset<T, FatSecretSavedMealUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FatSecretSavedMeal.
+     * @param {FatSecretSavedMealUpsertArgs} args - Arguments to update or create a FatSecretSavedMeal.
+     * @example
+     * // Update or create a FatSecretSavedMeal
+     * const fatSecretSavedMeal = await prisma.fatSecretSavedMeal.upsert({
+     *   create: {
+     *     // ... data to create a FatSecretSavedMeal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FatSecretSavedMeal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FatSecretSavedMealUpsertArgs>(args: SelectSubset<T, FatSecretSavedMealUpsertArgs<ExtArgs>>): Prisma__FatSecretSavedMealClient<$Result.GetResult<Prisma.$FatSecretSavedMealPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FatSecretSavedMeals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealCountArgs} args - Arguments to filter FatSecretSavedMeals to count.
+     * @example
+     * // Count the number of FatSecretSavedMeals
+     * const count = await prisma.fatSecretSavedMeal.count({
+     *   where: {
+     *     // ... the filter for the FatSecretSavedMeals we want to count
+     *   }
+     * })
+    **/
+    count<T extends FatSecretSavedMealCountArgs>(
+      args?: Subset<T, FatSecretSavedMealCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FatSecretSavedMealCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FatSecretSavedMeal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FatSecretSavedMealAggregateArgs>(args: Subset<T, FatSecretSavedMealAggregateArgs>): Prisma.PrismaPromise<GetFatSecretSavedMealAggregateType<T>>
+
+    /**
+     * Group by FatSecretSavedMeal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FatSecretSavedMealGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FatSecretSavedMealGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FatSecretSavedMealGroupByArgs['orderBy'] }
+        : { orderBy?: FatSecretSavedMealGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FatSecretSavedMealGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFatSecretSavedMealGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FatSecretSavedMeal model
+   */
+  readonly fields: FatSecretSavedMealFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FatSecretSavedMeal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FatSecretSavedMealClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FatSecretSavedMeal model
+   */
+  interface FatSecretSavedMealFieldRefs {
+    readonly id: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly profileId: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly season: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly weekday: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly mealType: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly title: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly savedMealId: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly createdAt: FieldRef<"FatSecretSavedMeal", 'DateTime'>
+    readonly updatedAt: FieldRef<"FatSecretSavedMeal", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FatSecretSavedMeal findUnique
+   */
+  export type FatSecretSavedMealFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter, which FatSecretSavedMeal to fetch.
+     */
+    where: FatSecretSavedMealWhereUniqueInput
+  }
+
+  /**
+   * FatSecretSavedMeal findUniqueOrThrow
+   */
+  export type FatSecretSavedMealFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter, which FatSecretSavedMeal to fetch.
+     */
+    where: FatSecretSavedMealWhereUniqueInput
+  }
+
+  /**
+   * FatSecretSavedMeal findFirst
+   */
+  export type FatSecretSavedMealFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter, which FatSecretSavedMeal to fetch.
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FatSecretSavedMeals to fetch.
+     */
+    orderBy?: FatSecretSavedMealOrderByWithRelationInput | FatSecretSavedMealOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FatSecretSavedMeals.
+     */
+    cursor?: FatSecretSavedMealWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FatSecretSavedMeals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FatSecretSavedMeals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FatSecretSavedMeals.
+     */
+    distinct?: FatSecretSavedMealScalarFieldEnum | FatSecretSavedMealScalarFieldEnum[]
+  }
+
+  /**
+   * FatSecretSavedMeal findFirstOrThrow
+   */
+  export type FatSecretSavedMealFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter, which FatSecretSavedMeal to fetch.
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FatSecretSavedMeals to fetch.
+     */
+    orderBy?: FatSecretSavedMealOrderByWithRelationInput | FatSecretSavedMealOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FatSecretSavedMeals.
+     */
+    cursor?: FatSecretSavedMealWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FatSecretSavedMeals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FatSecretSavedMeals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FatSecretSavedMeals.
+     */
+    distinct?: FatSecretSavedMealScalarFieldEnum | FatSecretSavedMealScalarFieldEnum[]
+  }
+
+  /**
+   * FatSecretSavedMeal findMany
+   */
+  export type FatSecretSavedMealFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter, which FatSecretSavedMeals to fetch.
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FatSecretSavedMeals to fetch.
+     */
+    orderBy?: FatSecretSavedMealOrderByWithRelationInput | FatSecretSavedMealOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FatSecretSavedMeals.
+     */
+    cursor?: FatSecretSavedMealWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FatSecretSavedMeals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FatSecretSavedMeals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FatSecretSavedMeals.
+     */
+    distinct?: FatSecretSavedMealScalarFieldEnum | FatSecretSavedMealScalarFieldEnum[]
+  }
+
+  /**
+   * FatSecretSavedMeal create
+   */
+  export type FatSecretSavedMealCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FatSecretSavedMeal.
+     */
+    data: XOR<FatSecretSavedMealCreateInput, FatSecretSavedMealUncheckedCreateInput>
+  }
+
+  /**
+   * FatSecretSavedMeal createMany
+   */
+  export type FatSecretSavedMealCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FatSecretSavedMeals.
+     */
+    data: FatSecretSavedMealCreateManyInput | FatSecretSavedMealCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FatSecretSavedMeal createManyAndReturn
+   */
+  export type FatSecretSavedMealCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * The data used to create many FatSecretSavedMeals.
+     */
+    data: FatSecretSavedMealCreateManyInput | FatSecretSavedMealCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FatSecretSavedMeal update
+   */
+  export type FatSecretSavedMealUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FatSecretSavedMeal.
+     */
+    data: XOR<FatSecretSavedMealUpdateInput, FatSecretSavedMealUncheckedUpdateInput>
+    /**
+     * Choose, which FatSecretSavedMeal to update.
+     */
+    where: FatSecretSavedMealWhereUniqueInput
+  }
+
+  /**
+   * FatSecretSavedMeal updateMany
+   */
+  export type FatSecretSavedMealUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FatSecretSavedMeals.
+     */
+    data: XOR<FatSecretSavedMealUpdateManyMutationInput, FatSecretSavedMealUncheckedUpdateManyInput>
+    /**
+     * Filter which FatSecretSavedMeals to update
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * Limit how many FatSecretSavedMeals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FatSecretSavedMeal updateManyAndReturn
+   */
+  export type FatSecretSavedMealUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * The data used to update FatSecretSavedMeals.
+     */
+    data: XOR<FatSecretSavedMealUpdateManyMutationInput, FatSecretSavedMealUncheckedUpdateManyInput>
+    /**
+     * Filter which FatSecretSavedMeals to update
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * Limit how many FatSecretSavedMeals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FatSecretSavedMeal upsert
+   */
+  export type FatSecretSavedMealUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FatSecretSavedMeal to update in case it exists.
+     */
+    where: FatSecretSavedMealWhereUniqueInput
+    /**
+     * In case the FatSecretSavedMeal found by the `where` argument doesn't exist, create a new FatSecretSavedMeal with this data.
+     */
+    create: XOR<FatSecretSavedMealCreateInput, FatSecretSavedMealUncheckedCreateInput>
+    /**
+     * In case the FatSecretSavedMeal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FatSecretSavedMealUpdateInput, FatSecretSavedMealUncheckedUpdateInput>
+  }
+
+  /**
+   * FatSecretSavedMeal delete
+   */
+  export type FatSecretSavedMealDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
+    /**
+     * Filter which FatSecretSavedMeal to delete.
+     */
+    where: FatSecretSavedMealWhereUniqueInput
+  }
+
+  /**
+   * FatSecretSavedMeal deleteMany
+   */
+  export type FatSecretSavedMealDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FatSecretSavedMeals to delete
+     */
+    where?: FatSecretSavedMealWhereInput
+    /**
+     * Limit how many FatSecretSavedMeals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FatSecretSavedMeal without action
+   */
+  export type FatSecretSavedMealDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FatSecretSavedMeal
+     */
+    select?: FatSecretSavedMealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FatSecretSavedMeal
+     */
+    omit?: FatSecretSavedMealOmit<ExtArgs> | null
   }
 
 
@@ -41546,6 +42689,21 @@ export namespace Prisma {
   export type ProductFatSecretMappingScalarFieldEnum = (typeof ProductFatSecretMappingScalarFieldEnum)[keyof typeof ProductFatSecretMappingScalarFieldEnum]
 
 
+  export const FatSecretSavedMealScalarFieldEnum: {
+    id: 'id',
+    profileId: 'profileId',
+    season: 'season',
+    weekday: 'weekday',
+    mealType: 'mealType',
+    title: 'title',
+    savedMealId: 'savedMealId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FatSecretSavedMealScalarFieldEnum = (typeof FatSecretSavedMealScalarFieldEnum)[keyof typeof FatSecretSavedMealScalarFieldEnum]
+
+
   export const GiftedGroceryItemScalarFieldEnum: {
     id: 'id',
     weekStart: 'weekStart',
@@ -42644,6 +43802,79 @@ export namespace Prisma {
     source?: EnumMappingSourceWithAggregatesFilter<"ProductFatSecretMapping"> | $Enums.MappingSource
     createdAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductFatSecretMapping"> | Date | string
+  }
+
+  export type FatSecretSavedMealWhereInput = {
+    AND?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
+    OR?: FatSecretSavedMealWhereInput[]
+    NOT?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
+    id?: StringFilter<"FatSecretSavedMeal"> | string
+    profileId?: StringFilter<"FatSecretSavedMeal"> | string
+    season?: StringFilter<"FatSecretSavedMeal"> | string
+    weekday?: StringFilter<"FatSecretSavedMeal"> | string
+    mealType?: StringFilter<"FatSecretSavedMeal"> | string
+    title?: StringFilter<"FatSecretSavedMeal"> | string
+    savedMealId?: StringFilter<"FatSecretSavedMeal"> | string
+    createdAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
+    updatedAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
+  }
+
+  export type FatSecretSavedMealOrderByWithRelationInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    season?: SortOrder
+    weekday?: SortOrder
+    mealType?: SortOrder
+    title?: SortOrder
+    savedMealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FatSecretSavedMealWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    profileId_season_weekday_mealType?: FatSecretSavedMealProfileIdSeasonWeekdayMealTypeCompoundUniqueInput
+    AND?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
+    OR?: FatSecretSavedMealWhereInput[]
+    NOT?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
+    profileId?: StringFilter<"FatSecretSavedMeal"> | string
+    season?: StringFilter<"FatSecretSavedMeal"> | string
+    weekday?: StringFilter<"FatSecretSavedMeal"> | string
+    mealType?: StringFilter<"FatSecretSavedMeal"> | string
+    title?: StringFilter<"FatSecretSavedMeal"> | string
+    savedMealId?: StringFilter<"FatSecretSavedMeal"> | string
+    createdAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
+    updatedAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
+  }, "id" | "profileId_season_weekday_mealType">
+
+  export type FatSecretSavedMealOrderByWithAggregationInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    season?: SortOrder
+    weekday?: SortOrder
+    mealType?: SortOrder
+    title?: SortOrder
+    savedMealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FatSecretSavedMealCountOrderByAggregateInput
+    _max?: FatSecretSavedMealMaxOrderByAggregateInput
+    _min?: FatSecretSavedMealMinOrderByAggregateInput
+  }
+
+  export type FatSecretSavedMealScalarWhereWithAggregatesInput = {
+    AND?: FatSecretSavedMealScalarWhereWithAggregatesInput | FatSecretSavedMealScalarWhereWithAggregatesInput[]
+    OR?: FatSecretSavedMealScalarWhereWithAggregatesInput[]
+    NOT?: FatSecretSavedMealScalarWhereWithAggregatesInput | FatSecretSavedMealScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    profileId?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    season?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    weekday?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    mealType?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    title?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    savedMealId?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"FatSecretSavedMeal"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FatSecretSavedMeal"> | Date | string
   }
 
   export type GiftedGroceryItemWhereInput = {
@@ -45447,6 +46678,90 @@ export namespace Prisma {
     fat?: FloatFieldUpdateOperationsInput | number
     carbs?: FloatFieldUpdateOperationsInput | number
     source?: EnumMappingSourceFieldUpdateOperationsInput | $Enums.MappingSource
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FatSecretSavedMealCreateInput = {
+    id?: string
+    profileId: string
+    season: string
+    weekday: string
+    mealType: string
+    title: string
+    savedMealId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FatSecretSavedMealUncheckedCreateInput = {
+    id?: string
+    profileId: string
+    season: string
+    weekday: string
+    mealType: string
+    title: string
+    savedMealId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FatSecretSavedMealUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    season?: StringFieldUpdateOperationsInput | string
+    weekday?: StringFieldUpdateOperationsInput | string
+    mealType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    savedMealId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FatSecretSavedMealUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    season?: StringFieldUpdateOperationsInput | string
+    weekday?: StringFieldUpdateOperationsInput | string
+    mealType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    savedMealId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FatSecretSavedMealCreateManyInput = {
+    id?: string
+    profileId: string
+    season: string
+    weekday: string
+    mealType: string
+    title: string
+    savedMealId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FatSecretSavedMealUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    season?: StringFieldUpdateOperationsInput | string
+    weekday?: StringFieldUpdateOperationsInput | string
+    mealType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    savedMealId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FatSecretSavedMealUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profileId?: StringFieldUpdateOperationsInput | string
+    season?: StringFieldUpdateOperationsInput | string
+    weekday?: StringFieldUpdateOperationsInput | string
+    mealType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    savedMealId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -48619,6 +49934,49 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMappingSourceFilter<$PrismaModel>
     _max?: NestedEnumMappingSourceFilter<$PrismaModel>
+  }
+
+  export type FatSecretSavedMealProfileIdSeasonWeekdayMealTypeCompoundUniqueInput = {
+    profileId: string
+    season: string
+    weekday: string
+    mealType: string
+  }
+
+  export type FatSecretSavedMealCountOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    season?: SortOrder
+    weekday?: SortOrder
+    mealType?: SortOrder
+    title?: SortOrder
+    savedMealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FatSecretSavedMealMaxOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    season?: SortOrder
+    weekday?: SortOrder
+    mealType?: SortOrder
+    title?: SortOrder
+    savedMealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FatSecretSavedMealMinOrderByAggregateInput = {
+    id?: SortOrder
+    profileId?: SortOrder
+    season?: SortOrder
+    weekday?: SortOrder
+    mealType?: SortOrder
+    title?: SortOrder
+    savedMealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type GiftedGroceryItemWeekStartItemIdCompoundUniqueInput = {
