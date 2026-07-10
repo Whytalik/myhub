@@ -136,8 +136,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-1-sun",
         food: "yogurtGreek",
-        qty: "1781 г",
-        note: "Нд 386г + Пн 471г + Вт 602г + Ср 322г (збільшено замість протеїну)",
+        computedQty: { food: "yogurtGreek", weekdays: ["sun", "mon", "tue", "wed"] },
+        note: "Нд + Пн + Вт + Ср (збільшено замість протеїну)",
         price: 232,
         buyDay: "sun",
       },
@@ -295,8 +295,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-potato",
         food: "potato",
-        qty: "1.89 кг",
-        note: "Пн 990г + Ср 435г + Пт 460г (Пт збільшено до нормальної порції гарніру на 2 прийоми)",
+        computedQty: { food: "potato", weekdays: ["mon", "wed", "fri"] },
+        note: "Пн + Ср + Пт (Пт збільшено до нормальної порції гарніру на 2 прийоми)",
         price: 47,
         buyDay: "sun",
       },

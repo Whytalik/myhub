@@ -29,10 +29,10 @@ export const saturday: DayPlan = {
       ],
       macroItems: [
         { food: "chickenMarinated", vitalii: 227, olesia: 124 },
-        // Залишок медово-гірчичного соусу з того ж батчу (27.3% на 300г Цезаря).
-        { food: "mustardDijon", vitalii: 4, olesia: 4, component: "Медово-гірчичний соус" },
-        { food: "honey", vitalii: 3, olesia: 3, component: "Медово-гірчичний соус" },
-        { food: "oil", vitalii: 1.5, olesia: 5.5, component: "Медово-гірчичний соус" },
+        // Залишок медово-гірчичного маринаду з того ж батчу (39.6% на 886г: 535г Пт + 351г Сб).
+        { food: "mustardDijon", vitalii: 5.9, olesia: 5.9, component: "Медово-гірчичний маринад" },
+        { food: "honey", vitalii: 4.4, olesia: 4.4, component: "Медово-гірчичний маринад" },
+        { food: "oil", vitalii: 2.3, olesia: 8.4, component: "Медово-гірчичний маринад" },
         { food: "rice", vitalii: 55, olesia: 88 },
         { food: "icebergLettuce", vitalii: 120, olesia: 120, component: "Цезар" },
         { food: "hardCheese", vitalii: 45, olesia: 35, component: "Цезар" },
