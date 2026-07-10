@@ -56,6 +56,14 @@ const SEASON_PLANS: Record<string, DayPlan[]> = {
 
 type ProfileId = "vitalii" | "olesia";
 
+/** Same mapping fatsecret-actions.ts uses for food_entry.create's `meal` param. */
+const FATSECRET_MEAL: Record<string, string> = {
+  breakfast: "breakfast",
+  lunch: "lunch",
+  dinner: "dinner",
+  snack: "other",
+};
+
 const RATE_LIMIT_DELAY_MS = 300;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -140,7 +148,7 @@ async function main() {
         }
 
         try {
-          const savedMealId = await createSavedMeal(title, token);
+          const savedMealId = await createSavedMeal(title, token, FATSECRET_MEAL[meal.type]);
           await sleep(RATE_LIMIT_DELAY_MS);
 
           for (const { item, mapping } of mappedItems) {

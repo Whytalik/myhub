@@ -97,11 +97,23 @@ function extractId(value: unknown): string | undefined {
   return undefined;
 }
 
-/** Delegated (OAuth1) — creates a FatSecret "Saved Meal" (their combo-of-foods, one-tap-log feature). */
-export async function createSavedMeal(name: string, accessToken: OAuth1Token): Promise<string> {
+/** Delegated (OAuth1) — creates a FatSecret "Saved Meal" (their combo-of-foods, one-tap-log feature).
+ *  `meals` is a comma-separated subset of "breakfast,lunch,dinner,other" — the app sets this
+ *  automatically when a user saves a meal from inside a specific diary slot; left unset here
+ *  originally, which may be why the app's SAVED MEALS tab wasn't surfacing API-created entries. */
+export async function createSavedMeal(
+  name: string,
+  accessToken: OAuth1Token,
+  meals?: string,
+): Promise<string> {
   const body = await signedFetch(
     REST_API_URL,
-    { method: "saved_meal.create", format: "json", saved_meal_name: name },
+    {
+      method: "saved_meal.create",
+      format: "json",
+      saved_meal_name: name,
+      ...(meals ? { meals } : {}),
+    },
     accessToken,
   );
   const parsed = JSON.parse(body) as { saved_meal_id?: unknown; error?: { message?: string } };
