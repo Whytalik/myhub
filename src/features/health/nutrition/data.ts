@@ -606,11 +606,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       },
       {
         id: "spices-5",
-        food: "coriander",
-        qualifier: "мелений",
+        food: "koreanCarrotSeasoning",
         qty: "1 упаковка",
-        note: "Пт",
-        price: 22,
+        note: "Пт — корейська морква",
+        price: 28,
         buyDay: "sun",
       },
       {

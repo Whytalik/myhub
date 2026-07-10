@@ -339,6 +339,9 @@ export const PRODUCTS: Record<string, Product> = {
   oregano: pantry("oregano", "Орегано"),
   fishSeasoning: pantry("fishSeasoning", "Приправа до риби"),
   coriander: pantry("coriander", "Коріандр"),
+  koreanCarrotSeasoning: pantry("koreanCarrotSeasoning", "Приправа для моркви по-корейськи", {
+    basePrice: 28,
+  }),
   nutmeg: pantry("nutmeg", "Мускатний горіх"),
   salt: pantry("salt", "Сіль"),
   blackPepper: pantry("blackPepper", "Чорний перець"),
