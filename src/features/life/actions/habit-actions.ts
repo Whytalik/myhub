@@ -5,7 +5,9 @@ import { invalidateHabitCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertHabitInput } from "../types";
 
-export async function upsertHabitAction(data: UpsertHabitInput): Promise<ActionResult<Awaited<ReturnType<typeof habitService.upsertHabit>>>> {
+export async function upsertHabitAction(
+  data: UpsertHabitInput,
+): Promise<ActionResult<Awaited<ReturnType<typeof habitService.upsertHabit>>>> {
   return withAction(async (userId) => {
     const habit = await habitService.upsertHabit(userId, data);
     invalidateHabitCache(userId);
@@ -20,7 +22,10 @@ export async function deleteHabitAction(id: string): Promise<ActionResult<void>>
   });
 }
 
-export async function toggleHabitCompletionAction(habitId: string, date: Date): Promise<ActionResult<void>> {
+export async function toggleHabitCompletionAction(
+  habitId: string,
+  date: Date,
+): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await habitService.toggleHabitCompletion(userId, habitId, date);
     invalidateHabitCache(userId);

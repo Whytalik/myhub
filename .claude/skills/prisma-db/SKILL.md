@@ -17,11 +17,13 @@ Connection resolution is in `prisma.config.ts`: it picks `POSTGRES_URL_NON_POOLI
 This machine has no usable IPv6 route to the internet. Supabase's **direct** connection host (`db.<project-ref>.supabase.co`) is IPv6-only unless the IPv4 add-on is purchased — so a raw direct connection from here always fails with `P1001: Can't reach database server`.
 
 The fix already in place: `.env.local` points the Prisma-relevant vars at the **Supavisor pooler** (IPv4-reachable) instead of the direct host —
+
 - `POSTGRES_PRISMA_URL` / `POSTGRES_URL` → transaction pooler, port `6543`, `pgbouncer=true` (used by the running app)
 - `POSTGRES_URL_NON_POOLING` → session pooler, port `5432` (used by the Prisma CLI per `prisma.config.ts`)
 - both on `aws-0-eu-west-1.pooler.supabase.com`, user `postgres.<project-ref>`
 
 If `db push`/`migrate` suddenly starts failing with `P1001` again:
+
 1. Don't retry blindly expecting it to self-heal.
 2. Confirm the pooler vars are still set in `.env.local` (not the direct host).
 3. If the DB password was recently reset, the pooler can take up to ~60s to start authenticating — a P1000 error immediately after a reset doesn't mean "wrong password."

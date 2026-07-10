@@ -54,7 +54,9 @@ export function TaskCardBase({
   const isActiveNow = useMemo(() => {
     if (task.status === "DONE" || !task.plannedDate) return false;
     const start = new Date(task.plannedDate);
-    const end = task.plannedEndDate ? new Date(task.plannedEndDate) : new Date(start.getTime() + 3600000);
+    const end = task.plannedEndDate
+      ? new Date(task.plannedEndDate)
+      : new Date(start.getTime() + 3600000);
     return now >= start && now <= end;
   }, [task.status, task.plannedDate, task.plannedEndDate, now]);
 
@@ -165,8 +167,8 @@ export function TaskCardBase({
   const cardClass = `group relative glass-card flex flex-col transition-all duration-300 hover:border-white/[0.12] cursor-pointer ${
     isCompact ? "p-2.5 gap-1.5" : "p-3.5 gap-2"
   } ${isDragging ? "opacity-50 shadow-2xl" : ""} ${
-    isActiveNow 
-      ? "border-accent ring-1 ring-accent/20 bg-accent/[0.01] shadow-[0_0_15px_rgba(37,99,235,0.08)]" 
+    isActiveNow
+      ? "border-accent ring-1 ring-accent/20 bg-accent/[0.01] shadow-[0_0_15px_rgba(37,99,235,0.08)]"
       : ""
   } ${className}`;
   const actionBarClass =

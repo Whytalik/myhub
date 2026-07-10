@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 export interface PositionCoords {
   top: number;
   left: number;
-  align: 'top' | 'bottom';
+  align: "top" | "bottom";
   width: number;
 }
 
@@ -13,11 +13,10 @@ interface UseDynamicPositioningOptions {
   offset?: number;
 }
 
-export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C extends HTMLElement = HTMLElement>({
-  contentHeight = 0,
-  contentWidth = 0,
-  offset = 8
-}: UseDynamicPositioningOptions = {}) {
+export function useDynamicPositioning<
+  T extends HTMLElement = HTMLElement,
+  C extends HTMLElement = HTMLElement,
+>({ contentHeight = 0, contentWidth = 0, offset = 8 }: UseDynamicPositioningOptions = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<PositionCoords | null>(null);
   const triggerRef = useRef<T | null>(null);
@@ -29,22 +28,19 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
       const windowHeight = window.innerHeight;
       const windowWidth = window.innerWidth;
 
-
       const h = contentRef.current?.offsetHeight ?? contentHeight;
       const w = contentRef.current?.offsetWidth ?? contentWidth;
 
       const spaceBelow = windowHeight - rect.bottom;
       const spaceAbove = rect.top;
 
-
-      let align: 'top' | 'bottom' = 'bottom';
+      let align: "top" | "bottom" = "bottom";
 
       if (spaceBelow < h + offset && spaceAbove > spaceBelow) {
-        align = 'top';
+        align = "top";
       }
 
-      const top = align === 'bottom' ? rect.bottom + offset : rect.top - offset;
-
+      const top = align === "bottom" ? rect.bottom + offset : rect.top - offset;
 
       let left = rect.left;
       if (left + w > windowWidth) {
@@ -55,7 +51,6 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
     }
   }, [contentHeight, contentWidth, offset]);
 
-
   useEffect(() => {
     if (isOpen) {
       updateCoords();
@@ -64,7 +59,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
 
   const toggle = useCallback(() => {
     if (!isOpen) updateCoords();
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   }, [isOpen, updateCoords]);
 
   const open = useCallback(() => {
@@ -91,10 +86,7 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
     if (!isOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      if (
-        triggerRef.current?.contains(target) ||
-        contentRef.current?.contains(target)
-      ) return;
+      if (triggerRef.current?.contains(target) || contentRef.current?.contains(target)) return;
       setIsOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -110,6 +102,6 @@ export function useDynamicPositioning<T extends HTMLElement = HTMLElement, C ext
     open,
     close,
     updateCoords,
-    setIsOpen
+    setIsOpen,
   };
 }

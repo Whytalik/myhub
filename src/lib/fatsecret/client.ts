@@ -139,7 +139,9 @@ function assertNoFatSecretError(data: unknown, context?: string): void {
   const error = (data as { error?: { message?: string; code?: number } } | undefined)?.error;
   if (error) {
     const ctx = context ? ` [${context}]` : "";
-    throw new Error(`FatSecret API error ${error.code ?? "?"}: ${error.message ?? "unknown"}${ctx}`);
+    throw new Error(
+      `FatSecret API error ${error.code ?? "?"}: ${error.message ?? "unknown"}${ctx}`,
+    );
   }
 }
 

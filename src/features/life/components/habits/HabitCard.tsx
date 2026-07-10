@@ -291,11 +291,7 @@ export function HabitCard({
         </div>
       )}
 
-      <button
-        onClick={handleToggle}
-        disabled={isPending || readOnly}
-        className={toggleButtonClass}
-      >
+      <button onClick={handleToggle} disabled={isPending || readOnly} className={toggleButtonClass}>
         {isCompletedOnDate ? (
           <>
             <ShieldCheck size={18} strokeWidth={2.5} />

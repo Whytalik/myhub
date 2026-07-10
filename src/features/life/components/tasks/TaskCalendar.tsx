@@ -251,13 +251,7 @@ function DayTimelineCardWrapper({
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      className="absolute"
-      style={dragStyle}
-      {...attributes}
-      {...listeners}
-    >
+    <div ref={setNodeRef} className="absolute" style={dragStyle} {...attributes} {...listeners}>
       {children}
     </div>
   );
@@ -402,8 +396,6 @@ export function TaskCalendar({
     });
   };
 
-
-
   const handleEdit = (t: TaskData) => {
     setEditingTask(t);
     setParentTask(null);
@@ -527,7 +519,7 @@ export function TaskCalendar({
     };
 
     const sorted = [...scheduledTasks].sort(
-      (a, b) => new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime()
+      (a, b) => new Date(a.plannedDate!).getTime() - new Date(b.plannedDate!).getTime(),
     );
 
     const taskPlacements: {
@@ -597,7 +589,7 @@ export function TaskCalendar({
 
     const originalStart = new Date(task.plannedDate);
     const newStart = addMinutes(originalStart, minutesDelta);
-    
+
     const durationMs = task.plannedEndDate
       ? new Date(task.plannedEndDate).getTime() - originalStart.getTime()
       : 3600000;
@@ -623,8 +615,6 @@ export function TaskCalendar({
       toast.error(result.error || "Не вдалося перенести завдання");
     }
   };
-
-
 
   const allTasksWithLevels = useMemo(() => {
     const levelsByRow: Record<
@@ -686,20 +676,26 @@ export function TaskCalendar({
       return segments;
     });
   }, [calendarTasks, days]);
-  const maxTaskHeightForRow = useCallback((rowIdx: number) => {
-    const rowSegments = allTasksWithLevels.filter((s) => s.rowIdx === rowIdx);
-    const heights = rowSegments
-      .map((s) => taskHeights[s.task.id])
-      .filter((h): h is number => typeof h === "number");
-    return heights.length > 0 ? Math.max(...heights) : 80;
-  }, [allTasksWithLevels, taskHeights]);
+  const maxTaskHeightForRow = useCallback(
+    (rowIdx: number) => {
+      const rowSegments = allTasksWithLevels.filter((s) => s.rowIdx === rowIdx);
+      const heights = rowSegments
+        .map((s) => taskHeights[s.task.id])
+        .filter((h): h is number => typeof h === "number");
+      return heights.length > 0 ? Math.max(...heights) : 80;
+    },
+    [allTasksWithLevels, taskHeights],
+  );
 
-  const calculateTop = useCallback((level: number, rowIdx: number) => {
-    const baseTop = mode === "month" ? 64 : 74;
-    const padding = 8;
-    const rowMaxHeight = maxTaskHeightForRow(rowIdx);
-    return baseTop + level * (rowMaxHeight + padding);
-  }, [mode, maxTaskHeightForRow]);
+  const calculateTop = useCallback(
+    (level: number, rowIdx: number) => {
+      const baseTop = mode === "month" ? 64 : 74;
+      const padding = 8;
+      const rowMaxHeight = maxTaskHeightForRow(rowIdx);
+      return baseTop + level * (rowMaxHeight + padding);
+    },
+    [mode, maxTaskHeightForRow],
+  );
 
   const handleDragStart = () => {
     setIsDraggingAny(true);
@@ -1112,7 +1108,9 @@ export function TaskCalendar({
               {unscheduledTasks.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Гнучкі завдання (без фіксованого часу)</span>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+                      Гнучкі завдання (без фіксованого часу)
+                    </span>
                     <div className="flex-1 h-px bg-white/[0.04]" />
                   </div>
                   <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
@@ -1146,11 +1144,13 @@ export function TaskCalendar({
               {/* Vertical Timeline Hour Grid */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Погодинний розклад</span>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+                    Погодинний розклад
+                  </span>
                   <div className="flex-1 h-px bg-white/[0.04]" />
                 </div>
 
-                <div 
+                <div
                   ref={verticalScrollContainerRef}
                   className="relative rounded-2xl border border-white/[0.06] bg-zinc-950/10 overflow-y-auto h-[600px] scroll-smooth"
                 >
@@ -1160,14 +1160,14 @@ export function TaskCalendar({
                     onDragEnd={handleTimelineDragEnd}
                   >
                     <div className="relative flex" style={{ height: `${24 * HOUR_HEIGHT}px` }}>
-                      
                       {/* Sleep block shading: 00:00 to 06:30 */}
-                      <div 
+                      <div
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-b border-indigo-950/20 flex items-center justify-center pointer-events-none"
-                        style={{ 
-                          top: 0, 
+                        style={{
+                          top: 0,
                           height: `${6.5 * HOUR_HEIGHT}px`,
-                          backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
+                          backgroundImage:
+                            "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)",
                         }}
                       >
                         <span className="text-[10px] font-mono tracking-wider uppercase text-indigo-500/40 select-none">
@@ -1176,12 +1176,13 @@ export function TaskCalendar({
                       </div>
 
                       {/* Sleep block shading: 22:00 to 24:00 */}
-                      <div 
+                      <div
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-t border-indigo-950/20 flex items-center justify-center pointer-events-none"
-                        style={{ 
-                          top: `${22 * HOUR_HEIGHT}px`, 
+                        style={{
+                          top: `${22 * HOUR_HEIGHT}px`,
                           height: `${2 * HOUR_HEIGHT}px`,
-                          backgroundImage: "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)"
+                          backgroundImage:
+                            "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)",
                         }}
                       >
                         <span className="text-[10px] font-mono tracking-wider uppercase text-indigo-500/40 select-none">
@@ -1192,10 +1193,13 @@ export function TaskCalendar({
                       {/* Hours Column & Horizontal Guidelines */}
                       <div className="w-16 sm:w-20 shrink-0 border-r border-white/[0.04] bg-white/[0.01] relative select-none">
                         {Array.from({ length: 24 }).map((_, hourIdx) => (
-                          <div 
-                            key={hourIdx} 
+                          <div
+                            key={hourIdx}
                             className="absolute right-2 font-mono text-[10px] font-bold text-zinc-500 text-right"
-                            style={{ top: `${hourIdx * HOUR_HEIGHT}px`, transform: "translateY(-50%)" }}
+                            style={{
+                              top: `${hourIdx * HOUR_HEIGHT}px`,
+                              transform: "translateY(-50%)",
+                            }}
                           >
                             {String(hourIdx).padStart(2, "0")}:00
                           </div>
@@ -1205,25 +1209,26 @@ export function TaskCalendar({
                       {/* Grid lines running across the canvas */}
                       <div className="flex-1 relative z-0">
                         {Array.from({ length: 24 }).map((_, hourIdx) => (
-                          <div 
-                            key={hourIdx} 
+                          <div
+                            key={hourIdx}
                             className="absolute left-0 right-0 border-b border-white/[0.03]"
                             style={{ top: `${hourIdx * HOUR_HEIGHT}px` }}
                           />
                         ))}
 
                         {/* Current time horizontal indicator */}
-                        {isToday(currentDate) && (() => {
-                          const nowMin = now.getHours() * 60 + now.getMinutes();
-                          return (
-                            <div 
-                              className="absolute left-0 right-0 h-0.5 bg-rose-500/80 z-20 pointer-events-none"
-                              style={{ top: `${(nowMin * HOUR_HEIGHT) / 60}px` }}
-                            >
-                              <div className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
-                            </div>
-                          );
-                        })()}
+                        {isToday(currentDate) &&
+                          (() => {
+                            const nowMin = now.getHours() * 60 + now.getMinutes();
+                            return (
+                              <div
+                                className="absolute left-0 right-0 h-0.5 bg-rose-500/80 z-20 pointer-events-none"
+                                style={{ top: `${(nowMin * HOUR_HEIGHT) / 60}px` }}
+                              >
+                                <div className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
+                              </div>
+                            );
+                          })()}
 
                         {/* Draggable Task Cards Container */}
                         <div className="absolute inset-0 z-10 pointer-events-none">
@@ -1237,7 +1242,7 @@ export function TaskCalendar({
                                   height: `${((p.endMin - p.startMin) * HOUR_HEIGHT) / 60}px`,
                                   left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
                                   width: `calc(${100 / p.totalCols}% - 4px)`,
-                                  pointerEvents: "auto"
+                                  pointerEvents: "auto",
                                 }}
                               >
                                 <div className="w-full h-full p-0.5 overflow-hidden">
@@ -1256,7 +1261,6 @@ export function TaskCalendar({
                             );
                           })}
                         </div>
-
                       </div>
                     </div>
                   </DndContext>

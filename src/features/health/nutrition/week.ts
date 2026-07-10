@@ -52,12 +52,7 @@ export function formatWeekRange(weekStart: string): string {
 }
 
 import { DayPlan } from "./types";
-import {
-  SUMMER_WEEK_PLAN,
-  WINTER_WEEK_PLAN,
-  AUTUMN_WEEK_PLAN,
-  SPRING_WEEK_PLAN
-} from "./data";
+import { SUMMER_WEEK_PLAN, WINTER_WEEK_PLAN, AUTUMN_WEEK_PLAN, SPRING_WEEK_PLAN } from "./data";
 
 /**
  * Повертає активний план на тиждень залежно від дати чи weekStart та обраного сезону в налаштуваннях.
@@ -102,4 +97,3 @@ export function getActiveWeekPlan(weekStart?: string | Date, seasonOverride?: st
   // 11 = Грудень, 0 = Січень, 1 = Лютий (Зима)
   return WINTER_WEEK_PLAN;
 }
-

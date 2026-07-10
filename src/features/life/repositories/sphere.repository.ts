@@ -9,7 +9,11 @@ export const sphereRepository = {
     });
   },
 
-  upsert(id: string | undefined, userId: string, data: { name: string; color: string; icon: string; order?: number }) {
+  upsert(
+    id: string | undefined,
+    userId: string,
+    data: { name: string; color: string; icon: string; order?: number },
+  ) {
     return prisma.lifeSphere.upsert({
       where: { id: id ?? "" },
       create: { userId, ...data, order: data.order ?? 0 },

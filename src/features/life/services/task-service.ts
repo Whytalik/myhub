@@ -1,10 +1,31 @@
-import { getCachedAllTasks, getCachedCalendarTasks, getCachedTasksByDate, getCachedSpheres } from "@/lib/cache/cache";
+import {
+  getCachedAllTasks,
+  getCachedCalendarTasks,
+  getCachedTasksByDate,
+  getCachedSpheres,
+} from "@/lib/cache/cache";
 import { taskRepository, type TaskRow } from "../repositories/task.repository";
 import { sphereRepository } from "../repositories/sphere.repository";
-import type { TaskData, LifeSphereData, TaskStatus, TaskPriority, UpsertTaskInput, UpsertSphereInput } from "../types";
+import type {
+  TaskData,
+  LifeSphereData,
+  TaskStatus,
+  TaskPriority,
+  UpsertTaskInput,
+  UpsertSphereInput,
+} from "../types";
 
 function mapSphere(
-  sphere: { id: string; name: string; color: string; icon: string; order: number; isActive: boolean; createdAt: Date; updatedAt: Date } | null,
+  sphere: {
+    id: string;
+    name: string;
+    color: string;
+    icon: string;
+    order: number;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null,
 ): LifeSphereData | null {
   if (!sphere) return null;
   return { ...sphere, taskCount: 0 };
@@ -36,7 +57,7 @@ function mapTask(task: TaskRow): TaskData {
     sphere: mapSphere(task.sphere),
     projectId: task.projectId,
     project: task.project,
-    children: (task.children as unknown as TaskRow[] ?? []).map(mapTask),
+    children: ((task.children as unknown as TaskRow[]) ?? []).map(mapTask),
     completedAt: task.completedAt,
     carriedFromDate: task.carriedFromDate,
     carryOverReason: task.carryOverReason,
@@ -46,7 +67,13 @@ function mapTask(task: TaskRow): TaskData {
 }
 
 const PRIORITY_ORDER: Record<TaskPriority, number> = { URGENT: 3, HIGH: 2, MEDIUM: 1, LOW: 0 };
-const STATUS_SORT_ORDER: Record<TaskStatus, number> = { IN_PROGRESS: 0, TODO: 1, BACKLOG: 2, DONE: 3, CANCELLED: 4 };
+const STATUS_SORT_ORDER: Record<TaskStatus, number> = {
+  IN_PROGRESS: 0,
+  TODO: 1,
+  BACKLOG: 2,
+  DONE: 3,
+  CANCELLED: 4,
+};
 
 function sortTasks(tasks: TaskData[]): TaskData[] {
   return [...tasks].sort((a, b) => {
@@ -81,8 +108,12 @@ export async function getTasksByDate(userId: string, date: Date): Promise<TaskDa
   const mapped = sortTasks(tasks.map(mapTask));
   return mapped.filter((task) => {
     if (task.children.length === 0) return true;
-    const allSubtasksDone = task.children.every((c) => c.status === "DONE" || c.status === "CANCELLED");
-    const isDueToday = task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) === dateStr : false;
+    const allSubtasksDone = task.children.every(
+      (c) => c.status === "DONE" || c.status === "CANCELLED",
+    );
+    const isDueToday = task.dueDate
+      ? new Date(task.dueDate).toISOString().slice(0, 10) === dateStr
+      : false;
     return allSubtasksDone || isDueToday;
   });
 }
@@ -97,23 +128,46 @@ async function resolveDepth(parentId: string | null | undefined): Promise<number
 
 export async function upsertTask(userId: string, input: UpsertTaskInput): Promise<TaskData> {
   const {
-    id, title, description, icon, status, priority, isPrivate, isBlocked,
-    plannedDate, hasPlannedTime, plannedEndDate, hasPlannedEndTime,
-    dueDate, hasDueTime, parentId, sphereId, projectId, carriedFromDate, carryOverReason,
+    id,
+    title,
+    description,
+    icon,
+    status,
+    priority,
+    isPrivate,
+    isBlocked,
+    plannedDate,
+    hasPlannedTime,
+    plannedEndDate,
+    hasPlannedEndTime,
+    dueDate,
+    hasDueTime,
+    parentId,
+    sphereId,
+    projectId,
+    carriedFromDate,
+    carryOverReason,
   } = input;
 
-  const parsedPlannedDate = plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
-  const parsedPlannedEndDate = plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
+  const parsedPlannedDate =
+    plannedDate !== undefined ? (plannedDate ? new Date(plannedDate) : null) : undefined;
+  const parsedPlannedEndDate =
+    plannedEndDate !== undefined ? (plannedEndDate ? new Date(plannedEndDate) : null) : undefined;
   const parsedDueDate = dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : undefined;
-  const parsedCarriedFrom = carriedFromDate !== undefined ? (carriedFromDate ? new Date(carriedFromDate) : null) : undefined;
+  const parsedCarriedFrom =
+    carriedFromDate !== undefined
+      ? carriedFromDate
+        ? new Date(carriedFromDate)
+        : null
+      : undefined;
 
   const completedAt = status === "DONE" ? new Date() : status ? null : undefined;
 
   if (id) {
     const saved = await taskRepository.update(id, userId, {
       title: title ?? undefined,
-      description: description !== undefined ? description ?? null : undefined,
-      icon: icon !== undefined ? icon ?? null : undefined,
+      description: description !== undefined ? (description ?? null) : undefined,
+      icon: icon !== undefined ? (icon ?? null) : undefined,
       status: status ?? undefined,
       priority: priority ?? undefined,
       isPrivate: isPrivate ?? undefined,
@@ -126,7 +180,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       hasDueTime: hasDueTime ?? undefined,
       completedAt,
       carriedFromDate: parsedCarriedFrom !== undefined ? parsedCarriedFrom : undefined,
-      carryOverReason: carryOverReason !== undefined ? carryOverReason ?? null : undefined,
+      carryOverReason: carryOverReason !== undefined ? (carryOverReason ?? null) : undefined,
       parentId: parentId !== undefined ? (parentId ?? null) : undefined,
       sphereId: sphereId !== undefined ? (sphereId ?? null) : undefined,
       projectId: projectId !== undefined ? (projectId ?? null) : undefined,
@@ -163,7 +217,10 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
   return mapTask(saved);
 }
 
-export async function autoCarryOverYesterdayTasks(userId: string, todayStr: string): Promise<number> {
+export async function autoCarryOverYesterdayTasks(
+  userId: string,
+  todayStr: string,
+): Promise<number> {
   const today = new Date(todayStr);
   today.setHours(0, 0, 0, 0);
   const yesterdayStart = new Date(today);
@@ -172,7 +229,12 @@ export async function autoCarryOverYesterdayTasks(userId: string, todayStr: stri
   yesterdayEnd.setHours(23, 59, 59, 999);
 
   const result = await taskRepository.updateMany(
-    { userId, plannedDate: { gte: yesterdayStart, lte: yesterdayEnd }, plannedEndDate: null, status: { notIn: ["DONE", "CANCELLED"] } },
+    {
+      userId,
+      plannedDate: { gte: yesterdayStart, lte: yesterdayEnd },
+      plannedEndDate: null,
+      status: { notIn: ["DONE", "CANCELLED"] },
+    },
     { plannedDate: today, carriedFromDate: yesterdayStart },
   );
   return result.count;
@@ -182,7 +244,11 @@ export async function deleteTask(userId: string, id: string): Promise<void> {
   await taskRepository.delete(id, userId);
 }
 
-export async function updateTaskStatus(userId: string, id: string, status: TaskStatus): Promise<void> {
+export async function updateTaskStatus(
+  userId: string,
+  id: string,
+  status: TaskStatus,
+): Promise<void> {
   const completedAt = status === "DONE" ? new Date() : null;
   await taskRepository.updateById(id, { status, completedAt });
   if (status === "DONE") await autoCompleteParentIfAllChildrenDone(id);
@@ -201,7 +267,11 @@ async function autoCompleteParentIfAllChildrenDone(childId: string): Promise<voi
   if (parent?.parentId) await autoCompleteParentIfAllChildrenDone(child.parentId);
 }
 
-export async function updateTaskPriority(userId: string, id: string, priority: TaskPriority): Promise<void> {
+export async function updateTaskPriority(
+  userId: string,
+  id: string,
+  priority: TaskPriority,
+): Promise<void> {
   await taskRepository.updateById(id, { priority });
 }
 
@@ -230,7 +300,10 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
   }));
 }
 
-export async function upsertSphere(userId: string, input: UpsertSphereInput): Promise<LifeSphereData> {
+export async function upsertSphere(
+  userId: string,
+  input: UpsertSphereInput,
+): Promise<LifeSphereData> {
   const { id, name, color, icon, order = 0 } = input;
   const sphere = await sphereRepository.upsert(id, userId, { name, color, icon, order });
   return {
@@ -246,7 +319,11 @@ export async function upsertSphere(userId: string, input: UpsertSphereInput): Pr
   };
 }
 
-export async function toggleSphereActive(userId: string, id: string, isActive: boolean): Promise<void> {
+export async function toggleSphereActive(
+  userId: string,
+  id: string,
+  isActive: boolean,
+): Promise<void> {
   await sphereRepository.update(id, userId, { isActive });
 }
 

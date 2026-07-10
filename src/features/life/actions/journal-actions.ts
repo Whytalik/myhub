@@ -6,7 +6,9 @@ import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { journalRepository } from "../repositories/journal.repository";
 import type { UpsertDailyEntryInput } from "../types";
 
-export async function upsertEntryAction(data: UpsertDailyEntryInput): Promise<ActionResult<Awaited<ReturnType<typeof journalService.upsertEntry>>>> {
+export async function upsertEntryAction(
+  data: UpsertDailyEntryInput,
+): Promise<ActionResult<Awaited<ReturnType<typeof journalService.upsertEntry>>>> {
   return withAction(async (userId) => {
     const entry = await journalService.upsertEntry(userId, data);
     invalidateJournalCache(userId, new Date(data.date));

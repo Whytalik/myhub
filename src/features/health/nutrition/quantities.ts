@@ -29,7 +29,10 @@ export function sumMacroGramsMulti(
   weekStart?: string,
   seasonOverride?: string,
 ): number {
-  return productKeys.reduce((sum, key) => sum + sumMacroGrams(key, weekdays, weekStart, seasonOverride), 0);
+  return productKeys.reduce(
+    (sum, key) => sum + sumMacroGrams(key, weekdays, weekStart, seasonOverride),
+    0,
+  );
 }
 
 export type QuantityUnit = "g" | "piece" | "ml";

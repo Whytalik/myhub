@@ -7,7 +7,7 @@ description: macOS Sonoma Minimalist design system rules (glass tokens, typograp
 
 Read `docs/design-system.md` in full before writing or editing any frontend component — it is the source of truth. `docs/design-system.html` is the visual showcase (buttons, badges, cards, all inputs); open it for concrete markup examples when the `.md` doesn't cover a case.
 
-This skill covers *which classes/tokens* to use. See `[[component-structure]]` for *where in the component* to compute them — token strings belong in a named variable above the `return`, never inline in JSX.
+This skill covers _which classes/tokens_ to use. See `[[component-structure]]` for _where in the component_ to compute them — token strings belong in a named variable above the `return`, never inline in JSX.
 
 The design system has been rewritten several times (Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS Sonoma Minimalist**, current). Always check `docs/design-system.md`'s H1 matches "macOS Sonoma Minimalist" before trusting this skill's cached values below — if it's changed again, re-derive this skill from the doc + `src/app/globals.css` rather than trusting stale notes.
 
@@ -17,14 +17,14 @@ Unlike earlier iterations, these tokens **are** wired into Tailwind v4 via `@the
 
 ## Glass surface tokens
 
-| Token | Utility definition | Use for |
-| --- | --- | --- |
-| `bg-canvas` | `--color-canvas: #1c1c1e` | Primary page viewport background (`html, body { @apply bg-canvas }`) |
-| `glass-sidebar` | `bg-surface/40 backdrop-blur-3xl border-r border-white/[0.06]` | Sidebar shell |
-| `glass-card` | `bg-surface/30 backdrop-blur-2xl border border-white/[0.06] rounded-2xl` | Cards, panels (includes the `rounded-2xl`, don't add it again) |
-| `glass-elevated` | `bg-elevated/80 backdrop-blur-2xl border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/50` | Modals, dropdowns, popovers |
-| `glass-input` | `bg-black/25 border border-white/[0.08] rounded-lg transition-all duration-150` | Inputs, selects, textareas (base state) |
-| `glass-input-focus` | `border-accent bg-black/35 outline-none ring-2 ring-accent/20` | Apply on `focus:` alongside `glass-input` |
+| Token               | Utility definition                                                                                   | Use for                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `bg-canvas`         | `--color-canvas: #1c1c1e`                                                                            | Primary page viewport background (`html, body { @apply bg-canvas }`) |
+| `glass-sidebar`     | `bg-surface/40 backdrop-blur-3xl border-r border-white/[0.06]`                                       | Sidebar shell                                                        |
+| `glass-card`        | `bg-surface/30 backdrop-blur-2xl border border-white/[0.06] rounded-2xl`                             | Cards, panels (includes the `rounded-2xl`, don't add it again)       |
+| `glass-elevated`    | `bg-elevated/80 backdrop-blur-2xl border border-white/[0.12] rounded-2xl shadow-2xl shadow-black/50` | Modals, dropdowns, popovers                                          |
+| `glass-input`       | `bg-black/25 border border-white/[0.08] rounded-lg transition-all duration-150`                      | Inputs, selects, textareas (base state)                              |
+| `glass-input-focus` | `border-accent bg-black/35 outline-none ring-2 ring-accent/20`                                       | Apply on `focus:` alongside `glass-input`                            |
 
 `bg-surface` = `rgba(30,30,30,0.45)`, `bg-elevated` = `rgba(45,45,45,0.85)` — both translucent, always paired with `backdrop-blur-*`.
 
@@ -41,13 +41,13 @@ Pick the accent by which domain/space the component lives under — don't hardco
 
 Sans is the system font stack (`-apple-system, BlinkMacSystemFont, "SF Pro Text"...`); mono (`SFMono-Regular, SF Mono, Menlo`) is mandatory for numbers, durations, times, status tags, uppercase labels.
 
-| Class | Spec |
-| --- | --- |
-| `text-page-title` | 20px semibold, tracking-tight, `text-zinc-50` |
-| `text-panel-title` | 15px semibold, `text-zinc-100` |
-| `text-body` | 14px regular, leading-relaxed, `text-zinc-300` |
-| `text-caption` | 13px regular, `text-zinc-400` |
-| `text-label` | 11px semibold mono uppercase tracking-wider, `text-zinc-500` |
+| Class              | Spec                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| `text-page-title`  | 20px semibold, tracking-tight, `text-zinc-50`                |
+| `text-panel-title` | 15px semibold, `text-zinc-100`                               |
+| `text-body`        | 14px regular, leading-relaxed, `text-zinc-300`               |
+| `text-caption`     | 13px regular, `text-zinc-400`                                |
+| `text-label`       | 11px semibold mono uppercase tracking-wider, `text-zinc-500` |
 
 ## Form elements
 

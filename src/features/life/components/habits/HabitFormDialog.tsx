@@ -66,9 +66,7 @@ export function HabitFormDialog({
 }: HabitFormDialogProps) {
   const isEditing = !!habit;
   const [isPending, startTransition] = useTransition();
-  const [showAdvanced, setShowAdvanced] = useState(
-    !!(habit?.sphereId || habit?.chainId),
-  );
+  const [showAdvanced, setShowAdvanced] = useState(!!(habit?.sphereId || habit?.chainId));
   const [showBehaviorDesign, setShowBehaviorDesign] = useState(
     !!(habit?.identityStatement || habit?.minimalThreshold),
   );
@@ -189,15 +187,21 @@ export function HabitFormDialog({
 
         {/* Recipe card */}
         <div className="glass-card p-4 flex flex-col gap-3">
-          <span className="text-label">{isAvoidance ? "Avoidance plan" : "Tiny Habits Recipe"}</span>
+          <span className="text-label">
+            {isAvoidance ? "Avoidance plan" : "Tiny Habits Recipe"}
+          </span>
 
           <div className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-zinc-400">{isAvoidance ? "🚫 Trigger" : "🔗 After"}</span>
+            <span className="text-xs font-medium text-zinc-400">
+              {isAvoidance ? "🚫 Trigger" : "🔗 After"}
+            </span>
             <div className={iconInputWrapClass}>
               <Anchor size={14} className="text-zinc-500 shrink-0" />
               <Input
                 {...register("anchor")}
-                placeholder={isAvoidance ? "After lunch when I'm tired..." : "After [wash my face]..."}
+                placeholder={
+                  isAvoidance ? "After lunch when I'm tired..." : "After [wash my face]..."
+                }
                 variant="inline"
                 className="flex-1"
                 autoFocus
@@ -380,7 +384,6 @@ export function HabitFormDialog({
                   )}
                 />
               )}
-
             </div>
           )}
         </div>

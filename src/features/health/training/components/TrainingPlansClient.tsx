@@ -134,21 +134,24 @@ function getVolumeStatus(sets: number) {
       label: "Підтримка",
       colorClass: "text-amber-400 bg-amber-500/10 border-amber-500/20",
       barColor: "bg-amber-500",
-      description: "1-5 підходів: об'єм підтримки (MV). Мало для росту, але добре для підтримки або відновлення.",
+      description:
+        "1-5 підходів: об'єм підтримки (MV). Мало для росту, але добре для підтримки або відновлення.",
     };
   } else if (sets <= 20) {
     return {
       label: "Оптимально",
       colorClass: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
       barColor: "bg-emerald-500",
-      description: "6-20 підходів: оптимальна зона для гіпертрофії (MEV/MAV). Найкращий баланс росту та відновлення.",
+      description:
+        "6-20 підходів: оптимальна зона для гіпертрофії (MEV/MAV). Найкращий баланс росту та відновлення.",
     };
   } else {
     return {
       label: "Надмірно",
       colorClass: "text-rose-400 bg-rose-500/10 border-rose-500/20",
       barColor: "bg-rose-500",
-      description: "20+ підходів: перевищує об'єм відновлення (MRV). Високий ризик перетренованості та накопичення втоми.",
+      description:
+        "20+ підходів: перевищує об'єм відновлення (MRV). Високий ризик перетренованості та накопичення втоми.",
     };
   }
 }
@@ -339,9 +342,17 @@ export function TrainingPlansClient({
                               <span className="font-semibold text-zinc-200">{muscle}</span>
                               <div className="flex items-center gap-2">
                                 <span className="font-mono text-zinc-400 text-xs">
-                                  {sets} {sets === 1 ? "підхід" : sets >= 2 && sets <= 4 ? "підходи" : "підходів"}/тиждень
+                                  {sets}{" "}
+                                  {sets === 1
+                                    ? "підхід"
+                                    : sets >= 2 && sets <= 4
+                                      ? "підходи"
+                                      : "підходів"}
+                                  /тиждень
                                 </span>
-                                <span className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${status.colorClass}`}>
+                                <span
+                                  className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${status.colorClass}`}
+                                >
                                   {status.label}
                                 </span>
                               </div>
@@ -367,21 +378,28 @@ export function TrainingPlansClient({
                   </h3>
                   <div className="flex flex-col gap-2.5 text-zinc-300 leading-relaxed font-normal">
                     <div>
-                      <span className="font-semibold text-zinc-200">Низький (Підтримка) (&lt; 6 підходів):</span>
+                      <span className="font-semibold text-zinc-200">
+                        Низький (Підтримка) (&lt; 6 підходів):
+                      </span>
                       <p className="text-xs text-zinc-400 mt-0.5">
-                        Об'єм підтримки (Maintenance Volume - MV). Достатній для збереження форми при обмеженому часі.
+                        Об'єм підтримки (Maintenance Volume - MV). Достатній для збереження форми
+                        при обмеженому часі.
                       </p>
                     </div>
                     <div>
-                      <span className="font-semibold text-zinc-200">Оптимальний (6 - 20 підходів):</span>
+                      <span className="font-semibold text-zinc-200">
+                        Оптимальний (6 - 20 підходів):
+                      </span>
                       <p className="text-xs text-zinc-400 mt-0.5">
-                        Зона активного росту (MEV/MAV). Золотий стандарт для збільшення сили та гіпертрофії м'язів.
+                        Зона активного росту (MEV/MAV). Золотий стандарт для збільшення сили та
+                        гіпертрофії м'язів.
                       </p>
                     </div>
                     <div>
                       <span className="font-semibold text-zinc-200">Надмірний (20+ підходів):</span>
                       <p className="text-xs text-zinc-400 mt-0.5">
-                        Зона ризику (MRV). Може призвести до перевантаження ЦНС і суглобів, потребує періодичного делоаду.
+                        Зона ризику (MRV). Може призвести до перевантаження ЦНС і суглобів, потребує
+                        періодичного делоаду.
                       </p>
                     </div>
                   </div>
@@ -496,11 +514,15 @@ export function TrainingPlansClient({
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 text-amber-400">
                                 <Activity size={16} />
-                                <span className="text-xs font-bold uppercase tracking-wider font-mono">1. Розминка (Протокол RAMP)</span>
+                                <span className="text-xs font-bold uppercase tracking-wider font-mono">
+                                  1. Розминка (Протокол RAMP)
+                                </span>
                               </div>
-                              <span className="text-[10px] font-mono text-zinc-500">~8-10 хв • Науково доведено</span>
+                              <span className="text-[10px] font-mono text-zinc-500">
+                                ~8-10 хв • Науково доведено
+                              </span>
                             </div>
-                            
+
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                               {/* Raise */}
                               <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
@@ -509,10 +531,11 @@ export function TrainingPlansClient({
                                   1. Підвищення (Raise)
                                 </div>
                                 <p className="text-[11px] text-zinc-400 leading-relaxed">
-                                  3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба). Підвищує температуру тіла, еластичність м'язів та ЧСС.
+                                  3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба).
+                                  Підвищує температуру тіла, еластичність м'язів та ЧСС.
                                 </p>
                               </div>
-                              
+
                               {/* Activate & Mobilize */}
                               <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
                                 <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
@@ -520,7 +543,8 @@ export function TrainingPlansClient({
                                   2. Мобілізація (Mobilize)
                                 </div>
                                 <p className="text-[11px] text-zinc-400 leading-relaxed">
-                                  Динамічні обертання плечових суглобів, розкриття грудного відділу хребта, 10 присідань без ваги та 12 сідничних містків.
+                                  Динамічні обертання плечових суглобів, розкриття грудного відділу
+                                  хребта, 10 присідань без ваги та 12 сідничних містків.
                                 </p>
                               </div>
 
@@ -531,7 +555,8 @@ export function TrainingPlansClient({
                                   3. Активація (Potentiate)
                                 </div>
                                 <p className="text-[11px] text-zinc-400 leading-relaxed">
-                                  1–2 легкі розминочні підходи з 50% від робочої ваги для першої вправи дня, щоб підготувати ЦНС та суглоби.
+                                  1–2 легкі розминочні підходи з 50% від робочої ваги для першої
+                                  вправи дня, щоб підготувати ЦНС та суглоби.
                                 </p>
                               </div>
                             </div>
@@ -541,65 +566,67 @@ export function TrainingPlansClient({
                           <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-2 text-accent-training mb-1">
                               <Dumbbell size={16} />
-                              <span className="text-xs font-bold uppercase tracking-wider font-mono">2. Основне тренування</span>
+                              <span className="text-xs font-bold uppercase tracking-wider font-mono">
+                                2. Основне тренування
+                              </span>
                             </div>
 
                             {day.exercises.length === 0 ? (
                               <p className="text-caption py-1">No exercises prescribed yet.</p>
                             ) : (
                               day.exercises.map((de) => (
-                              <div
-                                key={de.id}
-                                className="flex items-center justify-between gap-2 py-1.5"
-                              >
-                                <div className="flex flex-col min-w-0 gap-1">
-                                  <Link
-                                    href={`/health/training/exercises/${de.exerciseId}`}
-                                    className="text-sm text-zinc-200 hover:text-accent-training transition-colors duration-150 truncate"
-                                  >
-                                    {de.exercise.name}
-                                  </Link>
-                                  <div className="flex items-center gap-1.5 flex-wrap">
-                                    <span className={badgeClass}>{formatPrescription(de)}</span>
-                                    {de.targetRpe ? (
-                                      <span className={badgeClass}>RPE {de.targetRpe}</span>
-                                    ) : null}
-                                    {de.restSeconds ? (
-                                      <span className={badgeClass}>rest {de.restSeconds}s</span>
-                                    ) : null}
+                                <div
+                                  key={de.id}
+                                  className="flex items-center justify-between gap-2 py-1.5"
+                                >
+                                  <div className="flex flex-col min-w-0 gap-1">
+                                    <Link
+                                      href={`/health/training/exercises/${de.exerciseId}`}
+                                      className="text-sm text-zinc-200 hover:text-accent-training transition-colors duration-150 truncate"
+                                    >
+                                      {de.exercise.name}
+                                    </Link>
+                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                      <span className={badgeClass}>{formatPrescription(de)}</span>
+                                      {de.targetRpe ? (
+                                        <span className={badgeClass}>RPE {de.targetRpe}</span>
+                                      ) : null}
+                                      {de.restSeconds ? (
+                                        <span className={badgeClass}>rest {de.restSeconds}s</span>
+                                      ) : null}
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-0.5 shrink-0">
+                                    <button
+                                      onClick={() => {
+                                        setDayExerciseFormDayId(day.id);
+                                        setSelectedDayExercise(de);
+                                      }}
+                                      className={smallIconActionClass}
+                                    >
+                                      <Edit2 size={12} />
+                                    </button>
+                                    <button
+                                      onClick={() => setDayExerciseToDelete(de.id)}
+                                      className={smallDeleteActionClass}
+                                    >
+                                      <Trash2 size={12} />
+                                    </button>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-0.5 shrink-0">
-                                  <button
-                                    onClick={() => {
-                                      setDayExerciseFormDayId(day.id);
-                                      setSelectedDayExercise(de);
-                                    }}
-                                    className={smallIconActionClass}
-                                  >
-                                    <Edit2 size={12} />
-                                  </button>
-                                  <button
-                                    onClick={() => setDayExerciseToDelete(de.id)}
-                                    className={smallDeleteActionClass}
-                                  >
-                                    <Trash2 size={12} />
-                                  </button>
-                                </div>
-                              </div>
-                            ))
-                          )}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setDayExerciseFormDayId(day.id);
-                              setSelectedDayExercise(null);
-                            }}
-                          >
-                            <Plus size={14} />
-                            Add exercise
-                          </Button>
+                              ))
+                            )}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setDayExerciseFormDayId(day.id);
+                                setSelectedDayExercise(null);
+                              }}
+                            >
+                              <Plus size={14} />
+                              Add exercise
+                            </Button>
                           </div>
                         </div>
                       )}

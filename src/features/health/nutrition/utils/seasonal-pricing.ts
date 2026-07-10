@@ -5,37 +5,57 @@ import type { ShoppingItem } from "../types";
 // Коефіцієнти сезонності для категорій продуктів по місяцях (0 = Січень, 11 = Грудень)
 export const CATEGORY_SEASONALITY: Record<string, number[]> = {
   vegetables: [
-    1.5, 1.4, 1.3, 1.2, 1.1, // Січ - Трав (теплиці/імпорт, дорого)
-    0.7, 0.4, 0.3, 0.4,      // Черв - Верес (ґрунтовий сезон, дешево)
-    0.8, 1.1, 1.4             // Жовт - Груд
+    1.5,
+    1.4,
+    1.3,
+    1.2,
+    1.1, // Січ - Трав (теплиці/імпорт, дорого)
+    0.7,
+    0.4,
+    0.3,
+    0.4, // Черв - Верес (ґрунтовий сезон, дешево)
+    0.8,
+    1.1,
+    1.4, // Жовт - Груд
   ],
   fruits: [
-    1.4, 1.4, 1.3, 1.2, 1.1, // Січ - Трав
-    0.6, 0.5, 0.6, 0.8,      // Черв - Верес (сезонні ягоди/фрукти)
-    1.0, 1.2, 1.3
-  ]
+    1.4,
+    1.4,
+    1.3,
+    1.2,
+    1.1, // Січ - Трав
+    0.6,
+    0.5,
+    0.6,
+    0.8, // Черв - Верес (сезонні ягоди/фрукти)
+    1.0,
+    1.2,
+    1.3,
+  ],
 };
 
 /**
  * Парсить кількість та одиницю виміру з текстового рядка кількості (наприклад, "~1.66 кг" -> { amount: 1.66, unit: "kg" })
  */
-function parseQtyString(qtyStr: string): { amount: number; unit: "kg" | "g" | "piece" | "ml" } | null {
+function parseQtyString(
+  qtyStr: string,
+): { amount: number; unit: "kg" | "g" | "piece" | "ml" } | null {
   const clean = qtyStr.toLowerCase().replace(/~/g, "").trim();
-  
+
   // 1. Кілограми (кг)
   const kgMatch = clean.match(/^([\d.,]+)\s*кг/);
   if (kgMatch) {
     const amount = parseFloat(kgMatch[1].replace(",", "."));
     return { amount, unit: "kg" };
   }
-  
+
   // 2. Грами (г)
   const gMatch = clean.match(/^([\d.,]+)\s*г/);
   if (gMatch) {
     const amount = parseFloat(gMatch[1].replace(",", "."));
     return { amount, unit: "g" };
   }
-  
+
   // 3. Штуки (шт)
   const pcsMatch = clean.match(/^([\d.,]+)\s*шт/);
   if (pcsMatch) {
@@ -56,7 +76,11 @@ function parseQtyString(qtyStr: string): { amount: number; unit: "kg" | "g" | "p
 /**
  * Повертає сезонний коефіцієнт для продукту на основі дати або примусового сезону
  */
-export function getProductSeasonMultiplier(productKey: string, weekStartKey: string, seasonOverride?: string): number {
+export function getProductSeasonMultiplier(
+  productKey: string,
+  weekStartKey: string,
+  seasonOverride?: string,
+): number {
   const product = PRODUCTS[productKey];
   if (!product) return 1.0;
 
@@ -71,7 +95,7 @@ export function getProductSeasonMultiplier(productKey: string, weekStartKey: str
 
   const date = new Date(`${weekStartKey}T00:00:00`);
   const month = isNaN(date.getTime()) ? new Date().getMonth() : date.getMonth();
-  
+
   return CATEGORY_SEASONALITY[category]?.[month] ?? 1.0;
 }
 
@@ -79,7 +103,11 @@ export function getProductSeasonMultiplier(productKey: string, weekStartKey: str
  * Розраховує динамічну сезонну ціну для позиції списку покупок.
  * Якщо розрахувати неможливо (немає basePrice), повертає оригінальну статичну ціну.
  */
-export function getSeasonalPrice(item: ShoppingItem, weekStartKey: string, seasonOverride?: string): number {
+export function getSeasonalPrice(
+  item: ShoppingItem,
+  weekStartKey: string,
+  seasonOverride?: string,
+): number {
   if (!item.food) return item.price ?? 0;
 
   const product = PRODUCTS[item.food];
@@ -93,7 +121,8 @@ export function getSeasonalPrice(item: ShoppingItem, weekStartKey: string, seaso
   // 1. Якщо кількість розраховується автоматично через computedQty
   if (item.computedQty) {
     const { food, extraFood, weekdays, grams = 0, unit = "g" } = item.computedQty;
-    const totalQty = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
+    const totalQty =
+      sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
 
     if (unit === "piece") {
       return Math.round(totalQty * seasonalUnitPrice);

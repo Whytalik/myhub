@@ -115,9 +115,20 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
       targetKey = "Груди";
     } else if (groupLower.includes("спин") || groupLower === "back") {
       targetKey = "Спина";
-    } else if (groupLower.includes("ног") || groupLower === "legs" || groupLower.includes("quad") || groupLower.includes("hamstring") || groupLower.includes("glute")) {
+    } else if (
+      groupLower.includes("ног") ||
+      groupLower === "legs" ||
+      groupLower.includes("quad") ||
+      groupLower.includes("hamstring") ||
+      groupLower.includes("glute")
+    ) {
       targetKey = "Ноги";
-    } else if (groupLower.includes("плеч") || groupLower === "shoulders" || groupLower === "delts" || groupLower.includes("delt")) {
+    } else if (
+      groupLower.includes("плеч") ||
+      groupLower === "shoulders" ||
+      groupLower === "delts" ||
+      groupLower.includes("delt")
+    ) {
       targetKey = "Плечі";
     } else if (groupLower.includes("біцеп") || groupLower.includes("bicep")) {
       targetKey = "Біцепс";
@@ -127,7 +138,11 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
       targetKey = "Трицепс";
     } else if (groupLower.includes("передпліч") || groupLower.includes("forearm")) {
       targetKey = "Передпліччя";
-    } else if (groupLower.includes("литк") || groupLower === "calves" || groupLower.includes("calf")) {
+    } else if (
+      groupLower.includes("литк") ||
+      groupLower === "calves" ||
+      groupLower.includes("calf")
+    ) {
       targetKey = "Литки";
     }
 
@@ -160,7 +175,9 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
 
         <div className="flex items-center gap-2 text-sm font-semibold font-mono text-zinc-200">
           <CalendarDays size={16} className="text-zinc-400" />
-          <span>{startStr} – {endStr}</span>
+          <span>
+            {startStr} – {endStr}
+          </span>
           {weekOffset === 0 && (
             <span className="text-[10px] uppercase font-bold text-accent-training bg-accent-training/10 border border-accent-training/20 px-2 py-0.5 rounded-full ml-1">
               Поточний тиждень
@@ -184,7 +201,9 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
           </div>
           <div>
             <p className="text-xs text-zinc-400 font-mono uppercase tracking-wider">Тренування</p>
-            <p className="text-2xl font-bold text-zinc-200 font-mono mt-0.5">{weeklySessionsCount}</p>
+            <p className="text-2xl font-bold text-zinc-200 font-mono mt-0.5">
+              {weeklySessionsCount}
+            </p>
           </div>
         </div>
 
@@ -193,7 +212,9 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
             <Dumbbell size={24} />
           </div>
           <div>
-            <p className="text-xs text-zinc-400 font-mono uppercase tracking-wider">Завершено підходів</p>
+            <p className="text-xs text-zinc-400 font-mono uppercase tracking-wider">
+              Завершено підходів
+            </p>
             <p className="text-2xl font-bold text-zinc-200 font-mono mt-0.5">{totalWeeklySets}</p>
           </div>
         </div>
@@ -203,15 +224,21 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
             <Hourglass size={24} />
           </div>
           <div>
-            <p className="text-xs text-zinc-400 font-mono uppercase tracking-wider">Час під навантаженням</p>
-            <p className="text-2xl font-bold text-zinc-200 font-mono mt-0.5">{totalDurationMinutes} хв</p>
+            <p className="text-xs text-zinc-400 font-mono uppercase tracking-wider">
+              Час під навантаженням
+            </p>
+            <p className="text-2xl font-bold text-zinc-200 font-mono mt-0.5">
+              {totalDurationMinutes} хв
+            </p>
           </div>
         </div>
       </div>
 
       {/* Muscle Group Progression Grid */}
       <div className="flex flex-col gap-3">
-        <h2 className="text-panel-title font-semibold text-zinc-300 pl-1">Розподіл навантаження на м'язи</h2>
+        <h2 className="text-panel-title font-semibold text-zinc-300 pl-1">
+          Розподіл навантаження на м'язи
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {targets.map((item) => {
             const completed = completedSetsMap[item.name] || 0;

@@ -25,4 +25,3 @@ export async function getExercise(userId: string, id: string) {
   }
   return exercise;
 }
-

@@ -126,7 +126,8 @@ function ProfileScienceCard({ profile }: { profile: Profile }) {
           </div>
           <div className="flex items-center justify-between gap-4 flex-wrap pt-1 border-t border-white/[0.03]">
             <span className="text-caption">
-              Порівняння з науковим орієнтиром ({science.targetKcal} ккал: Б {science.proteinG}г · Ж {science.fatG}г · В {science.carbsG}г)
+              Порівняння з науковим орієнтиром ({science.targetKcal} ккал: Б {science.proteinG}г · Ж{" "}
+              {science.fatG}г · В {science.carbsG}г)
             </span>
             <Pill tone={deltaTone}>{kcalDeltaLabel}</Pill>
           </div>

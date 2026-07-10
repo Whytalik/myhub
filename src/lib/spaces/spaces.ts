@@ -22,7 +22,6 @@ export const SPACE_THEMES = {
 export type SpaceKey = keyof typeof SPACE_THEMES;
 
 export function getSpaceFromPath(pathname: string): SpaceKey {
-
   if (pathname === "/operations") return "operations";
   if (pathname === "/health") return "health";
   if (pathname === "/mind") return "mind";

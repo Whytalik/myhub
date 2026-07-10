@@ -49,7 +49,9 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Email</label>
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                Email
+              </label>
               <Input
                 type="email"
                 placeholder="email@example.com"
@@ -60,7 +62,9 @@ export default function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Пароль</label>
+              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                Пароль
+              </label>
               <Input
                 type="password"
                 placeholder="••••••••"
@@ -76,11 +80,7 @@ export default function LoginPage() {
               </p>
             )}
 
-            <Button
-              type="submit"
-              isLoading={isPending}
-              className="w-full shadow-md"
-            >
+            <Button type="submit" isLoading={isPending} className="w-full shadow-md">
               Увійти
             </Button>
           </form>

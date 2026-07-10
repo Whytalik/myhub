@@ -20,20 +20,20 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const themeData = SPACE_THEMES[getSpaceFromPath(pathname)];
 
-
   const getDomainFromPath = (path: string): DomainId => {
-    if (path.startsWith("/operations") || path.startsWith("/planning") || path.startsWith("/life")) return "operations";
-    if (path.startsWith("/health") || path.startsWith("/nutrition") || path.startsWith("/fitness")) return "health";
-    if (path.startsWith("/mind") || path.startsWith("/languages") || path.startsWith("/library")) return "mind";
+    if (path.startsWith("/operations") || path.startsWith("/planning") || path.startsWith("/life"))
+      return "operations";
+    if (path.startsWith("/health") || path.startsWith("/nutrition") || path.startsWith("/fitness"))
+      return "health";
+    if (path.startsWith("/mind") || path.startsWith("/languages") || path.startsWith("/library"))
+      return "mind";
     if (path.startsWith("/wealth") || path.startsWith("/trading")) return "wealth";
     if (path.startsWith("/vault") || path.startsWith("/other")) return "vault";
-
 
     return "operations";
   };
 
   const activeDomain = getDomainFromPath(pathname);
-
 
   useEffect(() => {
     const root = document.documentElement;
@@ -41,9 +41,8 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty("--color-accent-muted", themeData.accentMuted);
   }, [themeData]);
 
-
   const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("system-theme") as Theme;
       if (savedTheme) {
         document.documentElement.classList.toggle("light", savedTheme === "light");
@@ -61,12 +60,7 @@ export function SpaceProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <SpaceContext.Provider value={{ activeDomain, setActiveDomain: () => {}, theme, setTheme }}>
-      <div
-
-
-      >
-        {children}
-      </div>
+      <div>{children}</div>
     </SpaceContext.Provider>
   );
 }

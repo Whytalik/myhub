@@ -1,59 +1,59 @@
 "use client";
- 
- import {
-   CheckCircle2,
-   Circle,
-   Sun,
-   Moon,
-   Dumbbell,
-   AlarmClock,
-   Droplets,
-   ShowerHead,
-   Footprints,
-   PhoneOff,
-   Utensils,
- } from "lucide-react";
- import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
- 
- const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-   AlarmClock,
-   Droplets,
-   ShowerHead,
-   Sun,
-   Footprints,
-   PhoneOff,
-   Moon,
-   Dumbbell,
-   Utensils,
-   CheckCircle2,
-   Circle,
- };
- 
- interface Props {
-   type: "morning" | "evening";
-   routine: RoutineMap | null;
-   scheduledTrainingDayName?: string;
-   onChange: (patch: {
-     morningRoutine?: RoutineMap | null;
-     eveningRoutine?: RoutineMap | null;
-   }) => void;
- }
- 
- export function RoutineSection({ type, routine, scheduledTrainingDayName, onChange }: Props) {
-   const map: RoutineMap = routine ?? ({} as RoutineMap);
-   const isTrainingScheduled = !!scheduledTrainingDayName;
-   const items = type === "morning" ? getMorningRoutine(isTrainingScheduled) : EVENING_ROUTINE;
- 
-   const done = items.filter((item) => map[item.id]).length;
-   const total = items.length;
-   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-   const isComplete = total > 0 && done === total;
-   const hasValue = done > 0;
- 
-   const toggle = (id: string) => {
-     const next = { ...map, [id]: !map[id] };
-     onChange({ [`${type}Routine`]: next });
-   };
+
+import {
+  CheckCircle2,
+  Circle,
+  Sun,
+  Moon,
+  Dumbbell,
+  AlarmClock,
+  Droplets,
+  ShowerHead,
+  Footprints,
+  PhoneOff,
+  Utensils,
+} from "lucide-react";
+import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
+
+const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  AlarmClock,
+  Droplets,
+  ShowerHead,
+  Sun,
+  Footprints,
+  PhoneOff,
+  Moon,
+  Dumbbell,
+  Utensils,
+  CheckCircle2,
+  Circle,
+};
+
+interface Props {
+  type: "morning" | "evening";
+  routine: RoutineMap | null;
+  scheduledTrainingDayName?: string;
+  onChange: (patch: {
+    morningRoutine?: RoutineMap | null;
+    eveningRoutine?: RoutineMap | null;
+  }) => void;
+}
+
+export function RoutineSection({ type, routine, scheduledTrainingDayName, onChange }: Props) {
+  const map: RoutineMap = routine ?? ({} as RoutineMap);
+  const isTrainingScheduled = !!scheduledTrainingDayName;
+  const items = type === "morning" ? getMorningRoutine(isTrainingScheduled) : EVENING_ROUTINE;
+
+  const done = items.filter((item) => map[item.id]).length;
+  const total = items.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const isComplete = total > 0 && done === total;
+  const hasValue = done > 0;
+
+  const toggle = (id: string) => {
+    const next = { ...map, [id]: !map[id] };
+    onChange({ [`${type}Routine`]: next });
+  };
 
   const cardClass = `glass-card p-4 flex flex-col gap-3 border ${
     isComplete ? "border-emerald-500/20" : hasValue ? "border-accent/20" : "border-white/[0.06]"

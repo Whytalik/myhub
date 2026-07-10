@@ -20,7 +20,11 @@ import {
   ClipboardCopy,
 } from "lucide-react";
 import type { SetLogData, TrainingSessionData } from "../types";
-import { updateSetLogAction, completeSessionAction, updateSessionNotesAction } from "../actions/training-session-actions";
+import {
+  updateSetLogAction,
+  completeSessionAction,
+  updateSessionNotesAction,
+} from "../actions/training-session-actions";
 import { buildSessionReportMarkdown } from "../utils/session-report";
 
 interface SessionClientProps {
@@ -535,7 +539,9 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                               className={notesInputClass}
                               disabled={isCompleted}
                               value={setLog.notes ?? ""}
-                              onChange={(event) => updateField(setLog.id, "notes", event.target.value)}
+                              onChange={(event) =>
+                                updateField(setLog.id, "notes", event.target.value)
+                              }
                               onBlur={() => persist(setLog.id)}
                             />
                           </div>
@@ -583,8 +589,12 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   <span className="text-zinc-500">Минулого разу:</span>
                                   {isTimeBased ? (
                                     <span className="text-zinc-400 font-medium">
-                                      {pastSet.durationSeconds ? `${pastSet.durationSeconds}с` : "—"}
-                                      {pastSet.distanceMeters ? ` / ${pastSet.distanceMeters}м` : ""}
+                                      {pastSet.durationSeconds
+                                        ? `${pastSet.durationSeconds}с`
+                                        : "—"}
+                                      {pastSet.distanceMeters
+                                        ? ` / ${pastSet.distanceMeters}м`
+                                        : ""}
                                     </span>
                                   ) : (
                                     <span className="text-zinc-400 font-bold">
@@ -613,7 +623,11 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className="w-full text-center text-sm px-1 h-9 rounded-lg"
                                   disabled={isCompleted}
-                                  value={isTimeBased ? (setLog.durationSeconds ?? "") : (setLog.reps ?? "")}
+                                  value={
+                                    isTimeBased
+                                      ? (setLog.durationSeconds ?? "")
+                                      : (setLog.reps ?? "")
+                                  }
                                   onChange={(event) =>
                                     updateField(
                                       setLog.id,
@@ -637,7 +651,11 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   placeholder="—"
                                   className="w-full text-center text-sm px-1 h-9 rounded-lg"
                                   disabled={isCompleted}
-                                  value={isTimeBased ? (setLog.distanceMeters ?? "") : (setLog.weight ?? "")}
+                                  value={
+                                    isTimeBased
+                                      ? (setLog.distanceMeters ?? "")
+                                      : (setLog.weight ?? "")
+                                  }
                                   onChange={(event) =>
                                     updateField(
                                       setLog.id,
@@ -705,7 +723,9 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                 className="w-full text-xs min-h-[44px] py-2 px-2.5 rounded-lg border border-white/[0.04] bg-black/15 focus:bg-black/25 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 resize-none"
                                 disabled={isCompleted}
                                 value={setLog.notes ?? ""}
-                                onChange={(event) => updateField(setLog.id, "notes", event.target.value)}
+                                onChange={(event) =>
+                                  updateField(setLog.id, "notes", event.target.value)
+                                }
                                 onBlur={() => persist(setLog.id)}
                               />
                             </div>

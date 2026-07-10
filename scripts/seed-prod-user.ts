@@ -32,9 +32,19 @@ async function main() {
   console.log("⚠️  Clearing database...");
 
   const legacy = [
-    "NutritionPerson", "WeekPlan", "DayPlan", "ShoppingList", "ShoppingListItem",
-    "Dish", "DishIngredient", "Product", "DishProduct",
-    "Language", "VocabularyEntry", "JournalEntry", "LanguageResource",
+    "NutritionPerson",
+    "WeekPlan",
+    "DayPlan",
+    "ShoppingList",
+    "ShoppingListItem",
+    "Dish",
+    "DishIngredient",
+    "Product",
+    "DishProduct",
+    "Language",
+    "VocabularyEntry",
+    "JournalEntry",
+    "LanguageResource",
     "WishlistItem",
     "LibraryItem",
     "UserProfile",
@@ -68,19 +78,16 @@ async function main() {
 
   const hash = await bcrypt.hash(PASSWORD, 12);
 
-  const patch = await fetch(
-    `${SUPABASE_URL}/rest/v1/User?email=eq.hanmaster05%40gmail.com`,
-    {
-      method: "PATCH",
-      headers: { ...headers, Prefer: "return=representation" },
-      body: JSON.stringify({
-        name: "Vitalii",
-        passwordHash: hash,
-        updatedAt: new Date().toISOString(),
-        systemStatus: "STABLE",
-      }),
-    },
-  );
+  const patch = await fetch(`${SUPABASE_URL}/rest/v1/User?email=eq.hanmaster05%40gmail.com`, {
+    method: "PATCH",
+    headers: { ...headers, Prefer: "return=representation" },
+    body: JSON.stringify({
+      name: "Vitalii",
+      passwordHash: hash,
+      updatedAt: new Date().toISOString(),
+      systemStatus: "STABLE",
+    }),
+  });
 
   if (patch.ok) {
     const users = await patch.json();

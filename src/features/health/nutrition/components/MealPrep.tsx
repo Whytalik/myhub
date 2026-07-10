@@ -22,8 +22,12 @@ function productLabel(food: string, qualifier?: string): string {
  *  qty is `sumMacroGramsMulti(...) + grams` formatted, never a hand-typed string. */
 function quantityLabel(computed: ComputedQuantity, seasonOverride?: string): string {
   const total =
-    sumMacroGramsMulti([computed.food, ...(computed.extraFood ?? [])], computed.weekdays, undefined, seasonOverride) +
-    (computed.grams ?? 0);
+    sumMacroGramsMulti(
+      [computed.food, ...(computed.extraFood ?? [])],
+      computed.weekdays,
+      undefined,
+      seasonOverride,
+    ) + (computed.grams ?? 0);
   return formatGrams(total, computed.unit, PRODUCTS[computed.food]?.gramsPerPiece);
 }
 

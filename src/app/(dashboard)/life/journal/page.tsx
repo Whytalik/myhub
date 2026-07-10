@@ -126,7 +126,8 @@ export default async function JournalPage({
                 ) не завершено
               </p>
               <p className="text-xs text-zinc-400">
-                Ви вимкнули пристрої о 21:00? Ви можете заповнити вечірні звички та завершити вчорашній день retrospectively.
+                Ви вимкнули пристрої о 21:00? Ви можете заповнити вечірні звички та завершити
+                вчорашній день retrospectively.
               </p>
             </div>
           </div>

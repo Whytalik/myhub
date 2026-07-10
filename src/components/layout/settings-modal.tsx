@@ -99,44 +99,69 @@ export function SettingsModal({
             <h4 className="text-label">Seasonal Nutrition Menu</h4>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <button onClick={() => setSeason("auto")} className={seasonOptionClass(season === "auto") + " sm:col-span-2"}>
+            <button
+              onClick={() => setSeason("auto")}
+              className={seasonOptionClass(season === "auto") + " sm:col-span-2"}
+            >
               <div className="flex items-center gap-2">
                 <CloudSun size={14} />
                 <span className="text-sm font-medium">Auto (За календарем)</span>
               </div>
-              {season === "auto" && <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />}
+              {season === "auto" && (
+                <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />
+              )}
             </button>
-            
-            <button onClick={() => setSeason("summer")} className={seasonOptionClass(season === "summer")}>
+
+            <button
+              onClick={() => setSeason("summer")}
+              className={seasonOptionClass(season === "summer")}
+            >
               <div className="flex items-center gap-2">
                 <Sun size={14} />
                 <span className="text-sm font-medium">Літо (Summer)</span>
               </div>
-              {season === "summer" && <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />}
+              {season === "summer" && (
+                <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />
+              )}
             </button>
 
-            <button onClick={() => setSeason("autumn")} className={seasonOptionClass(season === "autumn")}>
+            <button
+              onClick={() => setSeason("autumn")}
+              className={seasonOptionClass(season === "autumn")}
+            >
               <div className="flex items-center gap-2">
                 <Leaf size={14} />
                 <span className="text-sm font-medium">Осінь (Autumn)</span>
               </div>
-              {season === "autumn" && <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />}
+              {season === "autumn" && (
+                <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />
+              )}
             </button>
 
-            <button onClick={() => setSeason("winter")} className={seasonOptionClass(season === "winter")}>
+            <button
+              onClick={() => setSeason("winter")}
+              className={seasonOptionClass(season === "winter")}
+            >
               <div className="flex items-center gap-2">
                 <Snowflake size={14} />
                 <span className="text-sm font-medium">Зима (Winter)</span>
               </div>
-              {season === "winter" && <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />}
+              {season === "winter" && (
+                <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />
+              )}
             </button>
 
-            <button onClick={() => setSeason("spring")} className={seasonOptionClass(season === "spring")}>
+            <button
+              onClick={() => setSeason("spring")}
+              className={seasonOptionClass(season === "spring")}
+            >
               <div className="flex items-center gap-2">
                 <Sprout size={14} />
                 <span className="text-sm font-medium">Весна (Spring)</span>
               </div>
-              {season === "spring" && <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />}
+              {season === "spring" && (
+                <div className="w-1.5 h-1.5 rounded-full bg-accent-nutrition" />
+              )}
             </button>
           </div>
         </div>

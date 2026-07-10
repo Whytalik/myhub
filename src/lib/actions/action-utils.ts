@@ -1,8 +1,6 @@
 import { auth } from "@/auth";
 
-export type ActionResult<T = void> =
-  | { success: true; data: T }
-  | { success: false; error: string };
+export type ActionResult<T = void> = { success: true; data: T } | { success: false; error: string };
 
 export async function getRequiredUserId(): Promise<string> {
   const session = await auth();
@@ -11,9 +9,7 @@ export async function getRequiredUserId(): Promise<string> {
   return userId;
 }
 
-export async function withAction<T>(
-  fn: (userId: string) => Promise<T>
-): Promise<ActionResult<T>> {
+export async function withAction<T>(fn: (userId: string) => Promise<T>): Promise<ActionResult<T>> {
   try {
     const userId = await getRequiredUserId();
     const data = await fn(userId);

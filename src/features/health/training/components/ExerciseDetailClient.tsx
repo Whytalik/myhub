@@ -38,11 +38,17 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
   const [name, setName] = useState(exercise.name);
   const [muscleGroup, setMuscleGroup] = useState(exercise.muscleGroup || "");
   const [equipment, setEquipment] = useState(exercise.equipment || "");
-  const [explanation, setExplanation] = useState(exercise.explanation || staticDetails?.explanation || "");
-  const [scientificInsight, setScientificInsight] = useState(exercise.scientificInsight || staticDetails?.scientificInsight || "");
+  const [explanation, setExplanation] = useState(
+    exercise.explanation || staticDetails?.explanation || "",
+  );
+  const [scientificInsight, setScientificInsight] = useState(
+    exercise.scientificInsight || staticDetails?.scientificInsight || "",
+  );
   const [technique, setTechnique] = useState(exercise.technique || staticDetails?.technique || "");
   const [videoUrl, setVideoUrl] = useState(exercise.videoUrl || staticDetails?.videoUrl || "");
-  const [progression, setProgression] = useState(exercise.progression || staticDetails?.progression || "");
+  const [progression, setProgression] = useState(
+    exercise.progression || staticDetails?.progression || "",
+  );
   const [notes, setNotes] = useState(exercise.notes || "");
 
   const handleCancel = () => {
@@ -90,7 +96,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
     }
   };
 
-  const badgeClass = "text-[10px] font-mono font-semibold uppercase tracking-wide px-2 py-0.5 rounded bg-white/5 border border-white/[0.06] text-zinc-300";
+  const badgeClass =
+    "text-[10px] font-mono font-semibold uppercase tracking-wide px-2 py-0.5 rounded bg-white/5 border border-white/[0.06] text-zinc-300";
 
   return (
     <div className="flex flex-col gap-6 pb-12">
@@ -132,30 +139,48 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
             {/* Title & Metadata Inputs */}
             <div className="glass-card p-6 flex flex-col gap-4">
               <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Основні дані</h2>
-              
+
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Назва вправи</label>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Назва вправи
+                </label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Група м'язів</label>
-                  <Input value={muscleGroup} onChange={(e) => setMuscleGroup(e.target.value)} placeholder="Напр. Груди, Квадрицепс" />
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                    Група м'язів
+                  </label>
+                  <Input
+                    value={muscleGroup}
+                    onChange={(e) => setMuscleGroup(e.target.value)}
+                    placeholder="Напр. Груди, Квадрицепс"
+                  />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Спорядження</label>
-                  <Input value={equipment} onChange={(e) => setEquipment(e.target.value)} placeholder="Напр. Гантелі, Килимок" />
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                    Спорядження
+                  </label>
+                  <Input
+                    value={equipment}
+                    onChange={(e) => setEquipment(e.target.value)}
+                    placeholder="Напр. Гантелі, Килимок"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Explanation & Insight Inputs */}
             <div className="glass-card p-6 flex flex-col gap-4">
-              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Науковий аналіз</h2>
+              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">
+                Науковий аналіз
+              </h2>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Пояснення вправи</label>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Пояснення вправи
+                </label>
                 <textarea
                   className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[120px] rounded-lg"
                   value={explanation}
@@ -165,7 +190,9 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Науковий інсайт (Дослідження)</label>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Науковий інсайт (Дослідження)
+                </label>
                 <textarea
                   className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[100px] rounded-lg"
                   value={scientificInsight}
@@ -177,10 +204,16 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
 
             {/* Technique Inputs */}
             <div className="glass-card p-6 flex flex-col gap-4">
-              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Покрокова техніка виконання</h2>
+              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">
+                Покрокова техніка виконання
+              </h2>
               <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Кроки техніки</label>
-                <span className="text-[10px] text-zinc-500 mb-1">Кожен крок пишіть з нового рядка без цифр (вони додадуться автоматично)</span>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Кроки техніки
+                </label>
+                <span className="text-[10px] text-zinc-500 mb-1">
+                  Кожен крок пишіть з нового рядка без цифр (вони додадуться автоматично)
+                </span>
                 <textarea
                   className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[180px] rounded-lg font-mono text-xs"
                   value={technique}
@@ -192,9 +225,13 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
 
             {/* Progression Input */}
             <div className="glass-card p-6 flex flex-col gap-4">
-              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Стратегія прогресу</h2>
+              <h2 className="text-panel-title border-b border-white/[0.06] pb-2">
+                Стратегія прогресу
+              </h2>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Правила прогресії</label>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Правила прогресії
+                </label>
                 <textarea
                   className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 min-h-[120px] rounded-lg"
                   value={progression}
@@ -211,14 +248,17 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
             <div className="glass-card p-5 flex flex-col gap-4">
               <h2 className="text-panel-title border-b border-white/[0.06] pb-2">Медіа та відео</h2>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">Посилання на YouTube Embed</label>
+                <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+                  Посилання на YouTube Embed
+                </label>
                 <Input
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   placeholder="https://www.youtube.com/embed/..."
                 />
                 <span className="text-[10px] text-zinc-500 leading-relaxed">
-                  Будь ласка, використовуйте посилання у форматі <strong>/embed/VIDEO_ID</strong> для вбудовування відеоплеєра.
+                  Будь ласка, використовуйте посилання у форматі <strong>/embed/VIDEO_ID</strong>{" "}
+                  для вбудовування відеоплеєра.
                 </span>
               </div>
             </div>
@@ -250,12 +290,15 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                 </div>
                 <h2 className="text-panel-title">Біомеханічний та науковий аналіз</h2>
               </div>
-              
+
               <div className="flex flex-col gap-4">
                 <div>
-                  <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-zinc-400 mb-1">Пояснення вправи</h3>
+                  <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-zinc-400 mb-1">
+                    Пояснення вправи
+                  </h3>
                   <p className="text-body leading-relaxed">
-                    {explanation || "Детальний опис цієї вправи знаходиться на етапі підготовки. Вона задіює цільові м'язові групи відповідно до вашої анатомічної структури."}
+                    {explanation ||
+                      "Детальний опис цієї вправи знаходиться на етапі підготовки. Вона задіює цільові м'язові групи відповідно до вашої анатомічної структури."}
                   </p>
                 </div>
 
@@ -296,7 +339,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                   <div className="flex gap-3 items-start text-body">
                     <CheckCircle size={16} className="text-zinc-500 mt-0.5 shrink-0" />
                     <p className="text-zinc-400">
-                      Утримуйте хребет у нейтральному положенні, виконуйте рух плавно та контролюйте ексцентричну фазу (опускання ваги).
+                      Утримуйте хребет у нейтральному положенні, виконуйте рух плавно та контролюйте
+                      ексцентричну фазу (опускання ваги).
                     </p>
                   </div>
                 )}
@@ -309,7 +353,9 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                 <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
                   <TrendingUp size={18} />
                 </div>
-                <h2 className="text-panel-title">Стратегія прогресу (Прогресивне перевантаження)</h2>
+                <h2 className="text-panel-title">
+                  Стратегія прогресу (Прогресивне перевантаження)
+                </h2>
               </div>
 
               {progression ? (
@@ -319,7 +365,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               ) : exercise.trackingType === "weight_reps" ? (
                 <div className="flex flex-col gap-4 text-body text-zinc-300">
                   <p className="leading-relaxed">
-                    Для ефективного росту сили та м'язової маси використовуйте метод <strong>подвійної прогресії</strong>:
+                    Для ефективного росту сили та м'язової маси використовуйте метод{" "}
+                    <strong>подвійної прогресії</strong>:
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
@@ -327,7 +374,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         1. Закріплення ваги
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        Використовуйте стабільну вагу та намагайтеся досягти верхньої межі цільового діапазону повторень (наприклад, 12 повторень) в усіх запланованих підходах.
+                        Використовуйте стабільну вагу та намагайтеся досягти верхньої межі цільового
+                        діапазону повторень (наприклад, 12 повторень) в усіх запланованих підходах.
                       </p>
                     </div>
 
@@ -336,7 +384,9 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         2. Крок вгору
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        Коли всі підходи виконані на максимум із запасом RPE 8-9, на наступному тренуванні додайте вагу (+1-2.5 кг для верхньої частини тіла, +2.5-5 кг для нижньої).
+                        Коли всі підходи виконані на максимум із запасом RPE 8-9, на наступному
+                        тренуванні додайте вагу (+1-2.5 кг для верхньої частини тіла, +2.5-5 кг для
+                        нижньої).
                       </p>
                     </div>
 
@@ -345,7 +395,9 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         3. Новий цикл
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        З новою вагою кількість повторень знизиться до нижньої межі (наприклад, 8 повторень). Поступово збільшуйте їх від тренування до тренування, повторюючи цикл.
+                        З новою вагою кількість повторень знизиться до нижньої межі (наприклад, 8
+                        повторень). Поступово збільшуйте їх від тренування до тренування, повторюючи
+                        цикл.
                       </p>
                     </div>
                   </div>
@@ -353,7 +405,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               ) : (
                 <div className="flex flex-col gap-4 text-body text-zinc-300">
                   <p className="leading-relaxed">
-                    Для вправ із трекінгом за часом використовуйте метод <strong>прогресії часу під навантаженням (Time under Tension)</strong>:
+                    Для вправ із трекінгом за часом використовуйте метод{" "}
+                    <strong>прогресії часу під навантаженням (Time under Tension)</strong>:
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
@@ -361,7 +414,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         1. Збільшення часу
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        Намагайтеся збільшувати тривалість виконання вправи на 2–5 секунд у кожному підході на кожному тренуванні (наприклад, планка від 45 до 60 секунд).
+                        Намагайтеся збільшувати тривалість виконання вправи на 2–5 секунд у кожному
+                        підході на кожному тренуванні (наприклад, планка від 45 до 60 секунд).
                       </p>
                     </div>
 
@@ -370,7 +424,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         2. Ускладнення
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        Досягнувши цільового часу, ускладніть вправу (додайте жилет-обважнювач, змініть кут нахилу або робіть статичні паузи у найважчій точці).
+                        Досягнувши цільового часу, ускладніть вправу (додайте жилет-обважнювач,
+                        змініть кут нахилу або робіть статичні паузи у найважчій точці).
                       </p>
                     </div>
 
@@ -379,7 +434,8 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                         3. Контроль форми
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">
-                        Збільшення часу не повинно шкодити техніці. Якщо спина прогинається або тіло тремтить надмірно, поверніться на попередній рівень часу.
+                        Збільшення часу не повинно шкодити техніці. Якщо спина прогинається або тіло
+                        тремтить надмірно, поверніться на попередній рівень часу.
                       </p>
                     </div>
                   </div>
@@ -447,7 +503,9 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
                 {notes ? (
                   <p className="whitespace-pre-line leading-relaxed">{notes}</p>
                 ) : (
-                  <p className="text-zinc-500 italic text-[13px] text-center pt-4">Немає особистих нотаток для цієї вправи.</p>
+                  <p className="text-zinc-500 italic text-[13px] text-center pt-4">
+                    Немає особистих нотаток для цієї вправи.
+                  </p>
                 )}
               </div>
             </div>

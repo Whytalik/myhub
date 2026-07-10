@@ -42,9 +42,14 @@ function pushServingGramsOf(serving: FoodServing, metricGrams: number): number {
   return measurement === "g" || measurement === "ml" ? 1 : metricGrams;
 }
 
-function buildMacroOverrides(food: FoodDetail): Record<string, {kcal: string; protein: string; fat: string; carbs: string}> {
-  const servings = Array.isArray(food.servings.serving) ? food.servings.serving : [food.servings.serving];
-  const overrides: Record<string, {kcal: string; protein: string; fat: string; carbs: string}> = {};
+function buildMacroOverrides(
+  food: FoodDetail,
+): Record<string, { kcal: string; protein: string; fat: string; carbs: string }> {
+  const servings = Array.isArray(food.servings.serving)
+    ? food.servings.serving
+    : [food.servings.serving];
+  const overrides: Record<string, { kcal: string; protein: string; fat: string; carbs: string }> =
+    {};
   for (const s of servings) {
     overrides[s.serving_id] = {
       kcal: s.calories ?? "",
@@ -82,7 +87,9 @@ export function FoodMapperDialog({
   const [manualServingDescription, setManualServingDescription] = useState("100 г");
 
   // Macro override state (Option B: keep real US food_id for push, override macros for display)
-  const [macroOverrides, setMacroOverrides] = useState<Record<string, {kcal: string; protein: string; fat: string; carbs: string}>>({});
+  const [macroOverrides, setMacroOverrides] = useState<
+    Record<string, { kcal: string; protein: string; fat: string; carbs: string }>
+  >({});
 
   // Search state
   const [searchQuery, setSearchQuery] = useState(productNameUk);
@@ -297,7 +304,10 @@ export function FoodMapperDialog({
                 }`;
                 const ov = macroOverrides[serving.serving_id];
 
-                const updateOverride = (field: "kcal" | "protein" | "fat" | "carbs", value: string) => {
+                const updateOverride = (
+                  field: "kcal" | "protein" | "fat" | "carbs",
+                  value: string,
+                ) => {
                   setMacroOverrides((prev) => ({
                     ...prev,
                     [serving.serving_id]: { ...prev[serving.serving_id], [field]: value },

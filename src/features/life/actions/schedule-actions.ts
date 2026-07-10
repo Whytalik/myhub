@@ -6,7 +6,7 @@ import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertDayScheduleInput } from "../types";
 
 export async function upsertDayScheduleAction(
-  data: UpsertDayScheduleInput
+  data: UpsertDayScheduleInput,
 ): Promise<ActionResult<Awaited<ReturnType<typeof scheduleService.upsertSchedule>>>> {
   return withAction(async (userId) => {
     const result = await scheduleService.upsertSchedule(userId, data);

@@ -20,7 +20,11 @@ interface PushToFatSecretButtonProps {
   pushedKey?: string;
 }
 
-export function PushToFatSecretButton({ mealType, macroItems, pushedKey }: PushToFatSecretButtonProps) {
+export function PushToFatSecretButton({
+  mealType,
+  macroItems,
+  pushedKey,
+}: PushToFatSecretButtonProps) {
   // 1. Hooks
   const [isPreviewPending, startPreviewTransition] = useTransition();
   const [isPushPending, startPushTransition] = useTransition();
@@ -84,7 +88,7 @@ export function PushToFatSecretButton({ mealType, macroItems, pushedKey }: PushT
         return;
       }
       setError(null);
-      
+
       const entries = response.data.entries;
       setResult(entries);
 

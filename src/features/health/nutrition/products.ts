@@ -33,7 +33,10 @@ function tracked(
   nameUk: string,
   macros: FoodMacros,
   category: ProductCategory,
-  extra?: Pick<Product, "searchTerm" | "excludeAfter" | "gramsPerPiece" | "cookedMultiplier" | "basePrice">,
+  extra?: Pick<
+    Product,
+    "searchTerm" | "excludeAfter" | "gramsPerPiece" | "cookedMultiplier" | "basePrice"
+  >,
 ): Product {
   return { key, nameUk, kind: "tracked", macros, category, ...extra };
 }
@@ -149,13 +152,9 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 73, protein: 9, fat: 2, carbs: 4 },
     "dairy",
   ),
-  berries: tracked(
-    "berries",
-    "Ягоди",
-    { kcal: 43, protein: 0.8, fat: 0.4, carbs: 10 },
-    "fruits",
-    { basePrice: 180 },
-  ),
+  berries: tracked("berries", "Ягоди", { kcal: 43, protein: 0.8, fat: 0.4, carbs: 10 }, "fruits", {
+    basePrice: 180,
+  }),
   fruitMix: tracked(
     "fruitMix",
     "Фрукти (мікс)",
@@ -235,13 +234,10 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { searchTerm: "буряк", basePrice: 20 },
   ),
-  apple: tracked(
-    "apple",
-    "Яблука",
-    { kcal: 52, protein: 0.3, fat: 0.2, carbs: 13.8 },
-    "fruits",
-    { searchTerm: "яблук", basePrice: 25 },
-  ),
+  apple: tracked("apple", "Яблука", { kcal: 52, protein: 0.3, fat: 0.2, carbs: 13.8 }, "fruits", {
+    searchTerm: "яблук",
+    basePrice: 25,
+  }),
   hardCheese: tracked(
     "hardCheese",
     "Твердий сир",

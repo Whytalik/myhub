@@ -40,7 +40,7 @@ export function GiftedItemDialog({
 }: GiftedItemDialogProps) {
   // Розраховуємо сезонну ціну за одиницю (кг, літр або штуку)
   const product = productKey ? PRODUCTS[productKey] : null;
-  
+
   let seasonalUnitPrice: number | null = null;
   if (productKey && product && product.basePrice !== undefined) {
     const multiplier = getProductSeasonMultiplier(productKey, weekStart, seasonOverride);
@@ -172,7 +172,12 @@ export function GiftedItemDialog({
 
         <label className="flex flex-col gap-1.5">
           <span className="text-label">Нотатка (необов&apos;язково)</span>
-          <Input type="text" placeholder="напр. Принесли батьки" value={note} onChange={(e) => setNote(e.target.value)} />
+          <Input
+            type="text"
+            placeholder="напр. Принесли батьки"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
         </label>
 
         {isSaving && (

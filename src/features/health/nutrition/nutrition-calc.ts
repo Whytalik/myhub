@@ -38,10 +38,7 @@ export function calculateDayMacros(day: DayPlan, person: "vitalii" | "olesia"): 
 }
 
 export function calculateMealMacros(meal: Meal, person: "vitalii" | "olesia"): DayMacros {
-  const raw = (meal.macroItems ?? []).reduce(
-    (totals, item) => addItem(totals, item, person),
-    ZERO
-  );
+  const raw = (meal.macroItems ?? []).reduce((totals, item) => addItem(totals, item, person), ZERO);
 
   return {
     kcal: Math.round(raw.kcal),
@@ -50,4 +47,3 @@ export function calculateMealMacros(meal: Meal, person: "vitalii" | "olesia"): D
     carbs: Math.round(raw.carbs),
   };
 }
-

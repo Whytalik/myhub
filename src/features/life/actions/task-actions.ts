@@ -4,9 +4,17 @@ import * as taskService from "../services/task-service";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { taskRepository } from "../repositories/task.repository";
-import type { UpsertTaskInput, UpsertSphereInput, TaskStatus, TaskPriority, TaskData } from "../types";
+import type {
+  UpsertTaskInput,
+  UpsertSphereInput,
+  TaskStatus,
+  TaskPriority,
+  TaskData,
+} from "../types";
 
-export async function upsertTaskAction(input: UpsertTaskInput): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function upsertTaskAction(
+  input: UpsertTaskInput,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
     const task = await taskService.upsertTask(userId, input);
     invalidateTaskCache(userId);
@@ -21,21 +29,30 @@ export async function deleteTaskAction(id: string): Promise<ActionResult<void>> 
   });
 }
 
-export async function updateTaskStatusAction(id: string, status: TaskStatus): Promise<ActionResult<void>> {
+export async function updateTaskStatusAction(
+  id: string,
+  status: TaskStatus,
+): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await taskService.updateTaskStatus(userId, id, status);
     invalidateTaskCache(userId);
   });
 }
 
-export async function updateTaskPriorityAction(id: string, priority: TaskPriority): Promise<ActionResult<void>> {
+export async function updateTaskPriorityAction(
+  id: string,
+  priority: TaskPriority,
+): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await taskService.updateTaskPriority(userId, id, priority);
     invalidateTaskCache(userId);
   });
 }
 
-export async function updateTaskDateAction(id: string, plannedDate: string): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function updateTaskDateAction(
+  id: string,
+  plannedDate: string,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
     const task = await taskService.upsertTask(userId, { id, plannedDate });
     invalidateTaskCache(userId);
@@ -43,7 +60,9 @@ export async function updateTaskDateAction(id: string, plannedDate: string): Pro
   });
 }
 
-export async function upsertSphereAction(input: UpsertSphereInput): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertSphere>>>> {
+export async function upsertSphereAction(
+  input: UpsertSphereInput,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertSphere>>>> {
   return withAction(async (userId) => {
     const sphere = await taskService.upsertSphere(userId, input);
     invalidateTaskCache(userId);
@@ -58,20 +77,33 @@ export async function deleteSphereAction(id: string): Promise<ActionResult<void>
   });
 }
 
-export async function toggleSphereActiveAction(id: string, isActive: boolean): Promise<ActionResult<void>> {
+export async function toggleSphereActiveAction(
+  id: string,
+  isActive: boolean,
+): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await taskService.toggleSphereActive(userId, id, isActive);
     invalidateTaskCache(userId);
   });
 }
 
-export async function getAllSpheresAction(): Promise<ActionResult<Awaited<ReturnType<typeof taskService.getAllSpheres>>>> {
+export async function getAllSpheresAction(): Promise<
+  ActionResult<Awaited<ReturnType<typeof taskService.getAllSpheres>>>
+> {
   return withAction(async (userId) => taskService.getAllSpheres(userId));
 }
 
-export async function instantDuplicateTaskAction(task: TaskData): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function instantDuplicateTaskAction(
+  task: TaskData,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
-    const { id: _id, children: _children, carriedFromDate: _cfd, carryOverReason: _cor, ...rest } = task;
+    const {
+      id: _id,
+      children: _children,
+      carriedFromDate: _cfd,
+      carryOverReason: _cor,
+      ...rest
+    } = task;
     const newTask = await taskService.upsertTask(userId, {
       ...rest,
       title: `${task.title} (Copy)`,
@@ -84,7 +116,10 @@ export async function instantDuplicateTaskAction(task: TaskData): Promise<Action
   });
 }
 
-export async function instantAddSubtaskAction(parentId: string, sphereId: string | null): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function instantAddSubtaskAction(
+  parentId: string,
+  sphereId: string | null,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
     const newTask = await taskService.upsertTask(userId, {
       title: "New Subtask",
@@ -98,7 +133,11 @@ export async function instantAddSubtaskAction(parentId: string, sphereId: string
   });
 }
 
-export async function updateTaskRangeAction(id: string, plannedDate: string | null, plannedEndDate: string | null): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function updateTaskRangeAction(
+  id: string,
+  plannedDate: string | null,
+  plannedEndDate: string | null,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
     const task = await taskService.upsertTask(userId, { id, plannedDate, plannedEndDate });
     invalidateTaskCache(userId);
@@ -106,7 +145,11 @@ export async function updateTaskRangeAction(id: string, plannedDate: string | nu
   });
 }
 
-export async function updateTaskTimeRangeAction(id: string, plannedDate: string | null, plannedEndDate: string | null): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+export async function updateTaskTimeRangeAction(
+  id: string,
+  plannedDate: string | null,
+  plannedEndDate: string | null,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
   return withAction(async (userId) => {
     const task = await taskService.upsertTask(userId, {
       id,
@@ -137,10 +180,12 @@ export async function carryOverTaskAction(
     today.setHours(0, 0, 0, 0);
 
     const existing = await taskRepository.findByIdSelect(taskId, {
-      plannedDate: true, hasPlannedTime: true, plannedEndDate: true,
+      plannedDate: true,
+      hasPlannedTime: true,
+      plannedEndDate: true,
     });
 
-    const [ny, nm, nd] = newDateISO.split('-').map(Number);
+    const [ny, nm, nd] = newDateISO.split("-").map(Number);
     const targetUTCMidnight = Date.UTC(ny, nm - 1, nd);
 
     let newPlannedDate: string = newDateISO;
@@ -148,15 +193,23 @@ export async function carryOverTaskAction(
 
     if (existing?.hasPlannedTime && existing.plannedDate) {
       const orig = existing.plannedDate;
-      const origUTCMidnight = Date.UTC(orig.getUTCFullYear(), orig.getUTCMonth(), orig.getUTCDate());
-      newPlannedDate = new Date(orig.getTime() + (targetUTCMidnight - origUTCMidnight)).toISOString();
+      const origUTCMidnight = Date.UTC(
+        orig.getUTCFullYear(),
+        orig.getUTCMonth(),
+        orig.getUTCDate(),
+      );
+      newPlannedDate = new Date(
+        orig.getTime() + (targetUTCMidnight - origUTCMidnight),
+      ).toISOString();
     }
 
     if (existing?.plannedEndDate) {
       const origEnd = existing.plannedEndDate;
       const ref = existing.plannedDate ?? origEnd;
       const refUTCMidnight = Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth(), ref.getUTCDate());
-      newPlannedEndDate = new Date(origEnd.getTime() + (targetUTCMidnight - refUTCMidnight)).toISOString();
+      newPlannedEndDate = new Date(
+        origEnd.getTime() + (targetUTCMidnight - refUTCMidnight),
+      ).toISOString();
     }
 
     const task = await taskService.upsertTask(userId, {

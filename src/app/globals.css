@@ -9,16 +9,18 @@
   --color-canvas: #1c1c1e;
   --color-surface: rgba(30, 30, 30, 0.45);
   --color-elevated: rgba(45, 45, 45, 0.85);
-  
+
   --color-accent: var(--color-accent);
   --color-accent-muted: var(--color-accent-muted);
-  
+
   /* Space-Specific Accent Tokens */
   --color-accent-life: #6fbfbf;
   --color-accent-nutrition: #ff8c00;
   --color-accent-training: #e87d88;
-  
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial,
+    sans-serif;
   --font-mono: SFMono-Regular, SF Mono, Menlo, monospace;
 }
 
@@ -27,7 +29,8 @@
   display: none;
 }
 
-html, body {
+html,
+body {
   @apply bg-canvas text-zinc-200 font-sans overflow-x-hidden;
 }
 

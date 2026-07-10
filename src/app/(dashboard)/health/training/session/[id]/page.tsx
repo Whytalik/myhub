@@ -43,8 +43,8 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
           day: "numeric",
         })}
       />
-      <SessionClient 
-        session={trainingSession as unknown as TrainingSessionData} 
+      <SessionClient
+        session={trainingSession as unknown as TrainingSessionData}
         pastLogs={pastLogs as any}
       />
     </div>

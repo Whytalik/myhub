@@ -22,15 +22,18 @@ Feature code always lives under `src/features/<domain>/` (flat) or `src/features
 ## 1. Prisma model
 
 Add the model to `prisma/schema.prisma`. Conventions from existing models:
+
 - `id String @id @default(cuid())`
 - `userId String` + relation to `User`, and add the reverse array field on `User`
 - `createdAt DateTime @default(now())`, `updatedAt DateTime @updatedAt`
 
 Then run:
+
 ```
 npx prisma generate   # schema-only, always safe, unblocks type-checking
 npx prisma db push    # writes to the DB — needs a working connection, see below
 ```
+
 If `db push` fails with `P1001: Can't reach database server`, don't retry blindly — the direct Supabase host is IPv6-only and this machine has no IPv6 route. The pooler URLs (`POSTGRES_URL`/`POSTGRES_PRISMA_URL`/`POSTGRES_URL_NON_POOLING`) in `.env.local` are the working path; confirm they're set before assuming the DB itself is down.
 
 ## 2. `types.ts` + `schemas.ts`
@@ -42,6 +45,7 @@ In `src/features/<domain>/schemas.ts`: add a Zod schema for form validation (`z.
 ## 3. Repository — `repositories/<name>.repository.ts`
 
 Plain object of Prisma calls, no business logic:
+
 ```ts
 import { prisma } from "@/lib/db/prisma";
 import { Prisma } from "@/app/generated/prisma";
@@ -55,11 +59,13 @@ export const <name>Repository = {
   delete(id: string, userId: string) { return prisma.<model>.delete({ where: { id, userId } }); },
 };
 ```
+
 If a query needs nested relations, define a `<MODEL>_INCLUDE` const `satisfies Prisma.<Model>Include` and a `<Model>Row` type from `Prisma.<Model>GetPayload`.
 
 ## 4. Cache — `src/lib/cache/cache.ts` + `src/lib/cache/revalidate.ts`
 
 Add a tag to `cacheTags`, wrap the repository read in `unstable_cache`:
+
 ```ts
 export const getCached<Name> = unstable_cache(
   (userId: string) => <name>Repository.findAll(userId),
@@ -67,11 +73,13 @@ export const getCached<Name> = unstable_cache(
   { tags: ["<name>"] },
 );
 ```
+
 Add an `invalidate<Name>Cache(userId)` function in `revalidate.ts` that calls `revalidateTag` for every tag this feature's writes affect (including tags of related features it touches, e.g. task writes also invalidate `spheres`).
 
 ## 5. Service — `services/<name>-service.ts`
 
 Business logic and DB-row → domain-type mapping live here, never in the repository or the component. Pattern:
+
 ```ts
 function map<Name>(row: <Name>Row): <Name>Data { /* flatten/rename fields */ }
 
@@ -88,11 +96,13 @@ export async function upsert<Name>(userId: string, input: Upsert<Name>Input): Pr
   return map<Name>(saved);
 }
 ```
+
 Only pass fields through as `undefined` (skip) vs `null` (clear) deliberately — Prisma treats them differently.
 
 ## 6. Server Actions — `actions/<name>-actions.ts`
 
 `"use server"` at the top. Every action goes through `withAction` from `@/lib/actions/action-utils`, which resolves `userId` from the session and wraps the result as `ActionResult<T>`:
+
 ```ts
 "use server";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
@@ -107,11 +117,13 @@ export async function upsert<Name>Action(input: Upsert<Name>Input): Promise<Acti
   });
 }
 ```
+
 Never call the repository directly from an action for a write — go through the service so mapping/validation isn't bypassed. Always call `invalidate*Cache` after a write, before returning.
 
 ## 7. Components
 
 Follow the `[[design-system]]` skill for styling and the `[[component-structure]]` skill for internal ordering (hooks → derived values → handlers → early returns → JSX). Structural conventions:
+
 - `src/features/<domain>/components/<Name>PageClient.tsx` — `"use client"`, receives `initial<Name>` etc. as props from the page, owns local state, calls actions directly (Server Actions are callable from client components — no fetch wrapper needed), shows toasts (`sonner`) on action results.
 - Never call `input`/`textarea`/`select`/`button` raw — use the matching primitive from `src/components/ui/<category>/`.
 - Heavy/rarely-shown subviews (calendar, graph view) are lazy-loaded with `lazy(() => import(...))` + `Suspense`, matching `TasksPageClient.tsx`.
@@ -119,6 +131,7 @@ Follow the `[[design-system]]` skill for styling and the `[[component-structure]
 ## 8. Page — `src/app/(dashboard)/<domain>/<route>/page.tsx`
 
 Server Component:
+
 ```tsx
 export default async function <Name>Page() {
   const session = await auth();
@@ -141,6 +154,7 @@ export default async function <Name>Page() {
   );
 }
 ```
+
 Fetch multiple independent datasets with `Promise.all`, not sequential `await`s. Add `metadata: Metadata = { title: "..." }`. Add a sibling `loading.tsx` if the page has a non-trivial fetch.
 
 ## 9. Register in navigation

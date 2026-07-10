@@ -37,11 +37,17 @@ export function MealCard({ meal }: { meal: Meal }) {
             </span>
             <span className="text-zinc-500 font-mono flex items-center gap-1.5 shrink-0">
               <span>·</span>
-              <span>Б <span className="text-zinc-100">{vitaliiMacros.protein}г</span></span>
+              <span>
+                Б <span className="text-zinc-100">{vitaliiMacros.protein}г</span>
+              </span>
               <span>·</span>
-              <span>Ж <span className="text-zinc-100">{vitaliiMacros.fat}г</span></span>
+              <span>
+                Ж <span className="text-zinc-100">{vitaliiMacros.fat}г</span>
+              </span>
               <span>·</span>
-              <span>В <span className="text-zinc-100">{vitaliiMacros.carbs}г</span></span>
+              <span>
+                В <span className="text-zinc-100">{vitaliiMacros.carbs}г</span>
+              </span>
             </span>
           </div>
           <div className="flex items-center gap-1.5 whitespace-nowrap">
@@ -51,11 +57,17 @@ export function MealCard({ meal }: { meal: Meal }) {
             </span>
             <span className="text-zinc-500 font-mono flex items-center gap-1.5 shrink-0">
               <span>·</span>
-              <span>Б <span className="text-zinc-100">{olesiaMacros.protein}г</span></span>
+              <span>
+                Б <span className="text-zinc-100">{olesiaMacros.protein}г</span>
+              </span>
               <span>·</span>
-              <span>Ж <span className="text-zinc-100">{olesiaMacros.fat}г</span></span>
+              <span>
+                Ж <span className="text-zinc-100">{olesiaMacros.fat}г</span>
+              </span>
               <span>·</span>
-              <span>В <span className="text-zinc-100">{olesiaMacros.carbs}г</span></span>
+              <span>
+                В <span className="text-zinc-100">{olesiaMacros.carbs}г</span>
+              </span>
             </span>
           </div>
         </div>
@@ -63,4 +75,3 @@ export function MealCard({ meal }: { meal: Meal }) {
     </div>
   );
 }
-

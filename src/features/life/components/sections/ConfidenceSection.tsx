@@ -26,7 +26,9 @@ export function ConfidenceSection({ log, onChange }: Props) {
   const hasValue = log !== null && Object.values(log).some((v) => v !== null);
 
   return (
-    <div className={`glass-card p-4 flex flex-col gap-4 border ${hasValue ? "border-accent/20" : "border-white/[0.06]"}`}>
+    <div
+      className={`glass-card p-4 flex flex-col gap-4 border ${hasValue ? "border-accent/20" : "border-white/[0.06]"}`}
+    >
       <div className="flex items-center gap-2">
         <MessageSquare size={14} className="text-accent" />
         <h3 className="text-panel-title">Confidence & Communication</h3>
@@ -62,7 +64,9 @@ export function ConfidenceSection({ log, onChange }: Props) {
             min={0}
             max={50}
             value={log?.initAttempts ?? ""}
-            onChange={(e) => patch({ initAttempts: e.target.value ? Number(e.target.value) : null })}
+            onChange={(e) =>
+              patch({ initAttempts: e.target.value ? Number(e.target.value) : null })
+            }
             placeholder="0"
           />
         </div>

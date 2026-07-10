@@ -26,7 +26,11 @@ export interface WeekSpend {
 function plannedWeekTotal(weekStart: string, seasonOverride?: string): number {
   return SHOPPING_LIST.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride), 0),
+      sum +
+      category.items.reduce(
+        (itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride),
+        0,
+      ),
     0,
   );
 }
@@ -49,7 +53,10 @@ export async function removeGifted(weekStart: string, itemId: string) {
   await giftedGroceryRepository.remove(new Date(`${weekStart}T00:00:00`), itemId);
 }
 
-export async function getActualSpendForWeek(weekStart: string, seasonOverride?: string): Promise<WeekSpend> {
+export async function getActualSpendForWeek(
+  weekStart: string,
+  seasonOverride?: string,
+): Promise<WeekSpend> {
   const gifted = await getGiftedForWeek(weekStart);
   const giftedTotal = gifted.reduce((sum, row) => sum + row.value, 0);
   const plannedTotal = plannedWeekTotal(weekStart, seasonOverride);

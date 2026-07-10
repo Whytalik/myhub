@@ -32,10 +32,15 @@ function displayNameOf(item: ShoppingItem): string {
 
 /** Computed qty derives from macroItems (+ an explicit manual buffer) instead of
  *  being hand-typed — see [[nutrition_products_single_source]] / quantities.ts. */
-function displayQtyOf(item: ShoppingItem, weekStart?: string, seasonOverride?: string): string | undefined {
+function displayQtyOf(
+  item: ShoppingItem,
+  weekStart?: string,
+  seasonOverride?: string,
+): string | undefined {
   if (!item.computedQty) return item.qty;
   const { food, extraFood, weekdays, grams = 0, unit } = item.computedQty;
-  const total = sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+  const total =
+    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
   return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
 
@@ -44,10 +49,16 @@ function displayQtyOf(item: ShoppingItem, weekStart?: string, seasonOverride?: s
  * items (hand-typed `qty` strings like "1 пучок" have no clean number to divide against).
  * Used to translate a "вже вдома" fraction into a real "≈ X з Y" readout.
  */
-function computedTotal(item: ShoppingItem, weekStart?: string, seasonOverride?: string): number | null {
+function computedTotal(
+  item: ShoppingItem,
+  weekStart?: string,
+  seasonOverride?: string,
+): number | null {
   if (!item.computedQty) return null;
   const { food, extraFood, weekdays, grams = 0 } = item.computedQty;
-  return sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+  return (
+    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams
+  );
 }
 
 function isNeededForDay(item: ShoppingItem, day: string): boolean {
@@ -61,7 +72,11 @@ function isNeededForDay(item: ShoppingItem, day: string): boolean {
     if (day === "tue" && (lowerNote.includes("вт") || lowerNote.includes("вівторок"))) return true;
     if (day === "wed" && (lowerNote.includes("ср") || lowerNote.includes("середа"))) return true;
     if (day === "thu" && (lowerNote.includes("чт") || lowerNote.includes("четвер"))) return true;
-    if (day === "fri" && (lowerNote.includes("пт") || lowerNote.includes("п’ятниця") || lowerNote.includes("п'ятниця"))) return true;
+    if (
+      day === "fri" &&
+      (lowerNote.includes("пт") || lowerNote.includes("п’ятниця") || lowerNote.includes("п'ятниця"))
+    )
+      return true;
     if (day === "sat" && (lowerNote.includes("сб") || lowerNote.includes("субота"))) return true;
     if (day === "sun" && (lowerNote.includes("нд") || lowerNote.includes("неділя"))) return true;
   }
@@ -152,16 +167,29 @@ const homeStockStore = makeRecordStore<FractionMap>(
   EMPTY_FRACTIONS,
 );
 
-function categoryCost(categories: ShoppingCategory[], weekStart: string, seasonOverride?: string): number {
+function categoryCost(
+  categories: ShoppingCategory[],
+  weekStart: string,
+  seasonOverride?: string,
+): number {
   return categories.reduce(
     (sum, category) =>
-      sum + category.items.reduce((itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride), 0),
+      sum +
+      category.items.reduce(
+        (itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride),
+        0,
+      ),
     0,
   );
 }
 
 /** "з 990 г — купити ще 690 г" — only when the item has a computable total. */
-function homeStockReadout(item: ShoppingItem, fraction: number, weekStart?: string, seasonOverride?: string): string | null {
+function homeStockReadout(
+  item: ShoppingItem,
+  fraction: number,
+  weekStart?: string,
+  seasonOverride?: string,
+): string | null {
   const total = computedTotal(item, weekStart, seasonOverride);
   if (total === null) return null;
   const unit = item.computedQty?.unit;
@@ -219,12 +247,17 @@ function CategoryList({
                 : (homeStock[item.id] ?? 0);
               const isHomeStock = fraction > 0;
               const giftedRecord = item.id.includes("+")
-                ? (item.id.split("+").map((subId) => giftedByItemId.get(subId)).find(Boolean) ?? null)
+                ? (item.id
+                    .split("+")
+                    .map((subId) => giftedByItemId.get(subId))
+                    .find(Boolean) ?? null)
                 : (giftedByItemId.get(item.id) ?? null);
               const isGifted = giftedRecord !== null;
               const qty = displayQtyOf(item, weekStart, seasonOverride);
               const itemTotal = computedTotal(item, weekStart, seasonOverride);
-              const readout = isHomeStock ? homeStockReadout(item, fraction, weekStart, seasonOverride) : null;
+              const readout = isHomeStock
+                ? homeStockReadout(item, fraction, weekStart, seasonOverride)
+                : null;
               const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 !isHomeStock && !isGifted && isChecked
@@ -363,8 +396,12 @@ function CategoryList({
   );
 }
 
-function getConsolidatedCategories(categories: ShoppingCategory[], weekStart: string, seasonOverride?: string): ShoppingCategory[] {
-  return categories.map(category => {
+function getConsolidatedCategories(
+  categories: ShoppingCategory[],
+  weekStart: string,
+  seasonOverride?: string,
+): ShoppingCategory[] {
+  return categories.map((category) => {
     const grouped = new Map<string, ShoppingItem[]>();
     for (const item of category.items) {
       const key = displayNameOf(item);
@@ -383,19 +420,22 @@ function getConsolidatedCategories(categories: ShoppingCategory[], weekStart: st
 
       // Merge duplicates
       const base = list[0];
-      const mergedId = list.map(item => item.id).join("+");
-      const totalCostVal = list.reduce((sum, item) => sum + getSeasonalPrice(item, weekStart, seasonOverride), 0);
-      
+      const mergedId = list.map((item) => item.id).join("+");
+      const totalCostVal = list.reduce(
+        (sum, item) => sum + getSeasonalPrice(item, weekStart, seasonOverride),
+        0,
+      );
+
       // Combine notes
-      const notes = list.map(item => item.note).filter(Boolean);
+      const notes = list.map((item) => item.note).filter(Boolean);
       const combinedNote = notes.length > 0 ? notes.join(" + ") : undefined;
 
       // Combine quantities
       let combinedQty: string | undefined = undefined;
       let mergedComputedQty: any = undefined;
-      const allComputed = list.every(item => !!item.computedQty);
+      const allComputed = list.every((item) => !!item.computedQty);
       if (allComputed) {
-        const weekdays = Array.from(new Set(list.flatMap(item => item.computedQty!.weekdays)));
+        const weekdays = Array.from(new Set(list.flatMap((item) => item.computedQty!.weekdays)));
         const grams = list.reduce((sum, item) => sum + (item.computedQty!.grams ?? 0), 0);
         mergedComputedQty = {
           ...base.computedQty,
@@ -435,7 +475,10 @@ function getConsolidatedCategories(categories: ShoppingCategory[], weekStart: st
             combinedQty = `${totalPieces} шт`;
           }
         } else {
-          combinedQty = list.map(item => item.qty).filter(Boolean).join(" + ");
+          combinedQty = list
+            .map((item) => item.qty)
+            .filter(Boolean)
+            .join(" + ");
         }
       }
 
@@ -486,12 +529,17 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
 
   const visibleCategories = activeView === "all" ? SHOPPING_LIST : categoriesForDay(activeView);
 
-  const filteredCategories = selectedDay === "all"
-    ? (activeView === "all" ? getConsolidatedCategories(visibleCategories, weekStart, seasonOverride) : visibleCategories)
-    : visibleCategories.map(category => ({
-        ...category,
-        items: category.items.filter(item => isNeededForDay(item, selectedDay))
-      })).filter(category => category.items.length > 0);
+  const filteredCategories =
+    selectedDay === "all"
+      ? activeView === "all"
+        ? getConsolidatedCategories(visibleCategories, weekStart, seasonOverride)
+        : visibleCategories
+      : visibleCategories
+          .map((category) => ({
+            ...category,
+            items: category.items.filter((item) => isNeededForDay(item, selectedDay)),
+          }))
+          .filter((category) => category.items.length > 0);
 
   const visibleItemIds = new Set(
     filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
@@ -555,10 +603,10 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
       sum +
       category.items.reduce((itemSum, item) => {
         const isChecked = item.id.includes("+")
-          ? item.id.split("+").every(subId => checked[subId])
+          ? item.id.split("+").every((subId) => checked[subId])
           : !!checked[item.id];
         if (!isChecked) return itemSum;
-        
+
         if (item.id.includes("+")) {
           const ids = item.id.split("+");
           const fraction = homeStock[ids[0]] ?? 0;
@@ -572,7 +620,7 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
           }
           return itemSum + activePrice;
         }
-        
+
         if (giftedByItemId.has(item.id)) return itemSum;
         const fraction = homeStock[item.id] ?? 0;
         const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);

@@ -13,7 +13,14 @@ interface TaskRowProps {
   allTasks: TaskData[];
 }
 
-export function TaskRow({ task, onAddChild, onEdit, onDuplicate, onDelete, allTasks }: TaskRowProps) {
+export function TaskRow({
+  task,
+  onAddChild,
+  onEdit,
+  onDuplicate,
+  onDelete,
+  allTasks,
+}: TaskRowProps) {
   return (
     <TaskCardBase
       task={task}

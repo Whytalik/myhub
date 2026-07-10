@@ -261,7 +261,8 @@ export function DailyEntryForm({
         <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-accent/10 border border-accent/25 text-xs text-zinc-200">
           <AlertCircle size={14} className="text-accent shrink-0" />
           <span>
-            Ви заповнюєте вчорашній день retrospectively. Після натискання &quot;Завершити день&quot; він стане доступним лише для читання.
+            Ви заповнюєте вчорашній день retrospectively. Після натискання &quot;Завершити
+            день&quot; він стане доступним лише для читання.
           </span>
         </div>
       ) : null}
@@ -504,10 +505,7 @@ export function DailyEntryForm({
                   />
                 </Suspense>
 
-                <ConfidenceSection
-                  log={data.confidenceLog ?? null}
-                  onChange={patch}
-                />
+                <ConfidenceSection log={data.confidenceLog ?? null} onChange={patch} />
 
                 <TaskReviewSection tasks={tasks} date={todayStr} />
 
