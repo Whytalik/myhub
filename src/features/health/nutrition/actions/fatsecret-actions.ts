@@ -34,7 +34,7 @@ const MEAL_TYPE_MAP: Record<MealType, FatSecretMealType> = {
   snack: "other",
 };
 
-type ProfileId = "vitalii" | "olesia";
+export type ProfileId = "vitalii" | "olesia";
 
 export type PushEntryStatus = "ok" | "unmapped" | "failed";
 
@@ -95,15 +95,19 @@ export async function previewFatSecretPushAction(
 export async function pushMealToFatSecretAction(
   mealType: MealType,
   macroItems: MacroItem[],
+  profileIds: ProfileId[],
+  date?: string,
 ): Promise<ActionResult<PushMealResult>> {
   return withAction(async () => {
     const accounts = await prisma.fatSecretAccount.findMany();
     const accountByProfile = new Map(accounts.map((a) => [a.profileId, a]));
     const mappings = await getMergedMappings();
     const fatSecretMeal = MEAL_TYPE_MAP[mealType];
+    const entryDate = date ? new Date(`${date}T00:00:00`) : undefined;
     const entries: PushEntryResult[] = [];
 
     for (const profile of PROFILES) {
+      if (!profileIds.includes(profile.id as ProfileId)) continue;
       const account = accountByProfile.get(profile.id);
       const itemsForProfile = macroItems.filter(
         (item) => item[profile.id as ProfileId] > 0 && PRODUCTS[item.food]?.macros,
@@ -143,6 +147,7 @@ export async function pushMealToFatSecretAction(
             numberOfUnits,
             meal: fatSecretMeal,
             entryName: productName,
+            date: entryDate,
           });
           entries.push({ profile: profile.id as ProfileId, food: productName, status: "ok" });
         } catch (error) {

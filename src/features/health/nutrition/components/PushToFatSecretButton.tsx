@@ -5,13 +5,18 @@ import Link from "next/link";
 import { Send, Check, AlertTriangle, X } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Dialog } from "@/components/ui/overlays/dialog";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
+import { Select } from "@/components/ui/inputs/select";
+import { DatePicker } from "@/components/ui/inputs/date-picker";
 import {
   previewFatSecretPushAction,
   pushMealToFatSecretAction,
   type PushEntryResult,
   type PushPreviewEntry,
+  type ProfileId,
 } from "../actions/fatsecret-actions";
 import { PROFILES } from "../data";
+import { weekStartKey } from "../week";
 import type { MacroItem, MealType } from "../types";
 
 interface PushToFatSecretButtonProps {
@@ -19,6 +24,15 @@ interface PushToFatSecretButtonProps {
   macroItems: MacroItem[];
   pushedKey?: string;
 }
+
+const PROFILE_IDS = PROFILES.map((p) => p.id as ProfileId);
+
+const MEAL_TYPE_OPTIONS: { value: MealType; label: string }[] = [
+  { value: "breakfast", label: "Сніданок" },
+  { value: "lunch", label: "Обід" },
+  { value: "dinner", label: "Вечеря" },
+  { value: "snack", label: "Перекус" },
+];
 
 export function PushToFatSecretButton({
   mealType,
@@ -34,6 +48,9 @@ export function PushToFatSecretButton({
   const [error, setError] = useState<string | null>(null);
   const [isPushed, setIsPushed] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedProfiles, setSelectedProfiles] = useState<ProfileId[]>(PROFILE_IDS);
+  const [selectedMealType, setSelectedMealType] = useState<MealType>(mealType);
+  const [selectedDate, setSelectedDate] = useState<string>(() => weekStartKey(new Date()));
 
   const macroItemsKey = JSON.stringify(macroItems);
 
@@ -56,11 +73,18 @@ export function PushToFatSecretButton({
   // 2. Derived values
   const okCount = result?.filter((r) => r.status === "ok").length ?? 0;
   const problemEntries = result?.filter((r) => r.status !== "ok") ?? [];
-  const hasUnmapped = preview?.some((entry) => !entry.mapped) ?? false;
+  const visiblePreview = preview?.filter((entry) => selectedProfiles.includes(entry.profile)) ?? [];
+  const hasUnmapped = visiblePreview.some((entry) => !entry.mapped);
   const profileNameOf = (profileId: string) =>
     PROFILES.find((p) => p.id === profileId)?.name ?? profileId;
 
   // 3. Handlers
+  const toggleProfile = (id: ProfileId) => {
+    setSelectedProfiles((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id],
+    );
+  };
+
   const handleOpenPreview = () => {
     setError(null);
     setResult(null);
@@ -80,7 +104,12 @@ export function PushToFatSecretButton({
 
   const handleConfirmPush = () => {
     startPushTransition(async () => {
-      const response = await pushMealToFatSecretAction(mealType, macroItems);
+      const response = await pushMealToFatSecretAction(
+        selectedMealType,
+        macroItems,
+        selectedProfiles,
+        selectedDate,
+      );
       setPreview(null);
       if (!response.success) {
         setError(response.error);
@@ -198,51 +227,101 @@ export function PushToFatSecretButton({
               <Button variant="ghost" onClick={handleClosePreview}>
                 Скасувати
               </Button>
-              <Button onClick={handleConfirmPush} isLoading={isPushPending}>
+              <Button
+                onClick={handleConfirmPush}
+                isLoading={isPushPending}
+                disabled={selectedProfiles.length === 0}
+              >
                 Продовжити
               </Button>
             </>
           }
         >
-          <div className="flex flex-col gap-3">
-            {preview.length === 0 && <p className="text-caption">Немає позицій для запису.</p>}
-
-            {preview.map((entry, idx) => {
-              const statusClass = !entry.accountLinked
-                ? "text-zinc-500"
-                : entry.mapped
-                  ? "text-zinc-200"
-                  : "text-amber-400";
-
-              return (
-                <div key={idx} className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className={`text-body truncate ${statusClass}`}>
-                      {profileNameOf(entry.profile)} · {entry.food}
-                    </p>
-                    {!entry.accountLinked && (
-                      <p className="text-label text-rose-400">FatSecret не підключено</p>
-                    )}
-                    {entry.accountLinked && !entry.mapped && (
-                      <p className="text-label text-amber-400">нема відповідника у FatSecret</p>
-                    )}
-                  </div>
-                  <span className="text-label shrink-0">
-                    {entry.grams} г
-                    {entry.numberOfUnits !== null && ` · ${entry.numberOfUnits.toFixed(2)} порц.`}
-                  </span>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-label">Кому</span>
+                <div className="flex items-center gap-4">
+                  {PROFILES.map((profile) => (
+                    <label
+                      key={profile.id}
+                      className="flex items-center gap-1.5 text-sm text-zinc-300 cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={selectedProfiles.includes(profile.id as ProfileId)}
+                        onChange={() => toggleProfile(profile.id as ProfileId)}
+                      />
+                      {profile.name}
+                    </label>
+                  ))}
                 </div>
-              );
-            })}
+              </div>
 
-            {hasUnmapped && (
-              <Link
-                href="/health/nutrition/mapping"
-                className="text-caption text-accent-nutrition hover:opacity-80 transition-opacity"
-              >
-                Мапувати відсутні продукти →
-              </Link>
-            )}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-label">Прийом їжі</span>
+                  <Select
+                    value={selectedMealType}
+                    onChange={(e) => setSelectedMealType(e.target.value as MealType)}
+                  >
+                    {MEAL_TYPE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-label">Дата</span>
+                  <DatePicker value={selectedDate} onChange={setSelectedDate} />
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px bg-white/[0.06]" />
+
+            <div className="flex flex-col gap-3">
+              {visiblePreview.length === 0 && (
+                <p className="text-caption">Немає позицій для запису.</p>
+              )}
+
+              {visiblePreview.map((entry, idx) => {
+                const statusClass = !entry.accountLinked
+                  ? "text-zinc-500"
+                  : entry.mapped
+                    ? "text-zinc-200"
+                    : "text-amber-400";
+
+                return (
+                  <div key={idx} className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className={`text-body truncate ${statusClass}`}>
+                        {profileNameOf(entry.profile)} · {entry.food}
+                      </p>
+                      {!entry.accountLinked && (
+                        <p className="text-label text-rose-400">FatSecret не підключено</p>
+                      )}
+                      {entry.accountLinked && !entry.mapped && (
+                        <p className="text-label text-amber-400">нема відповідника у FatSecret</p>
+                      )}
+                    </div>
+                    <span className="text-label shrink-0">
+                      {entry.grams} г
+                      {entry.numberOfUnits !== null && ` · ${entry.numberOfUnits.toFixed(2)} порц.`}
+                    </span>
+                  </div>
+                );
+              })}
+
+              {hasUnmapped && (
+                <Link
+                  href="/health/nutrition/mapping"
+                  className="text-caption text-accent-nutrition hover:opacity-80 transition-opacity"
+                >
+                  Мапувати відсутні продукти →
+                </Link>
+              )}
+            </div>
           </div>
         </Dialog>
       )}
