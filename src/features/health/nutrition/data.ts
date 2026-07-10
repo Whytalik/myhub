@@ -136,11 +136,13 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
         title: "Вівсянка з чорницями та йогуртом",
         ingredients: [
           "Вівсянка — 170 г (Віталій 75г, Олеся 95г)",
+          "Молоко — 210 мл (Віталій 90 мл, Олеся 120 мл)",
           "Грецький йогурт — 241 г (Віталій 141 г, Олеся 100 г — збільшено замість протеїну)",
           "Чорниці — 100 г (по 50 г)",
         ],
         macroItems: [
           { food: "oats", vitalii: 75, olesia: 95 },
+          { food: "milk", vitalii: 90, olesia: 120 },
           { food: "yogurtGreek", vitalii: 141, olesia: 100 },
           { food: "berries", vitalii: 50, olesia: 50 },
         ],
@@ -198,7 +200,7 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         title: "Сніданок (~10 хв)",
         steps: [
-          "Зварити вівсянку у воді (5–7 хв).",
+          "Зварити вівсянку на воді та молоці (50/50) у пропорції 1:2.5 (5–7 хв).",
           "Зняти з вогню, дати трішки охолонути, вмішати або викласти зверху грецький йогурт.",
           "Прикрасити чорницями перед подачею.",
         ],
@@ -461,18 +463,14 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
       {
         type: "breakfast",
         label: "Сніданок",
-        title: "Вівсянка з ягодами та медом",
+        title: "Смажені яйця",
         ingredients: [
-          "Вівсянка — 195 г (Віталій — 85 г, Олеся — 110 г)",
-          "Ягоди — по 75 г",
-          "Цільнозерновий хліб (для Олесі) — 1.5 скибки (40 г)",
-          "Мед (для Віталія) — ½ ч.л. (~15 г)",
+          "Яйця — 4 шт (Віталій — 2, Олеся — 2)",
+          "Олія — ½ ч.л. (для смаження Олесі, на суху пательню для Віталія)",
         ],
         macroItems: [
-          { food: "oats", vitalii: 85, olesia: 110 },
-          { food: "berries", vitalii: 75, olesia: 75 },
-          { food: "bread", vitalii: 0, olesia: 40 },
-          { food: "honey", vitalii: 15, olesia: 0 },
+          { food: "eggs", vitalii: 120, olesia: 120 },
+          { food: "oil", vitalii: 0, olesia: 1.25 },
         ],
       },
       {
@@ -528,11 +526,8 @@ export const SUMMER_WEEK_PLAN: DayPlan[] = [
     ],
     prepSteps: [
       {
-        title: "Сніданок (~10 хв)",
-        steps: [
-          "Зварити вівсянку на воді у пропорції 1:2.5 (5–7 хв після закипання).",
-          "Зняти з вогню, для Віталія вмішати мед. Зверху викласти промиті свіжі або розморожені ягоди.",
-        ],
+        title: "Сніданок (~7 хв)",
+        steps: ["Розігріти пательню на середньому вогні.", "Посмажити смажені яйця 3–5 хв."],
       },
       {
         title: "Обід + Вечеря (~45 хв, переважно пасивно)",
@@ -824,9 +819,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-0-wed",
         food: "eggs",
-        computedQty: { food: "eggs", weekdays: ["thu"], unit: "piece" },
-        note: "Чт 4шт",
-        price: 30,
+        computedQty: { food: "eggs", weekdays: ["thu", "fri"], unit: "piece" },
+        note: "Чт 4шт + Пт 4шт",
+        price: 55,
         buyDay: "wed",
       },
       {
@@ -866,9 +861,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-3",
         food: "milk",
-        qty: "500 мл",
-        note: "Пн 120мл + Нд 60мл + Сб 300мл",
-        price: 23,
+        qty: "1 л",
+        note: "Пн 120мл + Вт 210мл + Нд 60мл + Сб 300мл",
+        price: 46,
         buyDay: "sun",
       },
       {
@@ -921,8 +916,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-0",
         food: "oats",
-        qty: "370 г",
-        note: "Вт 170г + Пт 180г",
+        qty: "170 г",
+        note: "Вт",
         price: 17,
         buyDay: "sun",
       },
@@ -961,9 +956,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-4-wed",
         food: "bread",
-        qty: "~270 г",
-        note: "Чт + Пт + Сб",
-        price: 25,
+        qty: "~230 г",
+        note: "Чт + Сб",
+        price: 21,
         buyDay: "wed",
       },
       {
@@ -1103,10 +1098,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-0",
         food: "berries",
-        qty: "~900 г",
-        note: "Щодня + Вт 100г + Пт 150г",
+        qty: "~750 г",
+        note: "Щодня + Вт 100г",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
-        price: 162,
+        price: 135,
         buyDay: "sun",
       },
       {

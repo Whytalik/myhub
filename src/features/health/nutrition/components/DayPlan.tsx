@@ -581,8 +581,9 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                 <div className="flex flex-col gap-0.5">
                   <span className="text-sm font-semibold">Розморожування не потрібне</span>
                   <p className="text-sm text-zinc-300">
-                    Для завтрашніх страв не потрібно нічого діставати з морозилки. Скумбрія
-                    запікається прямо з морозилки, а сирники смажаться замороженими.
+                    Для завтрашніх страв не потрібно нічого діставати з морозилки.
+                    {tomorrowWeekday === "wed" && " Скумбрія запікається прямо з морозилки."}
+                    {tomorrowWeekday === "sat" && " Сирники смажаться замороженими."}
                   </p>
                 </div>
               </div>
