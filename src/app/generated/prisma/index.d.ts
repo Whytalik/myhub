@@ -10550,8 +10550,18 @@ export namespace Prisma {
 
   export type AggregateFatSecretSavedMeal = {
     _count: FatSecretSavedMealCountAggregateOutputType | null
+    _avg: FatSecretSavedMealAvgAggregateOutputType | null
+    _sum: FatSecretSavedMealSumAggregateOutputType | null
     _min: FatSecretSavedMealMinAggregateOutputType | null
     _max: FatSecretSavedMealMaxAggregateOutputType | null
+  }
+
+  export type FatSecretSavedMealAvgAggregateOutputType = {
+    mealSlot: number | null
+  }
+
+  export type FatSecretSavedMealSumAggregateOutputType = {
+    mealSlot: number | null
   }
 
   export type FatSecretSavedMealMinAggregateOutputType = {
@@ -10559,6 +10569,7 @@ export namespace Prisma {
     profileId: string | null
     season: string | null
     weekday: string | null
+    mealSlot: number | null
     mealType: string | null
     title: string | null
     savedMealId: string | null
@@ -10571,6 +10582,7 @@ export namespace Prisma {
     profileId: string | null
     season: string | null
     weekday: string | null
+    mealSlot: number | null
     mealType: string | null
     title: string | null
     savedMealId: string | null
@@ -10583,6 +10595,7 @@ export namespace Prisma {
     profileId: number
     season: number
     weekday: number
+    mealSlot: number
     mealType: number
     title: number
     savedMealId: number
@@ -10592,11 +10605,20 @@ export namespace Prisma {
   }
 
 
+  export type FatSecretSavedMealAvgAggregateInputType = {
+    mealSlot?: true
+  }
+
+  export type FatSecretSavedMealSumAggregateInputType = {
+    mealSlot?: true
+  }
+
   export type FatSecretSavedMealMinAggregateInputType = {
     id?: true
     profileId?: true
     season?: true
     weekday?: true
+    mealSlot?: true
     mealType?: true
     title?: true
     savedMealId?: true
@@ -10609,6 +10631,7 @@ export namespace Prisma {
     profileId?: true
     season?: true
     weekday?: true
+    mealSlot?: true
     mealType?: true
     title?: true
     savedMealId?: true
@@ -10621,6 +10644,7 @@ export namespace Prisma {
     profileId?: true
     season?: true
     weekday?: true
+    mealSlot?: true
     mealType?: true
     title?: true
     savedMealId?: true
@@ -10667,6 +10691,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: FatSecretSavedMealAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FatSecretSavedMealSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: FatSecretSavedMealMinAggregateInputType
@@ -10697,6 +10733,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: FatSecretSavedMealCountAggregateInputType | true
+    _avg?: FatSecretSavedMealAvgAggregateInputType
+    _sum?: FatSecretSavedMealSumAggregateInputType
     _min?: FatSecretSavedMealMinAggregateInputType
     _max?: FatSecretSavedMealMaxAggregateInputType
   }
@@ -10706,12 +10744,15 @@ export namespace Prisma {
     profileId: string
     season: string
     weekday: string
+    mealSlot: number
     mealType: string
     title: string
     savedMealId: string
     createdAt: Date
     updatedAt: Date
     _count: FatSecretSavedMealCountAggregateOutputType | null
+    _avg: FatSecretSavedMealAvgAggregateOutputType | null
+    _sum: FatSecretSavedMealSumAggregateOutputType | null
     _min: FatSecretSavedMealMinAggregateOutputType | null
     _max: FatSecretSavedMealMaxAggregateOutputType | null
   }
@@ -10735,6 +10776,7 @@ export namespace Prisma {
     profileId?: boolean
     season?: boolean
     weekday?: boolean
+    mealSlot?: boolean
     mealType?: boolean
     title?: boolean
     savedMealId?: boolean
@@ -10747,6 +10789,7 @@ export namespace Prisma {
     profileId?: boolean
     season?: boolean
     weekday?: boolean
+    mealSlot?: boolean
     mealType?: boolean
     title?: boolean
     savedMealId?: boolean
@@ -10759,6 +10802,7 @@ export namespace Prisma {
     profileId?: boolean
     season?: boolean
     weekday?: boolean
+    mealSlot?: boolean
     mealType?: boolean
     title?: boolean
     savedMealId?: boolean
@@ -10771,6 +10815,7 @@ export namespace Prisma {
     profileId?: boolean
     season?: boolean
     weekday?: boolean
+    mealSlot?: boolean
     mealType?: boolean
     title?: boolean
     savedMealId?: boolean
@@ -10778,7 +10823,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type FatSecretSavedMealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "season" | "weekday" | "mealType" | "title" | "savedMealId" | "createdAt" | "updatedAt", ExtArgs["result"]["fatSecretSavedMeal"]>
+  export type FatSecretSavedMealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profileId" | "season" | "weekday" | "mealSlot" | "mealType" | "title" | "savedMealId" | "createdAt" | "updatedAt", ExtArgs["result"]["fatSecretSavedMeal"]>
 
   export type $FatSecretSavedMealPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FatSecretSavedMeal"
@@ -10788,6 +10833,7 @@ export namespace Prisma {
       profileId: string
       season: string
       weekday: string
+      mealSlot: number
       mealType: string
       title: string
       savedMealId: string
@@ -11220,6 +11266,7 @@ export namespace Prisma {
     readonly profileId: FieldRef<"FatSecretSavedMeal", 'String'>
     readonly season: FieldRef<"FatSecretSavedMeal", 'String'>
     readonly weekday: FieldRef<"FatSecretSavedMeal", 'String'>
+    readonly mealSlot: FieldRef<"FatSecretSavedMeal", 'Int'>
     readonly mealType: FieldRef<"FatSecretSavedMeal", 'String'>
     readonly title: FieldRef<"FatSecretSavedMeal", 'String'>
     readonly savedMealId: FieldRef<"FatSecretSavedMeal", 'String'>
@@ -42694,6 +42741,7 @@ export namespace Prisma {
     profileId: 'profileId',
     season: 'season',
     weekday: 'weekday',
+    mealSlot: 'mealSlot',
     mealType: 'mealType',
     title: 'title',
     savedMealId: 'savedMealId',
@@ -43812,6 +43860,7 @@ export namespace Prisma {
     profileId?: StringFilter<"FatSecretSavedMeal"> | string
     season?: StringFilter<"FatSecretSavedMeal"> | string
     weekday?: StringFilter<"FatSecretSavedMeal"> | string
+    mealSlot?: IntFilter<"FatSecretSavedMeal"> | number
     mealType?: StringFilter<"FatSecretSavedMeal"> | string
     title?: StringFilter<"FatSecretSavedMeal"> | string
     savedMealId?: StringFilter<"FatSecretSavedMeal"> | string
@@ -43824,6 +43873,7 @@ export namespace Prisma {
     profileId?: SortOrder
     season?: SortOrder
     weekday?: SortOrder
+    mealSlot?: SortOrder
     mealType?: SortOrder
     title?: SortOrder
     savedMealId?: SortOrder
@@ -43833,33 +43883,37 @@ export namespace Prisma {
 
   export type FatSecretSavedMealWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    profileId_season_weekday_mealType?: FatSecretSavedMealProfileIdSeasonWeekdayMealTypeCompoundUniqueInput
+    profileId_season_weekday_mealSlot?: FatSecretSavedMealProfileIdSeasonWeekdayMealSlotCompoundUniqueInput
     AND?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
     OR?: FatSecretSavedMealWhereInput[]
     NOT?: FatSecretSavedMealWhereInput | FatSecretSavedMealWhereInput[]
     profileId?: StringFilter<"FatSecretSavedMeal"> | string
     season?: StringFilter<"FatSecretSavedMeal"> | string
     weekday?: StringFilter<"FatSecretSavedMeal"> | string
+    mealSlot?: IntFilter<"FatSecretSavedMeal"> | number
     mealType?: StringFilter<"FatSecretSavedMeal"> | string
     title?: StringFilter<"FatSecretSavedMeal"> | string
     savedMealId?: StringFilter<"FatSecretSavedMeal"> | string
     createdAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
     updatedAt?: DateTimeFilter<"FatSecretSavedMeal"> | Date | string
-  }, "id" | "profileId_season_weekday_mealType">
+  }, "id" | "profileId_season_weekday_mealSlot">
 
   export type FatSecretSavedMealOrderByWithAggregationInput = {
     id?: SortOrder
     profileId?: SortOrder
     season?: SortOrder
     weekday?: SortOrder
+    mealSlot?: SortOrder
     mealType?: SortOrder
     title?: SortOrder
     savedMealId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FatSecretSavedMealCountOrderByAggregateInput
+    _avg?: FatSecretSavedMealAvgOrderByAggregateInput
     _max?: FatSecretSavedMealMaxOrderByAggregateInput
     _min?: FatSecretSavedMealMinOrderByAggregateInput
+    _sum?: FatSecretSavedMealSumOrderByAggregateInput
   }
 
   export type FatSecretSavedMealScalarWhereWithAggregatesInput = {
@@ -43870,6 +43924,7 @@ export namespace Prisma {
     profileId?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
     season?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
     weekday?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
+    mealSlot?: IntWithAggregatesFilter<"FatSecretSavedMeal"> | number
     mealType?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
     title?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
     savedMealId?: StringWithAggregatesFilter<"FatSecretSavedMeal"> | string
@@ -46687,6 +46742,7 @@ export namespace Prisma {
     profileId: string
     season: string
     weekday: string
+    mealSlot: number
     mealType: string
     title: string
     savedMealId: string
@@ -46699,6 +46755,7 @@ export namespace Prisma {
     profileId: string
     season: string
     weekday: string
+    mealSlot: number
     mealType: string
     title: string
     savedMealId: string
@@ -46711,6 +46768,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     season?: StringFieldUpdateOperationsInput | string
     weekday?: StringFieldUpdateOperationsInput | string
+    mealSlot?: IntFieldUpdateOperationsInput | number
     mealType?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     savedMealId?: StringFieldUpdateOperationsInput | string
@@ -46723,6 +46781,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     season?: StringFieldUpdateOperationsInput | string
     weekday?: StringFieldUpdateOperationsInput | string
+    mealSlot?: IntFieldUpdateOperationsInput | number
     mealType?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     savedMealId?: StringFieldUpdateOperationsInput | string
@@ -46735,6 +46794,7 @@ export namespace Prisma {
     profileId: string
     season: string
     weekday: string
+    mealSlot: number
     mealType: string
     title: string
     savedMealId: string
@@ -46747,6 +46807,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     season?: StringFieldUpdateOperationsInput | string
     weekday?: StringFieldUpdateOperationsInput | string
+    mealSlot?: IntFieldUpdateOperationsInput | number
     mealType?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     savedMealId?: StringFieldUpdateOperationsInput | string
@@ -46759,6 +46820,7 @@ export namespace Prisma {
     profileId?: StringFieldUpdateOperationsInput | string
     season?: StringFieldUpdateOperationsInput | string
     weekday?: StringFieldUpdateOperationsInput | string
+    mealSlot?: IntFieldUpdateOperationsInput | number
     mealType?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     savedMealId?: StringFieldUpdateOperationsInput | string
@@ -49936,11 +49998,11 @@ export namespace Prisma {
     _max?: NestedEnumMappingSourceFilter<$PrismaModel>
   }
 
-  export type FatSecretSavedMealProfileIdSeasonWeekdayMealTypeCompoundUniqueInput = {
+  export type FatSecretSavedMealProfileIdSeasonWeekdayMealSlotCompoundUniqueInput = {
     profileId: string
     season: string
     weekday: string
-    mealType: string
+    mealSlot: number
   }
 
   export type FatSecretSavedMealCountOrderByAggregateInput = {
@@ -49948,6 +50010,7 @@ export namespace Prisma {
     profileId?: SortOrder
     season?: SortOrder
     weekday?: SortOrder
+    mealSlot?: SortOrder
     mealType?: SortOrder
     title?: SortOrder
     savedMealId?: SortOrder
@@ -49955,11 +50018,16 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type FatSecretSavedMealAvgOrderByAggregateInput = {
+    mealSlot?: SortOrder
+  }
+
   export type FatSecretSavedMealMaxOrderByAggregateInput = {
     id?: SortOrder
     profileId?: SortOrder
     season?: SortOrder
     weekday?: SortOrder
+    mealSlot?: SortOrder
     mealType?: SortOrder
     title?: SortOrder
     savedMealId?: SortOrder
@@ -49972,11 +50040,16 @@ export namespace Prisma {
     profileId?: SortOrder
     season?: SortOrder
     weekday?: SortOrder
+    mealSlot?: SortOrder
     mealType?: SortOrder
     title?: SortOrder
     savedMealId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type FatSecretSavedMealSumOrderByAggregateInput = {
+    mealSlot?: SortOrder
   }
 
   export type GiftedGroceryItemWeekStartItemIdCompoundUniqueInput = {

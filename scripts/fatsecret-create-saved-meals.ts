@@ -5,9 +5,11 @@
  * something other than the plan, they can just tap the saved dish inside the
  * FatSecret app's own SAVED MEALS tab instead of logging products by hand.
  *
- * Idempotent: re-running for the same (profile, season, weekday, mealType) slot
+ * Idempotent: re-running for the same (profile, season, weekday, mealSlot) slot
  * deletes the previously provisioned saved meal (tracked in FatSecretSavedMeal)
  * and creates a fresh one, so edits to the plan propagate instead of duplicating.
+ * mealSlot is the meal's index within DayPlan.meals, not its MealType — a day can
+ * have two meals sharing one MealType (e.g. Friday has two "snack" meals).
  *
  * Run with:
  *   set -a; source .env.local; set +a
@@ -88,7 +90,7 @@ async function main() {
     console.log(`\n=== ${profileId} (season: ${season}) ===`);
 
     for (const day of plan) {
-      for (const meal of day.meals) {
+      for (const [mealSlot, meal] of day.meals.entries()) {
         if (!meal.macroItems || meal.macroItems.length === 0) {
           continue;
         }
@@ -115,11 +117,11 @@ async function main() {
 
         const title = `${day.labelShort} ${meal.label} — ${meal.title}`.slice(0, 100);
         const slotKey = {
-          profileId_season_weekday_mealType: {
+          profileId_season_weekday_mealSlot: {
             profileId,
             season,
             weekday: day.weekday,
-            mealType: meal.type,
+            mealSlot,
           },
         };
 
@@ -161,6 +163,7 @@ async function main() {
               profileId,
               season,
               weekday: day.weekday,
+              mealSlot,
               mealType: meal.type,
               title,
               savedMealId,

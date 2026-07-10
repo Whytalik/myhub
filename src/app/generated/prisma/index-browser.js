@@ -184,6 +184,7 @@ exports.Prisma.FatSecretSavedMealScalarFieldEnum = {
   profileId: 'profileId',
   season: 'season',
   weekday: 'weekday',
+  mealSlot: 'mealSlot',
   mealType: 'mealType',
   title: 'title',
   savedMealId: 'savedMealId',
