@@ -111,6 +111,8 @@ export interface DailyEntryData {
   eveningRoutine: JsonValue | null;
   routineNote: string | null;
   trainingDayName: string | null;
+  gymSkipped: boolean;
+  gymSkipReason: string | null;
 
   winToday: string | null;
   improveTomorrow: string | null;
@@ -152,6 +154,8 @@ export interface UpsertDailyEntryInput {
   eveningRoutine?: RoutineMap | null;
   routineNote?: string | null;
   trainingDayName?: string | null;
+  gymSkipped?: boolean;
+  gymSkipReason?: string | null;
 
   winToday?: string | null;
   improveTomorrow?: string | null;
@@ -263,6 +267,7 @@ export interface ReviewEntryData {
   recoveryScore: number | null;
   emotions: JsonValue | null;
   trainingDayName: string | null;
+  gymSkipped: boolean;
   winToday: string | null;
   improveTomorrow: string | null;
   gratitude: string | null;

@@ -269,6 +269,8 @@ model DailyEntry {
   eveningRoutine  Json?
   routineNote     String?
   trainingDayName String?
+  gymSkipped      Boolean   @default(false)
+  gymSkipReason   String?
   winToday        String?
   improveTomorrow String?
   gratitude       String?

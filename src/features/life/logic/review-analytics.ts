@@ -64,9 +64,9 @@ function genericMapCompletionPct(map: unknown): number | null {
 }
 
 export function morningRoutinePct(
-  entry: Pick<ReviewEntryData, "morningRoutine" | "date" | "trainingDayName">,
+  entry: Pick<ReviewEntryData, "morningRoutine" | "date" | "trainingDayName" | "gymSkipped">,
 ): number | null {
-  const isTrainingDay = !!entry.trainingDayName;
+  const isTrainingDay = !!entry.trainingDayName && !entry.gymSkipped;
   const items = getMorningRoutine(isTrainingDay);
   return itemsCompletionPct(entry.morningRoutine, items);
 }

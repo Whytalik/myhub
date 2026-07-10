@@ -134,6 +134,8 @@ export function DailyEntryForm({
       eveningRoutine: (initialEntry?.eveningRoutine as RoutineMap | null) ?? null,
       routineNote: initialEntry?.routineNote ?? null,
       trainingDayName: initialEntry?.trainingDayName ?? scheduledTrainingDayName ?? null,
+      gymSkipped: initialEntry?.gymSkipped ?? false,
+      gymSkipReason: initialEntry?.gymSkipReason ?? null,
       winToday: initialEntry?.winToday ?? null,
       improveTomorrow: initialEntry?.improveTomorrow ?? null,
       gratitude: initialEntry?.gratitude ?? null,
@@ -354,6 +356,8 @@ export function DailyEntryForm({
                     type="morning"
                     routine={data.morningRoutine ?? null}
                     scheduledTrainingDayName={scheduledTrainingDayName}
+                    gymSkipped={data.gymSkipped}
+                    gymSkipReason={data.gymSkipReason}
                     onChange={patch}
                   />
                 </Suspense>
@@ -501,6 +505,8 @@ export function DailyEntryForm({
                     type="evening"
                     routine={data.eveningRoutine ?? null}
                     scheduledTrainingDayName={scheduledTrainingDayName}
+                    gymSkipped={data.gymSkipped}
+                    gymSkipReason={data.gymSkipReason}
                     onChange={patch}
                   />
                 </Suspense>

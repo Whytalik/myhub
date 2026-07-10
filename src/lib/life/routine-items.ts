@@ -45,7 +45,7 @@ export const MORNING_ROUTINE = [
 
 export interface RoutineItem {
   id: string;
-  time: string;
+  time?: string;
   label: string;
   labelUk: string;
   icon: string;
@@ -81,16 +81,14 @@ export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
       ...base,
       {
         id: "m_gym",
-        time: "07:00",
-        label: "Training in the gym (07:00 - 08:30)",
-        labelUk: "Тренування в залі (07:00 - 08:30)",
+        label: "Training in the gym",
+        labelUk: "Тренування в залі",
         icon: "Dumbbell",
       },
       {
         id: "m_cook",
-        time: "08:45",
-        label: "Cooking food (08:45 - 09:30)",
-        labelUk: "Приготування їжі (08:45 - 09:30)",
+        label: "Cooking food",
+        labelUk: "Приготування їжі",
         icon: "Utensils",
       },
     ];
@@ -106,9 +104,8 @@ export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
       },
       {
         id: "m_cook",
-        time: "07:00",
-        label: "Cooking food (07:00 - 08:00)",
-        labelUk: "Приготування їжі (07:00 - 08:00)",
+        label: "Cooking food",
+        labelUk: "Приготування їжі",
         icon: "Utensils",
       },
     ];

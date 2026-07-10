@@ -26,6 +26,7 @@ export const journalRepository = {
         morningRoutine: true,
         eveningRoutine: true,
         trainingDayName: true,
+        gymSkipped: true,
         winToday: true,
         improveTomorrow: true,
         gratitude: true,
