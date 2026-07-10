@@ -4,12 +4,12 @@ import { Scale, ClipboardList, Flame, UtensilsCrossed, Snowflake } from "lucide-
 import { PROFILES } from "../data";
 import { calculateDayMacros } from "../nutrition-calc";
 import { PRODUCTS, getProductName } from "../products";
-import { highlightProductMentions } from "../highlight-products";
+import { highlightProductMentions, findMentionedPantryProductKeys } from "../highlight-products";
 import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
 import { currentWeekStart, weekStartKey } from "../week";
 import { formatGrams } from "../quantities";
-import type { DayPlan as DayPlanType, Meal, MacroItem, MealType } from "../types";
+import type { DayPlan as DayPlanType, Meal, MacroItem, MealType, PrepSection } from "../types";
 
 function isRepeatPortion(meal: Meal): boolean {
   return (
@@ -114,7 +114,7 @@ interface DayProductTotal {
  * одразу кілька продуктів в одному реченні (напр. "Для салату: помідори...,
  * огірок..., перець...") і не розбиваються чисто на "продукт" + "кількість".
  */
-function buildDayProductTotals(meals: Meal[]): DayProductTotal[] {
+function buildDayProductTotals(meals: Meal[], prepSteps?: PrepSection[]): DayProductTotal[] {
   const totals = new Map<string, DayProductTotal>();
 
   for (const meal of meals) {
@@ -134,6 +134,17 @@ function buildDayProductTotals(meals: Meal[]): DayProductTotal[] {
         });
       }
     }
+  }
+
+  // Pantry products (спеції) carry no macros, so they never show up above —
+  // recover them from the day's free text instead, with a "—" quantity.
+  const texts = [
+    ...meals.flatMap((meal) => meal.ingredients),
+    ...(prepSteps?.flatMap((section) => section.steps) ?? []),
+  ];
+  for (const key of findMentionedPantryProductKeys(texts)) {
+    if (totals.has(key)) continue;
+    totals.set(key, { foodKey: key, name: getProductName(key), vitalii: 0, olesia: 0 });
   }
 
   return [...totals.values()];
@@ -258,7 +269,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
     olesia: calculateDayMacros(processedDay, "olesia"),
   };
 
-  const dayProductTotals = buildDayProductTotals(processedDay.meals);
+  const dayProductTotals = buildDayProductTotals(processedDay.meals, processedDay.prepSteps);
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";

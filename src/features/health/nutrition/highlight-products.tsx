@@ -51,6 +51,7 @@ function lastWord(nameUk: string): string {
 interface StemEntry {
   stem: string;
   excludeAfter?: string[];
+  productKey: string;
 }
 
 function buildStems(): StemEntry[] {
@@ -65,7 +66,7 @@ function buildStems(): StemEntry[] {
       if (stem.length < 3) continue;
       const existing = byStem.get(stem);
       if (existing?.excludeAfter && !product.excludeAfter) continue;
-      byStem.set(stem, { stem, excludeAfter: product.excludeAfter });
+      byStem.set(stem, { stem, excludeAfter: product.excludeAfter, productKey: product.key });
     }
   }
   // Найдовші корені першими, щоб довший специфічний збіг вигравав у regex-альтернації.
@@ -107,4 +108,28 @@ export function highlightProductMentions(text: string): ReactNode {
       <span key={idx}>{part}</span>
     ),
   );
+}
+
+const PANTRY_STEMS = STEMS.filter((s) => PRODUCTS[s.productKey]?.kind === "pantry");
+
+/**
+ * Pantry products (спеції/приправи) never get a `macroItems` entry — they carry
+ * no macros — so anything that reads only `macroItems` (like DayPlan.tsx's
+ * "Продукти на день" totals) silently drops them. This scans free-text mentions
+ * (ingredients/prep steps) to recover which pantry products a day actually needs.
+ */
+export function findMentionedPantryProductKeys(texts: string[]): string[] {
+  const found = new Set<string>();
+  for (const text of texts) {
+    for (const entry of PANTRY_STEMS) {
+      if (found.has(entry.productKey)) continue;
+      const exclusion = entry.excludeAfter?.length ? `(?!${entry.excludeAfter.join("|")})` : "";
+      const re = new RegExp(
+        `(?<![${WORD_CHAR}])(${entry.stem}${exclusion}[${WORD_CHAR}]*)(?![${WORD_CHAR}])`,
+        "iu",
+      );
+      if (re.test(text)) found.add(entry.productKey);
+    }
+  }
+  return [...found];
 }

@@ -187,9 +187,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-5",
         food: "butter",
-        qty: "94 г",
-        note: "Пн 35г + Ср 27г + Пт 32г (Пн збільшено, щоб довести день до цілі)",
-        price: 52,
+        qty: "77 г",
+        note: "Пн 35г + Ср 27г + Пт 15г (Пн збільшено, щоб довести день до цілі; Пт зменшено під більшу картоплю)",
+        price: 43,
         buyDay: "sun",
       },
       {
@@ -295,9 +295,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-potato",
         food: "potato",
-        qty: "1.66 кг",
-        note: "Пн 990г + Ср 435г + Пт 230г",
-        price: 41,
+        qty: "1.89 кг",
+        note: "Пн 990г + Ср 435г + Пт 460г (Пт збільшено до нормальної порції гарніру на 2 прийоми)",
+        price: 47,
         buyDay: "sun",
       },
       {

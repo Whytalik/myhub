@@ -347,7 +347,9 @@ export const PRODUCTS: Record<string, Product> = {
   // корінь "паста" замінено на "томат" — так ловиться і "томатна", і "томатний" (маринади).
   tomatoPaste: pantry("tomatoPaste", "Томатна паста", { searchTerm: "томат" }),
   flour: pantry("flour", "Борошно"),
-  vanillaSugar: pantry("vanillaSugar", "Ванільний цукор"),
+  // Дефолтний корінь "цукор" збігається зі звичайним sugar — беремо прикметник,
+  // інакше цей запис глушить sugar у спільній мапі коренів (highlight-products.tsx).
+  vanillaSugar: pantry("vanillaSugar", "Ванільний цукор", { searchTerm: "ванільн" }),
   dillParsley: pantry("dillParsley", "Кріп/петрушка"),
   greenOnion: pantry(
     "greenOnion",
