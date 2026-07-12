@@ -259,8 +259,9 @@ function CategoryList({
                 ? homeStockReadout(item, fraction, weekStart, seasonOverride)
                 : null;
               const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
+              const hasCheckmark = isChecked && (fraction >= 1 || isGifted || fraction === 0);
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
-                !isHomeStock && !isGifted && isChecked
+                hasCheckmark
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
                   : "border-white/[0.15]"
               }`;
@@ -292,7 +293,7 @@ function CategoryList({
                       className="flex items-start gap-2.5 text-left flex-1 min-w-0"
                     >
                       <span className={checkboxClass}>
-                        {!isHomeStock && !isGifted && isChecked && (
+                        {hasCheckmark && (
                           <Check size={11} strokeWidth={3} />
                         )}
                       </span>
