@@ -259,7 +259,7 @@ function CategoryList({
                 ? homeStockReadout(item, fraction, weekStart, seasonOverride)
                 : null;
               const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
-              const hasCheckmark = isChecked && (fraction >= 1 || isGifted || fraction === 0);
+              const hasCheckmark = isChecked || fraction >= 1 || isGifted;
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 hasCheckmark
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
