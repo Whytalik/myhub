@@ -288,11 +288,22 @@ export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
 }
 
 export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
-  // Uncached check so a first-ever visit doesn't cache an empty list before
-  // the defaults exist (mirrors thought-service.ts getBoard's seeding).
-  const existingCount = await sphereRepository.count(userId);
-  if (existingCount === 0) {
-    await sphereRepository.createMany(DEFAULT_SPHERES.map((sphere) => ({ ...sphere, userId })));
+  const userSpheres = await prisma.lifeSphere.findMany({ where: { userId } });
+  const userSphereNamesLower = new Set(userSpheres.map((s) => s.name.toLowerCase()));
+
+  const missingDefaults = DEFAULT_SPHERES.filter(
+    (ds) => !userSphereNamesLower.has(ds.name.toLowerCase())
+  );
+
+  if (missingDefaults.length > 0) {
+    await sphereRepository.createMany(
+      missingDefaults.map((s, idx) => ({
+        ...s,
+        userId,
+        order: userSpheres.length + idx,
+      }))
+    );
+
     const dbSpheres = await prisma.lifeSphere.findMany({
       where: { userId },
       include: {
@@ -302,12 +313,14 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
       },
       orderBy: { order: "asc" }
     });
+
     try {
       const { invalidateTaskCache } = await import("@/lib/cache/revalidate");
       invalidateTaskCache(userId);
     } catch (error) {
       console.error("Failed to invalidate spheres cache:", error);
     }
+
     return dbSpheres.map((s) => ({
       id: s.id,
       name: s.name,
