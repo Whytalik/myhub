@@ -15,11 +15,13 @@ import { SummaryTab } from "./SummaryTab";
 import { TrendsTab } from "./TrendsTab";
 import { PatternsTab } from "./PatternsTab";
 import { RecapTab } from "./RecapTab";
+import { KaizenTab } from "./KaizenTab";
 
 interface Props {
   entries: ReviewEntryData[];
   habits: HabitData[];
   tasks: TaskData[];
+  activeSprint: any | null;
 }
 
 function formatRange(range: WeekRange): string {
@@ -28,7 +30,7 @@ function formatRange(range: WeekRange): string {
   return `${fmt(range.start)} – ${fmt(end)}`;
 }
 
-export function ReviewClient({ entries, habits, tasks }: Props) {
+export function ReviewClient({ entries, habits, tasks, activeSprint }: Props) {
   const [weekOffset, setWeekOffset] = useState(0);
   const [activeTab, setActiveTab] = useState("summary");
 
@@ -98,6 +100,17 @@ export function ReviewClient({ entries, habits, tasks }: Props) {
           },
           { id: "patterns", label: "Patterns", content: <PatternsTab patterns={patterns} /> },
           { id: "recap", label: "Recap", content: <RecapTab summary={currentSummary} /> },
+          {
+            id: "kaizen",
+            label: "Kaizen",
+            content: (
+              <KaizenTab
+                tasks={tasks}
+                activeSprint={activeSprint}
+                weekStart={currentRange.start}
+              />
+            ),
+          },
         ]}
       />
     </div>
