@@ -145,7 +145,13 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { basePrice: 25 },
   ),
-  brynza: tracked("brynza", "Бринза", { kcal: 260, protein: 17.9, fat: 20.1, carbs: 0 }, "dairy"),
+  mozzarella: tracked(
+    "mozzarella",
+    "Моцарела",
+    { kcal: 250, protein: 17.9, fat: 17.9, carbs: 3.6 },
+    "dairy",
+    { basePrice: 250 },
+  ),
   yogurtGreek: tracked(
     "yogurtGreek",
     "Грецький йогурт",

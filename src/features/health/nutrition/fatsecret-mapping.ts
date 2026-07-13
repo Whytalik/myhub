@@ -39,7 +39,7 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   chickenHearts: { foodId: "34410", servingId: "57141", servingGrams: 1 },
   porkChop: { foodId: "1435", servingId: "50115", servingGrams: 1 },
 
-  brynza: { foodId: "33699", servingId: "56430", servingGrams: 1 },
+  mozzarella: { foodId: "4184515", servingId: "0", servingGrams: 1 },
   suluguni: { foodId: "33708", servingId: "56439", servingGrams: 1 },
   yogurtGreek: { foodId: "32696412", servingId: "29550569", servingGrams: 1 },
   proteinPowder: { foodId: "30236771", servingId: "27532320", servingGrams: 31 },

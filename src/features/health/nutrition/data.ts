@@ -153,16 +153,16 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-2-sun",
         food: "cottageCheese",
         qualifier: "5–9%",
-        qty: "500 г",
-        note: "Нд",
+        computedQty: { food: "cottageCheese", weekdays: [], grams: 500 },
+        note: "Нд (для сирників)",
         price: 90,
         buyDay: "sun",
       },
       {
-        id: "dairy-2-sun-2",
+        id: "dairy-2-wed",
         food: "cottageCheese",
         qualifier: "5–9%",
-        qty: "500 г",
+        computedQty: { food: "cottageCheese", weekdays: ["wed"] },
         note: "Ср",
         price: 90,
         buyDay: "wed",
@@ -187,23 +187,23 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-5",
         food: "butter",
-        qty: "77 г",
-        note: "Пн 35г + Ср 27г + Пт 15г (Пн збільшено, щоб довести день до цілі; Пт зменшено під більшу картоплю)",
+        computedQty: { food: "butter", weekdays: ["mon", "wed", "thu", "fri"] },
+        note: "Пн 35г + Ср 27г + Чт 10г + Пт 15г (Пн збільшено, щоб довести день до цілі; Пт зменшено під більшу картоплю)",
         price: 43,
         buyDay: "sun",
       },
       {
         id: "dairy-6",
-        food: "brynza",
-        computedQty: { food: "brynza", weekdays: ["mon", "sun"] },
-        note: "Пн 135г + Нд 150г",
-        price: 71,
+        food: "mozzarella",
+        computedQty: { food: "mozzarella", weekdays: ["mon", "sun"] },
+        note: "Пн 135г + Нд 50г",
+        price: 46,
         buyDay: "sun",
       },
       {
         id: "dairy-7",
         food: "suluguni",
-        qty: "200 г",
+        computedQty: { food: "suluguni", weekdays: ["thu", "fri"] },
         note: "Чт + Пт",
         price: 80,
         buyDay: "sun",
@@ -225,7 +225,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-0",
         food: "oats",
-        qty: "170 г",
+        computedQty: { food: "oats", weekdays: ["tue"] },
         note: "Вт",
         price: 17,
         buyDay: "sun",
@@ -257,7 +257,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-4-sun",
         food: "bread",
-        qty: "~380 г",
+        computedQty: { food: "bread", weekdays: ["sun", "mon", "wed"] },
         note: "Нд + Пн + Ср",
         price: 33,
         buyDay: "sun",
@@ -265,7 +265,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-4-wed",
         food: "bread",
-        qty: "~290 г",
+        computedQty: { food: "bread", weekdays: ["thu", "fri", "sat"] },
         note: "Чт + Пт + Сб",
         price: 27,
         buyDay: "wed",
@@ -303,7 +303,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-0-sun",
         food: "tomato",
-        qty: "~1.95 кг (14 шт)",
+        computedQty: { food: "tomato", weekdays: ["mon", "tue", "wed", "sun"] },
         note: "Пн + Вт + Ср + Нд",
         price: 209,
         buyDay: "sun",
@@ -311,7 +311,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-0-wed",
         food: "tomato",
-        qty: "~830 г (6 шт)",
+        computedQty: { food: "tomato", weekdays: ["thu", "fri"] },
         note: "Чт + Пт",
         price: 86,
         buyDay: "wed",
@@ -319,7 +319,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-1-sun",
         food: "cucumber",
-        qty: "~1.3 кг",
+        computedQty: { food: "cucumber", weekdays: ["mon", "wed", "sun"] },
         note: "Пн + Ср + Нд",
         price: 46,
         buyDay: "sun",
@@ -327,7 +327,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-1-wed",
         food: "cucumber",
-        qty: "~1 шт (~150 г)",
+        computedQty: { food: "cucumber", weekdays: ["thu", "fri"], grams: 50 },
         note: "Чт + Пт",
         price: 6,
         buyDay: "wed",
@@ -335,7 +335,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-2-sun",
         food: "pepper",
-        qty: "~220 г",
+        computedQty: { food: "pepper", weekdays: ["mon", "sun"] },
         note: "Пн + Нд",
         price: 12,
         buyDay: "sun",
@@ -407,19 +407,19 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-0",
         food: "berries",
-        qty: "~750 г",
-        note: "Щодня + Вт 100г",
+        computedQty: { food: "berries", weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
+        note: "Щодня",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
-        price: 135,
+        price: 243,
         buyDay: "sun",
       },
       {
         id: "fruits-1",
         food: "fruitMix",
-        qty: "~250 г",
+        computedQty: { food: "fruitMix", weekdays: ["wed"] },
         note: "Ср",
         options: ["банани", "яблука", "груші", "апельсини"],
-        price: 16,
+        price: 15,
         buyDay: "sun",
       },
       {
@@ -520,23 +520,23 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "sauces-0",
         food: "soySauce",
         qty: "200 мл",
-        note: "Нд + Вт",
+        note: "Нд (для маринування на Вт і Чт)",
         price: 32,
         buyDay: "sun",
       },
       {
         id: "sauces-1",
         food: "honey",
-        qty: "100 г",
+        computedQty: { food: "honey", weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
         note: "Щодня",
-        price: 20,
+        price: 42,
         buyDay: "sun",
       },
       {
         id: "sauces-2",
         food: "mustardDijon",
         qty: "80 г",
-        note: "Нд + Пн + Сб",
+        note: "Нд (для маринування) + Пн + Сб",
         price: 24,
         buyDay: "sun",
       },
@@ -653,7 +653,7 @@ if (monLunchW && monLunchW.macroItems) {
       item.food !== "tomato" &&
       item.food !== "cucumber" &&
       item.food !== "pepper" &&
-      item.food !== "brynza",
+      item.food !== "mozzarella",
   );
   monLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
@@ -711,7 +711,7 @@ if (sunLunchW && sunLunchW.macroItems) {
       item.food !== "tomato" &&
       item.food !== "cucumber" &&
       item.food !== "pepper" &&
-      item.food !== "brynza",
+      item.food !== "mozzarella",
   );
   sunLunchW.macroItems.push(
     { food: "cabbage", vitalii: 250, olesia: 250, component: "Салат з капусти" },
@@ -730,7 +730,7 @@ if (monLunchA && monLunchA.macroItems) {
       item.food !== "tomato" &&
       item.food !== "cucumber" &&
       item.food !== "pepper" &&
-      item.food !== "brynza",
+      item.food !== "mozzarella",
   );
   monLunchA.macroItems.push({
     food: "beetroot",
@@ -761,7 +761,7 @@ if (sunLunchA && sunLunchA.macroItems) {
       item.food !== "tomato" &&
       item.food !== "cucumber" &&
       item.food !== "pepper" &&
-      item.food !== "brynza",
+      item.food !== "mozzarella",
   );
   sunLunchA.macroItems.push(
     { food: "beetroot", vitalii: 250, olesia: 250, component: "Буряковий салат" },
@@ -786,7 +786,7 @@ if (monLunchS && monLunchS.macroItems) {
   monLunchS.ingredients[6] =
     "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
   monLunchS.macroItems = monLunchS.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
+    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "mozzarella",
   );
   monLunchS.macroItems.push(
     { food: "cabbage", vitalii: 175, olesia: 175, component: "Весняний салат" },
@@ -799,7 +799,7 @@ if (sunLunchS && sunLunchS.macroItems) {
   sunLunchS.ingredients[6] =
     "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
   sunLunchS.macroItems = sunLunchS.macroItems.filter(
-    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "brynza",
+    (item) => item.food !== "tomato" && item.food !== "pepper" && item.food !== "mozzarella",
   );
   sunLunchS.macroItems.push(
     { food: "cabbage", vitalii: 175, olesia: 175, component: "Весняний салат" },
