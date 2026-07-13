@@ -199,7 +199,7 @@ export function PlanningWizardClient({
   }, [currentDecomposeThought]);
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
+    <div className="flex flex-col gap-6 w-full">
       {/* Step Indicator */}
       {step > 0 && (
         <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
@@ -229,7 +229,7 @@ export function PlanningWizardClient({
 
       {/* STEP 0: INTRO */}
       {step === 0 && (
-        <div className="glass-card p-6 md:p-8 flex flex-col gap-6 items-center text-center bg-white/[0.01]">
+        <div className="glass-card p-6 md:p-8 flex flex-col gap-6 items-center text-center bg-white/[0.01] max-w-3xl mx-auto w-full">
           <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center animate-float">
             <Sparkles size={32} />
           </div>
@@ -356,7 +356,7 @@ export function PlanningWizardClient({
 
       {/* STEP 2: PRIME FILTER */}
       {step === 2 && (
-        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 items-center">
+        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 items-center max-w-2xl mx-auto w-full">
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <h3 className="text-panel-title font-semibold text-zinc-200">Step 2: Prime Filter</h3>
             <span className="text-xs font-mono text-zinc-500">
