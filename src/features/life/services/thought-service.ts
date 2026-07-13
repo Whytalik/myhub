@@ -258,3 +258,14 @@ export async function decomposeThought(
     }
   });
 }
+
+export async function getThoughtsForWizard(userId: string) {
+  return prisma.thought.findMany({
+    where: { userId },
+    include: {
+      status: true,
+      sphere: true,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+}
