@@ -238,9 +238,10 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
     }
 
     if (multiplier) {
+      const rawLabel = product?.category === "grains" ? "сух." : "сир.";
       return (
         <span className="flex flex-col items-end sm:inline sm:space-x-1">
-          <span className="text-zinc-500">{rawWeight} г (сух.)</span>
+          <span className="text-zinc-500">{rawWeight} г ({rawLabel})</span>
           <span className="hidden sm:inline text-zinc-600 mx-1.5">→</span>
           <span className="text-accent-nutrition font-bold">
             ~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}

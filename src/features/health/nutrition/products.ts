@@ -89,19 +89,21 @@ export const PRODUCTS: Record<string, Product> = {
     "Куряче філе",
     { kcal: 180, protein: 29, fat: 6, carbs: 2 },
     "meat",
-    { searchTerm: "куряче" },
+    { searchTerm: "куряче", cookedMultiplier: 0.75 },
   ),
   friedChicken: tracked(
     "friedChicken",
     "Смажена курка",
     { kcal: 220, protein: 26, fat: 12, carbs: 1 },
     "meat",
+    { cookedMultiplier: 0.75 },
   ),
   chickenHearts: tracked(
     "chickenHearts",
     "Курячі серця",
     { kcal: 153, protein: 15.6, fat: 9.3, carbs: 0.1 },
     "meat",
+    { cookedMultiplier: 0.65 },
   ),
   potato: tracked(
     "potato",
@@ -278,6 +280,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Скумбрія",
     { kcal: 193, protein: 18.7, fat: 13.2, carbs: 0 },
     "meat",
+    { cookedMultiplier: 0.80 },
   ),
   tunaCanned: tracked(
     "tunaCanned",
@@ -318,6 +321,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Свиняча відбивна",
     { kcal: 250, protein: 26, fat: 16, carbs: 0 },
     "meat",
+    { cookedMultiplier: 0.70 },
   ),
   cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
 
