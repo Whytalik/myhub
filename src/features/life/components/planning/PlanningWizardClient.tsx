@@ -315,6 +315,26 @@ export function PlanningWizardClient({
                 Add
               </Button>
             </div>
+
+            <div className="flex flex-col gap-2 mt-2 pt-3 border-t border-white/[0.04]">
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                💡 Life Areas (use as triggers to remember tasks):
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {spheres.map((s) => (
+                  <div
+                    key={s.id}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-[11px] text-zinc-350"
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ backgroundColor: s.color }}
+                    />
+                    <span>{s.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Bottom Inbox List (3-column grid) */}
