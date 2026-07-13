@@ -284,6 +284,7 @@ model DailyEntry {
   standupBlockers String?
   standupDone     String?
   standupPlan     String?
+  dailyVector     Json?
   recoveryRoutine Json?
   recoveryScore   Float?
   startedAt       DateTime?

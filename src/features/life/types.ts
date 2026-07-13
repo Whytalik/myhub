@@ -123,6 +123,7 @@ export interface DailyEntryData {
   standupDone: string | null;
   standupPlan: string | null;
   standupBlockers: string | null;
+  dailyVector: JsonValue | null;
 
   startedAt: Date | null;
   completedAt: Date | null;
@@ -167,6 +168,7 @@ export interface UpsertDailyEntryInput {
   standupPlan?: string | null;
   standupBlockers?: string | null;
   confidenceLog?: ConfidenceLog | null;
+  dailyVector?: DailyVector | null;
 }
 
 export interface ConfidenceLog {
@@ -179,6 +181,19 @@ export interface ConfidenceLog {
   stuporReality: string | null;
   floodingUsedPause: boolean | null;
   note: string | null;
+}
+
+// Morning "vector of the day" prompt set — a periodic self-audit ritual
+// (improve/do/efficiency/effort/automate/delegate/fix), distinct from the
+// nightly retrospective in ReflectionSection.
+export interface DailyVector {
+  toImprove: string | null;
+  toDo: string | null;
+  toIncreaseEfficiency: string | null;
+  toReduceEffort: string | null;
+  toAutomate: string | null;
+  toDelegate: string | null;
+  toFix: string | null;
 }
 
 export type SphereLevel = "MINIMUM" | "MEDIUM" | "DESIRED";

@@ -307,6 +307,7 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   standupBlockers: 'standupBlockers',
   standupDone: 'standupDone',
   standupPlan: 'standupPlan',
+  dailyVector: 'dailyVector',
   recoveryRoutine: 'recoveryRoutine',
   recoveryScore: 'recoveryScore',
   startedAt: 'startedAt',

@@ -10,6 +10,7 @@ import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
+import { DailyVectorSection } from "./sections/DailyVectorSection";
 import { ConfidenceSection } from "./sections/ConfidenceSection";
 import {
   upsertEntryAction,
@@ -28,6 +29,7 @@ import type {
   LifeSphereData,
   HabitData,
   ConfidenceLog,
+  DailyVector,
 } from "../types";
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -145,6 +147,7 @@ export function DailyEntryForm({
       standupPlan: initialEntry?.standupPlan ?? null,
       standupBlockers: initialEntry?.standupBlockers ?? null,
       confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
+      dailyVector: (initialEntry?.dailyVector as DailyVector | null) ?? null,
     };
   }, [initialEntry, scheduledTrainingDayName]);
 
@@ -351,6 +354,8 @@ export function DailyEntryForm({
                     onChange={patch}
                   />
                 </div>
+
+                <DailyVectorSection vector={data.dailyVector ?? null} onChange={patch} />
 
                 <Suspense fallback={suspenseFallback}>
                   <RoutineSection
