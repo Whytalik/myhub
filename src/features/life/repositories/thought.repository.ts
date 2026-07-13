@@ -3,11 +3,11 @@ import { Prisma } from "@/app/generated/prisma";
 
 export const thoughtRepository = {
   create(data: Prisma.ThoughtUncheckedCreateInput) {
-    return prisma.thought.create({ data });
+    return prisma.thought.create({ data, include: { sphere: true } });
   },
 
   update(id: string, userId: string, data: Prisma.ThoughtUncheckedUpdateInput) {
-    return prisma.thought.update({ where: { id, userId }, data });
+    return prisma.thought.update({ where: { id, userId }, data, include: { sphere: true } });
   },
 
   delete(id: string, userId: string) {

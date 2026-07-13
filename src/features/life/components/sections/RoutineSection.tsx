@@ -16,6 +16,7 @@ import {
   Utensils,
   Lightbulb,
 } from "lucide-react";
+import Link from "next/link";
 import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
 import { Input } from "@/components/ui/inputs/input";
 
@@ -42,6 +43,7 @@ interface Props {
   scheduledTrainingDayName?: string;
   gymSkipped?: boolean;
   gymSkipReason?: string | null;
+  inboxCount?: number;
   onChange: (patch: {
     morningRoutine?: RoutineMap | null;
     eveningRoutine?: RoutineMap | null;
@@ -56,6 +58,7 @@ export function RoutineSection({
   scheduledTrainingDayName,
   gymSkipped = false,
   gymSkipReason,
+  inboxCount,
   onChange,
 }: Props) {
   const [isSkipPanelOpen, setIsSkipPanelOpen] = useState(false);
@@ -215,27 +218,43 @@ export function RoutineSection({
           }`;
 
           return (
-            <button key={item.id} onClick={() => toggle(item.id)} className={itemClass}>
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className={itemIconClass}>
-                  <IconComponent size={12} />
-                </div>
-                <div className="flex flex-col items-start min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    {item.time && (
-                      <span className="text-[10px] font-mono text-zinc-500">{item.time}</span>
-                    )}
-                    <span className="text-sm truncate">{item.label}</span>
+            <div key={item.id} className="flex flex-col gap-1">
+              <button onClick={() => toggle(item.id)} className={itemClass}>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className={itemIconClass}>
+                    <IconComponent size={12} />
                   </div>
-                  <span className="text-[10px] text-zinc-500 truncate">{item.labelUk}</span>
+                  <div className="flex flex-col items-start min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      {item.time && (
+                        <span className="text-[10px] font-mono text-zinc-500">{item.time}</span>
+                      )}
+                      <span className="text-sm truncate">{item.label}</span>
+                    </div>
+                    <span className="text-[10px] text-zinc-500 truncate">{item.labelUk}</span>
+                  </div>
                 </div>
-              </div>
-              {checked ? (
-                <CheckCircle2 size={14} />
-              ) : (
-                <Circle size={14} className="text-zinc-600" />
+                {checked ? (
+                  <CheckCircle2 size={14} />
+                ) : (
+                  <Circle size={14} className="text-zinc-600" />
+                )}
+              </button>
+
+              {item.id === "e_kaizen" && inboxCount !== undefined && (
+                <Link
+                  href="/life/planning"
+                  className="flex items-center justify-between gap-2 px-2.5 py-1 rounded-lg text-[11px] text-zinc-500 hover:text-accent hover:bg-white/[0.02] transition-colors duration-150"
+                >
+                  <span>
+                    {inboxCount > 0
+                      ? `${inboxCount} thought${inboxCount === 1 ? "" : "s"} waiting in Inbox`
+                      : "Inbox is empty"}
+                  </span>
+                  <span className="underline underline-offset-2">Sort now →</span>
+                </Link>
               )}
-            </button>
+            </div>
           );
         })}
       </div>

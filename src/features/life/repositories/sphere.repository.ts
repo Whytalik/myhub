@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
+import { Prisma } from "@/app/generated/prisma";
 
 export const sphereRepository = {
   findAll(userId: string) {
@@ -7,6 +8,14 @@ export const sphereRepository = {
       orderBy: { order: "asc" },
       include: { _count: { select: { tasks: true } } },
     });
+  },
+
+  count(userId: string) {
+    return prisma.lifeSphere.count({ where: { userId } });
+  },
+
+  createMany(data: Prisma.LifeSphereCreateManyInput[]) {
+    return prisma.lifeSphere.createMany({ data });
   },
 
   upsert(

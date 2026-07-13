@@ -183,6 +183,11 @@ export type ThoughtStatus = $Result.DefaultSelection<Prisma.$ThoughtStatusPayloa
  * 
  */
 export type Thought = $Result.DefaultSelection<Prisma.$ThoughtPayload>
+/**
+ * Model MissionVersion
+ * 
+ */
+export type MissionVersion = $Result.DefaultSelection<Prisma.$MissionVersionPayload>
 
 /**
  * Enums
@@ -264,6 +269,15 @@ export const TacticFrequency: {
 
 export type TacticFrequency = (typeof TacticFrequency)[keyof typeof TacticFrequency]
 
+
+export const ThoughtType: {
+  WORRY_PROBLEM: 'WORRY_PROBLEM',
+  IDEA_DREAM: 'IDEA_DREAM',
+  TASK_DEADLINE: 'TASK_DEADLINE'
+};
+
+export type ThoughtType = (typeof ThoughtType)[keyof typeof ThoughtType]
+
 }
 
 export type MappingSource = $Enums.MappingSource
@@ -297,6 +311,10 @@ export const ObjectiveStatus: typeof $Enums.ObjectiveStatus
 export type TacticFrequency = $Enums.TacticFrequency
 
 export const TacticFrequency: typeof $Enums.TacticFrequency
+
+export type ThoughtType = $Enums.ThoughtType
+
+export const ThoughtType: typeof $Enums.ThoughtType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -758,6 +776,16 @@ export class PrismaClient<
     * ```
     */
   get thought(): Prisma.ThoughtDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.missionVersion`: Exposes CRUD operations for the **MissionVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MissionVersions
+    * const missionVersions = await prisma.missionVersion.findMany()
+    * ```
+    */
+  get missionVersion(): Prisma.MissionVersionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1225,7 +1253,8 @@ export namespace Prisma {
     TrainingSession: 'TrainingSession',
     SetLog: 'SetLog',
     ThoughtStatus: 'ThoughtStatus',
-    Thought: 'Thought'
+    Thought: 'Thought',
+    MissionVersion: 'MissionVersion'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1241,7 +1270,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "fatSecretSavedMeal" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog" | "thoughtStatus" | "thought"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "fatSecretSavedMeal" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog" | "thoughtStatus" | "thought" | "missionVersion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3761,6 +3790,80 @@ export namespace Prisma {
           }
         }
       }
+      MissionVersion: {
+        payload: Prisma.$MissionVersionPayload<ExtArgs>
+        fields: Prisma.MissionVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MissionVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MissionVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.MissionVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MissionVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          findMany: {
+            args: Prisma.MissionVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>[]
+          }
+          create: {
+            args: Prisma.MissionVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          createMany: {
+            args: Prisma.MissionVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MissionVersionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>[]
+          }
+          delete: {
+            args: Prisma.MissionVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          update: {
+            args: Prisma.MissionVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MissionVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MissionVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MissionVersionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>[]
+          }
+          upsert: {
+            args: Prisma.MissionVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissionVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.MissionVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMissionVersion>
+          }
+          groupBy: {
+            args: Prisma.MissionVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MissionVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MissionVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<MissionVersionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3903,6 +4006,7 @@ export namespace Prisma {
     setLog?: SetLogOmit
     thoughtStatus?: ThoughtStatusOmit
     thought?: ThoughtOmit
+    missionVersion?: MissionVersionOmit
   }
 
   /* Types for Logging */
@@ -4004,6 +4108,7 @@ export namespace Prisma {
     setLogs: number
     thoughtStatuses: number
     thoughts: number
+    missionVersions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4028,6 +4133,7 @@ export namespace Prisma {
     setLogs?: boolean | UserCountOutputTypeCountSetLogsArgs
     thoughtStatuses?: boolean | UserCountOutputTypeCountThoughtStatusesArgs
     thoughts?: boolean | UserCountOutputTypeCountThoughtsArgs
+    missionVersions?: boolean | UserCountOutputTypeCountMissionVersionsArgs
   }
 
   // Custom InputTypes
@@ -4188,6 +4294,13 @@ export namespace Prisma {
     where?: ThoughtWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMissionVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissionVersionWhereInput
+  }
+
 
   /**
    * Count Type LifeSphereCountOutputType
@@ -4198,6 +4311,7 @@ export namespace Prisma {
     milestones: number
     objectives: number
     tasks: number
+    thoughts: number
   }
 
   export type LifeSphereCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4205,6 +4319,7 @@ export namespace Prisma {
     milestones?: boolean | LifeSphereCountOutputTypeCountMilestonesArgs
     objectives?: boolean | LifeSphereCountOutputTypeCountObjectivesArgs
     tasks?: boolean | LifeSphereCountOutputTypeCountTasksArgs
+    thoughts?: boolean | LifeSphereCountOutputTypeCountThoughtsArgs
   }
 
   // Custom InputTypes
@@ -4244,6 +4359,13 @@ export namespace Prisma {
    */
   export type LifeSphereCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
+  }
+
+  /**
+   * LifeSphereCountOutputType without action
+   */
+  export type LifeSphereCountOutputTypeCountThoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtWhereInput
   }
 
 
@@ -4924,6 +5046,7 @@ export namespace Prisma {
     setLogs?: boolean | User$setLogsArgs<ExtArgs>
     thoughtStatuses?: boolean | User$thoughtStatusesArgs<ExtArgs>
     thoughts?: boolean | User$thoughtsArgs<ExtArgs>
+    missionVersions?: boolean | User$missionVersionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4989,6 +5112,7 @@ export namespace Prisma {
     setLogs?: boolean | User$setLogsArgs<ExtArgs>
     thoughtStatuses?: boolean | User$thoughtStatusesArgs<ExtArgs>
     thoughts?: boolean | User$thoughtsArgs<ExtArgs>
+    missionVersions?: boolean | User$missionVersionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5018,6 +5142,7 @@ export namespace Prisma {
       setLogs: Prisma.$SetLogPayload<ExtArgs>[]
       thoughtStatuses: Prisma.$ThoughtStatusPayload<ExtArgs>[]
       thoughts: Prisma.$ThoughtPayload<ExtArgs>[]
+      missionVersions: Prisma.$MissionVersionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5445,6 +5570,7 @@ export namespace Prisma {
     setLogs<T extends User$setLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$setLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     thoughtStatuses<T extends User$thoughtStatusesArgs<ExtArgs> = {}>(args?: Subset<T, User$thoughtStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     thoughts<T extends User$thoughtsArgs<ExtArgs> = {}>(args?: Subset<T, User$thoughtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    missionVersions<T extends User$missionVersionsArgs<ExtArgs> = {}>(args?: Subset<T, User$missionVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6378,6 +6504,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
+  }
+
+  /**
+   * User.missionVersions
+   */
+  export type User$missionVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    where?: MissionVersionWhereInput
+    orderBy?: MissionVersionOrderByWithRelationInput | MissionVersionOrderByWithRelationInput[]
+    cursor?: MissionVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MissionVersionScalarFieldEnum | MissionVersionScalarFieldEnum[]
   }
 
   /**
@@ -16463,6 +16613,7 @@ export namespace Prisma {
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
+    thoughts?: boolean | LifeSphere$thoughtsArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lifeSphere"]>
 
@@ -16511,6 +16662,7 @@ export namespace Prisma {
     milestones?: boolean | LifeSphere$milestonesArgs<ExtArgs>
     objectives?: boolean | LifeSphere$objectivesArgs<ExtArgs>
     tasks?: boolean | LifeSphere$tasksArgs<ExtArgs>
+    thoughts?: boolean | LifeSphere$thoughtsArgs<ExtArgs>
     _count?: boolean | LifeSphereCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LifeSphereIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16528,6 +16680,7 @@ export namespace Prisma {
       milestones: Prisma.$MilestonePayload<ExtArgs>[]
       objectives: Prisma.$ObjectivePayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
+      thoughts: Prisma.$ThoughtPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -16938,6 +17091,7 @@ export namespace Prisma {
     milestones<T extends LifeSphere$milestonesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$milestonesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MilestonePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     objectives<T extends LifeSphere$objectivesArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$objectivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasks<T extends LifeSphere$tasksArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    thoughts<T extends LifeSphere$thoughtsArgs<ExtArgs> = {}>(args?: Subset<T, LifeSphere$thoughtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17470,6 +17624,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * LifeSphere.thoughts
+   */
+  export type LifeSphere$thoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    where?: ThoughtWhereInput
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    cursor?: ThoughtWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
   }
 
   /**
@@ -44162,6 +44340,8 @@ export namespace Prisma {
     statusId: string | null
     content: string | null
     order: number | null
+    type: $Enums.ThoughtType | null
+    sphereId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -44172,6 +44352,8 @@ export namespace Prisma {
     statusId: string | null
     content: string | null
     order: number | null
+    type: $Enums.ThoughtType | null
+    sphereId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -44182,6 +44364,9 @@ export namespace Prisma {
     statusId: number
     content: number
     order: number
+    type: number
+    templateData: number
+    sphereId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -44202,6 +44387,8 @@ export namespace Prisma {
     statusId?: true
     content?: true
     order?: true
+    type?: true
+    sphereId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -44212,6 +44399,8 @@ export namespace Prisma {
     statusId?: true
     content?: true
     order?: true
+    type?: true
+    sphereId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -44222,6 +44411,9 @@ export namespace Prisma {
     statusId?: true
     content?: true
     order?: true
+    type?: true
+    templateData?: true
+    sphereId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -44319,6 +44511,9 @@ export namespace Prisma {
     statusId: string
     content: string
     order: number
+    type: $Enums.ThoughtType | null
+    templateData: JsonValue | null
+    sphereId: string | null
     createdAt: Date
     updatedAt: Date
     _count: ThoughtCountAggregateOutputType | null
@@ -44348,10 +44543,14 @@ export namespace Prisma {
     statusId?: boolean
     content?: boolean
     order?: boolean
+    type?: boolean
+    templateData?: boolean
+    sphereId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["thought"]>
 
   export type ThoughtSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -44360,10 +44559,14 @@ export namespace Prisma {
     statusId?: boolean
     content?: boolean
     order?: boolean
+    type?: boolean
+    templateData?: boolean
+    sphereId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["thought"]>
 
   export type ThoughtSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -44372,10 +44575,14 @@ export namespace Prisma {
     statusId?: boolean
     content?: boolean
     order?: boolean
+    type?: boolean
+    templateData?: boolean
+    sphereId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }, ExtArgs["result"]["thought"]>
 
   export type ThoughtSelectScalar = {
@@ -44384,22 +44591,28 @@ export namespace Prisma {
     statusId?: boolean
     content?: boolean
     order?: boolean
+    type?: boolean
+    templateData?: boolean
+    sphereId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ThoughtOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "statusId" | "content" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["thought"]>
+  export type ThoughtOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "statusId" | "content" | "order" | "type" | "templateData" | "sphereId" | "createdAt" | "updatedAt", ExtArgs["result"]["thought"]>
   export type ThoughtInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }
   export type ThoughtIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }
   export type ThoughtIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+    sphere?: boolean | Thought$sphereArgs<ExtArgs>
   }
 
   export type $ThoughtPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -44407,6 +44620,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       status: Prisma.$ThoughtStatusPayload<ExtArgs>
+      sphere: Prisma.$LifeSpherePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -44414,6 +44628,9 @@ export namespace Prisma {
       statusId: string
       content: string
       order: number
+      type: $Enums.ThoughtType | null
+      templateData: Prisma.JsonValue | null
+      sphereId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["thought"]>
@@ -44812,6 +45029,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     status<T extends ThoughtStatusDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ThoughtStatusDefaultArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sphere<T extends Thought$sphereArgs<ExtArgs> = {}>(args?: Subset<T, Thought$sphereArgs<ExtArgs>>): Prisma__LifeSphereClient<$Result.GetResult<Prisma.$LifeSpherePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -44846,6 +45064,9 @@ export namespace Prisma {
     readonly statusId: FieldRef<"Thought", 'String'>
     readonly content: FieldRef<"Thought", 'String'>
     readonly order: FieldRef<"Thought", 'Int'>
+    readonly type: FieldRef<"Thought", 'ThoughtType'>
+    readonly templateData: FieldRef<"Thought", 'Json'>
+    readonly sphereId: FieldRef<"Thought", 'String'>
     readonly createdAt: FieldRef<"Thought", 'DateTime'>
     readonly updatedAt: FieldRef<"Thought", 'DateTime'>
   }
@@ -45249,6 +45470,25 @@ export namespace Prisma {
   }
 
   /**
+   * Thought.sphere
+   */
+  export type Thought$sphereArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LifeSphere
+     */
+    select?: LifeSphereSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LifeSphere
+     */
+    omit?: LifeSphereOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LifeSphereInclude<ExtArgs> | null
+    where?: LifeSphereWhereInput
+  }
+
+  /**
    * Thought without action
    */
   export type ThoughtDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -45264,6 +45504,1056 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ThoughtInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MissionVersion
+   */
+
+  export type AggregateMissionVersion = {
+    _count: MissionVersionCountAggregateOutputType | null
+    _min: MissionVersionMinAggregateOutputType | null
+    _max: MissionVersionMaxAggregateOutputType | null
+  }
+
+  export type MissionVersionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type MissionVersionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type MissionVersionCountAggregateOutputType = {
+    id: number
+    userId: number
+    content: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type MissionVersionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type MissionVersionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type MissionVersionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type MissionVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MissionVersion to aggregate.
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissionVersions to fetch.
+     */
+    orderBy?: MissionVersionOrderByWithRelationInput | MissionVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MissionVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissionVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissionVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MissionVersions
+    **/
+    _count?: true | MissionVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MissionVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MissionVersionMaxAggregateInputType
+  }
+
+  export type GetMissionVersionAggregateType<T extends MissionVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMissionVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMissionVersion[P]>
+      : GetScalarType<T[P], AggregateMissionVersion[P]>
+  }
+
+
+
+
+  export type MissionVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissionVersionWhereInput
+    orderBy?: MissionVersionOrderByWithAggregationInput | MissionVersionOrderByWithAggregationInput[]
+    by: MissionVersionScalarFieldEnum[] | MissionVersionScalarFieldEnum
+    having?: MissionVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MissionVersionCountAggregateInputType | true
+    _min?: MissionVersionMinAggregateInputType
+    _max?: MissionVersionMaxAggregateInputType
+  }
+
+  export type MissionVersionGroupByOutputType = {
+    id: string
+    userId: string
+    content: string
+    createdAt: Date
+    _count: MissionVersionCountAggregateOutputType | null
+    _min: MissionVersionMinAggregateOutputType | null
+    _max: MissionVersionMaxAggregateOutputType | null
+  }
+
+  type GetMissionVersionGroupByPayload<T extends MissionVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MissionVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MissionVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MissionVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], MissionVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MissionVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missionVersion"]>
+
+  export type MissionVersionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missionVersion"]>
+
+  export type MissionVersionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missionVersion"]>
+
+  export type MissionVersionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }
+
+  export type MissionVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "content" | "createdAt", ExtArgs["result"]["missionVersion"]>
+  export type MissionVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MissionVersionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MissionVersionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MissionVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MissionVersion"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      content: string
+      createdAt: Date
+    }, ExtArgs["result"]["missionVersion"]>
+    composites: {}
+  }
+
+  type MissionVersionGetPayload<S extends boolean | null | undefined | MissionVersionDefaultArgs> = $Result.GetResult<Prisma.$MissionVersionPayload, S>
+
+  type MissionVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MissionVersionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MissionVersionCountAggregateInputType | true
+    }
+
+  export interface MissionVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MissionVersion'], meta: { name: 'MissionVersion' } }
+    /**
+     * Find zero or one MissionVersion that matches the filter.
+     * @param {MissionVersionFindUniqueArgs} args - Arguments to find a MissionVersion
+     * @example
+     * // Get one MissionVersion
+     * const missionVersion = await prisma.missionVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MissionVersionFindUniqueArgs>(args: SelectSubset<T, MissionVersionFindUniqueArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MissionVersion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MissionVersionFindUniqueOrThrowArgs} args - Arguments to find a MissionVersion
+     * @example
+     * // Get one MissionVersion
+     * const missionVersion = await prisma.missionVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MissionVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, MissionVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MissionVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionFindFirstArgs} args - Arguments to find a MissionVersion
+     * @example
+     * // Get one MissionVersion
+     * const missionVersion = await prisma.missionVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MissionVersionFindFirstArgs>(args?: SelectSubset<T, MissionVersionFindFirstArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MissionVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionFindFirstOrThrowArgs} args - Arguments to find a MissionVersion
+     * @example
+     * // Get one MissionVersion
+     * const missionVersion = await prisma.missionVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MissionVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, MissionVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MissionVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MissionVersions
+     * const missionVersions = await prisma.missionVersion.findMany()
+     * 
+     * // Get first 10 MissionVersions
+     * const missionVersions = await prisma.missionVersion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const missionVersionWithIdOnly = await prisma.missionVersion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MissionVersionFindManyArgs>(args?: SelectSubset<T, MissionVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MissionVersion.
+     * @param {MissionVersionCreateArgs} args - Arguments to create a MissionVersion.
+     * @example
+     * // Create one MissionVersion
+     * const MissionVersion = await prisma.missionVersion.create({
+     *   data: {
+     *     // ... data to create a MissionVersion
+     *   }
+     * })
+     * 
+     */
+    create<T extends MissionVersionCreateArgs>(args: SelectSubset<T, MissionVersionCreateArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MissionVersions.
+     * @param {MissionVersionCreateManyArgs} args - Arguments to create many MissionVersions.
+     * @example
+     * // Create many MissionVersions
+     * const missionVersion = await prisma.missionVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MissionVersionCreateManyArgs>(args?: SelectSubset<T, MissionVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MissionVersions and returns the data saved in the database.
+     * @param {MissionVersionCreateManyAndReturnArgs} args - Arguments to create many MissionVersions.
+     * @example
+     * // Create many MissionVersions
+     * const missionVersion = await prisma.missionVersion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MissionVersions and only return the `id`
+     * const missionVersionWithIdOnly = await prisma.missionVersion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MissionVersionCreateManyAndReturnArgs>(args?: SelectSubset<T, MissionVersionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MissionVersion.
+     * @param {MissionVersionDeleteArgs} args - Arguments to delete one MissionVersion.
+     * @example
+     * // Delete one MissionVersion
+     * const MissionVersion = await prisma.missionVersion.delete({
+     *   where: {
+     *     // ... filter to delete one MissionVersion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MissionVersionDeleteArgs>(args: SelectSubset<T, MissionVersionDeleteArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MissionVersion.
+     * @param {MissionVersionUpdateArgs} args - Arguments to update one MissionVersion.
+     * @example
+     * // Update one MissionVersion
+     * const missionVersion = await prisma.missionVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MissionVersionUpdateArgs>(args: SelectSubset<T, MissionVersionUpdateArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MissionVersions.
+     * @param {MissionVersionDeleteManyArgs} args - Arguments to filter MissionVersions to delete.
+     * @example
+     * // Delete a few MissionVersions
+     * const { count } = await prisma.missionVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MissionVersionDeleteManyArgs>(args?: SelectSubset<T, MissionVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MissionVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MissionVersions
+     * const missionVersion = await prisma.missionVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MissionVersionUpdateManyArgs>(args: SelectSubset<T, MissionVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MissionVersions and returns the data updated in the database.
+     * @param {MissionVersionUpdateManyAndReturnArgs} args - Arguments to update many MissionVersions.
+     * @example
+     * // Update many MissionVersions
+     * const missionVersion = await prisma.missionVersion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MissionVersions and only return the `id`
+     * const missionVersionWithIdOnly = await prisma.missionVersion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MissionVersionUpdateManyAndReturnArgs>(args: SelectSubset<T, MissionVersionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MissionVersion.
+     * @param {MissionVersionUpsertArgs} args - Arguments to update or create a MissionVersion.
+     * @example
+     * // Update or create a MissionVersion
+     * const missionVersion = await prisma.missionVersion.upsert({
+     *   create: {
+     *     // ... data to create a MissionVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MissionVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MissionVersionUpsertArgs>(args: SelectSubset<T, MissionVersionUpsertArgs<ExtArgs>>): Prisma__MissionVersionClient<$Result.GetResult<Prisma.$MissionVersionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MissionVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionCountArgs} args - Arguments to filter MissionVersions to count.
+     * @example
+     * // Count the number of MissionVersions
+     * const count = await prisma.missionVersion.count({
+     *   where: {
+     *     // ... the filter for the MissionVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MissionVersionCountArgs>(
+      args?: Subset<T, MissionVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MissionVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MissionVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MissionVersionAggregateArgs>(args: Subset<T, MissionVersionAggregateArgs>): Prisma.PrismaPromise<GetMissionVersionAggregateType<T>>
+
+    /**
+     * Group by MissionVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissionVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MissionVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MissionVersionGroupByArgs['orderBy'] }
+        : { orderBy?: MissionVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MissionVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMissionVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MissionVersion model
+   */
+  readonly fields: MissionVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MissionVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MissionVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MissionVersion model
+   */
+  interface MissionVersionFieldRefs {
+    readonly id: FieldRef<"MissionVersion", 'String'>
+    readonly userId: FieldRef<"MissionVersion", 'String'>
+    readonly content: FieldRef<"MissionVersion", 'String'>
+    readonly createdAt: FieldRef<"MissionVersion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MissionVersion findUnique
+   */
+  export type MissionVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which MissionVersion to fetch.
+     */
+    where: MissionVersionWhereUniqueInput
+  }
+
+  /**
+   * MissionVersion findUniqueOrThrow
+   */
+  export type MissionVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which MissionVersion to fetch.
+     */
+    where: MissionVersionWhereUniqueInput
+  }
+
+  /**
+   * MissionVersion findFirst
+   */
+  export type MissionVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which MissionVersion to fetch.
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissionVersions to fetch.
+     */
+    orderBy?: MissionVersionOrderByWithRelationInput | MissionVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MissionVersions.
+     */
+    cursor?: MissionVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissionVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissionVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MissionVersions.
+     */
+    distinct?: MissionVersionScalarFieldEnum | MissionVersionScalarFieldEnum[]
+  }
+
+  /**
+   * MissionVersion findFirstOrThrow
+   */
+  export type MissionVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which MissionVersion to fetch.
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissionVersions to fetch.
+     */
+    orderBy?: MissionVersionOrderByWithRelationInput | MissionVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MissionVersions.
+     */
+    cursor?: MissionVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissionVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissionVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MissionVersions.
+     */
+    distinct?: MissionVersionScalarFieldEnum | MissionVersionScalarFieldEnum[]
+  }
+
+  /**
+   * MissionVersion findMany
+   */
+  export type MissionVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which MissionVersions to fetch.
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissionVersions to fetch.
+     */
+    orderBy?: MissionVersionOrderByWithRelationInput | MissionVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MissionVersions.
+     */
+    cursor?: MissionVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissionVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissionVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MissionVersions.
+     */
+    distinct?: MissionVersionScalarFieldEnum | MissionVersionScalarFieldEnum[]
+  }
+
+  /**
+   * MissionVersion create
+   */
+  export type MissionVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MissionVersion.
+     */
+    data: XOR<MissionVersionCreateInput, MissionVersionUncheckedCreateInput>
+  }
+
+  /**
+   * MissionVersion createMany
+   */
+  export type MissionVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MissionVersions.
+     */
+    data: MissionVersionCreateManyInput | MissionVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MissionVersion createManyAndReturn
+   */
+  export type MissionVersionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * The data used to create many MissionVersions.
+     */
+    data: MissionVersionCreateManyInput | MissionVersionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MissionVersion update
+   */
+  export type MissionVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MissionVersion.
+     */
+    data: XOR<MissionVersionUpdateInput, MissionVersionUncheckedUpdateInput>
+    /**
+     * Choose, which MissionVersion to update.
+     */
+    where: MissionVersionWhereUniqueInput
+  }
+
+  /**
+   * MissionVersion updateMany
+   */
+  export type MissionVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MissionVersions.
+     */
+    data: XOR<MissionVersionUpdateManyMutationInput, MissionVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which MissionVersions to update
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * Limit how many MissionVersions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MissionVersion updateManyAndReturn
+   */
+  export type MissionVersionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * The data used to update MissionVersions.
+     */
+    data: XOR<MissionVersionUpdateManyMutationInput, MissionVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which MissionVersions to update
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * Limit how many MissionVersions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MissionVersion upsert
+   */
+  export type MissionVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MissionVersion to update in case it exists.
+     */
+    where: MissionVersionWhereUniqueInput
+    /**
+     * In case the MissionVersion found by the `where` argument doesn't exist, create a new MissionVersion with this data.
+     */
+    create: XOR<MissionVersionCreateInput, MissionVersionUncheckedCreateInput>
+    /**
+     * In case the MissionVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MissionVersionUpdateInput, MissionVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * MissionVersion delete
+   */
+  export type MissionVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
+    /**
+     * Filter which MissionVersion to delete.
+     */
+    where: MissionVersionWhereUniqueInput
+  }
+
+  /**
+   * MissionVersion deleteMany
+   */
+  export type MissionVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MissionVersions to delete
+     */
+    where?: MissionVersionWhereInput
+    /**
+     * Limit how many MissionVersions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MissionVersion without action
+   */
+  export type MissionVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissionVersion
+     */
+    select?: MissionVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissionVersion
+     */
+    omit?: MissionVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissionVersionInclude<ExtArgs> | null
   }
 
 
@@ -45830,11 +47120,24 @@ export namespace Prisma {
     statusId: 'statusId',
     content: 'content',
     order: 'order',
+    type: 'type',
+    templateData: 'templateData',
+    sphereId: 'sphereId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type ThoughtScalarFieldEnum = (typeof ThoughtScalarFieldEnum)[keyof typeof ThoughtScalarFieldEnum]
+
+
+  export const MissionVersionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    content: 'content',
+    createdAt: 'createdAt'
+  };
+
+  export type MissionVersionScalarFieldEnum = (typeof MissionVersionScalarFieldEnum)[keyof typeof MissionVersionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -46070,6 +47373,20 @@ export namespace Prisma {
    */
   export type ListEnumTacticFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TacticFrequency[]'>
     
+
+
+  /**
+   * Reference to a field of type 'ThoughtType'
+   */
+  export type EnumThoughtTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ThoughtType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ThoughtType[]'
+   */
+  export type ListEnumThoughtTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ThoughtType[]'>
+    
   /**
    * Deep Input Types
    */
@@ -46110,6 +47427,7 @@ export namespace Prisma {
     setLogs?: SetLogListRelationFilter
     thoughtStatuses?: ThoughtStatusListRelationFilter
     thoughts?: ThoughtListRelationFilter
+    missionVersions?: MissionVersionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -46144,6 +47462,7 @@ export namespace Prisma {
     setLogs?: SetLogOrderByRelationAggregateInput
     thoughtStatuses?: ThoughtStatusOrderByRelationAggregateInput
     thoughts?: ThoughtOrderByRelationAggregateInput
+    missionVersions?: MissionVersionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -46181,6 +47500,7 @@ export namespace Prisma {
     setLogs?: SetLogListRelationFilter
     thoughtStatuses?: ThoughtStatusListRelationFilter
     thoughts?: ThoughtListRelationFilter
+    missionVersions?: MissionVersionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -46866,6 +48186,7 @@ export namespace Prisma {
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
     tasks?: TaskListRelationFilter
+    thoughts?: ThoughtListRelationFilter
   }
 
   export type LifeSphereOrderByWithRelationInput = {
@@ -46883,6 +48204,7 @@ export namespace Prisma {
     milestones?: MilestoneOrderByRelationAggregateInput
     objectives?: ObjectiveOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
+    thoughts?: ThoughtOrderByRelationAggregateInput
   }
 
   export type LifeSphereWhereUniqueInput = Prisma.AtLeast<{
@@ -46903,6 +48225,7 @@ export namespace Prisma {
     milestones?: MilestoneListRelationFilter
     objectives?: ObjectiveListRelationFilter
     tasks?: TaskListRelationFilter
+    thoughts?: ThoughtListRelationFilter
   }, "id">
 
   export type LifeSphereOrderByWithAggregationInput = {
@@ -49005,10 +50328,14 @@ export namespace Prisma {
     statusId?: StringFilter<"Thought"> | string
     content?: StringFilter<"Thought"> | string
     order?: IntFilter<"Thought"> | number
+    type?: EnumThoughtTypeNullableFilter<"Thought"> | $Enums.ThoughtType | null
+    templateData?: JsonNullableFilter<"Thought">
+    sphereId?: StringNullableFilter<"Thought"> | string | null
     createdAt?: DateTimeFilter<"Thought"> | Date | string
     updatedAt?: DateTimeFilter<"Thought"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     status?: XOR<ThoughtStatusScalarRelationFilter, ThoughtStatusWhereInput>
+    sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }
 
   export type ThoughtOrderByWithRelationInput = {
@@ -49017,10 +50344,14 @@ export namespace Prisma {
     statusId?: SortOrder
     content?: SortOrder
     order?: SortOrder
+    type?: SortOrderInput | SortOrder
+    templateData?: SortOrderInput | SortOrder
+    sphereId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     status?: ThoughtStatusOrderByWithRelationInput
+    sphere?: LifeSphereOrderByWithRelationInput
   }
 
   export type ThoughtWhereUniqueInput = Prisma.AtLeast<{
@@ -49032,10 +50363,14 @@ export namespace Prisma {
     statusId?: StringFilter<"Thought"> | string
     content?: StringFilter<"Thought"> | string
     order?: IntFilter<"Thought"> | number
+    type?: EnumThoughtTypeNullableFilter<"Thought"> | $Enums.ThoughtType | null
+    templateData?: JsonNullableFilter<"Thought">
+    sphereId?: StringNullableFilter<"Thought"> | string | null
     createdAt?: DateTimeFilter<"Thought"> | Date | string
     updatedAt?: DateTimeFilter<"Thought"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     status?: XOR<ThoughtStatusScalarRelationFilter, ThoughtStatusWhereInput>
+    sphere?: XOR<LifeSphereNullableScalarRelationFilter, LifeSphereWhereInput> | null
   }, "id">
 
   export type ThoughtOrderByWithAggregationInput = {
@@ -49044,6 +50379,9 @@ export namespace Prisma {
     statusId?: SortOrder
     content?: SortOrder
     order?: SortOrder
+    type?: SortOrderInput | SortOrder
+    templateData?: SortOrderInput | SortOrder
+    sphereId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ThoughtCountOrderByAggregateInput
@@ -49062,8 +50400,61 @@ export namespace Prisma {
     statusId?: StringWithAggregatesFilter<"Thought"> | string
     content?: StringWithAggregatesFilter<"Thought"> | string
     order?: IntWithAggregatesFilter<"Thought"> | number
+    type?: EnumThoughtTypeNullableWithAggregatesFilter<"Thought"> | $Enums.ThoughtType | null
+    templateData?: JsonNullableWithAggregatesFilter<"Thought">
+    sphereId?: StringNullableWithAggregatesFilter<"Thought"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Thought"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Thought"> | Date | string
+  }
+
+  export type MissionVersionWhereInput = {
+    AND?: MissionVersionWhereInput | MissionVersionWhereInput[]
+    OR?: MissionVersionWhereInput[]
+    NOT?: MissionVersionWhereInput | MissionVersionWhereInput[]
+    id?: StringFilter<"MissionVersion"> | string
+    userId?: StringFilter<"MissionVersion"> | string
+    content?: StringFilter<"MissionVersion"> | string
+    createdAt?: DateTimeFilter<"MissionVersion"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type MissionVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type MissionVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MissionVersionWhereInput | MissionVersionWhereInput[]
+    OR?: MissionVersionWhereInput[]
+    NOT?: MissionVersionWhereInput | MissionVersionWhereInput[]
+    userId?: StringFilter<"MissionVersion"> | string
+    content?: StringFilter<"MissionVersion"> | string
+    createdAt?: DateTimeFilter<"MissionVersion"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type MissionVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    _count?: MissionVersionCountOrderByAggregateInput
+    _max?: MissionVersionMaxOrderByAggregateInput
+    _min?: MissionVersionMinOrderByAggregateInput
+  }
+
+  export type MissionVersionScalarWhereWithAggregatesInput = {
+    AND?: MissionVersionScalarWhereWithAggregatesInput | MissionVersionScalarWhereWithAggregatesInput[]
+    OR?: MissionVersionScalarWhereWithAggregatesInput[]
+    NOT?: MissionVersionScalarWhereWithAggregatesInput | MissionVersionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MissionVersion"> | string
+    userId?: StringWithAggregatesFilter<"MissionVersion"> | string
+    content?: StringWithAggregatesFilter<"MissionVersion"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"MissionVersion"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -49098,6 +50489,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -49132,6 +50524,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -49166,6 +50559,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -49200,6 +50594,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -49943,6 +51338,7 @@ export namespace Prisma {
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateInput = {
@@ -49959,6 +51355,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUpdateInput = {
@@ -49975,6 +51372,7 @@ export namespace Prisma {
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateInput = {
@@ -49991,6 +51389,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereCreateManyInput = {
@@ -52309,10 +53708,13 @@ export namespace Prisma {
     id?: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutThoughtsInput
     status: ThoughtStatusCreateNestedOneWithoutThoughtsInput
+    sphere?: LifeSphereCreateNestedOneWithoutThoughtsInput
   }
 
   export type ThoughtUncheckedCreateInput = {
@@ -52321,6 +53723,9 @@ export namespace Prisma {
     statusId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52329,10 +53734,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutThoughtsNestedInput
     status?: ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput
+    sphere?: LifeSphereUpdateOneWithoutThoughtsNestedInput
   }
 
   export type ThoughtUncheckedUpdateInput = {
@@ -52341,6 +53749,9 @@ export namespace Prisma {
     statusId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52351,6 +53762,9 @@ export namespace Prisma {
     statusId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52359,6 +53773,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52369,8 +53785,59 @@ export namespace Prisma {
     statusId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionCreateInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutMissionVersionsInput
+  }
+
+  export type MissionVersionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type MissionVersionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMissionVersionsNestedInput
+  }
+
+  export type MissionVersionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionCreateManyInput = {
+    id?: string
+    userId: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type MissionVersionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -52558,6 +54025,12 @@ export namespace Prisma {
     none?: ThoughtWhereInput
   }
 
+  export type MissionVersionListRelationFilter = {
+    every?: MissionVersionWhereInput
+    some?: MissionVersionWhereInput
+    none?: MissionVersionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -52644,6 +54117,10 @@ export namespace Prisma {
   }
 
   export type ThoughtOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MissionVersionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -54771,6 +56248,13 @@ export namespace Prisma {
     order?: SortOrder
   }
 
+  export type EnumThoughtTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ThoughtType | EnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumThoughtTypeNullableFilter<$PrismaModel> | $Enums.ThoughtType | null
+  }
+
   export type ThoughtStatusScalarRelationFilter = {
     is?: ThoughtStatusWhereInput
     isNot?: ThoughtStatusWhereInput
@@ -54782,6 +56266,9 @@ export namespace Prisma {
     statusId?: SortOrder
     content?: SortOrder
     order?: SortOrder
+    type?: SortOrder
+    templateData?: SortOrder
+    sphereId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -54796,6 +56283,8 @@ export namespace Prisma {
     statusId?: SortOrder
     content?: SortOrder
     order?: SortOrder
+    type?: SortOrder
+    sphereId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -54806,12 +56295,45 @@ export namespace Prisma {
     statusId?: SortOrder
     content?: SortOrder
     order?: SortOrder
+    type?: SortOrder
+    sphereId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type ThoughtSumOrderByAggregateInput = {
     order?: SortOrder
+  }
+
+  export type EnumThoughtTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ThoughtType | EnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumThoughtTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ThoughtType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumThoughtTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumThoughtTypeNullableFilter<$PrismaModel>
+  }
+
+  export type MissionVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MissionVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MissionVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {
@@ -54961,6 +56483,13 @@ export namespace Prisma {
     connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
   }
 
+  export type MissionVersionCreateNestedManyWithoutUserInput = {
+    create?: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput> | MissionVersionCreateWithoutUserInput[] | MissionVersionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MissionVersionCreateOrConnectWithoutUserInput | MissionVersionCreateOrConnectWithoutUserInput[]
+    createMany?: MissionVersionCreateManyUserInputEnvelope
+    connect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -55106,6 +56635,13 @@ export namespace Prisma {
     connectOrCreate?: ThoughtCreateOrConnectWithoutUserInput | ThoughtCreateOrConnectWithoutUserInput[]
     createMany?: ThoughtCreateManyUserInputEnvelope
     connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+  }
+
+  export type MissionVersionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput> | MissionVersionCreateWithoutUserInput[] | MissionVersionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MissionVersionCreateOrConnectWithoutUserInput | MissionVersionCreateOrConnectWithoutUserInput[]
+    createMany?: MissionVersionCreateManyUserInputEnvelope
+    connect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -55422,6 +56958,20 @@ export namespace Prisma {
     deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
   }
 
+  export type MissionVersionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput> | MissionVersionCreateWithoutUserInput[] | MissionVersionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MissionVersionCreateOrConnectWithoutUserInput | MissionVersionCreateOrConnectWithoutUserInput[]
+    upsert?: MissionVersionUpsertWithWhereUniqueWithoutUserInput | MissionVersionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MissionVersionCreateManyUserInputEnvelope
+    set?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    disconnect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    delete?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    connect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    update?: MissionVersionUpdateWithWhereUniqueWithoutUserInput | MissionVersionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MissionVersionUpdateManyWithWhereWithoutUserInput | MissionVersionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MissionVersionScalarWhereInput | MissionVersionScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -55716,6 +57266,20 @@ export namespace Prisma {
     deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
   }
 
+  export type MissionVersionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput> | MissionVersionCreateWithoutUserInput[] | MissionVersionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MissionVersionCreateOrConnectWithoutUserInput | MissionVersionCreateOrConnectWithoutUserInput[]
+    upsert?: MissionVersionUpsertWithWhereUniqueWithoutUserInput | MissionVersionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MissionVersionCreateManyUserInputEnvelope
+    set?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    disconnect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    delete?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    connect?: MissionVersionWhereUniqueInput | MissionVersionWhereUniqueInput[]
+    update?: MissionVersionUpdateWithWhereUniqueWithoutUserInput | MissionVersionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MissionVersionUpdateManyWithWhereWithoutUserInput | MissionVersionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MissionVersionScalarWhereInput | MissionVersionScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutWeekTemplatesInput = {
     create?: XOR<UserCreateWithoutWeekTemplatesInput, UserUncheckedCreateWithoutWeekTemplatesInput>
     connectOrCreate?: UserCreateOrConnectWithoutWeekTemplatesInput
@@ -55850,6 +57414,13 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
+  export type ThoughtCreateNestedManyWithoutSphereInput = {
+    create?: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput> | ThoughtCreateWithoutSphereInput[] | ThoughtUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutSphereInput | ThoughtCreateOrConnectWithoutSphereInput[]
+    createMany?: ThoughtCreateManySphereInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+  }
+
   export type HabitUncheckedCreateNestedManyWithoutSphereInput = {
     create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
     connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
@@ -55876,6 +57447,13 @@ export namespace Prisma {
     connectOrCreate?: TaskCreateOrConnectWithoutSphereInput | TaskCreateOrConnectWithoutSphereInput[]
     createMany?: TaskCreateManySphereInputEnvelope
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type ThoughtUncheckedCreateNestedManyWithoutSphereInput = {
+    create?: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput> | ThoughtCreateWithoutSphereInput[] | ThoughtUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutSphereInput | ThoughtCreateOrConnectWithoutSphereInput[]
+    createMany?: ThoughtCreateManySphereInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -55946,6 +57524,20 @@ export namespace Prisma {
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
+  export type ThoughtUpdateManyWithoutSphereNestedInput = {
+    create?: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput> | ThoughtCreateWithoutSphereInput[] | ThoughtUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutSphereInput | ThoughtCreateOrConnectWithoutSphereInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutSphereInput | ThoughtUpsertWithWhereUniqueWithoutSphereInput[]
+    createMany?: ThoughtCreateManySphereInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutSphereInput | ThoughtUpdateWithWhereUniqueWithoutSphereInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutSphereInput | ThoughtUpdateManyWithWhereWithoutSphereInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+  }
+
   export type HabitUncheckedUpdateManyWithoutSphereNestedInput = {
     create?: XOR<HabitCreateWithoutSphereInput, HabitUncheckedCreateWithoutSphereInput> | HabitCreateWithoutSphereInput[] | HabitUncheckedCreateWithoutSphereInput[]
     connectOrCreate?: HabitCreateOrConnectWithoutSphereInput | HabitCreateOrConnectWithoutSphereInput[]
@@ -56000,6 +57592,20 @@ export namespace Prisma {
     update?: TaskUpdateWithWhereUniqueWithoutSphereInput | TaskUpdateWithWhereUniqueWithoutSphereInput[]
     updateMany?: TaskUpdateManyWithWhereWithoutSphereInput | TaskUpdateManyWithWhereWithoutSphereInput[]
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutSphereNestedInput = {
+    create?: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput> | ThoughtCreateWithoutSphereInput[] | ThoughtUncheckedCreateWithoutSphereInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutSphereInput | ThoughtCreateOrConnectWithoutSphereInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutSphereInput | ThoughtUpsertWithWhereUniqueWithoutSphereInput[]
+    createMany?: ThoughtCreateManySphereInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutSphereInput | ThoughtUpdateWithWhereUniqueWithoutSphereInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutSphereInput | ThoughtUpdateManyWithWhereWithoutSphereInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
   }
 
   export type TaskCreateNestedOneWithoutChildrenInput = {
@@ -57315,6 +58921,16 @@ export namespace Prisma {
     connect?: ThoughtStatusWhereUniqueInput
   }
 
+  export type LifeSphereCreateNestedOneWithoutThoughtsInput = {
+    create?: XOR<LifeSphereCreateWithoutThoughtsInput, LifeSphereUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutThoughtsInput
+    connect?: LifeSphereWhereUniqueInput
+  }
+
+  export type NullableEnumThoughtTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ThoughtType | null
+  }
+
   export type UserUpdateOneRequiredWithoutThoughtsNestedInput = {
     create?: XOR<UserCreateWithoutThoughtsInput, UserUncheckedCreateWithoutThoughtsInput>
     connectOrCreate?: UserCreateOrConnectWithoutThoughtsInput
@@ -57329,6 +58945,30 @@ export namespace Prisma {
     upsert?: ThoughtStatusUpsertWithoutThoughtsInput
     connect?: ThoughtStatusWhereUniqueInput
     update?: XOR<XOR<ThoughtStatusUpdateToOneWithWhereWithoutThoughtsInput, ThoughtStatusUpdateWithoutThoughtsInput>, ThoughtStatusUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type LifeSphereUpdateOneWithoutThoughtsNestedInput = {
+    create?: XOR<LifeSphereCreateWithoutThoughtsInput, LifeSphereUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: LifeSphereCreateOrConnectWithoutThoughtsInput
+    upsert?: LifeSphereUpsertWithoutThoughtsInput
+    disconnect?: LifeSphereWhereInput | boolean
+    delete?: LifeSphereWhereInput | boolean
+    connect?: LifeSphereWhereUniqueInput
+    update?: XOR<XOR<LifeSphereUpdateToOneWithWhereWithoutThoughtsInput, LifeSphereUpdateWithoutThoughtsInput>, LifeSphereUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type UserCreateNestedOneWithoutMissionVersionsInput = {
+    create?: XOR<UserCreateWithoutMissionVersionsInput, UserUncheckedCreateWithoutMissionVersionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMissionVersionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutMissionVersionsNestedInput = {
+    create?: XOR<UserCreateWithoutMissionVersionsInput, UserUncheckedCreateWithoutMissionVersionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMissionVersionsInput
+    upsert?: UserUpsertWithoutMissionVersionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMissionVersionsInput, UserUpdateWithoutMissionVersionsInput>, UserUncheckedUpdateWithoutMissionVersionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -57723,6 +59363,23 @@ export namespace Prisma {
     _max?: NestedEnumTacticFrequencyFilter<$PrismaModel>
   }
 
+  export type NestedEnumThoughtTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ThoughtType | EnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumThoughtTypeNullableFilter<$PrismaModel> | $Enums.ThoughtType | null
+  }
+
+  export type NestedEnumThoughtTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ThoughtType | EnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ThoughtType[] | ListEnumThoughtTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumThoughtTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ThoughtType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumThoughtTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumThoughtTypeNullableFilter<$PrismaModel>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -57986,6 +59643,7 @@ export namespace Prisma {
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutUserInput = {
@@ -58001,6 +59659,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutUserInput = {
@@ -58523,9 +60182,12 @@ export namespace Prisma {
     id?: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     status: ThoughtStatusCreateNestedOneWithoutThoughtsInput
+    sphere?: LifeSphereCreateNestedOneWithoutThoughtsInput
   }
 
   export type ThoughtUncheckedCreateWithoutUserInput = {
@@ -58533,6 +60195,9 @@ export namespace Prisma {
     statusId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -58544,6 +60209,28 @@ export namespace Prisma {
 
   export type ThoughtCreateManyUserInputEnvelope = {
     data: ThoughtCreateManyUserInput | ThoughtCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MissionVersionCreateWithoutUserInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type MissionVersionUncheckedCreateWithoutUserInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type MissionVersionCreateOrConnectWithoutUserInput = {
+    where: MissionVersionWhereUniqueInput
+    create: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput>
+  }
+
+  export type MissionVersionCreateManyUserInputEnvelope = {
+    data: MissionVersionCreateManyUserInput | MissionVersionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -59253,8 +60940,37 @@ export namespace Prisma {
     statusId?: StringFilter<"Thought"> | string
     content?: StringFilter<"Thought"> | string
     order?: IntFilter<"Thought"> | number
+    type?: EnumThoughtTypeNullableFilter<"Thought"> | $Enums.ThoughtType | null
+    templateData?: JsonNullableFilter<"Thought">
+    sphereId?: StringNullableFilter<"Thought"> | string | null
     createdAt?: DateTimeFilter<"Thought"> | Date | string
     updatedAt?: DateTimeFilter<"Thought"> | Date | string
+  }
+
+  export type MissionVersionUpsertWithWhereUniqueWithoutUserInput = {
+    where: MissionVersionWhereUniqueInput
+    update: XOR<MissionVersionUpdateWithoutUserInput, MissionVersionUncheckedUpdateWithoutUserInput>
+    create: XOR<MissionVersionCreateWithoutUserInput, MissionVersionUncheckedCreateWithoutUserInput>
+  }
+
+  export type MissionVersionUpdateWithWhereUniqueWithoutUserInput = {
+    where: MissionVersionWhereUniqueInput
+    data: XOR<MissionVersionUpdateWithoutUserInput, MissionVersionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MissionVersionUpdateManyWithWhereWithoutUserInput = {
+    where: MissionVersionScalarWhereInput
+    data: XOR<MissionVersionUpdateManyMutationInput, MissionVersionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MissionVersionScalarWhereInput = {
+    AND?: MissionVersionScalarWhereInput | MissionVersionScalarWhereInput[]
+    OR?: MissionVersionScalarWhereInput[]
+    NOT?: MissionVersionScalarWhereInput | MissionVersionScalarWhereInput[]
+    id?: StringFilter<"MissionVersion"> | string
+    userId?: StringFilter<"MissionVersion"> | string
+    content?: StringFilter<"MissionVersion"> | string
+    createdAt?: DateTimeFilter<"MissionVersion"> | Date | string
   }
 
   export type UserCreateWithoutWeekTemplatesInput = {
@@ -59288,6 +61004,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekTemplatesInput = {
@@ -59321,6 +61038,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekTemplatesInput = {
@@ -59401,6 +61119,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekTemplatesInput = {
@@ -59434,6 +61153,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutWeekTemplatesInput = {
@@ -59504,6 +61224,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -59537,6 +61258,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -59586,6 +61308,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -59619,6 +61342,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -59652,6 +61376,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -59685,6 +61410,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -59734,6 +61460,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -59767,6 +61494,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -59800,6 +61528,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -59833,6 +61562,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -59882,6 +61612,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -59915,6 +61646,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCreateWithoutSphereInput = {
@@ -60008,6 +61740,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -60041,6 +61774,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -60182,6 +61916,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ThoughtCreateWithoutSphereInput = {
+    id?: string
+    content: string
+    order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutThoughtsInput
+    status: ThoughtStatusCreateNestedOneWithoutThoughtsInput
+  }
+
+  export type ThoughtUncheckedCreateWithoutSphereInput = {
+    id?: string
+    userId: string
+    statusId: string
+    content: string
+    order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtCreateOrConnectWithoutSphereInput = {
+    where: ThoughtWhereUniqueInput
+    create: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput>
+  }
+
+  export type ThoughtCreateManySphereInputEnvelope = {
+    data: ThoughtCreateManySphereInput | ThoughtCreateManySphereInput[]
+    skipDuplicates?: boolean
+  }
+
   export type HabitUpsertWithWhereUniqueWithoutSphereInput = {
     where: HabitWhereUniqueInput
     update: XOR<HabitUpdateWithoutSphereInput, HabitUncheckedUpdateWithoutSphereInput>
@@ -60240,6 +62008,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -60273,6 +62042,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -60335,6 +62105,22 @@ export namespace Prisma {
   export type TaskUpdateManyWithWhereWithoutSphereInput = {
     where: TaskScalarWhereInput
     data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutSphereInput>
+  }
+
+  export type ThoughtUpsertWithWhereUniqueWithoutSphereInput = {
+    where: ThoughtWhereUniqueInput
+    update: XOR<ThoughtUpdateWithoutSphereInput, ThoughtUncheckedUpdateWithoutSphereInput>
+    create: XOR<ThoughtCreateWithoutSphereInput, ThoughtUncheckedCreateWithoutSphereInput>
+  }
+
+  export type ThoughtUpdateWithWhereUniqueWithoutSphereInput = {
+    where: ThoughtWhereUniqueInput
+    data: XOR<ThoughtUpdateWithoutSphereInput, ThoughtUncheckedUpdateWithoutSphereInput>
+  }
+
+  export type ThoughtUpdateManyWithWhereWithoutSphereInput = {
+    where: ThoughtScalarWhereInput
+    data: XOR<ThoughtUpdateManyMutationInput, ThoughtUncheckedUpdateManyWithoutSphereInput>
   }
 
   export type TaskCreateWithoutChildrenInput = {
@@ -60510,6 +62296,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutTasksInput = {
@@ -60525,6 +62312,7 @@ export namespace Prisma {
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutTasksInput = {
@@ -60563,6 +62351,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -60596,6 +62385,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -60747,6 +62537,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutTasksInput = {
@@ -60762,6 +62553,7 @@ export namespace Prisma {
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type UserUpsertWithoutTasksInput = {
@@ -60806,6 +62598,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -60839,6 +62632,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -60872,6 +62666,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -60905,6 +62700,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -60954,6 +62750,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -60987,6 +62784,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -61002,6 +62800,7 @@ export namespace Prisma {
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutHabitsInput = {
@@ -61017,6 +62816,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutHabitsInput = {
@@ -61082,6 +62882,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -61115,6 +62916,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -61168,6 +62970,7 @@ export namespace Prisma {
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutHabitsInput = {
@@ -61183,6 +62986,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type HabitChainUpsertWithoutHabitsInput = {
@@ -61260,6 +63064,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -61293,6 +63098,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -61352,6 +63158,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitChainsInput = {
@@ -61385,6 +63192,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitChainsInput = {
@@ -61494,6 +63302,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitChainsInput = {
@@ -61527,6 +63336,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitUpsertWithWhereUniqueWithoutChainInput = {
@@ -61692,6 +63502,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -61725,6 +63536,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -61774,6 +63586,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -61807,6 +63620,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -61840,6 +63654,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -61873,6 +63688,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -61922,6 +63738,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -61955,6 +63772,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -61970,6 +63788,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     objectives?: ObjectiveCreateNestedManyWithoutSphereInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutMilestonesInput = {
@@ -61985,6 +63804,7 @@ export namespace Prisma {
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
     objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutMilestonesInput = {
@@ -62023,6 +63843,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -62056,6 +63877,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -62087,6 +63909,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutMilestonesInput = {
@@ -62102,6 +63925,7 @@ export namespace Prisma {
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type UserUpsertWithoutMilestonesInput = {
@@ -62146,6 +63970,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -62179,6 +64004,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -62246,6 +64072,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -62279,6 +64106,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -62378,6 +64206,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -62411,6 +64240,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -62490,6 +64320,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutLifeSpheresInput
     milestones?: MilestoneCreateNestedManyWithoutSphereInput
     tasks?: TaskCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereUncheckedCreateWithoutObjectivesInput = {
@@ -62505,6 +64336,7 @@ export namespace Prisma {
     habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
     milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
     tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutSphereInput
   }
 
   export type LifeSphereCreateOrConnectWithoutObjectivesInput = {
@@ -62631,6 +64463,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutObjectivesInput = {
@@ -62646,6 +64479,7 @@ export namespace Prisma {
     habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type SprintUpsertWithoutObjectivesInput = {
@@ -63253,6 +65087,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutExercisesInput = {
@@ -63286,6 +65121,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutExercisesInput = {
@@ -63419,6 +65255,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExercisesInput = {
@@ -63452,6 +65289,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -63517,6 +65355,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingPlansInput = {
@@ -63550,6 +65389,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingPlansInput = {
@@ -63635,6 +65475,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingPlansInput = {
@@ -63668,6 +65509,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithWhereUniqueWithoutPlanInput = {
@@ -63717,6 +65559,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingDaysInput = {
@@ -63750,6 +65593,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingDaysInput = {
@@ -63928,6 +65772,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingDaysInput = {
@@ -63961,6 +65806,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingPlanUpsertWithoutDaysInput = {
@@ -64075,6 +65921,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingDayExercisesInput = {
@@ -64108,6 +65955,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingDayExercisesInput = {
@@ -64233,6 +66081,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingDayExercisesInput = {
@@ -64266,6 +66115,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutExercisesInput = {
@@ -64387,6 +66237,7 @@ export namespace Prisma {
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingSessionsInput = {
@@ -64420,6 +66271,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingSessionsInput = {
@@ -64544,6 +66396,7 @@ export namespace Prisma {
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingSessionsInput = {
@@ -64577,6 +66430,7 @@ export namespace Prisma {
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutSessionsInput = {
@@ -64663,6 +66517,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSetLogsInput = {
@@ -64696,6 +66551,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSetLogsInput = {
@@ -64821,6 +66677,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSetLogsInput = {
@@ -64854,6 +66711,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingSessionUpsertWithoutSetLogsInput = {
@@ -64975,6 +66833,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutThoughtStatusesInput = {
@@ -65008,6 +66867,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutThoughtStatusesInput = {
@@ -65019,9 +66879,12 @@ export namespace Prisma {
     id?: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutThoughtsInput
+    sphere?: LifeSphereCreateNestedOneWithoutThoughtsInput
   }
 
   export type ThoughtUncheckedCreateWithoutStatusInput = {
@@ -65029,6 +66892,9 @@ export namespace Prisma {
     userId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65085,6 +66951,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutThoughtStatusesInput = {
@@ -65118,6 +66985,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ThoughtUpsertWithWhereUniqueWithoutStatusInput = {
@@ -65167,6 +67035,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutThoughtsInput = {
@@ -65200,6 +67069,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
     thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutThoughtsInput = {
@@ -65230,6 +67100,43 @@ export namespace Prisma {
   export type ThoughtStatusCreateOrConnectWithoutThoughtsInput = {
     where: ThoughtStatusWhereUniqueInput
     create: XOR<ThoughtStatusCreateWithoutThoughtsInput, ThoughtStatusUncheckedCreateWithoutThoughtsInput>
+  }
+
+  export type LifeSphereCreateWithoutThoughtsInput = {
+    id?: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    habits?: HabitCreateNestedManyWithoutSphereInput
+    user: UserCreateNestedOneWithoutLifeSpheresInput
+    milestones?: MilestoneCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveCreateNestedManyWithoutSphereInput
+    tasks?: TaskCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereUncheckedCreateWithoutThoughtsInput = {
+    id?: string
+    userId: string
+    name: string
+    color: string
+    icon: string
+    order?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    habits?: HabitUncheckedCreateNestedManyWithoutSphereInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutSphereInput
+    objectives?: ObjectiveUncheckedCreateNestedManyWithoutSphereInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutSphereInput
+  }
+
+  export type LifeSphereCreateOrConnectWithoutThoughtsInput = {
+    where: LifeSphereWhereUniqueInput
+    create: XOR<LifeSphereCreateWithoutThoughtsInput, LifeSphereUncheckedCreateWithoutThoughtsInput>
   }
 
   export type UserUpsertWithoutThoughtsInput = {
@@ -65274,6 +67181,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutThoughtsInput = {
@@ -65307,6 +67215,7 @@ export namespace Prisma {
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
     thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ThoughtStatusUpsertWithoutThoughtsInput = {
@@ -65338,6 +67247,201 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LifeSphereUpsertWithoutThoughtsInput = {
+    update: XOR<LifeSphereUpdateWithoutThoughtsInput, LifeSphereUncheckedUpdateWithoutThoughtsInput>
+    create: XOR<LifeSphereCreateWithoutThoughtsInput, LifeSphereUncheckedCreateWithoutThoughtsInput>
+    where?: LifeSphereWhereInput
+  }
+
+  export type LifeSphereUpdateToOneWithWhereWithoutThoughtsInput = {
+    where?: LifeSphereWhereInput
+    data: XOR<LifeSphereUpdateWithoutThoughtsInput, LifeSphereUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type LifeSphereUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    habits?: HabitUpdateManyWithoutSphereNestedInput
+    user?: UserUpdateOneRequiredWithoutLifeSpheresNestedInput
+    milestones?: MilestoneUpdateManyWithoutSphereNestedInput
+    objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
+    tasks?: TaskUpdateManyWithoutSphereNestedInput
+  }
+
+  export type LifeSphereUncheckedUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    icon?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    habits?: HabitUncheckedUpdateManyWithoutSphereNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
+    objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+  }
+
+  export type UserCreateWithoutMissionVersionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMissionVersionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMissionVersionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMissionVersionsInput, UserUncheckedCreateWithoutMissionVersionsInput>
+  }
+
+  export type UserUpsertWithoutMissionVersionsInput = {
+    update: XOR<UserUpdateWithoutMissionVersionsInput, UserUncheckedUpdateWithoutMissionVersionsInput>
+    create: XOR<UserCreateWithoutMissionVersionsInput, UserUncheckedCreateWithoutMissionVersionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMissionVersionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMissionVersionsInput, UserUncheckedUpdateWithoutMissionVersionsInput>
+  }
+
+  export type UserUpdateWithoutMissionVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMissionVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -65626,8 +67730,17 @@ export namespace Prisma {
     statusId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type MissionVersionCreateManyUserInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -65941,6 +68054,7 @@ export namespace Prisma {
     milestones?: MilestoneUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUpdateManyWithoutSphereNestedInput
     tasks?: TaskUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateWithoutUserInput = {
@@ -65956,6 +68070,7 @@ export namespace Prisma {
     milestones?: MilestoneUncheckedUpdateManyWithoutSphereNestedInput
     objectives?: ObjectiveUncheckedUpdateManyWithoutSphereNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutSphereNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutSphereNestedInput
   }
 
   export type LifeSphereUncheckedUpdateManyWithoutUserInput = {
@@ -66511,9 +68626,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput
+    sphere?: LifeSphereUpdateOneWithoutThoughtsNestedInput
   }
 
   export type ThoughtUncheckedUpdateWithoutUserInput = {
@@ -66521,6 +68639,9 @@ export namespace Prisma {
     statusId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -66530,8 +68651,29 @@ export namespace Prisma {
     statusId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissionVersionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HabitCreateManySphereInput = {
@@ -66605,6 +68747,18 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+  }
+
+  export type ThoughtCreateManySphereInput = {
+    id?: string
+    userId: string
+    statusId: string
+    content: string
+    order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type HabitUpdateWithoutSphereInput = {
@@ -66832,6 +68986,42 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ThoughtUpdateWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutThoughtsNestedInput
+    status?: ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput
+  }
+
+  export type ThoughtUncheckedUpdateWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutSphereInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TaskCreateManyParentInput = {
@@ -67819,6 +70009,9 @@ export namespace Prisma {
     userId: string
     content: string
     order?: number
+    type?: $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -67827,9 +70020,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutThoughtsNestedInput
+    sphere?: LifeSphereUpdateOneWithoutThoughtsNestedInput
   }
 
   export type ThoughtUncheckedUpdateWithoutStatusInput = {
@@ -67837,6 +70033,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -67846,6 +70045,9 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+    type?: NullableEnumThoughtTypeFieldUpdateOperationsInput | $Enums.ThoughtType | null
+    templateData?: NullableJsonNullValueInput | InputJsonValue
+    sphereId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

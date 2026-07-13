@@ -3,6 +3,7 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { DomainHeader } from "@/components/layout/domain-header";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
+import { QuickCaptureButton } from "@/features/life/components/thoughts/QuickCaptureButton";
 
 export function DashboardUIWrapper({
   children,
@@ -32,6 +33,8 @@ export function DashboardUIWrapper({
         {/* Mobile Bottom Navigation */}
         <MobileBottomNav />
       </div>
+
+      <QuickCaptureButton />
     </div>
   );
 }

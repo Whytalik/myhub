@@ -4,6 +4,7 @@ import type {
   Prisma,
 } from "@/app/generated/prisma";
 import type { RoutineMap } from "@/lib/life/routine-items";
+import type { ThoughtType } from "./logic/thought-types";
 
 type JsonValue = Prisma.JsonValue;
 
@@ -362,6 +363,10 @@ export interface ThoughtData {
   statusId: string;
   content: string;
   order: number;
+  type: ThoughtType | null;
+  templateData: Record<string, string> | null;
+  sphereId: string | null;
+  sphere: LifeSphereData | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -388,6 +393,9 @@ export interface UpsertThoughtInput {
   statusId?: string;
   content?: string;
   order?: number;
+  type?: ThoughtType | null;
+  templateData?: Record<string, string> | null;
+  sphereId?: string | null;
 }
 
 export interface UpsertHabitInput {

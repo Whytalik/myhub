@@ -1,14 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
-import { Dialog } from "@/components/ui/overlays/dialog";
 import { Heading } from "@/components/ui/display/heading";
 import { instantDuplicateTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
 import { CheckCircle2, Layers, Loader2, Plus } from "lucide-react";
 import { lazy, Suspense, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { SphereGrid } from "./SphereGrid";
 import { TaskFormDialog } from "./TaskFormDialog";
 import { TaskTree } from "./TaskTree";
 
@@ -30,7 +29,6 @@ export function TasksPageClient({
   spheres,
   initialView,
 }: TasksPageClientProps) {
-  const [spheresOpen, setSpheresOpen] = useState(false);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [view, setView] = useState(initialView ?? "gallery");
   const [hideDoneSubtasks, setHideDoneSubtasks] = useState(false);
@@ -129,10 +127,12 @@ export function TasksPageClient({
               </Button>
             )}
 
-            <Button variant="outline" size="sm" onClick={() => setSpheresOpen(true)}>
-              <Layers size={14} />
-              Life Spheres
-            </Button>
+            <Link href="/life/planning/spheres">
+              <Button variant="outline" size="sm">
+                <Layers size={14} />
+                Life Spheres
+              </Button>
+            </Link>
 
             <Button variant="primary" size="sm" onClick={handleAddNew}>
               <Plus size={16} />
@@ -197,17 +197,6 @@ export function TasksPageClient({
           </Suspense>
         )}
       </div>
-
-      <Dialog
-        isOpen={spheresOpen}
-        onClose={() => setSpheresOpen(false)}
-        title="Life Spheres"
-        description="Areas of your life"
-        maxWidth="720px"
-        bare
-      >
-        <SphereGrid spheres={spheres} onClose={() => setSpheresOpen(false)} />
-      </Dialog>
 
       <TaskFormDialog
         key={`task-form-${dialogVersion}-${editingTask?.id ?? "new"}`}

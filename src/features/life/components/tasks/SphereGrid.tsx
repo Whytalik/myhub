@@ -9,7 +9,7 @@ import type { LifeSphereData } from "@/features/life/types";
 
 interface SphereGridProps {
   spheres: LifeSphereData[];
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export function SphereGrid({ spheres, onClose }: SphereGridProps) {
@@ -41,12 +41,14 @@ export function SphereGrid({ spheres, onClose }: SphereGridProps) {
             <Plus size={14} />
             Add Life Sphere
           </Button>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-white/5 rounded-md transition-colors"
-          >
-            <X size={16} />
-          </button>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-white/5 rounded-md transition-colors"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 

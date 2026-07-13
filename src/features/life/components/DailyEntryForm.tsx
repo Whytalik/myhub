@@ -54,6 +54,7 @@ interface Props {
   spheres: LifeSphereData[];
   habits: HabitData[];
   scheduledTrainingDayName?: string;
+  inboxThoughtCount?: number;
 }
 
 const EVENING_ENERGY_LABELS = [
@@ -82,6 +83,7 @@ export function DailyEntryForm({
   spheres,
   habits,
   scheduledTrainingDayName,
+  inboxThoughtCount,
 }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
   const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
@@ -513,6 +515,7 @@ export function DailyEntryForm({
                     scheduledTrainingDayName={scheduledTrainingDayName}
                     gymSkipped={data.gymSkipped}
                     gymSkipReason={data.gymSkipReason}
+                    inboxCount={inboxThoughtCount}
                     onChange={patch}
                   />
                 </Suspense>

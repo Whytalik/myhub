@@ -570,8 +570,18 @@ exports.Prisma.ThoughtScalarFieldEnum = {
   statusId: 'statusId',
   content: 'content',
   order: 'order',
+  type: 'type',
+  templateData: 'templateData',
+  sphereId: 'sphereId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MissionVersionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  content: 'content',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -652,6 +662,12 @@ exports.TacticFrequency = exports.$Enums.TacticFrequency = {
   WEEKLY: 'WEEKLY'
 };
 
+exports.ThoughtType = exports.$Enums.ThoughtType = {
+  WORRY_PROBLEM: 'WORRY_PROBLEM',
+  IDEA_DREAM: 'IDEA_DREAM',
+  TASK_DEADLINE: 'TASK_DEADLINE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   WeekTemplate: 'WeekTemplate',
@@ -686,7 +702,8 @@ exports.Prisma.ModelName = {
   TrainingSession: 'TrainingSession',
   SetLog: 'SetLog',
   ThoughtStatus: 'ThoughtStatus',
-  Thought: 'Thought'
+  Thought: 'Thought',
+  MissionVersion: 'MissionVersion'
 };
 
 /**

@@ -6,6 +6,7 @@ import {
 } from "@/lib/cache/cache";
 import { taskRepository, type TaskRow } from "../repositories/task.repository";
 import { sphereRepository } from "../repositories/sphere.repository";
+import { DEFAULT_SPHERES } from "../constants";
 import type {
   TaskData,
   LifeSphereData,
@@ -286,6 +287,13 @@ export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
 }
 
 export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
+  // Uncached check so a first-ever visit doesn't cache an empty list before
+  // the defaults exist (mirrors thought-service.ts getBoard's seeding).
+  const existingCount = await sphereRepository.count(userId);
+  if (existingCount === 0) {
+    await sphereRepository.createMany(DEFAULT_SPHERES.map((sphere) => ({ ...sphere, userId })));
+  }
+
   const spheres = await getCachedSpheres(userId);
   return spheres.map((s) => ({
     id: s.id,

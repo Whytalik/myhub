@@ -4,6 +4,7 @@ import * as thoughtService from "../services/thought-service";
 import { invalidateThoughtCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
+import type { FilterOutcome } from "../logic/filter-outcomes";
 
 export async function upsertStatusAction(
   input: UpsertThoughtStatusInput,
@@ -48,6 +49,17 @@ export async function deleteThoughtAction(id: string): Promise<ActionResult<void
   });
 }
 
+export async function quickCaptureAction(
+  content: string,
+  extra?: Parameters<typeof thoughtService.quickCapture>[2],
+): Promise<ActionResult<Awaited<ReturnType<typeof thoughtService.quickCapture>>>> {
+  return withAction(async (userId) => {
+    const thought = await thoughtService.quickCapture(userId, content, extra);
+    invalidateThoughtCache(userId);
+    return thought;
+  });
+}
+
 export async function moveThoughtAction(
   thoughtId: string,
   targetStatusId: string,
@@ -55,6 +67,16 @@ export async function moveThoughtAction(
 ): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await thoughtService.moveThought(userId, thoughtId, targetStatusId, orderedIdsInTargetColumn);
+    invalidateThoughtCache(userId);
+  });
+}
+
+export async function routeThoughtAction(
+  thoughtId: string,
+  outcome: FilterOutcome,
+): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await thoughtService.routeThought(userId, thoughtId, outcome);
     invalidateThoughtCache(userId);
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -13,7 +13,7 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, horizontalListSortingStrategy } from "@dnd-kit/sortable";
-import { Plus } from "lucide-react";
+import { Eye, EyeOff, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/actions/button";
 import {
@@ -23,23 +23,29 @@ import {
   reorderStatusesAction,
   upsertThoughtAction,
 } from "@/features/life/actions/thought-actions";
-import type { ThoughtData, ThoughtStatusData } from "@/features/life/types";
+import { TRASH_STATUS_NAME } from "@/features/life/logic/filter-outcomes";
+import type { LifeSphereData, ThoughtData, ThoughtStatusData } from "@/features/life/types";
 import { StatusColumn } from "./StatusColumn";
 import { StatusFormDialog } from "./StatusFormDialog";
+import type { ThoughtDetailPatch } from "./ThoughtDetailDialog";
 
 interface ThoughtsBoardClientProps {
   initialStatuses: ThoughtStatusData[];
+  spheres: LifeSphereData[];
 }
 
-export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProps) {
+export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardClientProps) {
   const [columns, setColumns] = useState<ThoughtStatusData[]>(initialStatuses);
   const [newStatusOpen, setNewStatusOpen] = useState(false);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [isTrashVisible, setIsTrashVisible] = useState(false);
   const [, startTransition] = useTransition();
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
-  const columnIds = useMemo(() => columns.map((c) => c.id), [columns]);
+  const trashColumn = columns.find((c) => c.name === TRASH_STATUS_NAME);
+  const visibleColumns = columns.filter((c) => c.name !== TRASH_STATUS_NAME || isTrashVisible);
+  const columnIds = visibleColumns.map((c) => c.id);
 
   const findColumnByCardId = (cardId: string) =>
     columns.find((c) => c.thoughts.some((t) => t.id === cardId));
@@ -157,6 +163,10 @@ export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProp
       statusId,
       content,
       order: column.thoughts.length,
+      type: null,
+      templateData: null,
+      sphereId: null,
+      sphere: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -170,7 +180,7 @@ export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProp
     startTransition(async () => {
       const result = await upsertThoughtAction({ statusId, content });
       if (result.success) {
-        const saved = result.data;
+        const saved = result.data as unknown as ThoughtData;
         setColumns((prev) =>
           prev.map((c) =>
             c.id === statusId
@@ -189,28 +199,30 @@ export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProp
     });
   };
 
-  const handleEditThought = (thoughtId: string, content: string) => {
+  const handleEditThought = (thoughtId: string, patch: ThoughtDetailPatch) => {
     const column = findColumnByCardId(thoughtId);
     if (!column) return;
     const previous = column.thoughts.find((t) => t.id === thoughtId);
     if (!previous) return;
 
+    const optimisticSphere = spheres.find((s) => s.id === patch.sphereId) ?? null;
+
     setColumns((prev) =>
       prev.map((c) => ({
         ...c,
-        thoughts: c.thoughts.map((t) => (t.id === thoughtId ? { ...t, content } : t)),
+        thoughts: c.thoughts.map((t) =>
+          t.id === thoughtId ? { ...t, ...patch, sphere: optimisticSphere } : t,
+        ),
       })),
     );
 
     startTransition(async () => {
-      const result = await upsertThoughtAction({ id: thoughtId, content });
+      const result = await upsertThoughtAction({ id: thoughtId, ...patch });
       if (!result.success) {
         setColumns((prev) =>
           prev.map((c) => ({
             ...c,
-            thoughts: c.thoughts.map((t) =>
-              t.id === thoughtId ? { ...t, content: previous.content } : t,
-            ),
+            thoughts: c.thoughts.map((t) => (t.id === thoughtId ? previous : t)),
           })),
         );
         toast.error(result.error || "Failed to update thought");
@@ -268,10 +280,11 @@ export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProp
       >
         <div className="flex gap-4 overflow-x-auto pb-2">
           <SortableContext items={columnIds} strategy={horizontalListSortingStrategy}>
-            {columns.map((status) => (
+            {visibleColumns.map((status) => (
               <StatusColumn
                 key={status.id}
                 status={status}
+                spheres={spheres}
                 onAddThought={handleAddThought}
                 onEditThought={handleEditThought}
                 onDeleteThought={handleDeleteThought}
@@ -280,15 +293,31 @@ export function ThoughtsBoardClient({ initialStatuses }: ThoughtsBoardClientProp
             ))}
           </SortableContext>
 
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setNewStatusOpen(true)}
-            className="h-10 shrink-0 self-start"
-          >
-            <Plus size={14} /> Add status
-          </Button>
+          <div className="flex flex-col gap-2 shrink-0 self-start">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setNewStatusOpen(true)}
+              className="h-10"
+            >
+              <Plus size={14} /> Add status
+            </Button>
+
+            {trashColumn && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsTrashVisible((v) => !v)}
+                className="h-10"
+              >
+                {isTrashVisible ? <EyeOff size={14} /> : <Eye size={14} />}
+                {isTrashVisible ? "Hide" : "Show"} {TRASH_STATUS_NAME} (
+                {trashColumn.thoughts.length})
+              </Button>
+            )}
+          </div>
         </div>
 
         <DragOverlay>

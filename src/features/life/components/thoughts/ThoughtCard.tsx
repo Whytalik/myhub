@@ -3,20 +3,23 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Sparkles, Trash2, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
-import { Textarea } from "@/components/ui/inputs/textarea";
-import type { ThoughtData } from "@/features/life/types";
+import { getThoughtTypeConfig } from "@/features/life/logic/thought-types";
+import { ThoughtDetailDialog, type ThoughtDetailPatch } from "./ThoughtDetailDialog";
+import type { LifeSphereData, ThoughtData } from "@/features/life/types";
+
+const TYPE_ICONS: Record<string, LucideIcon> = { AlertTriangle, Sparkles, CheckCircle2 };
 
 interface ThoughtCardProps {
   thought: ThoughtData;
-  onEdit: (content: string) => void;
+  spheres: LifeSphereData[];
+  onEdit: (patch: ThoughtDetailPatch) => void;
   onDelete: () => void;
 }
 
-export function ThoughtCard({ thought, onEdit, onDelete }: ThoughtCardProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [draft, setDraft] = useState(thought.content);
+export function ThoughtCard({ thought, spheres, onEdit, onDelete }: ThoughtCardProps) {
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: thought.id,
@@ -29,69 +32,69 @@ export function ThoughtCard({ thought, onEdit, onDelete }: ThoughtCardProps) {
     opacity: isDragging ? 0.4 : 1,
   };
 
-  const commitEdit = () => {
-    const trimmed = draft.trim();
-    setIsEditing(false);
-    if (trimmed && trimmed !== thought.content) {
-      onEdit(trimmed);
-    } else {
-      setDraft(thought.content);
-    }
-  };
-
-  if (isEditing) {
-    return (
-      <div ref={setNodeRef} style={style} className="glass-card p-3 flex flex-col gap-2">
-        <Textarea
-          autoFocus
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onBlur={commitEdit}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              commitEdit();
-            }
-            if (e.key === "Escape") {
-              setDraft(thought.content);
-              setIsEditing(false);
-            }
-          }}
-          rows={3}
-        />
-      </div>
-    );
-  }
+  const typeConfig = getThoughtTypeConfig(thought.type);
+  const TypeIcon = typeConfig ? TYPE_ICONS[typeConfig.icon] : null;
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="glass-card p-3 flex flex-col gap-1 group cursor-grab active:cursor-grabbing touch-none"
-    >
-      <p
-        className="text-body whitespace-pre-wrap break-words"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsEditing(true);
-        }}
+    <>
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="glass-card p-3 flex flex-col gap-2 group cursor-grab active:cursor-grabbing touch-none"
       >
-        {thought.content}
-      </p>
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-        className="self-end opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-red-400"
-      >
-        <Trash2 size={13} />
-      </Button>
-    </div>
+        <p
+          className="text-body whitespace-pre-wrap break-words"
+          onClick={(e) => {
+            e.stopPropagation();
+            setDetailOpen(true);
+          }}
+        >
+          {thought.content}
+        </p>
+
+        {(thought.sphere || typeConfig) && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {thought.sphere && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/[0.03] text-[10px] text-zinc-400">
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                  style={{ backgroundColor: thought.sphere.color }}
+                />
+                {thought.sphere.name}
+              </span>
+            )}
+            {typeConfig && TypeIcon && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/[0.03] text-[10px] text-zinc-400">
+                <TypeIcon size={10} />
+                {typeConfig.label}
+              </span>
+            )}
+          </div>
+        )}
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          className="self-end opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-red-400"
+        >
+          <Trash2 size={13} />
+        </Button>
+      </div>
+
+      <ThoughtDetailDialog
+        isOpen={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        thought={thought}
+        spheres={spheres}
+        onSave={onEdit}
+      />
+    </>
   );
 }

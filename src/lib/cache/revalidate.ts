@@ -68,3 +68,8 @@ export function invalidateThoughtCache(userId: string) {
   revalidateTag(cacheTags.thoughtStatuses(userId), INVALIDATE_PROFILE);
   revalidateTag("thought-board", INVALIDATE_PROFILE);
 }
+
+export function invalidateMissionCache(userId: string) {
+  revalidateTag(cacheTags.missionVersions(userId), INVALIDATE_PROFILE);
+  revalidateTag("mission-versions", INVALIDATE_PROFILE);
+}

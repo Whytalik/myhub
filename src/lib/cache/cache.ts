@@ -10,6 +10,7 @@ import { trainingSessionRepository } from "@/features/health/training/repositori
 import { productMappingRepository } from "@/features/health/nutrition/repositories/product-mapping.repository";
 import { giftedGroceryRepository } from "@/features/health/nutrition/repositories/gifted-grocery.repository";
 import { thoughtStatusRepository } from "@/features/life/repositories/thought-status.repository";
+import { missionRepository } from "@/features/life/repositories/mission.repository";
 
 export const cacheTags = {
   spheres: (userId: string) => `spheres:${userId}`,
@@ -22,6 +23,7 @@ export const cacheTags = {
   trainingPlans: (userId: string) => `training-plans:${userId}`,
   trainingSessions: (userId: string) => `training-sessions:${userId}`,
   thoughtStatuses: (userId: string) => `thought-statuses:${userId}`,
+  missionVersions: (userId: string) => `mission-versions:${userId}`,
 };
 
 export const getCachedSpheres = unstable_cache(
@@ -130,4 +132,16 @@ export const getCachedThoughtBoard = unstable_cache(
   (userId: string) => thoughtStatusRepository.findAll(userId),
   [],
   { tags: ["thought-board"] },
+);
+
+export const getCachedLatestMission = unstable_cache(
+  (userId: string) => missionRepository.findLatest(userId),
+  [],
+  { tags: ["mission-versions"] },
+);
+
+export const getCachedMissionHistory = unstable_cache(
+  (userId: string) => missionRepository.findAll(userId),
+  [],
+  { tags: ["mission-versions"] },
 );

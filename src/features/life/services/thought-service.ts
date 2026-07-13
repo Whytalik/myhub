@@ -1,8 +1,12 @@
 import { getCachedThoughtBoard } from "@/lib/cache/cache";
 import { thoughtStatusRepository } from "../repositories/thought-status.repository";
 import { thoughtRepository } from "../repositories/thought.repository";
+import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
+import { Prisma } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
+import type { ThoughtType } from "../logic/thought-types";
+import { FILTER_OUTCOME_STATUS, type FilterOutcome } from "../logic/filter-outcomes";
 
 export async function getBoard(userId: string) {
   // Uncached check so a first-ever visit doesn't cache an empty board before
@@ -44,9 +48,31 @@ export async function reorderStatuses(userId: string, orderedStatusIds: string[]
 }
 
 export async function upsertThought(userId: string, input: UpsertThoughtInput) {
-  const { id, ...data } = input;
+  const { id, sphereId, templateData, ...data } = input;
+
+  if (sphereId) {
+    const spheres = await sphereRepository.findAll(userId);
+    if (!spheres.some((sphere) => sphere.id === sphereId)) {
+      throw new Error("Sphere not found or unauthorized");
+    }
+  }
+
+  // Json? columns need Prisma.DbNull to clear to SQL NULL — passing raw
+  // `null` is ambiguous between "no value" and "the JSON literal null"
+  // (same pattern as journal-service.ts confidenceLog/dailyVector).
+  const templateDataValue =
+    templateData === undefined
+      ? undefined
+      : templateData === null
+        ? Prisma.DbNull
+        : (templateData as unknown as Prisma.InputJsonValue);
+
   if (id) {
-    return thoughtRepository.update(id, userId, data);
+    return thoughtRepository.update(id, userId, {
+      ...data,
+      sphereId: sphereId === undefined ? undefined : (sphereId ?? null),
+      templateData: templateDataValue,
+    });
   }
 
   if (!data.statusId) throw new Error("statusId is required to create a thought");
@@ -59,12 +85,69 @@ export async function upsertThought(userId: string, input: UpsertThoughtInput) {
     content: data.content,
     statusId: data.statusId,
     order: data.order ?? (await thoughtRepository.countInStatus(data.statusId, userId)),
+    type: data.type ?? undefined,
+    templateData: templateDataValue,
+    sphereId: sphereId ?? undefined,
     userId,
   });
 }
 
 export async function deleteThought(userId: string, id: string) {
   return thoughtRepository.delete(id, userId);
+}
+
+// Zero-friction capture entry point: resolve the Inbox column by name (not a
+// hardcoded order index, since columns are user-reorderable) and drop the
+// thought straight in. `extra` is only populated when the user chose
+// "Continue filling" past the one-line quick capture — omitted entirely,
+// capture stays untyped/unsphered as before.
+export async function quickCapture(
+  userId: string,
+  content: string,
+  extra?: {
+    sphereId?: string | null;
+    type?: ThoughtType | null;
+    templateData?: Record<string, string> | null;
+  },
+) {
+  const trimmed = content.trim();
+  if (!trimmed) throw new Error("Content is required");
+
+  const board = await getBoard(userId);
+  const inbox = board.find((status) => status.name === "Inbox") ?? board[0];
+  if (!inbox) throw new Error("No inbox status available");
+
+  return upsertThought(userId, { statusId: inbox.id, content: trimmed, ...extra });
+}
+
+// Evening Review session outcome routing — resolves the destination status
+// by name (creating it lazily, same spirit as the "Inbox" default) and
+// appends the thought there. DELETE has no destination: it's a hard delete,
+// per the user's own "сміливо видаляй" wording for the Q1b "nothing
+// catastrophic" branch specifically.
+export async function routeThought(userId: string, thoughtId: string, outcome: FilterOutcome) {
+  if (outcome === "DELETE") {
+    return thoughtRepository.delete(thoughtId, userId);
+  }
+
+  const target = FILTER_OUTCOME_STATUS[outcome];
+  if (!target) throw new Error(`No destination configured for outcome "${outcome}"`);
+
+  const board = await getBoard(userId);
+  let destination = board.find((status) => status.name === target.name);
+
+  if (!destination) {
+    const created = await thoughtStatusRepository.create({
+      name: target.name,
+      color: target.color,
+      order: board.length,
+      userId,
+    });
+    destination = { ...created, thoughts: [] };
+  }
+
+  const orderedIds = [...destination.thoughts.map((t) => t.id), thoughtId];
+  return thoughtRepository.moveAndReorder(userId, thoughtId, destination.id, orderedIds);
 }
 
 export async function moveThought(

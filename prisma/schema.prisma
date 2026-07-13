@@ -39,6 +39,7 @@ model User {
   setLogs                 SetLog[]
   thoughtStatuses         ThoughtStatus[]
   thoughts                Thought[]
+  missionVersions         MissionVersion[]
 }
 
 model WeekTemplate {
@@ -206,6 +207,7 @@ model LifeSphere {
   milestones Milestone[]
   objectives Objective[]
   tasks      Task[]
+  thoughts   Thought[]
 
   @@index([userId])
 }
@@ -690,16 +692,40 @@ model ThoughtStatus {
 }
 
 model Thought {
-  id        String        @id @default(cuid())
-  userId    String
-  statusId  String
-  content   String
-  order     Int           @default(0)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status    ThoughtStatus @relation(fields: [statusId], references: [id], onDelete: Cascade)
+  id           String        @id @default(cuid())
+  userId       String
+  statusId     String
+  content      String
+  order        Int           @default(0)
+  type         ThoughtType?
+  templateData Json?
+  sphereId     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status       ThoughtStatus @relation(fields: [statusId], references: [id], onDelete: Cascade)
+  sphere       LifeSphere?   @relation(fields: [sphereId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([statusId])
+  @@index([sphereId])
+}
+
+enum ThoughtType {
+  WORRY_PROBLEM
+  IDEA_DREAM
+  TASK_DEADLINE
+}
+
+// Append-only — every save inserts a new row, never updates one. "Current"
+// mission = most recent row by createdAt. This retained history is a
+// deliberate enhancement beyond Covey's "living document" concept.
+model MissionVersion {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

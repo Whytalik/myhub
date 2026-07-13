@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { getEntryByDate } from "@/features/life/services/journal-service";
 import * as taskService from "@/features/life/services/task-service";
 import * as habitService from "@/features/life/services/habit-service";
+import * as thoughtService from "@/features/life/services/thought-service";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
 import type { DailyEntryData, HabitData } from "@/features/life/types";
@@ -52,7 +53,7 @@ export default async function JournalPage({
   const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
 
-  const [raw, yesterdayRaw, tasks, yesterdayTasks, allTasks, spheres, habits, schedule] =
+  const [raw, yesterdayRaw, tasks, yesterdayTasks, allTasks, spheres, habits, schedule, board] =
     await Promise.all([
       getEntryByDate(userId, date),
       getEntryByDate(userId, yesterday),
@@ -62,7 +63,10 @@ export default async function JournalPage({
       taskService.getAllSpheres(userId),
       habitService.getActiveHabits(userId),
       getScheduleByDate(userId, date),
+      thoughtService.getBoard(userId),
     ]);
+
+  const inboxThoughtCount = board.find((status) => status.name === "Inbox")?.thoughts.length ?? 0;
 
   const yesterdayCompletedTasks = yesterdayTasks
     .filter((t) => t.status === "DONE")
@@ -153,6 +157,7 @@ export default async function JournalPage({
         spheres={spheres}
         habits={habits as unknown as HabitData[]}
         scheduledTrainingDayName={schedule?.trainingDay?.name ?? undefined}
+        inboxThoughtCount={inboxThoughtCount}
       />
     </div>
   );

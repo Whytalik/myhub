@@ -12,18 +12,21 @@ import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { ThoughtCard } from "./ThoughtCard";
 import { StatusFormDialog } from "./StatusFormDialog";
-import type { ThoughtStatusData } from "@/features/life/types";
+import type { ThoughtDetailPatch } from "./ThoughtDetailDialog";
+import type { LifeSphereData, ThoughtStatusData } from "@/features/life/types";
 
 interface StatusColumnProps {
   status: ThoughtStatusData;
+  spheres: LifeSphereData[];
   onAddThought: (statusId: string, content: string) => void;
-  onEditThought: (thoughtId: string, content: string) => void;
+  onEditThought: (thoughtId: string, patch: ThoughtDetailPatch) => void;
   onDeleteThought: (thoughtId: string) => void;
   onDeleteStatus: (statusId: string) => void;
 }
 
 export function StatusColumn({
   status,
+  spheres,
   onAddThought,
   onEditThought,
   onDeleteThought,
@@ -143,7 +146,8 @@ export function StatusColumn({
             <ThoughtCard
               key={thought.id}
               thought={thought}
-              onEdit={(content) => onEditThought(thought.id, content)}
+              spheres={spheres}
+              onEdit={(patch) => onEditThought(thought.id, patch)}
               onDelete={() => onDeleteThought(thought.id)}
             />
           ))}

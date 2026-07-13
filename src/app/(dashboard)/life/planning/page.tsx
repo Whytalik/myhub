@@ -4,7 +4,8 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { ThoughtsBoardClient } from "@/features/life/components/thoughts/ThoughtsBoardClient";
 import * as thoughtService from "@/features/life/services/thought-service";
-import type { ThoughtStatusData } from "@/features/life/types";
+import * as taskService from "@/features/life/services/task-service";
+import type { LifeSphereData, ThoughtStatusData } from "@/features/life/types";
 
 export const metadata: Metadata = { title: "Thoughts" };
 
@@ -17,9 +18,13 @@ export default async function PlanningPage() {
   }
 
   let statuses: ThoughtStatusData[] = [];
+  let spheres: LifeSphereData[] = [];
 
   try {
-    statuses = (await thoughtService.getBoard(userId)) as unknown as ThoughtStatusData[];
+    [statuses, spheres] = await Promise.all([
+      thoughtService.getBoard(userId) as unknown as Promise<ThoughtStatusData[]>,
+      taskService.getAllSpheres(userId),
+    ]);
   } catch (error) {
     console.error("Critical error in PlanningPage:", error);
     return (
@@ -42,7 +47,7 @@ export default async function PlanningPage() {
         title="Thoughts"
         description="Capture ideas and move them across statuses you define."
       />
-      <ThoughtsBoardClient initialStatuses={statuses} />
+      <ThoughtsBoardClient initialStatuses={statuses} spheres={spheres} />
     </div>
   );
 }

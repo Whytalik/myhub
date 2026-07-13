@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db/prisma";
 import { Prisma } from "@/app/generated/prisma";
 
 export const THOUGHT_STATUS_INCLUDE = {
-  thoughts: { orderBy: { order: "asc" } },
+  thoughts: { orderBy: { order: "asc" }, include: { sphere: true } },
 } as const satisfies Prisma.ThoughtStatusInclude;
 
 export type ThoughtStatusRow = Prisma.ThoughtStatusGetPayload<{
