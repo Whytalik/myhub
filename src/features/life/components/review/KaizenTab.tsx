@@ -15,7 +15,6 @@ import {
   Zap,
   Save,
   MessageSquareQuote,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -55,7 +54,7 @@ export function KaizenTab({
   const [subtaskTitle, setSubtaskTitle] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  // 1. Calculate week number of active sprint
+  // Calculate week number of active sprint
   const weekNum = activeSprint
     ? Math.floor(
         (new Date(weekStart).getTime() - new Date(activeSprint.startDate).getTime()) /
@@ -63,14 +62,13 @@ export function KaizenTab({
       ) + 1
     : null;
 
-  // 2. Find existing review for this sprint and week
+  // Find existing review for this sprint and week
   const currentReview = activeSprint
     ? sprintReviews.find(
         (r) => r.sprintId === activeSprint.id && r.weekNumber === weekNum
       )
     : null;
 
-  // 3. Reflection form states (keyed by weekNum to reset automatically when user shifts weeks)
   return (
     <KaizenFormInner
       key={`kaizen-form-${weekNum ?? "none"}`}
@@ -129,7 +127,6 @@ function KaizenFormInner({
   startTransition,
   router,
 }: KaizenFormInnerProps) {
-  // Sync tasks on mount / prop change
   useEffect(() => {
     setLocalTasks(tasks);
   }, [tasks, setLocalTasks]);
@@ -168,10 +165,10 @@ function KaizenFormInner({
         plannedDate: null,
       });
       if (result.success) {
-        toast.success("Задачу перенесено у Глобальний Беклог");
+        toast.success("Task moved to Global Backlog");
         setLocalTasks((prev) => prev.filter((t) => t.id !== taskId));
       } else {
-        toast.error(result.error || "Не вдалося перенести в беклог");
+        toast.error(result.error || "Failed to move task to backlog");
       }
     });
   };
@@ -180,10 +177,10 @@ function KaizenFormInner({
     startTransition(async () => {
       const result = await deleteTaskAction(taskId);
       if (result.success) {
-        toast.success("Задачу успішно видалено");
+        toast.success("Task deleted successfully");
         setLocalTasks((prev) => prev.filter((t) => t.id !== taskId));
       } else {
-        toast.error(result.error || "Не вдалося видалити задачу");
+        toast.error(result.error || "Failed to delete task");
       }
     });
   };
@@ -203,20 +200,20 @@ function KaizenFormInner({
       });
 
       if (subtaskResult.success) {
-        toast.success("Створено дрібніший атом!");
+        toast.success("Created a smaller atom!");
         setSubtaskTitle("");
         setDecomposingTaskId(null);
         const newSub: TaskData = subtaskResult.data as any;
         setLocalTasks((prev) => [newSub, ...prev]);
       } else {
-        toast.error(subtaskResult.error || "Не вдалося створити підзадачу");
+        toast.error(subtaskResult.error || "Failed to create subtask");
       }
     });
   };
 
   const handleSaveReview = () => {
     if (!activeSprint || !weekNum) {
-      toast.error("Немає активного спринту для збереження рефлексії");
+      toast.error("No active sprint to save review");
       return;
     }
 
@@ -234,10 +231,10 @@ function KaizenFormInner({
       );
 
       if (result.success) {
-        toast.success("Висновки тижня успішно збережено в базі!");
+        toast.success("Weekly review saved successfully!");
         router.refresh();
       } else {
-        toast.error(result.error || "Не вдалося зберегти рефлексію");
+        toast.error(result.error || "Failed to save review");
       }
     });
   };
@@ -273,7 +270,7 @@ function KaizenFormInner({
       return (
         <h4 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
           <CheckSquare size={14} className="text-orange-400" />
-          Чекліст аналізу тижня
+          Weekly Review Checklist
         </h4>
       );
     }
@@ -281,7 +278,7 @@ function KaizenFormInner({
       return (
         <h4 className="text-sm font-semibold text-orange-400 flex items-center gap-2 font-mono">
           <Compass size={14} />
-          Місячний чек-поінт (Тиждень {weekNum} / 12)
+          Monthly Checkpoint (Week {weekNum} / 12)
         </h4>
       );
     }
@@ -289,14 +286,14 @@ function KaizenFormInner({
       return (
         <h4 className="text-sm font-semibold text-purple-400 flex items-center gap-2 font-mono">
           <Sparkles size={14} />
-          «Річний» аналіз Спринту (Тиждень 12 / 12)
+          Sprint Review / "Annual" Analysis (Week 12 / 12)
         </h4>
       );
     }
     return (
       <h4 className="text-sm font-semibold text-zinc-200 flex items-center gap-2 font-mono">
         <Zap size={14} className="text-orange-400" />
-        Тиждень {weekNum} / 12 — Рефлексія
+        Week {weekNum} / 12 — Kaizen Review
       </h4>
     );
   };
@@ -305,9 +302,9 @@ function KaizenFormInner({
     if (!weekNum || weekNum < 1 || weekNum > 12) {
       return (
         <>
-          {renderCheckboxItem("w-1", `Збір метрик: Подивись на завершені атоми (${completedTasksCount} виконано).`)}
-          {renderCheckboxItem("w-2", "Кайдзен-аудит: Проаналізуй застряглі атоми в списку зліва. Чому вони зависли?")}
-          {renderCheckboxItem("w-3", "Планування: Наріж 5-10 нових кайдзен-атомів на наступний тиждень.")}
+          {renderCheckboxItem("w-1", `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`)}
+          {renderCheckboxItem("w-2", "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?")}
+          {renderCheckboxItem("w-3", "Planning: Slice 5-10 new kaizen atoms for the next week.")}
         </>
       );
     }
@@ -315,11 +312,11 @@ function KaizenFormInner({
       return (
         <>
           <p className="text-[10px] text-orange-400 font-mono mb-1">
-            ⚠️ ТРЕТИНА СПРИНТУ. ЧАС ОЦІНИТИ РЕАЛЬНІСТЬ ЦІЛЕЙ:
+            ⚠️ SPRINT MILESTONE. EVALUATE YOUR PROGRESS:
           </p>
-          {renderCheckboxItem("m-1", `Звірка компаса: Чи пройшов ти ${weekNum === 4 ? "33%" : "66%"} шляху до цілей свого Спринту?`)}
-          {renderCheckboxItem("m-2", "Жорсткий пріоритет: Чи готовий заморозити один проєкт, щоб врятувати головний?")}
-          {renderCheckboxItem("m-3", "Корекція Спринту: Офіційно зміни або видали цілі, якщо життя внесло зміни.")}
+          {renderCheckboxItem("m-1", `Compass check: Have you completed ${weekNum === 4 ? "33%" : "66%"} of your Sprint goals?`)}
+          {renderCheckboxItem("m-2", "Hard priority: Are you ready to freeze secondary projects to save the primary?")}
+          {renderCheckboxItem("m-3", "Plan correction: Officially adjust or reassign Sprint projects.")}
         </>
       );
     }
@@ -327,35 +324,35 @@ function KaizenFormInner({
       return (
         <>
           <p className="text-[10px] text-purple-400 font-mono mb-1">
-            🎉 ЦЕ ТВОЙ НОВИЙ РІК! ЧАС ДЛЯ ГЛОБАЛЬНОЇ СТРАТЕГІЇ:
+            🎉 THIS IS YOUR NEW YEAR! TIME FOR STRATEGY & CELEBRATION:
           </p>
-          {renderCheckboxItem("s-1", "Святкування: Переглянь і випиши всі досягнення за 12 тижнів.")}
-          {renderCheckboxItem("s-2", "Глибокий Кайдзен: Яка звичка заважала найбільше? Одне нове правило на наступний спринт.")}
-          {renderCheckboxItem("s-3", "Очищення беклогу: Безжально видали застарілі думки з глобального беклогу.")}
-          {renderCheckboxItem("s-4", "Новий Спринт: Обери 2-3 нові проєкти на наступні 12 тижнів.")}
-          {renderCheckboxItem("s-5", "Буферний тиждень 13: Наступного тижня зроби перерву від планування.")}
+          {renderCheckboxItem("s-1", "Celebration: Review and write down all achievements this Sprint. Feel the win!")}
+          {renderCheckboxItem("s-2", "Deep Kaizen: What habits/processes blocked you? Define one new rule for the next Sprint.")}
+          {renderCheckboxItem("s-3", "Backlog cleaning: Review Global Backlog and ruthlessly delete stale ideas.")}
+          {renderCheckboxItem("s-4", "New Sprint: Select 2-3 new goals/projects from the Backlog for the next 12 weeks.")}
+          {renderCheckboxItem("s-5", "Week 13 (Rest): Make the next week buffer. No planning — rest for the brain.")}
         </>
       );
     }
     return (
       <>
-        {renderCheckboxItem("w-1", `Збір метрик: Подивись на завершені атоми (${completedTasksCount} виконано).`)}
-        {renderCheckboxItem("w-2", "Кайдзен-аудит: Проаналізуй застряглі атоми в списку зліва. Чому вони зависли?")}
-        {renderCheckboxItem("w-3", "Планування: Наріж нові атоми до цілей спринту на наступний тиждень.")}
+        {renderCheckboxItem("w-1", `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`)}
+        {renderCheckboxItem("w-2", "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?")}
+        {renderCheckboxItem("w-3", "Planning: Slice new atoms for Sprint goals for the next week.")}
       </>
     );
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-6 items-start">
-      {/* 🔎 Column 1: Kaizen Audit (Stuck Tasks) */}
+      {/* Column 1: Kaizen Audit (Stuck Tasks) */}
       <div className="glass-card p-5 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-4">
         <div>
           <h3 className="text-panel-title font-semibold text-zinc-200">
-            🔎 Кайдзен-аудит (Застряглі Атоми)
+            🔎 Kaizen Audit (Stuck Atoms)
           </h3>
           <p className="text-caption text-xs mt-1">
-            Завдання, які були заплановані, але не виконані цього тижня. Знайди системні збої.
+            Tasks that were planned but not completed this week. Find systemic failures.
           </p>
         </div>
 
@@ -363,7 +360,7 @@ function KaizenFormInner({
           {stuckTasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-zinc-500 text-xs italic bg-white/[0.01] border border-white/[0.04] rounded-xl">
               <CheckCircle2 size={22} className="text-emerald-400 mb-2" />
-              Всі заплановані атоми виконано! Чудова робота.
+              All planned atoms completed! Great job.
             </div>
           ) : (
             stuckTasks.map((task) => (
@@ -377,7 +374,7 @@ function KaizenFormInner({
                   </h5>
                   {task.project && (
                     <span className="inline-block mt-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[9px] font-mono uppercase">
-                      Проєкт: {task.project.title}
+                      Project: {task.project.title}
                     </span>
                   )}
                 </div>
@@ -392,7 +389,7 @@ function KaizenFormInner({
                     }
                     className="h-6 px-2 text-[11px] text-orange-400 hover:text-orange-300"
                   >
-                    <GitBranch size={10} className="mr-1" /> Дробити
+                    <GitBranch size={10} className="mr-1" /> Decompose
                   </Button>
 
                   <Button
@@ -402,7 +399,7 @@ function KaizenFormInner({
                     onClick={() => handleMoveToBacklog(task.id)}
                     className="h-6 px-2 text-[11px] text-zinc-400 hover:text-zinc-300"
                   >
-                    <ArrowRightLeft size={10} className="mr-1" /> В Беклог
+                    <ArrowRightLeft size={10} className="mr-1" /> To Backlog
                   </Button>
 
                   <Button
@@ -412,20 +409,20 @@ function KaizenFormInner({
                     onClick={() => handleDeleteTask(task.id)}
                     className="h-6 px-2 text-[11px] text-rose-400 hover:text-rose-300 ml-auto"
                   >
-                    <Trash2 size={10} className="mr-1" /> Видалити
+                    <Trash2 size={10} className="mr-1" /> Delete
                   </Button>
                 </div>
 
                 {decomposingTaskId === task.id && (
                   <div className="mt-2 p-2.5 rounded-lg bg-black/30 border border-white/5 flex flex-col gap-2">
                     <label className="text-[9px] font-mono text-orange-400">
-                      Створити дрібнішу фізичну підзадачу (атом):
+                      Create a smaller physical subtask (atom):
                     </label>
                     <div className="flex gap-2">
                       <Input
                         value={subtaskTitle}
                         onChange={(e) => setSubtaskTitle(e.target.value)}
-                        placeholder="Наприклад: Знайти пароль від кабінету..."
+                        placeholder="e.g. Find password for cabinet..."
                         className="text-xs h-7 flex-1"
                         autoFocus
                       />
@@ -437,7 +434,7 @@ function KaizenFormInner({
                         disabled={!subtaskTitle.trim() || isPending}
                         className="h-7"
                       >
-                        Додати
+                        Add
                       </Button>
                     </div>
                   </div>
@@ -448,26 +445,23 @@ function KaizenFormInner({
         </div>
       </div>
 
-      {/* 📝 Column 2: Reflection & written conclusions */}
+      {/* Column 2: Reflection & written conclusions */}
       <div className="glass-card p-5 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-5">
-        {/* Checklist */}
         <div className="flex flex-col gap-3">
           {renderChecklistHeader()}
           <div className="flex flex-col gap-2">{renderChecklistItems()}</div>
         </div>
 
-        {/* Written Review */}
         {activeSprint && weekNum ? (
           <div className="flex flex-col gap-4 border-t border-white/[0.06] pt-4">
             <h4 className="text-sm font-semibold text-zinc-200 flex items-center gap-2">
               <MessageSquareQuote size={14} className="text-accent" />
-              Письмові висновки ({currentReview ? "Редагувати" : "Створити"})
+              Written Conclusions ({currentReview ? "Edit" : "Create"})
             </h4>
 
-            {/* Score */}
             <div className="flex flex-col gap-1.5">
               <div className="flex justify-between items-center text-xs font-mono text-zinc-400">
-                <span>Оцінка тижня</span>
+                <span>Week Score</span>
                 <span className="text-accent font-bold text-sm">{score}/10</span>
               </div>
               <input
@@ -480,15 +474,14 @@ function KaizenFormInner({
               />
             </div>
 
-            {/* Aggregated daily notes from Journal */}
             {(summary.wins.length > 0 || summary.improvements.length > 0) && (
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-3 flex flex-col gap-2 text-xs">
                 <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wide">
-                  📌 Матеріал з щоденника за тиждень:
+                  📌 Material from Journal for the Week:
                 </span>
                 {summary.wins.length > 0 && (
                   <div className="flex flex-col gap-1">
-                    <span className="text-emerald-400 font-medium text-[10px]">Перемоги:</span>
+                    <span className="text-emerald-400 font-medium text-[10px]">Wins:</span>
                     <ul className="list-disc list-inside text-zinc-400 pl-1 space-y-0.5 max-h-20 overflow-y-auto">
                       {summary.wins.map((w, idx) => (
                         <li key={idx} className="truncate">{w}</li>
@@ -498,7 +491,7 @@ function KaizenFormInner({
                 )}
                 {summary.improvements.length > 0 && (
                   <div className="flex flex-col gap-1 mt-1">
-                    <span className="text-amber-400 font-medium text-[10px]">Потребує покращення:</span>
+                    <span className="text-amber-400 font-medium text-[10px]">Needs Improvement:</span>
                     <ul className="list-disc list-inside text-zinc-400 pl-1 space-y-0.5 max-h-20 overflow-y-auto">
                       {summary.improvements.map((imp, idx) => (
                         <li key={idx} className="truncate">{imp}</li>
@@ -509,46 +502,43 @@ function KaizenFormInner({
               </div>
             )}
 
-            {/* Wins input */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                1. Твої перемоги та досягнення (Wins)
+                1. Your wins and achievements (Wins)
               </label>
               <Textarea
                 value={wins}
                 onChange={(e) => setWins(e.target.value)}
-                placeholder="Що вдалося виконати? Чим пишаєшся?.."
+                placeholder="What went well? What are you proud of?.."
                 rows={2}
                 className="text-xs"
               />
             </div>
 
-            {/* Challenges input */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                2. Головні труднощі та виклики (Challenges)
+                2. Main challenges and obstacles (Challenges)
               </label>
               <Textarea
                 value={challenges}
                 onChange={(e) => setChallenges(e.target.value)}
-                placeholder="Що заважало? Де виник збій у системі?.."
+                placeholder="What blocked you? Where did the system fail?.."
                 rows={2}
                 className="text-xs"
               />
             </div>
 
-            {/* Adjustments input */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                3. Кайдзен-корективи на майбутнє (Adjustments)
+                3. Kaizen adjustments for the future (Adjustments)
               </label>
               <Textarea
                 value={adjustments}
                 onChange={(e) => setAdjustments(e.target.value)}
                 placeholder={
                   weekNum === 12
-                    ? "Які глобальні висновки зробиш на наступний Спринт? Яке одне залізне правило впровадиш?.."
-                    : "Що змінити наступного тижня, щоб полегшити процеси? Як розбити кроки?.."
+                    ? "What global conclusions will you apply next Sprint? What one rule will you implement?.."
+                    : "What will you adjust next week to ease processes? How to slice steps?.."
                 }
                 rows={2}
                 className="text-xs"
@@ -564,12 +554,12 @@ function KaizenFormInner({
               className="mt-2 flex items-center justify-center gap-1.5"
             >
               <Save size={14} />
-              {currentReview ? "Оновити висновки" : "Зберегти висновки"} {weekNum ? `тижня ${weekNum}` : ""}
+              {currentReview ? "Update conclusions" : "Save conclusions"} {weekNum ? `for week ${weekNum}` : ""}
             </Button>
           </div>
         ) : (
           <div className="text-zinc-500 text-xs italic py-8 text-center border-t border-white/[0.06] mt-4">
-            Не знайдено активного спринту на цей період для написання письмових висновків.
+            No active sprint found for this period to write conclusions.
           </div>
         )}
       </div>

@@ -8,7 +8,7 @@ import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { PlanningWizardClient } from "@/features/life/components/planning/PlanningWizardClient";
 
 export const metadata: Metadata = {
-  title: "Майстер Планування",
+  title: "Planning Wizard",
 };
 
 export default async function PlanningWizardPage() {
@@ -33,8 +33,8 @@ export default async function PlanningWizardPage() {
           { label: "planning", href: "/life/planning" },
           { label: "wizard" },
         ]}
-        title="Кайдзен-Планування"
-        description="Поетапний флоу: Збір думок → Прайм-Фільтр → Декомпозиція → Канбан."
+        title="Kaizen Planning Flow"
+        description="Guided Flow: Brain Dump → Prime Filter → Decomposition → Kanban."
       />
       <PlanningWizardClient
         initialThoughts={thoughts as any}

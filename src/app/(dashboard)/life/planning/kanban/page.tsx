@@ -7,7 +7,7 @@ import { getAllSpheres } from "@/features/life/services/task-service";
 import { KanbanBoardClient } from "@/features/life/components/sprints/KanbanBoardClient";
 
 export const metadata: Metadata = {
-  title: "Кайдзен-Канбан",
+  title: "Kaizen Kanban",
 };
 
 export default async function KanbanPage() {
@@ -31,8 +31,8 @@ export default async function KanbanPage() {
           { label: "planning", href: "/life/planning" },
           { label: "kanban" },
         ]}
-        title="Кайдзен-Канбан"
-        description="Дворівневе планування 12-тижневих спринтів та щоденних атомів."
+        title="Kaizen Kanban"
+        description="Split-scale planning for 12-week sprints and daily task atoms."
       />
       <KanbanBoardClient
         initialSprint={dashboardData.sprint as any}

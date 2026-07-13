@@ -25,15 +25,12 @@ import {
   Layers,
   ChevronRight,
   X,
-  Check,
-  FolderOpen,
   ArrowRightLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
-import { Dialog, ConfirmationDialog } from "@/components/ui/overlays/dialog";
-import { CustomSelect } from "@/components/ui/inputs/custom-select";
+import { Dialog } from "@/components/ui/overlays/dialog";
 import {
   createProjectAction,
   deleteProjectAction,
@@ -47,7 +44,7 @@ import {
   updateTaskStatusAction,
 } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
-import { startOfWeek, endOfWeek, format, isToday } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 
 // Custom TaskCard component for the Operational board
 import { useSortable } from "@dnd-kit/sortable";
@@ -136,7 +133,7 @@ function TaskColumn({ id, title, tasks, onDeleteTask, onEditTask }: TaskColumnPr
         <div className="flex flex-col gap-2 overflow-y-auto max-h-[400px] pr-1">
           {tasks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-zinc-500 text-xs italic">
-              Немає атомів
+              No atoms
             </div>
           ) : (
             tasks.map((task) => (
@@ -245,7 +242,7 @@ export function KanbanBoardClient({
     startTransition(async () => {
       const result = await createProjectAction(title, projectDesc, targetObjectiveId);
       if (result.success) {
-        toast.success("Проєкт успішно створено!");
+        toast.success("Project created successfully!");
         const newProj: ProjectData = {
           id: result.data.id,
           title: result.data.title,
@@ -273,7 +270,7 @@ export function KanbanBoardClient({
         setProjectDesc("");
         setNewProjectOpen(false);
       } else {
-        toast.error(result.error || "Не вдалося створити проєкт");
+        toast.error(result.error || "Failed to create project");
       }
     });
   };
@@ -282,7 +279,7 @@ export function KanbanBoardClient({
     startTransition(async () => {
       const result = await deleteProjectAction(projectId);
       if (result.success) {
-        toast.success("Проєкт видалено");
+        toast.success("Project deleted");
         if (inSprint) {
           setSprint((prev) => ({
             ...prev,
@@ -295,7 +292,7 @@ export function KanbanBoardClient({
           setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
         }
       } else {
-        toast.error(result.error || "Не вдалося видалити проєкт");
+        toast.error(result.error || "Failed to delete project");
       }
     });
   };
@@ -304,15 +301,12 @@ export function KanbanBoardClient({
     startTransition(async () => {
       const result = await assignProjectToObjectiveAction(projectId, objectiveId);
       if (result.success) {
-        toast.success("Проєкт перерозподілено");
+        toast.success("Project reassigned");
 
-        // Find the project object first
         let movingProject: ProjectData | undefined;
 
-        // Try searching backlog
         movingProject = backlogProjects.find((p) => p.id === projectId);
 
-        // Try searching sprint
         if (!movingProject) {
           for (const obj of sprint.objectives) {
             const found = obj.projects.find((p) => p.id === projectId);
@@ -326,7 +320,6 @@ export function KanbanBoardClient({
         if (!movingProject) return;
         movingProject = { ...movingProject, objectiveId };
 
-        // Remove from old location
         setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
         setSprint((prev) => ({
           ...prev,
@@ -336,7 +329,6 @@ export function KanbanBoardClient({
           })),
         }));
 
-        // Add to new location
         if (objectiveId === null) {
           setBacklogProjects((prev) => [movingProject!, ...prev]);
         } else {
@@ -351,7 +343,7 @@ export function KanbanBoardClient({
         }
         setAssigningProjectId(null);
       } else {
-        toast.error(result.error || "Не вдалося перемістити проєкт");
+        toast.error(result.error || "Failed to reassign project");
       }
     });
   };
@@ -368,7 +360,7 @@ export function KanbanBoardClient({
         objectiveDesc
       );
       if (result.success) {
-        toast.success("Ціль успішно додано!");
+        toast.success("Objective added successfully!");
         const sphere = spheres.find((s) => s.id === selectedSphereId)!;
         const newObj: ObjectiveData = {
           id: result.data.id,
@@ -386,7 +378,7 @@ export function KanbanBoardClient({
         setObjectiveDesc("");
         setNewObjectiveOpen(false);
       } else {
-        toast.error(result.error || "Не вдалося створити ціль");
+        toast.error(result.error || "Failed to create objective");
       }
     });
   };
@@ -397,7 +389,6 @@ export function KanbanBoardClient({
     if (!title) return;
 
     startTransition(async () => {
-      // We plan atoms for the current week range by default
       const result = await upsertTaskAction({
         title,
         projectId,
@@ -407,17 +398,15 @@ export function KanbanBoardClient({
       });
 
       if (result.success) {
-        toast.success("Атом успішно додано до плану на тиждень!");
+        toast.success("Atom added to weekly plan successfully!");
 
         const newTask: TaskData = result.data as any;
 
-        // Append to UI columns
         setColumns((prev) => ({
           ...prev,
           weekly: [...prev.weekly, newTask],
         }));
 
-        // Append task to project array locally
         setSprint((prev) => ({
           ...prev,
           objectives: prev.objectives.map((obj) => ({
@@ -434,7 +423,7 @@ export function KanbanBoardClient({
 
         setInlineAtomTitle((prev) => ({ ...prev, [projectId]: "" }));
       } else {
-        toast.error(result.error || "Не вдалося створити атом");
+        toast.error(result.error || "Failed to create atom");
       }
     });
   };
@@ -444,16 +433,14 @@ export function KanbanBoardClient({
     startTransition(async () => {
       const result = await deleteTaskAction(taskId);
       if (result.success) {
-        toast.success("Атом видалено");
+        toast.success("Atom deleted");
 
-        // Filter locally from columns
         setColumns((prev) => ({
           weekly: prev.weekly.filter((t) => t.id !== taskId),
           today: prev.today.filter((t) => t.id !== taskId),
           done: prev.done.filter((t) => t.id !== taskId),
         }));
 
-        // Filter locally from projects tasks
         setSprint((prev) => ({
           ...prev,
           objectives: prev.objectives.map((obj) => ({
@@ -472,7 +459,7 @@ export function KanbanBoardClient({
           }))
         );
       } else {
-        toast.error(result.error || "Не вдалося видалити атом");
+        toast.error(result.error || "Failed to delete atom");
       }
     });
   };
@@ -503,7 +490,6 @@ export function KanbanBoardClient({
     const task = active.data.current?.task as TaskData;
     if (!task) return;
 
-    // Determine target column
     const overId = over.id as string;
     let targetCol: "weekly" | "today" | "done" | null = null;
 
@@ -514,7 +500,6 @@ export function KanbanBoardClient({
     } else if (overId === "column-body-done" || overId.startsWith("column-done")) {
       targetCol = "done";
     } else {
-      // Find column by target card ID
       const inWeekly = columns.weekly.some((t) => t.id === overId);
       const inToday = columns.today.some((t) => t.id === overId);
       const inDone = columns.done.some((t) => t.id === overId);
@@ -525,7 +510,6 @@ export function KanbanBoardClient({
 
     if (!targetCol) return;
 
-    // Check if task is already in target column
     const inWeekly = columns.weekly.some((t) => t.id === taskId);
     const inToday = columns.today.some((t) => t.id === taskId);
     const inDone = columns.done.some((t) => t.id === taskId);
@@ -539,12 +523,10 @@ export function KanbanBoardClient({
 
     if (sourceCol === targetCol) return;
 
-    // Optimistic Update
     setColumns((prev) => {
       const targetList = [...prev[targetCol!]];
       const updatedTask = { ...task };
 
-      // Update state parameters based on target column
       if (targetCol === "weekly") {
         updatedTask.plannedDate = weekStart;
         updatedTask.status = "TODO";
@@ -556,7 +538,6 @@ export function KanbanBoardClient({
         updatedTask.completedAt = now;
       }
 
-      // Add to target and remove from source
       return {
         ...prev,
         [sourceCol!]: prev[sourceCol!].filter((t) => t.id !== taskId),
@@ -564,7 +545,6 @@ export function KanbanBoardClient({
       };
     });
 
-    // Run Server Action
     startTransition(async () => {
       let result;
       if (targetCol === "done") {
@@ -584,8 +564,7 @@ export function KanbanBoardClient({
       }
 
       if (!result.success) {
-        toast.error(result.error || "Не вдалося перемістити атом");
-        // Revert columns state (simplified reload/refresh or toast)
+        toast.error(result.error || "Failed to move atom");
       }
     });
   };
@@ -596,7 +575,7 @@ export function KanbanBoardClient({
 
   return (
     <div className="flex flex-col gap-8">
-      {/* 📅 Strategy Dashboard Info */}
+      {/* Strategy Dashboard Info */}
       <div className="glass-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/[0.01]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center">
@@ -604,18 +583,18 @@ export function KanbanBoardClient({
           </div>
           <div>
             <h2 className="text-panel-title font-semibold text-zinc-100 font-mono">
-              Спринт #{sprint.number} — {sprint.year} рік
+              Sprint #{sprint.number} — {sprint.year}
             </h2>
             <p className="text-caption mt-0.5">
-              Період: {format(new Date(sprint.startDate), "dd.MM.yyyy")} —{" "}
-              {format(new Date(sprint.endDate), "dd.MM.yyyy")} (Тижні 1-12)
+              Period: {format(new Date(sprint.startDate), "dd.MM.yyyy")} —{" "}
+              {format(new Date(sprint.endDate), "dd.MM.yyyy")} (Weeks 1-12)
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setNewObjectiveOpen(true)}>
-            <Plus size={14} /> Нова Ціль
+            <Plus size={14} /> New Objective
           </Button>
           <Button
             variant="primary"
@@ -625,17 +604,17 @@ export function KanbanBoardClient({
               setNewProjectOpen(true);
             }}
           >
-            <Plus size={14} /> Новий Проєкт
+            <Plus size={14} /> New Project
           </Button>
         </div>
       </div>
 
-      {/* 🏠 LEVEL 1: Рівень Проєктів (Стратегія) */}
+      {/* LEVEL 1: Projects (Strategy) */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 text-zinc-400">
           <Layers size={14} className="text-orange-400" />
           <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
-            Стратегічні Проєкти (Спринти та Беклог)
+            Strategic Projects (Sprints & Backlog)
           </h2>
         </div>
 
@@ -643,7 +622,7 @@ export function KanbanBoardClient({
           {/* Backlog Column */}
           <div className="glass-card p-3 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-3 min-h-[300px]">
             <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-              <h3 className="text-panel-title font-semibold text-zinc-300">Глобальний Беклог</h3>
+              <h3 className="text-panel-title font-semibold text-zinc-300">Global Backlog</h3>
               <span className="text-label text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md font-mono">
                 {backlogProjects.length}
               </span>
@@ -652,7 +631,7 @@ export function KanbanBoardClient({
             <div className="flex flex-col gap-2 overflow-y-auto max-h-[420px] pr-1">
               {backlogProjects.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-zinc-500 text-xs italic">
-                  Беклог порожній
+                  Backlog is empty
                 </div>
               ) : (
                 backlogProjects.map((project) => (
@@ -684,17 +663,17 @@ export function KanbanBoardClient({
                         }
                         className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1"
                       >
-                        <ArrowRightLeft size={10} /> Додати у Спринт
+                        <ArrowRightLeft size={10} /> Assign to Sprint
                       </button>
 
                       {assigningProjectId === project.id && (
                         <div className="absolute left-0 right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl p-1.5 shadow-xl z-20 flex flex-col gap-1">
                           <span className="text-[9px] uppercase tracking-wider font-mono text-zinc-500 px-2 block mb-1">
-                            Виберіть Ціль:
+                            Select Objective:
                           </span>
                           {sprint.objectives.length === 0 ? (
                             <span className="text-zinc-500 text-[10px] italic px-2">
-                              Немає цілей у спринті
+                              No objectives in sprint
                             </span>
                           ) : (
                             sprint.objectives.map((obj) => (
@@ -721,24 +700,24 @@ export function KanbanBoardClient({
           <div className="glass-card p-4 bg-black/10 border border-white/[0.04] rounded-2xl flex flex-col gap-4 min-h-[300px]">
             <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
               <h3 className="text-panel-title font-semibold text-zinc-200">
-                Цілі поточного спринту (Активні проєкти)
+                Active Sprint Objectives (Active Projects)
               </h3>
               <span className="text-label text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md font-mono">
-                {activeProjectsCount} проєкт(ів)
+                {activeProjectsCount} project(s)
               </span>
             </div>
 
             {sprint.objectives.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 text-zinc-500 text-sm">
                 <Compass size={32} className="mb-2 text-zinc-600" />
-                <p>Цього спринту ще не створено жодної цілі.</p>
+                <p>No objectives created for this sprint yet.</p>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setNewObjectiveOpen(true)}
                   className="mt-3"
                 >
-                  Створити першу ціль
+                  Create first objective
                 </Button>
               </div>
             ) : (
@@ -768,17 +747,15 @@ export function KanbanBoardClient({
                     <div className="flex flex-col gap-3">
                       {obj.projects.length === 0 ? (
                         <div className="text-zinc-500 text-xs italic py-4 text-center">
-                          Немає проєктів. Перетягніть із беклогу або додайте новий.
+                          No projects. Reassign from backlog or add a new one.
                         </div>
                       ) : (
                         obj.projects.map((project) => {
-                          // Calculate Project Progress
                           const totalTasks = project.tasks.length;
                           const completedTasks = project.tasks.filter((t) => t.status === "DONE")
                             .length;
                           const progressPct = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
-                          // Check for Stalled Status (Stall Prevention)
                           const hasActiveTask = project.tasks.some(
                             (t) => t.status === "TODO" || t.status === "IN_PROGRESS"
                           );
@@ -814,11 +791,10 @@ export function KanbanBoardClient({
                                 </button>
                               </div>
 
-                              {/* Progress bar */}
                               {totalTasks > 0 && (
                                 <div className="flex flex-col gap-1">
                                   <div className="flex justify-between text-[10px] font-mono text-zinc-500">
-                                    <span>Прогрес атомів</span>
+                                    <span>Atom progress</span>
                                     <span>
                                       {completedTasks}/{totalTasks} ({Math.round(progressPct)}%)
                                     </span>
@@ -832,15 +808,13 @@ export function KanbanBoardClient({
                                 </div>
                               )}
 
-                              {/* Stall Warning */}
                               {isStalled && (
                                 <div className="flex items-center gap-1.5 text-orange-400 text-[10px] font-mono bg-orange-500/5 px-2 py-1 rounded border border-orange-500/10">
                                   <AlertTriangle size={11} className="shrink-0" />
-                                  <span>ЗАСТІЙ: немає активних атомів</span>
+                                  <span>STALLED: no active atoms</span>
                                 </div>
                               )}
 
-                              {/* Inline Quick Add Atom */}
                               <div className="flex items-center gap-1.5 pt-1">
                                 <Input
                                   value={inlineAtomTitle[project.id] || ""}
@@ -856,7 +830,7 @@ export function KanbanBoardClient({
                                       handleAddInlineAtom(project.id, obj.sphere.id);
                                     }
                                   }}
-                                  placeholder="+ Новий кайдзен-атом..."
+                                  placeholder="+ New kaizen atom..."
                                   className="text-xs h-7 py-1 px-2 flex-1 bg-black/20"
                                 />
                                 <Button
@@ -876,7 +850,7 @@ export function KanbanBoardClient({
                                   onClick={() => handleAssignProject(project.id, null)}
                                   className="text-[9px] font-mono font-semibold uppercase text-zinc-500 hover:text-zinc-300 flex items-center gap-1"
                                 >
-                                  Повернути в беклог
+                                  Move to backlog
                                 </button>
                               </div>
                             </div>
@@ -892,12 +866,12 @@ export function KanbanBoardClient({
         </div>
       </div>
 
-      {/* ⚡ LEVEL 2: Рівень Атомів (Тактика) */}
+      {/* LEVEL 2: Atoms (Tactics) */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2 text-zinc-400">
           <CheckSquare size={14} className="text-orange-400" />
           <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
-            Операційні Атоми (Щотижневе Виконання)
+            Operational Atoms (Weekly Execution)
           </h2>
         </div>
 
@@ -912,7 +886,7 @@ export function KanbanBoardClient({
             <div id="column-weekly">
               <TaskColumn
                 id="weekly"
-                title="План на тиждень"
+                title="Weekly Plan"
                 tasks={columns.weekly}
                 onDeleteTask={handleDeleteTask}
                 onEditTask={() => {}}
@@ -921,7 +895,7 @@ export function KanbanBoardClient({
             <div id="column-today">
               <TaskColumn
                 id="today"
-                title="СЬОГОДНІ"
+                title="TODAY"
                 tasks={columns.today}
                 onDeleteTask={handleDeleteTask}
                 onEditTask={() => {}}
@@ -930,7 +904,7 @@ export function KanbanBoardClient({
             <div id="column-done">
               <TaskColumn
                 id="done"
-                title="Готово (Done)"
+                title="Done"
                 tasks={columns.done}
                 onDeleteTask={handleDeleteTask}
                 onEditTask={() => {}}
@@ -958,26 +932,26 @@ export function KanbanBoardClient({
       <Dialog
         isOpen={newProjectOpen}
         onClose={() => setNewProjectOpen(false)}
-        title="Створити новий проєкт"
+        title="Create new project"
         maxWidth="480px"
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-label text-zinc-300">Назва проекту</label>
+            <label className="text-label text-zinc-300">Project title</label>
             <Input
               value={projectTitle}
               onChange={(e) => setProjectTitle(e.target.value)}
-              placeholder="Наприклад: Підготуватися до марафону"
+              placeholder="e.g. Train for marathon"
               autoFocus
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-label text-zinc-300">Опис (опціонально)</label>
+            <label className="text-label text-zinc-300">Description (optional)</label>
             <Textarea
               value={projectDesc}
               onChange={(e) => setProjectDesc(e.target.value)}
-              placeholder="Короткий опис цілей та задач проекту..."
+              placeholder="Brief description of goals..."
               rows={3}
             />
           </div>
@@ -990,7 +964,7 @@ export function KanbanBoardClient({
               onClick={() => setNewProjectOpen(false)}
               disabled={isPending}
             >
-              Скасувати
+              Cancel
             </Button>
             <Button
               type="button"
@@ -999,7 +973,7 @@ export function KanbanBoardClient({
               onClick={handleCreateProject}
               disabled={!projectTitle.trim() || isPending}
             >
-              Створити
+              Create
             </Button>
           </div>
         </div>
@@ -1009,32 +983,32 @@ export function KanbanBoardClient({
       <Dialog
         isOpen={newObjectiveOpen}
         onClose={() => setNewObjectiveOpen(false)}
-        title="Додати стратегічну ціль спринту"
+        title="Add strategic sprint objective"
         maxWidth="480px"
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-label text-zinc-300">Ціль спринту</label>
+            <label className="text-label text-zinc-300">Sprint objective</label>
             <Input
               value={objectiveTitle}
               onChange={(e) => setObjectiveTitle(e.target.value)}
-              placeholder="Наприклад: Пройти курс та підтягнути англійську мову"
+              placeholder="e.g. Learn English and pass exam"
               autoFocus
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-label text-zinc-300">Опис цілі (опціонально)</label>
+            <label className="text-label text-zinc-300">Objective description (optional)</label>
             <Textarea
               value={objectiveDesc}
               onChange={(e) => setObjectiveDesc(e.target.value)}
-              placeholder="Що буде вважатися успішним результатом спринту..."
+              placeholder="What defines success for this objective..."
               rows={3}
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-label text-zinc-300">Сфера життя</label>
+            <label className="text-label text-zinc-300">Life sphere</label>
             <div className="flex flex-wrap gap-2">
               {spheres.map((s) => (
                 <button
@@ -1065,7 +1039,7 @@ export function KanbanBoardClient({
               onClick={() => setNewObjectiveOpen(false)}
               disabled={isPending}
             >
-              Скасувати
+              Cancel
             </Button>
             <Button
               type="button"
@@ -1074,7 +1048,7 @@ export function KanbanBoardClient({
               onClick={handleCreateObjective}
               disabled={!objectiveTitle.trim() || isPending}
             >
-              Створити ціль
+              Create objective
             </Button>
           </div>
         </div>
