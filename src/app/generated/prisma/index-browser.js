@@ -425,6 +425,7 @@ exports.Prisma.KeyResultScalarFieldEnum = {
 
 exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   objectiveId: 'objectiveId',
   title: 'title',
   description: 'description',

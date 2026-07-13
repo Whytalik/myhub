@@ -226,6 +226,7 @@ export async function decomposeThought(
       const title = projectTitle || thought.content;
       const createdProject = await tx.project.create({
         data: {
+          userId,
           title,
           description: description || null,
           status: "TODO",

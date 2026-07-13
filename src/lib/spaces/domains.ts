@@ -20,6 +20,7 @@ import {
   Scale,
   Star,
   BarChart3,
+  Kanban,
 } from "lucide-react";
 
 export interface PageLink {
@@ -70,8 +71,9 @@ export const DOMAINS: Domain[] = [
         label: "Planning Space",
         icon: ClipboardList,
         accent: "#fbbf24",
-        href: "/life/planning",
+        href: "/life/planning/kanban",
         pages: [
+          { href: "/life/planning/kanban", label: "Kanban", icon: Kanban },
           { href: "/life/planning", label: "Thoughts", icon: Lightbulb },
           { href: "/life/planning/spheres", label: "Spheres", icon: LayoutGrid },
           { href: "/life/planning/mission", label: "Mission", icon: Compass },

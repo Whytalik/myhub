@@ -4098,6 +4098,7 @@ export namespace Prisma {
     sessions: number
     sprints: number
     tasks: number
+    projects: number
     visions: number
     weekTemplates: number
     exercises: number
@@ -4123,6 +4124,7 @@ export namespace Prisma {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     sprints?: boolean | UserCountOutputTypeCountSprintsArgs
     tasks?: boolean | UserCountOutputTypeCountTasksArgs
+    projects?: boolean | UserCountOutputTypeCountProjectsArgs
     visions?: boolean | UserCountOutputTypeCountVisionsArgs
     weekTemplates?: boolean | UserCountOutputTypeCountWeekTemplatesArgs
     exercises?: boolean | UserCountOutputTypeCountExercisesArgs
@@ -4222,6 +4224,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectWhereInput
   }
 
   /**
@@ -5036,6 +5045,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     sprints?: boolean | User$sprintsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
+    projects?: boolean | User$projectsArgs<ExtArgs>
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
     exercises?: boolean | User$exercisesArgs<ExtArgs>
@@ -5102,6 +5112,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     sprints?: boolean | User$sprintsArgs<ExtArgs>
     tasks?: boolean | User$tasksArgs<ExtArgs>
+    projects?: boolean | User$projectsArgs<ExtArgs>
     visions?: boolean | User$visionsArgs<ExtArgs>
     weekTemplates?: boolean | User$weekTemplatesArgs<ExtArgs>
     exercises?: boolean | User$exercisesArgs<ExtArgs>
@@ -5132,6 +5143,7 @@ export namespace Prisma {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       sprints: Prisma.$SprintPayload<ExtArgs>[]
       tasks: Prisma.$TaskPayload<ExtArgs>[]
+      projects: Prisma.$ProjectPayload<ExtArgs>[]
       visions: Prisma.$VisionPayload<ExtArgs>[]
       weekTemplates: Prisma.$WeekTemplatePayload<ExtArgs>[]
       exercises: Prisma.$ExercisePayload<ExtArgs>[]
@@ -5560,6 +5572,7 @@ export namespace Prisma {
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sprints<T extends User$sprintsArgs<ExtArgs> = {}>(args?: Subset<T, User$sprintsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SprintPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    projects<T extends User$projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visions<T extends User$visionsArgs<ExtArgs> = {}>(args?: Subset<T, User$visionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     weekTemplates<T extends User$weekTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$weekTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeekTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exercises<T extends User$exercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$exercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6264,6 +6277,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.projects
+   */
+  export type User$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    where?: ProjectWhereInput
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    cursor?: ProjectWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
   }
 
   /**
@@ -31217,6 +31254,7 @@ export namespace Prisma {
 
   export type ProjectMinAggregateOutputType = {
     id: string | null
+    userId: string | null
     objectiveId: string | null
     title: string | null
     description: string | null
@@ -31229,6 +31267,7 @@ export namespace Prisma {
 
   export type ProjectMaxAggregateOutputType = {
     id: string | null
+    userId: string | null
     objectiveId: string | null
     title: string | null
     description: string | null
@@ -31241,6 +31280,7 @@ export namespace Prisma {
 
   export type ProjectCountAggregateOutputType = {
     id: number
+    userId: number
     objectiveId: number
     title: number
     description: number
@@ -31255,6 +31295,7 @@ export namespace Prisma {
 
   export type ProjectMinAggregateInputType = {
     id?: true
+    userId?: true
     objectiveId?: true
     title?: true
     description?: true
@@ -31267,6 +31308,7 @@ export namespace Prisma {
 
   export type ProjectMaxAggregateInputType = {
     id?: true
+    userId?: true
     objectiveId?: true
     title?: true
     description?: true
@@ -31279,6 +31321,7 @@ export namespace Prisma {
 
   export type ProjectCountAggregateInputType = {
     id?: true
+    userId?: true
     objectiveId?: true
     title?: true
     description?: true
@@ -31364,6 +31407,7 @@ export namespace Prisma {
 
   export type ProjectGroupByOutputType = {
     id: string
+    userId: string
     objectiveId: string | null
     title: string
     description: string | null
@@ -31393,6 +31437,7 @@ export namespace Prisma {
 
   export type ProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    userId?: boolean
     objectiveId?: boolean
     title?: boolean
     description?: boolean
@@ -31401,6 +31446,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
     tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
@@ -31408,6 +31454,7 @@ export namespace Prisma {
 
   export type ProjectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    userId?: boolean
     objectiveId?: boolean
     title?: boolean
     description?: boolean
@@ -31416,11 +31463,13 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    userId?: boolean
     objectiveId?: boolean
     title?: boolean
     description?: boolean
@@ -31429,11 +31478,13 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectScalar = {
     id?: boolean
+    userId?: boolean
     objectiveId?: boolean
     title?: boolean
     description?: boolean
@@ -31444,27 +31495,32 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "objectiveId" | "title" | "description" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "objectiveId" | "title" | "description" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
     tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
   }
   export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
     objective?: boolean | Project$objectiveArgs<ExtArgs>
   }
 
   export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Project"
     objects: {
+      user: Prisma.$UserPayload<ExtArgs>
       objective: Prisma.$ObjectivePayload<ExtArgs> | null
       tasks: Prisma.$TaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      userId: string
       objectiveId: string | null
       title: string
       description: string | null
@@ -31867,6 +31923,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     objective<T extends Project$objectiveArgs<ExtArgs> = {}>(args?: Subset<T, Project$objectiveArgs<ExtArgs>>): Prisma__ObjectiveClient<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     tasks<T extends Project$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Project$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -31899,6 +31956,7 @@ export namespace Prisma {
    */
   interface ProjectFieldRefs {
     readonly id: FieldRef<"Project", 'String'>
+    readonly userId: FieldRef<"Project", 'String'>
     readonly objectiveId: FieldRef<"Project", 'String'>
     readonly title: FieldRef<"Project", 'String'>
     readonly description: FieldRef<"Project", 'String'>
@@ -46961,6 +47019,7 @@ export namespace Prisma {
 
   export const ProjectScalarFieldEnum: {
     id: 'id',
+    userId: 'userId',
     objectiveId: 'objectiveId',
     title: 'title',
     description: 'description',
@@ -47436,6 +47495,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     sprints?: SprintListRelationFilter
     tasks?: TaskListRelationFilter
+    projects?: ProjectListRelationFilter
     visions?: VisionListRelationFilter
     weekTemplates?: WeekTemplateListRelationFilter
     exercises?: ExerciseListRelationFilter
@@ -47471,6 +47531,7 @@ export namespace Prisma {
     sessions?: SessionOrderByRelationAggregateInput
     sprints?: SprintOrderByRelationAggregateInput
     tasks?: TaskOrderByRelationAggregateInput
+    projects?: ProjectOrderByRelationAggregateInput
     visions?: VisionOrderByRelationAggregateInput
     weekTemplates?: WeekTemplateOrderByRelationAggregateInput
     exercises?: ExerciseOrderByRelationAggregateInput
@@ -47509,6 +47570,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     sprints?: SprintListRelationFilter
     tasks?: TaskListRelationFilter
+    projects?: ProjectListRelationFilter
     visions?: VisionListRelationFilter
     weekTemplates?: WeekTemplateListRelationFilter
     exercises?: ExerciseListRelationFilter
@@ -49406,6 +49468,7 @@ export namespace Prisma {
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     id?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
     objectiveId?: StringNullableFilter<"Project"> | string | null
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
@@ -49414,12 +49477,14 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     objective?: XOR<ObjectiveNullableScalarRelationFilter, ObjectiveWhereInput> | null
     tasks?: TaskListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
     id?: SortOrder
+    userId?: SortOrder
     objectiveId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -49428,6 +49493,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
     objective?: ObjectiveOrderByWithRelationInput
     tasks?: TaskOrderByRelationAggregateInput
   }
@@ -49437,6 +49503,7 @@ export namespace Prisma {
     AND?: ProjectWhereInput | ProjectWhereInput[]
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
+    userId?: StringFilter<"Project"> | string
     objectiveId?: StringNullableFilter<"Project"> | string | null
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
@@ -49445,12 +49512,14 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     objective?: XOR<ObjectiveNullableScalarRelationFilter, ObjectiveWhereInput> | null
     tasks?: TaskListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
     id?: SortOrder
+    userId?: SortOrder
     objectiveId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -49469,6 +49538,7 @@ export namespace Prisma {
     OR?: ProjectScalarWhereWithAggregatesInput[]
     NOT?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Project"> | string
+    userId?: StringWithAggregatesFilter<"Project"> | string
     objectiveId?: StringNullableWithAggregatesFilter<"Project"> | string | null
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
@@ -50498,6 +50568,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -50533,6 +50604,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -50568,6 +50640,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -50603,6 +50676,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -52722,12 +52796,14 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProjectsInput
     objective?: ObjectiveCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
     id?: string
+    userId: string
     objectiveId?: string | null
     title: string
     description?: string | null
@@ -52748,12 +52824,14 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProjectsNestedInput
     objective?: ObjectiveUpdateOneWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52767,6 +52845,7 @@ export namespace Prisma {
 
   export type ProjectCreateManyInput = {
     id?: string
+    userId: string
     objectiveId?: string | null
     title: string
     description?: string | null
@@ -52790,6 +52869,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53984,6 +54064,12 @@ export namespace Prisma {
     none?: TaskWhereInput
   }
 
+  export type ProjectListRelationFilter = {
+    every?: ProjectWhereInput
+    some?: ProjectWhereInput
+    none?: ProjectWhereInput
+  }
+
   export type VisionListRelationFilter = {
     every?: VisionWhereInput
     some?: VisionWhereInput
@@ -54096,6 +54182,10 @@ export namespace Prisma {
   }
 
   export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -55565,17 +55655,7 @@ export namespace Prisma {
     isNot?: SprintWhereInput
   }
 
-  export type ProjectListRelationFilter = {
-    every?: ProjectWhereInput
-    some?: ProjectWhereInput
-    none?: ProjectWhereInput
-  }
-
   export type KeyResultOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ProjectOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -55687,6 +55767,7 @@ export namespace Prisma {
 
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     objectiveId?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -55699,6 +55780,7 @@ export namespace Prisma {
 
   export type ProjectMaxOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     objectiveId?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -55711,6 +55793,7 @@ export namespace Prisma {
 
   export type ProjectMinOrderByAggregateInput = {
     id?: SortOrder
+    userId?: SortOrder
     objectiveId?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -56437,6 +56520,13 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
+  export type ProjectCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
   export type VisionCreateNestedManyWithoutUserInput = {
     create?: XOR<VisionCreateWithoutUserInput, VisionUncheckedCreateWithoutUserInput> | VisionCreateWithoutUserInput[] | VisionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: VisionCreateOrConnectWithoutUserInput | VisionCreateOrConnectWithoutUserInput[]
@@ -56589,6 +56679,13 @@ export namespace Prisma {
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
     createMany?: TaskCreateManyUserInputEnvelope
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type ProjectUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
   export type VisionUncheckedCreateNestedManyWithoutUserInput = {
@@ -56840,6 +56937,20 @@ export namespace Prisma {
     update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type ProjectUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
   export type VisionUpdateManyWithoutUserNestedInput = {
@@ -57148,6 +57259,20 @@ export namespace Prisma {
     update?: TaskUpdateWithWhereUniqueWithoutUserInput | TaskUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TaskUpdateManyWithWhereWithoutUserInput | TaskUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type ProjectUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
   export type VisionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -58269,6 +58394,12 @@ export namespace Prisma {
     deleteMany?: TacticScalarWhereInput | TacticScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutProjectsInput = {
+    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type ObjectiveCreateNestedOneWithoutProjectsInput = {
     create?: XOR<ObjectiveCreateWithoutProjectsInput, ObjectiveUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: ObjectiveCreateOrConnectWithoutProjectsInput
@@ -58287,6 +58418,14 @@ export namespace Prisma {
     connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
     createMany?: TaskCreateManyProjectInputEnvelope
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
+    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
+    upsert?: UserUpsertWithoutProjectsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectsInput, UserUpdateWithoutProjectsInput>, UserUncheckedUpdateWithoutProjectsInput>
   }
 
   export type ObjectiveUpdateOneWithoutProjectsNestedInput = {
@@ -59884,6 +60023,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProjectCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    status?: $Enums.TaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    objective?: ObjectiveCreateNestedOneWithoutProjectsInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutUserInput = {
+    id?: string
+    objectiveId?: string | null
+    title: string
+    description?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    status?: $Enums.TaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProjectCreateManyUserInputEnvelope = {
+    data: ProjectCreateManyUserInput | ProjectCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VisionCreateWithoutUserInput = {
     id?: string
     title: string
@@ -60654,6 +60829,38 @@ export namespace Prisma {
     isFrog?: BoolFilter<"Task"> | boolean
   }
 
+  export type ProjectUpsertWithWhereUniqueWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    update: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
+    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProjectUpdateWithWhereUniqueWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    data: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProjectUpdateManyWithWhereWithoutUserInput = {
+    where: ProjectScalarWhereInput
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ProjectScalarWhereInput = {
+    AND?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    OR?: ProjectScalarWhereInput[]
+    NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    id?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
+    objectiveId?: StringNullableFilter<"Project"> | string | null
+    title?: StringFilter<"Project"> | string
+    description?: StringNullableFilter<"Project"> | string | null
+    startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"Project"> | Date | string | null
+    status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+  }
+
   export type VisionUpsertWithWhereUniqueWithoutUserInput = {
     where: VisionWhereUniqueInput
     update: XOR<VisionUpdateWithoutUserInput, VisionUncheckedUpdateWithoutUserInput>
@@ -61021,6 +61228,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
@@ -61055,6 +61263,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
@@ -61136,6 +61345,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
@@ -61170,6 +61380,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
@@ -61240,6 +61451,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -61274,6 +61486,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -61324,6 +61537,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -61358,6 +61572,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -61392,6 +61607,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -61426,6 +61642,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -61476,6 +61693,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -61510,6 +61728,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -61544,6 +61763,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -61578,6 +61798,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -61628,6 +61849,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -61662,6 +61884,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -61756,6 +61979,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -61790,6 +62014,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -62024,6 +62249,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -62058,6 +62284,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -62289,11 +62516,13 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProjectsInput
     objective?: ObjectiveCreateNestedOneWithoutProjectsInput
   }
 
   export type ProjectUncheckedCreateWithoutTasksInput = {
     id?: string
+    userId: string
     objectiveId?: string | null
     title: string
     description?: string | null
@@ -62367,6 +62596,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -62401,6 +62631,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -62524,11 +62755,13 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProjectsNestedInput
     objective?: ObjectiveUpdateOneWithoutProjectsNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -62614,6 +62847,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -62648,6 +62882,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -62682,6 +62917,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -62716,6 +62952,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -62766,6 +63003,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -62800,6 +63038,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -62898,6 +63137,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -62932,6 +63172,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -63080,6 +63321,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -63114,6 +63356,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -63174,6 +63417,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -63208,6 +63452,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -63318,6 +63563,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -63352,6 +63598,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -63519,6 +63766,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
@@ -63553,6 +63801,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
@@ -63603,6 +63852,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
@@ -63637,6 +63887,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
@@ -63670,6 +63921,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -63704,6 +63956,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -63754,6 +64007,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -63788,6 +64042,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -63859,6 +64114,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -63893,6 +64149,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -63986,6 +64243,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -64020,6 +64278,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -64088,6 +64347,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -64122,6 +64382,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -64222,6 +64483,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -64256,6 +64518,7 @@ export namespace Prisma {
     pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -64410,11 +64673,13 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutObjectiveInput = {
     id?: string
+    userId: string
     title: string
     description?: string | null
     startDate?: Date | string | null
@@ -64561,21 +64826,6 @@ export namespace Prisma {
     data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutObjectiveInput>
   }
 
-  export type ProjectScalarWhereInput = {
-    AND?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-    OR?: ProjectScalarWhereInput[]
-    NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
-    id?: StringFilter<"Project"> | string
-    objectiveId?: StringNullableFilter<"Project"> | string | null
-    title?: StringFilter<"Project"> | string
-    description?: StringNullableFilter<"Project"> | string | null
-    startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
-    endDate?: DateTimeNullableFilter<"Project"> | Date | string | null
-    status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
-    createdAt?: DateTimeFilter<"Project"> | Date | string
-    updatedAt?: DateTimeFilter<"Project"> | Date | string
-  }
-
   export type ObjectiveCreateWithoutKeyResultsInput = {
     id?: string
     title: string
@@ -64699,6 +64949,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Tactic"> | Date | string
   }
 
+  export type UserCreateWithoutProjectsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProjectsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+    missionVersions?: MissionVersionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProjectsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+  }
+
   export type ObjectiveCreateWithoutProjectsInput = {
     id?: string
     title: string
@@ -64794,6 +65119,87 @@ export namespace Prisma {
   export type TaskCreateManyProjectInputEnvelope = {
     data: TaskCreateManyProjectInput | TaskCreateManyProjectInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutProjectsInput = {
+    update: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
+    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutProjectsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type UserUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+    missionVersions?: MissionVersionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveUpsertWithoutProjectsInput = {
@@ -65104,6 +65510,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
@@ -65138,6 +65545,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
@@ -65272,6 +65680,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
@@ -65306,6 +65715,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
@@ -65372,6 +65782,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -65406,6 +65817,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -65492,6 +65904,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -65526,6 +65939,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -65576,6 +65990,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -65610,6 +66025,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -65789,6 +66205,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -65823,6 +66240,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -65938,6 +66356,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -65972,6 +66391,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -66098,6 +66518,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -66132,6 +66553,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -66254,6 +66676,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -66288,6 +66711,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -66413,6 +66837,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -66447,6 +66872,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -66534,6 +66960,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -66568,6 +66995,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -66694,6 +67122,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -66728,6 +67157,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -66850,6 +67280,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -66884,6 +67315,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -66968,6 +67400,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -67002,6 +67435,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -67052,6 +67486,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -67086,6 +67521,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -67198,6 +67634,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -67232,6 +67669,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -67340,6 +67778,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     sprints?: SprintCreateNestedManyWithoutUserInput
     tasks?: TaskCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
     visions?: VisionCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
     exercises?: ExerciseCreateNestedManyWithoutUserInput
@@ -67374,6 +67813,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
     visions?: VisionUncheckedCreateNestedManyWithoutUserInput
     weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
     exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
@@ -67424,6 +67864,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     sprints?: SprintUpdateManyWithoutUserNestedInput
     tasks?: TaskUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
     visions?: VisionUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUpdateManyWithoutUserNestedInput
@@ -67458,6 +67899,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
     visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
     weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
     exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
@@ -67642,6 +68084,18 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+  }
+
+  export type ProjectCreateManyUserInput = {
+    id?: string
+    objectiveId?: string | null
+    title: string
+    description?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    status?: $Enums.TaskStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type VisionCreateManyUserInput = {
@@ -68309,6 +68763,44 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ProjectUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    objective?: ObjectiveUpdateOneWithoutProjectsNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VisionUpdateWithoutUserInput = {
@@ -69390,6 +69882,7 @@ export namespace Prisma {
 
   export type ProjectCreateManyObjectiveInput = {
     id?: string
+    userId: string
     title: string
     description?: string | null
     startDate?: Date | string | null
@@ -69440,11 +69933,13 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutObjectiveInput = {
     id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69457,6 +69952,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateManyWithoutObjectiveInput = {
     id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

@@ -29,6 +29,7 @@ model User {
   sessions                Session[]
   sprints                 Sprint[]
   tasks                   Task[]
+  projects                Project[]
   visions                 Vision[]
   weekTemplates           WeekTemplate[]
   exercises               Exercise[]
@@ -455,6 +456,7 @@ model KeyResult {
 
 model Project {
   id          String     @id @default(cuid())
+  userId      String
   objectiveId String?
   title       String
   description String?
@@ -463,9 +465,11 @@ model Project {
   status      TaskStatus @default(TODO)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   objective   Objective? @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
   tasks       Task[]
 
+  @@index([userId])
   @@index([objectiveId])
 }
 
