@@ -511,18 +511,6 @@ export function DailyEntryForm({
                   </div>
                 </div>
 
-                <Suspense fallback={suspenseFallback}>
-                  <RoutineSection
-                    type="evening"
-                    routine={data.eveningRoutine ?? null}
-                    scheduledTrainingDayName={scheduledTrainingDayName}
-                    gymSkipped={data.gymSkipped}
-                    gymSkipReason={data.gymSkipReason}
-                    inboxCount={inboxThoughtCount}
-                    onChange={patch}
-                  />
-                </Suspense>
-
                 <ConfidenceSection log={data.confidenceLog ?? null} onChange={patch} />
 
                 <TaskReviewSection tasks={tasks} date={todayStr} />
@@ -554,6 +542,18 @@ export function DailyEntryForm({
                   frictionToday={data.frictionToday ?? null}
                   onChange={patch}
                 />
+
+                <Suspense fallback={suspenseFallback}>
+                  <RoutineSection
+                    type="evening"
+                    routine={data.eveningRoutine ?? null}
+                    scheduledTrainingDayName={scheduledTrainingDayName}
+                    gymSkipped={data.gymSkipped}
+                    gymSkipReason={data.gymSkipReason}
+                    inboxCount={inboxThoughtCount}
+                    onChange={patch}
+                  />
+                </Suspense>
 
                 {isEditable && (
                   <div className="flex justify-center pt-2">

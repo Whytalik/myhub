@@ -126,14 +126,14 @@ export function RoutineSection({
         </span>
       </div>
 
-      {isScheduled && !gymSkipped && (
+      {type === "morning" && isScheduled && !gymSkipped && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-accent-training/10 text-accent-training text-xs">
             <div className="flex items-center gap-1.5">
               <Dumbbell size={12} />
               <span>Training day: {scheduledTrainingDayName}</span>
             </div>
-            {type === "morning" && !isSkipPanelOpen && (
+            {!isSkipPanelOpen && (
               <button
                 type="button"
                 onClick={openSkipPanel}
@@ -144,7 +144,7 @@ export function RoutineSection({
             )}
           </div>
 
-          {type === "morning" && isSkipPanelOpen && (
+          {isSkipPanelOpen && (
             <div className="flex flex-col gap-2 p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06]">
               <span className="text-caption">Чому пропускаєш зал?</span>
               <div className="flex flex-wrap gap-1.5">
@@ -187,21 +187,19 @@ export function RoutineSection({
         </div>
       )}
 
-      {gymSkipped && (
+      {type === "morning" && gymSkipped && (
         <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-white/[0.04] text-zinc-400 text-xs">
           <div className="flex items-center gap-1.5 min-w-0">
             <XCircle size={12} className="shrink-0" />
             <span className="truncate">Зал пропущено: {gymSkipReason}</span>
           </div>
-          {type === "morning" && (
-            <button
-              type="button"
-              onClick={undoSkip}
-              className="shrink-0 text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
-            >
-              Повернути зал
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={undoSkip}
+            className="shrink-0 text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+          >
+            Повернути зал
+          </button>
         </div>
       )}
 
