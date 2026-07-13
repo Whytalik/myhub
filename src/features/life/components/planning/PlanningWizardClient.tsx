@@ -285,8 +285,9 @@ export function PlanningWizardClient({
 
       {/* STEP 1: BRAIN DUMP */}
       {step === 1 && (
-        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-6 items-start">
-          <div className="glass-card p-6 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-4">
+        <div className="flex flex-col gap-6 w-full">
+          {/* Top Form */}
+          <div className="glass-card p-6 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-4 w-full">
             <div>
               <h3 className="text-panel-title font-semibold text-zinc-200">Step 1: Brain Dump</h3>
               <p className="text-caption text-xs mt-1">
@@ -304,6 +305,7 @@ export function PlanningWizardClient({
                 placeholder="Capture thought..."
                 autoFocus
                 disabled={isActionPending}
+                className="flex-1"
               />
               <Button
                 variant="primary"
@@ -315,7 +317,8 @@ export function PlanningWizardClient({
             </div>
           </div>
 
-          <div className="glass-card p-5 bg-black/10 border border-white/[0.04] rounded-2xl flex flex-col gap-4 max-h-[450px]">
+          {/* Bottom Inbox List (3-column grid) */}
+          <div className="glass-card p-5 bg-black/10 border border-white/[0.04] rounded-2xl flex flex-col gap-4 w-full">
             <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
               <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">Current Inbox</h4>
               <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded">
@@ -323,32 +326,37 @@ export function PlanningWizardClient({
               </span>
             </div>
 
-            <div className="flex flex-col gap-2 overflow-y-auto pr-1">
-              {thoughts.length === 0 ? (
-                <div className="text-zinc-500 text-xs italic py-12 text-center">
-                  Your thoughts will appear here. Write something on the left!
-                </div>
-              ) : (
-                [...thoughts].reverse().map((t) => (
-                  <div key={t.id} className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex items-center justify-between gap-3">
-                    <span className="text-zinc-300 leading-normal">{t.content}</span>
-                    <span className="text-[9px] font-mono text-zinc-500 shrink-0 bg-white/[0.03] px-1.5 py-0.5 rounded">
+            {thoughts.length === 0 ? (
+              <div className="text-zinc-500 text-xs italic py-12 text-center">
+                Your thoughts will appear here. Write something above!
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto max-h-[350px] pr-1">
+                {[...thoughts].reverse().map((t) => (
+                  <div
+                    key={t.id}
+                    className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex items-center justify-between gap-3 min-h-[48px]"
+                  >
+                    <span className="text-zinc-300 leading-normal break-words">{t.content}</span>
+                    <span className="text-[9px] font-mono text-zinc-500 shrink-0 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
                       {t.status.name}
                     </span>
                   </div>
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            )}
 
             {thoughts.length > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setStep(2)}
-                className="w-full mt-auto"
-              >
-                Next to Filtering ({inboxThoughts.length} in Inbox) <ChevronRight size={14} className="ml-1" />
-              </Button>
+              <div className="flex justify-end border-t border-white/[0.04] pt-3 mt-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep(2)}
+                  className="w-full md:w-auto"
+                >
+                  Next to Filtering ({inboxThoughts.length} in Inbox) <ChevronRight size={14} className="ml-1" />
+                </Button>
+              </div>
             )}
           </div>
         </div>
