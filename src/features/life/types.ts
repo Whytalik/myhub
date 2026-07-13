@@ -125,6 +125,7 @@ export interface DailyEntryData {
   standupPlan: string | null;
   standupBlockers: string | null;
   dailyVector: JsonValue | null;
+  pdcaLog: JsonValue | null;
 
   startedAt: Date | null;
   completedAt: Date | null;
@@ -170,6 +171,7 @@ export interface UpsertDailyEntryInput {
   standupBlockers?: string | null;
   confidenceLog?: ConfidenceLog | null;
   dailyVector?: DailyVector | null;
+  pdcaLog?: PdcaLog | null;
 }
 
 export interface ConfidenceLog {
@@ -182,6 +184,14 @@ export interface ConfidenceLog {
   stuporReality: string | null;
   floodingUsedPause: boolean | null;
   note: string | null;
+}
+
+// Daily PDCA (Plan→Do→Check→Act) reflection log — stored per evening entry
+export interface PdcaLog {
+  plan: string | null;
+  do: string | null;
+  check: string | null;
+  act: string | null;
 }
 
 // Morning "vector of the day" prompt set — a periodic self-audit ritual

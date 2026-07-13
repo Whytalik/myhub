@@ -290,6 +290,7 @@ model DailyEntry {
   dailyVector     Json?
   recoveryRoutine Json?
   recoveryScore   Float?
+  pdcaLog         Json?
   startedAt       DateTime?
   completedAt     DateTime?
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)

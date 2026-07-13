@@ -12,6 +12,7 @@ import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
 import { DailyVectorSection } from "./sections/DailyVectorSection";
 import { ConfidenceSection } from "./sections/ConfidenceSection";
+import { PdcaSection } from "./sections/PdcaSection";
 import {
   upsertEntryAction,
   setDayStartedAction,
@@ -30,6 +31,7 @@ import type {
   HabitData,
   ConfidenceLog,
   DailyVector,
+  PdcaLog,
 } from "../types";
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -150,6 +152,7 @@ export function DailyEntryForm({
       standupBlockers: initialEntry?.standupBlockers ?? null,
       confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
       dailyVector: (initialEntry?.dailyVector as DailyVector | null) ?? null,
+      pdcaLog: (initialEntry?.pdcaLog as PdcaLog | null) ?? null,
     };
   }, [initialEntry, scheduledTrainingDayName]);
 
@@ -536,6 +539,12 @@ export function DailyEntryForm({
                     minCellHeight={150}
                   />
                 </Suspense>
+
+                <PdcaSection
+                  pdcaLog={data.pdcaLog ?? null}
+                  standupPlan={data.standupPlan ?? null}
+                  onChange={patch}
+                />
 
                 <ReflectionSection
                   winToday={data.winToday ?? null}

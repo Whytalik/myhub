@@ -19332,6 +19332,7 @@ export namespace Prisma {
     dailyVector: number
     recoveryRoutine: number
     recoveryScore: number
+    pdcaLog: number
     startedAt: number
     completedAt: number
     _all: number
@@ -19467,6 +19468,7 @@ export namespace Prisma {
     dailyVector?: true
     recoveryRoutine?: true
     recoveryScore?: true
+    pdcaLog?: true
     startedAt?: true
     completedAt?: true
     _all?: true
@@ -19595,6 +19597,7 @@ export namespace Prisma {
     dailyVector: JsonValue | null
     recoveryRoutine: JsonValue | null
     recoveryScore: number | null
+    pdcaLog: JsonValue | null
     startedAt: Date | null
     completedAt: Date | null
     _count: DailyEntryCountAggregateOutputType | null
@@ -19655,6 +19658,7 @@ export namespace Prisma {
     dailyVector?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    pdcaLog?: boolean
     startedAt?: boolean
     completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19697,6 +19701,7 @@ export namespace Prisma {
     dailyVector?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    pdcaLog?: boolean
     startedAt?: boolean
     completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19739,6 +19744,7 @@ export namespace Prisma {
     dailyVector?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    pdcaLog?: boolean
     startedAt?: boolean
     completedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -19781,11 +19787,12 @@ export namespace Prisma {
     dailyVector?: boolean
     recoveryRoutine?: boolean
     recoveryScore?: boolean
+    pdcaLog?: boolean
     startedAt?: boolean
     completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "pdcaLog" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -19838,6 +19845,7 @@ export namespace Prisma {
       dailyVector: Prisma.JsonValue | null
       recoveryRoutine: Prisma.JsonValue | null
       recoveryScore: number | null
+      pdcaLog: Prisma.JsonValue | null
       startedAt: Date | null
       completedAt: Date | null
     }, ExtArgs["result"]["dailyEntry"]>
@@ -20300,6 +20308,7 @@ export namespace Prisma {
     readonly dailyVector: FieldRef<"DailyEntry", 'Json'>
     readonly recoveryRoutine: FieldRef<"DailyEntry", 'Json'>
     readonly recoveryScore: FieldRef<"DailyEntry", 'Float'>
+    readonly pdcaLog: FieldRef<"DailyEntry", 'Json'>
     readonly startedAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly completedAt: FieldRef<"DailyEntry", 'DateTime'>
   }
@@ -46874,6 +46883,7 @@ export namespace Prisma {
     dailyVector: 'dailyVector',
     recoveryRoutine: 'recoveryRoutine',
     recoveryScore: 'recoveryScore',
+    pdcaLog: 'pdcaLog',
     startedAt: 'startedAt',
     completedAt: 'completedAt'
   };
@@ -48555,6 +48565,7 @@ export namespace Prisma {
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    pdcaLog?: JsonNullableFilter<"DailyEntry">
     startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -48597,6 +48608,7 @@ export namespace Prisma {
     dailyVector?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
     recoveryScore?: SortOrderInput | SortOrder
+    pdcaLog?: SortOrderInput | SortOrder
     startedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
@@ -48643,6 +48655,7 @@ export namespace Prisma {
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    pdcaLog?: JsonNullableFilter<"DailyEntry">
     startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -48685,6 +48698,7 @@ export namespace Prisma {
     dailyVector?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
     recoveryScore?: SortOrderInput | SortOrder
+    pdcaLog?: SortOrderInput | SortOrder
     startedAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     _count?: DailyEntryCountOrderByAggregateInput
@@ -48734,6 +48748,7 @@ export namespace Prisma {
     dailyVector?: JsonNullableWithAggregatesFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
     recoveryScore?: FloatNullableWithAggregatesFilter<"DailyEntry"> | number | null
+    pdcaLog?: JsonNullableWithAggregatesFilter<"DailyEntry">
     startedAt?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"DailyEntry"> | Date | string | null
   }
@@ -51759,6 +51774,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
     user: UserCreateNestedOneWithoutDailyEntriesInput
@@ -51801,6 +51817,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
   }
@@ -51841,6 +51858,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutDailyEntriesNestedInput
@@ -51883,6 +51901,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -51924,6 +51943,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
   }
@@ -51964,6 +51984,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -52005,6 +52026,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -55117,6 +55139,7 @@ export namespace Prisma {
     dailyVector?: SortOrder
     recoveryRoutine?: SortOrder
     recoveryScore?: SortOrder
+    pdcaLog?: SortOrder
     startedAt?: SortOrder
     completedAt?: SortOrder
   }
@@ -59649,6 +59672,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
   }
@@ -59689,6 +59713,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
   }
@@ -60555,6 +60580,7 @@ export namespace Prisma {
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
     recoveryScore?: FloatNullableFilter<"DailyEntry"> | number | null
+    pdcaLog?: JsonNullableFilter<"DailyEntry">
     startedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"DailyEntry"> | Date | string | null
   }
@@ -67972,6 +67998,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: Date | string | null
     completedAt?: Date | string | null
   }
@@ -68331,6 +68358,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -68371,6 +68399,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -68411,6 +68440,7 @@ export namespace Prisma {
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
     recoveryScore?: NullableFloatFieldUpdateOperationsInput | number | null
+    pdcaLog?: NullableJsonNullValueInput | InputJsonValue
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }

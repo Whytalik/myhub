@@ -310,6 +310,7 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   dailyVector: 'dailyVector',
   recoveryRoutine: 'recoveryRoutine',
   recoveryScore: 'recoveryScore',
+  pdcaLog: 'pdcaLog',
   startedAt: 'startedAt',
   completedAt: 'completedAt'
 };

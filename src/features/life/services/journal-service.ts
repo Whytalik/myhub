@@ -25,6 +25,7 @@ export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) 
     eveningRoutine,
     confidenceLog,
     dailyVector,
+    pdcaLog,
     ...data
   } = input;
 
@@ -36,6 +37,7 @@ export async function upsertEntry(userId: string, input: UpsertDailyEntryInput) 
     eveningRoutine: (eveningRoutine as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
     confidenceLog: (confidenceLog as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
     dailyVector: (dailyVector as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
+    pdcaLog: (pdcaLog as unknown as Prisma.InputJsonValue) ?? Prisma.DbNull,
   };
 
   return journalRepository.upsert(
