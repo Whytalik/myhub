@@ -14,7 +14,7 @@ export default async function ReviewPage() {
   const userId = session?.user?.id;
   if (!userId) redirect("/login");
 
-  const { entries, habits, tasks, activeSprint } = await getReviewData(userId);
+  const { entries, habits, tasks, activeSprint, sprintReviews } = await getReviewData(userId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,6 +29,7 @@ export default async function ReviewPage() {
         habits={habits}
         tasks={tasks}
         activeSprint={activeSprint}
+        sprintReviews={sprintReviews}
       />
     </div>
   );

@@ -9,14 +9,20 @@ export interface ReviewData {
   habits: HabitData[];
   tasks: TaskData[];
   activeSprint: any | null;
+  sprintReviews: any[];
 }
 
 export async function getReviewData(userId: string): Promise<ReviewData> {
-  const [entries, habits, tasks, activeSprint] = await Promise.all([
+  const [entries, habits, tasks, activeSprint, sprintReviews] = await Promise.all([
     getAllEntries(userId),
     getCachedHabitsForReview(userId),
     getAllTasks(userId),
     prisma.sprint.findFirst({ where: { userId, status: "ACTIVE" } }),
+    prisma.sprintReview.findMany({
+      where: {
+        sprint: { userId },
+      },
+    }),
   ]);
 
   return {
@@ -24,5 +30,6 @@ export async function getReviewData(userId: string): Promise<ReviewData> {
     habits: habits as unknown as HabitData[],
     tasks,
     activeSprint,
+    sprintReviews,
   };
 }

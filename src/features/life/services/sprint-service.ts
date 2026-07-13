@@ -229,3 +229,76 @@ export async function createSprintObjective(
     },
   });
 }
+
+export async function getSprintReviewForWeek(userId: string, date: Date) {
+  const sprint = await prisma.sprint.findFirst({
+    where: {
+      userId,
+      startDate: { lte: date },
+    },
+    orderBy: { startDate: "desc" },
+  });
+
+  if (!sprint) return null;
+
+  const weekNumber = Math.floor((date.getTime() - sprint.startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+
+  const review = await prisma.sprintReview.findFirst({
+    where: {
+      sprintId: sprint.id,
+      weekNumber,
+    },
+  });
+
+  return {
+    sprint,
+    weekNumber,
+    review,
+  };
+}
+
+export async function saveSprintReview(
+  userId: string,
+  sprintId: string,
+  weekNumber: number,
+  date: Date,
+  data: {
+    score?: number;
+    wins?: string;
+    challenges?: string;
+    adjustments?: string;
+  }
+) {
+  const sprint = await prisma.sprint.findFirst({
+    where: { id: sprintId, userId },
+  });
+  if (!sprint) throw new Error("Sprint not found or unauthorized");
+
+  const existingReview = await prisma.sprintReview.findFirst({
+    where: { sprintId, weekNumber },
+  });
+
+  if (existingReview) {
+    return prisma.sprintReview.update({
+      where: { id: existingReview.id },
+      data: {
+        score: data.score !== undefined ? data.score : existingReview.score,
+        wins: data.wins !== undefined ? data.wins : existingReview.wins,
+        challenges: data.challenges !== undefined ? data.challenges : existingReview.challenges,
+        adjustments: data.adjustments !== undefined ? data.adjustments : existingReview.adjustments,
+      },
+    });
+  } else {
+    return prisma.sprintReview.create({
+      data: {
+        sprintId,
+        weekNumber,
+        date,
+        score: data.score || null,
+        wins: data.wins || null,
+        challenges: data.challenges || null,
+        adjustments: data.adjustments || null,
+      },
+    });
+  }
+}

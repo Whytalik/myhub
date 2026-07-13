@@ -22,6 +22,7 @@ interface Props {
   habits: HabitData[];
   tasks: TaskData[];
   activeSprint: any | null;
+  sprintReviews: any[];
 }
 
 function formatRange(range: WeekRange): string {
@@ -30,7 +31,7 @@ function formatRange(range: WeekRange): string {
   return `${fmt(range.start)} – ${fmt(end)}`;
 }
 
-export function ReviewClient({ entries, habits, tasks, activeSprint }: Props) {
+export function ReviewClient({ entries, habits, tasks, activeSprint, sprintReviews }: Props) {
   const [weekOffset, setWeekOffset] = useState(0);
   const [activeTab, setActiveTab] = useState("summary");
 
@@ -107,7 +108,9 @@ export function ReviewClient({ entries, habits, tasks, activeSprint }: Props) {
               <KaizenTab
                 tasks={tasks}
                 activeSprint={activeSprint}
+                sprintReviews={sprintReviews}
                 weekStart={currentRange.start}
+                summary={currentSummary}
               />
             ),
           },

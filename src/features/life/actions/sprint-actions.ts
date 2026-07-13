@@ -57,3 +57,21 @@ export async function createSprintObjectiveAction(
     return objective;
   });
 }
+
+export async function saveSprintReviewAction(
+  sprintId: string,
+  weekNumber: number,
+  dateString: string,
+  data: {
+    score?: number;
+    wins?: string;
+    challenges?: string;
+    adjustments?: string;
+  }
+): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+    const date = new Date(dateString);
+    const review = await sprintService.saveSprintReview(userId, sprintId, weekNumber, date, data);
+    return review;
+  });
+}
