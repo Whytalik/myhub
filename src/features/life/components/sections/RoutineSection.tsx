@@ -14,6 +14,7 @@ import {
   Footprints,
   PhoneOff,
   Utensils,
+  Lightbulb,
 } from "lucide-react";
 import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
 import { Input } from "@/components/ui/inputs/input";
@@ -30,6 +31,7 @@ const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; classNa
   Moon,
   Dumbbell,
   Utensils,
+  Lightbulb,
   CheckCircle2,
   Circle,
 };

@@ -140,6 +140,7 @@ export function DailyEntryForm({
       improveTomorrow: initialEntry?.improveTomorrow ?? null,
       gratitude: initialEntry?.gratitude ?? null,
       brainDump: initialEntry?.brainDump ?? null,
+      frictionToday: initialEntry?.frictionToday ?? null,
       standupDone: initialEntry?.standupDone ?? null,
       standupPlan: initialEntry?.standupPlan ?? null,
       standupBlockers: initialEntry?.standupBlockers ?? null,
@@ -533,6 +534,7 @@ export function DailyEntryForm({
                   improveTomorrow={data.improveTomorrow ?? null}
                   gratitude={data.gratitude ?? null}
                   brainDump={data.brainDump ?? null}
+                  frictionToday={data.frictionToday ?? null}
                   onChange={patch}
                 />
 

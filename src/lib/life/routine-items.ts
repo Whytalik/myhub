@@ -114,6 +114,13 @@ export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
 
 export const EVENING_ROUTINE = [
   {
+    id: "e_kaizen",
+    time: "20:30 - 21:00",
+    label: "Kaizen time",
+    labelUk: "Кайдзен час",
+    icon: "Lightbulb",
+  },
+  {
     id: "e_devices_off",
     time: "21:00",
     label: "Turn off all devices",

@@ -30,6 +30,7 @@ export const journalRepository = {
         winToday: true,
         improveTomorrow: true,
         gratitude: true,
+        frictionToday: true,
         recoveryRoutine: true,
         recoveryScore: true,
         completedAt: true,

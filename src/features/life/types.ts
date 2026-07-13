@@ -118,6 +118,7 @@ export interface DailyEntryData {
   improveTomorrow: string | null;
   gratitude: string | null;
   brainDump: string | null;
+  frictionToday: string | null;
   confidenceLog: JsonValue | null;
   standupDone: string | null;
   standupPlan: string | null;
@@ -161,6 +162,7 @@ export interface UpsertDailyEntryInput {
   improveTomorrow?: string | null;
   gratitude?: string | null;
   brainDump?: string | null;
+  frictionToday?: string | null;
   standupDone?: string | null;
   standupPlan?: string | null;
   standupBlockers?: string | null;

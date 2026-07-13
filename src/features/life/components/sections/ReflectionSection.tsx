@@ -1,18 +1,20 @@
 "use client";
 import { Textarea } from "@/components/ui/inputs/textarea";
 
-import { Trophy, RefreshCw, Heart, Trash2 } from "lucide-react";
+import { Trophy, RefreshCw, Heart, Trash2, Search } from "lucide-react";
 
 interface Props {
   winToday: string | null;
   improveTomorrow: string | null;
   gratitude: string | null;
   brainDump: string | null;
+  frictionToday: string | null;
   onChange: (patch: {
     winToday?: string | null;
     improveTomorrow?: string | null;
     gratitude?: string | null;
     brainDump?: string | null;
+    frictionToday?: string | null;
   }) => void;
 }
 
@@ -36,10 +38,16 @@ const PROMPTS = [
     placeholder: "Clear your mind before sleep. Worries, ideas, random thoughts...",
   },
   {
+    key: "frictionToday" as const,
+    icon: Search,
+    label: "Kaizen: Friction Today",
+    placeholder: "What took more time or energy than it should have?",
+  },
+  {
     key: "improveTomorrow" as const,
     icon: RefreshCw,
-    label: "Do Better Tomorrow",
-    placeholder: "One concrete action for tomorrow",
+    label: "Kaizen: Fix for Tomorrow",
+    placeholder: "One small tweak to make it easier next time",
   },
 ];
 
@@ -48,9 +56,10 @@ export function ReflectionSection({
   improveTomorrow,
   gratitude,
   brainDump,
+  frictionToday,
   onChange,
 }: Props) {
-  const values = { winToday, improveTomorrow, gratitude, brainDump };
+  const values = { winToday, improveTomorrow, gratitude, brainDump, frictionToday };
 
   return (
     <div className="glass-card p-4 flex flex-col gap-4">
