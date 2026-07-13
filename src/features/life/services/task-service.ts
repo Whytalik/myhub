@@ -7,6 +7,7 @@ import {
 import { taskRepository, type TaskRow } from "../repositories/task.repository";
 import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_SPHERES } from "../constants";
+import { prisma } from "@/lib/db/prisma";
 import type {
   TaskData,
   LifeSphereData,
@@ -292,6 +293,32 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
   const existingCount = await sphereRepository.count(userId);
   if (existingCount === 0) {
     await sphereRepository.createMany(DEFAULT_SPHERES.map((sphere) => ({ ...sphere, userId })));
+    const dbSpheres = await prisma.lifeSphere.findMany({
+      where: { userId },
+      include: {
+        _count: {
+          select: { tasks: true }
+        }
+      },
+      orderBy: { order: "asc" }
+    });
+    try {
+      const { invalidateTaskCache } = await import("@/lib/cache/revalidate");
+      invalidateTaskCache(userId);
+    } catch (error) {
+      console.error("Failed to invalidate spheres cache:", error);
+    }
+    return dbSpheres.map((s) => ({
+      id: s.id,
+      name: s.name,
+      color: s.color,
+      icon: s.icon,
+      order: s.order,
+      isActive: s.isActive,
+      taskCount: s._count.tasks,
+      createdAt: s.createdAt,
+      updatedAt: s.updatedAt,
+    }));
   }
 
   const spheres = await getCachedSpheres(userId);
