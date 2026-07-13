@@ -28,6 +28,7 @@ import {
   decomposeThoughtAction,
 } from "@/features/life/actions/thought-actions";
 import type { LifeSphereData } from "@/features/life/types";
+import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 
 interface ThoughtItem {
   id: string;
@@ -43,12 +44,16 @@ interface PlanningWizardClientProps {
   initialThoughts: ThoughtItem[];
   spheres: LifeSphereData[];
   activeSprint: any;
+  initialBacklogProjects: any[];
+  initialColumns: any;
 }
 
 export function PlanningWizardClient({
   initialThoughts,
   spheres,
   activeSprint,
+  initialBacklogProjects,
+  initialColumns,
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(0); // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Finish
@@ -476,8 +481,19 @@ export function PlanningWizardClient({
                   Ти успішно декомпозував усі відфільтровані бажання та обов'язки в робочі сутності.
                 </p>
               </div>
-              <Button variant="primary" size="sm" onClick={() => setStep(4)} className="mt-2">
-                Завершити планування <ArrowRight size={14} />
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  startActionTransition(async () => {
+                    router.refresh();
+                    setStep(4);
+                  });
+                }}
+                disabled={isActionPending}
+                className="mt-2"
+              >
+                Далі до планування Спринту <ArrowRight size={14} />
               </Button>
             </div>
           ) : (
@@ -696,38 +712,35 @@ export function PlanningWizardClient({
         </div>
       )}
 
-      {/* 🎉 STEP 4: FINISH */}
+      {/* 📅 STEP 4: KANBAN DISTRIBUTION */}
       {step === 4 && (
-        <div className="glass-card p-8 flex flex-col gap-6 items-center text-center bg-white/[0.01]">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center animate-float">
-            <CheckCircle2 size={32} />
-          </div>
-
-          <div className="flex flex-col gap-2 max-w-md">
-            <h2 className="text-2xl font-bold text-zinc-100 font-mono">Планування успішно завершено!</h2>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Ти успішно розібрав свій Інбокс, провів фільтрацію та декомпозував думки на конкретні робочі кроки та проєкти.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2 w-full max-w-sm mt-2">
+        <div className="flex flex-col gap-6">
+          <div className="glass-card p-4 bg-emerald-500/5 border-emerald-500/10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">🎉</span>
+              <div>
+                <h4 className="text-sm font-bold text-zinc-100 font-mono">Декомпозиція завершена! Крок 4: Розподіл</h4>
+                <p className="text-xs text-zinc-400">
+                  Усі твої нові проєкти додані в Беклог, а атоми — в План на тиждень. Розподіли їх зараз:
+                </p>
+              </div>
+            </div>
             <Button
               variant="primary"
-              size="md"
-              onClick={() => router.push("/life/planning/kanban")}
-              className="w-full font-semibold flex items-center justify-center gap-2"
-            >
-              Відкрити Спринт-Канбан <ArrowRight size={16} />
-            </Button>
-            <Button
-              variant="ghost"
               size="sm"
-              onClick={() => setStep(0)}
-              className="w-full text-xs text-zinc-500"
+              onClick={() => router.push("/life/planning/kanban")}
+              className="flex items-center gap-1.5"
             >
-              Спланувати ще раз
+              Завершити планування <CheckCircle2 size={14} />
             </Button>
           </div>
+
+          <KanbanBoardClient
+            initialSprint={activeSprint}
+            initialBacklogProjects={initialBacklogProjects}
+            initialColumns={initialColumns}
+            spheres={spheres}
+          />
         </div>
       )}
     </div>

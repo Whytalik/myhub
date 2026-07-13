@@ -40,6 +40,8 @@ export default async function PlanningWizardPage() {
         initialThoughts={thoughts as any}
         spheres={spheres}
         activeSprint={dashboard.sprint as any}
+        initialBacklogProjects={dashboard.backlogProjects as any}
+        initialColumns={dashboard.columns as any}
       />
     </div>
   );
