@@ -22,6 +22,7 @@ interface StatusColumnProps {
   onEditThought: (thoughtId: string, patch: ThoughtDetailPatch) => void;
   onDeleteThought: (thoughtId: string) => void;
   onDeleteStatus: (statusId: string) => void;
+  onDecomposeThought: (thoughtId: string) => void;
 }
 
 export function StatusColumn({
@@ -31,6 +32,7 @@ export function StatusColumn({
   onEditThought,
   onDeleteThought,
   onDeleteStatus,
+  onDecomposeThought,
 }: StatusColumnProps) {
   const [renameOpen, setRenameOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -149,6 +151,8 @@ export function StatusColumn({
               spheres={spheres}
               onEdit={(patch) => onEditThought(thought.id, patch)}
               onDelete={() => onDeleteThought(thought.id)}
+              canDecompose={status.name === "Хочу" || status.name === "Повинен"}
+              onDecomposed={() => onDecomposeThought(thought.id)}
             />
           ))}
         </div>

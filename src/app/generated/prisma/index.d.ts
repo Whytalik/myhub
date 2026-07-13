@@ -31364,7 +31364,7 @@ export namespace Prisma {
 
   export type ProjectGroupByOutputType = {
     id: string
-    objectiveId: string
+    objectiveId: string | null
     title: string
     description: string | null
     startDate: Date | null
@@ -31401,7 +31401,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
     tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
@@ -31416,7 +31416,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -31429,7 +31429,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectScalar = {
@@ -31446,26 +31446,26 @@ export namespace Prisma {
 
   export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "objectiveId" | "title" | "description" | "startDate" | "endDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
     tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
   }
   export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    objective?: boolean | ObjectiveDefaultArgs<ExtArgs>
+    objective?: boolean | Project$objectiveArgs<ExtArgs>
   }
 
   export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Project"
     objects: {
-      objective: Prisma.$ObjectivePayload<ExtArgs>
+      objective: Prisma.$ObjectivePayload<ExtArgs> | null
       tasks: Prisma.$TaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      objectiveId: string
+      objectiveId: string | null
       title: string
       description: string | null
       startDate: Date | null
@@ -31867,7 +31867,7 @@ export namespace Prisma {
    */
   export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    objective<T extends ObjectiveDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ObjectiveDefaultArgs<ExtArgs>>): Prisma__ObjectiveClient<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    objective<T extends Project$objectiveArgs<ExtArgs> = {}>(args?: Subset<T, Project$objectiveArgs<ExtArgs>>): Prisma__ObjectiveClient<$Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     tasks<T extends Project$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Project$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -32305,6 +32305,25 @@ export namespace Prisma {
      * Limit how many Projects to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Project.objective
+   */
+  export type Project$objectiveArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Objective
+     */
+    select?: ObjectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Objective
+     */
+    omit?: ObjectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ObjectiveInclude<ExtArgs> | null
+    where?: ObjectiveWhereInput
   }
 
   /**
@@ -49387,7 +49406,7 @@ export namespace Prisma {
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
     id?: StringFilter<"Project"> | string
-    objectiveId?: StringFilter<"Project"> | string
+    objectiveId?: StringNullableFilter<"Project"> | string | null
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
@@ -49395,13 +49414,13 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
-    objective?: XOR<ObjectiveScalarRelationFilter, ObjectiveWhereInput>
+    objective?: XOR<ObjectiveNullableScalarRelationFilter, ObjectiveWhereInput> | null
     tasks?: TaskListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
     id?: SortOrder
-    objectiveId?: SortOrder
+    objectiveId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     startDate?: SortOrderInput | SortOrder
@@ -49418,7 +49437,7 @@ export namespace Prisma {
     AND?: ProjectWhereInput | ProjectWhereInput[]
     OR?: ProjectWhereInput[]
     NOT?: ProjectWhereInput | ProjectWhereInput[]
-    objectiveId?: StringFilter<"Project"> | string
+    objectiveId?: StringNullableFilter<"Project"> | string | null
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null
@@ -49426,13 +49445,13 @@ export namespace Prisma {
     status?: EnumTaskStatusFilter<"Project"> | $Enums.TaskStatus
     createdAt?: DateTimeFilter<"Project"> | Date | string
     updatedAt?: DateTimeFilter<"Project"> | Date | string
-    objective?: XOR<ObjectiveScalarRelationFilter, ObjectiveWhereInput>
+    objective?: XOR<ObjectiveNullableScalarRelationFilter, ObjectiveWhereInput> | null
     tasks?: TaskListRelationFilter
   }, "id">
 
   export type ProjectOrderByWithAggregationInput = {
     id?: SortOrder
-    objectiveId?: SortOrder
+    objectiveId?: SortOrderInput | SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     startDate?: SortOrderInput | SortOrder
@@ -49450,7 +49469,7 @@ export namespace Prisma {
     OR?: ProjectScalarWhereWithAggregatesInput[]
     NOT?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Project"> | string
-    objectiveId?: StringWithAggregatesFilter<"Project"> | string
+    objectiveId?: StringNullableWithAggregatesFilter<"Project"> | string | null
     title?: StringWithAggregatesFilter<"Project"> | string
     description?: StringNullableWithAggregatesFilter<"Project"> | string | null
     startDate?: DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
@@ -52703,13 +52722,13 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    objective: ObjectiveCreateNestedOneWithoutProjectsInput
+    objective?: ObjectiveCreateNestedOneWithoutProjectsInput
     tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
     id?: string
-    objectiveId: string
+    objectiveId?: string | null
     title: string
     description?: string | null
     startDate?: Date | string | null
@@ -52729,13 +52748,13 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    objective?: ObjectiveUpdateOneRequiredWithoutProjectsNestedInput
+    objective?: ObjectiveUpdateOneWithoutProjectsNestedInput
     tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    objectiveId?: StringFieldUpdateOperationsInput | string
+    objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52748,7 +52767,7 @@ export namespace Prisma {
 
   export type ProjectCreateManyInput = {
     id?: string
-    objectiveId: string
+    objectiveId?: string | null
     title: string
     description?: string | null
     startDate?: Date | string | null
@@ -52771,7 +52790,7 @@ export namespace Prisma {
 
   export type ProjectUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    objectiveId?: StringFieldUpdateOperationsInput | string
+    objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55661,6 +55680,11 @@ export namespace Prisma {
     currentValue?: SortOrder
   }
 
+  export type ObjectiveNullableScalarRelationFilter = {
+    is?: ObjectiveWhereInput | null
+    isNot?: ObjectiveWhereInput | null
+  }
+
   export type ProjectCountOrderByAggregateInput = {
     id?: SortOrder
     objectiveId?: SortOrder
@@ -58265,10 +58289,12 @@ export namespace Prisma {
     connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
-  export type ObjectiveUpdateOneRequiredWithoutProjectsNestedInput = {
+  export type ObjectiveUpdateOneWithoutProjectsNestedInput = {
     create?: XOR<ObjectiveCreateWithoutProjectsInput, ObjectiveUncheckedCreateWithoutProjectsInput>
     connectOrCreate?: ObjectiveCreateOrConnectWithoutProjectsInput
     upsert?: ObjectiveUpsertWithoutProjectsInput
+    disconnect?: ObjectiveWhereInput | boolean
+    delete?: ObjectiveWhereInput | boolean
     connect?: ObjectiveWhereUniqueInput
     update?: XOR<XOR<ObjectiveUpdateToOneWithWhereWithoutProjectsInput, ObjectiveUpdateWithoutProjectsInput>, ObjectiveUncheckedUpdateWithoutProjectsInput>
   }
@@ -62263,12 +62289,12 @@ export namespace Prisma {
     status?: $Enums.TaskStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    objective: ObjectiveCreateNestedOneWithoutProjectsInput
+    objective?: ObjectiveCreateNestedOneWithoutProjectsInput
   }
 
   export type ProjectUncheckedCreateWithoutTasksInput = {
     id?: string
-    objectiveId: string
+    objectiveId?: string | null
     title: string
     description?: string | null
     startDate?: Date | string | null
@@ -62498,12 +62524,12 @@ export namespace Prisma {
     status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    objective?: ObjectiveUpdateOneRequiredWithoutProjectsNestedInput
+    objective?: ObjectiveUpdateOneWithoutProjectsNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutTasksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    objectiveId?: StringFieldUpdateOperationsInput | string
+    objectiveId?: NullableStringFieldUpdateOperationsInput | string | null
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -64540,7 +64566,7 @@ export namespace Prisma {
     OR?: ProjectScalarWhereInput[]
     NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
     id?: StringFilter<"Project"> | string
-    objectiveId?: StringFilter<"Project"> | string
+    objectiveId?: StringNullableFilter<"Project"> | string | null
     title?: StringFilter<"Project"> | string
     description?: StringNullableFilter<"Project"> | string | null
     startDate?: DateTimeNullableFilter<"Project"> | Date | string | null

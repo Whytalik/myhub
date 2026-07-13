@@ -80,3 +80,23 @@ export async function routeThoughtAction(
     invalidateThoughtCache(userId);
   });
 }
+
+export async function decomposeThoughtAction(input: {
+  thoughtId: string;
+  type: "task" | "project";
+  taskTitle?: string;
+  sphereId?: string | null;
+  description?: string | null;
+  priority?: string;
+  projectTitle?: string;
+  atomTitle?: string;
+  atomDescription?: string | null;
+}): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+    const result = await thoughtService.decomposeThought(userId, input);
+    invalidateThoughtCache(userId);
+    const { invalidateTaskCache } = await import("@/lib/cache/revalidate");
+    invalidateTaskCache(userId);
+    return result;
+  });
+}

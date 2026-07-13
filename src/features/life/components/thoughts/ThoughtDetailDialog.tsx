@@ -21,6 +21,8 @@ interface ThoughtDetailDialogProps {
   thought: ThoughtData;
   spheres: LifeSphereData[];
   onSave: (patch: ThoughtDetailPatch) => void;
+  canDecompose?: boolean;
+  onDecompose?: () => void;
 }
 
 // Collects the edit and hands it to the parent (ThoughtsBoardClient), which
@@ -32,6 +34,8 @@ export function ThoughtDetailDialog({
   thought,
   spheres,
   onSave,
+  canDecompose,
+  onDecompose,
 }: ThoughtDetailDialogProps) {
   const [content, setContent] = useState(thought.content);
   const [sphereId, setSphereId] = useState<string | null>(thought.sphereId);
@@ -77,6 +81,20 @@ export function ThoughtDetailDialog({
         />
 
         <div className="flex justify-end gap-2">
+          {canDecompose && onDecompose && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                onDecompose();
+                onClose();
+              }}
+              className="mr-auto text-orange-400 border-orange-500/20 hover:bg-orange-500/10"
+            >
+              Розбити
+            </Button>
+          )}
           <Button type="button" variant="ghost" size="sm" onClick={onClose}>
             Cancel
           </Button>

@@ -1,6 +1,7 @@
 import { getCachedThoughtBoard } from "@/lib/cache/cache";
 import { thoughtStatusRepository } from "../repositories/thought-status.repository";
 import { thoughtRepository } from "../repositories/thought.repository";
+import { prisma } from "@/lib/db/prisma";
 import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
 import { Prisma } from "@/app/generated/prisma";
@@ -165,4 +166,94 @@ export async function moveThought(
     targetStatusId,
     orderedIdsInTargetColumn,
   );
+}
+
+export async function decomposeThought(
+  userId: string,
+  input: {
+    thoughtId: string;
+    type: "task" | "project";
+    taskTitle?: string;
+    sphereId?: string | null;
+    description?: string | null;
+    priority?: string;
+    projectTitle?: string;
+    atomTitle?: string;
+    atomDescription?: string | null;
+  },
+) {
+  const {
+    thoughtId,
+    type,
+    taskTitle,
+    sphereId,
+    description,
+    priority = "MEDIUM",
+    projectTitle,
+    atomTitle,
+    atomDescription,
+  } = input;
+
+  // Verify thought ownership/existence
+  const thought = await prisma.thought.findUnique({
+    where: { id: thoughtId, userId },
+  });
+  if (!thought) {
+    throw new Error("Thought not found or unauthorized");
+  }
+
+  return prisma.$transaction(async (tx) => {
+    if (type === "task") {
+      const title = taskTitle || thought.content;
+      const createdTask = await tx.task.create({
+        data: {
+          userId,
+          title,
+          description: description || null,
+          status: "TODO",
+          priority: priority as any,
+          sphereId: sphereId || thought.sphereId,
+          depth: 0,
+        },
+      });
+
+      await tx.thought.delete({
+        where: { id: thoughtId, userId },
+      });
+
+      return { type: "task" as const, task: createdTask };
+    } else {
+      const title = projectTitle || thought.content;
+      const createdProject = await tx.project.create({
+        data: {
+          title,
+          description: description || null,
+          status: "TODO",
+        },
+      });
+
+      const createdTask = await tx.task.create({
+        data: {
+          userId,
+          title: atomTitle || "Перший крок проєкту",
+          description: atomDescription || null,
+          status: "TODO",
+          priority: priority as any,
+          projectId: createdProject.id,
+          sphereId: sphereId || thought.sphereId,
+          depth: 0,
+        },
+      });
+
+      await tx.thought.delete({
+        where: { id: thoughtId, userId },
+      });
+
+      return {
+        type: "project" as const,
+        project: createdProject,
+        task: createdTask,
+      };
+    }
+  });
 }

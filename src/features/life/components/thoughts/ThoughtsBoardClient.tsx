@@ -252,6 +252,16 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
     });
   };
 
+  const handleDecomposeThought = (thoughtId: string) => {
+    const column = findColumnByCardId(thoughtId);
+    if (!column) return;
+    setColumns((prev) =>
+      prev.map((c) =>
+        c.id === column.id ? { ...c, thoughts: c.thoughts.filter((t) => t.id !== thoughtId) } : c,
+      ),
+    );
+  };
+
   const handleDeleteStatus = (statusId: string) => {
     const previous = columns;
     setColumns((prev) => prev.filter((c) => c.id !== statusId));
@@ -289,6 +299,7 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
                 onEditThought={handleEditThought}
                 onDeleteThought={handleDeleteThought}
                 onDeleteStatus={handleDeleteStatus}
+                onDecomposeThought={handleDecomposeThought}
               />
             ))}
           </SortableContext>

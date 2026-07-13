@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { AlertTriangle, CheckCircle2, Sparkles, Trash2, type LucideIcon } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Sparkles, Trash2, FolderKanban, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { getThoughtTypeConfig } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog, type ThoughtDetailPatch } from "./ThoughtDetailDialog";
+import { ThoughtDecomposeDialog } from "./ThoughtDecomposeDialog";
 import type { LifeSphereData, ThoughtData } from "@/features/life/types";
 
 const TYPE_ICONS: Record<string, LucideIcon> = { AlertTriangle, Sparkles, CheckCircle2 };
@@ -16,10 +17,20 @@ interface ThoughtCardProps {
   spheres: LifeSphereData[];
   onEdit: (patch: ThoughtDetailPatch) => void;
   onDelete: () => void;
+  canDecompose?: boolean;
+  onDecomposed?: () => void;
 }
 
-export function ThoughtCard({ thought, spheres, onEdit, onDelete }: ThoughtCardProps) {
+export function ThoughtCard({
+  thought,
+  spheres,
+  onEdit,
+  onDelete,
+  canDecompose,
+  onDecomposed,
+}: ThoughtCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
+  const [decomposeOpen, setDecomposeOpen] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: thought.id,
@@ -74,18 +85,36 @@ export function ThoughtCard({ thought, spheres, onEdit, onDelete }: ThoughtCardP
           </div>
         )}
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          className="self-end opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-red-400"
-        >
-          <Trash2 size={13} />
-        </Button>
+        <div className="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+          {canDecompose && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDecomposeOpen(true);
+              }}
+              className="text-zinc-500 hover:text-orange-400 h-7 w-7"
+              title="Розбити до атомів (Кайдзен)"
+            >
+              <FolderKanban size={13} />
+            </Button>
+          )}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            className="text-zinc-600 hover:text-red-400 h-7 w-7"
+            title="Видалити"
+          >
+            <Trash2 size={13} />
+          </Button>
+        </div>
       </div>
 
       <ThoughtDetailDialog
@@ -94,7 +123,19 @@ export function ThoughtCard({ thought, spheres, onEdit, onDelete }: ThoughtCardP
         thought={thought}
         spheres={spheres}
         onSave={onEdit}
+        canDecompose={canDecompose}
+        onDecompose={() => setDecomposeOpen(true)}
       />
+
+      {canDecompose && onDecomposed && (
+        <ThoughtDecomposeDialog
+          isOpen={decomposeOpen}
+          onClose={() => setDecomposeOpen(false)}
+          thought={thought}
+          spheres={spheres}
+          onDecomposed={onDecomposed}
+        />
+      )}
     </>
   );
 }
